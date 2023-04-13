@@ -1,0 +1,276 @@
+// Here you can add other styles
+
+li.nav-dropdown>ul.nav-dropdown-items {
+    padding-left: 12px!important;
+    font-size: 13px;
+}
+
+.text-overflow-button > span{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 92%;
+  max-width: 100%;
+}
+
+.text-overflow-button{
+  padding:0px !important;
+}
+
+.tooltip{
+  z-index: 99999;
+}
+
+.margin-name-0mobile{
+  margin-top:18px;
+}
+
+/*desktopcss starts*/
+.breadcrumb{
+    margin-bottom: 0px;
+}
+
+.border-charts{
+    border:1px solid #a4b7c1;
+}
+
+.more-changes{
+  margin-left:310px;
+  margin-top:15px;
+}
+
+.margin-new-top-one{
+  margin-top: -43px;
+}
+
+.margin-name{
+  margin-top:18px;
+}
+
+/*desktopcss Ends*/
+
+/*Mobile Css Starts*/
+@media (min-width: 300px) and (max-width: 480px) { 
+  
+    .mobile-padding{
+      padding:0px;
+  }
+
+  
+
+  .more-changes{
+    margin-left:180px;
+    margin-top:15px;
+  }
+
+  .company{
+    font-size: 24px; 
+  }
+
+  .margin-new{
+    margin-right: auto;
+    margin-left: auto
+  }
+
+  .margin-name{
+    margin-top:-63px;
+  }
+
+  .margin-name-0mobile{
+    margin-top:18px;
+  }
+
+  .app-header.navbar{
+    height: auto;
+  }
+
+  .main{
+    margin-top: 20px;
+  }
+
+
+}
+
+@media (min-width: 400px) and (max-width: 520px) {
+    .margin-bottom-mobile{
+        margin-bottom: 10px;
+      }
+
+      .app-header.navbar{
+        height: auto;
+      }
+
+      .margin-new{
+        margin-right: auto;
+        margin-left: auto
+      }
+
+      .more-changes{
+        margin-left:180px;
+        margin-top:15px;
+      }
+
+      .margin-name{
+        margin-top:-63px;
+      }
+
+      .margin-name-0mobile{
+        margin-top:18px;
+      }
+
+      .main{
+        margin-top: 20px;
+      }
+    
+
+}
+
+/*mobile css Ends*/
+
+@media only screen   and (min-width: 810px) 
+  and (max-width: 830px) 
+  {
+    .show-land-new{
+        float:right !important;
+    }
+
+    .margin-name-0mobile{
+      margin-top:18px;
+      font-size:12.2px;
+    }
+
+    .img-side-logo{
+      width: 150px;
+      padding: 3px;
+    }
+}
+
+
+@media only screen   and (min-width: 725px) 
+  and (max-width: 740px) 
+  {
+       .center-landscape{
+        text-align: center;
+        margin-left: -12px;
+        }
+
+
+ .margin-name-0mobile{
+      margin-top:18px;
+      font-size:11px;
+    }
+
+    .margin-pixel-2{
+      margin-left:18px;
+    }
+
+    .ngx-dropdown-button{
+      padding-left:2px;
+      padding-right:2px;
+    }
+
+
+  }
+
+
+  @media (min-width: 540px) and (max-width: 580px) {
+  
+    .iphone-1{
+      max-width:7%;
+    }
+
+    .iphone-2{
+      max-width:13%;
+    }
+
+    .margin-name-0mobile{
+      margin-left:30px;
+    }
+
+    .r-0{
+      right:0px;
+    }
+
+    .iphone-5s-1{
+      max-width:30%;
+    }
+
+    .iphone-5s-2{
+      max-width:42%;
+    }
+
+    .show-land-new{
+      display:none;
+    }
+
+    .r-106{
+      right:-106px;
+    }
+
+    .show-land{
+      display:block !important;
+    }
+
+
+    .iphone-tag{
+      max-width:46%
+    }
+    .iphone-5s-3{
+      max-width:17%;
+    }
+
+     .app-header.navbar .navbar-brand{
+       margin-left: -24px;
+     }
+
+     .iphone-absolute{
+       position: absolute;
+     }
+
+  }
+
+
+
+@media only screen   and (min-width: 640px) 
+  and (max-width: 790px) 
+    {
+
+      .show-land-new{
+        display:none;
+     }
+
+       .show-land{
+          display:block !important;
+          margin-top: -22px;
+          margin-bottom: 5px;
+       }
+
+       .margin-tag{
+         margin-left: -34px;
+       }
+
+      //  .center-landscape{
+      //   text-align: center;
+      //   margin-left: -12px;
+      //  }
+
+      .margin-name-0mobile{
+        margin-top:18px;
+        font-size:11px;
+      }
+
+
+
+}
+
+
+.show-land{
+  display:none;
+}
+
+.margin-bottom-mobile{
+  margin-bottom: 10px;
+}
+.table-responsive-sm1 {
+  display: block;
+  overflow-x: auto;
+}

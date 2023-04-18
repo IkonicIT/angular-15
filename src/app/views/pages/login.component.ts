@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   templateUrl: 'login.component.html',
 })
 export class LoginComponent {
-  userName: string = 'hello';
+  userName: string;
   password: string;
   router: any;
   loginError: any = false;
@@ -14,6 +14,8 @@ export class LoginComponent {
   user: any = {};
   isOwnerAdmin: any;
   date: any;
+  loading = false;
+  submitted = false;
 
   constructor(router: Router) {
     this.router = router;
@@ -32,8 +34,11 @@ export class LoginComponent {
   }
 
   login() {
-    console.log('Username is ', this.userName);
-    console.log('Password is ', this.password);
+    var req = {
+      userName: this.userName,
+      password: this.password,
+    };
+    console.log(req);
   }
 
   getUserIdByNameForLogged() {

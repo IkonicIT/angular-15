@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
 
     // Start watching when user idle is starting and reset if user action is there.
     this.userIdle.onTimerStart().subscribe((count) => {
-      console.log(count);
+      //console.log(count);
       if (count == 1) {
         //this.modalService.show(ModalComponent, { backdrop: 'static' });
       }

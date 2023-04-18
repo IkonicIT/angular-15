@@ -11,8 +11,10 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppCustomPreloader } from './app.custome.preloader';
+import { AuthInterceptor } from 'src/AuthInterceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +22,7 @@ import { AppCustomPreloader } from './app.custome.preloader';
     CommonModule,
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     PagesModule,
     FormsModule,
     ReactiveFormsModule,
@@ -27,7 +30,13 @@ import { AppCustomPreloader } from './app.custome.preloader';
     AlertModule.forRoot(),
     TooltipModule.forRoot(),
   ],
+  exports: [CommonModule, FormsModule, ReactiveFormsModule],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     AppCustomPreloader,
     {
       provide: LocationStrategy,

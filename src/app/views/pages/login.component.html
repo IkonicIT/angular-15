@@ -1,7 +1,7 @@
 <div class="app flex-row align-items-center">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-6 cent">
         <div class="card-group">
           <div class="card p-4">
             <div class="card-body">
@@ -53,7 +53,7 @@
                     <button
                       type="button"
                       (click)="login()"
-                      class="btn btn-primary px-4"
+                      class="btn btn-danger px-4"
                     >
                       Login
                     </button>
@@ -72,7 +72,7 @@
             </div>
           </div>
           <div
-            class="card text-white bg-primary py-5 d-md-down-none"
+            class="card text-white bg-danger py-5 d-md-down-none"
             style="width: 44%"
           >
             <div class="card-body text-center">
@@ -181,4 +181,16 @@
       opacity: 1;
     }
   }
+
+  .btn-link[routerLink='/forgot-password'] {
+  color: red;
+}
+
+.cent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 </style>

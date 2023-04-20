@@ -15,6 +15,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppCustomPreloader } from './app.custome.preloader';
 import { AuthInterceptor } from 'src/AuthInterceptor';
+import { LoginService } from './services';
+import { UserManagementService } from './services/user-management.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +44,8 @@ import { AuthInterceptor } from 'src/AuthInterceptor';
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
     },
+    LoginService,
+    UserManagementService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

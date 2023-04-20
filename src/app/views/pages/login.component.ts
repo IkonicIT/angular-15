@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { UserManagementService } from '../../services/user-management.service';
 
 @Component({
   templateUrl: 'login.component.html',
@@ -17,7 +20,12 @@ export class LoginComponent {
   loading = false;
   submitted = false;
 
-  constructor(router: Router) {
+  constructor(
+    router: Router,
+    private loginService: LoginService,
+    private spinner: NgxSpinnerService,
+    private userManagementService: UserManagementService
+  ) {
     this.router = router;
     this.loader = true;
 
@@ -38,13 +46,62 @@ export class LoginComponent {
       userName: this.userName,
       password: this.password,
     };
-    console.log(req);
+    this.loader = true;
+    this.loginService.loginAuth(req).subscribe(
+      (response) => {
+        sessionStorage.setItem('auth_token', response.access_token);
+        console.log(response.access_token);
+        this.loader = false;
+        this.getUserIdByNameForLogged();
+      },
+      (error) => {
+        console.log(error);
+        this.loginError = true;
+        this.loader = false;
+      }
+    );
   }
 
   getUserIdByNameForLogged() {
-    console.log('get');
+    this.loginService.getUserIdByName(this.userName).subscribe(
+      (response) => {
+        console.log(response.userid);
+        this.userId = response.userid;
+        sessionStorage.setItem('userId', response.userid);
+        sessionStorage.setItem('userName', response.username);
+        this.getProfile();
+        this.spinner.hide();
+      },
+      (error) => {
+        console.log(error);
+        this.loginError = true;
+        this.spinner.hide();
+      }
+    );
   }
+
   getProfile() {
-    console.log('get');
+    this.loginService.getProfileByUserId(this.userId).subscribe(
+      (response) => {
+        sessionStorage.setItem('IsOwnerAdmin', response.isowneradmin);
+        sessionStorage.setItem('IsOwnerAdminReadOnly', response.acceptedterms);
+
+        this.date = new Date();
+        this.user.userid = this.userId;
+        this.userManagementService.updateLoginDate(this.user).subscribe(
+          (response) => {},
+          (error) => {
+            console.log(error);
+            this.loginError = true;
+            this.spinner.hide();
+          }
+        );
+
+        this.router.navigate(['/dashboard']);
+      },
+      (error) => {
+        this.spinner.hide();
+      }
+    );
   }
 }

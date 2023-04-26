@@ -17,6 +17,19 @@ import { AppCustomPreloader } from './app.custome.preloader';
 import { AuthInterceptor } from 'src/AuthInterceptor';
 import { LoginService } from './services';
 import { UserManagementService } from './services/user-management.service';
+import {
+  CompanyManagementService,
+  CompanyDocumentsService,
+  LocationManagementService,
+  ItemManagementService,
+  ItemTypesService,
+} from './services';
+import { BroadcasterService } from './services/broadcaster.service';
+import { DashboardService } from './services/dashboard.service';
+import { ExcelService } from './services/excel-service';
+import { DropdownTreeviewModule } from './views/dropdown-treeview-select/dropdown-treeview.module';
+import { NgChartsModule } from 'ng2-charts';
+import { TreeviewModule } from 'ngx-treeview';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,9 +41,12 @@ import { UserManagementService } from './services/user-management.service';
     PagesModule,
     FormsModule,
     ReactiveFormsModule,
+    NgChartsModule,
+    DropdownTreeviewModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     TooltipModule.forRoot(),
+    TreeviewModule.forRoot(),
   ],
   exports: [CommonModule, FormsModule, ReactiveFormsModule],
   providers: [
@@ -45,7 +61,15 @@ import { UserManagementService } from './services/user-management.service';
       useClass: HashLocationStrategy,
     },
     LoginService,
-    UserManagementService
+    UserManagementService,
+    CompanyManagementService,
+    CompanyDocumentsService,
+    LocationManagementService,
+    ItemManagementService,
+    BroadcasterService,
+    DashboardService,
+    ItemTypesService,
+    ExcelService,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

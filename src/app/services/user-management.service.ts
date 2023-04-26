@@ -28,6 +28,7 @@ export class UserManagementService {
   ) {}
 
   updateLoginDate(user: any) {
+    console.log('USER MANAGEMENT SERVICE');
     return this.http
       .put(this.serviceURL + 'users/updatelogindate', user, this.httpOptions)
       .pipe(catchError(this.handleError));

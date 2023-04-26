@@ -10,7 +10,7 @@ import { isUndefined } from 'is-what';
 
 @Component({
   templateUrl: 'dashboard.component.html',
-  //styleUrls: ['./dashboard.component.scss'],
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
   public brandPrimary = '#20a8d8';

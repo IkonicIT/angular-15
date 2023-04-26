@@ -1,41 +1,39 @@
-::ng-deep .dp-picker-input{
-    height: calc(2.0625rem + 2px)!important;
+::ng-deep .dp-picker-input {
+  height: calc(2.0625rem + 2px) !important;
 }
-.my-pagination /deep/ .ngx-pagination {
-    margin-bottom: 1rem;
-    margin-top: 25px;
-    width: fit-content;
-    border: solid 1px #a4b7c1;
-    padding-left: 0px;
+.my-pagination ::v-deep .ngx-pagination {
+  margin-bottom: 1rem;
+  margin-top: 25px;
+  width: fit-content;
+  border: solid 1px #a4b7c1;
+  padding-left: 0px;
+}
+.my-pagination ::v-deep .ngx-pagination .current {
+  color: white;
+  background-color: red;
+}
+.my-pagination ::v-deep .ngx-pagination a,
+.ngx-pagination button {
+  color: red;
+  background-color: white;
+}
+thead th {
+  cursor: pointer;
+  span {
+    visibility: hidden;
   }
-  .my-pagination /deep/ .ngx-pagination .current{
-    color:white;
-    background-color: red;
-  }
-  .my-pagination /deep/ .ngx-pagination a,  .ngx-pagination button {
-    color: red;
-    background-color: white;
-  }
-  thead th {
-    cursor: pointer;
+  &.active {
+    color: #000;
+
     span {
-      visibility: hidden;
-    }
-    &.active {
-      color: #000;
-  
-      span {
-        visibility: visible;
-      }
+      visibility: visible;
     }
   }
-  .float-right {
-    float: right;
-  }
-  .div-search {
-    margin-bottom: 1%;
-    margin-top: 1%;
-  }
-
-
-
+}
+.float-right {
+  float: right;
+}
+.div-search {
+  margin-bottom: 1%;
+  margin-top: 1%;
+}

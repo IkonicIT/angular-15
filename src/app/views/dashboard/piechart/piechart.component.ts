@@ -18,12 +18,12 @@ import { DashboardService } from '../../../services/dashboard.service';
 import * as cloneDeep from 'lodash';
 import { ExcelService } from '../../../services/excel-service';
 import { NgChartsModule } from 'ng2-charts';
-import { ChartData, ChartType } from 'chart.js';
+import { ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-piechart',
   templateUrl: './piechart.component.html',
-  //styleUrls: ['./piechart.component.scss'],
+  styleUrls: ['./piechart.component.scss'],
 })
 export class PiechartComponent implements OnInit {
   modalRef: BsModalRef;

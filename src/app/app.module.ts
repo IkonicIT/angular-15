@@ -11,6 +11,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppCustomPreloader } from './app.custome.preloader';
@@ -30,9 +31,34 @@ import { ExcelService } from './services/excel-service';
 import { DropdownTreeviewModule } from './views/dropdown-treeview-select/dropdown-treeview.module';
 import { NgChartsModule } from 'ng2-charts';
 import { TreeviewModule } from 'ngx-treeview';
+import {
+  AppHeaderComponent,
+  AppSidebarComponent,
+  AppSidebarFormComponent,
+  AppSidebarHeaderComponent,
+  AppSidebarFooterComponent,
+  APP_SIDEBAR_NAV,
+  AppSidebarMinimizerComponent,
+  AppAsideComponent,
+  AppBreadcrumbsComponent,
+  AppFooterComponent,
+} from './components';
+
+const APP_COMPONENTS = [
+  AppHeaderComponent,
+  AppSidebarComponent,
+  AppSidebarFormComponent,
+  AppSidebarHeaderComponent,
+  AppSidebarFooterComponent,
+  APP_SIDEBAR_NAV,
+  AppSidebarMinimizerComponent,
+  AppAsideComponent,
+  AppBreadcrumbsComponent,
+  AppFooterComponent,
+];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, APP_COMPONENTS],
   imports: [
     CommonModule,
     BrowserModule,
@@ -43,6 +69,7 @@ import { TreeviewModule } from 'ngx-treeview';
     ReactiveFormsModule,
     NgChartsModule,
     DropdownTreeviewModule,
+    TabsModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     TooltipModule.forRoot(),

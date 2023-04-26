@@ -27,10 +27,173 @@ export class UserManagementService {
     private http: HttpClient
   ) {}
 
+  saveUser(user: any, companyId: string) {
+    return this.http
+      .post(this.serviceURL + 'users/' + companyId, user, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  addSecurityRole(role: any) {
+    return this.http
+      .post(this.serviceURL + 'userSecurity', role, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  changePassword(user: any) {
+    return this.http
+      .post(this.serviceURL + 'users/changepassword', user, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  getAllUsers(companyId: string) {
+    return this.http
+      .get(
+        this.serviceURL + 'users/getUserProfiles/' + companyId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getAllUsersAsOwnerAdmin(companyId: string) {
+    return this.http
+      .get(
+        this.serviceURL + 'users/getUserProfilesAsAdmin/' + companyId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getReportSecurityForUser(profileId: string) {
+    return this.http
+      .get(
+        AppConfiguration.locationRestURL + 'reportsecurity/' + profileId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getUserProfile(profileId: string) {
+    return this.http
+      .get(
+        AppConfiguration.locationRestURL + 'profile/' + profileId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getUserId(userName: string) {
+    return this.http
+      .get(
+        AppConfiguration.locationRestURL + 'users/usercount/' + userName,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getEmail(email: string) {
+    return this.http
+      .get(
+        AppConfiguration.locationRestURL + 'users/usercountbyemail/' + email,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getProfileWithUser(userId: string) {
+    return this.http
+      .get(
+        AppConfiguration.locationRestURL + 'profile/user/' + userId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  updateStatus(profileId: string, companyId: string, statusroles: any) {
+    return this.http
+      .put(
+        AppConfiguration.locationRestURL +
+          'profile/' +
+          profileId +
+          '/' +
+          companyId,
+        statusroles,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  updateProfile(profileId: string, companyId: string, profile: any) {
+    return this.http
+      .put(
+        AppConfiguration.locationRestURL +
+          'profile/saveProfile/' +
+          profileId +
+          '/' +
+          companyId,
+        profile,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  updateAccess(profileId: string, accessroles: any) {
+    return this.http
+      .put(
+        AppConfiguration.locationRestURL + 'reportsecurity/' + profileId,
+        accessroles,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  updateUser(userId: string, user: any) {
+    return this.http
+      .put(this.serviceURL + 'users/' + userId, user, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
   updateLoginDate(user: any) {
-    console.log('USER MANAGEMENT SERVICE');
     return this.http
       .put(this.serviceURL + 'users/updatelogindate', user, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  updateLogoutDate(id: string) {
+    return this.http
+      .put(this.serviceURL + 'users/updateUserLogOut/' + id, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  getUser(userId: string, profileId: string, companyId: string) {
+    return this.http
+      .get(
+        this.serviceURL + 'users/' + userId + '/' + profileId + '/' + companyId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getUserview(companyId: string) {
+    return this.http
+      .get(this.serviceURL + 'users/userlog/' + companyId, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  getprofileWithType(userId: string, companyId: string) {
+    return this.http
+      .get(
+        this.serviceURL + 'profile/user/' + userId + '/' + companyId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getUserlogData(companyId: string, username: string) {
+    return this.http
+      .get(
+        this.serviceURL + 'users/userlogdetails/' + companyId + '/' + username,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -43,5 +206,52 @@ export class UserManagementService {
       );
     }
     return throwError(() => 'Something bad happened; please try again later.');
+  }
+
+  removeUser(
+    userid: string,
+    profileId: string,
+    companyId: string,
+    userName: string,
+    addedBy: string
+  ) {
+    return this.http
+      .delete(
+        this.serviceURL +
+          'users/' +
+          userid +
+          '/' +
+          profileId +
+          '/' +
+          companyId +
+          '/' +
+          userName +
+          '/' +
+          addedBy,
+        { responseType: 'text' }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  removeRole(
+    companyid: string,
+    locationid: string,
+    userid: string,
+    username: string
+  ) {
+    return this.http
+      .delete(
+        AppConfiguration.locationRestURL +
+          'userSecurity/' +
+          userid +
+          '/' +
+          companyid +
+          '/' +
+          locationid +
+          '/' +
+          username,
+        { responseType: 'text' }
+      )
+      .pipe(catchError(this.handleError));
   }
 }

@@ -20,6 +20,7 @@
     "target": "ES2022",
     "module": "esnext",
     "useDefineForClassFields": false,
+    "allowSyntheticDefaultImports": true,
     "lib": ["ES2022", "dom"]
   },
   "angularCompilerOptions": {

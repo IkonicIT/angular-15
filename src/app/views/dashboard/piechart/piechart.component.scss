@@ -1,3 +1,6 @@
+::ng-deep .dp-picker-input {
+  height: calc(2.0625rem + 2px) !important;
+}
 .my-pagination ::v-deep .ngx-pagination {
   margin-bottom: 1rem;
   margin-top: 25px;
@@ -33,14 +36,4 @@ thead th {
 .div-search {
   margin-bottom: 1%;
   margin-top: 1%;
-}
-
-.table .thead-light th {
-  color: #5c6873;
-  background-color: #e4e7ea;
-  border-color: #c8ced3;
-}
-.chart-wrapper canvas {
-  width: 70% !important;
-  height: 390px !important;
 }

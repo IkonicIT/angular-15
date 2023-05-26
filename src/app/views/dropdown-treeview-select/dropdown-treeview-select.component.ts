@@ -44,14 +44,12 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
       hasFilter: true,
       maxHeight: 200,
     });
-    this.dropdownTreeviewSelectI18n = i18n as any;
+    this.dropdownTreeviewSelectI18n = i18n as DropdownTreeviewSelectI18n;
   }
 
   ngOnInit() {
-    //this.getAllItemTypes();
     console.log(`tree view ngonit()`, this.items);
     if (this.items && this.items.length > 0) {
-      //this.select(this.items[0]);
     }
   }
   ngOnChanges(changes: SimpleChanges) {
@@ -63,9 +61,7 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
   }
 
   select(item: TreeviewItem) {
-    //if (item.children === undefined) {
     this.selectItem(item);
-    //}
   }
 
   private updateSelectedItem() {

@@ -3,7 +3,7 @@
 
   // Cards with color accent
   @each $color, $value in $theme-colors {
-    &.bg-#{$color} {
+    &.bg-#{"" + $color} {
       border-color: darken($value, 12.5%);
       .card-header {
         background-color: darken($value, 3%);
@@ -14,11 +14,10 @@
 }
 
 .text-white .text-muted {
-  color: rgba(255,255,255,.6) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .card-header {
-
   .icon-bg {
     display: inline-block;
     padding: $card-spacer-y $card-spacer-x !important;
@@ -43,7 +42,7 @@
     }
 
     .nav-link {
-      padding: $card-spacer-y $card-spacer-x / 2;
+      padding: $card-spacer-y calc($card-spacer-x / 2);
       color: $text-muted;
       border-top: 0;
 
@@ -59,18 +58,17 @@
   }
 
   .btn {
-    margin-top: - $input-btn-padding-y;
+    margin-top: -$input-btn-padding-y;
   }
   .btn-sm {
-    margin-top: - $input-btn-padding-y-sm;
+    margin-top: -$input-btn-padding-y-sm;
   }
   .btn-lg {
-    margin-top: - $input-btn-padding-y-lg;
+    margin-top: -$input-btn-padding-y-lg;
   }
 }
 //
 .card-footer {
-
   ul {
     display: table;
     width: 100%;
@@ -101,7 +99,7 @@
 
 // Cards with color accent
 @each $color, $value in $theme-colors {
-  .card-accent-#{$color} {
+  .card-accent-#{"" + $color} {
     @include card-accent-variant($value);
   }
 }
@@ -109,7 +107,7 @@
 // Card Actions
 .card-header {
   > i {
-    margin-right: $spacer / 2;
+    margin-right: calc($spacer / 2);
   }
   .card-actions {
     position: absolute;
@@ -117,7 +115,8 @@
     right: 0;
     //height: inherit;
 
-    a, button {
+    a,
+    button {
       display: block;
       float: left;
       width: 50px;
@@ -134,14 +133,15 @@
         text-decoration: none;
       }
 
-      [class^="icon-"], [class*=" icon-"] {
+      [class^="icon-"],
+      [class*=" icon-"] {
         display: inline-block;
         vertical-align: middle;
       }
 
       i {
         display: inline-block;
-        transition: .4s;
+        transition: 0.4s;
       }
 
       .r180 {
@@ -153,7 +153,8 @@
       width: 230px;
       margin: 6px;
 
-      .input-group-prepend, .input-group-append {
+      .input-group-prepend,
+      .input-group-append {
         background: #fff;
       }
 
@@ -165,16 +166,15 @@
 }
 
 .card-full {
-  margin-top: - $spacer;
-  margin-right: - $grid-gutter-width / 2;
-  margin-left: - $grid-gutter-width / 2;
+  margin-top: -$spacer;
+  margin-right: -(calc($grid-gutter-width / 2));
+  margin-left: -(calc($grid-gutter-width / 2));
   border: 0;
   border-bottom: $card-border-width solid $border-color;
 }
 
 @include media-breakpoint-up(sm) {
   .card-columns {
-
     &.cols-2 {
       column-count: 2;
     }
@@ -182,12 +182,13 @@
 }
 
 .card {
-  &.drag, .drag {
+  &.drag,
+  .drag {
     cursor: move;
   }
 }
 
 .card-placeholder {
-  background: rgba(0,0,0,.025);
+  background: rgba(0, 0, 0, 0.025);
   border: 1px dashed $gray-300;
 }

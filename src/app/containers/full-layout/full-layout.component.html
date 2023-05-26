@@ -1,0 +1,169 @@
+<ngx-spinner
+  bdColor="rgba(51, 51, 51, 0.8)"
+  size="default"
+  color="#fff"
+  type="ball-clip-rotate"
+></ngx-spinner>
+<app-header></app-header>
+<div class="app-body" style="width: 1536px">
+  <app-sidebar></app-sidebar>
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <div
+      class="row"
+      style="
+        background-color: white;
+        border-bottom: 1px solid gray;
+        margin-bottom: 4%;
+      "
+    >
+      <div
+        class="col-12 col-md-12 col-lg-3"
+        style="padding-left: 15px; padding-right: 15px; position: relative"
+      >
+        <ol
+          class="breadcrumb"
+          style="
+            float: left;
+            border-bottom: none;
+            padding-left: 24px;
+            padding-right: 16px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+          "
+        >
+          <app-breadcrumbs></app-breadcrumbs>
+        </ol>
+      </div>
+      <div class="col-12 p-0 mt-2 col-lg-9 col-md-12 ml-15 mb-1">
+        <div class="row">
+          <div class="col-12"></div>
+          <div
+            class="col-5 pr-1 margin-mobile margin-new margin-pixel-2 col-sm-3 col-md-5 iphone-5s-1"
+          >
+            <a
+              *ngIf="userSelectedCompany.companyid != 0 && !noLogo"
+              class="float-left show-land-new"
+            >
+              <img class="img-side-logo" [src]="imageSource" />
+            </a>
+
+            <div
+              class="btn-group float-right margin-new-top"
+              data-placement="bottom"
+              tooltip="click here to Manage Companies"
+            >
+              <ngx-select-dropdown
+                [(ngModel)]="userSelectedCompany1"
+                (change)="selectRootCompany($event)"
+                [config]="ngxconfig"
+                [options]="userCompanies"
+                [multiple]="true"
+                tabindex="0"
+                class="text-overflow-button"
+              ></ngx-select-dropdown>
+              <alert type="danger" *ngIf="highestRank == 0">
+                This account has been disabled for this company. <br />
+              </alert>
+            </div>
+          </div>
+
+          <div
+            class="col-12 col-md-4 p-0 margin-new-top mobile-new-padding col-sm-6 center-landscape iphone-5s-2"
+          >
+            <input
+              [(ngModel)]="itemTag"
+              class="col-7 col-md-6 height iphone-tag"
+              [disabled]="
+                userSelectedCompany.companyid == 0 || highestRank == 0
+              "
+              data-placement="bottom"
+              tooltip="Enter Item Tag"
+              [typeahead]="suggessions"
+              (ngModelChange)="getSuggessions(itemTag)"
+              typeaheadOptionField="tag"
+              (keyup.enter)="navigateToItems()"
+              placeholder="#Tag"
+            />
+
+            <div
+              class="btn-group"
+              data-placement="bottom"
+              tooltip="Select Item Type"
+              dropdown
+            >
+              <app-dropdown-treeview-select
+                [items]="items"
+                [(value)]="value"
+                (valueChange)="selectRootItemType($event)"
+              >
+              </app-dropdown-treeview-select>
+            </div>
+            <button
+              (click)="navigateToItems()"
+              [disabled]="
+                userSelectedCompany.companyid == 0 || highestRank == 0
+              "
+              data-placement="bottom"
+              tooltip="click here to Search"
+              class="btn btn-danger"
+            >
+              GO
+            </button>
+          </div>
+          <div
+            *ngIf="masterSearchFlag == 'false'"
+            class="col-12 col-md-3 p-0 margin-tag col-sm-3 iphone-5s-3"
+          >
+            <button
+              (click)="navigateToAdvanceItemSearch()"
+              [disabled]="
+                userSelectedCompany.companyid == 0 || highestRank == 0
+              "
+              data-placement="bottom"
+              tooltip="click here for Advance Item search "
+              class="btn btn-danger"
+            >
+              Advanced search
+            </button>
+          </div>
+          <div class="col-12 col-md-3 p-0 margin-tag col-sm-3 iphone-5s-3">
+            <button
+              (click)="navigateToMasterSearch()"
+              *ngIf="
+                isOwnerAdmin == 'true' && userSelectedCompany.companyid == 0
+              "
+              data-placement="bottom"
+              tooltip="click here for Master Item search "
+              class="btn btn-danger"
+            >
+              Master search
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+    <!-- /.conainer-fluid -->
+  </main>
+  <app-aside></app-aside>
+</div>
+<app-footer></app-footer>
+
+<style>
+  ::ng-deep .ngx-dropdown-button {
+    border: 1px solid #0000003b !important;
+    background-color: #f86c6b !important;
+    padding: 0.375rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+    border-radius: 0 !important;
+  }
+  ::ng-deep .ngx-dropdown-list-container {
+    width: max-content !important;
+  }
+</style>

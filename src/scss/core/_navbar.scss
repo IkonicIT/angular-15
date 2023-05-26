@@ -1,3 +1,10 @@
+@mixin navbar {
+  &:hover,
+  &:focus {
+    @content;
+  }
+}
+
 .app-header.navbar {
   position: relative;
   flex-direction: row;
@@ -84,7 +91,7 @@
 .navbar-brand {
   color: $navbar-active-color;
 
-  @include hover-focus {
+  @include navbar {
     color: $navbar-active-color;
   }
 }
@@ -93,7 +100,7 @@
   .nav-link {
     color: $navbar-color;
 
-    @include hover-focus {
+    @include navbar {
       color: $navbar-hover-color;
     }
   }
@@ -102,14 +109,14 @@
   .active > .nav-link,
   .nav-link.open,
   .nav-link.active {
-    @include plain-hover-focus {
+    @include navbar {
       color: $navbar-active-color;
     }
   }
 }
 
 .navbar-divider {
-  background-color: rgba(0,0,0,.075);
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
 @include media-breakpoint-up(lg) {

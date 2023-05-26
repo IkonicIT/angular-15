@@ -1,30 +1,30 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { ProgressbarType } from 'ngx-bootstrap/progressbar';
 
 @Component({
-  templateUrl: 'progress.component.html'
+  templateUrl: 'progress.component.html',
 })
 export class ProgressComponent implements OnDestroy {
-
   max: number = 200;
   showWarning: boolean;
   dynamic: number;
-  type: string;
+  type: ProgressbarType;
 
   constructor() {
     this.random();
-    this.randomStacked()
+    this.randomStacked();
   }
 
   ngOnDestroy() {
     if (this.timer) {
-      clearInterval(this.timer)
+      clearInterval(this.timer);
     }
     // console.log(`onDestroy`, this.timer);
   }
 
   random(): void {
     let value = Math.floor(Math.random() * 100 + 1);
-    let type: string;
+    let type: ProgressbarType;
 
     if (value < 25) {
       type = 'success';
@@ -39,7 +39,6 @@ export class ProgressComponent implements OnDestroy {
     this.showWarning = type === 'danger' || type === 'warning';
     this.dynamic = value;
     this.type = type;
-
   }
 
   stacked: any[] = [];
@@ -55,7 +54,7 @@ export class ProgressComponent implements OnDestroy {
       this.stacked.push({
         value,
         type: types[index],
-        label: value + ' %'
+        label: value + ' %',
       });
     }
   }

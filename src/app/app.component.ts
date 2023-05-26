@@ -5,6 +5,8 @@ import { UserIdleService } from 'angular-user-idle';
 import { Subscription } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { UserManagementService } from './services/user-management.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'body',
@@ -19,7 +21,9 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private userIdle: UserIdleService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private userManagementService: UserManagementService,
+    private spinner: NgxSpinnerService
   ) {}
   private subscription: Subscription;
   ngOnInit() {
@@ -34,7 +38,7 @@ export class AppComponent implements OnInit {
 
     // Start watching when user idle is starting and reset if user action is there.
     this.userIdle.onTimerStart().subscribe((count) => {
-      //console.log(count);
+      console.log(count);
       if (count == 1) {
         //this.modalService.show(ModalComponent, { backdrop: 'static' });
       }
@@ -57,9 +61,9 @@ export class AppComponent implements OnInit {
     this.userIdle.onTimeout().subscribe(() => {
       this.userId = sessionStorage.getItem('userId');
 
-      // this.userManagementService
-      //   .updateLogoutDate(this.userId)
-      //   .subscribe((response) => {});
+      this.userManagementService
+        .updateLogoutDate(this.userId)
+        .subscribe((response) => {});
 
       localStorage.clear();
       sessionStorage.clear();

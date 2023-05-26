@@ -1,5 +1,5 @@
 @each $color, $value in $theme-colors {
-  .modal-#{$color} {
+  .modal-#{"" + $color} {
     .modal-content {
       border-color: "$value";
     }

@@ -13,14 +13,12 @@
               </p>
               <form name="myForm" (keyup.enter)="login()">
                 <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="icon-user"></i
-                    ></span>
-                  </div>
+                  <span class="input-group-text"
+                    ><i class="icon-user"></i
+                  ></span>
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control loginForm"
                     [(ngModel)]="userName"
                     placeholder="Username"
                     name="username"
@@ -32,14 +30,12 @@
                   <a class="dropdown-item" href="#">Link 3</a>
                 </div>
                 <div class="input-group mb-4">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="icon-lock"></i
-                    ></span>
-                  </div>
+                  <span class="input-group-text"
+                    ><i class="icon-lock"></i
+                  ></span>
                   <input
                     type="password"
-                    class="form-control"
+                    class="form-control loginForm"
                     [(ngModel)]="password"
                     placeholder="Password"
                     name="password"
@@ -182,15 +178,14 @@
     }
   }
 
-  .btn-link[routerLink='/forgot-password'] {
-  color: red;
-}
+  .btn-link[routerLink="/forgot-password"] {
+    color: red;
+  }
 
-.cent {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
+  .cent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 </style>

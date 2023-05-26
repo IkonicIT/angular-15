@@ -135,7 +135,7 @@
           .nav-link {
             direction: rtl;
             i {
-              margin: 0 0 0 ($sidebar-nav-link-padding-x / 2);
+              margin: 0 0 0 calc($sidebar-nav-link-padding-x / 2);
             }
             .badge {
               float: left;
@@ -264,7 +264,7 @@
     border-right-width: .25rem;
 
     @each $color, $value in $theme-colors {
-      &.callout-#{$color} {
+      &.callout-#{"" + $color} {
         border-right-color: $value;
       }
     }

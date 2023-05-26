@@ -83,4 +83,24 @@ export class LoginService {
       )
       .pipe(catchError(this.handleError));
   }
+
+  getRolesForALoggedInUser(
+    userName: string,
+    companyid: string
+  ): Observable<any> {
+    this.authToken = sessionStorage.getItem('auth_token')
+      ? sessionStorage.getItem('auth_token')
+      : '';
+    return this.http
+      .get(
+        this.locationRestURL +
+          'userSecurity/getAllRolesForLoggedInUser/' +
+          userName +
+          '/' +
+          companyid +
+          '?access_token=' +
+          this.authToken
+      )
+      .pipe(catchError(this.handleError));
+  }
 }

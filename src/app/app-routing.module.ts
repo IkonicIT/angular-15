@@ -7,9 +7,10 @@ import { PagesModule } from './views/pages/pages.module';
 import { ButtonsModule } from './views/buttons/buttons.module';
 import { ChartJSModule } from './views/chartjs/chartjs.module';
 import { BaseModule } from './views/base/base.module';
+import { CompanyModule } from './views/company/company.module';
 import { FullLayoutComponent, SimpleLayoutComponent } from './containers';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
@@ -47,13 +48,15 @@ const routes: Routes = [
       /* {
         path: 'icons',
         loadChildren: () => import('./views/icons/icons.module').then((x) => IconsModule),
-      },
+      }, */
       {
         path: 'company',
-        loadChildren: () => import('./views/company/company.module').then((x) => CompanyModule),
-        data: { preload: true },
+        loadChildren: () =>
+          import('./views/company/company.module').then((x) => CompanyModule),
+        pathMatch: 'full',
+        // data: { preload: true },
       },
-      {
+      /*  {
         path: 'notifications',
         loadChildren:
           () => import('./views/notifications/notifications.module').then((x) => NotificationsModule),
@@ -132,12 +135,6 @@ const routes: Routes = [
       },
     ],
   },
-  // {
-  //   path: 'dashboard',
-  //   component: DashboardComponent,
-  //   loadChildren: () =>
-  //     import('./views/dashboard/dashboard.module').then((x) => DashboardModule),
-  // },
 ];
 
 @NgModule({

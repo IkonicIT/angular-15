@@ -1,0 +1,73 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button type="button" (click)="help()" tooltip=" Instructions" class="btn btn-outline-danger btn-sm">Help
+          </button>
+          <div style="text-align: left;border:1px solid;width:fit-content;background-color:whitesmoke;"
+            *ngIf="helpFlag==true">
+            * To create a new status:<br>
+            1.Click the 'Add Status' button.<br>
+            2.Enter the new status data.<br>
+            3.Click the 'Save' button.<br>
+            * To edit an existing status:<br>
+            1.Click 'Edit' button.<br>
+            2.Make necessary changes.<br>
+            3.Click the 'Save' button.<br>
+            * To delete an existing status:<br>
+            1.Click the 'Delete' button.<br>
+
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <alert *ngIf="index ==1" type="success" [dismissible]="dismissible">
+            Company Status saved successfully.
+          </alert>
+          <alert *ngIf="index ==-1" type="danger" [dismissible]="dismissible">
+            Please enter Status.
+          </alert>
+          <alert *ngIf="index ==2" type="danger" [dismissible]="dismissible">
+            Status size should be less than 100 characters.
+          </alert>
+          <div class="modal-body mobile-padding">
+
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Add Status</strong>
+                </div>
+                <form name="form" (ngSubmit)=" saveStatus()" #f="ngForm" novalidate>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <input type="text" [(ngModel)]="model.added" name="added" #added="ngModel" id="added" hidden>
+                        <input type="text" [(ngModel)]="model.by" name="by" #by="ngModel" id="by" hidden>
+                        <input type="text" [(ngModel)]="model._id" name="_id" #_id="ngModel" id="_id" hidden>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="Status">Status<strong class="text-danger">*</strong></label>
+                        <input id="status" type="text" class="form-control" [(ngModel)]="model.status" name="status"
+                          #status="ngModel" placeholder="Enter Status" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button class="btn btn-primary" tooltip="Save Status">Save</button>
+                        <button type="button" (click)="cancelAddStatus()" tooltip="Cancel"
+                          class="btn btn-primary">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+<div class="animated fadeIn" *ngIf="highestRank >6">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="form-group col-sm-12 text-right">
+                    <button type="button" (click)="print()" tooltip="Click to Print this Page"
+                        class="btn btn-outline-danger btn-sm">Print </button>
+                    <button type="button" (click)="help()" tooltip=" Instructions"
+                        class="btn btn-outline-danger btn-sm">Help </button>
+                    <div style="text-align: left;border:1px solid;width:fit-content;background-color:whitesmoke;"
+                        *ngIf="helpFlag==true">
+                        Note: Mandatory Fields are required.<br>
+                        * To create a new Company:<br>
+                        1.Click the 'Add Company' button.<br>
+                        1.Enter the Company information below.<br>
+                        2.Click the 'Save' button.<br>
+                        * To edit an existing Company:<br>
+                        1.Click on 'Edit' button. <br>
+                        2.Make necessary changes.<br>
+                        3.Click the 'Save' button.<br>
+                        * To delete an existing Company:<br>
+                        1. Click on 'Delete' button.
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <p class="card-text">Manage Companies
+
+                        <button type="button" class="btn btn-primary float-right" [routerLink]="['../add']"
+                            tooltip="Add a new Company." placement="top">Add Company</button>
+                    </p>
+                    <div>
+                        <div class="float-left">
+                            <span>Show
+                                <select [(ngModel)]="itemsForPagination">
+                                    <option>5</option>
+                                    <option>10</option>
+                                    <option>25</option>
+                                    <option>50</option>
+                                </select> entries
+                            </span>
+                        </div>
+                    </div>
+                    <div class="float-right div-search">
+                        <span>Search : </span>
+                        <input [(ngModel)]="companyFilter" />
+                    </div>
+
+                    <table class="table table-responsive-sm table-hover table-outline mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th [class.active]="order === 'name'" (click)="setOrder('name')">Companyname<span
+                                        [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
+                                <th [class.active]="order === 'phone'" (click)="setOrder('phone')">Phone<span
+                                        [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
+                                <th [class.active]="order === 'city'" (click)="setOrder('city')">City<span
+                                        [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
+                                <th>Attachments</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let company of companies | orderBy: reverse+order | filterBy : ['name','phone','city']: companyFilter | paginate: { itemsPerPage: itemsForPagination, currentPage: p }">
+                                <td>{{company.name}}</td>
+                                <td>{{company.phone}}</td>
+                                <td>{{company.city}}</td>
+                                <td>
+                                    <button type="button" tooltip="Company Attachments"
+                                        class="btn btn-outline-success btn-sm"
+                                        [routerLink]="['../documents',company.companyid]">Attachments</button>
+                                </td>
+                                
+                                <td>
+                                    <button type="button" tooltip="Company Notes" class="btn btn-outline-success btn-sm"
+                                        (click)="companyNotes(company)">Notes</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-danger btn-sm mb-1"
+                                        tooltip="view this Company"
+                                        [routerLink]="['../view',company.companyid]">View</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm mb-1"
+                                        tooltip="Edit this Company"
+                                        [routerLink]="['../edit',company.companyid]">Edit</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm mb-1"
+                                        tooltip="Delete this Company" [disabled] = "highestRank == 9"
+                                        (click)="openModal(confirmtemplate,company.companyid)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination-controls class="my-pagination" (pageChange)="p = $event" autoHide="true">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+
+
+
+<ng-template #templateNested>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Second modal</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        This is nested modal.
+        <br>
+        <button *ngIf="modalRef" type="button" class="btn btn-danger" (click)="closeFirstModal()">Close first
+            modal</button>
+    </div>
+</ng-template>
+
+<ng-template #confirmtemplate>
+    <div class="modal-body text-center">
+        <p>Click(Yes) to permanently delete this Company or Click(No) to discard this action.</p>
+        <button type="button" class="btn btn-primary" (click)="confirm()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    </div>
+</ng-template>

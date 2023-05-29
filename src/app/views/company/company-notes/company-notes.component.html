@@ -1,0 +1,171 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-text">
+            Manage {{ companyName }} Notes
+            <button
+              type="button"
+              class="btn btn-primary float-right"
+              tooltip="Add Notes."
+              (click)="addNotes()"
+              placement="top"
+            >
+              Add Notes
+            </button>
+          </p>
+          <div>
+            <div class="float-left">
+              <span
+                >Show
+                <select [(ngModel)]="itemsForPagination">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+          </div>
+          <div class="float-right div-search">
+            <span>Search : </span>
+            <input [(ngModel)]="companyNotesFilter" />
+          </div>
+          <table
+            class="table table-responsive-sm table-respnsosive table-hover table-outline mb-0"
+          >
+            <thead class="thead-light">
+              <tr>
+                <th
+                  [class.active]="order === 'enteredon'"
+                  (click)="setOrder('enteredon')"
+                >
+                  Date<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'entityname'"
+                  (click)="setOrder('entityname')"
+                >
+                  Title<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'jobnumber'"
+                  (click)="setOrder('jobnumber')"
+                >
+                  Job<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'ponumber'"
+                  (click)="setOrder('ponumber')"
+                >
+                  PO<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'enteredby'"
+                  (click)="setOrder('enteredby')"
+                >
+                  By <span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th>Attachments</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let note of notes
+                    | orderBy : reverse + order
+                    | filterBy
+                      : [
+                          'enteredon',
+                          'entityname',
+                          'jobnumber',
+                          'ponumber',
+                          'enteredby'
+                        ]
+                      : companyNotesFilter
+                    | paginate
+                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                "
+              >
+                <td>{{ note.effectiveon | date : "MM/dd/yyyy" }}</td>
+                <td>{{ note.entityname }}</td>
+                <td>{{ note.jobnumber }}</td>
+                <td>{{ note.ponumber }}</td>
+                <td>{{ note.enteredby }}</td>
+                <td>
+                  <button
+                    type="button"
+                    tooltip="Company Attachments"
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="companyNoteAttachments(note)"
+                  >
+                    Attachments
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    tooltip="View Company Note"
+                    class="btn btn-outline-danger btn-sm margin-bottom-mobile"
+                    (click)="viewCompanyNotes(note)"
+                  >
+                    View
+                  </button>
+                  <button
+                    type="button"
+                    tooltip="Edit Company Note"
+                    class="btn btn-outline-danger btn-sm margin-bottom-mobile"
+                    (click)="editCompanyNotes(note)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    tooltip="Delete Company Note"
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="openModal(confirmtemplate, note.journalid)"
+                    disabled="highestRank == 9"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls
+            class="my-pagination"
+            (pageChange)="p = $event"
+            [autoHide]="true"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Ok) to permanently delete this Note or Click(Cancel) to discard this
+      action.
+    </p>
+    <button
+      type="button"
+      class="btn btn-outline-danger btn-sm"
+      (click)="confirm()"
+    >
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

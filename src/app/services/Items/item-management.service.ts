@@ -116,6 +116,7 @@ export class ItemManagementService {
   public setSearchedItemTag(tag: any) {
     this.searchedItemTag = tag;
   }
+  
   public getSearchedItemTag() {
     return this.searchedItemTag;
   }

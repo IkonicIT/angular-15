@@ -371,8 +371,7 @@ export class FullLayoutComponent implements OnInit {
   }
 
   selectRootCompany(userSelectedCompany: any) {
-    userSelectedCompany = (userSelectedCompany.target as HTMLInputElement)
-      .value;
+    let userSelectedCompany1 = userSelectedCompany.value[0];
     this.itemManagementService.setSearchedItemTag('');
     this.itemManagementService.setSearchedItemTypeId(0);
     this.itemManagementService.setItemSearchResults([]);
@@ -385,41 +384,42 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setCompletedRepairs([]);
     this.itemManagementService.setInCompletedRepairs([]);
     this.broadcasterService.locations = [];
-    if (typeof userSelectedCompany == 'undefined') {
-      userSelectedCompany = { name: 'Select Company', companyid: 0 };
+    if (typeof userSelectedCompany1 == 'undefined') {
+      userSelectedCompany1 = { name: 'Select Company', companyid: 0 };
     }
 
     if (this.isOwnerAdmin == 'true' || this.isOwnerAminReadOnly == 'true') {
-      this.selectRootCompanyForAdmin(userSelectedCompany);
+      this.selectRootCompanyForAdmin(userSelectedCompany1);
     } else {
-      if (userSelectedCompany.companyid == 0) {
+      if (userSelectedCompany1.companyid == 0) {
         sessionStorage.removeItem('currentRole');
         sessionStorage.removeItem('highestRank');
         this.broadcasterService.currentCompany = 'selectcompany';
         this.userSelectedCompany = { name: 'Select Company', companyid: 0 };
         this.broadcasterService.selectedCompanyId =
-          userSelectedCompany.companyid;
+          userSelectedCompany1.companyid;
         this.broadcasterService.broadcast('refreshNavBar', true);
         this.broadcasterService.broadcast(
           'piechart',
-          userSelectedCompany.companyid
+          userSelectedCompany1.companyid
         );
         this.router.navigate(['/dashboard']);
         return true;
       }
-      this.getCompanyLogo(userSelectedCompany.companyid);
+      this.getCompanyLogo(userSelectedCompany1.companyid);
       this.broadcasterService.currentCompany = 'nonselectcompany';
       this.broadcasterService.locations = [];
       this.itemTag = null;
-      this.userSelectedCompany = userSelectedCompany;
+      this.userSelectedCompany = userSelectedCompany1;
       this.authToken = sessionStorage.getItem('auth_token');
       this.userName = sessionStorage.getItem('userName');
       this.locationManagementService.setLocations([]);
       this.spinner.show();
-      this.companyManagementService.setGlobalCompany(userSelectedCompany);
-      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyid;
+      this.companyManagementService.setGlobalCompany(userSelectedCompany1);
+      this.broadcasterService.selectedCompanyId =
+        userSelectedCompany1.companyid;
       this.itemTypesService
-        .getAllItemTypesWithHierarchy(userSelectedCompany.companyid)
+        .getAllItemTypesWithHierarchy(userSelectedCompany1.companyid)
         .subscribe((response) => {
           this.broadcasterService.itemTypeHierarchy = response;
           this.highestRank = 0;
@@ -428,7 +428,7 @@ export class FullLayoutComponent implements OnInit {
           this.loginService
             .getRolesForALoggedInUser(
               this.userName,
-              userSelectedCompany.companyid
+              userSelectedCompany1.companyid
             )
             .subscribe((response: any) => {
               this.userSecurityRoles = response;

@@ -1,0 +1,173 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button type="button" (click)="print()" tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm">Print </button>
+          <button type="button" (click)="help()" tooltip=" Instructions" class="btn btn-outline-danger btn-sm">Help
+          </button>
+          <div style="text-align: left;border:1px solid;width:fit-content;background-color:whitesmoke;"
+            *ngIf="helpFlag==true">
+            Note: Mandatory Fields are required.<br>
+            * To create a new Company:<br>
+            1.Click the 'Add Company' button.<br>
+            1.Enter the Company information below.<br>
+            2.Click the 'Save' button.<br>
+            * To edit an existing Company:<br>
+            1.Click on 'Edit' button. <br>
+            2.Make necessary changes.<br>
+            3.Click the 'Save' button.<br>
+            * To delete an existing Company:<br>
+            1. Click on 'Delete' button.
+          </div>
+        </div>
+       
+        <div class="card-body">
+          <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
+            Company Details saved successfully.
+          </alert>
+
+          <alert type="danger" *ngIf="index ==-1">
+            Please Enter Company Name
+          </alert>
+          <alert type="danger" *ngIf="index ==-2">
+            Company Name already present
+          </alert>
+
+          <div class="modal-body mobile-padding">
+
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <div class="card-header">
+                  <strong style="color: red;">ADD COMPANY </strong>
+                </div>
+                <form name="form" (ngSubmit)="f.form.valid && saveCompany()" #f="ngForm" nphonephonneovalidate>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="name">Name </label><strong class="text-danger">*</strong>
+                        <input type="text" [(ngModel)]="model.companyid" name="companyid" #companyid="ngModel"
+                          id="companyid" hidden>
+                        <input type="text" class="form-control" [(ngModel)]="model.name" name="name" #name="ngModel"
+                          id="name" placeholder="Enter Company Name">
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="url">URL</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.url" name="url" #url="ngModel"
+                          id="url" placeholder="Enter URL">
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="phone">Phone</label>
+                        <input type="number" class="form-control" [(ngModel)]="model.phone" name="phone"
+                          #phone="ngModel" id="phone" placeholder="Enter Phone">
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="fax">Fax</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.fax" id="fax" name="fax"
+                          #fax="ngModel" placeholder="Enter Fax">
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="AddressLine1">Address Line1</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.address1" name="address1"
+                          #address1="ngModel" id="AddressLine1" placeholder="Enter Address 1">
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="AddressLine2">Address Line2</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.address2" name="address2"
+                          #address2="ngModel" id="AddressLine2" placeholder="Enter Address 2">
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.city" name="city" #city="ngModel"
+                          id="city" placeholder="Enter City">
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="state">State</label>
+                        <input type="text" class="form-control" maxlength="50" [(ngModel)]="model.state" name="state"
+                          #state="ngModel" id="state" placeholder="Enter State">
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="pcode">Postal Code</label>
+                        <input type="number" class="form-control" [(ngModel)]="model.postalcode" name="postalCode"
+                          #postalCode="ngModel" id="pcode" placeholder="Enter Postal Code">
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="status">Status</label>
+                        
+                        <select class="form-control" [(ngModel)]="model.status" name="status" #status="ngModel"
+                          id="status">
+                          <option value="" selected="true">Choose..</option>
+                          <option [ngValue]='stat.status' *ngFor='let stat of statuses'>{{stat.status}}
+                          </option>
+                        </select>
+
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="desc">Description</label>
+                        <textarea id="desc" name="textarea-input" rows="2" cols="4" class="form-control"
+                          [(ngModel)]="model.description" name="description" #description="ngModel"
+                          placeholder="Enter Description"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="logo">Add Company Logo</label>
+                        <input type="file" class="form-control" (change)="fileChangeListener($event)" name="logo"
+                          id="logo">
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="conatctName">Primary Contact Name</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.primaryContactName" id="conatctName"
+                          name="primaryContactName" #primaryContactName="ngModel" placeholder="Primary Contact Name">
+                      </div>
+                    </div>
+                   
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="companyAnnouncement">Company Announcements</label>
+                        <textarea id="companyAnnouncement" name="textarea-input" rows="2" cols="4"
+                          name="companyAnnouncements" #companyAnnouncements="ngModel" class="form-control"
+                          [(ngModel)]="model.companyAnnouncements" placeholder="Enter Description"></textarea>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button tooltip="Save Company" class="btn btn-primary">Save</button>
+                        <button type="button" (click)="back()" tooltip="Back button"
+                          class="btn btn-primary">Back</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -25,6 +25,7 @@ export class CompanymanagementComponent implements OnInit {
   highestRank: any;
   router: Router;
   helpFlag: any = false;
+  p: any;
 
   constructor(
     private modalService: BsModalService,
@@ -67,13 +68,13 @@ export class CompanymanagementComponent implements OnInit {
     );
   }
 
-  companyNotes(company: { companyid: string; name: any; }) {
+  companyNotes(company: any) {
     this.companyManagementService.currentCompanyId = company.companyid;
     this.companyManagementService.currentCompanyName = company.name;
     this.router.navigate(['/company/companyNote/' + company.companyid]);
   }
 
-  openModal(template: TemplateRef<any>, id: number) {
+  openModal(template: TemplateRef<any>, id: any) {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }

@@ -24,6 +24,7 @@ export class EditcompanystatusComponent implements OnInit {
   helpFlag: any = false;
   oldStatus: any;
   length: any;
+  dismissible = true;
 
   constructor(
     private companyStatusesService: CompanyStatusesService,

@@ -31,6 +31,7 @@ export class CompanytypesComponent implements OnInit {
   highestRank: any;
   helpFlag: any = false;
   userName: any;
+  p: any;
 
   constructor(
     private modalService: BsModalService,
@@ -72,7 +73,7 @@ export class CompanytypesComponent implements OnInit {
       (response) => {
         this.spinner.hide();
         this.types = response;
-        this.types.forEach((type: { parentid: string; }) => {
+        this.types.forEach((type: { parentid: string }) => {
           if (!type.parentid) {
             type.parentid = 'Top Level';
           }
@@ -87,6 +88,11 @@ export class CompanytypesComponent implements OnInit {
   openModal(template: TemplateRef<any>, id: string) {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
+  }
+
+  closeFirstModal() {
+    this.modalRef.hide();
+    // this.modalRef = null;
   }
 
   addCompanyType() {

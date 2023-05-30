@@ -30,8 +30,9 @@ export class EditCompanyTypeComponent implements OnInit {
     hasCollapseExpand: false,
   });
   userName: any;
-
   helpFlag: any = false;
+  dismissible = true;
+
   constructor(
     private companyTypesService: CompanyTypesService,
     router: Router,

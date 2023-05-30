@@ -19,6 +19,7 @@ export class EditcompanydocumentComponent implements OnInit {
   router: Router;
   helpFlag: any = false;
   userName: any;
+  dismissible = true;
 
   constructor(
     private companyDocumentsService: CompanyDocumentsService,

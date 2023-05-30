@@ -25,6 +25,8 @@ export class EditNoteAttachmentComponent implements OnInit {
   noteId: any;
   helpFlag: any = false;
   noteName: any;
+  dismissible = true;
+
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,

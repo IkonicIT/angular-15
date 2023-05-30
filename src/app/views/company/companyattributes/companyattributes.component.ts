@@ -71,6 +71,8 @@ export class CompanyattributesComponent implements OnInit {
   typeName: any;
   typeList: boolean;
   helpFlag: any = false;
+  dismissible = true;
+
   constructor(
     private modalService: BsModalService,
     private companyTypesService: CompanyTypesService,
@@ -485,6 +487,11 @@ export class CompanyattributesComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
+  closeFirstModal() {
+    this.modalRef.hide();
+    // this.modalRef = null;
+  }
+
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
@@ -540,6 +547,7 @@ export class CompanyattributesComponent implements OnInit {
     }
     this.order = value;
   }
+
   cancelCompanyAttributes() {
     this._location.back();
   }

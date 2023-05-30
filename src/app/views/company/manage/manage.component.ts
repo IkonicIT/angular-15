@@ -30,6 +30,7 @@ export class ManageComponent implements OnInit {
   globalCompany: any;
   currentRole: any;
   highestRank: any;
+  dismissible = true;
   journalid: number = 0;
   private sub: any;
   id: number;
@@ -353,8 +354,7 @@ export class ManageComponent implements OnInit {
     }
     this.order = value;
   }
-  openModal(template: TemplateRef<any>, id: any) {
-    //this.index = id;
+  openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 

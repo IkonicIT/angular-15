@@ -14,7 +14,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class CompanystatusesComponent implements OnInit {
   statuses: any = [];
-
   companyId: string;
   model: any;
   index: string = 'companydocument';
@@ -33,6 +32,8 @@ export class CompanystatusesComponent implements OnInit {
   highestRank: any;
   userName: any;
   helpFlag: any = false;
+  dismissible = true;
+  p: any;
 
   constructor(
     private modalService: BsModalService,

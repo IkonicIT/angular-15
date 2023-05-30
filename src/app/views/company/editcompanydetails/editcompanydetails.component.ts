@@ -49,6 +49,7 @@ export class EditcompanydetailsComponent implements OnInit {
   isDuplicateTag: boolean = false;
   companyList: any = [];
   helpFlag: any = false;
+  dismissible = true;
 
   constructor(
     private companyManagementService: CompanyManagementService,

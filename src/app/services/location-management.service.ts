@@ -85,7 +85,7 @@ export class LocationManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  removeLocation(locationId: string, companyId: string, username: string) {
+  removeLocation(locationId: number, companyId: number, username: string) {
     return this.http
       .delete(
         AppConfiguration.locationRestURL +
@@ -109,7 +109,7 @@ export class LocationManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getAllLocations(companyId: string) {
+  getAllLocations(companyId: number) {
     return this.http
       .get(
         AppConfiguration.locationRestURL +

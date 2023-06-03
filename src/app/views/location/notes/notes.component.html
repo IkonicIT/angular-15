@@ -1,0 +1,758 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-text" style="font-weight: bold; font-size: 22px">
+            Location Notes:
+          </p>
+          <div class="form-group col-sm-12 text-right">
+            <button
+              type="button"
+              (click)="print()"
+              tooltip="Click to Print this Page"
+              class="btn btn-outline-danger btn-sm"
+            >
+              Print
+            </button>
+            <button
+              type="button"
+              (click)="help()"
+              tooltip=" Instructions"
+              class="btn btn-outline-danger btn-sm"
+            >
+              Help
+            </button>
+            <div
+              style="
+                text-align: left;
+                border: 1px solid;
+                width: fit-content;
+                background-color: whitesmoke;
+              "
+              *ngIf="helpFlag == true"
+            >
+              * To create a Note <br />
+              1.Enter the information <br />
+              2.Click the 'Save' button <br />
+              * Pressing 'Cancel' will undo the changes you've made.
+            </div>
+          </div>
+          <div *ngIf="newFlag == true">
+            <div class="row">
+              <div class="form-group col-sm-12 text-right">
+                <p style="text-align: left">
+                  <strong
+                    >Adding new Note for Location: '{{
+                      currentLocationName
+                    }}'</strong
+                  >
+                </p>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  class="btn btn-primary"
+                  tooltip="Add New LocationNote"
+                  (click)="addNotes()"
+                >
+                  New
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  tooltip="Save Location Note"
+                  (click)="saveLocationNote()"
+                  class="btn btn-primary"
+                >
+                  Save
+                </button>
+                <button
+                  *ngIf="highestRank > 5"
+                  type="button"
+                  tooltip="Cancel the Changes for this Note"
+                  (click)="cancelLocationNotes()"
+                  class="btn btn-primary"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  tooltip="Delete Location Note"
+                  disabled
+                  (click)="openModal(confirmtemplate)"
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  tooltip=" Add LocationNote Attachment"
+                  class="btn btn-primary"
+                  disabled
+                  (click)="goToAttachments(model.journalid, model.entityname)"
+                >
+                  Attachments
+                </button>
+                <button
+                  type="button"
+                  tooltip="Back  "
+                  (click)="backToItem()"
+                  class="btn btn-primary"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+            <alert
+              *ngIf="index1 == 1"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for 'Location: {{ currentLocationName }} ' was successfully
+              Saved
+            </alert>
+            <alert
+              *ngIf="index1 == 2"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for 'Location: {{ currentLocationName }} ' was successfully
+              Updated
+            </alert>
+
+            <alert
+              type="danger"
+              *ngIf="index1 == -1"
+              [dismissible]="dismissible"
+            >
+              Please Enter Title and Date
+            </alert>
+
+            <alert
+              type="success"
+              *ngIf="index1 == 4"
+              [dismissible]="dismissible"
+            >
+              Note for 'Location: {{ currentLocationName }} ' was successfully
+              Deleted
+            </alert>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="title"
+                  >Title <strong class="text-danger">*</strong></label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="model.journalid"
+                  name="journalid"
+                  #journalid="ngModel"
+                  id="_id"
+                  hidden
+                />
+                <input
+                  class="form-control"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.entityname"
+                  name="title"
+                  #title="ngModel"
+                  id="title"
+                  placeholder="Enter Title"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="date"
+                  >Date <strong class="text-danger">*</strong></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.effectiveon"
+                  name="date"
+                  #date="ngModel"
+                  id="date"
+                  placeholder="Enter Date"
+                  bsDatepicker
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="job">JOB Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.jobnumber"
+                  name="job"
+                  #job="ngModel"
+                  id="job"
+                  placeholder="Enter JOB Number"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="po">PO Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.ponumber"
+                  id="po"
+                  name="po"
+                  #po="ngModel"
+                  placeholder="Enter PO Number"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <label for="details">Details</label>
+                <textarea
+                  id="details"
+                  name="textarea-input"
+                  rows="2"
+                  cols="4"
+                  name="details"
+                  #details="ngModel"
+                  class="form-control"
+                  [(ngModel)]="model.entry"
+                  placeholder="Enter Description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="viewFlag == true">
+            <div class="row">
+              <div class="form-group col-sm-12 text-right">
+                <p style="text-align: left">
+                  <strong
+                    >Viewing Note for Location: '{{
+                      currentLocationName
+                    }}
+                    '</strong
+                  >
+                </p>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  class="btn btn-primary"
+                  tooltip="Add New LocationNote"
+                  (click)="addNotes()"
+                >
+                  New
+                </button>
+                <button
+                  type="button"
+                  tooltip="Save Location Note"
+                  (click)="saveLocationNote()"
+                  disabled
+                  class="btn btn-primary"
+                >
+                  Save
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  class="btn btn-primary"
+                  tooltip="Edit Location Note"
+                  (click)="editNote()"
+                >
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  tooltip="Delete Location Note"
+                  disabled
+                  (click)="openModal(confirmtemplate)"
+                >
+                  Delete
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  tooltip=" Add LocationNote Attachment"
+                  class="btn btn-primary"
+                  (click)="goToAttachments(model.journalid, model.entityname)"
+                >
+                  Attachments
+                </button>
+                <button
+                  type="button"
+                  tooltip="Back"
+                  (click)="backToItem()"
+                  class="btn btn-primary"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+            <alert
+              *ngIf="index1 == 1"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for 'Location: {{ currentLocationName }} ' was successfully
+              Saved
+            </alert>
+            <alert
+              *ngIf="index1 == 2"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for 'Location: {{ currentLocationName }} ' was successfully
+              Updated
+            </alert>
+
+            <alert
+              type="danger"
+              *ngIf="index1 == -1"
+              [dismissible]="dismissible"
+            >
+              Please Enter Title and Date
+            </alert>
+
+            <alert
+              type="success"
+              *ngIf="index1 == 4"
+              [dismissible]="dismissible"
+            >
+              Note for 'Location: {{ currentLocationName }} ' was successfully
+              Deleted
+            </alert>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="title"
+                  >Title <strong class="text-danger">*</strong></label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="model.journalid"
+                  name="journalid"
+                  #journalid="ngModel"
+                  id="_id"
+                  hidden
+                />
+                <input
+                  readonly
+                  class="form-control"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.entityname"
+                  name="title"
+                  #title="ngModel"
+                  id="title"
+                  placeholder="Enter Title"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="date"
+                  >Date <strong class="text-danger">*</strong></label
+                >
+                <!-- <input  class="form-control"  type="text"  [(ngModel)]="model.effectiveon" name="date" #date="ngModel" id="date"> -->
+                <input
+                  readonly
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.effectiveon"
+                  name="date"
+                  #date="ngModel"
+                  id="date"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="job">JOB Number</label>
+                <input
+                  readonly
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.jobnumber"
+                  name="job"
+                  #job="ngModel"
+                  id="job"
+                  placeholder="Enter JOB Number"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="po">PO Number</label>
+                <input
+                  readonly
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.ponumber"
+                  id="po"
+                  name="po"
+                  #po="ngModel"
+                  placeholder="Enter PO Number"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <label for="details">Details</label>
+                <textarea
+                  readonly
+                  id="details"
+                  name="textarea-input"
+                  rows="2"
+                  cols="4"
+                  name="details"
+                  #details="ngModel"
+                  class="form-control"
+                  [(ngModel)]="model.entry"
+                  placeholder="Enter Description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="editFlag == true">
+            <div class="row">
+              <div class="form-group col-sm-12 text-right">
+                <p style="text-align: left">
+                  <strong
+                    >Editing Note for Location: '{{
+                      currentLocationName
+                    }}'</strong
+                  >
+                </p>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  class="btn btn-primary"
+                  tooltip="Add New LocationNote"
+                  (click)="addNotes()"
+                >
+                  New
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  tooltip="Save Location Note"
+                  (click)="updateLocationNotes()"
+                  class="btn btn-primary"
+                >
+                  Save
+                </button>
+
+                <button
+                  *ngIf="highestRank > 5"
+                  type="button"
+                  tooltip="Cancel the Changes for this Note"
+                  (click)="cancelLocationNotes()"
+                  class="btn btn-primary"
+                >
+                  Cancel
+                </button>
+                <button
+                  [disabled]="highestRank < 6 || highestRank == 9"
+                  type="button"
+                  class="btn btn-primary"
+                  tooltip="Delete Location Note"
+                  (click)="openModal(confirmtemplate)"
+                >
+                  Delete
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  tooltip=" Add LocationNote Attachment"
+                  class="btn btn-primary"
+                  (click)="goToAttachments(model.journalid, model.entityname)"
+                >
+                  Attachments
+                </button>
+                <button
+                  type="button"
+                  tooltip="Back"
+                  (click)="backToItem()"
+                  class="btn btn-primary"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+            <alert
+              *ngIf="index1 == 1"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for 'Location: {{ currentLocationName }} ' was successfully
+              Saved
+            </alert>
+            <alert
+              *ngIf="index1 == 2"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for 'Location: {{ currentLocationName }} ' was successfully
+              Updated
+            </alert>
+
+            <alert
+              type="danger"
+              *ngIf="index1 == -1"
+              [dismissible]="dismissible"
+            >
+              Please Enter Title and Date
+            </alert>
+
+            <alert
+              type="success"
+              *ngIf="index1 == 4"
+              [dismissible]="dismissible"
+            >
+              Note for 'Location: {{ currentLocationName }} ' was successfully
+              Deleted
+            </alert>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="title"
+                  >Title <strong class="text-danger">*</strong></label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="model.journalid"
+                  name="journalid"
+                  #journalid="ngModel"
+                  id="_id"
+                  hidden
+                />
+                <input
+                  readonly
+                  class="form-control"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.entityname"
+                  name="title"
+                  #title="ngModel"
+                  id="title"
+                  placeholder="Enter Title"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="date"
+                  >Date <strong class="text-danger">*</strong></label
+                >
+
+                <input
+                  readonly
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.effectiveon"
+                  name="date"
+                  #date="ngModel"
+                  id="date"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="job">JOB Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.jobnumber"
+                  name="job"
+                  #job="ngModel"
+                  id="job"
+                  placeholder="Enter JOB Number"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="po">PO Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.ponumber"
+                  id="po"
+                  name="po"
+                  #po="ngModel"
+                  placeholder="Enter PO Number"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <label for="details">Details</label>
+                <textarea
+                  id="details"
+                  name="textarea-input"
+                  rows="2"
+                  cols="4"
+                  name="details"
+                  #details="ngModel"
+                  class="form-control"
+                  [(ngModel)]="model.entry"
+                  placeholder="Enter Description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="animated fadeIn" *ngIf="highestRank > 4">
+            <!--/.row-->
+            <div class="row">
+              <div class="col-lg-12">
+                <p class="card-text" style="font-weight: bold; font-size: 18px">
+                  Current Notes:
+                </p>
+                <!-- Large modal -->
+                <div class="card-body">
+                  <div>
+                    <div class="float-left">
+                      <span
+                        >Show
+                        <select [(ngModel)]="itemsForPagination">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select>
+                        entries
+                      </span>
+                    </div>
+                  </div>
+                  <div class="float-right div-search">
+                    <span>Search : </span>
+                    <input [(ngModel)]="locationNotesFilter" />
+                  </div>
+                  <table
+                    class="table table-responsive-sm table-hover table-outline mb-0"
+                  >
+                    <thead class="thead-light">
+                      <tr>
+                        <th
+                          [class.active]="order === 'effectiveon'"
+                          (click)="setOrder('effectiveon')"
+                        >
+                          Date<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="order === 'entityname'"
+                          (click)="setOrder('entityname')"
+                        >
+                          Title<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="order === 'jobnumber'"
+                          (click)="setOrder('jobnumber')"
+                        >
+                          Job<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="order === 'ponumber'"
+                          (click)="setOrder('ponumber')"
+                        >
+                          PO<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="order === 'enteredby'"
+                          (click)="setOrder('enteredby')"
+                        >
+                          By <span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+
+                        <th>Attachments</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let note of notes
+                            | orderBy : reverse + order
+                            | filterBy
+                              : [
+                                  'effectiveon',
+                                  'entityname',
+                                  'jobnumber',
+                                  'ponumber',
+                                  'enteredby'
+                                ]
+                              : locationNotesFilter
+                            | paginate
+                              : {
+                                  itemsPerPage: itemsForPagination,
+                                  currentPage: p
+                                }
+                        "
+                      >
+                        <td>{{ note.effectiveon | date : "MM/dd/yyyy" }}</td>
+                        <td>{{ note.entityname }}</td>
+                        <td>{{ note.jobnumber }}</td>
+                        <td>{{ note.ponumber }}</td>
+                        <td>{{ note.enteredby }}</td>
+                        <td>
+                          <ng-container
+                            *ngFor="let attachment of note.attachmentList"
+                          >
+                            <br /><a
+                              href="javascript:void(0)"
+                              tooltip="Click here to View this NoteAttachment"
+                              (click)="download(attachment)"
+                              >{{ attachment.fileName }}</a
+                            >
+                          </ng-container>
+                        </td>
+
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-outline-danger btn-sm"
+                            tooltip="Click here to View this Note"
+                            (click)="viewLocationNotes(note.journalid)"
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <pagination-controls
+                    class="my-pagination"
+                    (pageChange)="p = $event"
+                    [autoHide]="true"
+                  >
+                  </pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #confirmtemplate>
+    <div class="modal-body text-center">
+      <p>
+        Click(Yes) to permanently delete this Note or Click(No) to discard this
+        action.
+      </p>
+      <button type="button" class="btn btn-primary" (click)="confirm()">
+        Yes
+      </button>
+      <button type="button" class="btn btn-primary" (click)="decline()">
+        No
+      </button>
+    </div>
+  </ng-template>
+</div>

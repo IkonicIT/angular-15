@@ -1,0 +1,353 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <ng-container *ngIf="!isExpandAdvancedSearch">
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            (click)="isExpandAdvancedSearch = !isExpandAdvancedSearch"
+            tooltip="Click here to Show/Change the Search Fields"
+          >
+            Show/Change Search Fields Criteria
+          </button>
+        </ng-container>
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            *To add a new item:<br />
+            1.Enter the data for the new item.<br />
+            2.Click the 'Save' button.<br />
+            *To edit an existing item: <br />
+            1.Enter the tag number and click 'Search' or click the 'Edit'
+            button.<br />
+            2.If more than one item type is found for the tag number, select the
+            desired type in the 'Select Type' drop down list.<br />
+            3.Make the necessary changes.<br />
+            4.Click the 'Save' button.
+          </div>
+        </div>
+        <div class="card-body">
+          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+            Please enter Any of the fields
+          </alert>
+          <ng-container *ngIf="isExpandAdvancedSearch">
+            <p class="card-text">Master Search</p>
+            <div class="row">
+              <div class="form-group col-sm-1"></div>
+              <div class="form-group col-sm-5">
+                <label for="tag">Item Tag#</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.tag"
+                  name="Tag"
+                  #Tag="ngModel"
+                  id="tag"
+                  placeholder="Enter Item Tag"
+                />
+              </div>
+              <div class="form-group col-sm-5">
+                <label for="hp">HP</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.hp"
+                  name="HP"
+                  #HP="ngModel"
+                  id="hp"
+                  placeholder="Enter HP"
+                />
+              </div>
+              <div class="form-group col-sm-1"></div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-1"></div>
+              <div class="form-group col-sm-5">
+                <label for="RPM">RPM</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.rpm"
+                  name="RPM"
+                  #RPM="ngModel"
+                  id="rpm"
+                  placeholder="Enter RPM"
+                />
+              </div>
+              <div class="form-group col-sm-5">
+                <label for="frame">Frame</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.frame"
+                  name="frame"
+                  #frame="ngModel"
+                  id="frame"
+                  placeholder="Enter Frame"
+                />
+              </div>
+              <div class="form-group col-sm-1"></div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-1"></div>
+              <div class="form-group col-sm-5">
+                <label for="locationName">Location Name Includes</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.locationName"
+                  name="locationName"
+                  #LocationName="ngModel"
+                  id="locationName"
+                  placeholder="Enter Location Name"
+                />
+              </div>
+              <div class="form-group col-sm-1"></div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-5"></div>
+              <div class="form-group col-sm-4 align-center">
+                <button
+                  type="button"
+                  (click)="getResults()"
+                  tooltip="Search an item"
+                  class="btn btn-primary"
+                >
+                  Search
+                </button>
+                <button
+                  type="button"
+                  (click)="clear()"
+                  tooltip="Clear searched Fields"
+                  class="btn btn-primary"
+                >
+                  Clear
+                </button>
+                <button
+                  type="button"
+                  (click)="Hide()"
+                  tooltip="Hide searched Fields"
+                  class="btn btn-primary"
+                >
+                  Hide
+                </button>
+              </div>
+            </div>
+          </ng-container>
+          <div *ngIf="showTable">
+            <div class="row">
+              <div class="form-group col-sm-4 align-left">
+                <button
+                  type="button"
+                  tooltip="Export results to Excel Sheet "
+                  (click)="exportAsExcelFileWithMultipleSheets()"
+                  class="btn btn-primary"
+                >
+                  Export to Excel
+                </button>
+
+                <button
+                  type="button"
+                  tooltip="Show All Items"
+                  (click)="showAll()"
+                  class="btn btn-primary"
+                >
+                  Show All
+                </button>
+              </div>
+            </div>
+            <div class="float-left">
+              <span
+                >Show
+                <select [(ngModel)]="itemsForPagination" (change)="getItems()">
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Company</th>
+                    <th>Tag</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Location</th>
+                    <th>Attributes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let result of masterSearchResults
+                        | paginate
+                          : {
+                              itemsPerPage: itemsForPagination,
+                              currentPage: page,
+                              totalItems: totalRows
+                            }
+                    "
+                  >
+                    <td>{{ result.companyName }}</td>
+                    <td>
+                      <a
+                        href="javascript:void(0)"
+                        (click)="
+                          goToView(
+                            result.itemId,
+                            result.tag,
+                            result.typeName,
+                            result.companyId
+                          )
+                        "
+                        >{{ result.tag }}</a
+                      >
+                    </td>
+                    <td>{{ result.typeName }}</td>
+                    <td>{{ result.status }}</td>
+                    <td>{{ result.locationName }}</td>
+
+                    <td *ngFor="let attr of result.attributes">
+                      {{ attr.attributeName }}:{{ attr.value }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <pagination-controls
+                class="my-pagination"
+                (pageChange)="getPage($event)"
+                [autoHide]="true"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+          <div *ngIf="showAllTable">
+            <div class="row">
+              <div class="form-group col-sm-4 align-left">
+                <button
+                  type="button"
+                  tooltip="Export results to Excel Sheet "
+                  (click)="exportAsExcelFileWithMultipleSheets()"
+                  class="btn btn-primary"
+                >
+                  Export to Excel
+                </button>
+              </div>
+            </div>
+
+            <div class="float-left">
+              <span
+                >Show
+                <select [(ngModel)]="itemsPerPaginationForShowAll">
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+            <div class="float-right div-search">
+              <span>Search : </span>
+              <input [(ngModel)]="filter" />
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Company</th>
+                    <th>Tag</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Location</th>
+                    <th>Attributes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let result of masterSearchResults
+                        | filterBy
+                          : [
+                              'companyName',
+                              'tag',
+                              'typeName',
+                              'status',
+                              'locationName',
+                              'attributeName',
+                              'value'
+                            ]
+                          : filter
+                        | paginate
+                          : {
+                              itemsPerPage: itemsPerPaginationForShowAll,
+                              currentPage: pagesForShowAll
+                            }
+                    "
+                  >
+                    <td>{{ result.companyName }}</td>
+                    <td>
+                      <a
+                        href="javascript:void(0)"
+                        (click)="
+                          goToViewFromShowAll(
+                            result.itemId,
+                            result.tag,
+                            result.typeName,
+                            result.companyId
+                          )
+                        "
+                        >{{ result.tag }}</a
+                      >
+                    </td>
+                    <td>{{ result.typeName }}</td>
+                    <td>{{ result.status }}</td>
+                    <td>{{ result.locationName }}</td>
+
+                    <td *ngFor="let attr of result.attributes">
+                      {{ attr.attributeName }}:{{ attr.value }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <pagination-controls
+                class="my-pagination"
+                (pageChange)="pagesForShowAll = $event"
+                [autoHide]="true"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

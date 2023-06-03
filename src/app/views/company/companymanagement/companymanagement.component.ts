@@ -119,10 +119,12 @@ export class CompanymanagementComponent implements OnInit {
     }
     this.order = value;
   }
+
   print() {
     this.helpFlag = false;
     window.print();
   }
+
   help() {
     this.helpFlag = !this.helpFlag;
   }

@@ -1,0 +1,12 @@
+@import '../../../../../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
+.default-img{
+  height: 100px;
+  width: 270px;
+  text-align: center;
+}
+
+.form-control[readonly] {
+  background-color: #cccccc;
+  opacity: 1;
+  cursor: not-allowed;
+}

@@ -1,0 +1,142 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            *To add an attachment:<br />
+            1.Click the 'Choose File' button to locate the desired file.<br />
+            2.Enter a description for the file.<br />
+            3.Click the 'Save' button.<br />
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Edit Item Repair Attachments</p>
+
+          <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
+            Item Repair Documents Updated successfully.
+          </alert>
+
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <form
+                  name="form"
+                  (ngSubmit)="f.form.valid && updateItemRepairDocument()"
+                  #f="ngForm"
+                  novalidate
+                >
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <input
+                          type="file"
+                          class="form-control"
+                          name="logo"
+                          id="logo"
+                          hidden
+                        />
+                        <input
+                          type="text"
+                          [(ngModel)]="model.dateadded"
+                          name="added"
+                          #added="ngModel"
+                          id="added"
+                          hidden
+                        />
+                        <input
+                          type="text"
+                          [(ngModel)]="model.addedby"
+                          name="by"
+                          #by="ngModel"
+                          id="by"
+                          hidden
+                        />
+                        <input
+                          type="text"
+                          [(ngModel)]="model.attachmentid"
+                          name="_id"
+                          #_id="ngModel"
+                          id="_id"
+                          hidden
+                        />
+                        <input
+                          type="text"
+                          [(ngModel)]="model.entityid"
+                          name="companyId"
+                          #companyId="ngModel"
+                          id="companyId"
+                          hidden
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="desc">Description</label>
+                        <textarea
+                          id="desc"
+                          name="textarea-input"
+                          rows="2"
+                          cols="4"
+                          class="form-control"
+                          [(ngModel)]="model.description"
+                          name="description"
+                          #description="ngModel"
+                          placeholder="Enter Description"
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button
+                          tooltip="Update this ItemRepair Attachment"
+                          class="btn btn-primary"
+                        >
+                          Update
+                        </button>
+                        <button
+                          type="button"
+                          (click)="back()"
+                          tooltip="Back to itemRepair Attachments"
+                          class="btn btn-primary"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

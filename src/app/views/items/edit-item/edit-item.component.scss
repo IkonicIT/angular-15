@@ -1,0 +1,12 @@
+.form-control:disabled, .form-control[readonly] {
+  background-color: #cccccc;
+  opacity: 1;
+  cursor: not-allowed;
+}
+#box {
+  width: 300px;
+  height: 80px;
+ padding: 30px;  
+text-align: center;
+  border: 1px solid #002A64;
+}

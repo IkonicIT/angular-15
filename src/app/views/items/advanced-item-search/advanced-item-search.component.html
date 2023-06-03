@@ -1,0 +1,1156 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <alert
+          type="danger"
+          *ngIf="isTimeSpanSelected == -1"
+          [dismissible]="dismissible"
+        >
+          Please Select Time Frame.
+        </alert>
+        <ng-container *ngIf="!isExpandAdvancedSearch">
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            (click)="isExpandAdvancedSearch = !isExpandAdvancedSearch"
+            tooltip="Click here to Show/Change the Search Fields"
+          >
+            Show/Change Search Fields Criteria
+          </button>
+        </ng-container>
+        <div class="card-body" *ngIf="isExpandAdvancedSearch">
+          <p class="card-text">Advanced Item Search</p>
+
+          <mat-tab-group
+            *ngIf="isloaded"
+            (selectedTabChange)="onTabChanged($event)"
+            [selectedIndex]="activeTab"
+          >
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span> Item </span>
+              </ng-template>
+              <div class="card-body">
+                <button
+                  type="button"
+                  tooltip="Click here to showSearchResults"
+                  class="btn btn-primary"
+                  (click)="searchItems()"
+                  style="margin-left: 90%"
+                >
+                  Search
+                </button>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="itemId">Item Type</label>
+                    <span>
+                      <app-dropdown-treeview-select
+                        [items]="itemTypeItems"
+                        [(value)]="value"
+                        (valueChange)="getTypeAttributes($event)"
+                      >
+                      </app-dropdown-treeview-select>
+                    </span>
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="tag">Tag #</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemModel.tag"
+                      name="tag"
+                      id="tag"
+                      placeholder="Enter Tag"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="name">Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemModel.name"
+                      name="name"
+                      id="name"
+                      placeholder="Enter Name"
+                    />
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="status">Status</label>
+                    <select
+                      class="form-control"
+                      [(ngModel)]="itemModel.status"
+                      name="status"
+                      #status="ngModel"
+                      id="status"
+                    >
+                      <option value="" selected="true">Choose Status</option>
+                      <option
+                        [ngValue]="stat.statusid"
+                        *ngFor="let stat of statuses"
+                      >
+                        {{ stat.status }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="locName">Location Name Includes</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemModel.location"
+                      name="locName"
+                      id="locName"
+                    />
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="loc">Location</label>
+
+                    <app-dropdown-treeview-select
+                      [items]="items"
+                      [(value)]="itemModel.locationId"
+                      id="loc"
+                      (valueChange)="onValueChange($event)"
+                    >
+                    </app-dropdown-treeview-select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div
+                    class="form-group col-sm-6"
+                    *ngFor="
+                      let eachAttr of itemModel.attributevalues;
+                      let i = index
+                    "
+                  >
+                    <div>
+                      <label>{{ eachAttr.name }}</label>
+                      <div>
+                        <input
+                          *ngIf="eachAttr.attributetype.attributetypeid == 1"
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="number{{ i }}"
+                        />
+                        <input
+                          *ngIf="eachAttr.attributetype.attributetypeid == 2"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="text{{ i }}"
+                        />
+                        <input
+                          *ngIf="eachAttr.attributetype.attributetypeid == 6"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="multiValue{{ i }}"
+                        />
+                        <input
+                          *ngIf="eachAttr.attributetype.attributetypeid == 3"
+                          type="date"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="radio{{ i }}"
+                          #state="ngModel"
+                        />
+                        <select
+                          *ngIf="eachAttr.attributetype.attributetypeid == 4"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="select{{ i }}"
+                          #type="ngModel"
+                        >
+                          <option value="">Choose..</option>
+                          <option
+                            [ngValue]="list.listitem"
+                            *ngFor="
+                              let list of eachAttr.attributelistitemResource
+                            "
+                          >
+                            {{ list.listitem }}
+                          </option>
+                        </select>
+                        <div
+                          class="form-check"
+                          *ngIf="eachAttr.attributetype.attributetypeid == 5"
+                        >
+                          <label
+                            class="form-check-label margin-right"
+                            for="radio1"
+                          >
+                            &nbsp;
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [(ngModel)]="eachAttr.value"
+                              name="radios{{ i }}"
+                              id="radio1"
+                              value="true"
+                              checked
+                            />Y &nbsp;&nbsp;&nbsp;&nbsp;
+                          </label>
+                          <label
+                            class="form-check-label margin-right"
+                            for="radio2"
+                          >
+                            &nbsp;
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [(ngModel)]="eachAttr.value"
+                              name="radios{{ i }}"
+                              id="radio2"
+                              value="false"
+                            />N &nbsp;&nbsp;&nbsp;&nbsp;
+                          </label>
+                          <label class="form-check-label" for="radio3">
+                            &nbsp;
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [(ngModel)]="eachAttr.value"
+                              name="radios{{ i }}"
+                              id="radio3"
+                              value="N/A"
+                            />N/A
+                          </label>
+                        </div>
+                        <textarea
+                          *ngIf="eachAttr.attributetype.attributetypeid == 7"
+                          name="textarea{{ i }}"
+                          rows="2"
+                          cols="4"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          placeholder="Enter Value"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-12 text-center">
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      tooltip="Click here to showSearchResults"
+                      (click)="searchItems()"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="clearItem()"
+                      tooltip="Clear"
+                      class="btn btn-primary"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      type="button"
+                      (click)="back()"
+                      tooltip="Back "
+                      class="btn btn-primary"
+                    >
+                      Back
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span> Failed Items </span>
+              </ng-template>
+              <div class="card-body">
+                <div class="d-flex justify-content-start flex-row">
+                  <div>
+                    <label for="status"><strong>TimeSpan</strong></label>
+                    <select class="form-control" [(ngModel)]="params.type">
+                      <option value="yearly">Last Year</option>
+                    </select>
+                  </div>
+                  <div style="margin-top: 30px">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      style="
+                        display: inherit;
+                        margin-top: -1px;
+                        margin-left: 2px;
+                      "
+                      (click)="getDataForFailedItems()"
+                      tooltip="Get PrimaryFindings"
+                    >
+                      GET
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span> Repair/Note </span>
+              </ng-template>
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="itemrepairnotesrfqModel">Notes:</label> &nbsp;
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="itemrepairnotesrfqModel.isitemnote"
+                      id="isitemnote"
+                    />&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label for="itemrepairnotesrfqModel">Repair Logs:</label
+                    >&nbsp;
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="itemrepairnotesrfqModel.isitemrepair"
+                      id="isitemrepair"
+                    />&nbsp;&nbsp;&nbsp;&nbsp;
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="exactTag">Exact Tag#</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemrepairnotesrfqModel.exactTag"
+                      name="exactTag"
+                      id="exactTag"
+                      placeholder="Enter Tag"
+                    />
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="rfq">RFQ</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemrepairnotesrfqModel.rfq"
+                      name="rfq"
+                      id="rfq"
+                      placeholder="Enter RFQ"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="po">PO</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemrepairnotesrfqModel.po"
+                      name="po"
+                      id="po"
+                      placeholder="Enter PO"
+                    />
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="job">JOB #</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemrepairnotesrfqModel.job"
+                      name="po"
+                      id="job"
+                      placeholder="Enter job"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-12">
+                    <label for="vendor">Vendor</label>
+                    <select
+                      class="form-control"
+                      [(ngModel)]="repairModel.vendorId"
+                      name="vendor"
+                      #vendor="ngModel"
+                      id="vendor"
+                    >
+                      <option value="" selected="true">Choose Vendor</option>
+                      <option
+                        [ngValue]="vendor.companyid"
+                        *ngFor="let vendor of vendors"
+                      >
+                        {{ vendor.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-12 text-center">
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      tooltip="Click here to showSearchResults"
+                      (click)="searchItemRepairNotesRfqModel()"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="clearRepairNoteQuote()"
+                      tooltip="Clear"
+                      class="btn btn-primary"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      type="button"
+                      (click)="back()"
+                      tooltip="back button"
+                      class="btn btn-primary"
+                    >
+                      Back
+                    </button>
+                  </div>
+
+                  <div
+                    class="table-responsive"
+                    *ngIf="searchresults.rfqFlag == true"
+                  >
+                    <table class="table">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>RFQs</th>
+                          <th>Exact Tag #</th>
+                          <th>RFQ Number</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let rfqssearch of RFQsList">
+                          <td></td>
+                          <td>{{ rfqssearch.entityid }}</td>
+                          <td>{{ rfqssearch.entitytypeid }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div
+                    class="table-responsive"
+                    *ngIf="searchresults.repairFlag == true"
+                  >
+                    <table class="table">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Repair Logs</th>
+                          <th>Exact Tag #</th>
+                          <th>RFQ Number</th>
+                          <th>Job Number</th>
+                          <th>PO Number</th>
+                          <th
+                            [class.active]="order === 'enteredby'"
+                            (click)="setOrder('enteredby')"
+                          >
+                            Repair Vendor
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let repairsearch of repairlogList">
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-outline-danger btn-sm"
+                              tooltip="View"
+                              (click)="
+                                goToItemRepair(
+                                  repairsearch.itemId,
+                                  repairsearch.repairLogId,
+                                  repairsearch.rank,
+                                  repairsearch.tag,
+                                  repairsearch.typeName
+                                )
+                              "
+                            >
+                              View
+                            </button>
+                          </td>
+                          <td>{{ repairsearch.tag }}</td>
+                          <td>{{ repairsearch.rfqNumber }}</td>
+                          <td>{{ repairsearch.jobNumber }}</td>
+                          <td>{{ repairsearch.poNumber }}</td>
+                          <td>{{ repairsearch.repairVendorName }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div
+                    class="table-responsive"
+                    *ngIf="searchresults.noteFlag == true"
+                  >
+                    <table class="table">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Notes</th>
+                          <th>Date</th>
+                          <th>Entry</th>
+                          <th>Job #</th>
+                          <th>PO #</th>
+                          <th>By</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let itemnotessearch of itemNotesList">
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-outline-danger btn-sm"
+                              tooltip="View "
+                              (click)="
+                                goToNote(
+                                  itemnotessearch.itemId,
+                                  itemnotessearch.journalId,
+                                  itemnotessearch.rank,
+                                  itemnotessearch.tag,
+                                  itemnotessearch.typeName
+                                )
+                              "
+                            >
+                              View
+                            </button>
+                          </td>
+                          <td>
+                            {{
+                              itemnotessearch.enteredOn
+                                | date : "MM/dd/yyyy h:mm:ss a "
+                            }}
+                          </td>
+                          <td>{{ itemnotessearch.entry }}</td>
+                          <td>{{ itemnotessearch.jobNumber }}</td>
+                          <td>{{ itemnotessearch.poNumber }}</td>
+                          <td>{{ itemnotessearch.enteredBy }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+        <div [style.display]="showSearchResults ? 'block' : 'none'">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-text">Advanced Item Search Results</p>
+                  <div>
+                    <alert
+                      type="danger"
+                      *ngIf="flag == 1"
+                      [dismissible]="dismissible"
+                    >
+                      No Results Found <br />
+                    </alert>
+                  </div>
+                  <button
+                    type="button"
+                    *ngIf="flag == 0"
+                    (click)="exportAsExcelFileWithMultipleSheets()"
+                    class="btn btn-primary"
+                  >
+                    Export to Excel
+                  </button>
+                  <button
+                    type="button"
+                    *ngIf="flag == 0"
+                    (click)="getPieChartData($event, mytemplate)"
+                    class="btn btn-primary"
+                  >
+                    PieCharts
+                  </button>
+
+                  <div
+                    *ngFor="let itemType of searchResultKeys; let t = index"
+                    style="margin-bottom: 0.3rem"
+                  >
+                    <div class="card">
+                      <div class="type-header">
+                        <strong>{{ itemType }}</strong>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="this.searchResultKeys.length == 1"
+                      class="float-left"
+                    >
+                      <span
+                        >Show
+
+                        <select [(ngModel)]="dynLst[t].itemsForPagination">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select>
+                        entries
+                      </span>
+                    </div>
+
+                    <div class="table-responsive">
+                      <table
+                        *ngIf="
+                          searchResults[itemType] &&
+                          searchResults[itemType].length > 0
+                        "
+                        class="table"
+                      >
+                        <thead class="thead-light">
+                          <tr>
+                            <th
+                              [class.active]="order === 'name'"
+                              (click)="setOrder('name')"
+                            >
+                              Tag #<span [hidden]="reverse == ''">▼</span
+                              ><span [hidden]="reverse != ''">▲</span>
+                            </th>
+                            <th
+                              [class.active]="order === 'phone'"
+                              (click)="setOrder('phone')"
+                            >
+                              Location<span [hidden]="reverse == ''">▼</span
+                              ><span [hidden]="reverse != ''">▲</span>
+                            </th>
+                            <th
+                              [class.active]="order === 'state'"
+                              (click)="setOrder('state')"
+                            >
+                              Status<span [hidden]="reverse == ''">▼</span
+                              ><span [hidden]="reverse != ''">▲</span>
+                            </th>
+                            <ng-container
+                              *ngIf="
+                                searchResults[itemType][0] &&
+                                searchResults[itemType][0].attributeNameList
+                              "
+                            >
+                              <th
+                                *ngFor="
+                                  let attr of searchResults[itemType][0]
+                                    .attributeNameList
+                                    | slice
+                                      : 0
+                                      : attributesSearchDisplay[itemType]
+                                "
+                              >
+                                {{
+                                  searchResults[itemType][0].attributeNameList
+                                    .name
+                                }}
+                              </th>
+                            </ng-container>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let result of searchResults[itemType]
+                                | paginate
+                                  : {
+                                      itemsPerPage:
+                                        dynLst[t].itemsForPagination,
+                                      currentPage: dynLst[t].p,
+                                      id: 'page' + t
+                                    }
+                            "
+                          >
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                (click)="
+                                  goToView(
+                                    result.itemId,
+                                    result.rank,
+                                    result.tag,
+                                    result.typeName
+                                  )
+                                "
+                                >{{ result.tag }}</a
+                              >
+                            </td>
+                            <td title="{{ result.locationPath }}">
+                              {{ result.locationPath }}
+                            </td>
+                            <td>{{ result.status }}</td>
+                            <ng-container
+                              *ngIf="result && result.attributeNameList"
+                            >
+                              <td
+                                *ngFor="
+                                  let attr of result.attributeNameList
+                                    | slice
+                                      : 0
+                                      : attributesSearchDisplay[itemType]
+                                "
+                              >
+                                {{ result.attributeNameList.value }}
+                              </td>
+                            </ng-container>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <pagination-controls
+                        class="my-pagination"
+                        id="page{{ t }}"
+                        (pageChange)="dynLst[t].p = $event"
+                      >
+                      </pagination-controls>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="this.searchResultKeys.length > 1" class="float-left">
+            <span>Showing {{ itemsLength }} Results </span>
+          </div>
+          <div
+            *ngIf="this.searchResultKeys.length == 1 && dynLst[0].p == 1"
+            class="float-left"
+          >
+            <span
+              >Showing results {{ dynLst[0].p }} to
+              {{ dynLst[0].itemsForPagination }} of {{ itemsLength }}
+            </span>
+          </div>
+          <div
+            *ngIf="this.searchResultKeys.length == 1 && dynLst[0].p > 1"
+            class="float-left"
+          >
+            <span
+              >Showing results
+              {{ (dynLst[0].p - 1) * dynLst[0].itemsForPagination + 1 }} to
+              {{ dynLst[0].itemsForPagination * dynLst[0].p }} of
+              {{ itemsLength }}
+            </span>
+          </div>
+        </div>
+        <div [style.display]="showFailedItemsSearchResults ? 'block' : 'none'">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-text">Failed Item Search Results</p>
+                  <div>
+                    <alert
+                      type="danger"
+                      *ngIf="flag == 1"
+                      [dismissible]="dismissible"
+                    >
+                      No Results Found <br />
+                    </alert>
+                  </div>
+                  <button
+                    type="button"
+                    *ngIf="flag == 0"
+                    (click)="exportAsExcelFileWithMultipleSheets()"
+                    class="btn btn-primary"
+                  >
+                    Export to Excel
+                  </button>
+
+                  <div
+                    *ngFor="let itemType of searchResultKeys; let t = index"
+                    style="margin-bottom: 0.3rem"
+                  >
+                    <div class="card">
+                      <div class="type-header">
+                        <strong>{{ itemType }}</strong>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="this.searchResultKeys.length == 1"
+                      class="float-left"
+                    >
+                      <span
+                        >Show
+
+                        <select [(ngModel)]="dynLst[t].itemsForPagination">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select>
+                        entries
+                      </span>
+                    </div>
+
+                    <div class="table-responsive">
+                      <table
+                        *ngIf="
+                          searchResults[itemType] &&
+                          searchResults[itemType].length > 0
+                        "
+                        class="table"
+                      >
+                        <thead class="thead-light">
+                          <tr>
+                            <th
+                              [class.active]="order === 'name'"
+                              (click)="setOrder('name')"
+                            >
+                              Tag #<span [hidden]="reverse == ''">▼</span
+                              ><span [hidden]="reverse != ''">▲</span>
+                            </th>
+                            <th
+                              [class.active]="order === 'phone'"
+                              (click)="setOrder('phone')"
+                            >
+                              Location<span [hidden]="reverse == ''">▼</span
+                              ><span [hidden]="reverse != ''">▲</span>
+                            </th>
+                            <th
+                              [class.active]="order === 'state'"
+                              (click)="setOrder('state')"
+                            >
+                              Status<span [hidden]="reverse == ''">▼</span
+                              ><span [hidden]="reverse != ''">▲</span>
+                            </th>
+                            <ng-container
+                              *ngIf="
+                                searchResults[itemType][0] &&
+                                searchResults[itemType][0].attributeNameList
+                              "
+                            >
+                              <th
+                                *ngFor="
+                                  let attr of searchResults[itemType][0]
+                                    .attributeNameList
+                                    | slice
+                                      : 0
+                                      : attributesSearchDisplay[itemType]
+                                "
+                              >
+                                {{
+                                  searchResults[itemType][0].attributeNameList
+                                    .name
+                                }}
+                              </th>
+                            </ng-container>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let result of searchResults[itemType]
+                                | paginate
+                                  : {
+                                      itemsPerPage:
+                                        dynLst[t].itemsForPagination,
+                                      currentPage: dynLst[t].p,
+                                      id: 'page' + t
+                                    }
+                            "
+                          >
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                (click)="
+                                  goToView(
+                                    result.itemId,
+                                    highestRank,
+                                    result.tag,
+                                    result.typeName
+                                  )
+                                "
+                                >{{ result.tag }}</a
+                              >
+                            </td>
+                            <td title="{{ result.locationPath }}">
+                              {{ result.locationPath }}
+                            </td>
+                            <td>{{ result.status }}</td>
+                            <ng-container
+                              *ngIf="result && result.attributeNameList"
+                            >
+                              <td
+                                *ngFor="
+                                  let attr of result.attributeNameList
+                                    | slice
+                                      : 0
+                                      : attributesSearchDisplay[itemType]
+                                "
+                              >
+                                {{ result.attributeNameList.value }}
+                              </td>
+                            </ng-container>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <pagination-controls
+                        class="my-pagination"
+                        id="page{{ t }}"
+                        (pageChange)="dynLst[t].p = $event"
+                      >
+                      </pagination-controls>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="this.searchResultKeys.length > 1" class="float-left">
+            <span>Showing {{ itemsLength }} Results </span>
+          </div>
+          <div
+            *ngIf="this.searchResultKeys.length == 1 && dynLst[0].p == 1"
+            class="float-left"
+          >
+            <span
+              >Showing results {{ dynLst[0].p }} to
+              {{ dynLst[0].itemsForPagination }} of {{ itemsLength }}
+            </span>
+          </div>
+          <div
+            *ngIf="this.searchResultKeys.length == 1 && dynLst[0].p > 1"
+            class="float-left"
+          >
+            <span
+              >Showing results
+              {{ (dynLst[0].p - 1) * dynLst[0].itemsForPagination + 1 }} to
+              {{ dynLst[0].itemsForPagination * dynLst[0].p }} of
+              {{ itemsLength }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #mytemplate>
+  <div class="row" style="margin-left: 10px">
+    <div class="col-sm-12 p-0" style="margin-top: 20px">
+      <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+        Please Select From & To Fields.
+      </alert>
+      <h5 class="card-title mb-0" style="color: red">
+        PRIMARY FINDINGS & CAUSES
+      </h5>
+      <br />
+      <div>
+        <mat-button-toggle-group
+          #group="matButtonToggleGroup"
+          name="fontStyle"
+          [value]="selectedVal"
+          (change)="onValChange(group.value)"
+          aria-label="Font Style"
+        >
+          <mat-button-toggle value="count">PRIMARYFINDINGS</mat-button-toggle>
+          <mat-button-toggle value="repaircost">REPAIRCOST</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <div class="d-flex justify-content-start flex-row">
+        <div>
+          <label for="status"><strong>TimeSpan</strong></label>
+          <select class="form-control" [(ngModel)]="params.type">
+            <option value="monthly">Last Month</option>
+            <option value="quarterly">Last Quarter</option>
+            <option value="yearly">Last Year</option>
+            <option value="lasttwoyears">Last Two Years</option>
+            <option value="range">range</option>
+          </select>
+        </div>
+        <ng-container [ngSwitch]="params.type">
+          <ng-container *ngSwitchCase="'range'">
+            <div>
+              <label for="status"
+                ><strong>From</strong
+                ><strong class="text-danger"> *</strong></label
+              >
+              <div>
+                <dp-date-picker
+                  [(ngModel)]="params.from"
+                  theme="dp-material"
+                ></dp-date-picker>
+              </div>
+            </div>
+            <div>
+              <label for="status"
+                ><strong>To</strong
+                ><strong class="text-danger"> *</strong></label
+              >
+              <div>
+                <dp-date-picker
+                  [(ngModel)]="params.to"
+                  theme="dp-material"
+                ></dp-date-picker>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+        <div style="margin-top: 30px">
+          <button
+            type="button"
+            class="btn btn-danger"
+            style="display: inherit; margin-top: -1px; margin-left: 2px"
+            (click)="getFailureTypesPieChart()"
+            tooltip="Get PrimaryFindings"
+          >
+            GET
+          </button>
+        </div>
+      </div>
+      <div class="col-md-6 mb-2" style="margin-top: 5px">
+        <h5>PRIMARYFINDINGS</h5>
+        <div class="border-charts" *ngIf="pieChartData.length == 0">
+          <h6 style="color: red">
+            There are no Repairs in the selected time span.
+          </h6>
+        </div>
+        <div class="border-charts" *ngIf="pieChartData.length > 0">
+          <canvas
+            baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [plugins]="pieChartPlugins"
+            [legend]="true"
+            [options]="barChartOptions"
+            [type]="pieChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"
+          ></canvas>
+        </div>
+      </div>
+      <div class="col-md-6 mb-2">
+        <h5 *ngIf="pieChartCauseData.length > 0">
+          Primary Causes for "{{ selectedFailureType }}"
+        </h5>
+        <div
+          class="border-charts"
+          *ngIf="pieChartCauseData.length > 0"
+          style="margin-right: 10px"
+        >
+          <canvas
+            baseChart
+            [data]="pieChartCauseData"
+            [labels]="pieChartCauseLabels"
+            [plugins]="pieChartPlugins"
+            [legend]="true"
+            [options]="barChartOptions"
+            [type]="pieChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="getRepairJobs($event, repairJobsTemplate)"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="d-flex justify-content-end flex-row"
+    style="margin-bottom: 10px; margin-right: 10px"
+  >
+    <button
+      type="button"
+      (click)="closeModelForPieCharts()"
+      class="btn btn-outline-danger btn-sm float-right"
+    >
+      Close
+    </button>
+  </div>
+</ng-template>
+<ng-template #repairJobsTemplate>
+  <div
+    class="col-lg-12 mobile-padding"
+    style="margin-top: 30px"
+    *ngIf="highestRank > 0"
+  >
+    <div class="card">
+      <div class="card-body">
+        <div style="margin-bottom: 10px">
+          <strong class="card-text"
+            >Repairs under: "{{ selectedFailureCause }}"</strong
+          >
+          <button
+            type="button"
+            (click)="CloseModel()"
+            class="btn btn-outline-danger btn-sm float-right"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            (click)="exportToExel()"
+            class="btn btn-outline-danger btn-sm float-right"
+            *ngIf="highestRank > 5"
+          >
+            Export to Excel
+          </button>
+        </div>
+        <table
+          class="table table-responsive-sm table-responsive-md table-hover table-outline mb-0"
+        >
+          <thead class="thead-light">
+            <tr>
+              <th>Tag#</th>
+              <th>PO Number</th>
+              <th>Job Number</th>
+              <th>Location</th>
+              <th>Vendor</th>
+              <th *ngIf="highestRank > 5">Repair Cost</th>
+              <th>Actual Completion Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let repairJob of repairJobs">
+              <td>
+                <a
+                  href="javascript:void(0)"
+                  (click)="
+                    goToView(
+                      repairJob.itemId,
+                      repairJob.rank,
+                      repairJob.tag,
+                      repairJob.typeName
+                    )
+                  "
+                  tooltip="click here to view this Item"
+                  [innerHTML]="repairJob.tag"
+                ></a>
+              </td>
+
+              <td [innerHTML]="repairJob.poNumber"></td>
+              <td>
+                <a
+                  href="javascript:void(0)"
+                  (click)="
+                    goToItemRepair(
+                      repairJob.itemId,
+                      repairJob.repairLogId,
+                      repairJob.rank,
+                      repairJob.tag,
+                      repairJob.typeName
+                    )
+                  "
+                  style="color: red"
+                  tooltip="click here to view Job Screen"
+                  [innerHTML]="repairJob.jobNumber"
+                ></a>
+              </td>
+
+              <td [innerHTML]="repairJob.location"></td>
+              <td [innerHTML]="repairJob.vendor"></td>
+              <td
+                *ngIf="highestRank > 5"
+                [innerHTML]="repairJob.repairCost | currency"
+              ></td>
+              <td
+                [innerHTML]="
+                  repairJob.actualCompletionDate | date : 'MM/dd/yyyy'
+                "
+              ></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-template>

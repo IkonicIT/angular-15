@@ -154,7 +154,7 @@ export class NoteAttachmentsComponent implements OnInit {
       this.downloadDocumentFromDB(companyDocument);
     }
   }
-  downloadDocumentFromDB(document: { attachmentid: string }) {
+  downloadDocumentFromDB(document: { attachmentid: number }) {
     this.spinner.show();
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentid)

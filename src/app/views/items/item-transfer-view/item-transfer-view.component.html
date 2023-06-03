@@ -1,0 +1,327 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <!-- <button type="button" (click)="print()"  tooltip="Click to Print this Page" class="btn btn-outline-danger btn-sm" >Print </button> -->
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="modal-body">
+            <div class="col-sm-12">
+              <div class="card">
+                <div class="card-header">
+                  <strong>View Transfer Item</strong>
+                </div>
+
+                <div class="col-sm-12">
+                  <form name="form" #f="ngForm" novalidate>
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="name">Effective Date</label>
+                        <input
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.transfeDate"
+                          name="transferDate"
+                          #transferDate="ngModel"
+                          id="transferDate"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="name">PO Number</label>
+                        <input
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.ponumber"
+                          name="PONumber"
+                          #PONumber="ngModel"
+                          id="PONumber"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="name">Job Number</label>
+                        <input
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.jobNumber"
+                          name="jobNumber"
+                          #jobNumber="ngModel"
+                          id="jobNumber"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="name">Shipping Number</label>
+                        <input
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.shippingNumber"
+                          name="shippingNumber"
+                          #shippingNumber="ngModel"
+                          id="shippingNumber"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="name">Tracking Number</label>
+                        <input
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.trackingNumber"
+                          name="trackingNumber"
+                          #trackingNumber="ngModel"
+                          id="trackingNumber"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="name">Previous Status</label>
+                        <input
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.oldStatus"
+                          id="oldStatus"
+                          #oldStatus="ngModel"
+                          name="oldStatus"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="name">Status</label>
+                        <input
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.newStatusName"
+                          id="newStatus"
+                          #newStatus="ngModel"
+                          name="newStatus"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="mtbs">Days in Previous Status</label>
+                        <input
+                          readonly
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="model.daysinOldStatus"
+                          id="daysinOldStatus"
+                          name="daysinOldStatus"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="toLocation">To Location:</label>
+                        <input
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.toLocation"
+                          name="toLocation"
+                          #toLocation="ngModel"
+                          id="toLocation"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="description">Details</label>
+                        <input
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.details"
+                          name="details"
+                          #details="ngModel"
+                          id="details"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button
+                          type="button"
+                          (click)="back()"
+                          tooltip="Back to View ItemTransfer"
+                          class="btn btn-primary"
+                        >
+                          Back To TransferItem
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="card-body">
+                      <p class="card-text">Previous Transfers</p>
+                      <table
+                        class="table table-responsive-sm1 table-hover table-outline mb-0"
+                      >
+                        <thead class="thead-light">
+                          <tr>
+                            <th
+                              [class.active]="order === 'transferDate'"
+                              (click)="setOrder('transferDate')"
+                            >
+                              TransferDate
+                            </th>
+                            <th
+                              [class.active]="order === 'fromLocation'"
+                              (click)="setOrder('fromLocation')"
+                            >
+                              FromLocation
+                            </th>
+                            <th
+                              [class.active]="order === 'toLocation'"
+                              (click)="setOrder('toLocation')"
+                            >
+                              ToLocation
+                            </th>
+                            <th
+                              [class.active]="order === 'ponumber'"
+                              (click)="setOrder('ponumber')"
+                            >
+                              PONumber
+                            </th>
+                            <th
+                              [class.active]="order === 'jobNumber'"
+                              (click)="setOrder('jobNumber')"
+                            >
+                              JobNumber
+                            </th>
+                            <th
+                              [class.active]="order === 'shippingNumber'"
+                              (click)="setOrder('shippingNumber')"
+                            >
+                              ShippingNo
+                            </th>
+                            <th
+                              [class.active]="order === 'trackingNumber'"
+                              (click)="setOrder('trackingNumber')"
+                            >
+                              trackingNo
+                            </th>
+                            <th
+                              [class.active]="order === 'daysinOldStatus'"
+                              (click)="setOrder('daysinOldStatus')"
+                            >
+                              DaysinStatus
+                            </th>
+                            <th
+                              [class.active]="order === 'oldStatus'"
+                              (click)="setOrder('oldStatus')"
+                            >
+                              Previous Status
+                            </th>
+                            <th
+                              [class.active]="order === 'newStatus'"
+                              (click)="setOrder('newStatus')"
+                            >
+                              Status
+                            </th>
+                            <th
+                              [class.active]="order === 'transferredBy'"
+                              (click)="setOrder('transferredBy')"
+                            >
+                              TransferredBy
+                            </th>
+                            <th
+                              [class.active]="order === 'transferredBy'"
+                              (click)="setOrder('transferredBy')"
+                            ></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let transfer of transfers
+                                | orderBy : reverse + order
+                                | filterBy
+                                  : [
+                                      'transferDate',
+                                      'fromLocation',
+                                      'toLocation',
+                                      'ponumber',
+                                      'jobNumber',
+                                      'shippingNumber',
+                                      'trackingNumber',
+                                      'daysinOldStatus',
+                                      'oldStatus',
+                                      'newStatus',
+                                      'transferredBy'
+                                    ]
+                                  : transferFilter
+                                | paginate
+                                  : {
+                                      itemsPerPage: itemsForPagination,
+                                      currentPage: p
+                                    }
+                            "
+                          >
+                            <td>
+                              {{ transfer.transferDate | date : "MM/dd/yyyy" }}
+                            </td>
+                            <td>{{ transfer.fromLocation }}</td>
+                            <td>{{ transfer.toLocation }}</td>
+                            <td>{{ transfer.ponumber }}</td>
+                            <td>{{ transfer.jobNumber }}</td>
+                            <td>{{ transfer.shippingNumber }}</td>
+                            <td>{{ transfer.trackingNumber }}</td>
+                            <td>{{ transfer.daysinOldStatus }}</td>
+                            <td>{{ transfer.oldStatus }}</td>
+                            <td>{{ transfer.newStatus }}</td>
+                            <td>{{ transfer.transferredBy }}</td>
+                            <td>
+                              <button
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                tooltip="View Item Transfer"
+                                (click)="view(transfer.transferLogID)"
+                              >
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

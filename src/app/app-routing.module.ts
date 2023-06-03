@@ -8,6 +8,8 @@ import { ButtonsModule } from './views/buttons/buttons.module';
 import { ChartJSModule } from './views/chartjs/chartjs.module';
 import { BaseModule } from './views/base/base.module';
 import { CompanyModule } from './views/company/company.module';
+import { LocationModule } from './views/location/location.module';
+import { ItemsModule } from './views/items/items.module';
 import { FullLayoutComponent, SimpleLayoutComponent } from './containers';
 
 export const routes: Routes = [
@@ -52,34 +54,37 @@ export const routes: Routes = [
       {
         path: 'company',
         loadChildren: () =>
-          import('./views/company/company.module').then((x) => CompanyModule),
-        pathMatch: 'full',
-        // data: { preload: true },
+          import('./views/company/company.module').then((m) => m.CompanyModule),
+        data: { preload: true },
       },
       /*  {
         path: 'notifications',
         loadChildren:
           () => import('./views/notifications/notifications.module').then((x) => NotificationsModule),
-      },
+      }, */
       {
         path: 'items',
-        loadChildren: () => import('./views/items/items.module').then((x) => ItemsModule),
+        loadChildren: () =>
+          import('./views/items/items.module').then((x) => ItemsModule),
         data: { preload: true },
       },
-      {
+      /*   {
         path: 'theme',
         loadChildren: () => import('./views/theme/theme.module').then((x) => ThemeModule),
       },
       {
         path: 'widgets',
         loadChildren: () => import('./views/widgets/widgets.module').then((x) => WidgetsModule),
-      },
+      }, */
       {
         path: 'location',
-        loadChildren: () => import('./views/location/location.module').then((x) => LocationModule),
+        loadChildren: () =>
+          import('./views/location/location.module').then(
+            (x) => LocationModule
+          ),
         data: { preload: true },
       },
-      {
+      /* {
         path: 'template',
         loadChildren: () => import('./views/template/template.module').then((x) => TemplateModule),
       },

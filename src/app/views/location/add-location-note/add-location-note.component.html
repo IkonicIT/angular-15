@@ -1,0 +1,138 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-text">Add Notes</p>
+
+          <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
+            Location Notes saved successfully.
+          </alert>
+
+          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+            Please Enter Title and Date
+          </alert>
+
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <form
+                  name="form"
+                  (ngSubmit)="f.form.valid && saveLocationNote()"
+                  #f="ngForm"
+                  novalidate
+                >
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="title"
+                          >Title <strong class="text-danger">*</strong></label
+                        >
+                        <input
+                          type="text"
+                          [(ngModel)]="model.journalid"
+                          name="journalid"
+                          #journalid="ngModel"
+                          id="_id"
+                          hidden
+                        />
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.entityname"
+                          name="title"
+                          #title="ngModel"
+                          id="title"
+                          placeholder="Enter Title"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="date"
+                          >Date <strong class="text-danger">*</strong></label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [bsConfig]="bsConfig"
+                          [(ngModel)]="model.effectiveon"
+                          name="date"
+                          #date="ngModel"
+                          id="date"
+                          placeholder="Enter Date"
+                          bsDatepicker
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="job">JOB Number</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.jobnumber"
+                          name="job"
+                          #job="ngModel"
+                          id="job"
+                          placeholder="Enter JOB Number"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="po">PO Number</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.ponumber"
+                          id="po"
+                          name="po"
+                          #po="ngModel"
+                          placeholder="Enter PO Number"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="details">Details</label>
+                        <textarea
+                          id="details"
+                          name="textarea-input"
+                          rows="2"
+                          cols="4"
+                          name="details"
+                          #details="ngModel"
+                          class="form-control"
+                          [(ngModel)]="model.entry"
+                          placeholder="Enter Description"
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button
+                          tooltip="Save Location Note"
+                          class="btn btn-primary"
+                        >
+                          Save
+                        </button>
+                        <button
+                          type="button"
+                          (click)="cancelLocationNote()"
+                          tooltip="Cancel"
+                          class="btn btn-outline-danger btn-sm"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

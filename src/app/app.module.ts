@@ -7,6 +7,7 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
+import { StorageServiceModule } from 'ngx-webstorage-service';
 import { PagesModule } from './views/pages/pages.module';
 import {
   FormsModule,
@@ -24,19 +25,27 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppCustomPreloader } from './app.custome.preloader';
 import { AuthInterceptor } from 'src/AuthInterceptor';
-import { LoginService } from './services';
+import { ItemRepairItemsService, LoginService } from './services';
 import { UserManagementService } from './services/user-management.service';
 import {
+  WarrantyManagementService,
   CompanyManagementService,
   CompanyDocumentsService,
   CompanyStatusesService,
   CompanynotesService,
   CompanyTypesService,
   CompanyAttributesServiceService,
+  LocationAttachmentsService,
   LocationManagementService,
+  LocationAttributeService,
+  LocationNotesService,
+  LocationStatusService,
+  LocationTypesService,
   ItemManagementService,
+  ItemStatusService,
   ItemTypesService,
 } from './services';
+import { ItemAttributeService } from './services/Items/item-attribute.service';
 import { BroadcasterService } from './services/broadcaster.service';
 import { DashboardService } from './services/dashboard.service';
 import { ExcelService } from './services/excel-service';
@@ -98,6 +107,7 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     CommonModule,
     BrowserModule,
     AppRoutingModule,
+    StorageServiceModule,
     HttpClientModule,
     PagesModule,
     FormsModule,
@@ -128,6 +138,7 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
       useClass: HashLocationStrategy,
     },
     LoginService,
+    WarrantyManagementService,
     UserManagementService,
     CompanyManagementService,
     CompanyDocumentsService,
@@ -135,10 +146,18 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     CompanynotesService,
     CompanyTypesService,
     CompanyAttributesServiceService,
+    LocationAttachmentsService,
     LocationManagementService,
+    LocationAttributeService,
+    LocationNotesService,
+    LocationStatusService,
+    LocationTypesService,
     ItemManagementService,
+    ItemAttributeService,
     BroadcasterService,
     DashboardService,
+    ItemRepairItemsService,
+    ItemStatusService,
     ItemTypesService,
     ExcelService,
     OrderByPipe,

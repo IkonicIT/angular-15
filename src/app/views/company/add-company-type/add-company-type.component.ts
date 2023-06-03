@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyTypesService } from '../../../services/index';
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { Company } from '../../../models';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -22,7 +21,6 @@ export class AddCompanyTypeComponent implements OnInit {
   id: any;
   router: Router;
   cmpTypes: any[] = [];
-
   value: any;
   items: TreeviewItem[];
   config = TreeviewConfig.create({
@@ -31,6 +29,7 @@ export class AddCompanyTypeComponent implements OnInit {
   });
   userName: any;
   helpFlag: any = false;
+
   constructor(
     private companyTypesService: CompanyTypesService,
     router: Router,
@@ -148,6 +147,7 @@ export class AddCompanyTypeComponent implements OnInit {
     this.helpFlag = false;
     window.print();
   }
+
   help() {
     this.helpFlag = !this.helpFlag;
   }

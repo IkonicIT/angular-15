@@ -129,6 +129,7 @@ export class CompanyNotesComponent implements OnInit {
     this.message = 'Declined!';
     this.modalRef.hide();
   }
+  
   setOrder(value: string) {
     if (this.order === value) {
       if (this.reverse == '') {

@@ -15,6 +15,7 @@ import {
   TreeviewI18n,
   TreeviewHelper,
   DropdownDirective,
+  TreeviewComponent,
 } from 'ngx-treeview';
 import { DropdownTreeviewSelectI18n } from './dropdown-treeview-select-i18n';
 import { isNil } from 'lodash';
@@ -79,7 +80,7 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
   }
 
   private selectItem(item: TreeviewItem) {
-    this.dropdownDirective.close();
+    if (this.dropdownDirective) this.dropdownDirective.close();
     if (this.dropdownTreeviewSelectI18n.selectedItem !== item) {
       this.dropdownTreeviewSelectI18n.selectedItem = item;
       if (this.value !== item.value) {
@@ -90,7 +91,13 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
   }
 
   private selectAll() {
-    const allItem = this.dropdownTreeviewComponent.treeviewComponent.allItem;
-    this.selectItem(allItem);
+    if (this.dropdownTreeviewComponent) {
+      const treeviewComponent =
+        this.dropdownTreeviewComponent.treeviewComponent;
+      if (TreeviewComponent) {
+        const allItem = treeviewComponent.allItem;
+        this.selectItem(allItem);
+      }
+    }
   }
 }

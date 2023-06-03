@@ -1,0 +1,137 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
+            Location Attribute Updated successfully.
+          </alert>
+
+          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+            Please Enter Location Attribute Name
+          </alert>
+
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Add Company Details</strong>
+                </div>
+                <form
+                  name="form"
+                  (ngSubmit)="f.form.valid && updateLocationAttribute()"
+                  #f="ngForm"
+                  novalidate
+                >
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="name">location Name</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="model._id"
+                          name="_id"
+                          #_id="ngModel"
+                          id="_id"
+                          hidden
+                        />
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.name"
+                          name="name"
+                          #name="ngModel"
+                          id="name"
+                          placeholder="Enter Location Attribute Name"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="type">Type Of Attribute</label>
+                        <select
+                          class="form-control"
+                          [(ngModel)]="model.type"
+                          name="type"
+                          #type="ngModel"
+                          id="type"
+                        >
+                          <option value="" selected="true">Choose..</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="tooltip">Attribute Tooltip</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.tooltip"
+                          name="tooltip"
+                          #tooltip="ngModel"
+                          id="tooltip"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="listType"
+                          >List Type Attribute condition</label
+                        >
+                        <input
+                          type="checkbox"
+                          class="form-control"
+                          [checked]="model.listType"
+                          (change)="model.listType = !model.listType"
+                          id="listType"
+                          name="listType"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="searchType">Search Type</label>
+                        <select
+                          class="form-control"
+                          [(ngModel)]="model.searchType"
+                          name="searchType"
+                          #searchType="ngModel"
+                          id="searchType"
+                        >
+                          <option value="" selected="true">Choose..</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="required">Required Field</label>
+                        <input
+                          type="checkbox"
+                          class="form-control"
+                          [checked]="model.required"
+                          id="required"
+                          name="required"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button class="btn btn-primary" *ngIf="highestRank > 5">
+                          Update
+                        </button>
+                        <button
+                          type="button"
+                          [routerLink]="['../attributes']"
+                          class="btn btn btn-outline-danger btn-sm"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

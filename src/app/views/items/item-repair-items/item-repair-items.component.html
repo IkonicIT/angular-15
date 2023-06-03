@@ -1,0 +1,247 @@
+<div class="animated fadeIn" *ngIf="highestRank > 5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            * To add new Repair Item:<br />
+            1.Select the Type from the 'Select a ItemType' pop-up for the new
+            RepairItem & then click on 'AddRepair Item' button.<br />
+            2.Enter the information for the Repair Item.<br />
+            3.Click the 'Save' button.<br />
+            * To edit a Repair Item:<br />
+            1.Select the Type from the 'Select a ItemType' pop-up for the new
+            RepairItem & then click on 'AddRepair Item' button.<br />
+            2.Click on 'Edit' button.<br />
+            3.Make necessary changes to the Repair Item<br />
+            4.Click the 'Save' button<br />
+            * To delete an Repair Item:<br />
+            1.Click on 'Delete' button.
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="modal-body p-0">
+            <div class="col-sm-12 p-0">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Manage {{ companyName }} Repair Items</strong>
+                </div>
+                <form name="form">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-12 col-md-8 margin-bottom-mobile">
+                            <p class="card-text">Manage Item Repair Items</p>
+                          </div>
+                          <div class="col-12 col-md-4 float-right">
+                            <button
+                              type="button"
+                              tooltip=" Add new Repair Item "
+                              [disabled]="itemType == undefined"
+                              (click)="openModal(templateAdd, companyId)"
+                              placement="top"
+                              class="btn btn-primary float-right"
+                            >
+                              Add Repair Item
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 p-0">
+                      <div class="row">
+                        <div class="col-md-4 col-12 mt-4">
+                          <span
+                            >Show
+                            <select
+                              [(ngModel)]="itemsForPagination"
+                              name="pagination"
+                            >
+                              <option>5</option>
+                              <option>10</option>
+                              <option>25</option>
+                              <option>50</option>
+                            </select>
+                            entries
+                          </span>
+                        </div>
+
+                        <div class="col-md-4 col-12 div-search mt-4">
+                          <span>Search : </span>
+                          <input [(ngModel)]="repairItemFilter" name="filter" />
+                        </div>
+
+                        <div class="col-md-4 col-12">
+                          Select Item Type:
+
+                          <app-dropdown-treeview-select
+                            [items]="itemTypeItems"
+                            [(value)]="itemType"
+                            id="type"
+                            (valueChange)="getRepairItems()"
+                          >
+                          </app-dropdown-treeview-select>
+                        </div>
+                      </div>
+                      <table class="table table-hover mt-3 table-outline mb-0">
+                        <thead class="thead-light">
+                          <tr>
+                            <th
+                              [class.active]="order === 'repairdescription'"
+                              (click)="setOrder('repairdescription')"
+                            >
+                              Repair Item name<span [hidden]="reverse == ''"
+                                >▼</span
+                              ><span [hidden]="reverse != ''">▲</span>
+                            </th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let item of repairItems
+                                | orderBy : reverse + order
+                                | filterBy
+                                  : ['repairdescription']
+                                  : repairItemFilter
+                                | paginate
+                                  : {
+                                      itemsPerPage: itemsForPagination,
+                                      currentPage: p
+                                    }
+                            "
+                          >
+                            <td>{{ item.repairdescription }}</td>
+                            <td>
+                              <button
+                                tooltip="Edit Repair Item"
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                (click)="editItemrepairItem(item.repairid)"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                tooltip="Delete Repair Item"
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                (click)="
+                                  openModal(confirmtemplate, item.repairid)
+                                "
+                                [disabled]="highestRank == 9"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div *ngIf="repairItems">
+                        <pagination-controls
+                          class="my-pagination"
+                          (pageChange)="p = $event"
+                          [autoHide]="true"
+                        >
+                        </pagination-controls>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #templateAdd>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Create New Repair Item</h4>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="modalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
+        Please enter Repair Item.
+      </alert>
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label for="name">Add New Repair Item</label
+          ><strong class="text-danger">*</strong>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="repairItem"
+            name="name"
+            #name="ngModel"
+            id="name"
+            placeholder="Enter Item name"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-12 text-center">
+          <button
+            type="button"
+            class="btn btn-primary"
+            tooltip="Save this repairItem"
+            (click)="saveRepairItem()"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #confirmtemplate>
+    <div class="modal-body text-center">
+      <p>
+        Click(Yes) to permanently delete this RepairItem or Click(No) to discard
+        This action.
+      </p>
+      <button type="button" class="btn btn-primary" (click)="confirm()">
+        Yes
+      </button>
+      <button type="button" class="btn btn-primary" (click)="decline()">
+        No
+      </button>
+    </div>
+  </ng-template>
+</div>

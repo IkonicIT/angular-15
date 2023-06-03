@@ -43,7 +43,7 @@ export class ItemTypesService {
       .pipe(catchError(this.handleError));
   }
 
-  getAllItemTypes(companyId: string) {
+  getAllItemTypes(companyId: number) {
     return this.http
       .get(
         this.serviceURL + '/getAllType/itemtype/' + companyId,
@@ -72,7 +72,7 @@ export class ItemTypesService {
     return throwError(() => 'Something bad happened; please try again later.');
   }
 
-  removeItemType(id: string, userName: string) {
+  removeItemType(id: number, userName: string) {
     return this.http
       .delete(this.serviceURL + '/' + id + '/' + userName, this.httpOptions)
       .pipe(catchError(this.handleError));

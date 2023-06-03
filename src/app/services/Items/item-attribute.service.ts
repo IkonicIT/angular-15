@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { SESSION_STORAGE, StorageService } from 'angular-webstorage-service';
+import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { HttpClient } from '@angular/common/http';
 import { AppConfiguration } from '../../configuration';
 import { catchError } from 'rxjs/operators';

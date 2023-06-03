@@ -1,0 +1,854 @@
+<div class="animated fadeIn" style="margin-top: -2%" *ngIf="highestRank > 0">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <div class="form-group col-sm-12 text-right">
+                  <button
+                    type="button"
+                    (click)="print()"
+                    tooltip="Click to Print this Page"
+                    class="btn btn-outline-danger btn-sm"
+                  >
+                    Print
+                  </button>
+                  <button
+                    type="button"
+                    (click)="help()"
+                    tooltip="Instructions"
+                    class="btn btn-outline-danger btn-sm"
+                  >
+                    Help
+                  </button>
+                  <div
+                    style="
+                      text-align: left;
+                      border: 1px solid;
+                      width: fit-content;
+                      background-color: whitesmoke;
+                    "
+                    *ngIf="helpFlag == true"
+                  >
+                    Note: Mandatory Fields are required.<br />
+                    *To add a new item:<br />
+                    1.Enter the data for the new item.<br />
+                    2.Click the 'Save' button.<br />
+                    *To edit an existing item: <br />
+                    1.Enter the tag number and click 'Search' or click the
+                    'Edit' button.<br />
+                    2.If more than one item type is found for the tag number,
+                    select the desired type in the 'Select Type' drop down
+                    list.<br />
+                    3.Make the necessary changes.<br />
+                    4.Click the 'Save' button.
+                  </div>
+                </div>
+                <div class="card-header">
+                  <div class="col-12 p-0">
+                    <div class="row">
+                      <div class="col-12 col-md-3 margin-bottom-mobile">
+                        <strong
+                          >Viewing "{{ itemType }}" '{{ itemTag }}'</strong
+                        >
+                      </div>
+                      <div class="col-12 col-md-9">
+                        <button
+                          [routerLink]="['../../cloneItem/' + itemId]"
+                          [disabled]="itemRank < 3"
+                          tooltip="Clone Item"
+                          class="btn btn-primary margin-bottom-mobile"
+                          style="margin-right: 3px"
+                        >
+                          Clone
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-primary margin-bottom-mobile"
+                          [routerLink]="['../../itemRepairs/' + itemId]"
+                          *ngIf="itemRank > 0"
+                          tooltip="Item Repairs"
+                          placement="top"
+                          style="margin-right: 3px"
+                        >
+                          Item Repairs
+                        </button>
+                        <button
+                          [routerLink]="['../../itemNotes/' + itemId + '/' + 0]"
+                          *ngIf="itemRank > 0"
+                          tooltip="Notes"
+                          class="btn btn-primary margin-bottom-mobile"
+                          style="margin-right: 3px"
+                        >
+                          Notes
+                        </button>
+                        <button
+                          [routerLink]="[
+                            '../../attachments/' +
+                              itemId +
+                              '/' +
+                              currentAttachmentId
+                          ]"
+                          *ngIf="itemRank > 0"
+                          tooltip="Click here to see Item Pictures"
+                          class="btn btn-primary margin-bottom-mobile"
+                          style="margin-right: 3px"
+                        >
+                          Pictures/Prints
+                        </button>
+                        <button
+                          [routerLink]="['../../transferItem/' + itemId]"
+                          [disabled]="itemRank < 4"
+                          tooltip="Item Transfer"
+                          class="btn btn-primary margin-bottom-mobile"
+                          style="margin-right: 3px"
+                        >
+                          Item Transfer
+                        </button>
+                        <button
+                          (click)="GoToWareHousetag()"
+                          *ngIf="itemRank > 0"
+                          tooltip="WarehouseTag"
+                          class="btn btn-primary margin-bottom-mobile"
+                          style="margin-right: 3px"
+                        >
+                          WarehouseTag
+                        </button>
+                        <button
+                          tooltip="Find Replacement"
+                          [routerLink]="[
+                            '/items/advancedSearch/' +
+                              itemId +
+                              '/' +
+                              model.typeId
+                          ]"
+                          *ngIf="itemRank > 0"
+                          class="btn btn-primary margin-bottom-mobile"
+                          style="margin-right: 3px"
+                        >
+                          Find Replacement
+                        </button>
+                        <button
+                          tooltip="Item Service"
+                          (click)="goToItemService()"
+                          *ngIf="itemRank > 3"
+                          class="btn btn-primary margin-bottom-mobile"
+                          style="margin-right: 3px"
+                        >
+                          Service
+                        </button>
+                        <button
+                          type="button"
+                          [disabled]="itemRank < 5 || highestRank == 9"
+                          class="btn btn-primary margin-bottom-mobile"
+                          style="margin-right: 3px"
+                          tooltip="Delete Item"
+                          (click)="openModal(confirmtemplate, itemId)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <form name="form" #f="ngForm" novalidate>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-12 col-md-4">
+                        <label for="tag">Item Tag#</label>
+
+                        <span
+                          style="background: white"
+                          [innerHTML]="model.tag"
+                        ></span>
+                      </div>
+                      <div class="form-group col-12 col-md-4">
+                        <label for="name"> Status:</label>
+                        <span
+                          style="background: white"
+                          [innerHTML]="model.status"
+                        ></span>
+                      </div>
+
+                      <div class="form-group col-12 col-md-4">
+                        <label for="type">Type Of Item :</label>
+                        <span
+                          style="background: white"
+                          [innerHTML]="model.typeName"
+                        ></span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div
+                        class="form-group col-12 col-md-6"
+                        *ngIf="itemRank > 1"
+                      >
+                        <p
+                          style="
+                            color: #002a64;
+                            font-size: 18px;
+                            font-weight: bold;
+                          "
+                        >
+                          Changes Log Feed:
+                        </p>
+                        <div style="height: auto; border: 3px red solid">
+                          <br />
+                          <ul
+                            *ngFor="
+                              let journal of journals | slice : 0 : 3;
+                              let i = index
+                            "
+                          >
+                            <li>
+                              {{ journal.entry }} on
+                              {{ journal.enteredon | date : "MM/dd/yyyy" }} by
+                              {{ journal.enteredby }}...........<a
+                                [routerLink]="[
+                                  '../../../items/changeLog/',
+                                  journal.entityid,
+                                  journal.journalid
+                                ]"
+                                (click)="modalRef.hide()"
+                                >details</a
+                              >
+                            </li>
+                          </ul>
+
+                          <button
+                            type="button"
+                            (click)="openMoreChanges()"
+                            tooltip="click here for More Changes Log Feed"
+                            class="btn btn-primary more-changes"
+                          >
+                            More Changes
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        id="image"
+                        class="form-group col-12 col-md-6"
+                        *ngIf="itemRank > 0"
+                      >
+                        <div class="row">
+                          <div
+                            class="col-sm-9"
+                            style="padding: 100px"
+                            *ngIf="
+                              model.defaultImageAttachmentId == null ||
+                                model.defaultImageAttachmentId == 0;
+                              else showImage
+                            "
+                          >
+                            <div id="box">No Image for this Item</div>
+                          </div>
+                          <ng-template #showImage>
+                            <div class="col-sm-12">
+                              <a
+                                (click)="openImage()"
+                                tooltip="click here to see other Pictures"
+                                style="cursor: pointer"
+                              >
+                                <img
+                                  class="img-fluid pull-right"
+                                  [src]="imageSource"
+                                  style="width: 500px; height: 300px"
+                                />
+                              </a>
+                            </div>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-2">
+                        <label for="name">Name:</label>
+                      </div>
+                      <div class="col-8">
+                        <span [innerHTML]="model.name"></span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4 col-lg-2">
+                        <label for="location">Location:</label>
+                      </div>
+                      <div class="col-8 col-lg-8">
+                        <span [innerHTML]="model.locationPath"></span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4 col-lg-2">
+                        <label for="description">Description:</label>
+                      </div>
+                      <div class="col-8 col-lg-8">
+                        <span [innerHTML]="model.description"></span>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div class="row">
+                          <div class="col-6 col-md-5">
+                            <label for="price">Purchase price:</label>
+                          </div>
+                          <div class="col-6 col-md-5">
+                            <span [innerHTML]="model.purchasePrice"></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="date">Purchase Date:</label>
+                          </div>
+                          <div class="col-6">
+                            <span
+                              [innerHTML]="
+                                model.purchaseDate | date : 'MM/dd/yyyy'
+                              "
+                            ></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="mtbs">MTBS:</label>
+                          </div>
+                          <div class="col-6">
+                            <span
+                              [innerHTML]="model.meanTimeBetweenService"
+                            ></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                      <div class="form-group col-12 col-md-4">
+                        <label for="mtbs"
+                          >Days in "{{ model.status }}" status:</label
+                        >
+
+                        <span [innerHTML]="model.daysInService"></span>
+                      </div>
+                      <div class="form-group col-12 col-md-4">
+                        <label for="serviceDate">Next Service Date:</label>
+
+                        <span>
+                          {{ model.serviceDate | date : "MM/dd/yyyy" }}
+                        </span>
+                      </div>
+                      <div class="form-group col-12 col-md-4">
+                        <label for="serviceDuration"
+                          >Days Due for next Service:</label
+                        >
+                        <span> {{ model.daysDueForNextService }} </span>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div class="row">
+                          <div class="col-6 col-md-5">
+                            <label for="warranty">Warranty Type:</label>
+                          </div>
+                          <div class="col-6">
+                            <span [innerHTML]="model.warrantytype"></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="exp">Warranty Exp:</label>
+                          </div>
+                          <div class="col-6">
+                            <span
+                              [innerHTML]="
+                                model.warrantyExpiration | date : 'MM/dd/yyyy'
+                              "
+                            ></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="spareratio">Desired Spare Ratio:</label>
+                          </div>
+                          <div class="col-6">
+                            <span [innerHTML]="model.desiredSpareRatio"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="companyId == 1806">
+                      <div class="row">
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="form-group col-12 col-md-4">
+                              <label for="replacedTag">Replaced Tag_MMS:</label>
+                            </div>
+                            <div class="col-6">
+                              <span [innerHTML]="model.replacedTag"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="form-group col-12 col-md-4">
+                              <label for="groupNumber">Group Number_MMS:</label>
+                            </div>
+                            <div class="col-6">
+                              <span [innerHTML]="model.groupNumber"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="form-group col-12 col-md-4">
+                              <label for="replacedByTag"
+                                >Replaced By Tag_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span [innerHTML]="model.replacedByTag"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6 col-md-5">
+                              <label for="addReasonCode"
+                                >Add Reason Code_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span [innerHTML]="model.addReasonCode"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="locationPath"
+                                >Location Path_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span [innerHTML]="model.locationPath"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                      <div>
+                        <h6 style="color: red">Reserve</h6>
+                        <br />
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6 col-md-5">
+                              <label for="reservedOnlyFor"
+                                >Reserved only for_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span [innerHTML]="model.reservedOnlyFor"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="reservedForDeptNumber"
+                                >Reserved for Dept Number_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span
+                                [innerHTML]="model.reservedForDeptNumber"
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row">
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6 col-md-5">
+                              <label for="QC Fail">QC Fail_MMS</label>
+                              <input
+                                type="checkbox"
+                                [(ngModel)]="model.qcFail"
+                                name="qcFail"
+                                #complete="ngModel"
+                                id="qcFail"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="exp">Critical_MMS:</label>
+                              <input
+                                type="checkbox"
+                                [(ngModel)]="model.critical"
+                                name="critical"
+                                #complete="ngModel"
+                                id="critical"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="exp">File_MMS:</label>
+                              <input
+                                type="checkbox"
+                                [(ngModel)]="model.file"
+                                name="file"
+                                #complete="ngModel"
+                                id="file"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6 col-md-5">
+                              <label for="criticalLastTestDate"
+                                >Critcal Last Date_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span
+                                [innerHTML]="
+                                  model.criticalLastTestDate
+                                    | date : 'MM/dd/yyyy'
+                                "
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="inventoriedDate"
+                                >Inventoried Date_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span
+                                [innerHTML]="
+                                  model.inventoriedDate | date : 'MM/dd/yyyy'
+                                "
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="importedNotReviewed"
+                                >Imported Not Reviewed_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span
+                                [innerHTML]="model.importedNotReviewed"
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6 col-md-5">
+                              <label for="dispositionEmployeeID"
+                                >Disposition Employee Id_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span
+                                [innerHTML]="model.dispositionEmployeeID"
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="createDate">Created Date_MMS:</label>
+                            </div>
+                            <div class="col-6">
+                              <span
+                                [innerHTML]="
+                                  model.createDate | date : 'MM/dd/yyyy'
+                                "
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="updatedDate">Updated Date_MMS:</label>
+                            </div>
+                            <div class="col-6">
+                              <span
+                                [innerHTML]="
+                                  model.updatedDate | date : 'MM/dd/yyyy'
+                                "
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                      <div>
+                        <h6 style="color: red">Scrap</h6>
+                        <br />
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6 col-md-5">
+                              <label for="scrapDate">Scrap Date_MMS:</label>
+                            </div>
+                            <div class="col-6">
+                              <span
+                                [innerHTML]="
+                                  model.scrapDate | date : 'MM/dd/yyyy'
+                                "
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="scrapLocation"
+                                >Scrap Location_MMS:</label
+                              >
+                            </div>
+                            <div class="col-6">
+                              <span [innerHTML]="model.scrapLocation"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="scrapperName">Scrap Name_MMS:</label>
+                            </div>
+                            <div class="col-6">
+                              <span [innerHTML]="model.scrapperName"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 0px">
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="scrapValue">Scrap Value_MMS:</label>
+                            </div>
+                            <div class="col-6">
+                              <span [innerHTML]="model.scrapValue"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br /><br />
+                    <div>
+                      <h6 style="color: red">Item Attributes</h6>
+                      <br />
+                    </div>
+
+                    <div class="row">
+                      <div
+                        class="col-sm-4"
+                        style="margin-bottom: 0px"
+                        *ngFor="
+                          let eachAttr of model.attributeValues;
+                          let i = index
+                        "
+                      >
+                        <div class="row">
+                          <div class="col-6">
+                            <label [innerHTML]="eachAttr.name">:</label>
+                          </div>
+                          <div class="col-6">
+                            <span>
+                              <span>{{ eachAttr.value }}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button
+                          type="button"
+                          [routerLink]="['../../editItem/' + itemId]"
+                          [disabled]="itemRank < 4"
+                          tooltip="Edit Item"
+                          class="btn btn-primary"
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          type="button"
+                          (click)="back()"
+                          tooltip="Back"
+                          class="btn btn-primary"
+                        >
+                          Back
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  bsModal
+  #myModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document" style="height: 600px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Item Pictures</h4>
+        <button
+          type="button"
+          class="close"
+          (click)="myModal.hide()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ngx-image-viewer [src]="images"> </ngx-image-viewer>
+      </div>
+      <div class="modal-footer">
+        <a
+          class="btn btn-primary"
+          tooltip="Click here to Manage Pictures"
+          [routerLink]="[
+            '../../attachments/' + itemId + '/' + currentAttachmentId
+          ]"
+          >Manage Pictures</a
+        >
+        <button
+          type="button"
+          tooltip="Click here to Close"
+          class="btn btn-secondary"
+          (click)="myModal.hide()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left" style="color: #c31e1c">
+      Change Log Feed Summary
+    </h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body scrollPopUp">
+    <ul *ngFor="let journal of journals">
+      <li *ngIf="journal.journaltypeid == 3">
+        Item updated on {{ journal.enteredOn.split(" ")[0] }} by
+        {{ journal.enteredby }}...........<a
+          [routerLink]="[
+            '../../viewChangeLogItem',
+            journal.entityid,
+            journal.journalid
+          ]"
+          (click)="modalRef.hide()"
+          >details</a
+        >
+      </li>
+      <li *ngIf="journal.journaltypeid == 4">
+        Notes {{ journal.entry }} added on
+        {{ journal.enteredOn.split(" ")[0] }} by
+        {{ journal.enteredby }}..........<a
+          [routerLink]="[
+            '../../editItemNotes',
+            journal.journalid,
+            journal.entityid
+          ]"
+          (click)="modalRef.hide()"
+          >details</a
+        >
+      </li>
+      <li *ngIf="journal.journaltypeid == 7">
+        {{ journal.entry }} by {{ journal.enteredby }} .........<a
+          [routerLink]="['../../transferItem', journal.entityid]"
+          (click)="modalRef.hide()"
+          >details</a
+        >
+      </li>
+      <li *ngIf="journal.journaltypeid == 6">
+        Repair Data added on {{ journal.enteredOn.split(" ")[0] }} by
+        'justin'..........<a
+          [routerLink]="['../../transferItem', journal.entityid]"
+          (click)="modalRef.hide()"
+          >details</a
+        >
+      </li>
+    </ul>
+  </div>
+</ng-template>
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Yes) to permanently delete this item or Click(No) to discard This
+      action.
+    </p>
+    <button type="button" class="btn btn-primary" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

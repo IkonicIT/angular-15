@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { AppConfiguration } from '../../configuration';
 import { HttpHeaders } from '@angular/common/http';
-import { SESSION_STORAGE, StorageService } from 'angular-webstorage-service';
+import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -42,7 +42,7 @@ export class ItemAttachmentsService {
       .pipe(catchError(this.handleError));
   }
 
-  updateItemDefaultImage(itemId: string, attachmentId: string) {
+  updateItemDefaultImage(itemId: string, attachmentId: any) {
     return this.http
       .get(
         this.serviceLocationURL + 'item/' + itemId + '/' + attachmentId,
@@ -51,7 +51,7 @@ export class ItemAttachmentsService {
       .pipe(catchError(this.handleError));
   }
 
-  getItemDocuments(attachmentId: string) {
+  getItemDocuments(attachmentId: number) {
     return this.http
       .get(this.serviceURL + '/' + attachmentId, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -116,7 +116,7 @@ export class ItemAttachmentsService {
 
   removeItemNoteDocuments(
     attachmentId: string,
-    companyid: string,
+    companyid: any,
     username: string,
     userLog: {
       itemTag: string | number | boolean;
@@ -147,7 +147,7 @@ export class ItemAttachmentsService {
 
   removeItemRepairDocuments(
     attachmentId: string,
-    companyid: string,
+    companyid: number,
     username: string,
     userLog: {
       itemTag: string | number | boolean;

@@ -1,0 +1,100 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            * To add new Repair Item:<br />
+            1.Select the Type from the 'Select a ItemType' pop-up for the new
+            RepairItem & then click on 'AddRepair Item' button.<br />
+            2.Enter the information for the Repair Item.<br />
+            3.Click the 'Save' button.<br />
+            * To edit a Repair Item:<br />
+            1.Select the Type from the 'Select a ItemType' pop-up for the new
+            RepairItem & then click on 'AddRepair Item' button.<br />
+            2.Click on 'Edit' button.<br />
+            3.Make necessary changes to the Repair Item<br />
+            4.Click the 'Save' button<br />
+            * To delete an Repair Item:<br />
+            1.Click on 'Delete' button.
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Edit Item repair Items</p>
+
+          <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
+            Item repair item Updated successfully.
+          </alert>
+
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <form
+                  name="form"
+                  (ngSubmit)="f.form.valid && UpdateRepairItem()"
+                  #f="ngForm"
+                  novalidate
+                >
+                  <div class="card-body">
+                    <div class="form-group col-sm-12">
+                      <label for="name">Edit Repair Item</label
+                      ><strong class="text-danger"></strong>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.repairdescription"
+                        name="name"
+                        id="name"
+                        placeholder="Enter Item name"
+                      />
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button tooltip="Update " class="btn btn-primary">
+                          Update
+                        </button>
+                        <button
+                          type="button"
+                          (click)="cancel()"
+                          tooltip="Cancel"
+                          class="btn btn-primary"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

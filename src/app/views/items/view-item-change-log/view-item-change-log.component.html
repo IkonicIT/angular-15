@@ -1,0 +1,127 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-text">Edit Notes</p>
+
+          <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
+            Item Notes Updated successfully.
+          </alert>
+
+          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+            Please Enter Title and Date
+          </alert>
+
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <form name="form" #f="ngForm" novalidate>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="title">Title</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.entityname"
+                          name="title"
+                          #title="ngModel"
+                          id="title"
+                          placeholder="Enter Title"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="date">Date</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [bsConfig]="bsConfig"
+                          [(ngModel)]="model.enteredon"
+                          name="date"
+                          #date="ngModel"
+                          id="date"
+                          placeholder="Enter Date"
+                          bsDatepicker
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="job">JOB Number</label>
+                        <input
+                          type="number"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.jobnumber"
+                          name="job"
+                          #job="ngModel"
+                          id="job"
+                          placeholder="Enter JOB Number"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="po">PO Number</label>
+                        <input
+                          type="number"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.ponumber"
+                          id="po"
+                          name="po"
+                          #po="ngModel"
+                          placeholder="Enter PO Number"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="details">Details</label>
+                        <textarea
+                          id="details"
+                          readonly
+                          name="textarea-input"
+                          rows="2"
+                          cols="4"
+                          name="details"
+                          #details="ngModel"
+                          class="form-control"
+                          [(ngModel)]="model.entry"
+                          placeholder="Enter Description"
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button
+                          type="button"
+                          (click)="cancelItemNotes()"
+                          class="btn btn-outline-danger btn-sm"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          tooltip=" Back to View Item "
+                          (click)="backToItem()"
+                          class="btn btn-outline-danger btn-sm"
+                        >
+                          Back To Item
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

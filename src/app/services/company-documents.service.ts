@@ -65,7 +65,7 @@ export class CompanyDocumentsService {
       .pipe(catchError(this.handleError));
   }
 
-  getCompanyDocuments(attachmentId: string) {
+  getCompanyDocuments(attachmentId: number) {
     return this.http
       .get(this.serviceURL + '/' + attachmentId, this.httpOptions)
       .pipe(catchError(this.handleError));

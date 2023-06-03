@@ -1,0 +1,181 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-text">Advanced Item Search Results</p>
+          <div>
+            <alert type="danger" *ngIf="flag == 1" [dismissible]="dismissible">
+              No Results Found <br />
+            </alert>
+          </div>
+          <button
+            type="button"
+            *ngIf="flag == 0"
+            (click)="exportAsExcelFileWithMultipleSheets()"
+            class="btn btn-primary"
+          >
+            Export to Excel
+          </button>
+
+          <div
+            *ngFor="let itemType of searchResultKeys; let t = index"
+            style="margin-bottom: 0.3rem"
+          >
+            <div class="card">
+              <div class="type-header">
+                <strong>{{ itemType }}</strong>
+              </div>
+            </div>
+            <div *ngIf="this.searchResultKeys.length == 1" class="float-left">
+              <span
+                >Show
+
+                <select [(ngModel)]="dynLst[t].itemsForPagination">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+
+            <div class="table-responsive">
+              <table
+                *ngIf="
+                  searchResults[itemType] && searchResults[itemType].length > 0
+                "
+                class="table"
+              >
+                <thead class="thead-light">
+                  <tr>
+                    <th
+                      [class.active]="order === 'name'"
+                      (click)="setOrder('name')"
+                    >
+                      Tag #<span [hidden]="reverse == ''">▼</span
+                      ><span [hidden]="reverse != ''">▲</span>
+                    </th>
+                    <th
+                      [class.active]="order === 'phone'"
+                      (click)="setOrder('phone')"
+                    >
+                      Location<span [hidden]="reverse == ''">▼</span
+                      ><span [hidden]="reverse != ''">▲</span>
+                    </th>
+                    <th
+                      [class.active]="order === 'state'"
+                      (click)="setOrder('state')"
+                    >
+                      Status<span [hidden]="reverse == ''">▼</span
+                      ><span [hidden]="reverse != ''">▲</span>
+                    </th>
+                    <ng-container
+                      *ngIf="
+                        searchResults[itemType][0] &&
+                        searchResults[itemType][0].attributeNameList
+                      "
+                    >
+                      <th
+                        *ngFor="
+                          let attr of searchResults[itemType][0]
+                            .attributeNameList
+                            | slice : 0 : attributesSearchDisplay[itemType]
+                        "
+                      >
+                        {{ searchResults[itemType][0].name }}
+                      </th>
+                    </ng-container>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let result of searchResults[itemType]
+                        | paginate
+                          : {
+                              itemsPerPage: dynLst[t].itemsForPagination,
+                              currentPage: dynLst[t].p,
+                              id: 'page' + t
+                            }
+                    "
+                  >
+                    <td>
+                      <a
+                        href="javascript:void(0)"
+                        (click)="
+                          goToView(
+                            result.itemId,
+                            result.rank,
+                            result.tag,
+                            result.typeName
+                          )
+                        "
+                        >{{ result.tag }}</a
+                      >
+                    </td>
+                    <td title="{{ result.locationPath }}">
+                      {{ result.locationName }}
+                    </td>
+                    <td>{{ result.status }}</td>
+                    <ng-container *ngIf="result && result.attributeNameList">
+                      <td
+                        *ngFor="
+                          let attr of result.attributeNameList
+                            | slice : 0 : attributesSearchDisplay[itemType]
+                        "
+                      >
+                        {{ result.attributeNameList.value }}
+                      </td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+              <pagination-controls
+                class="my-pagination"
+                id="page{{ t }}"
+                (pageChange)="dynLst[t].p = $event"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="this.searchResultKeys.length > 1" class="float-left">
+    <span>Showing {{ itemsLength }} Results </span>
+  </div>
+  <div
+    *ngIf="this.searchResultKeys.length == 1 && dynLst[0].p == 1"
+    class="float-left"
+  >
+    <span
+      >Showing results {{ dynLst[0].p }} to
+      {{ dynLst[0].itemsForPagination }} of {{ itemsLength }}
+    </span>
+  </div>
+  <div
+    *ngIf="this.searchResultKeys.length == 1 && dynLst[0].p > 1"
+    class="float-left"
+  >
+    <span
+      >Showing results
+      {{ (dynLst[0].p - 1) * dynLst[0].itemsForPagination + 1 }} to
+      {{ dynLst[0].itemsForPagination * dynLst[0].p }} of {{ itemsLength }}
+    </span>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-12 text-center">
+      <button
+        type="button"
+        (click)="back()"
+        tooltip="Back"
+        class="btn btn-primary"
+      >
+        Back
+      </button>
+    </div>
+  </div>
+</div>

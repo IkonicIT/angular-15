@@ -1,0 +1,497 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <ng-container *ngIf="!isExpandAdvancedSearch">
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            (click)="isExpandAdvancedSearch = !isExpandAdvancedSearch"
+            tooltip="Click here to Show/Change the Search Fields"
+          >
+            Show/Change Search Fields Criteria
+          </button>
+        </ng-container>
+        <div class="card-body" *ngIf="isExpandAdvancedSearch">
+          <p class="card-text">Advanced Item Search Replacement</p>
+          <tabset>
+            <tab heading="Item">
+              <div class="card-body mobile-padding">
+                <button
+                  type="button"
+                  tooltip="Search"
+                  class="btn btn-primary"
+                  (click)="searchItems()"
+                  style="margin-left: 90%"
+                >
+                  Search
+                </button>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="itemId">Item Type</label>
+
+                    <app-dropdown-treeview-select
+                      [items]="itemTypeItems"
+                      [(value)]="itemValue"
+                      (valueChange)="onItemValueChange($event)"
+                    >
+                    </app-dropdown-treeview-select>
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="tag">Tag #</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemModel.tag"
+                      name="tag"
+                      id="tag"
+                      placeholder="Enter Tag"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="name">Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemModel.name"
+                      name="name"
+                      id="name"
+                      placeholder="Enter Name"
+                    />
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="status">Status</label>
+                    <select
+                      class="form-control"
+                      [(ngModel)]="itemModel.status"
+                      name="status"
+                      #status="ngModel"
+                      id="status"
+                    >
+                      <option value="" selected="true">Choose Status</option>
+                      <option
+                        [ngValue]="stat.statusid"
+                        *ngFor="let stat of statuses"
+                      >
+                        {{ stat.status }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="locName">Location Name Includes</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemModel.location"
+                      name="locName"
+                      id="locName"
+                    />
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="loc">Location</label>
+
+                    <app-dropdown-treeview-select
+                      [items]="items"
+                      [(value)]="itemModel.locationId"
+                      id="loc"
+                    >
+                    </app-dropdown-treeview-select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div
+                    class="form-group col-sm-6"
+                    *ngFor="
+                      let eachAttr of itemModel.attributevalues;
+                      let i = index
+                    "
+                  >
+                    <div>
+                      <label>{{ eachAttr.name }}</label>
+                      <div>
+                        <input
+                          *ngIf="eachAttr.attributetype.attributetypeid == 1"
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="number{{ i }}"
+                        />
+                        <input
+                          *ngIf="eachAttr.attributetype.attributetypeid == 2"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="text{{ i }}"
+                        />
+                        <input
+                          *ngIf="eachAttr.attributetype.attributetypeid == 6"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="multiValue{{ i }}"
+                        />
+                        <input
+                          *ngIf="eachAttr.attributetype.attributetypeid == 3"
+                          type="date"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="radio{{ i }}"
+                          #state="ngModel"
+                        />
+                        <select
+                          *ngIf="eachAttr.attributetype.attributetypeid == 4"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="select{{ i }}"
+                          #type="ngModel"
+                        >
+                          <option value="">Choose..</option>
+                          <option
+                            [ngValue]="list.listitem"
+                            *ngFor="
+                              let list of eachAttr.attributelistitemResource
+                            "
+                          >
+                            {{ list.listitem }}
+                          </option>
+                        </select>
+                        <div
+                          class="form-check"
+                          *ngIf="eachAttr.attributetype.attributetypeid == 5"
+                        >
+                          <label
+                            class="form-check-label margin-right"
+                            for="radio1"
+                          >
+                            &nbsp;
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [(ngModel)]="eachAttr.value"
+                              name="radios{{ i }}"
+                              id="radio1"
+                              value="Y"
+                              checked
+                            />Y &nbsp; &nbsp; &nbsp;
+                          </label>
+                          <label
+                            class="form-check-label margin-right"
+                            for="radio2"
+                          >
+                            &nbsp;
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [(ngModel)]="eachAttr.value"
+                              name="radios{{ i }}"
+                              id="radio2"
+                              value="N"
+                            />N &nbsp; &nbsp; &nbsp;
+                          </label>
+                          <label class="form-check-label" for="radio3">
+                            &nbsp;
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [(ngModel)]="eachAttr.value"
+                              name="radios{{ i }}"
+                              id="radio3"
+                              value="N/A"
+                            />N/A
+                          </label>
+                        </div>
+                        <textarea
+                          *ngIf="eachAttr.attributetype.attributetypeid == 7"
+                          name="textarea{{ i }}"
+                          rows="2"
+                          cols="4"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          placeholder="Enter Value"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-12 text-center">
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="searchItems()"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="clearItem()"
+                      tooltip="Clear"
+                      class="btn btn-primary"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      type="button"
+                      (click)="back()"
+                      tooltip="Back to View Item"
+                      class="btn btn-primary"
+                    >
+                      Back To Item
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </tab>
+
+            <tab heading="Repair/Note/Quote">
+              <div class="card-body mobile-padding">
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="itemrepairnotesrfqModel">Notes:</label> &nbsp;
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="itemrepairnotesrfqModel.isitemnote"
+                      id="isitemnote"
+                    />&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label for="itemrepairnotesrfqModel">Repair Logs:</label
+                    >&nbsp;
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="itemrepairnotesrfqModel.isitemrepair"
+                      id="isitemrepair"
+                    />&nbsp;&nbsp;&nbsp;&nbsp;
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="exactTag">Exact Tag#</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemrepairnotesrfqModel.exactTag"
+                      name="exactTag"
+                      id="exactTag"
+                      placeholder="Enter Tag"
+                    />
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="rfq">RFQ</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemrepairnotesrfqModel.rfq"
+                      name="rfq"
+                      id="rfq"
+                      placeholder="Enter RFQ"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="po">PO</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemrepairnotesrfqModel.po"
+                      name="po"
+                      id="po"
+                      placeholder="Enter PO"
+                    />
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="job">JOB #</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="itemrepairnotesrfqModel.job"
+                      name="po"
+                      id="job"
+                      placeholder="Enter job"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-12">
+                    <label for="vendor">Vendor</label>
+                    <select
+                      class="form-control"
+                      [(ngModel)]="repairModel.vendorId"
+                      name="vendor"
+                      #vendor="ngModel"
+                      id="vendor"
+                    >
+                      <option value="" selected="true">Choose Vendor</option>
+                      <option
+                        [value]="vendor.companyid"
+                        *ngFor="let vendor of vendors"
+                      >
+                        {{ vendor.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-12 text-center">
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="searchItemRepairNotesRfqModel()"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="clearRepairNoteQuote()"
+                      tooltip="Clear"
+                      class="btn btn btn-outline-danger btn-sm"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      type="button"
+                      (click)="back()"
+                      tooltip="back button"
+                      class="btn btn btn-outline-danger btn-sm"
+                    >
+                      Back
+                    </button>
+                  </div>
+
+                  <div
+                    class="table-responsive"
+                    *ngIf="searchresults.rfqFlag == true"
+                  >
+                    <table class="table">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>RFQs</th>
+                          <th>Exact Tag #</th>
+                          <th>RFQ Number</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let rfqssearch of RFQsList">
+                          <td></td>
+                          <td>{{ rfqssearch.entityid }}</td>
+                          <td>{{ rfqssearch.entitytypeid }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div
+                    class="table-responsive"
+                    *ngIf="searchresults.repairFlag == true"
+                  >
+                    <table class="table">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Repair Logs</th>
+                          <th>Exact Tag #</th>
+                          <th>RFQ Number</th>
+                          <th>Job Number</th>
+                          <th>PO Number</th>
+                          <th
+                            [class.active]="order === 'enteredby'"
+                            (click)="setOrder('enteredby')"
+                          >
+                            Repair Vendor
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let repairsearch of repairlogList">
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-outline-danger btn-sm"
+                              tooltip="View"
+                              (click)="
+                                goToItemRepair(
+                                  repairsearch.itemId,
+                                  repairsearch.repairLogId,
+                                  repairsearch.rank,
+                                  repairsearch.tag,
+                                  repairsearch.typeName
+                                )
+                              "
+                            >
+                              View
+                            </button>
+                          </td>
+                          <td>{{ repairsearch.tag }}</td>
+                          <td>{{ repairsearch.rfqNumber }}</td>
+                          <td>{{ repairsearch.jobNumber }}</td>
+                          <td>{{ repairsearch.poNumber }}</td>
+                          <td>{{ repairsearch.repairVendorName }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div
+                    class="table-responsive"
+                    *ngIf="searchresults.noteFlag == true"
+                  >
+                    <table class="table">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Notes</th>
+                          <th>Date</th>
+                          <th>Entry</th>
+                          <th>Job #</th>
+                          <th>PO #</th>
+                          <th>By</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let itemnotessearch of itemNotesList">
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-outline-danger btn-sm"
+                              tooltip="View "
+                              (click)="
+                                goToNote(
+                                  itemnotessearch.itemId,
+                                  itemnotessearch.journalId,
+                                  itemnotessearch.rank,
+                                  itemnotessearch.tag,
+                                  itemnotessearch.typeName
+                                )
+                              "
+                            >
+                              View
+                            </button>
+                          </td>
+                          <td>
+                            {{
+                              itemnotessearch.enteredOn
+                                | date : "MM/dd/yyyy h:mm:ss a "
+                            }}
+                          </td>
+                          <td>{{ itemnotessearch.entry }}</td>
+                          <td>{{ itemnotessearch.jobNumber }}</td>
+                          <td>{{ itemnotessearch.poNumber }}</td>
+                          <td>{{ itemnotessearch.enteredBy }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </tab>
+          </tabset>
+        </div>
+      </div>
+      <div [style.display]="showSearchResults ? 'block' : 'none'">
+        <app-advanced-search-results></app-advanced-search-results>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -36,68 +35,66 @@ import { EditCompanyAtrributeComponent } from './edit-company-atrribute/edit-com
 import { AddCompanyAtrributeComponent } from './add-company-atrribute/add-company-atrribute.component';
 import { CompanymanagementComponent } from './companymanagement/companymanagement.component';
 import { TreeviewModule } from 'ngx-treeview';
-import { DropdownTreeviewSelectComponent } from "../dropdown-treeview-select/dropdown-treeview-select.component";
-import { DropdownTreeviewModule } from "../dropdown-treeview-select/dropdown-treeview.module";
+import { DropdownTreeviewSelectComponent } from '../dropdown-treeview-select/dropdown-treeview-select.component';
+import { DropdownTreeviewModule } from '../dropdown-treeview-select/dropdown-treeview.module';
 import { NoteAttachmentsComponent } from './note-attachments/note-attachments.component';
 import { AddNoteAttachmentComponent } from './add-note-attachment/add-note-attachment.component';
 import { EditNoteAttachmentComponent } from './edit-note-attachment/edit-note-attachment.component';
-import { AddcompanyattributesComponent } from "./addcompanyattributes/addcompanyattributes.component";
-import { EditcompanyattributesComponent } from "./editcompanyattributes/editcompanyattributes.component";
-import { NgxSortableModule } from 'ngx-sortable'
-import { CompanyComponent } from "./company.component";
+import { AddcompanyattributesComponent } from './addcompanyattributes/addcompanyattributes.component';
+import { EditcompanyattributesComponent } from './editcompanyattributes/editcompanyattributes.component';
+import { NgxSortableModule } from 'ngx-sortable';
+import { CompanyComponent } from './company.component';
 import { ManageComponent } from './manage/manage.component';
 
-
-
 @NgModule({
-    imports: [
-        BsDatepickerModule.forRoot(),
-        CommonModule,
-        FormsModule,
-        AlertModule.forRoot(),
-        BsDropdownModule.forRoot(),
-        TabsModule,
-        NgxSortableModule,
-        CompanyRoutingModule,
-        CarouselModule.forRoot(),
-        CollapseModule.forRoot(),
-        PaginationModule.forRoot(),
-        PopoverModule.forRoot(),
-        ProgressbarModule.forRoot(),
-        TooltipModule.forRoot(),
-        NgxPaginationModule,
-        NgPipesModule,
-        TreeviewModule.forRoot(),
-        DropdownTreeviewModule
-    ],
-    declarations: [
-        CompanymanagementComponent,
-        CompanydocumentsComponent,
-        CompanytypesComponent,
-        CompanyattributesComponent,
-        CompanystatusesComponent,
-        ViewcompanydetailsComponent,
-        EditcompanydetailsComponent,
-        AddcompanydetailsComponent,
-        AddcompanydocumentsComponent,
-        EditcompanydocumentComponent,
-        AddcompanystatusComponent,
-        EditcompanystatusComponent,
-        CompanyNotesComponent,
-        AddCompanyNotesComponent,
-        EditCompanyNotesComponent,
-        ViewCompanyNotesComponent,
-        AddCompanyTypeComponent,
-        EditCompanyTypeComponent,
-        EditCompanyAtrributeComponent,
-        AddCompanyAtrributeComponent,
-        NoteAttachmentsComponent,
-        AddNoteAttachmentComponent,
-        EditNoteAttachmentComponent,
-        AddcompanyattributesComponent,
-        EditcompanyattributesComponent,
-        CompanyComponent,
-        ManageComponent
-    ]
+  imports: [
+    BsDatepickerModule.forRoot(),
+    CommonModule,
+    FormsModule,
+    AlertModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    TabsModule,
+    NgxSortableModule,
+    CompanyRoutingModule,
+    CarouselModule.forRoot(),   
+    CollapseModule.forRoot(),
+    PaginationModule.forRoot(),
+    PopoverModule.forRoot(),
+    ProgressbarModule.forRoot(),
+    TooltipModule.forRoot(),
+    NgxPaginationModule,
+    NgPipesModule,
+    TreeviewModule.forRoot(),
+    DropdownTreeviewModule,
+  ],
+  declarations: [
+    CompanymanagementComponent,
+    CompanydocumentsComponent,
+    CompanytypesComponent,
+    CompanyattributesComponent,
+    CompanystatusesComponent,
+    ViewcompanydetailsComponent,
+    EditcompanydetailsComponent,
+    AddcompanydetailsComponent,
+    AddcompanydocumentsComponent,
+    EditcompanydocumentComponent,
+    AddcompanystatusComponent,
+    EditcompanystatusComponent,
+    CompanyNotesComponent,
+    AddCompanyNotesComponent,
+    EditCompanyNotesComponent,
+    ViewCompanyNotesComponent,
+    AddCompanyTypeComponent,
+    EditCompanyTypeComponent,
+    EditCompanyAtrributeComponent,
+    AddCompanyAtrributeComponent,
+    NoteAttachmentsComponent,
+    AddNoteAttachmentComponent,
+    EditNoteAttachmentComponent,
+    AddcompanyattributesComponent,
+    EditcompanyattributesComponent,
+    CompanyComponent,
+    ManageComponent,
+  ],
 })
-export class CompanyModule { }
+export class CompanyModule {}

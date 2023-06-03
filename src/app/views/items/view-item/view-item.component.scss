@@ -1,0 +1,32 @@
+.form-control:disabled, .form-control[readonly] {
+  background-color: #cccccc;
+  opacity: 1;
+  cursor: not-allowed;
+}
+label{
+  color:#002a64;
+  font-weight: bold;
+}
+.card-body{
+  padding: 0.5em;
+}
+.main>.row{
+  margin-bottom: 1%;
+}
+.scrollPopUp{
+  height: 600px;
+  overflow-y: scroll;
+}
+#box {
+  width: 300px;
+  height: 80px;
+ padding: 30px;  
+text-align: center;
+  border: 1px solid #002A64;
+}
+// #image {
+//   margin-right: 0.4px;
+  
+// }
+
+

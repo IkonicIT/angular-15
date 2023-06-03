@@ -1,0 +1,186 @@
+<div
+  class="animated fadeIn"
+  id="print-section"
+  onload="window.print();window.close()"
+>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <table style="width: 65%">
+          <tr>
+            <th
+              style="
+                padding: 12px;
+                text-align: right;
+                font-size: 50px;
+                color: darkblue;
+                border: 1px solid black;
+              "
+            >
+              Company Name:
+            </th>
+            <td>
+              <u style="color: darkblue">
+                <b
+                  style="font-size: 50px; color: darkblue"
+                  [innerHTML]="this.companyName"
+                ></b
+              ></u>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 60%">
+          <tr>
+            <th
+              style="
+                padding: 12px;
+                text-align: right;
+                font-size: 50px;
+                color: darkblue;
+                border: 1px solid black;
+              "
+            >
+              Tag #:
+            </th>
+            <td>
+              <u style="color: darkblue">
+                <b
+                  style="font-size: 50px; color: darkblue"
+                  [innerHTML]="model.tag"
+                ></b
+              ></u>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 60%">
+          <tr>
+            <th
+              style="
+                padding: 12px;
+                text-align: right;
+                font-size: 50px;
+                color: darkblue;
+                border: 1px solid black;
+              "
+            >
+              Type:
+            </th>
+            <td>
+              <u style="color: darkblue">
+                <b
+                  style="font-size: 50px; color: darkblue"
+                  [innerHTML]="model.typeName"
+                ></b
+              ></u>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 60%">
+          <tr>
+            <th
+              style="
+                padding: 12px;
+                text-align: right;
+                font-size: 50px;
+                color: darkblue;
+                border: 1px solid black;
+              "
+            >
+              Status :
+            </th>
+            <td>
+              <u style="color: darkblue">
+                <b
+                  style="font-size: 50px; color: darkblue"
+                  [innerHTML]="model.status"
+                ></b
+              ></u>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 60%">
+          <tr>
+            <th
+              style="
+                padding: 12px;
+                text-align: right;
+                font-size: 50px;
+                color: darkblue;
+                border: 1px solid black;
+              "
+            >
+              Last Repair :
+            </th>
+            <td>
+              <u style="color: darkblue">
+                <b
+                  style="font-size: 50px; color: darkblue"
+                  [innerHTML]="repair.lastRepairDate"
+                ></b
+              ></u>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 60%">
+          <tr>
+            <th
+              style="
+                padding: 12px;
+                text-align: right;
+                font-size: 50px;
+                color: darkblue;
+                border: 1px solid black;
+              "
+            >
+              Repair By :
+            </th>
+            <td>
+              <u style="color: darkblue">
+                <b
+                  style="font-size: 50px; color: darkblue"
+                  [innerHTML]="repair.repairBy"
+                ></b
+              ></u>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 60%">
+          <tr *ngFor="let attribute of attributes">
+            <th
+              style="
+                padding: 12px;
+                text-align: right;
+                font-size: 50px;
+                color: darkblue;
+                border: 1px solid black;
+              "
+              [innerHTML]="attribute.attributeName"
+            >
+              :
+            </th>
+            <td>
+              <u style="color: darkblue">
+                <b
+                  style="font-size: 50px; color: darkblue"
+                  [innerHTML]="attribute.attributeValue"
+                ></b
+              ></u>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-12 text-center">
+          <button
+            type="button"
+            (click)="back()"
+            tooltip="Back to View Item "
+            class="btn btn-primary"
+          >
+            Back To Item
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

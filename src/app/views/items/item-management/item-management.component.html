@@ -1,0 +1,317 @@
+<div class="animated fadeIn" *ngIf="highestRank > 0">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            *To add a new item:<br />
+            1.Enter the data for the new item.<br />
+            2.Click the 'Save' button.<br />
+            *To edit an existing item: <br />
+            1.Enter the tag number and click 'Search' or click the 'Edit'
+            button.<br />
+            2.If more than one item type is found for the tag number, select the
+            desired type in the 'Select Type' drop down list.<br />
+            3.Make the necessary changes.<br />
+            4.Click the 'Save' button.
+          </div>
+        </div>
+        <div class="card-body">
+          <alert
+            *ngIf="deleteFlag === 1"
+            type="success"
+            [dismissible]="dismissible"
+          >
+            Item Deleted successfully.
+          </alert>
+          <p class="card-text">
+            Manage Items
+            <button
+              type="button"
+              *ngIf="highestRank > 2"
+              class="btn btn-primary float-right"
+              (click)="goToAddItem()"
+              tooltip="Add a new Item."
+              placement="top"
+            >
+              Add Item
+            </button>
+          </p>
+          <div class="row">
+            <div class="form-group col-sm-1"></div>
+            <div class="form-group col-sm-5">
+              <label for="tag">Item Tag#</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="model.tag"
+                [typeahead]="suggessions"
+                (ngModelChange)="getSuggessions(model.tag)"
+                typeaheadOptionField="tag"
+                name="Tag"
+                #Tag="ngModel"
+                id="tag"
+                placeholder="Enter Item Tag"
+              />
+            </div>
+            <div class="form-group col-sm-5">
+              <label for="type">Type Of Item</label>
+              <app-dropdown-treeview-select
+                [items]="itemTypeItems"
+                id="type"
+                [(value)]="model.typeId"
+              >
+              </app-dropdown-treeview-select>
+            </div>
+            <div class="form-group col-sm-1"></div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-1"></div>
+            <div class="form-group col-sm-5">
+              <label for="status">Select Status</label>
+              <select
+                class="form-control"
+                [(ngModel)]="model.statusid"
+                name="status"
+                #status="ngModel"
+                id="status"
+              >
+                <option value="null" selected="true">Choose Status</option>
+                <option
+                  [ngValue]="status.statusid"
+                  *ngFor="let status of statuses"
+                >
+                  {{ status.status }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-sm-5">
+              <label for="location">Location</label>
+              <app-dropdown-treeview-select
+                [items]="locationItems"
+                [(value)]="value"
+                id="location"
+                (valueChange)="onValueChange($event)"
+              >
+              </app-dropdown-treeview-select>
+            </div>
+            <div class="form-group col-sm-1"></div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-5"></div>
+            <div class="form-group col-sm-2 align-center">
+              <button
+                type="button"
+                (click)="getSearchedItems()"
+                tooltip="Search an item"
+                class="btn btn-primary"
+              >
+                Search
+              </button>
+            </div>
+            <div class="form-group col-sm-5"></div>
+          </div>
+          <div *ngIf="flag == 0">
+            <strong>Search Results:</strong>
+          </div>
+          <div>
+            <alert type="danger" *ngIf="flag == 1">
+              No Results Found <br />
+            </alert>
+          </div>
+          <button
+            type="button"
+            *ngIf="flag == 0"
+            (click)="exportAsExcelFileWithMultipleSheets()"
+            class="btn btn-primary"
+          >
+            Export to Excel
+          </button>
+          <div
+            *ngFor="let itemType of searchResultKeys; let t = index"
+            style="margin-bottom: 0.3rem"
+          >
+            <div class="card">
+              <div class="type-header">
+                <strong>{{ itemType }}</strong>
+              </div>
+            </div>
+            <div class="float-left">
+              <span
+                >Show
+                <select [(ngModel)]="dynLst[t].itemsForPagination">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+
+            <div class="table-responsive">
+              <table
+                *ngIf="
+                  searchResults[itemType] && searchResults[itemType].length > 0
+                "
+                class="table"
+              >
+                <thead class="thead-light">
+                  <tr>
+                    <th
+                      [class.active]="order === 'name'"
+                      (click)="setOrder('name')"
+                    >
+                      Tag #<span [hidden]="reverse == ''">▼</span
+                      ><span [hidden]="reverse != ''">▲</span>
+                    </th>
+                    <th
+                      [class.active]="order === 'phone'"
+                      (click)="setOrder('phone')"
+                    >
+                      Location<span [hidden]="reverse == ''">▼</span
+                      ><span [hidden]="reverse != ''">▲</span>
+                    </th>
+                    <th
+                      [class.active]="order === 'state'"
+                      (click)="setOrder('state')"
+                    >
+                      Status<span [hidden]="reverse == ''">▼</span
+                      ><span [hidden]="reverse != ''">▲</span>
+                    </th>
+                    <ng-container
+                      *ngIf="
+                        searchResults[itemType][0] &&
+                        searchResults[itemType][0].attributeNameList
+                      "
+                    >
+                      <th
+                        *ngFor="
+                          let attr of searchResults[itemType][0]
+                            .attributeNameList
+                            | slice : 0 : attributesSearchDisplay[itemType]
+                        "
+                        [innerHTML]="searchResults[itemType][0].name"
+                      ></th>
+                    </ng-container>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let result of searchResults[itemType]
+                        | paginate
+                          : {
+                              itemsPerPage: dynLst[t].itemsForPagination,
+                              currentPage: dynLst[t].p,
+                              id: 'page' + t
+                            }
+                    "
+                  >
+                    <td>
+                      <a
+                        href="javascript:void(0)"
+                        (click)="
+                          goToView(
+                            result.itemid,
+                            result.itemRank,
+                            result.tag,
+                            result.typeName
+                          )
+                        "
+                        [innerHTML]="result.tag"
+                      ></a>
+                    </td>
+                    <td [innerHTML]="result.locationPath"></td>
+                    <td [innerHTML]="result.statusname"></td>
+                    <ng-container *ngIf="result && result.attributeNameList">
+                      <td
+                        *ngFor="
+                          let attr of result.attributeNameList
+                            | slice : 0 : attributesSearchDisplay[itemType]
+                        "
+                        [innerHTML]="result.attributeNameList.value"
+                      ></td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+              <pagination-controls
+                class="my-pagination"
+                id="page{{ t }}"
+                (pageChange)="dynLst[t].p = $event"
+              ></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateNested>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Second modal</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef2.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This is nested modal.
+    <br />
+    <button
+      *ngIf="modalRef"
+      type="button"
+      class="btn btn-danger"
+      (click)="closeFirstModal()"
+    >
+      Close first modal
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>Do you want to confirm?</p>
+    <button
+      type="button"
+      class="btn btn-outline-danger btn-sm"
+      (click)="confirm()"
+    >
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

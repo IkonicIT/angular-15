@@ -149,7 +149,7 @@ export class CompanydocumentsComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { attachmentid: string }) {
+  downloadDocumentFromDB(document: { attachmentid: number }) {
     this.spinner.show();
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentid)

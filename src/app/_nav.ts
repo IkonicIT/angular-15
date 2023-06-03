@@ -1,9 +1,8 @@
-
 export const navigation = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    icon: 'icon-speedometer'
+    icon: 'icon-speedometer',
   },
 
   {
@@ -14,29 +13,30 @@ export const navigation = [
       {
         name: 'Manage Companies',
         url: '/company/list',
-        icon: 'fa fa-building'
+        icon: 'fa fa-building',
+        pathMatch: 'full',
       },
       {
         name: 'Company Documents',
         url: '/company/documents',
-        icon: 'fa fa-file'
+        icon: 'fa fa-file',
       },
       {
         name: 'Company Types',
         url: '/company/types',
-        icon: 'fa fa-building'
+        icon: 'fa fa-building',
       },
       {
         name: 'Company Attributes',
         url: '/company/attributes/0/0',
-        icon: 'fa fa-building'
+        icon: 'fa fa-building',
       },
       {
         name: 'Company Status',
         url: '/company/statuses',
-        icon: 'fa fa-building'
-      }
-    ]
+        icon: 'fa fa-building',
+      },
+    ],
   },
   {
     name: 'Locations',
@@ -46,19 +46,19 @@ export const navigation = [
       {
         name: 'Manage Locations',
         url: '/location/list',
-        icon: 'fa fa-map-marker'
+        icon: 'fa fa-map-marker',
       },
       {
         name: 'Location Types',
         url: '/location/types',
-        icon: 'fa fa-map-marker'
+        icon: 'fa fa-map-marker',
       },
       {
         name: 'Location Status',
         url: '/location/status',
-        icon: 'fa fa-map-marker'
-      }
-    ]
+        icon: 'fa fa-map-marker',
+      },
+    ],
   },
   {
     name: 'Items',
@@ -68,39 +68,39 @@ export const navigation = [
       {
         name: 'Manage Items',
         url: '/items/list',
-        icon: 'fa fa-sitemap'
+        icon: 'fa fa-sitemap',
       },
       {
         name: 'Item Types',
         url: '/items/types',
-        icon: 'fa fa-sitemap'
+        icon: 'fa fa-sitemap',
       },
       {
         name: 'Item Status',
         url: '/items/status',
-        icon: 'fa fa-sitemap'
+        icon: 'fa fa-sitemap',
       },
       {
         name: 'Item Repair Items',
         url: '/items/repairItems',
-        icon: 'fa fa-sitemap'
-      }
-    ]
+        icon: 'fa fa-sitemap',
+      },
+    ],
   },
   {
     name: 'Template',
     url: '/template',
-    icon: 'fa fa-user-circle-o'
+    icon: 'fa fa-user-circle-o',
   },
   {
     name: 'Vendor',
     url: '/vendor/list',
-    icon: 'fa fa-user-circle'
+    icon: 'fa fa-user-circle',
   },
   {
     name: 'Warranty',
     url: '/warranty/list',
-    icon: 'fa fa-superpowers'
+    icon: 'fa fa-superpowers',
   },
   {
     name: 'Users',
@@ -110,14 +110,14 @@ export const navigation = [
       {
         name: 'User Management',
         url: '/user/list',
-        icon: 'fa fa-users'
+        icon: 'fa fa-users',
       },
       {
         name: 'User Types',
         url: '/user/types',
-        icon: 'fa fa-users'
-      }
-    ]
+        icon: 'fa fa-users',
+      },
+    ],
   },
 
   {
@@ -128,25 +128,23 @@ export const navigation = [
       {
         name: 'My Profile',
         url: '/profile',
-        icon: 'fa fa-user'
+        icon: 'fa fa-user',
       },
-   
-
-    ]
+    ],
   },
   {
     name: 'Failure Type',
     url: '/failuretype',
-    icon: 'fa fa-bug'
-  },
-  
-  {
-    name: 'Help',
-    url: '/theme/help',
-    icon: 'fa fa-question'
+    icon: 'fa fa-bug',
   },
 
   {
-    divider: true
-  }
+    name: 'Help',
+    url: '/theme/help',
+    icon: 'fa fa-question',
+  },
+
+  {
+    divider: true,
+  },
 ];

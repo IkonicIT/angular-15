@@ -243,11 +243,12 @@ export class ManageComponent implements OnInit {
     this.model = [];
     this.model.effectiveon = new Date();
   }
+
   backToItem() {
     this.helpFlag = false;
-
     this.router.navigate(['/company/list']);
   }
+
   download(companyDocument: any) {
     if (companyDocument.new == false) {
       this.downloadFile(companyDocument);
@@ -270,6 +271,7 @@ export class ManageComponent implements OnInit {
         }
       );
   }
+
   downloadDocument(companyDocument: { attachmentFile: any; contenttype: any }) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
@@ -341,9 +343,11 @@ export class ManageComponent implements OnInit {
       );
     }
   }
+
   refreshCall() {
     this.getAllNotes(this.companyId);
   }
+
   setOrder(value: string) {
     if (this.order === value) {
       if (this.reverse == '') {
@@ -354,6 +358,7 @@ export class ManageComponent implements OnInit {
     }
     this.order = value;
   }
+
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
@@ -391,14 +396,17 @@ export class ManageComponent implements OnInit {
         }
       );
   }
+
   decline(): void {
     this.message = 'Declined!';
     this.modalRef.hide();
   }
+
   print() {
     this.helpFlag = false;
     window.print();
   }
+
   help() {
     this.helpFlag = !this.helpFlag;
   }

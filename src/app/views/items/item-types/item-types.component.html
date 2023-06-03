@@ -1,0 +1,204 @@
+<div class="animated fadeIn" *ngIf="highestRank > 5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            * To create a new type:<br />
+            1.Enter the information for the new type.<br />
+            2.Click the 'Save' button.<br />
+            * To edit an existing type:<br />
+            1.Click the 'Edit' button.<br />
+            2.Make necessary changes.<br />
+            3.Click the 'Save' button.
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            Manage {{ companyName }} Item types
+            <button
+              type="button"
+              *ngIf="highestRank > 3"
+              class="btn btn-primary float-right"
+              [routerLink]="['../addItemType']"
+              tooltip="Add a new Item."
+              placement="top"
+            >
+              Add Item Type
+            </button>
+          </p>
+          <div>
+            <div class="float-left">
+              <span
+                >Show
+                <select [(ngModel)]="itemsForPagination">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+          </div>
+          <div class="float-right div-search">
+            <span>Search : </span>
+            <input [(ngModel)]="typeFilter" />
+          </div>
+
+          <table
+            class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
+          >
+            <thead class="thead-light">
+              <tr>
+                <th
+                  [class.active]="order === 'name'"
+                  (click)="setOrder('name')"
+                >
+                  Item Type Name<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'hostingfee'"
+                  (click)="setOrder('hostingfee')"
+                >
+                  Hosting Fee<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+
+                <th
+                  [class.active]="order === 'description'"
+                  (click)="setOrder('description')"
+                >
+                  Description<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th>Attributes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let type of locationsTypes
+                    | orderBy : reverse + order
+                    | filterBy
+                      : ['name', 'hostingfee', 'description']
+                      : typeFilter
+                    | paginate
+                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                "
+              >
+                <td [innerHTML]="type.name"></td>
+                <td [innerHTML]="type.hostingfee"></td>
+
+                <td [innerHTML]="type.description"></td>
+                <td>
+                  <button
+                    type="button"
+                    tooltip="Click here to Manage Item Attributes"
+                    class="btn btn-outline-success btn-sm"
+                    [routerLink]="['../attributes', type.typeid, companyId]"
+                  >
+                    Manage Attributes
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    *ngIf="highestRank > 3"
+                    class="btn btn-outline-danger btn-sm mb-1"
+                    tooltip="Edit this Type"
+                    [routerLink]="['../editItemType', type.typeid, companyId]"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    *ngIf="highestRank > 3"
+                    class="btn btn-outline-danger btn-sm mb-1"
+                    tooltip="Delete this Type"
+                    (click)="openModal(confirmtemplate, type.typeid)"
+                    [disabled]="highestRank == 9"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls
+            class="my-pagination"
+            (pageChange)="p = $event"
+            [autoHide]="true"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #templateNested>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Second modal</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef2.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This is nested modal.
+    <br />
+    <button
+      *ngIf="modalRef"
+      type="button"
+      class="btn btn-danger"
+      (click)="closeFirstModal()"
+    >
+      Close first modal
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>Do you want to confirm?</p>
+    <button
+      type="button"
+      class="btn btn-outline-danger btn-sm"
+      (click)="confirm()"
+    >
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

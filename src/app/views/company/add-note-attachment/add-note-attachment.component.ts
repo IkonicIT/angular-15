@@ -30,6 +30,7 @@ export class AddNoteAttachmentComponent implements OnInit {
   addedfiles: any = [];
   helpFlag: any = false;
   noteName: any;
+
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     private companyManagementService: CompanyManagementService,

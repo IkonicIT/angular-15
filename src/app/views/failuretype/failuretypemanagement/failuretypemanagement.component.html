@@ -1,0 +1,354 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            * To add a new Type of Failure: <br />
+            1.Select the Item type.<br />
+            2.Click the 'New' button.<br />
+            3.Enter the new Type in the 'Primary Findings' text box.<br />
+            4.Add causes in the 'Causes' text box.<br />
+            5.Click the 'Save' button.<br />
+            * To edit an existing Type of Failure:<br />
+            1.Select the Item type.<br />
+            2.Select the Failure Type in the 'Primary Findings List'.<br />
+            3.Click the 'Edit' button.<br />
+            4.Make the necessary changes to the 'Primary Findings' or
+            'Causes'.<br />
+            5.Click the 'Update' button. * To delete an existing Type of
+            Failure:<br />
+            1.Select the Item type.<br />
+            2.Select the Failure Type in the 'Primary Findings List'.<br />
+            3.Click the 'Delete' button.
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="col-sm-12">
+            <alert
+              type="danger"
+              *ngIf="index == -1"
+              [dismissible]="dismissible"
+            >
+              Please Enter Primary Finding..
+            </alert>
+            <alert
+              *ngIf="index == 1"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Primary Findings and Causes Added successfully.
+            </alert>
+            <alert
+              *ngIf="index == 2"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Primary Findings and Causes Updated successfully.
+            </alert>
+            <alert
+              *ngIf="index == 3"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Primary Findings and Causes Deleted successfully.
+            </alert>
+          </div>
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobmile-padding">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Primary Findings Management</strong>
+                </div>
+                <form name="form">
+                  <div class="card-body">
+                    <div class="row form-group">
+                      <div class="col-sm-3">
+                        Select Item Type <strong class="text-danger">*</strong>
+                      </div>
+
+                      <div class="col-sm-4">
+                        <app-dropdown-treeview-select
+                          [items]="items"
+                          tooltip="Select ItemType to add Primary Findings & causes"
+                          [(value)]="value"
+                          (valueChange)="onValueChange($event)"
+                        >
+                        </app-dropdown-treeview-select>
+                      </div>
+                      <div class="col-sm-8"></div>
+                    </div>
+
+                    <div class="col-12 mobile-padding">
+                      <div class="row">
+                        <div class="col-md-4 col-12" *ngIf="addFailure == 0">
+                          Select Primary Finding
+                          <div
+                            style="
+                              height: 50vh;
+                              overflow-y: auto;
+                              border: 1px solid lightgray;
+                              background-color: white;
+                            "
+                          >
+                            <ul
+                              style="
+                                list-style: none;
+                                margin: 0;
+                                padding: 0;
+                                cursor: pointer;
+                              "
+                              *ngFor="let failureType of failureTypes"
+                            >
+                              <li
+                                tooltip="Select PrimaryFinding to Edit"
+                                (click)="
+                                  getCausesForFailureType(failureType);
+                                  editDeleteFlag = true
+                                "
+                              >
+                                <a>{{ failureType.split("_")[0] }}</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div class="col-md-8 col-12 mobile-padding">
+                          <div class="row">
+                            <div class="row" *ngIf="addFailure == 1">
+                              <div class="form-group col-sm-12">
+                                <label for="name"
+                                  >Primary Finding:
+                                  <strong class="text-danger">*</strong></label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  [(ngModel)]="model.failuretype"
+                                  name="failuretype"
+                                  #name="ngModel"
+                                  id="failuretype"
+                                  placeholder="Enter Primary Finding"
+                                />
+                              </div>
+                              <div class="col-md-6 col-12">
+                                <label for="name"
+                                  >Failure Causes:
+                                  <p style="border: 1px solid">
+                                    Type each cause on a separate line. Add or
+                                    remove causes as needed.
+                                  </p></label
+                                >
+                              </div>
+                              <div class="form-group col-sm-12">
+                                <label for="desc">Causes:</label>
+                                <textarea
+                                  id="desc"
+                                  name="textarea-input"
+                                  rows="10.5"
+                                  cols="30"
+                                  class="form-control"
+                                  [(ngModel)]="model.causes"
+                                  name="causes"
+                                  #description="ngModel"
+                                  placeholder="Enter Causes"
+                                ></textarea>
+                              </div>
+                            </div>
+
+                            <div
+                              *ngIf="addFailure != 1"
+                              class="col-12 col-md-12"
+                            >
+                              <div class="col-12">
+                                <label for="name"
+                                  >Primary Finding:
+                                  <span
+                                    style="
+                                      background-color: whitesmoke;
+                                      color: black;
+                                      border: 1px solid;
+                                    "
+                                    >{{ failuretype }}</span
+                                  >
+                                </label>
+                              </div>
+                              <div class="col-md-6 col-12">
+                                <label for="name"
+                                  >Failure Causes:
+                                  <p style="border: 1px solid">
+                                    Type each cause on a separate line. Add or
+                                    remove causes as needed.
+                                  </p></label
+                                >
+                              </div>
+                              <label for="name">Causes:</label>
+                              <div
+                                class="col-12 col-md-12"
+                                style="
+                                  height: 40vh;
+                                  overflow-y: auto;
+                                  border: 1px solid lightgray;
+                                  background-color: white;
+                                "
+                              >
+                                <ul
+                                  style="
+                                    list-style: none;
+                                    margin: 0;
+                                    padding: 0;
+                                    cursor: pointer;
+                                  "
+                                  *ngFor="let causes of failurecauses"
+                                >
+                                  <li>
+                                    <a>{{ causes }}</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+
+                            <div
+                              class="col-sm-12"
+                              style="text-align: center; margin-top: 20px"
+                            >
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                tooltip="updatePrimaryFindingAndCauses"
+                                *ngIf="editEnable == 1"
+                                (click)="updateFailureTypeAndCauses()"
+                              >
+                                Update
+                              </button>
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                tooltip="AddPrimaryFindingAndCauses"
+                                [disabled]="newFlag == false"
+                                (click)="addFailureTypeAndCauses()"
+                              >
+                                New
+                              </button>
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                tooltip="SavePrimaryFindingAndCauses"
+                                *ngIf="addEditFlag"
+                                (click)="saveFailureTypeAndCauses()"
+                              >
+                                Save
+                              </button>
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                tooltip="EditPrimaryFindingAndCauses"
+                                [disabled]="highestRank < 7"
+                                *ngIf="editDeleteFlag == true"
+                                (click)="editFailureType(failuretype)"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                tooltip="DeletePrimaryFindingAndCauses"
+                                [disabled]="highestRank < 7 || highestRank == 9"
+                                *ngIf="editDeleteFlag == true"
+                                (click)="
+                                  openModal(confirmtemplate, failureTypeId)
+                                "
+                              >
+                                Delete
+                              </button>
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                *ngIf="addFailure == 1"
+                                tooltip="Back"
+                                (click)="cancelAdd()"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateNested>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Second modal</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef?.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This is nested modal.
+    <br />
+    <button
+      *ngIf="modalRef"
+      type="button"
+      class="btn btn-danger"
+      (click)="closeFirstModal()"
+    >
+      Close first modal
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Yes) to permanently delete this PimaryFindings or Click(No) to
+      discard This action.
+    </p>
+    <button type="button" class="btn btn-primary" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

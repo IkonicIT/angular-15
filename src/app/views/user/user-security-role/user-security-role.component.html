@@ -1,0 +1,297 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <alert
+          type="danger"
+          *ngIf="isSelected == 0"
+          [dismissible]="dismissible"
+        >
+          Please Select One Role only.
+        </alert>
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            * To add a Security Role for a user:<br />
+            1.Click the 'Security Roles' button.<br />
+            2.Select a Company, Location and Role fields.<br />
+            3.Click the 'Add Security Role' button.
+          </div>
+        </div>
+        <div class="card-body">
+          <alert *ngIf="index == 1" type="success" [dismissible]="dismissible">
+            User security role added successfully .
+          </alert>
+          <alert *ngIf="index == 2" type="success" [dismissible]="dismissible">
+            status updated successfully .
+          </alert>
+          <alert *ngIf="index == 3" type="success" [dismissible]="dismissible">
+            Access updated successfully .
+          </alert>
+          <alert *ngIf="index == 4" type="success" [dismissible]="dismissible">
+            User security role deleted successfully .
+          </alert>
+          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+            Please Enter Required fields
+          </alert>
+          <div class="modal-body p-0">
+            <div class="col-sm-12 p-0">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Manage User Security [User:{{ username }}]</strong>
+                </div>
+
+                <div class="card-body">
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="statusroles" *ngIf="isOwnerAdmin === 'true'"
+                        >Owner Admin:</label
+                      >
+                      &nbsp;
+                      <input
+                        type="checkbox"
+                        *ngIf="isOwnerAdmin === 'true'"
+                        [(ngModel)]="statusroles.isowneradmin"
+                        id="isowneradmin"
+                      /><br />
+                      <label
+                        for="statusroles"
+                        *ngIf="isOwnerAdminReadOnly || isOwnerAdmin === 'true'"
+                        >OwnerAdmin ReadOnly:</label
+                      >
+                      &nbsp;
+                      <input
+                        type="checkbox"
+                        *ngIf="isOwnerAdminReadOnly || isOwnerAdmin === 'true'"
+                        [(ngModel)]="statusroles.isOwnerAdminReadOnly"
+                        id="isOwnerAdminReadOnly"
+                      /><br />
+                      <label for="statusroles">Hide Pricing:</label
+                      >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="statusroles.hidepricing"
+                        id="hidepricing"
+                      />
+                    </div>
+                    <div class="form-group col-sm-6" style="text-align: center">
+                      <p>
+                        <button
+                          [disabled]="highestRank < 7"
+                          tooltip="Update Status"
+                          class="btn btn-primary"
+                          (click)="
+                            updateStatus(
+                              profileId,
+                              statusroles.companyid,
+                              statusroles
+                            )
+                          "
+                        >
+                          Update Status
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="company"
+                        >Select Company<strong class="text-danger"
+                          >*</strong
+                        ></label
+                      >
+                      <select
+                        class="form-control"
+                        [(ngModel)]="userSecurityRole.companyid"
+                        id="companyid"
+                        (change)="onValueChange()"
+                      >
+                        <option value="">Select Company</option>
+                        <option
+                          *ngFor="let company of companies"
+                          [value]="company.companyid"
+                        >
+                          {{ company.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="location">
+                        Select Location
+                        <strong class="text-danger">*</strong></label
+                      >
+
+                      <app-dropdown-treeview-select
+                        [items]="locationItems"
+                        [(value)]="userSecurityRole.locationid"
+                      >
+                      </app-dropdown-treeview-select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="company"
+                        >Select Role<strong class="text-danger"
+                          >*</strong
+                        ></label
+                      >
+                      <select
+                        class="form-control"
+                        id="level"
+                        [(ngModel)]="userSecurityRole.roleid"
+                      >
+                        <option value="0" selected="true">Select Role</option>
+                        <option
+                          *ngFor="let level of levels"
+                          [value]="level.roleId"
+                        >
+                          {{ level.roleName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-12 text-center">
+                      <button
+                        type="button"
+                        tooltip="add Security Role"
+                        class="btn btn-primary"
+                        [disabled]="highestRank < 7"
+                        (click)="addSecurityRole()"
+                      >
+                        Add Security Role
+                      </button>
+                      <button
+                        type="button"
+                        tooltip="Back To User Management screen"
+                        *ngIf="highestRank > 5"
+                        (click)="cancelUser()"
+                        class="btn btn-primary"
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </div>
+                  <div *ngIf="highestRank > 6" class="card-body p-0">
+                    <p class="card-text">
+                      <strong> Current Security Roles</strong>
+                    </p>
+                    <table
+                      class="table table-responsive-sm table-hover table-outline mb-0"
+                    >
+                      <thead class="thead-light">
+                        <tr>
+                          <th
+                            [class.active]="order === 'companyname'"
+                            (click)="setOrder('companyname')"
+                          >
+                            CompanyName<span [hidden]="reverse == ''">▼</span
+                            ><span [hidden]="reverse != ''">▲</span>
+                          </th>
+                          <th
+                            [class.active]="order === 'locationname'"
+                            (click)="setOrder('locationname')"
+                          >
+                            LocationName<span [hidden]="reverse == ''">▼</span
+                            ><span [hidden]="reverse != ''">▲</span>
+                          </th>
+                          <th
+                            [class.active]="order === 'rolename'"
+                            (click)="setOrder('rolename')"
+                          >
+                            RoleName<span [hidden]="reverse == ''">▼</span
+                            ><span [hidden]="reverse != ''">▲</span>
+                          </th>
+                          <th
+                            [class.active]="order === 'rolename'"
+                            (click)="setOrder('roleName')"
+                          >
+                            <span [hidden]="reverse == ''"></span
+                            ><span [hidden]="reverse != ''">▲</span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let role of roles
+                              | orderBy : reverse + order
+                              | filterBy
+                                : ['companyName', 'locationName', 'roleName']
+                                : roleFilter
+                              | paginate
+                                : {
+                                    itemsPerPage: itemsForPagination,
+                                    currentPage: p
+                                  }
+                          "
+                        >
+                          <td>{{ role.companyName }}</td>
+                          <td>{{ role.locationName }}</td>
+                          <td>{{ role.roleName }}</td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-outline-danger btn-sm"
+                              *ngIf="highestRank > 5"
+                              tooltip="Remove this role"
+                              [disabled]="highestRank == 9"
+                              (click)="
+                                openModal(
+                                  confirmtemplate,
+                                  role.compositePrimaryKey.companyid,
+                                  role.compositePrimaryKey.locationid,
+                                  role.compositePrimaryKey.userid
+                                )
+                              "
+                            >
+                              Remove Role
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Yes) to permanently delete this Role or Click(No) to discard This
+      action.
+    </p>
+    <button type="button" class="btn btn-primary" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

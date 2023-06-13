@@ -11,6 +11,18 @@ import { CompanyModule } from './views/company/company.module';
 import { LocationModule } from './views/location/location.module';
 import { ItemsModule } from './views/items/items.module';
 import { FullLayoutComponent, SimpleLayoutComponent } from './containers';
+import { TemplateModule } from './views/template/template.module';
+import { VendorModule } from './views/vendor/vendor.module';
+import { WarrantyModule } from './views/warranty/warranty.module';
+import { UserModule } from './views/user/user.module';
+import { ReportsModule } from './views/reports/reports.module';
+import { FailureTypeModule } from './views/failuretype/failure type.module';
+import { HelpModule } from './views/help/help.module';
+import { ProfileModule } from './views/profile/profile.module';
+import { ThemeModule } from './views/theme/theme.module';
+import { WidgetsModule } from './views/widgets/widgets.module';
+import { NotificationsModule } from './views/notifications/notifications.module';
+import { IconsModule } from './views/icons/icons.module';
 
 export const routes: Routes = [
   {
@@ -47,35 +59,40 @@ export const routes: Routes = [
             (x) => DashboardModule
           ),
       },
-      /* {
+      {
         path: 'icons',
-        loadChildren: () => import('./views/icons/icons.module').then((x) => IconsModule),
-      }, */
+        loadChildren: () =>
+          import('./views/icons/icons.module').then((x) => IconsModule),
+      },
       {
         path: 'company',
         loadChildren: () =>
           import('./views/company/company.module').then((m) => m.CompanyModule),
         data: { preload: true },
       },
-      /*  {
+      {
         path: 'notifications',
-        loadChildren:
-          () => import('./views/notifications/notifications.module').then((x) => NotificationsModule),
-      }, */
+        loadChildren: () =>
+          import('./views/notifications/notifications.module').then(
+            (x) => NotificationsModule
+          ),
+      },
       {
         path: 'items',
         loadChildren: () =>
           import('./views/items/items.module').then((x) => ItemsModule),
         data: { preload: true },
       },
-      /*   {
+      {
         path: 'theme',
-        loadChildren: () => import('./views/theme/theme.module').then((x) => ThemeModule),
+        loadChildren: () =>
+          import('./views/theme/theme.module').then((x) => ThemeModule),
       },
       {
         path: 'widgets',
-        loadChildren: () => import('./views/widgets/widgets.module').then((x) => WidgetsModule),
-      }, */
+        loadChildren: () =>
+          import('./views/widgets/widgets.module').then((x) => WidgetsModule),
+      },
       {
         path: 'location',
         loadChildren: () =>
@@ -84,39 +101,52 @@ export const routes: Routes = [
           ),
         data: { preload: true },
       },
-      /* {
+      {
         path: 'template',
-        loadChildren: () => import('./views/template/template.module').then((x) => TemplateModule),
+        loadChildren: () =>
+          import('./views/template/template.module').then(
+            (x) => TemplateModule
+          ),
       },
       {
         path: 'reports',
-        loadChildren: () => import('./views/reports/reports.module').then((x) => ReportsModule),
+        loadChildren: () =>
+          import('./views/reports/reports.module').then((x) => ReportsModule),
       },
       {
         path: 'vendor',
-        loadChildren: () => import('./views/vendor/vendor.module').then((x) => VendorModule),
+        loadChildren: () =>
+          import('./views/vendor/vendor.module').then((x) => VendorModule),
       },
       {
         path: 'warranty',
-        loadChildren: () => import('./views/warranty/warranty.module').then((x) => WarrantyModule),
+        loadChildren: () =>
+          import('./views/warranty/warranty.module').then(
+            (x) => WarrantyModule
+          ),
       },
       {
         path: 'user',
-        loadChildren: () => import('./views/user/user.module').then((x) => UserModule),
+        loadChildren: () =>
+          import('./views/user/user.module').then((x) => UserModule),
       },
       {
         path: 'profile',
-        loadChildren: () => import('./views/profile/profile.module').then((x) => ProfileModule),
+        loadChildren: () =>
+          import('./views/profile/profile.module').then((x) => ProfileModule),
       },
       {
         path: 'failuretype',
-        loadChildren:
-          () => import('./views/failuretype/failure type.module').then((x) => FailureTypeModule),
+        loadChildren: () =>
+          import('./views/failuretype/failure type.module').then(
+            (x) => FailureTypeModule
+          ),
       },
       {
         path: 'help',
-        loadChildren: () => import('./views/help/help.module').then((x) => HelpModule),
-      }, */
+        loadChildren: () =>
+          import('./views/help/help.module').then((x) => HelpModule),
+      },
     ],
   },
   {

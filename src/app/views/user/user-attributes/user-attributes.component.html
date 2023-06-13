@@ -1,0 +1,391 @@
+<div class="animated fadeIn" *ngIf="highestRank > 5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            * To add new Attributes:<br />
+            1.Select the Type from the 'Select a Type' pop-up for the new
+            Attribute or Click the 'Add' button.<br />
+            2.Enter the information for the Attribute.<br />
+            3.Click the 'Save' button.<br />
+            * To edit an Attribute:<br />
+            1.Select the Type from the 'Select a Type' pop-up for the
+            Attribute.<br />
+            2.Select the Attribute from the 'Select an Attribute' list.<br />
+            3.Make necessary changes to the Attribute.<br />
+            4.Click the 'Save' button.<br />
+            * To delete an Attribute:<br />
+            1.Click on 'Remove' button.
+          </div>
+        </div>
+
+        <div class="card-body p-0">
+          <div class="col-sm-12">
+            <alert
+              type="danger"
+              *ngIf="index == -1"
+              [dismissible]="dismissible"
+            >
+              Please Enter Required Fields
+            </alert>
+            <alert
+              *ngIf="index == 1"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              User Attribute saved successfully.
+            </alert>
+            <alert
+              *ngIf="index == 2"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              User Attribute Updated successfully.
+            </alert>
+            <alert
+              *ngIf="index == 3"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              User Attribute Deleted successfully.
+            </alert>
+            <alert
+              *ngIf="index == 4"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              User Attributes Order Saved successfully..
+            </alert>
+          </div>
+          <div class="modal-body">
+            <div class="col-sm-12 p-0">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Manage {{ companyName }} User Attributes</strong>
+                </div>
+                <form name="form">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-3">Select User Type</div>
+                      <div class="col-sm-4">
+                        <app-dropdown-treeview-select
+                          [items]="items"
+                          [(value)]="value"
+                          (valueChange)="onValueChange($event)"
+                        >
+                        </app-dropdown-treeview-select>
+                      </div>
+                      <div class="col-sm-8"></div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4 col-12">
+                        Select Attribute
+                        <ngx-sortable
+                          [items]="typeAttributes"
+                          [name]="'attributesList'"
+                          [listStyle]="listStyle"
+                        >
+                          <ng-template let-item>
+                            <ul
+                              (click)="
+                                setSelectedAttribute(item);
+                                model = item;
+                                selectedAttrType = item.attributetype;
+                                index = 0;
+                                getSearchTypes(
+                                  item.attributetype?.attributetypeid
+                                );
+                                addEditFlag = true
+                              "
+                            >
+                              <a> {{ item.name }} </a>
+                            </ul>
+                          </ng-template>
+                        </ngx-sortable>
+                        <div class="form-group col-sm-12 text-center">
+                          <button
+                            type="button"
+                            *ngIf="addEditFlag"
+                            class="btn btn-primary"
+                            tooltip="Save Order Attribute"
+                            (click)="saveAttributeListOrder(typeAttributes)"
+                          >
+                            Save Order
+                          </button>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-8">
+                        <div class="row">
+                          <div class="form-group col-sm-12">
+                            <label for="name"
+                              >Name
+                              <strong class="text-danger">*</strong></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="model.name"
+                              name="name"
+                              #name="ngModel"
+                              id="name"
+                              placeholder="Enter Name"
+                            />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-sm-12">
+                            <label for="Toa"
+                              >Type of Attribute
+                              <strong class="text-danger">*</strong></label
+                            >
+                            <select
+                              class="form-control"
+                              [(ngModel)]="model.attributetype.attributetypeid"
+                              name="Toa"
+                              id="Toa"
+                              (change)="
+                                getSearchTypes(
+                                  model.attributetype.attributetypeid
+                                )
+                              "
+                            >
+                              <option [value]="null">
+                                Select attribute Type
+                              </option>
+                              <option
+                                [ngValue]="type.attributetypeid"
+                                *ngFor="let type of attributeTypes"
+                              >
+                                {{ type.typename }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-sm-12">
+                            <label for="aToolTip">Attribute Tooltip</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="model.tooltip"
+                              name="aTp"
+                              #aTp="ngModel"
+                              id="aToolTip"
+                              placeholder="Enter Attribute Tooltip"
+                            />
+                          </div>
+                        </div>
+                        <div
+                          class="row"
+                          *ngIf="model.attributetype.attributetypeid == 4"
+                        >
+                          <div class="form-group col-sm-12">
+                            <label for="manufacturer">Manufacturer</label>
+                            <input
+                              type="checkbox"
+                              id="manufacturer"
+                              name="manufacturer"
+                              #manufacturer="ngModel"
+                              class="checkbox-margin"
+                              [(ngModel)]="model.ismanufacturer"
+                            />
+                          </div>
+                          <div class="form-group col-sm-12">
+                            <label for="listValues">List Values</label>
+                            <div class="row">
+                              <input
+                                style="margin-left: 2%"
+                                type="text"
+                                class="form-control col-sm-5"
+                                [(ngModel)]="listItem"
+                                name="lItem"
+                                #lItem="ngModel"
+                                id="listValues"
+                                placeholder="Enter List value"
+                              />
+                              <select
+                                name="listItems"
+                                style="margin-left: 2%"
+                                class="form-control col-sm-5"
+                              >
+                                <option
+                                  *ngFor="
+                                    let addedItem of model.attributelistitemResource
+                                  "
+                                >
+                                  {{ addedItem.listitem }}
+                                </option>
+                              </select>
+                            </div>
+                            <button
+                              type="button"
+                              class="btn btn-primary btn-list"
+                              (click)="addListItem()"
+                            >
+                              Add to List
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-sm-12">
+                            <label for="sType">Search Type</label>
+                            <select
+                              class="form-control"
+                              [(ngModel)]="
+                                model.searchtype.attributesearchtypeid
+                              "
+                              id="sType"
+                              name="sType"
+                            >
+                              <option [value]="null">Select Search Type</option>
+                              <option
+                                [ngValue]="searchType.attributesearchtypeid"
+                                *ngFor="let searchType of searchTypes"
+                              >
+                                {{ searchType.searchtype }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-sm-12">
+                            <label for="rField"> Required Field</label>
+                            <input
+                              type="checkbox"
+                              id="rField"
+                              name="rField"
+                              #rField="ngModel"
+                              class="checkbox-margin"
+                              [(ngModel)]="model.isrequired"
+                            />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-sm-12 text-center">
+                            <button
+                              type="button"
+                              *ngIf="!addEditFlag && highestRank > 5"
+                              class="btn btn-primary"
+                              tooltip="Add this Attribute"
+                              (click)="createAttribute()"
+                            >
+                              Add
+                            </button>
+                            <button
+                              type="button"
+                              *ngIf="addEditFlag && highestRank > 5"
+                              class="btn btn-primary"
+                              tooltip="Update this Attribute"
+                              (click)="editAttribute()"
+                            >
+                              Update
+                            </button>
+                            <button
+                              type="button"
+                              *ngIf="addEditFlag && highestRank > 5"
+                              class="btn btn-primary"
+                              tooltip="Add new Attribute"
+                              (click)="newAttribute()"
+                            >
+                              New
+                            </button>
+                            <button
+                              type="button"
+                              *ngIf="addEditFlag && highestRank > 5"
+                              class="btn btn-primary"
+                              tooltip="Delete this Attribute"
+                              (click)="openModal(confirmtemplate)"
+                              [disabled]="highestRank == 9"
+                            >
+                              Remove
+                            </button>
+                            <button
+                              type="button"
+                              tooltip="Back"
+                              (click)="cancelUserAttributes()"
+                              class="btn btn-primary"
+                            >
+                              Back
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateNested>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Second modal</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef?.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This is nested modal.
+    <br />
+    <button
+      *ngIf="modalRef"
+      type="button"
+      class="btn btn-danger"
+      (click)="closeFirstModal()"
+    >
+      Close first modal
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Yes) to permanently delete this Attribute or Click(No) to discard
+      This action.
+    </p>
+    <button type="button" class="btn btn-primary" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

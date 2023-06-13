@@ -1,0 +1,212 @@
+<div class="animated fadeIn" *ngIf="highestRank > 5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip="Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            *To add a new Vendor:<br />
+            1.Click the 'AddVendor' button.<br />
+            2.Enter the data for the new vendor.<br />
+            3.Click the 'Save' button.<br />
+            *To edit an existing vendor: <br />
+            1.click the 'Edit' button.<br />
+            2.Make the necessary changes.<br />
+            3.Click the 'Update' button.<br />
+            *To delete an existing vendor: <br />
+            1.Click the 'Delete' button.
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            Manage Vendors
+            <button
+              type="button"
+              class="btn btn-primary float-right"
+              [routerLink]="['../addVendor']"
+              tooltip="Add a new Vendor."
+              placement="top"
+            >
+              Add Vendor
+            </button>
+          </p>
+          <div>
+            <div class="float-left">
+              <span
+                >Show
+                <select [(ngModel)]="itemsForPagination">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+          </div>
+          <div class="float-right div-search">
+            <span>Search : </span>
+            <input [(ngModel)]="vendorFilter" />
+          </div>
+
+          <table
+            class="table table-responsive-sm table-hover table-outline mb-0"
+          >
+            <thead class="thead-light">
+              <tr>
+                <th
+                  [class.active]="order === 'name'"
+                  (click)="setOrder('name')"
+                >
+                  Vendor name<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'phone'"
+                  (click)="setOrder('phone')"
+                >
+                  Phone<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'state'"
+                  (click)="setOrder('state')"
+                >
+                  City<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th>Attachments</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let vendor of vendors
+                    | orderBy : reverse + order
+                    | filterBy : ['name', 'phone', 'state'] : vendorFilter
+                    | paginate
+                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                "
+              >
+                <td>{{ vendor.name }}</td>
+                <td>{{ vendor.phone }}</td>
+                <td>{{ vendor.state }}</td>
+                <td>
+                  <button
+                    type="button"
+                    tooltip="Add Attachments"
+                    class="btn btn-outline-success btn-sm"
+                    [routerLink]="['../documents', vendor.companyid]"
+                  >
+                    Attachments
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    tooltip="Add Notes"
+                    class="btn btn-outline-success btn-sm"
+                    [routerLink]="['../notes', vendor.companyid]"
+                  >
+                    Notes
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger btn-sm mb-1"
+                    tooltip="Edit Vendor"
+                    [routerLink]="['../editVendor', vendor.companyid]"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger btn-sm mb-1"
+                    tooltip="Delete Vendor"
+                    (click)="openModal(confirmtemplate, vendor.companyid)"
+                    [disabled]="highestRank == 9"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls
+            class="my-pagination"
+            (pageChange)="p = $event"
+            [autoHide]="true"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateNested>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Second modal</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef2.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This is nested modal.
+    <br />
+    <button
+      *ngIf="modalRef"
+      type="button"
+      class="btn btn-danger"
+      (click)="closeFirstModal()"
+    >
+      Close first modal
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Yes) to permanently delete this Vendor or Click(No) to discard This
+      action.
+    </p>
+    <button type="button" class="btn btn-primary" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

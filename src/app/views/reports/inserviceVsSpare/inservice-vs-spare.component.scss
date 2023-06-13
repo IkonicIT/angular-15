@@ -1,0 +1,39 @@
+.my-pagination /deep/ .ngx-pagination {
+    margin-bottom: 1rem;
+    margin-top: 25px;
+    width: fit-content;
+    border: solid 1px #a4b7c1;
+    padding-left: 0px;
+  }
+.my-pagination /deep/ .ngx-pagination .current{
+    color:white;
+    background-color: red;
+  }
+  .my-pagination /deep/ .ngx-pagination a,  .ngx-pagination button {
+    color: red;
+    background-color: white;
+  }
+
+  .mat-tab-label {
+    min-width: 25px !important;
+    padding: 5px;
+    background-color: transparent;
+    color: #333333;
+    font-weight: 700;
+   
+  }
+  
+  /* Styles for the active tab label */
+  .mat-tab-label.mat-tab-label-active {
+    min-width: 25px !important;
+    padding: 5px;
+    background-color: transparent;
+    color:  #E02725;
+    font-weight: 700;
+  }
+  
+  /* Styles for the ink bar */
+  .mat-ink-bar {
+    background-color: black;
+  }
+    

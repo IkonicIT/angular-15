@@ -9,7 +9,7 @@ import { ItemTypesService } from '../../services/Items/item-types.service';
 import { LoginService } from '../../services/login.service';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from '../../services/broadcaster.service';
-//import { ReportsService } from 'app/services/reports.service';
+import { ReportsService } from '../../services/reports.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 @Component({
@@ -80,7 +80,7 @@ export class FullLayoutComponent implements OnInit {
     private itemManagementService: ItemManagementService,
     private router: Router,
     private loginService: LoginService,
-    //private reportsService: ReportsService,
+    private reportsService: ReportsService,
     private sanitizer: DomSanitizer
   ) {
     this.spinner.show();
@@ -248,8 +248,8 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setItemSearchResults([]);
     this.itemManagementService.setAdvancedItemSearchResults([]);
     this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
-    //this.reportsService.setInserviceVsSpareReport({});
-    //this.reportsService.setserviceReport([]);
+    this.reportsService.setInserviceVsSpareReport({});
+    this.reportsService.setserviceReport([]);
     this.itemManagementService.setCompletedRepairs([]);
     this.itemManagementService.setInCompletedRepairs([]);
     this.itemManagementService.itemModel = {};
@@ -376,8 +376,8 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setSearchedItemTypeId(0);
     this.itemManagementService.setItemSearchResults([]);
     this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
-    //this.reportsService.setInserviceVsSpareReport({});
-    //this.reportsService.setserviceReport([]);
+    this.reportsService.setInserviceVsSpareReport({});
+    this.reportsService.setserviceReport([]);
     this.itemManagementService.setAdvancedItemSearchResults([]);
     this.itemManagementService.itemModel = {};
     this.itemManagementService.itemrepairnotesrfqModel = {};

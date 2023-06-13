@@ -21,12 +21,17 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgPipesModule, OrderByPipe } from 'ngx-pipes';
+import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppCustomPreloader } from './app.custome.preloader';
 import { AuthInterceptor } from 'src/AuthInterceptor';
+import { ItemServiceManagementService } from './services/Items/item-service-management.service';
 import { ItemRepairItemsService, LoginService } from './services';
 import { UserManagementService } from './services/user-management.service';
+import { UserTypesService } from './services/user-types.service';
+import { ReportsService } from './services/reports.service';
+import { DatePipe } from '@angular/common';
 import {
   WarrantyManagementService,
   CompanyManagementService,
@@ -116,6 +121,7 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     NgPipesModule,
     DropdownTreeviewModule,
     NgxSpinnerModule,
+    // NgxPasswordToggleModule,
     BrowserAnimationsModule,
     SelectDropDownModule,
     TabsModule.forRoot(),
@@ -140,6 +146,7 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     LoginService,
     WarrantyManagementService,
     UserManagementService,
+    UserTypesService,
     CompanyManagementService,
     CompanyDocumentsService,
     CompanyStatusesService,
@@ -152,10 +159,13 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     LocationNotesService,
     LocationStatusService,
     LocationTypesService,
+    ItemServiceManagementService,
     ItemManagementService,
     ItemAttributeService,
     BroadcasterService,
     DashboardService,
+    ReportsService,
+    DatePipe,
     ItemRepairItemsService,
     ItemStatusService,
     ItemTypesService,

@@ -1,0 +1,157 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            * To create a new user:<br />
+            1.Click the 'Add User' button.<br />
+            2.Enter the Information to add new user.<br />
+            2.Click the 'Save' button.<br />
+            * To edit an existing user:<br />
+            1.Click the 'Edit' button.<br />
+            2.Make necessary changes.<br />
+            3.Click the 'Update' button.<br />
+            * To delete an existing user:<br />
+            1.Click the 'Delete' button.
+          </div>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">
+            <strong>Users Log</strong>
+            <!-- <button type="button" [disabled]="highestRank <5" class="btn btn-primary float-right" (click)='addUser()'
+              tooltip="Add New User." placement="top">Add User</button> -->
+          </p>
+          <p style="color: red">
+            Number of Users Currently LoggedIn - {{ loggedinuserscount }}
+          </p>
+          <div>
+            <div class="float-left">
+              <span
+                >Show
+                <select [(ngModel)]="itemsForPagination">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+          </div>
+
+          <div class="float-right div-search">
+            <span>Search : </span>
+            <input [(ngModel)]="userFilter" />
+          </div>
+          <table
+            class="table table-responsive-sm table-hover table-outline mb-0"
+          >
+            <thead class="thead-light">
+              <tr>
+                <th
+                  [class.active]="order === 'firstname'"
+                  (click)="setOrder('firstname')"
+                >
+                  User<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th>Is loggedIn</th>
+                <th>LastLoginTime</th>
+                <th>LastLogoutTime</th>
+                <th
+                  [class.active]="order === 'firstname'"
+                  (click)="setOrder('logincount')"
+                >
+                  LoginCount<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let result of results
+                    | orderBy : reverse + order
+                    | filterBy : ['firstname'] : userFilter
+                    | paginate
+                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                "
+              >
+                <td>{{ result.firstname + " " + result.lastname }}</td>
+
+                <td>{{ result.isloggedin }}</td>
+                <td>
+                  {{ result.lastlogindate | date : "MM/dd/yyyy , h:mm a" }}
+                </td>
+                <td>
+                  {{ result.lastLogoutDate | date : "MM/dd/yyyy ,h:mm a" }}
+                </td>
+                <td>{{ result.logincount }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger btn-sm mb-1"
+                    tooltip="view userLog"
+                    (click)="viewUser(result)"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls
+            class="my-pagination"
+            (pageChange)="p = $event"
+            [autoHide]="true"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Yes) to permanently delete this User or Click(No) to discard This
+      action.
+    </p>
+    <button type="button" class="btn btn-primary" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,292 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12 mobile-padding">
+      <div class="card">
+        <div class="card-body">
+          <div>
+            <h4 class="card-title mb-0" style="color: red">SERVICE REPORTS</h4>
+            <br />
+
+            <div class="row" style="padding: 15px">
+              <div>
+                <label for="status"><strong>TimeSpan</strong></label>
+                <select class="form-control" [(ngModel)]="params.type">
+                  <option value="monthly">Next Month</option>
+                  <option value="quarterly">Next Quarter</option>
+                  <option value="range">Range</option>
+                </select>
+              </div>
+              <ng-container [ngSwitch]="params.type">
+                <ng-container *ngSwitchCase="'range'">
+                  <div>
+                    <label for="status"
+                      ><strong>From</strong
+                      ><strong class="text-danger"> *</strong></label
+                    >
+                    <div>
+                      <dp-date-picker
+                        [(ngModel)]="params.from"
+                        theme="dp-material"
+                      ></dp-date-picker>
+                    </div>
+                  </div>
+                  <div>
+                    <label for="status"
+                      ><strong>To</strong
+                      ><strong class="text-danger"> *</strong></label
+                    >
+                    <div>
+                      <dp-date-picker
+                        [(ngModel)]="params.to"
+                        theme="dp-material"
+                      ></dp-date-picker>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+
+              <div>
+                <label><strong>&nbsp;</strong></label>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  style="display: inherit; margin-top: -1px; margin-left: 2px"
+                  (click)="generateReport()"
+                  tooltip="Get ServiceReports"
+                >
+                  GET
+                </button>
+              </div>
+            </div>
+            <div *ngIf="isloaded">
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="exportAsExcelFileWithMultipleSheets()"
+                >
+                  Export to Excel
+                </button>
+              </div>
+              <br />
+
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-text"><strong>Open Services</strong></p>
+                  <div>
+                    <div class="float-left">
+                      <span
+                        >Show
+                        <select [(ngModel)]="itemsForPagination">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select>
+                        entries
+                      </span>
+                    </div>
+                  </div>
+                  <div class="float-right div-search">
+                    <span>Search : </span>
+                    <input [(ngModel)]="inCompletedServicesFilter" />
+                  </div>
+
+                  <table
+                    class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
+                  >
+                    <thead class="thead-light">
+                      <tr>
+                        <th
+                          [class.active]="order === 'tag'"
+                          (click)="setOrder('tag')"
+                        >
+                          Tag#<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="order === 'serviceDate'"
+                          (click)="setOrder('serviceDate')"
+                        >
+                          ServiceDate<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th>Cause</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let service of incompletedServices
+                            | orderBy : reverse + order
+                            | filterBy
+                              : ['tag', 'serviceDate', 'serviceCause']
+                              : inCompletedServicesFilter
+                            | paginate
+                              : {
+                                  itemsPerPage: itemsForPagination,
+                                  currentPage: page1,
+                                  id: 'p1'
+                                }
+                        "
+                      >
+                        <td>
+                          <a
+                            href="javascript:void(0)"
+                            (click)="
+                              goToView(
+                                service.itemId,
+                                service.tag,
+                                service.typeName
+                              )
+                            "
+                            tooltip="click here to view this Item"
+                            [innerHTML]="service.tag"
+                          ></a>
+                        </td>
+                        <td
+                          [innerHTML]="
+                            service.serviceDate | date : 'MM/dd/yyyy'
+                          "
+                        ></td>
+                        <td [innerHTML]="service.serviceCause"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <pagination-controls
+                    class="my-pagination"
+                    (pageChange)="page1 = $event"
+                    id="p1"
+                    [autoHide]="true"
+                  ></pagination-controls>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-text"><strong>Previous Services</strong></p>
+                  <div>
+                    <div class="float-left">
+                      <span
+                        >Show
+                        <select [(ngModel)]="completedServicesForPagination">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select>
+                        entries
+                      </span>
+                    </div>
+                  </div>
+                  <div class="float-right div-search">
+                    <span>Search : </span>
+                    <input [(ngModel)]="completedServicesFilter" />
+                  </div>
+                  <table
+                    class="table table-responsive-sm table-hover table-outline mb-0"
+                  >
+                    <thead class="thead-light">
+                      <tr>
+                        <th
+                          [class.active]="order === 'tag'"
+                          (click)="setOrder('tag')"
+                        >
+                          Tag#<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="completedOrder === 'serviceDate'"
+                          (click)="setCompletedOrder('serviceDate')"
+                        >
+                          Service Date<span [hidden]="completedReverse == ''"
+                            >▼</span
+                          ><span [hidden]="completedReverse != ''">▲</span>
+                        </th>
+                        <th>Cause</th>
+                        <th
+                          [class.active]="completedOrder === 'actualCompletion'"
+                          (click)="setCompletedOrder('actualCompletion')"
+                        >
+                          Actual Completion<span
+                            [hidden]="completedReverse == ''"
+                            >▼</span
+                          ><span [hidden]="completedReverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="completedOrder === 'completedBy'"
+                          (click)="setCompletedOrder('completedBy')"
+                        >
+                          Completed By<span [hidden]="completedReverse == ''"
+                            >▼</span
+                          ><span [hidden]="completedReverse != ''">▲</span>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let service of completedServices
+                            | orderBy : completedReverse + completedOrder
+                            | filterBy
+                              : [
+                                  'tag',
+                                  '
+                                  serviceDate',
+                                  'serviceCause',
+                                  'completedBy',
+                                  'actualCompletion'
+                                ]
+                              : completedServicesFilter
+                            | paginate
+                              : {
+                                  itemsPerPage: completedServicesForPagination,
+                                  currentPage: page2,
+                                  id: 'p2'
+                                }
+                        "
+                      >
+                        <td>
+                          <a
+                            href="javascript:void(0)"
+                            (click)="
+                              goToView(
+                                service.itemId,
+                                service.tag,
+                                service.typeName
+                              )
+                            "
+                            tooltip="click here to view this Item"
+                            [innerHTML]="service.tag"
+                          ></a>
+                        </td>
+                        <td
+                          [innerHTML]="
+                            service.serviceDate | date : 'MM/dd/yyyy'
+                          "
+                        ></td>
+                        <td [innerHTML]="service.serviceCause"></td>
+                        <td
+                          [innerHTML]="
+                            service.actualCompletion | date : 'MM/dd/yyyy'
+                          "
+                        ></td>
+                        <td [innerHTML]="service.completedBy"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <pagination-controls
+                    class="my-pagination"
+                    (pageChange)="page2 = $event"
+                    id="p2"
+                    [autoHide]="true"
+                  ></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -227,7 +227,7 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  removeVendor(companyId: string) {
+  removeVendor(companyId: number) {
     return this.http
       .delete(AppConfiguration.vendorRestURL + '' + companyId, {
         responseType: 'text',
@@ -241,7 +241,7 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getVendorDetails(comapnyId: string) {
+  getVendorDetails(comapnyId: number) {
     return this.http
       .get(AppConfiguration.vendorRestURL + comapnyId)
       .pipe(catchError(this.handleError));

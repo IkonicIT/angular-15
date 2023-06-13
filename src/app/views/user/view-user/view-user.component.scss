@@ -1,0 +1,9 @@
+label{
+    color:#002a64;
+    font-weight: bold;
+  }
+  .form-control[readonly] {
+    background-color: #cccccc;
+    opacity: 1;
+    cursor: not-allowed;
+  }

@@ -50,7 +50,7 @@ export class WarrantyManagementService {
   }
 
   removeWarrantyType(
-    typeId: string,
+    typeId: number,
     companyId: string,
     userName: string,
     warrantyType: string

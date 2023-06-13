@@ -1,0 +1,48 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+       
+        <div class="card-body">
+          <p class="card-text">Edit Statuses</p>
+
+          <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
+            Updated Company Status successfully.
+          </alert>
+          <div class="modal-body">
+
+            <div class="col-sm-12">
+              <div class="card">
+                <form name="form" (ngSubmit)="f.form.valid && updateStatus()" #f="ngForm" novalidate>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <input type="text" [(ngModel)]="model.added" name="added" #added="ngModel" id="added" hidden>
+                        <input type="text" [(ngModel)]="model.by" name="by" #by="ngModel" id="by" hidden>
+                        <input type="text" [(ngModel)]="model._id" name="_id" #_id="ngModel" id="_id" hidden>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="Status">Status</label>
+                        <input id="status" type="text" class="form-control" [(ngModel)]="model.status" name="status"
+                          #status="ngModel" placeholder="Enter Status" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button class="btn btn-primary">Update</button>
+                        <button type="button" (click)="cancelUpdateStatus()"
+                          class="btn btn-outline-danger btn-sm">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

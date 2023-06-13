@@ -1,0 +1,508 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="modal-body p-0">
+            <div class="col-sm-12 p-0">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Inservice Vs Spare Report</strong>
+                </div>
+
+                <div class="card-body">
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="description">Hp</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.hp"
+                        name="hp"
+                        #hp="ngModel"
+                        id="hp"
+                      />
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="description">Rpm</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.rpm"
+                        name="rpm"
+                        #rpm="ngModel"
+                        id="rpm"
+                      />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="frame">Frame</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.frame"
+                        name="frame"
+                        #frame="ngModel"
+                        id="frame"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group col-sm-2 align-center">
+                    <button
+                      type="button"
+                      (click)="getReport()"
+                      tooltip="Generate Report"
+                      class="btn btn-primary"
+                    >
+                      Generate report
+                    </button>
+                  </div>
+
+                  <div *ngIf="isloaded">
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="exportAsExcelFileWithMultipleSheets()"
+                    >
+                      Export to Excel
+                    </button>
+                    <mat-tab-group
+                      (selectedTabChange)="onTabChanged($event)"
+                      [selectedIndex]="activeTab"
+                    >
+                      <mat-tab>
+                        <ng-template mat-tab-label>
+                          <span> InserviceVsSpare </span>
+                        </ng-template>
+                        <div>
+                          <br />
+                          <h5 class="card-title mb-0" style="color: red">
+                            Inservice and Related Spare Motors
+                          </h5>
+                          <br />
+                          <div class="float-left">
+                            <span
+                              >Show
+                              <select [(ngModel)]="itemsForPaginationISAS">
+                                <option>5</option>
+                                <option>10</option>
+                                <option>25</option>
+                                <option>50</option>
+                              </select>
+                              entries
+                            </span>
+                          </div>
+                        </div>
+                        <div class="float-right div-search">
+                          <span>Search : </span>
+                          <input [(ngModel)]="typeFilter" />
+                        </div>
+                        <table
+                          class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
+                        >
+                          <thead class="thead-light">
+                            <tr>
+                              <th
+                                [class.active]="order === 'tag'"
+                                (click)="setOrder('tag')"
+                              >
+                                Tag<span [hidden]="reverse == ''">▼</span
+                                ><span [hidden]="reverse != ''">▲</span>
+                              </th>
+
+                              <th
+                                [class.active]="order === 'hp'"
+                                (click)="setOrder('hp')"
+                              >
+                                Hp<span [hidden]="reverse == ''">▼</span
+                                ><span [hidden]="reverse != ''">▲</span>
+                              </th>
+
+                              <th
+                                [class.active]="order === 'rpm'"
+                                (click)="setOrder('rpm')"
+                              >
+                                Rpm<span [hidden]="reverse == ''">▼</span
+                                ><span [hidden]="reverse != ''">▲</span>
+                              </th>
+
+                              <th
+                                [class.active]="order === 'frame'"
+                                (click)="setOrder('frame')"
+                              >
+                                Frame<span [hidden]="reverse == ''">▼</span
+                                ><span [hidden]="reverse != ''">▲</span>
+                              </th>
+                              <th>Spares</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              *ngFor="
+                                let motor of inServiceAndSpareMotors
+                                  | orderBy : reverse + order
+                                  | filterBy
+                                    : ['tag', 'hp', 'rpm', 'frame']
+                                    : typeFilter
+                                  | paginate
+                                    : {
+                                        id: 'paginationISVS',
+                                        itemsPerPage: itemsForPaginationISAS,
+                                        currentPage: pageIsas
+                                      }
+                              "
+                            >
+                              <td>
+                                <a
+                                  href="javascript:void(0)"
+                                  (click)="
+                                    goToView(
+                                      motor.itemId,
+                                      motor.tag,
+                                      motor.typeName
+                                    )
+                                  "
+                                  tooltip="click here to view this Item"
+                                  [innerHTML]="motor.tag"
+                                ></a>
+                              </td>
+                              <td>{{ motor.hp }}</td>
+                              <td>{{ motor.rpm }}</td>
+                              <td>{{ motor.frame }}</td>
+                              <td>
+                                <a
+                                  href="javascript:void(0)"
+                                  (click)="
+                                    showSpares(sparesTemplate, motor.itemId)
+                                  "
+                                  >Spares</a
+                                >
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <pagination-controls
+                          class="my-pagination"
+                          id="paginationISVS"
+                          (pageChange)="pageIsas = $event"
+                          [autoHide]="true"
+                        ></pagination-controls>
+                      </mat-tab>
+                      <mat-tab>
+                        <ng-template mat-tab-label>
+                          <span> Inservice </span>
+                        </ng-template>
+                        <div>
+                          <div>
+                            <br />
+                            <h5 class="card-title mb-0" style="color: red">
+                              Unmatched Inservice Motors
+                            </h5>
+                            <br />
+                            <div class="float-left">
+                              <span
+                                >Show
+                                <select [(ngModel)]="itemsForPaginationIS">
+                                  <option>5</option>
+                                  <option>10</option>
+                                  <option>25</option>
+                                  <option>50</option>
+                                </select>
+                                entries
+                              </span>
+                            </div>
+                          </div>
+                          <div class="float-right div-search">
+                            <span>Search : </span>
+                            <input [(ngModel)]="typeFilter" />
+                          </div>
+                          <table
+                            class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
+                          >
+                            <thead class="thead-light">
+                              <tr>
+                                <th
+                                  [class.active]="orderIS === 'tag'"
+                                  (click)="setOrderforInservice('tag')"
+                                >
+                                  Tag<span [hidden]="reverseIS == ''">▼</span
+                                  ><span [hidden]="reverseIS != ''">▲</span>
+                                </th>
+
+                                <th
+                                  [class.active]="orderIS === 'hp'"
+                                  (click)="setOrderforInservice('hp')"
+                                >
+                                  Hp<span [hidden]="reverseIS == ''">▼</span
+                                  ><span [hidden]="reverseIS != ''">▲</span>
+                                </th>
+
+                                <th
+                                  [class.active]="orderIS === 'rpm'"
+                                  (click)="setOrderforInservice('rpm')"
+                                >
+                                  Rpm<span [hidden]="reverseIS == ''">▼</span
+                                  ><span [hidden]="reverseIS != ''">▲</span>
+                                </th>
+
+                                <th
+                                  [class.active]="orderIS === 'frame'"
+                                  (click)="setOrderforInservice('frame')"
+                                >
+                                  Frame<span [hidden]="reverseIS == ''">▼</span
+                                  ><span [hidden]="reverseIS != ''">▲</span>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr
+                                *ngFor="
+                                  let motor of inServiceMotors
+                                    | orderBy : reverseIS + orderIS
+                                    | filterBy
+                                      : ['tag', 'hp', 'rpm', 'frame']
+                                      : typeFilter
+                                    | paginate
+                                      : {
+                                          id: 'paginationIS',
+                                          itemsPerPage: itemsForPaginationIS,
+                                          currentPage: pageIs
+                                        }
+                                "
+                              >
+                                <td>
+                                  <a
+                                    href="javascript:void(0)"
+                                    (click)="
+                                      goToView(
+                                        motor.itemId,
+                                        motor.tag,
+                                        motor.typeName
+                                      )
+                                    "
+                                    tooltip="click here to view this Item"
+                                    [innerHTML]="motor.tag"
+                                  ></a>
+                                </td>
+                                <td>{{ motor.hp }}</td>
+                                <td>{{ motor.rpm }}</td>
+                                <td>{{ motor.frame }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <pagination-controls
+                            class="my-pagination"
+                            id="paginationIS"
+                            (pageChange)="pageIs = $event"
+                            [autoHide]="true"
+                          ></pagination-controls>
+                        </div>
+                      </mat-tab>
+                      <mat-tab>
+                        <ng-template mat-tab-label>
+                          <span> Spare </span>
+                        </ng-template>
+                        <div>
+                          <br />
+                          <h5 class="card-title mb-0" style="color: red">
+                            Unmatched Spare Motors
+                          </h5>
+                          <br />
+                          <div class="float-left">
+                            <span
+                              >Show
+                              <select [(ngModel)]="itemsForPaginationS">
+                                <option>5</option>
+                                <option>10</option>
+                                <option>25</option>
+                                <option>50</option>
+                              </select>
+                              entries
+                            </span>
+                          </div>
+                        </div>
+                        <div class="float-right div-search">
+                          <span>Search : </span>
+                          <input [(ngModel)]="typeFilter" />
+                        </div>
+                        <table
+                          class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
+                        >
+                          <thead class="thead-light">
+                            <tr>
+                              <th
+                                [class.active]="orderS === 'tag'"
+                                (click)="setOrderForSpare('tag')"
+                              >
+                                Tag<span [hidden]="reverseS == ''">▼</span
+                                ><span [hidden]="reverseS != ''">▲</span>
+                              </th>
+
+                              <th
+                                [class.active]="orderS === 'hp'"
+                                (click)="setOrderForSpare('hp')"
+                              >
+                                Hp<span [hidden]="reverseS == ''">▼</span
+                                ><span [hidden]="reverseS != ''">▲</span>
+                              </th>
+
+                              <th
+                                [class.active]="orderS === 'rpm'"
+                                (click)="setOrderForSpare('rpm')"
+                              >
+                                Rpm<span [hidden]="reverseS == ''">▼</span
+                                ><span [hidden]="reverseS != ''">▲</span>
+                              </th>
+
+                              <th
+                                [class.active]="orderS === 'frame'"
+                                (click)="setOrderForSpare('frame')"
+                              >
+                                Frame<span [hidden]="reverseS == ''">▼</span
+                                ><span [hidden]="reverseS != ''">▲</span>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              *ngFor="
+                                let motor of spareMotors
+                                  | orderBy : reverseS + orderS
+                                  | filterBy
+                                    : ['tag', 'hp', 'rpm', 'frame']
+                                    : typeFilter
+                                  | paginate
+                                    : {
+                                        id: 'pagination-s',
+                                        itemsPerPage: itemsForPaginationS,
+                                        currentPage: pageS
+                                      }
+                              "
+                            >
+                              <td>
+                                <a
+                                  href="javascript:void(0)"
+                                  (click)="
+                                    goToView(
+                                      motor.itemId,
+                                      motor.tag,
+                                      motor.typeName
+                                    )
+                                  "
+                                  tooltip="click here to view this Item"
+                                  [innerHTML]="motor.tag"
+                                ></a>
+                              </td>
+                              <td>{{ motor.hp }}</td>
+                              <td>{{ motor.rpm }}</td>
+                              <td>{{ motor.frame }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <pagination-controls
+                          class="my-pagination"
+                          id="pagination-s"
+                          (pageChange)="pageS = $event"
+                          [autoHide]="true"
+                        ></pagination-controls>
+                      </mat-tab>
+                    </mat-tab-group>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #mytemplate>
+  <div class="card">
+    <div class="card-body">
+      <div style="margin-bottom: 10px">
+        <strong class="card-text">Spare </strong>
+        <button
+          type="button"
+          (click)="closeModel()"
+          class="btn btn-outline-danger btn-sm float-right"
+        >
+          Close
+        </button>
+      </div>
+      <table
+        class="table table-responsive-sm table-responsive-md table-hover table-outline mb-0"
+      >
+        <thead class="thead-light">
+          <tr>
+            <th>Tag#</th>
+            <th>Hp</th>
+            <th>Rpm</th>
+            <th>Frame</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a
+                href="javascript:void(0)"
+                (click)="
+                  goToViewForSpare(
+                    spareItem.itemId,
+                    spareItem.tag,
+                    spareItem.typeName
+                  )
+                "
+                tooltip="click here to view this Item"
+                [innerHTML]="spareItem.tag"
+              ></a>
+            </td>
+            <td>{{ spareItem.hp }}</td>
+            <td>{{ spareItem.rpm }}</td>
+            <td>{{ spareItem.frame }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<ng-template #sparesTemplate>
+  <div class="card">
+    <div class="card-body">
+      <div style="margin-bottom: 10px">
+        <strong class="card-text">Spares </strong>
+        <button
+          type="button"
+          (click)="closeSparesModel()"
+          class="btn btn-outline-danger btn-sm float-right"
+        >
+          Close
+        </button>
+      </div>
+      <table
+        class="table table-responsive-sm table-responsive-md table-hover table-outline mb-0"
+      >
+        <thead class="thead-light">
+          <tr>
+            <th>Tag#</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let spareItem of spares">
+            <td>
+              <a
+                href="javascript:void(0)"
+                (click)="openModal(mytemplate, spareItem.itemId)"
+                tooltip="click here to view this Item"
+                [innerHTML]="spareItem.tag"
+              ></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>

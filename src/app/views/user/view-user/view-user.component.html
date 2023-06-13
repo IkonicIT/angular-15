@@ -1,0 +1,131 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Viewing User [User:{{username}}]</strong>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="lType">User Name :</label>
+                      <span>{{model.username}}</span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="vendor">Primary Company :</label>
+                      <input readonly type="checkbox" [(ngModel)]="model.vendor" name="vendor" #vendor="ngModel"
+                        id="vendor" (change)="checkValue(model.vendor?'A':'B')" style="margin-left:100px;">&nbsp; Vendor
+                      <select readonly class="form-control" [(ngModel)]="model.companyid" name="companyid"
+                        #companyid="ngModel">
+                       
+                        <option [ngValue]="company.companyid" *ngFor="let company of allCompanies"
+                          [selected]="isUserCompany === true">{{company.name}}</option>
+                        <option [ngValue]="vendor.companyid" *ngFor="let vendor of allVendors"
+                          [selected]="isVendor === true">{{vendor.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+
+                      <label for="fname">First Name :</label>
+                      <span>{{model.firstname}}</span>
+
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="lName">Last Name :</label>
+                      <span>{{model.lastname}}</span>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="job">Job Title :</label>
+                      <span>{{model.jobtitle}}</span>
+
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="dept">Department :</label>
+                      <span>{{model.department}}</span>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="email">E-mail :</label>
+                      <span>{{model.email}}</span>
+
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="phone">Phone :</label>
+                      <span>{{model.phone}}</span>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="fax">Fax :</label>
+                      <span>{{model.fax}}</span>
+
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="mobile">Mobile :</label>
+                      <span>{{model.mobilephone}}</span>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="req">Receive RFQ Notification :</label>
+                      <input type="checkbox" [(ngModel)]="model.sendreceiverfq" name="req" #req="ngModel" id="req">
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="form-group col-sm-6">
+                      <label for="location">User's Top Location</label>
+                     
+                      <app-dropdown-treeview-select readonly class="form-control" [items]="locationItems"
+                        [(value)]="model.toplocationid">
+                      </app-dropdown-treeview-select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="pLocation">User's Preferred Location</label>
+                     
+                      <app-dropdown-treeview-select readonly class="form-control" [items]="locationItems"
+                        [(value)]="model.preferredlocationid">
+                      </app-dropdown-treeview-select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-12 text-center">
+                      <button tooltip="Back to User management" (click)="cancelUser()"
+                        class="btn btn-primary">Back</button>
+                    </div>
+                  </div>
+                
+                  <div>
+                    <h6 style="color: red;">User Attributes:</h6> <br>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-sm-6" *ngFor="let eachAttr of typeAttributes;let i=index;">
+                      <label>{{eachAttr.name}} :</label>
+                      <span readonly>{{eachAttr.value}}</span>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,240 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            * To create a new company from an existing template:<br />
+            1.Select a template from the 'Select Template' drop-down list.<br />
+            2.Enter a name for the new company.<br />
+            3.Click the 'Create Company' button.<br />
+            * To create a new template from an existing company:<br />
+            1.Select a company from the 'Select Company' drop-down list.<br />
+            2.Enter a name for the new template.<br />
+            3.Click the 'CreateTempalte' button.<br />
+            * To delete an existing template:<br />
+            1.Click the 'Delete Template' button.
+          </div>
+        </div>
+        <div class="card-header" style="background-color: #e02725">
+          <strong>Template</strong>
+        </div>
+        <div class="card-body">
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <div class="card-header" style="background-color: #e02725">
+                  <strong>Create Company from Template</strong>
+                </div>
+
+                <div class="card-body">
+                  <alert
+                    *ngIf="index == 1"
+                    type="success"
+                    [dismissible]="dismissible"
+                  >
+                    Company "{{ savedCompanyName }}" saved successfully.
+                  </alert>
+                  <alert
+                    *ngIf="index == 2"
+                    type="success"
+                    [dismissible]="dismissible"
+                  >
+                    Template "{{ deletedTemplateName }}" Deleted successfully.
+                  </alert>
+                  <alert
+                    type="danger"
+                    *ngIf="index == -1"
+                    [dismissible]="dismissible"
+                  >
+                    Please select Template
+                  </alert>
+                  <alert
+                    type="danger"
+                    *ngIf="index == -2"
+                    [dismissible]="dismissible"
+                  >
+                    Please Enter company Name
+                  </alert>
+
+                  <div class="row">
+                    <div class="form-group col-sm-5">
+                      <label for="template"
+                        >Select Template:<strong class="text-danger"
+                          >*</strong
+                        ></label
+                      >
+                      <select
+                        class="form-control"
+                        [(ngModel)]="templateID"
+                        id="companyid"
+                      >
+                        <option
+                          *ngFor="let template of templates"
+                          [value]="template.templateID"
+                        >
+                          {{ template.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="form-group col-sm-1"></div>
+                    <div class="form-group col-sm-5">
+                      <label for="companyName">Enter New Company's Name:</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="company.name"
+                        name="lType"
+                        #name="ngModel"
+                        id="lType"
+                        placeholder="Enter new Company Name"
+                      />
+                    </div>
+                    <div class="form-group col-sm-1"></div>
+                  </div>
+                  <br />
+
+                  <div class="row">
+                    <div class="form-group col-sm-12 text-center">
+                      <button
+                        type="button"
+                        tooltip="Save new company"
+                        (click)="saveCompany()"
+                        class="btn btn-primary"
+                      >
+                        Create Company
+                      </button>
+                      <button
+                        type="button"
+                        tooltip="Delete this Template"
+                        (click)="openModal(confirmtemplate, templateID)"
+                        class="btn btn-primary"
+                        [disabled]="highestRank == 9"
+                      >
+                        Delete Template
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <div class="card-header" style="background-color: #e02725">
+                  <strong>Create Template from Company</strong>
+                </div>
+
+                <div class="card-body">
+                  <alert
+                    *ngIf="index1 == 1"
+                    type="success"
+                    [dismissible]="dismissible"
+                  >
+                    Template "{{ savedTemplateName }}" saved successfully.
+                  </alert>
+                  <alert
+                    type="danger"
+                    *ngIf="index1 == -1"
+                    [dismissible]="dismissible"
+                  >
+                    Please select Company
+                  </alert>
+                  <alert
+                    type="danger"
+                    *ngIf="index1 == -2"
+                    [dismissible]="dismissible"
+                  >
+                    Please Enter Template Name
+                  </alert>
+
+                  <div class="row">
+                    <div class="form-group col-sm-5">
+                      <label for="template"
+                        >Select Company:<strong class="text-danger"
+                          >*</strong
+                        ></label
+                      >
+                      <select
+                        class="form-control"
+                        [(ngModel)]="model.companyid"
+                        id="companyid"
+                      >
+                        <option
+                          *ngFor="let company of companies"
+                          [value]="company.companyid"
+                        >
+                          {{ company.name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group col-sm-1"></div>
+
+                    <div class="form-group col-sm-5">
+                      <label for="templateName"
+                        >Enter New Template's Name:</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.templateName"
+                        name="lType"
+                        #templateName="ngModel"
+                        id="lType"
+                        placeholder="Enter new Template Name"
+                      />
+                    </div>
+                    <div class="form-group col-sm-1"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-sm-12 text-center">
+                      <button
+                        tooltip="Save Template"
+                        (click)="saveTemplate()"
+                        class="btn btn-primary"
+                      >
+                        Create Template
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Yes) to permanently delete this Template or Click(No) to discard
+      This action.
+    </p>
+    <button type="button" class="btn btn-primary" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

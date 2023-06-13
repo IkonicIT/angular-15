@@ -1,0 +1,189 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip="Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            *To create a new note:<br />
+            1.Click the 'AddNotes' button.<br />
+            2.Enter the data for the new note.<br />
+            3.Click the 'Save' button.<br />
+            *To edit an existing note: <br />
+            1.click the 'Edit' button.<br />
+            2.Make the necessary changes.<br />
+            3.Click the 'Update' button.<br />
+            *To delete an existing note: <br />
+            1.Click the 'Delete' button.
+          </div>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">
+            Manage {{ vendorName }} Notes
+            <button
+              type="button"
+              class="btn btn-primary float-right"
+              tooltip="Add Notes."
+              (click)="addVendorNotes()"
+              placement="top"
+            >
+              Add Notes
+            </button>
+          </p>
+          <div>
+            <div class="float-left">
+              <span
+                >Show
+                <select [(ngModel)]="itemsForPagination">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+          </div>
+          <div class="float-right div-search">
+            <span>Search : </span>
+            <input [(ngModel)]="vendorNotesFilter" />
+          </div>
+          <table
+            class="table table-responsive-sm table-hover table-outline mb-0"
+          >
+            <thead class="thead-light">
+              <tr>
+                <th
+                  [class.active]="order === 'enteredon'"
+                  (click)="setOrder('enteredon')"
+                >
+                  Date<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'entry'"
+                  (click)="setOrder('entry')"
+                >
+                  Title<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'jobnumber'"
+                  (click)="setOrder('jobnumber')"
+                >
+                  Job<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'ponumber'"
+                  (click)="setOrder('ponumber')"
+                >
+                  PO<span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th
+                  [class.active]="order === 'enteredby'"
+                  (click)="setOrder('enteredby')"
+                >
+                  By <span [hidden]="reverse == ''">▼</span
+                  ><span [hidden]="reverse != ''">▲</span>
+                </th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let note of notes
+                    | orderBy : reverse + order
+                    | filterBy
+                      : [
+                          'enteredon',
+                          'entry',
+                          'jobnumber',
+                          'ponumber',
+                          'enteredby'
+                        ]
+                      : vendorNotesFilter
+                    | paginate
+                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                "
+              >
+                <td>{{ note.enteredon | date : "dd/mm/yyyy" }}</td>
+                <td>{{ note.entry }}</td>
+                <td>{{ note.jobnumber }}</td>
+                <td>{{ note.ponumber }}</td>
+                <td>{{ note.enteredby }}</td>
+
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger btn-sm"
+                    tooltip="Edit Note"
+                    (click)="editVendorNotes(note)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger btn-sm"
+                    tooltip="Delete Note"
+                    (click)="openModal(confirmtemplate, note.journalid)"
+                    disabled="highestRank == 9"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls
+            class="my-pagination"
+            (pageChange)="p = $event"
+            [autoHide]="true"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Yes) to permanently delete this VendorNote or Click(No) to discard
+      This action.
+    </p>
+    <button type="button" class="btn btn-primary" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

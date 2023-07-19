@@ -12,6 +12,7 @@ import { BroadcasterService } from '../../services/broadcaster.service';
 import { ReportsService } from '../../services/reports.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './full-layout.component.html',
@@ -28,9 +29,7 @@ export class FullLayoutComponent implements OnInit {
   tag: any = '';
   itemTypes: any = [];
   selectedType: any = null;
-
   suggessions: any[] = [];
-
   value: any;
   items: TreeviewItem[];
   config = TreeviewConfig.create({
@@ -101,6 +100,7 @@ export class FullLayoutComponent implements OnInit {
     this.isOwnerAminReadOnly = sessionStorage.getItem('IsOwnerAdminReadOnly');
     this.getUserAccessCompanies();
   }
+
   orderData(a: any, b: any): number {
     if (a.name >= b.name) {
       return 1;
@@ -110,6 +110,7 @@ export class FullLayoutComponent implements OnInit {
       return 0;
     }
   }
+
   ngOnInit() {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.isOwnerAminReadOnly = sessionStorage.getItem('IsOwnerAdminReadOnly');
@@ -200,48 +201,6 @@ export class FullLayoutComponent implements OnInit {
     }
   }
 
-  // selectCompanyFromMasterSearch(userSelectedCompany) {
-  //      this.getCompanyLogo(userSelectedCompany.companyid);
-  //     this.masterSearchFlag = 'false';
-  //     this.itemManagementService.setSearchedItemTag("");
-  //     this.itemManagementService.setSearchedItemTypeId(0);
-  //     this.itemManagementService.setItemSearchResults([]);
-  //     this.itemManagementService.setAdvancedItemSearchResults([]);
-  //     this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
-  //     this.itemManagementService.itemModel = {};
-  //     this.itemManagementService.itemrepairnotesrfqModel = {};
-  //     this.broadcasterService.locations = [];
-  //     this.itemManagementService.setCompletedRepairs([]);
-  //     this.itemManagementService.setInCompletedRepairs([]);
-  //     this.userSelectedCompany1 = userSelectedCompany;
-  //     this.companyManagementService.setGlobalCompany(userSelectedCompany);
-  //     this.broadcasterService.currentCompany = 'nonselectcompany';
-  //     this.authToken = sessionStorage.getItem('auth_token');
-  //     this.userName = sessionStorage.getItem('userName');
-  //     this.locationManagementService.setLocations([]);
-  //     this.spinner.show();
-  //     this.itemTypesService.getAllItemTypesWithHierarchy(userSelectedCompany.companyid).subscribe(response => {
-  //         this.broadcasterService.itemTypeHierarchy = response;
-  //         this.itemTypes = response;
-  //         if (this.itemTypes && this.itemTypes.length > 0) {
-  //             this.items = this.generateHierarchy(this.itemTypes);
-  //         }
-  //         this.itemManagementService.setItemTypes(response);
-  //         this.spinner.hide();
-  //     });
-  //     this.currentRole = 'ownerAdmin';
-  //     this.highestRank = 8;
-  //     this.broadcasterService.userRoles = [{ roleName: "ownerAdmin" }]
-  //     sessionStorage.setItem('currentRole', this.currentRole);
-  //     sessionStorage.setItem('highestRank', this.highestRank);
-  //     this.broadcasterService.broadcast('refreshNavBar', true);
-  //     this.spinner.show();
-  //     this.locationManagementService.getAllLocationsWithHierarchy(userSelectedCompany.companyid).subscribe(response => {
-  //         this.spinner.hide();
-  //         this.broadcasterService.locations = response;
-  //     });
-
-  // }
   selectRootCompanyForAdmin(userSelectedCompany: any) {
     this.itemManagementService.setSearchedItemTag('');
     this.itemManagementService.setSearchedItemTypeId(0);
@@ -352,6 +311,7 @@ export class FullLayoutComponent implements OnInit {
         });
     }
   }
+
   getCompanyLogo(companyid: any) {
     this.noLogo = false;
     this.spinner.show();
@@ -371,7 +331,7 @@ export class FullLayoutComponent implements OnInit {
   }
 
   selectRootCompany(userSelectedCompany: any) {
-    let userSelectedCompany1 = userSelectedCompany.value[0];
+    let userSelectedCompany1 = userSelectedCompany.value;
     this.itemManagementService.setSearchedItemTag('');
     this.itemManagementService.setSearchedItemTypeId(0);
     this.itemManagementService.setItemSearchResults([]);
@@ -473,10 +433,10 @@ export class FullLayoutComponent implements OnInit {
     return;
   }
 
-  generateHierarchy(typeList: any) {
-    let items: any = [];
-    typeList.forEach((type: any) => {
-      var children = [];
+  generateHierarchy(typeList: any[]) {
+    let items: TreeviewItem[] = [];
+    typeList.forEach((type) => {
+      var children: TreeviewItem[] = [];
       if (type.typeList && type.typeList.length > 0) {
         children = this.generateHierarchy(type.typeList);
       }

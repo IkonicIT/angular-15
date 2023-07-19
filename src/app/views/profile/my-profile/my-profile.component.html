@@ -3,19 +3,37 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
-          <button type="button" (click)="print()" tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm">Print </button>
-          <button type="button" (click)="help()" tooltip=" Instructions" class="btn btn-outline-danger btn-sm">Help
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
           </button>
-          <div style="text-align: left;border:1px solid;width:fit-content;background-color:whitesmoke;"
-            *ngIf="helpFlag==true">
-            Note: Mandatory Fields are required.<br>
-            * To change profile:<br>
-            1.Make necessary changes.<br>
-            3.Click the 'Save' button.<br>
-            * To change Password:<br>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            * To change profile:<br />
+            1.Make necessary changes.<br />
+            3.Click the 'Save' button.<br />
+            * To change Password:<br />
             1.Click the 'ChangePassword' button.
-
           </div>
         </div>
         <div class="card-body mobile-padding">
@@ -23,90 +41,177 @@
             <div class="col-sm-12 mobile-padding">
               <div class="card">
                 <div class="card-header">
-                  <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
-                    Profile of "{{username}}" updated successfully.
+                  <alert
+                    *ngIf="index > 0"
+                    type="success"
+                    [dismissible]="dismissible"
+                  >
+                    Profile of "{{ username }}" updated successfully.
                   </alert>
-                  <alert type="danger" *ngIf="index ==-1" [dismissible]="dismissible">
+                  <alert
+                    type="danger"
+                    *ngIf="index == -1"
+                    [dismissible]="dismissible"
+                  >
                     Please Enter Required Fields. <br />
-                    ( username and Email are required
-                    )
+                    ( username and Email are required )
                   </alert>
                   <strong>My Profile</strong>
-                  <button type="button" class="btn btn-primary float-right" [routerLink]="['../changePassword']"
-                    tooltip="Change Password" placement="top">Change Password</button>
+                  <button
+                    type="button"
+                    class="btn btn-primary float-right"
+                    [routerLink]="['../changePassword']"
+                    tooltip="Change Password"
+                    placement="top"
+                  >
+                    Change Password
+                  </button>
                 </div>
-                <form name="form" (ngSubmit)="saveProfile(0,0,0)" #f="ngForm" novalidate>
+                <form
+                  name="form"
+                  (ngSubmit)="saveProfile(0, 0, 0)"
+                  #f="ngForm"
+                  novalidate
+                >
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="lType">User Name</label><strong class="text-danger">*</strong>
-                        <input type="text" class="form-control" [(ngModel)]="model.username" name="lType"
-                          #name="ngModel" id="lType" placeholder="Enter User Name" required>
-
+                        <label for="lType">User Name</label
+                        ><strong class="text-danger">*</strong>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.username"
+                          name="lType"
+                          #name="ngModel"
+                          id="lType"
+                          placeholder="Enter User Name"
+                          required
+                        />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="email">E-mail</label><strong class="text-danger">*</strong>
-                        <input type="text" class="form-control" [(ngModel)]="model.email" name="email" #email="ngModel"
-                          id="email" required>
+                        <label for="email">E-mail</label
+                        ><strong class="text-danger">*</strong>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.email"
+                          name="email"
+                          #email="ngModel"
+                          id="email"
+                          required
+                        />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fname">First Name</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.firstname" name="fname"
-                          #fname="ngModel" id="fname">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.firstname"
+                          name="fname"
+                          #fname="ngModel"
+                          id="fname"
+                        />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="lName">Last Name</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.lastname" name="lName"
-                          #lName="ngModel" id="lName">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.lastname"
+                          name="lName"
+                          #lName="ngModel"
+                          id="lName"
+                        />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="job">Job Title</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.jobtitle" name="job" #job="ngModel"
-                          id="job">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.jobtitle"
+                          name="job"
+                          #job="ngModel"
+                          id="job"
+                        />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="dept">Department</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.department" name="dept"
-                          #dept="ngModel" id="dept">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.department"
+                          name="dept"
+                          #dept="ngModel"
+                          id="dept"
+                        />
                       </div>
-
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fax">Fax</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.fax" name="fax" #fax="ngModel"
-                          id="fax">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.fax"
+                          name="fax"
+                          #fax="ngModel"
+                          id="fax"
+                        />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="plocation">Preferred Location </label>
-                      
-                        <app-dropdown-treeview-select [items]="locationItems" [(value)]="model.preferredlocationid"
-                          (valueChange)="onValueChange($event)">
+
+                        <app-dropdown-treeview-select
+                          [items]="locationItems"
+                          [(value)]="model.preferredlocationid"
+                          (valueChange)="onValueChange($event)"
+                        >
                         </app-dropdown-treeview-select>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="phone">Phone</label>
-                        <input type="number" class="form-control" [(ngModel)]="model.phone" name="phone"
-                          #phone="ngModel" id="phone">
+                        <input
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="model.phone"
+                          name="phone"
+                          #phone="ngModel"
+                          id="phone"
+                        />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="mobile">Mobile</label>
-                        <input type="number" class="form-control" [(ngModel)]="model.mobilephone" name="mobile"
-                          #mobile="ngModel" id="mobile">
+                        <input
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="model.mobilephone"
+                          name="mobile"
+                          #mobile="ngModel"
+                          id="mobile"
+                        />
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button class="btn btn-primary" tooltip="Save Profile">Save</button>
-                        <button type="button" (click)="back()" class="btn btn btn-outline-danger btn-sm"
-                          tooltip="Cancel Profile">Cancel</button>
+                        <button class="btn btn-primary" tooltip="Save Profile">
+                          Save
+                        </button>
+                        <button
+                          type="button"
+                          (click)="back()"
+                          class="btn btn btn-outline-danger btn-sm"
+                          tooltip="Cancel Profile"
+                        >
+                          Cancel
+                        </button>
                       </div>
                     </div>
                   </div>

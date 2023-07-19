@@ -3,6 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { isUndefined } from 'is-what';
 import { BroadcasterService } from '../../services/broadcaster.service';
 import { UserManagementService } from '../../services/user-management.service';
+// import { ElementRef, Renderer2 } from '@angular/core';
+// import * as $ from 'jquery';
+
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
@@ -15,11 +18,14 @@ export class AppHeaderComponent implements OnInit {
   userRoles: any = [];
   userId: any;
   data: any;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private broadcasterService: BroadcasterService,
-    private userManagementService: UserManagementService
+    private userManagementService: UserManagementService,
+    // private elementRef: ElementRef,
+    // private renderer: Renderer2
   ) {
     this.getUserData();
   }
@@ -28,6 +34,10 @@ export class AppHeaderComponent implements OnInit {
     this.broadcasterService.on('refreshNavBar').subscribe((data) => {
       this.getUserData();
     });
+
+    // this.elementRef.nativeElement
+    //   .querySelector('#simple-dropdown')
+    //   .addEventListener('click', this.toggleDropdown.bind(this));
   }
 
   getUserData() {
@@ -76,4 +86,17 @@ export class AppHeaderComponent implements OnInit {
     sessionStorage.clear();
     this.router.navigate(['/login']);
   }
+
+  /* toggleDropdown() {
+    //alert('1');
+    let dropdownMenu =
+      this.elementRef.nativeElement.querySelector('.dropdown-menu');
+    if (dropdownMenu.classList.contains('show')) {
+      this.renderer.removeClass(dropdownMenu, 'show');
+      this.renderer.removeClass(dropdownMenu, 'd-block');
+    } else {
+      this.renderer.addClass(dropdownMenu, 'show');
+      this.renderer.addClass(dropdownMenu, 'd-block');
+    }
+  } */
 }

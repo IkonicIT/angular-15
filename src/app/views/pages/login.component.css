@@ -1,0 +1,30 @@
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 104px; /* Add space for the toggle button */
+}
+
+.password-input button {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.password-input i {
+  font-size: 15px;
+}
+
+/* Styling for the toggle button icon */
+.password-input .fa-eye {
+  opacity: 0.6;
+}
+
+.password-input .fa-eye-slash {
+  opacity: 0.6;
+}

@@ -3,33 +3,50 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
-          <button type="button" (click)="print()" tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm">Print </button>
-          <button type="button" (click)="help()" tooltip="Instructions" class="btn btn-outline-danger btn-sm">Help
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
           </button>
-          <div style="text-align: left;border:1px solid;width:fit-content;background-color:whitesmoke;"
-            *ngIf="helpFlag==true">
-            Note: Mandatory Fields are required.<br>
-            *To add a new Vendor:<br>
-            1.Click the 'AddVendor' button.<br>
-            2.Enter the data for the new vendor.<br>
-            3.Click the 'Save' button.<br>
-            *To edit an existing vendor: <br>
-            1.click the 'Edit' button.<br>
-            2.Make the necessary changes.<br>
-            3.Click the 'Update' button.<br>
-            *To delete an existing vendor: <br>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip="Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            *To add a new Vendor:<br />
+            1.Click the 'AddVendor' button.<br />
+            2.Enter the data for the new vendor.<br />
+            3.Click the 'Save' button.<br />
+            *To edit an existing vendor: <br />
+            1.click the 'Edit' button.<br />
+            2.Make the necessary changes.<br />
+            3.Click the 'Update' button.<br />
+            *To delete an existing vendor: <br />
             1.Click the 'Delete' button.
-
           </div>
         </div>
         <div class="card-body">
-
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Vendor updated successfully.
           </alert>
 
-          <alert type="danger" *ngIf="index ==-1">
+          <alert type="danger" *ngIf="index == -1">
             Please Enter Vendor Name
           </alert>
 
@@ -39,71 +56,157 @@
                 <div class="card-header">
                   <strong>Edit Vendor Details</strong>
                 </div>
-                <form name="form" (ngSubmit)="f.form.valid && updateVendor()" #f="ngForm" novalidate>
+                <form
+                  name="form"
+                  (ngSubmit)="f.form.valid && updateVendor()"
+                  #f="ngForm"
+                  novalidate
+                >
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="name">Name <strong class="text-danger">*</strong></label>
-                        <input type="text" [(ngModel)]="model.comapnyid" name="comapnyid" #comapnyid="ngModel"
-                          id="comapnyid" hidden>
-                        <input type="text" class="form-control" [(ngModel)]="model.name" name="name" #name="ngModel"
-                          id="name" placeholder="Enter Vendor Name">
+                        <label for="name"
+                          >Name <strong class="text-danger">*</strong></label
+                        >
+                        <input
+                          type="text"
+                          [(ngModel)]="model.comapnyid"
+                          name="comapnyid"
+                          #comapnyid="ngModel"
+                          id="comapnyid"
+                          hidden
+                        />
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.name"
+                          name="name"
+                          #name="ngModel"
+                          id="name"
+                          placeholder="Enter Vendor Name"
+                        />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="url">URL</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.url" name="url" #url="ngModel"
-                          id="url" placeholder="Enter URL">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.url"
+                          name="url"
+                          #url="ngModel"
+                          id="url"
+                          placeholder="Enter URL"
+                        />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="phone">Phone</label>
-                        <input type="number" class="form-control" [(ngModel)]="model.phone" name="phone"
-                          #phone="ngModel" id="phone" placeholder="Enter Phone">
+                        <input
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="model.phone"
+                          name="phone"
+                          #phone="ngModel"
+                          id="phone"
+                          placeholder="Enter Phone"
+                        />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="fax">Fax</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.fax" id="fax" name="fax"
-                          #fax="ngModel" placeholder="Enter Fax">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.fax"
+                          id="fax"
+                          name="fax"
+                          #fax="ngModel"
+                          placeholder="Enter Fax"
+                        />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="AddressLine1">Address Line1</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.address1" name="address1"
-                          #address1="ngModel" id="AddressLine1" placeholder="Enter Address 1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.address1"
+                          name="address1"
+                          #address1="ngModel"
+                          id="AddressLine1"
+                          placeholder="Enter Address 1"
+                        />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="AddressLine2">Address Line2</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.address2" name="address2"
-                          #address2="ngModel" id="AddressLine2" placeholder="Enter Address 2">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.address2"
+                          name="address2"
+                          #address2="ngModel"
+                          id="AddressLine2"
+                          placeholder="Enter Address 2"
+                        />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="city">City</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.city" name="city" #city="ngModel"
-                          id="city" placeholder="Enter City">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.city"
+                          name="city"
+                          #city="ngModel"
+                          id="city"
+                          placeholder="Enter City"
+                        />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="state">State</label>
-                        <input type="text" class="form-control" maxlength="2" [(ngModel)]="model.state" name="state"
-                          #state="ngModel" id="state" placeholder="Enter State">
+                        <input
+                          type="text"
+                          class="form-control"
+                          maxlength="2"
+                          [(ngModel)]="model.state"
+                          name="state"
+                          #state="ngModel"
+                          id="state"
+                          placeholder="Enter State"
+                        />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="pcode">Postal Code</label>
-                        <input type="number" class="form-control" [(ngModel)]="model.postalcode" name="postalCode"
-                          #postalCode="ngModel" id="pcode" placeholder="Enter Postal Code">
+                        <input
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="model.postalcode"
+                          name="postalCode"
+                          #postalCode="ngModel"
+                          id="pcode"
+                          placeholder="Enter Postal Code"
+                        />
                       </div>
 
                       <div class="form-group col-sm-6">
                         <label for="status">Status</label>
-                        <select class="form-control" [(ngModel)]="model.status" name="status" #status="ngModel"
-                          id="status">
+                        <select
+                          class="form-control"
+                          [(ngModel)]="model.status"
+                          name="status"
+                          #status="ngModel"
+                          id="status"
+                        >
                           <option value="">Choose..</option>
-                          <option [ngValue]='stat' *ngFor='let stat of statuses'>{{stat.status}}
+                          <option
+                            [ngValue]="stat"
+                            *ngFor="let stat of statuses"
+                          >
+                            {{ stat.status }}
                           </option>
                         </select>
                       </div>
@@ -111,53 +214,99 @@
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="desc">Description</label>
-                        <textarea id="desc" name="textarea-input" rows="2" cols="4" class="form-control"
-                          [(ngModel)]="model.description" name="description" #description="ngModel"
-                          placeholder="Enter Description"></textarea>
+                        <textarea
+                          id="desc"
+                          name="textarea-input"
+                          rows="2"
+                          cols="4"
+                          class="form-control"
+                          [(ngModel)]="model.description"
+                          name="description"
+                          #description="ngModel"
+                          placeholder="Enter Description"
+                        ></textarea>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="logo">Add Vendor Logo</label>
-                        <input type="file" class="form-control" [(ngModel)]="model.logo" name="logo" #logo="ngModel"
-                          id="logo">
+                        <input
+                          type="file"
+                          class="form-control"
+                          [(ngModel)]="model.logo"
+                          name="logo"
+                          #logo="ngModel"
+                          id="logo"
+                        />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="companyType">Company Types</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.companycontenttype" id="companyType"
-                          name="companyType" #companyType="ngModel" placeholder="Enter Comapany Types">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.companycontenttype"
+                          id="companyType"
+                          name="companyType"
+                          #companyType="ngModel"
+                          placeholder="Enter Comapany Types"
+                        />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="primaryContactName">Primary Contact Name</label>
-                        <input type="text" class="form-control" [(ngModel)]="model.primaryContactName"
-                          id="primaryContactName" name="primaryContactName" #primaryContactName="ngModel"
-                          placeholder="Primary Contanct Name">
+                        <label for="primaryContactName"
+                          >Primary Contact Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.primaryContactName"
+                          id="primaryContactName"
+                          name="primaryContactName"
+                          #primaryContactName="ngModel"
+                          placeholder="Primary Contanct Name"
+                        />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="companyAnnouncements">Vendor Announcements</label>
-                        <textarea id="companyAnnouncements" name="textarea-input" rows="2" cols="4"
-                          name="companyAnnouncements" #companyAnnouncements="ngModel" class="form-control"
-                          [(ngModel)]="model.announcement" placeholder="Enter announcement"></textarea>
+                        <label for="companyAnnouncements"
+                          >Vendor Announcements</label
+                        >
+                        <textarea
+                          id="companyAnnouncements"
+                          name="textarea-input"
+                          rows="2"
+                          cols="4"
+                          name="companyAnnouncements"
+                          #companyAnnouncements="ngModel"
+                          class="form-control"
+                          [(ngModel)]="model.announcement"
+                          placeholder="Enter announcement"
+                        ></textarea>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button tooltip="Update Vendor" class="btn btn-primary">Update</button>
-                        <button type="button" tooltip="Cancel" [routerLink]="['../../list']"
-                          class="btn btn-outline-danger btn-sm">Cancel</button>
+                        <button tooltip="Update Vendor" class="btn btn-primary">
+                          Update
+                        </button>
+                        <button
+                          type="button"
+                          tooltip="Cancel"
+                          [routerLink]="['../../list']"
+                          class="btn btn-outline-danger btn-sm"
+                        >
+                          Cancel
+                        </button>
                       </div>
                     </div>
                   </div>
                 </form>
               </div>
             </div>
-           
           </div>
         </div>
       </div>

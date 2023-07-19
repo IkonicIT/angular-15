@@ -1,55 +1,108 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
-
       <div class="card-body">
         <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
           Company Type Updated successfully.
         </alert>
 
-        <alert type="danger" *ngIf="index ==-1" [dismissible]="dismissible">
+        <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
           Please Enter Company Type
         </alert>
 
         <div class="modal-body mobile-padding">
-
           <div class="col-sm-12 mobile-padding">
             <div class="card">
               <div class="card-header">
                 <strong>Add Company Type</strong>
               </div>
-              <form name="form" (ngSubmit)="f.form.valid && updateCompanyType()" #f="ngForm" novalidate>
+              <form
+                name="form"
+                (ngSubmit)="f.form.valid && updateCompanyType()"
+                #f="ngForm"
+                novalidate
+              >
                 <div class="card-body">
-
                   <div class="row">
                     <div class="form-group col-sm-12">
                       <label for="nameOfType">Name of Type</label>
-                      <input type="text" class="form-control" [(ngModel)]="model.nameOfType" id="desc" name="nameOfType"
-                        #nameOfType="ngModel" placeholder="Enter Name of Type">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.nameOfType"
+                        id="desc"
+                        name="nameOfType"
+                        #nameOfType="ngModel"
+                        placeholder="Enter Name of Type"
+                      />
 
-                      <input type="text" [(ngModel)]="model.added" name="added" #added="ngModel" id="added" hidden>
-                      <input type="text" [(ngModel)]="model.by" name="by" #by="ngModel" id="by" hidden>
-                      <input type="text" [(ngModel)]="model._id" name="_id" #_id="ngModel" id="_id" hidden>
-                      <input type="text" [(ngModel)]="model.companyId" name="companyId" #companyId="ngModel"
-                        id="companyId" hidden>
+                      <input
+                        type="text"
+                        [(ngModel)]="model.added"
+                        name="added"
+                        #added="ngModel"
+                        id="added"
+                        hidden
+                      />
+                      <input
+                        type="text"
+                        [(ngModel)]="model.by"
+                        name="by"
+                        #by="ngModel"
+                        id="by"
+                        hidden
+                      />
+                      <input
+                        type="text"
+                        [(ngModel)]="model._id"
+                        name="_id"
+                        #_id="ngModel"
+                        id="_id"
+                        hidden
+                      />
+                      <input
+                        type="text"
+                        [(ngModel)]="model.companyId"
+                        name="companyId"
+                        #companyId="ngModel"
+                        id="companyId"
+                        hidden
+                      />
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="form-group col-sm-12">
                       <label for="hostingFee">Hosting Fee</label>
-                      <input type="number" class="form-control" [(ngModel)]="model.hostingFee" id="desc"
-                        name="hostingFee" #hostingFee="ngModel" placeholder="Enter Hosting Fee">
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="model.hostingFee"
+                        id="desc"
+                        name="hostingFee"
+                        #hostingFee="ngModel"
+                        placeholder="Enter Hosting Fee"
+                      />
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="form-group col-sm-12">
                       <label for="parentType">Select Parent Type</label>
-                      <select class="form-control" class="form-control" [(ngModel)]="model.parentType" id="parentType"
-                        name="parentType" #parentType="ngModel">
+                      <select
+                        class="form-control"
+                        class="form-control"
+                        [(ngModel)]="model.parentType"
+                        id="parentType"
+                        name="parentType"
+                        #parentType="ngModel"
+                      >
                         <option value="0" selected="true">-TOP LEVEL-</option>
-                        <option [value]='stat.status' *ngFor='let stat of statuses'>{{stat.status}}
+                        <option
+                          [value]="stat.status"
+                          *ngFor="let stat of statuses"
+                        >
+                          {{ stat.status }}
                         </option>
                       </select>
                     </div>
@@ -58,24 +111,31 @@
                   <div class="row">
                     <div class="form-group col-sm-12">
                       <label for="desc">Description</label>
-                      <textarea id="desc" name="textarea-input" rows="2" cols="4" class="form-control"
-                        [(ngModel)]="model.description" name="description" #description="ngModel"
-                        placeholder="Enter Description"></textarea>
+                      <textarea
+                        id="desc"
+                        name="textarea-input"
+                        rows="2"
+                        cols="4"
+                        class="form-control"
+                        [(ngModel)]="model.description"
+                        name="description"
+                        #description="ngModel"
+                        placeholder="Enter Description"
+                      ></textarea>
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="form-group col-sm-12 text-center">
-                      <button type="button" class="btn btn-primary">update</button>
+                      <button type="button" class="btn btn-primary">
+                        update
+                      </button>
                     </div>
                   </div>
                 </div>
-
-
               </form>
             </div>
           </div>
-
         </div>
       </div>
     </div>

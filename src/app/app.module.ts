@@ -27,7 +27,6 @@ import { AppComponent } from './app.component';
 import { AppCustomPreloader } from './app.custome.preloader';
 import { AuthInterceptor } from 'src/AuthInterceptor';
 import { ItemServiceManagementService } from './services/Items/item-service-management.service';
-import { ItemRepairItemsService, LoginService } from './services';
 import { UserManagementService } from './services/user-management.service';
 import { UserTypesService } from './services/user-types.service';
 import { ReportsService } from './services/reports.service';
@@ -46,11 +45,17 @@ import {
   LocationNotesService,
   LocationStatusService,
   LocationTypesService,
+  ItemRepairItemsService,
+  ItemAttachmentsService,
   ItemManagementService,
   ItemStatusService,
+  ItemNotesService,
   ItemTypesService,
+  LoginService,
 } from './services';
 import { ItemAttributeService } from './services/Items/item-attribute.service';
+import { ForgotPasswordService } from './services/forgot-password.service';
+import { ResetPasswordService } from './services/reset-password.service';
 import { BroadcasterService } from './services/broadcaster.service';
 import { DashboardService } from './services/dashboard.service';
 import { ExcelService } from './services/excel-service';
@@ -72,6 +77,7 @@ import {
 } from './components';
 import { FullLayoutComponent } from './containers/full-layout/full-layout.component';
 import { SimpleLayoutComponent } from './containers/simple-layout/simple-layout.component';
+//import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   AsideToggleDirective,
   NAV_DROPDOWN_DIRECTIVES,
@@ -122,6 +128,7 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     DropdownTreeviewModule,
     NgxSpinnerModule,
     // NgxPasswordToggleModule,
+    //NgbDropdownModule,
     BrowserAnimationsModule,
     SelectDropDownModule,
     TabsModule.forRoot(),
@@ -144,6 +151,8 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
       useClass: HashLocationStrategy,
     },
     LoginService,
+    ForgotPasswordService,
+    ResetPasswordService,
     WarrantyManagementService,
     UserManagementService,
     UserTypesService,
@@ -167,8 +176,10 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     ReportsService,
     DatePipe,
     ItemRepairItemsService,
+    ItemAttachmentsService,
     ItemStatusService,
     ItemTypesService,
+    ItemNotesService,
     ExcelService,
     OrderByPipe,
   ],

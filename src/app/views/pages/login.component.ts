@@ -6,10 +6,12 @@ import { UserManagementService } from '../../services/user-management.service';
 
 @Component({
   templateUrl: 'login.component.html',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   userName: string;
   password: string;
+  showPassword: boolean = true;
   router: any;
   loginError: any = false;
   loader = false;
@@ -60,6 +62,10 @@ export class LoginComponent {
         this.loader = false;
       }
     );
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   getUserIdByNameForLogged() {

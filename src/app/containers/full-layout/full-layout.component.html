@@ -69,10 +69,10 @@
                 (change)="selectRootCompany($event)"
                 [config]="ngxconfig"
                 [options]="userCompanies"
-                [multiple]="true"
                 tabindex="0"
                 class="text-overflow-button"
               ></ngx-select-dropdown>
+
               <alert type="danger" *ngIf="highestRank == 0">
                 This account has been disabled for this company. <br />
               </alert>

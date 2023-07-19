@@ -73,6 +73,7 @@
               aria-expanded="false"
             >
             </a>
+            <!-- add data-bs-toggle="popover" -->
           </li>
 
           <li class="nav-item">
@@ -101,6 +102,9 @@
               dropdownToggle
               (click)="(false)"
             >
+              <!-- add id="simple-dropdown"
+              add data-bs-toggle="dropdown"
+              remove (click)="(false)"-->
               <span class="navbar-toggler-icon"></span>
             </a>
 
@@ -110,9 +114,11 @@
               *dropdownMenu
               aria-labelledby="simple-dropdown"
             >
+              <!-- add appDropdown -->
               <div class="dropdown-header text-center">
                 <strong>Settings</strong>
               </div>
+
               <div *ngIf="highestRank > 0">
                 <a
                   class="dropdown-item"

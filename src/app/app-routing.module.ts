@@ -22,6 +22,7 @@ import { ProfileModule } from './views/profile/profile.module';
 import { ThemeModule } from './views/theme/theme.module';
 import { WidgetsModule } from './views/widgets/widgets.module';
 import { NotificationsModule } from './views/notifications/notifications.module';
+import { ResetPasswordComponent } from './views/pages/reset-password.component';
 import { IconsModule } from './views/icons/icons.module';
 
 export const routes: Routes = [
@@ -154,6 +155,13 @@ export const routes: Routes = [
     component: LoginComponent,
     data: {
       title: 'Login',
+    },
+  },
+  {
+    path: 'reset',
+    component: ResetPasswordComponent,
+    data: {
+      title: 'reset-password',
     },
   },
   {

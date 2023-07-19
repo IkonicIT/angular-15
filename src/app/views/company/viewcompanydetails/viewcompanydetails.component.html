@@ -3,101 +3,198 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
-          <button type="button" (click)="print()" tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm">Print </button>
-          <button type="button" (click)="help()" tooltip=" Instructions" class="btn btn-outline-danger btn-sm">Help
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
           </button>
-          <div style="text-align: left;border:1px solid;width:fit-content;background-color:whitesmoke;"
-            *ngIf="helpFlag==true">
-            Note: Mandatory Fields are required.<br>
-            * To create a new Company:<br>
-            1.Click the 'Add Company' button.<br>
-            1.Enter the Company information below.<br>
-            2.Click the 'Save' button.<br>
-            * To edit an existing Company:<br>
-            1.Click on 'Edit' button. <br>
-            2.Make necessary changes.<br>
-            3.Click the 'Save' button.<br>
-            * To delete an existing Company:<br>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            * To create a new Company:<br />
+            1.Click the 'Add Company' button.<br />
+            1.Enter the Company information below.<br />
+            2.Click the 'Save' button.<br />
+            * To edit an existing Company:<br />
+            1.Click on 'Edit' button. <br />
+            2.Make necessary changes.<br />
+            3.Click the 'Save' button.<br />
+            * To delete an existing Company:<br />
             1. Click on 'Delete' button.
           </div>
         </div>
-        
+
         <div class="card-body">
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding">
               <div class="card">
                 <div class="card-header">
-                  <strong>Viewing Company '{{model.name}}'</strong>
+                  <strong>Viewing Company '{{ model.name }}'</strong>
                 </div>
                 <div class="card-body">
                   <div class="row">
                     <div class="form-group col-sm-6">
                       <label for="name">Name</label>
-                      <input type="text" [(ngModel)]="model.companyid" name="_id" #_id="ngModel" id="name" hidden>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.name" name="name"
-                        #name="ngModel" id="name">
+                      <input
+                        type="text"
+                        [(ngModel)]="model.companyid"
+                        name="_id"
+                        #_id="ngModel"
+                        id="name"
+                        hidden
+                      />
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.name"
+                        name="name"
+                        #name="ngModel"
+                        id="name"
+                      />
                     </div>
                     <div class="form-group col-sm-6">
                       <label for="url">URL</label>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.url" name="url" #url="ngModel"
-                        id="url">
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.url"
+                        name="url"
+                        #url="ngModel"
+                        id="url"
+                      />
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="form-group col-sm-6">
                       <label for="phone">Phone</label>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.phone" name="phone"
-                        #phone="ngModel" id="phone">
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.phone"
+                        name="phone"
+                        #phone="ngModel"
+                        id="phone"
+                      />
                     </div>
                     <div class="form-group col-sm-6">
                       <label for="fax">Fax</label>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.fax" id="fax" name="fax"
-                        #fax="ngModel">
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.fax"
+                        id="fax"
+                        name="fax"
+                        #fax="ngModel"
+                      />
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="form-group col-sm-6">
                       <label for="AddressLine1">Address Line1</label>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.address1"
-                        name="addressLineOne" #addressLineOne="ngModel" id="AddressLine1">
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.address1"
+                        name="addressLineOne"
+                        #addressLineOne="ngModel"
+                        id="AddressLine1"
+                      />
                     </div>
                     <div class="form-group col-sm-6">
                       <label for="AddressLine2">Address Line2</label>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.address2"
-                        name="addressLineTwo" #addressLineTwo="ngModel" id="AddressLine2">
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.address2"
+                        name="addressLineTwo"
+                        #addressLineTwo="ngModel"
+                        id="AddressLine2"
+                      />
                     </div>
                   </div>
-
 
                   <div class="row">
                     <div class="form-group col-sm-6">
                       <label for="city">City</label>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.city" name="city"
-                        #city="ngModel" id="city">
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.city"
+                        name="city"
+                        #city="ngModel"
+                        id="city"
+                      />
                     </div>
                     <div class="form-group col-sm-6">
                       <label for="state">State</label>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.state" name="state"
-                        #state="ngModel" id="state">
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.state"
+                        name="state"
+                        #state="ngModel"
+                        id="state"
+                      />
                     </div>
                   </div>
-
 
                   <div class="row">
                     <div class="form-group col-sm-6">
                       <label for="pcode">Postal Code</label>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.postalcode" name="postalCode"
-                        #postalCode="ngModel" id="pcode">
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.postalcode"
+                        name="postalCode"
+                        #postalCode="ngModel"
+                        id="pcode"
+                      />
                     </div>
                     <div class="form-group col-sm-6">
                       <label for="status">Status</label>
-                      <select disabled class="form-control" [(ngModel)]="model.statusid" name="status" #status="ngModel"
-                        id="status">
+                      <select
+                        disabled
+                        class="form-control"
+                        [(ngModel)]="model.statusid"
+                        name="status"
+                        #status="ngModel"
+                        id="status"
+                      >
                         <option value="">Choose..</option>
-                        <option [ngValue]="stat.statusid" *ngFor="let stat of statuses">{{stat.status}}
+                        <option
+                          [ngValue]="stat.statusid"
+                          *ngFor="let stat of statuses"
+                        >
+                          {{ stat.status }}
                         </option>
                       </select>
                     </div>
@@ -106,64 +203,109 @@
                   <div class="row">
                     <div class="form-group col-sm-12">
                       <label for="desc">Description</label>
-                      <textarea readonly id="desc" name="textarea-input" rows="2" cols="4" class="form-control"
-                        [(ngModel)]="model.description" name="description" #description="ngModel"></textarea>
+                      <textarea
+                        readonly
+                        id="desc"
+                        name="textarea-input"
+                        rows="2"
+                        cols="4"
+                        class="form-control"
+                        [(ngModel)]="model.description"
+                        name="description"
+                        #description="ngModel"
+                      ></textarea>
                     </div>
                   </div>
-
-
-
 
                   <div class="row">
                     <div class="form-group col-sm-12">
                       <label for="desc"> Company Logo:</label>
-                      <label for="desc">{{model.companyfilename}}</label>
-                     
+                      <label for="desc">{{ model.companyfilename }}</label>
                     </div>
                   </div>
-
 
                   <div class="row">
                     <div class="form-group col-sm-12">
                       <label for="desc">Primary Contact Name</label>
-                      <input type="text" readonly class="form-control" [(ngModel)]="model.primaryContactName" id="desc"
-                        name="primaryContactName" #primaryContactName="ngModel">
+                      <input
+                        type="text"
+                        readonly
+                        class="form-control"
+                        [(ngModel)]="model.primaryContactName"
+                        id="desc"
+                        name="primaryContactName"
+                        #primaryContactName="ngModel"
+                      />
                     </div>
                   </div>
 
-                  <div class="row" *ngIf="isOwnerAdmin ==='true'">
+                  <div class="row" *ngIf="isOwnerAdmin === 'true'">
                     <div class="form-group col-sm-12">
-                      <label for="tracratAnnouncements">Tracrat Announcements</label>
-                      <textarea readonly id="tracratAnnouncement" name="textarea-input" rows="2" cols="4"
-                        name="tracratAnnouncements" #tracratAnnouncements="ngModel" class="form-control"
-                        [(ngModel)]="model.tracratAnnouncements" placeholder="Enter Description"></textarea>
-                      <button (click)="saveMessage()" tooltip="Save Message" class="btn btn-primary">Save
-                        Message</button>
+                      <label for="tracratAnnouncements"
+                        >Tracrat Announcements</label
+                      >
+                      <textarea
+                        readonly
+                        id="tracratAnnouncement"
+                        name="textarea-input"
+                        rows="2"
+                        cols="4"
+                        name="tracratAnnouncements"
+                        #tracratAnnouncements="ngModel"
+                        class="form-control"
+                        [(ngModel)]="model.tracratAnnouncements"
+                        placeholder="Enter Description"
+                      ></textarea>
+                      <button
+                        (click)="saveMessage()"
+                        tooltip="Save Message"
+                        class="btn btn-primary"
+                      >
+                        Save Message
+                      </button>
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="form-group col-sm-12">
                       <label for="desc">Company Announcements</label>
-                      <textarea readonly id="desc" name="textarea-input" rows="2" cols="4" name="companyAnnouncements"
-                        #companyAnnouncements="ngModel" class="form-control"
-                        [(ngModel)]="model.announcement.announcementtext"></textarea>
+                      <textarea
+                        readonly
+                        id="desc"
+                        name="textarea-input"
+                        rows="2"
+                        cols="4"
+                        name="companyAnnouncements"
+                        #companyAnnouncements="ngModel"
+                        class="form-control"
+                        [(ngModel)]="model.announcement.announcementtext"
+                      ></textarea>
                     </div>
                   </div>
 
-
                   <div class="row">
                     <div class="form-group col-sm-12 text-center">
-                      <button type="button" [routerLink]="['../../edit',model.companyid]" tooltip="Edit this Company"
-                        class="btn btn-primary">Edit</button>
-                      <button type="button" (click)="cancelCompanyDetails()" tooltip="Cancel"
-                        class="btn btn-primary">Back</button>
+                      <button
+                        type="button"
+                        [routerLink]="['../../edit', model.companyid]"
+                        tooltip="Edit this Company"
+                        class="btn btn-primary"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        (click)="cancelCompanyDetails()"
+                        tooltip="Cancel"
+                        class="btn btn-primary"
+                      >
+                        Back
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-         
           </div>
         </div>
       </div>

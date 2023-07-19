@@ -1,18 +1,22 @@
-.my-pagination /deep/ .ngx-pagination {
+.my-pagination :ng-deep .ngx-pagination {
   margin-bottom: 1rem;
   margin-top: 25px;
   width: fit-content;
   border: solid 1px #a4b7c1;
   padding-left: 0px;
 }
-.my-pagination /deep/ .ngx-pagination .current{
-  color:white;
+
+.my-pagination :ng-deep .ngx-pagination .current {
+  color: white;
   background-color: red;
 }
-.my-pagination /deep/ .ngx-pagination a,  .ngx-pagination button {
+
+.my-pagination :ng-deep .ngx-pagination a,
+.ngx-pagination button {
   color: red;
   background-color: white;
 }
+
 thead th {
   cursor: pointer;
   span {
@@ -26,9 +30,11 @@ thead th {
     }
   }
 }
+
 .float-right {
   float: right;
 }
+
 .div-search {
   margin-bottom: 1%;
   margin-top: 1%;

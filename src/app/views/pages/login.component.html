@@ -33,16 +33,21 @@
                   <span class="input-group-text"
                     ><i class="icon-lock"></i
                   ></span>
-                  <input
-                    type="password"
-                    class="form-control loginForm"
-                    [(ngModel)]="password"
-                    placeholder="Password"
-                    name="password"
-                    ngModel
-                    passwordToggle
-                    required
-                  />
+                  <div class="password-input">
+                    <input
+                      [type]="showPassword ? 'password' : 'text'"
+                      class="form-control loginForm"
+                      [(ngModel)]="password"
+                      placeholder="Password"
+                      name="password"
+                    />
+                    <button (click)="togglePasswordVisibility()">
+                      <i
+                        class="fas"
+                        [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                      ></i>
+                    </button>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-6">

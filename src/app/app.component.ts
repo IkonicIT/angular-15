@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {}
   private subscription: Subscription;
+  
   ngOnInit() {
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {

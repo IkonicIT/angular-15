@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -47,7 +51,9 @@
             <div class="form-group col-sm-12">
               <button
                 type="button"
-                tooltip=" Back to View Item "
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title=" Back to View Item "
                 style="margin: 5px"
                 (click)="backToItem()"
                 class="btn btn-primary float-right"
@@ -56,7 +62,9 @@
               </button>
               <button
                 type="button"
-                tooltip="ChangeLog Attachments "
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title="ChangeLog Attachments "
                 (click)="addAttachments()"
                 [disabled]="
                   itemRank < 3 ||
@@ -270,7 +278,9 @@
                     (click)="goToView(note.journalid)"
                     type="button"
                     class="btn btn-outline-success btn-sm"
-                    tooltip="View Change Log"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="View Change Log"
                   >
                     View
                   </button>

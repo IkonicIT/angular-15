@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -50,7 +54,9 @@
               type="button"
               class="btn btn-primary float-right"
               (click)="addNoteAttachments()"
-              tooltip="Add Attachment."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add Attachment."
               placement="top"
             >
               Add Attachment
@@ -122,7 +128,9 @@
                 <td>
                   <button
                     type="button"
-                    tooltip="View Note Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="View Note Attachment"
                     class="btn btn-outline-danger btn-sm"
                     (click)="download(document)"
                   >
@@ -131,16 +139,22 @@
 
                   <button
                     type="button"
-                    tooltip="Edit Note Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit Note Attachment"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Edit Document"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit Document"
                     (click)="editNoteDocument(document)"
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    tooltip="Delete Note Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete Note Attachment"
                     class="btn btn-outline-danger btn-sm"
                     (click)="openModal(confirmtemplate, document.attachmentid)"
                     disabled="highestRank == 9"
@@ -161,7 +175,9 @@
       <div class="form-group col-sm-12 text-center">
         <button
           type="button"
-          tooltip="Back"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="Back"
           class="btn btn-primary"
           (click)="back()"
         >

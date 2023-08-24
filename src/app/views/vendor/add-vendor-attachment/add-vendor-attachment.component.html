@@ -7,7 +7,9 @@
             <button
               type="button"
               (click)="print()"
-              tooltip="Click to Print this Page"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Click to Print this Page"
               class="btn btn-outline-danger btn-sm"
             >
               Print
@@ -15,7 +17,9 @@
             <button
               type="button"
               (click)="help()"
-              tooltip="Instructions"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Instructions"
               class="btn btn-outline-danger btn-sm"
             >
               Help
@@ -122,14 +126,18 @@
                       <div class="row">
                         <div class="form-group col-sm-12 text-center">
                           <button
-                            tooltip="Save Vendor Attachmengt"
+                            data-bs-placement="bottom"
+                            data-bs-toggle="tooltip"
+                            title="Save Vendor Attachmengt"
                             class="btn btn-primary"
                           >
                             Save
                           </button>
                           <button
                             type="button"
-                            tooltip="Cancel"
+                            data-bs-placement="bottom"
+                            data-bs-toggle="tooltip"
+                            title="Cancel"
                             (click)="cancelVendorDocument()"
                             class="btn btn-outline-danger btn-sm"
                           >

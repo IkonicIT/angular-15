@@ -1,6 +1,6 @@
 <div class="animated fadeIn" *ngIf="highestRank > 2">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="card-body">
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
@@ -15,22 +15,26 @@
             are mandatory). <br />
           </alert>
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding">
+            <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="form-group col-sm-12 text-right">
                   <button
                     type="button"
                     (click)="print()"
-                    tooltip="Click to Print this Page"
-                    class="btn btn-outline-danger btn-sm"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Click to Print this Page"
+                    class="btn btn-outline-danger btn-sm btn-right btn-top"
                   >
                     Print
                   </button>
                   <button
                     type="button"
                     (click)="help()"
-                    tooltip=" Instructions"
-                    class="btn btn-outline-danger btn-sm"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title=" Instructions"
+                    class="btn btn-outline-danger btn-sm btn-top"
                   >
                     Help
                   </button>
@@ -137,7 +141,7 @@
                         <label for="name">Name</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control add-item-background"
                           [(ngModel)]="model.name"
                           name="name"
                           #name="ngModel"
@@ -151,7 +155,7 @@
                           <strong class="text-danger">*</strong></label
                         >
                         <select
-                          class="form-control"
+                          class="form-control add-item-background"
                           [(ngModel)]="model.statusid"
                           name="status"
                           #status="ngModel"
@@ -174,7 +178,7 @@
                         <label for="price">Purchase price</label>
                         <input
                           type="number"
-                          class="form-control"
+                          class="form-control add-item-background"
                           [(ngModel)]="model.purchaseprice"
                           id="price"
                           name="critical"
@@ -184,7 +188,7 @@
                         <label for="date">Purchase Date</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control add-item-background"
                           [(ngModel)]="model.purchasedate"
                           id="date"
                           name="critical"
@@ -198,7 +202,7 @@
                         <label for="mtbs">MTBS</label>
                         <input
                           type="number"
-                          class="form-control"
+                          class="form-control add-item-background"
                           [(ngModel)]="model.mtbs"
                           id="mtbs"
                           name="mtbs"
@@ -208,7 +212,7 @@
                         <label for="spareratio">Desired Spare Ratio</label>
                         <input
                           type="number"
-                          class="form-control"
+                          class="form-control add-item-background"
                           [(ngModel)]="model.spareRatio"
                           id="spareratio"
                           name="spareratio"
@@ -219,7 +223,7 @@
                       <div class="form-group col-sm-6">
                         <label for="warranty">Warranty Type</label>
                         <select
-                          class="form-control"
+                          class="form-control add-item-background"
                           [(ngModel)]="model.warrantytypeid"
                           name="warranty"
                           #warranty="ngModel"
@@ -239,7 +243,7 @@
                         <label for="exp">Warranty Exp.</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control add-item-background"
                           [(ngModel)]="model.warrantyexpiration"
                           id="exp"
                           name="exp"
@@ -286,9 +290,11 @@
                         <button
                           type="button"
                           [disabled]="addLocationFlag == 0"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-right"
                           (click)="newLocation()"
-                          tooltip=" Click here to add New Location"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title=" Click here to add New Location"
                         >
                           Yes
                         </button>
@@ -297,7 +303,9 @@
                           type="button"
                           class="btn btn-primary"
                           (click)="existingLocation()"
-                          tooltip="Existing Location"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Existing Location"
                         >
                           No
                         </button>
@@ -393,7 +401,9 @@
                         type="button"
                         class="btn btn-primary"
                         (click)="saveLocation()"
-                        tooltip="Save Location"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="Save Location"
                       >
                         Save Location
                       </button>
@@ -404,7 +414,7 @@
                         <label for="description">Description</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control add-item-background"
                           [(ngModel)]="model.description"
                           name="description"
                           #description="ngModel"
@@ -538,16 +548,20 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-right"
                           (click)="saveItem()"
-                          tooltip="Save Item"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Save Item"
                         >
                           Save
                         </button>
                         <button
                           type="button"
                           [routerLink]="['../../items']"
-                          tooltip="Cancel"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Cancel"
                           class="btn btn-primary"
                         >
                           Cancel

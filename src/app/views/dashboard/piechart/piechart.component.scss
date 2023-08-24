@@ -1,22 +1,26 @@
 ::ng-deep .dp-picker-input {
   height: calc(2.0625rem + 2px) !important;
 }
-.my-pagination ::v-deep .ngx-pagination {
+
+.my-pagination ::ng-deep .ngx-pagination {
   margin-bottom: 1rem;
   margin-top: 25px;
   width: fit-content;
   border: solid 1px #a4b7c1;
   padding-left: 0px;
 }
-.my-pagination ::v-deep .ngx-pagination .current {
+
+.my-pagination ::ng-deep .ngx-pagination .current {
   color: white;
   background-color: red;
 }
-.my-pagination ::v-deep .ngx-pagination a,
+
+.my-pagination ::ng-deep .ngx-pagination a,
 .ngx-pagination button {
   color: red;
   background-color: white;
 }
+
 thead th {
   cursor: pointer;
   span {
@@ -30,10 +34,103 @@ thead th {
     }
   }
 }
+
 .float-right {
   float: right;
 }
+
 .div-search {
   margin-bottom: 1%;
   margin-top: 1%;
+}
+
+.remove-card-radius {
+  border-radius: 0;
+}
+
+.remove-padding {
+  padding: 0px;
+}
+
+::ng-deep .remove-radius .dropdown button {
+  --bs-btn-border-radius: -0.625rem !important;
+}
+
+::ng-deep .remove-radius .dropdown .btn {
+  --bs-btn-padding-y: 0.34rem;
+}
+
+.btn-danger,
+.btn-danger.disabled,
+.btn-danger:disabled {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-danger:hover {
+  color: #fff;
+  background-color: #f64846;
+  border-color: #f63c3a;
+}
+
+.btn.disabled,
+.btn:disabled {
+  opacity: 0.65;
+}
+
+.form-control {
+  background-color: #fff !important;
+}
+
+::ng-deep .ng-star-inserted .dropdown button {
+  border-radius: 0;
+}
+
+::ng-deep .location-padding {
+  padding: 0px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.col-padding .card {
+  border-radius: 0;
+}
+
+.col-padding .card-body {
+  padding: 20px;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #a4b7c1;
+}
+
+.table td,
+.table th {
+  padding: 0.78rem;
+  border-top: 1px solid #a4b7c1;
+}
+
+.table td a:hover {
+  color: #a21817;
+  text-decoration: underline;
+}
+
+.table td a {
+  color: #e02725;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.col-padding .card-header-padding {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #a4b7c1;
+  border-radius: 0;
+}
+
+.card-body .mat-expansion-panel {
+  border-radius: 0;
 }

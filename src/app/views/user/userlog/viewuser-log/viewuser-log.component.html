@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -17,7 +19,9 @@
           <p class="card-text">
             User Log Data of: <strong>{{ username }}</strong>
             <!-- <button type="button" [disabled]="highestRank <5" class="btn btn-primary float-right" (click)='addUser()'
-              tooltip="Add New User." placement="top">Add User</button> -->
+              data-bs-placement="bottom"
+data-bs-toggle="tooltip"
+title="Add New User." placement="top">Add User</button> -->
           </p>
           <div>
             <div class="float-left">

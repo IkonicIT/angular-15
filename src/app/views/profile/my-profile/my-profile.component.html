@@ -6,16 +6,20 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -56,12 +60,14 @@
                     Please Enter Required Fields. <br />
                     ( username and Email are required )
                   </alert>
-                  <strong>My Profile</strong>
+                  <strong class="btn-right">My Profile</strong>
                   <button
                     type="button"
                     class="btn btn-primary float-right"
                     [routerLink]="['../changePassword']"
-                    tooltip="Change Password"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Change Password"
                     placement="top"
                   >
                     Change Password
@@ -201,14 +207,21 @@
 
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button class="btn btn-primary" tooltip="Save Profile">
+                        <button
+                          class="btn btn-primary btn-right btn-top"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Save Profile"
+                        >
                           Save
                         </button>
                         <button
                           type="button"
                           (click)="back()"
-                          class="btn btn btn-outline-danger btn-sm"
-                          tooltip="Cancel Profile"
+                          class="btn btn btn-outline-danger btn-sm btn-top"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Cancel Profile"
                         >
                           Cancel
                         </button>

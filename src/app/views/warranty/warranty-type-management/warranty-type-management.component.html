@@ -1,13 +1,15 @@
 <div class="animated fadeIn" *ngIf="highestRank > 5">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -39,14 +41,16 @@
             <button
               type="button"
               class="btn btn-primary float-right"
-              tooltip="Add Warranty type"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add Warranty type"
               (click)="openModal(templateAdd)"
               placement="top"
             >
               Add Warranty Type
             </button>
           </p>
-          <div>
+          <div class="select-pagination-option">
             <div class="float-left">
               <span
                 >Show
@@ -92,8 +96,10 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Edit Warranty Type"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit Warranty Type"
                     (click)="editWarrantyType(type.warrantytypeid)"
                   >
                     Edit
@@ -101,7 +107,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Delete Warranty Type"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete Warranty Type"
                     (click)="openModal(confirmtemplate, type.warrantytypeid)"
                     [disabled]="highestRank == 9"
                   >
@@ -160,7 +168,9 @@
         <button
           class="btn btn-primary"
           (click)="saveWarraty()"
-          tooltip="Save Warranty Type"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="Save Warranty Type"
         >
           Save
         </button>

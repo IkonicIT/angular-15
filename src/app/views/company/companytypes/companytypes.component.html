@@ -6,16 +6,20 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -47,13 +51,15 @@
               type="button"
               class="btn btn-primary float-right"
               (click)="addCompanyType()"
-              tooltip="Add a new Company Type."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add a new Company Type."
               placement="top"
             >
               Add Company Type
             </button>
           </p>
-          <div>
+          <div class="select-pagination-option">
             <div class="float-left">
               <span
                 >Show
@@ -120,7 +126,9 @@
                 <td>
                   <button
                     type="button"
-                    tooltip="Click here to Manage Company Attributes"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Click here to Manage Company Attributes"
                     *ngIf="highestRank > 6"
                     class="btn btn-outline-success btn-sm"
                     (click)="gotoAttributesForType(companyType)"
@@ -132,8 +140,10 @@
                   <button
                     type="button"
                     *ngIf="highestRank > 6"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Edit this Company Type"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit this Company Type"
                     (click)="editCompanyType(companyType)"
                   >
                     Edit
@@ -142,7 +152,9 @@
                     type="button"
                     *ngIf="highestRank > 6"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Delete this Type"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this Type"
                     (click)="openModal(confirmtemplate, companyType.typeid)"
                     [disabled]="highestRank == 9"
                   >

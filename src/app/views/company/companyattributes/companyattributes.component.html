@@ -6,16 +6,20 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -44,17 +48,20 @@
             1.Click on 'Remove' button.
           </div>
         </div>
-        <div class="card-body">
-          <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding">
+        <div class="card-body" style="padding: 20px">
+          <div class="modal-body mobile-padding" style="padding: 16px">
+            <div
+              class="col-sm-12 mobile-padding"
+              style="padding-right: 15px; padding-left: 15px"
+            >
               <div class="card">
-                <div class="card-header">
+                <div class="card-header" style="padding: 12px 20px">
                   <strong>Manage {{ companyName }} Attributes</strong>
                 </div>
                 <form name="form">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-sm-10">
+                  <div class="card-body" style="padding: 20px">
+                    <div class="row" style="margin: 0px -15px">
+                      <div class="col-sm-10" style="padding: 0px 15px">
                         <alert
                           type="danger"
                           *ngIf="index == -1"
@@ -91,9 +98,11 @@
                           Company Attributes Order Saved successfully.
                         </alert>
                       </div>
-                      <div class="col-sm-3">Select Company Type</div>
+                      <div class="col-sm-3" style="padding: 0 15px">
+                        Select Company Type
+                      </div>
 
-                      <div class="col-sm-4">
+                      <div class="col-sm-4 company-type-dropdown">
                         <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
@@ -103,9 +112,9 @@
                       </div>
                       <div class="col-sm-8"></div>
                     </div>
-                    <div class="col-12">
-                      <div class="row">
-                        <div class="col-12 col-md-4">
+                    <div class="col-12" style="padding: 0 15px">
+                      <div class="row" style="margin: 0 -15px">
+                        <div class="col-12 col-md-4" style="padding: 0 15px">
                           Select Attribute
                           <ngx-sortable
                             [items]="typeAttributes"
@@ -134,16 +143,22 @@
                               type="button"
                               *ngIf="addEditFlag"
                               class="btn btn-primary"
-                              tooltip="Save Order Attribute"
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Save Order Attribute"
                               (click)="saveAttributeListOrder(typeAttributes)"
                             >
                               Save Order
                             </button>
                           </div>
                         </div>
-                        <div class="col-12 col-md-8">
-                          <div class="row">
-                            <div class="form-group col-sm-12">
+
+                        <div class="col-12 col-md-8" style="padding: 0 15px">
+                          <div class="row" style="margin: 0 -15px">
+                            <div
+                              class="form-group col-sm-12"
+                              style="padding: 0 15px; margin-bottom: 16px"
+                            >
                               <label for="name"
                                 >Name
                                 <strong class="text-danger">*</strong></label
@@ -159,8 +174,12 @@
                               />
                             </div>
                           </div>
-                          <div class="row">
-                            <div class="form-group col-sm-12">
+
+                          <div class="row" style="margin: 0 -15px">
+                            <div
+                              class="form-group col-sm-12"
+                              style="padding: 0 15px; margin-bottom: 16px"
+                            >
                               <label for="Toa"
                                 >Type of Attribute
                                 <strong class="text-danger">*</strong></label
@@ -190,8 +209,12 @@
                               </select>
                             </div>
                           </div>
+
                           <div class="row">
-                            <div class="form-group col-sm-12">
+                            <div
+                              class="form-group col-sm-12"
+                              style="padding: 0 15px; margin-bottom: 16px"
+                            >
                               <label for="aToolTip">Attribute Tooltip</label>
                               <input
                                 type="text"
@@ -204,11 +227,15 @@
                               />
                             </div>
                           </div>
+
                           <div
                             class="row"
                             *ngIf="model.attributetype.attributetypeid == 4"
                           >
-                            <div class="form-group col-sm-12">
+                            <div
+                              class="form-group col-sm-12"
+                              style="padding: 0 15px; margin-bottom: 16px"
+                            >
                               <label for="listValues">List Values</label>
                               <div class="row">
                                 <input
@@ -244,8 +271,12 @@
                               </button>
                             </div>
                           </div>
+
                           <div class="row">
-                            <div class="form-group col-sm-12">
+                            <div
+                              class="form-group col-sm-12"
+                              style="padding: 0 15px; margin-bottom: 16px"
+                            >
                               <label for="sType">Search Type</label>
                               <select
                                 class="form-control"
@@ -267,9 +298,13 @@
                               </select>
                             </div>
                           </div>
+
                           <div class="row">
-                            <div class="form-group col-sm-12">
-                              <label for="rField"> Required Field</label>
+                            <div
+                              class="form-group col-sm-12"
+                              style="padding: 0 15px; margin-bottom: 16px"
+                            >
+                              <label for="rField" class="btn-right"> Required Field</label>
                               <input
                                 type="checkbox"
                                 id="rField"
@@ -279,21 +314,29 @@
                               />
                             </div>
                           </div>
+
                           <div class="row">
-                            <div class="form-group col-sm-12 text-center">
+                            <div
+                              class="form-group col-sm-12 text-center add-form"
+                              style="padding: 0 15px; margin-bottom: 16px"
+                            >
                               <button
                                 type="button"
-                                tooltip="Add New Attribute"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Add New Attribute"
                                 *ngIf="!addEditFlag && highestRank > 6"
                                 [disabled]="typeId == 0"
-                                class="btn btn-primary"
+                                class="btn btn-primary btn-right"
                                 (click)="createAttribute()"
                               >
                                 Add
                               </button>
                               <button
                                 type="button"
-                                tooltip="Edit this Attribute"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Edit this Attribute"
                                 *ngIf="addEditFlag && highestRank > 6"
                                 class="btn btn-primary"
                                 (click)="editAttribute()"
@@ -302,7 +345,9 @@
                               </button>
                               <button
                                 type="button"
-                                tooltip="Add New Attribute"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Add New Attribute"
                                 *ngIf="addEditFlag && highestRank > 6"
                                 class="btn btn-primary"
                                 (click)="newAttribute()"
@@ -311,7 +356,9 @@
                               </button>
                               <button
                                 type="button"
-                                tooltip="Delete this  Attribute"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Delete this  Attribute"
                                 *ngIf="addEditFlag && highestRank > 6"
                                 class="btn btn-primary"
                                 (click)="openModal(confirmtemplate)"
@@ -321,7 +368,9 @@
                               </button>
                               <button
                                 type="button"
-                                tooltip="Back"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Back"
                                 (click)="cancelCompanyAttributes()"
                                 class="btn btn-primary"
                               >

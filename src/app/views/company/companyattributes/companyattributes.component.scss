@@ -5,11 +5,12 @@
   border: solid 1px #a4b7c1;
   padding-left: 0px;
 }
-.my-pagination ::ng-deep .ngx-pagination .current{
-  color:white;
+.my-pagination ::ng-deep .ngx-pagination .current {
+  color: white;
   background-color: red;
 }
-.my-pagination ::ng-deep .ngx-pagination a,  .ngx-pagination button {
+.my-pagination ::ng-deep .ngx-pagination a,
+.ngx-pagination button {
   color: red;
   background-color: white;
 }
@@ -34,19 +35,120 @@ thead th {
   margin-top: 1%;
 }
 
-ul>li:hover {
+ul > li:hover {
   background-color: lightgrey;
 }
-ul>li:active {
+ul > li:active {
   background-color: lightblue;
 }
-ul>li:focus {
+ul > li:focus {
   background-color: lightblue;
 }
-ul>li:target {
+ul > li:target {
   background-color: lightblue;
 }
-ul>li {
-  padding:3px;
+ul > li {
+  padding: 3px;
   padding-left: 8px;
+}
+
+.text-right {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 16px;
+}
+
+.text-right button {
+  border-radius: 0;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+::ng-deep .company-type-dropdown .dropdown button:after {
+  right: 1.6rem;
+}
+
+::ng-deep .sortable-container .sortable-header .sortable-name {
+  margin-bottom: 8px;
+}
+
+.add-form button {
+  border-radius: 0;
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  color: #fff;
+  background-color: #e02725;
+  border-color: #e02725;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #c31e1c;
+  border-color: #b81c1a;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #e02725;
+  border-color: #e02725;
+}
+
+.btn.disabled,
+.btn:disabled {
+  opacity: 0.65;
+}
+
+.card {
+  border-radius: 0;
+}
+
+.company-type-dropdown {
+  padding: 0 15px;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  background-color: #fff;
+}
+
+::ng-deep .row .alert-danger {
+  padding: 12px 20px;
+  color: #813838;
+  background-color: #fee2e1;
+  border-color: #fdd6d6;
+  border-radius: 0;
+}
+
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+}
+
+::ng-deep .alert-dismissible .btn-close {
+  opacity: 0;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
 }

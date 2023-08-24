@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -75,13 +79,20 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button tooltip="Update " class="btn btn-primary">
+                        <button
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Update "
+                          class="btn btn-primary"
+                        >
                           Update
                         </button>
                         <button
                           type="button"
                           (click)="cancel()"
-                          tooltip="Cancel"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Cancel"
                           class="btn btn-primary"
                         >
                           Cancel

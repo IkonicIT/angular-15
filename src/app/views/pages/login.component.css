@@ -28,3 +28,62 @@
 .password-input .fa-eye-slash {
   opacity: 0.6;
 }
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.input-group-text,
+.card,
+button {
+  border-radius: 0;
+}
+
+.password-input {
+  width: 87%;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #c31e1c;
+  border-color: #b81c1a;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #e02725;
+  border-color: #e02725;
+}
+
+.btn-link {
+  font-weight: 400;
+  color: #e02725 !important;
+  text-decoration: none;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.btn-link:hover {
+  color: #a21817 !important;
+  text-decoration: underline;
+}
+
+.py-5 {
+  padding: 4rem 0 !important;
+}
+
+.alert-danger {
+  color: #813838;
+  background-color: #fee2e1;
+  border-color: #fdd6d6;
+}

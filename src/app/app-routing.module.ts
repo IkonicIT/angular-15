@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppCustomPreloader } from './app.custome.preloader';
 import { LoginComponent } from './views/pages/login.component';
+import { FullLayoutComponent, SimpleLayoutComponent } from './containers';
+import { ResetPasswordComponent } from './views/pages/reset-password.component';
 import { DashboardModule } from './views/dashboard/dashboard.module';
 import { PagesModule } from './views/pages/pages.module';
 import { ButtonsModule } from './views/buttons/buttons.module';
@@ -10,7 +12,6 @@ import { BaseModule } from './views/base/base.module';
 import { CompanyModule } from './views/company/company.module';
 import { LocationModule } from './views/location/location.module';
 import { ItemsModule } from './views/items/items.module';
-import { FullLayoutComponent, SimpleLayoutComponent } from './containers';
 import { TemplateModule } from './views/template/template.module';
 import { VendorModule } from './views/vendor/vendor.module';
 import { WarrantyModule } from './views/warranty/warranty.module';
@@ -22,7 +23,6 @@ import { ProfileModule } from './views/profile/profile.module';
 import { ThemeModule } from './views/theme/theme.module';
 import { WidgetsModule } from './views/widgets/widgets.module';
 import { NotificationsModule } from './views/notifications/notifications.module';
-import { ResetPasswordComponent } from './views/pages/reset-password.component';
 import { IconsModule } from './views/icons/icons.module';
 
 export const routes: Routes = [

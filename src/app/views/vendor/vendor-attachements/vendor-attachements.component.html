@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip="Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -48,7 +52,9 @@
               type="button"
               class="btn btn-primary float-right"
               (click)="addDocument()"
-              tooltip="Add Dcoument."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add Dcoument."
               placement="top"
             >
               Add Document
@@ -120,7 +126,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Download Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Download Attachment"
                     (click)="downloadDocument(document)"
                   >
                     Download
@@ -128,7 +136,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Edit Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit Attachment"
                     (click)="editDocument(document)"
                   >
                     Edit
@@ -136,7 +146,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Delete Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete Attachment"
                     (click)="openModal(confirmtemplate, document.attachmentid)"
                     disabled="highestRank == 9"
                   >

@@ -1,0 +1,85 @@
+.text-right {
+  text-align: right;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-bottom: 16px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding,
+.modal-body-padding {
+  padding: 0 15px;
+}
+
+.card {
+  border-radius: 0;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.row .form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.row .form-group label {
+  margin-bottom: 8px;
+}
+
+.form-control {
+  background-color: #fff;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #c31e1c;
+  border-color: #b81c1a;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #e02725;
+  border-color: #e02725;
+}
+
+button {
+  border-radius: 0;
+}
+
+.alert-danger {
+  color: #813838;
+  background-color: #fee2e1;
+  border-color: #fdd6d6;
+}

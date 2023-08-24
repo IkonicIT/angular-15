@@ -13,6 +13,8 @@ import { NgPipesModule } from 'ngx-pipes';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { provideUserIdleConfig } from 'angular-user-idle';
 import { CompanydocumentsComponent } from './companydocuments/companydocuments.component';
 import { CompanytypesComponent } from './companytypes/companytypes.component';
 import { CompanyattributesComponent } from './companyattributes/companyattributes.component';
@@ -27,7 +29,6 @@ import { EditcompanystatusComponent } from './editcompanystatus/editcompanystatu
 import { CompanyNotesComponent } from './company-notes/company-notes.component';
 import { AddCompanyNotesComponent } from './add-company-notes/add-company-notes.component';
 import { EditCompanyNotesComponent } from './edit-company-notes/edit-company-notes.component';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ViewCompanyNotesComponent } from './view-company-notes/view-company-notes.component';
 import { AddCompanyTypeComponent } from './add-company-type/add-company-type.component';
 import { EditCompanyTypeComponent } from './edit-company-type/edit-company-type.component';
@@ -56,7 +57,7 @@ import { ManageComponent } from './manage/manage.component';
     TabsModule,
     NgxSortableModule,
     CompanyRoutingModule,
-    CarouselModule.forRoot(),   
+    CarouselModule.forRoot(),
     CollapseModule.forRoot(),
     PaginationModule.forRoot(),
     PopoverModule.forRoot(),

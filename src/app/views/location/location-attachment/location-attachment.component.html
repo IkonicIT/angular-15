@@ -9,7 +9,9 @@
               type="button"
               class="btn btn-primary float-right"
               (click)="addLocationDocument()"
-              tooltip="Add LocationAttachments"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add LocationAttachments"
               placement="top"
             >
               Add Document
@@ -81,7 +83,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="View this NoteAttachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="View this NoteAttachment"
                     (click)="downloadFile(document)"
                   >
                     View
@@ -89,7 +93,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Edit this NoteAttachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit this NoteAttachment"
                     (click)="editLocationDocument(document)"
                   >
                     Edit
@@ -97,7 +103,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Delete this NoteAttachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this NoteAttachment"
                     (click)="openModal(confirmtemplate, document.attachmentid)"
                     disabled="highestRank == 9"
                   >

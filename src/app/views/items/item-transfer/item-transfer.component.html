@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -209,7 +211,9 @@
                           [disabled]="addLocationFlag == 0"
                           class="btn btn-primary"
                           (click)="newLocation()"
-                          tooltip=" Click here to add New Location"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title=" Click here to add New Location"
                         >
                           Yes
                         </button>
@@ -217,7 +221,9 @@
                           type="button"
                           class="btn btn-primary"
                           (click)="existingLocation()"
-                          tooltip="Existing Location"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Existing Location"
                         >
                           No
                         </button>
@@ -311,7 +317,9 @@
                         type="button"
                         class="btn btn-primary"
                         (click)="saveLocation()"
-                        tooltip="Save Location"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="Save Location"
                       >
                         Save Location
                       </button>
@@ -336,7 +344,9 @@
                         <button
                           class="btn btn-primary"
                           (click)="saveTransfer()"
-                          tooltip="SaveItemTransfer"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="SaveItemTransfer"
                         >
                           Save
                         </button>
@@ -344,7 +354,9 @@
                         <button
                           type="button"
                           (click)="backToViewItem()"
-                          tooltip="Back to View Item"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Back to View Item"
                           class="btn btn-primary"
                         >
                           Back To Item
@@ -470,7 +482,9 @@
                               <button
                                 type="button"
                                 class="btn btn-outline-danger btn-sm mb-1"
-                                tooltip="View Item Transfer"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="View Item Transfer"
                                 [routerLink]="[
                                   '../../viewtItemTransfer/' +
                                     transfer.transferLogID
@@ -481,7 +495,9 @@
                               <button
                                 type="button"
                                 class="btn btn-outline-danger btn-sm mb-1"
-                                tooltip="Delete Item Transfer"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Delete Item Transfer"
                                 (click)="
                                   openModal(
                                     confirmtemplate,

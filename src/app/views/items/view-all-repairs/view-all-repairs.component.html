@@ -59,7 +59,9 @@
           class="btn btn-danger"
           style="display: inherit; margin-top: -1px; margin-left: 2px"
           (click)="getAllRepairs()"
-          tooltip="Get All Repairs in selected time span"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="Get All Repairs in selected time span"
         >
           GET
         </button>
@@ -138,7 +140,9 @@
                     recentRepair.typeName
                   )
                 "
-                tooltip="click here to view this Item"
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title="click here to view this Item"
                 >{{ recentRepair.tag }}</a
               >
             </td>
@@ -157,7 +161,9 @@
                   )
                 "
                 style="color: red"
-                tooltip="click here to view Job Screen"
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title="click here to view Job Screen"
                 >{{ recentRepair.jobNumber }}</a
               >
             </td>
@@ -259,7 +265,9 @@
                     recentRepair.typeName
                   )
                 "
-                tooltip="click here to view this Item"
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title="click here to view this Item"
                 >{{ recentRepair.tag }}</a
               >
             </td>
@@ -278,7 +286,9 @@
                   )
                 "
                 style="color: red"
-                tooltip="click here to view Job Screen"
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title="click here to view Job Screen"
                 >{{ recentRepair.jobNumber }}</a
               >
             </td>

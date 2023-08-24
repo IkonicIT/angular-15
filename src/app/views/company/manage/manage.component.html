@@ -10,7 +10,9 @@
             <button
               type="button"
               (click)="print()"
-              tooltip="Click to Print this Page"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Click to Print this Page"
               class="btn btn-outline-danger btn-sm"
             >
               Print
@@ -18,7 +20,9 @@
             <button
               type="button"
               (click)="help()"
-              tooltip=" Instructions"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title=" Instructions"
               class="btn btn-outline-danger btn-sm"
             >
               Help
@@ -49,14 +53,18 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Add New CompanyNote"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Add New CompanyNote"
                   (click)="addNotes()"
                 >
                   New
                 </button>
                 <button
                   type="button"
-                  tooltip="Save Company Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Save Company Note"
                   (click)="saveCompanyNote()"
                   class="btn btn-primary"
                 >
@@ -65,7 +73,9 @@
 
                 <button
                   type="button"
-                  tooltip="Cancel the Changes for this Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Cancel the Changes for this Note"
                   (click)="cancelCompanyNotes()"
                   class="btn btn-primary"
                 >
@@ -74,7 +84,9 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Delete Company Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Delete Company Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
                 >
@@ -82,7 +94,9 @@
                 </button>
                 <button
                   type="button"
-                  tooltip=" Add CompanyNote Attachment"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title=" Add CompanyNote Attachment"
                   class="btn btn-primary"
                   disabled
                   [routerLink]="['../../../noteAttachments/' + model.journalid]"
@@ -91,7 +105,9 @@
                 </button>
                 <button
                   type="button"
-                  tooltip="Back "
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Back "
                   (click)="backToItem()"
                   class="btn btn-primary"
                 >
@@ -233,14 +249,18 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Add New CompanyNote"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Add New CompanyNote"
                   (click)="addNotes()"
                 >
                   New
                 </button>
                 <button
                   type="button"
-                  tooltip="Save Company Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Save Company Note"
                   (click)="saveCompanyNote()"
                   disabled
                   class="btn btn-primary"
@@ -250,7 +270,9 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Edit Company Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Edit Company Note"
                   (click)="editNote()"
                 >
                   Edit
@@ -259,7 +281,9 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Delete Company Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Delete Company Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
                 >
@@ -267,7 +291,9 @@
                 </button>
                 <button
                   type="button"
-                  tooltip=" Add CompanyNote Attachment"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title=" Add CompanyNote Attachment"
                   class="btn btn-primary"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
@@ -276,7 +302,9 @@
 
                 <button
                   type="button"
-                  tooltip="Back "
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Back "
                   (click)="backToItem()"
                   class="btn btn-primary"
                 >
@@ -419,14 +447,18 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Add New CompanyNote"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Add New CompanyNote"
                   (click)="addNotes()"
                 >
                   New
                 </button>
                 <button
                   type="button"
-                  tooltip="Save Company Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Save Company Note"
                   (click)="updateCompanyNotes()"
                   class="btn btn-primary"
                 >
@@ -435,7 +467,9 @@
 
                 <button
                   type="button"
-                  tooltip="Cancel the Changes for this Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Cancel the Changes for this Note"
                   (click)="cancelCompanyNotes()"
                   class="btn btn-primary"
                 >
@@ -444,7 +478,9 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Delete Company Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Delete Company Note"
                   (click)="openModal(confirmtemplate)"
                   [disabled]="highestRank == 9"
                 >
@@ -452,7 +488,9 @@
                 </button>
                 <button
                   type="button"
-                  tooltip=" Add CompanyNote Attachment"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title=" Add CompanyNote Attachment"
                   class="btn btn-primary"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
@@ -460,7 +498,9 @@
                 </button>
                 <button
                   type="button"
-                  tooltip="Back "
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Back "
                   (click)="backToItem()"
                   class="btn btn-primary"
                 >
@@ -693,7 +733,9 @@
                           >
                             <br /><a
                               href="javascript:void(0)"
-                              tooltip="Click here to View this NoteAttachment"
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Click here to View this NoteAttachment"
                               (click)="download(attachment)"
                               >{{ attachment.fileName }}</a
                             >
@@ -704,7 +746,9 @@
                           <button
                             type="button"
                             class="btn btn-outline-danger btn-sm"
-                            tooltip="Click here to View this Note"
+                            data-bs-placement="bottom"
+                            data-bs-toggle="tooltip"
+                            title="Click here to View this Note"
                             (click)="viewCompanyNotes(note.journalid)"
                           >
                             View

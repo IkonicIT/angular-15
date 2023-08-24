@@ -9,7 +9,9 @@
               type="button"
               *ngIf="itemRank > 3"
               class="btn btn-primary float-right"
-              tooltip="Add Notes."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add Notes."
               (click)="addNotes()"
               placement="top"
             >
@@ -97,7 +99,9 @@
                     (click)="openModalView(templateView, note.journalid)"
                     placement="top"
                     style="color: red"
-                    tooltip="click here to View Notes Screen"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="click here to View Notes Screen"
                     [innerHTML]="note.entityname"
                   ></a>
                 </td>
@@ -118,7 +122,9 @@
                     type="button"
                     *ngIf="itemRank > 3"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Edit Item Note"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit Item Note"
                     (click)="editItemNotes(note)"
                   >
                     Edit
@@ -127,7 +133,9 @@
                     type="button"
                     *ngIf="itemRank > 3"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Delete Item Note"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete Item Note"
                     (click)="openModal(confirmtemplate, note.journalid)"
                     [disabled]="highestRank == 9"
                   >
@@ -151,7 +159,9 @@
       <button
         type="button"
         (click)="back()"
-        tooltip="Back"
+        data-bs-placement="bottom"
+        data-bs-toggle="tooltip"
+        title="Back"
         class="btn btn-outline-danger btn-sm"
       >
         Back
@@ -159,7 +169,9 @@
       <button
         type="button"
         (click)="backToViewItem()"
-        tooltip="Back to View Item"
+        data-bs-placement="bottom"
+        data-bs-toggle="tooltip"
+        title="Back to View Item"
         class="btn btn-primary"
       >
         Back To Item
@@ -260,7 +272,9 @@
       <div class="form-group col-sm-12 text-center">
         <button
           (click)="cancelViewItemNotes()"
-          tooltip="Back To Notes"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="Back To Notes"
           class="btn btn-outline-danger btn-sm"
         >
           Back

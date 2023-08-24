@@ -5,10 +5,12 @@
   border: solid 1px #a4b7c1;
   padding-left: 0px;
 }
+
 .my-pagination ::ng-deep .ngx-pagination .current {
   color: white;
   background-color: red;
 }
+
 .my-pagination ::ng-deep .ngx-pagination a,
 .ngx-pagination button {
   color: red;
@@ -35,4 +37,8 @@
 /* Styles for the ink bar */
 .mat-ink-bar {
   background-color: black;
+}
+
+.btn-top {
+  margin-top: 5px;
 }

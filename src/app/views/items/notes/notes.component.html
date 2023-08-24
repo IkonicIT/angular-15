@@ -10,7 +10,9 @@
             <button
               type="button"
               (click)="print()"
-              tooltip="Click to Print this Page"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Click to Print this Page"
               class="btn btn-outline-danger btn-sm"
             >
               Print
@@ -18,7 +20,9 @@
             <button
               type="button"
               (click)="help()"
-              tooltip=" Instructions"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title=" Instructions"
               class="btn btn-outline-danger btn-sm"
             >
               Help
@@ -51,13 +55,17 @@
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   class="btn btn-primary"
-                  tooltip="Add New ItemNote"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Add New ItemNote"
                   (click)="addNotes()"
                 >
                   New
                 </button>
                 <button
-                  tooltip="Save Item Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Save Item Note"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   (click)="saveItemNote()"
                   class="btn btn-primary"
@@ -66,7 +74,9 @@
                 </button>
 
                 <button
-                  tooltip="Cancel the Changes for this Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Cancel the Changes for this Note"
                   *ngIf="itemRank > 3 && itemRank != 4 && itemRank != 5"
                   (click)="cancelItemNotes()"
                   class="btn btn-primary"
@@ -76,7 +86,9 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Delete Item Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Delete Item Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
                 >
@@ -84,14 +96,18 @@
                 </button>
                 <button
                   disabled
-                  tooltip=" Add ItemNote Attachment"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title=" Add ItemNote Attachment"
                   class="btn btn-primary"
                   [routerLink]="['../../noteAttachments/' + model.journalid]"
                 >
                   Attachments
                 </button>
                 <button
-                  tooltip="Back to View Item"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Back to View Item"
                   (click)="backToItem()"
                   class="btn btn-primary"
                 >
@@ -233,13 +249,17 @@
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   class="btn btn-primary"
-                  tooltip="Add New ItemNote"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Add New ItemNote"
                   (click)="addNotes()"
                 >
                   New
                 </button>
                 <button
-                  tooltip="Save Item Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Save Item Note"
                   (click)="saveItemNote()"
                   disabled
                   class="btn btn-primary"
@@ -250,7 +270,9 @@
                   type="button"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   class="btn btn-primary"
-                  tooltip="Edit Item Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Edit Item Note"
                   (click)="editNote()"
                 >
                   Edit
@@ -259,7 +281,9 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Delete Item Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Delete Item Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
                 >
@@ -267,7 +291,9 @@
                 </button>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  tooltip=" Add ItemNote Attachment"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title=" Add ItemNote Attachment"
                   class="btn btn-primary"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
@@ -275,7 +301,9 @@
                 </button>
 
                 <button
-                  tooltip="Back to View Item"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Back to View Item"
                   (click)="backToItem()"
                   class="btn btn-primary"
                 >
@@ -420,13 +448,17 @@
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   class="btn btn-primary"
-                  tooltip="Add New ItemNote"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Add New ItemNote"
                   (click)="addNotes()"
                 >
                   New
                 </button>
                 <button
-                  tooltip="Save Item Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Save Item Note"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   (click)="updateItemNotes()"
                   class="btn btn-primary"
@@ -435,7 +467,9 @@
                 </button>
 
                 <button
-                  tooltip="Cancel the Changes for this Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Cancel the Changes for this Note"
                   *ngIf="itemRank > 3"
                   (click)="cancelItemNotes()"
                   class="btn btn-primary"
@@ -446,21 +480,27 @@
                   type="button"
                   [disabled]="itemRank < 6 || highestRank == 9"
                   class="btn btn-primary"
-                  tooltip="Delete Item Note"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Delete Item Note"
                   (click)="openModal(confirmtemplate)"
                 >
                   Delete
                 </button>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  tooltip=" Add ItemNote Attachment"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title=" Add ItemNote Attachment"
                   class="btn btn-primary"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
                   Attachments
                 </button>
                 <button
-                  tooltip="Back to View Item"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Back to View Item"
                   (click)="backToItem()"
                   class="btn btn-primary"
                 >
@@ -686,7 +726,9 @@
                           >
                             <br /><a
                               href="javascript:void(0)"
-                              tooltip="Click here to View this NoteAttachment"
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Click here to View this NoteAttachment"
                               (click)="download(attachment)"
                               >{{ attachment.fileName }}</a
                             >
@@ -697,7 +739,9 @@
                           <button
                             type="button"
                             class="btn btn-outline-danger btn-sm"
-                            tooltip="Click here to View this Note"
+                            data-bs-placement="bottom"
+                            data-bs-toggle="tooltip"
+                            title="Click here to View this Note"
                             (click)="viewItemNotes(note.journalid)"
                           >
                             View

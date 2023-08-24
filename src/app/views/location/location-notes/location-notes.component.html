@@ -8,7 +8,9 @@
             <button
               type="button"
               class="btn btn-primary float-right"
-              tooltip="Add Notes."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add Notes."
               (click)="addNotes()"
               placement="top"
             >
@@ -102,7 +104,9 @@
                     (click)="openModalView(templateView, note.journalid)"
                     placement="top"
                     style="color: red"
-                    tooltip="click here to View Notes Screen"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="click here to View Notes Screen"
                     >{{ note.entityname }}</a
                   >
                 </td>
@@ -113,7 +117,9 @@
                 <td>
                   <button
                     type="button"
-                    tooltip=" Note Attachments"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title=" Note Attachments"
                     class="btn btn-outline-danger btn-sm"
                     (click)="locationNoteAttachments(note)"
                   >
@@ -124,7 +130,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Update Note"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Update Note"
                     (click)="editLocationNotes(note)"
                   >
                     Edit
@@ -132,7 +140,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Delete Note"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete Note"
                     (click)="openModal(confirmtemplate, note.journalid)"
                     [disabled]="highestRank == 9"
                   >
@@ -246,7 +256,9 @@
         <button
           type="button"
           (click)="cancelViewLocationNotes()"
-          tooltip="Back To Notes"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="Back To Notes"
           class="btn btn-outline-danger btn-sm"
         >
           Back

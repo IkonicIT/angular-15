@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -402,7 +406,9 @@
                       <div class="form-group col-sm-12 text-center">
                         <button
                           class="btn btn-primary"
-                          tooltip="Update Item Repair"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Update Item Repair"
                           (click)="saveItemRepair()"
                         >
                           Save
@@ -410,7 +416,9 @@
                         <button
                           type="button"
                           (click)="cancelItemEditRepair()"
-                          tooltip="Back To View Item Repair"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Back To View Item Repair"
                           class="btn btn-primary"
                         >
                           Back

@@ -16,7 +16,9 @@
             href="javascript:void(0)"
             (click)="getManual()"
             style="border: 1px solid"
-            tooltip="click here to view Manual"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="click here to view Manual"
             >Tracrat Manual</a
           >
           <input
@@ -31,7 +33,9 @@
             *ngIf="isOwnerAdmin === 'true'"
             type="button"
             (click)="saveManual()"
-            tooltip="Click here to upload new manual"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click here to upload new manual"
           >
             Upload
           </button>
@@ -85,7 +89,9 @@
               <a
                 href="javascript:void(0)"
                 (click)="download(document)"
-                tooltip="click here to view this Company Document"
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title="click here to view this Company Document"
                 >{{ document.filename }}</a
               >
             </td>

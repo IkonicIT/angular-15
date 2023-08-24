@@ -1,21 +1,25 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip="Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -51,7 +55,7 @@
           </alert>
 
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding">
+            <div class="col-sm-12 mobile-padding modal-body-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Add Vendor Details</strong>
@@ -297,12 +301,19 @@
 
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button tooltip="Save Vendor" class="btn btn-primary">
+                        <button
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Save Vendor"
+                          class="btn btn-primary btn-right"
+                        >
                           Save
                         </button>
                         <button
                           type="button"
-                          tooltip="Cancel"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Cancel"
                           [routerLink]="['../list']"
                           class="btn btn btn-outline-danger btn-sm"
                         >

@@ -6,15 +6,19 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -46,7 +50,9 @@
           <p class="card-text">
             <strong>Users Log</strong>
             <!-- <button type="button" [disabled]="highestRank <5" class="btn btn-primary float-right" (click)='addUser()'
-              tooltip="Add New User." placement="top">Add User</button> -->
+              data-bs-placement="bottom"
+data-bs-toggle="tooltip"
+title="Add New User." placement="top">Add User</button> -->
           </p>
           <p style="color: red">
             Number of Users Currently LoggedIn - {{ loggedinuserscount }}
@@ -119,7 +125,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="view userLog"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="view userLog"
                     (click)="viewUser(result)"
                   >
                     View

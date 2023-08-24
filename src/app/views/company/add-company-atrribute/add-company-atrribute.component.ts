@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Company } from '../../../models';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BroadcasterService } from '../../../services/broadcaster.service';
-
 import { CompanyTypesService } from '../../../services/index';
 import { CompanyAttributesServiceService } from '../../../services/index';
 import { NgxSpinnerService } from 'ngx-spinner';

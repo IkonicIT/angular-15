@@ -1,9 +1,9 @@
 <div class="animated fadeIn" *ngIf="highestRank > 0">
   <div class="row">
     <div class="col-lg-12 mobile-padding">
-      <div class="card">
+      <div class="card remove-card-radius">
         <div class="card-body">
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert type="danger" *ngIf="index == -1" [dismissible]="true">
             Please Select From & To Fields.
           </alert>
           <div>
@@ -13,7 +13,7 @@
             <br />
 
             <div class="row" style="padding: 15px">
-              <div>
+              <div class="col remove-padding">
                 <label for="status"><strong>Chart Type</strong></label>
                 <select
                   class="form-control"
@@ -24,16 +24,20 @@
                   <option value="location">Location</option>
                 </select>
               </div>
-              <div>
+              <div
+                class="col remove-padding remove-radius"
+                [ngClass]="{ 'hide-location-range': !showLocationAndRange }"
+              >
                 <label for="status"><strong>Item Type</strong></label>
                 <app-dropdown-treeview-select
                   [items]="itemTypeItems"
                   id="type"
                   [(value)]="typeId"
+                  class="itemType"
                 >
                 </app-dropdown-treeview-select>
               </div>
-              <div>
+              <div class="col remove-padding">
                 <label for="status"><strong>TimeSpan</strong></label>
                 <select class="form-control" [(ngModel)]="params.type">
                   <option value="monthly">Last Month</option>
@@ -43,9 +47,14 @@
                   <option value="range">range</option>
                 </select>
               </div>
+
               <ng-container [ngSwitch]="params.type">
-                <ng-container *ngSwitchCase="'location'">
-                  <div cl>
+                <ng-container *ngSwitchCase="'location'" style="padding: 0px">
+                  <div
+                    class="col"
+                    style="padding: 0px"
+                    [ngClass]="{ 'show-location': showLocation }"
+                  >
                     <label for="location"
                       ><strong>Select Location</strong></label
                     >
@@ -57,8 +66,12 @@
                     </app-dropdown-treeview-select>
                   </div>
                 </ng-container>
+
                 <ng-container *ngSwitchCase="'range'">
-                  <div>
+                  <div
+                    class="col remove-padding"
+                    [ngClass]="{ 'show-range': showRange }"
+                  >
                     <label for="status"
                       ><strong>From</strong
                       ><strong class="text-danger"> *</strong></label
@@ -70,7 +83,7 @@
                       ></dp-date-picker>
                     </div>
                   </div>
-                  <div>
+                  <div class="col remove-padding">
                     <label for="status"
                       ><strong>To</strong
                       ><strong class="text-danger"> *</strong></label
@@ -87,7 +100,7 @@
 
               <ng-container [ngSwitch]="params.charttype">
                 <ng-container *ngSwitchCase="'location'">
-                  <div cl>
+                  <div class="col location-padding">
                     <label for="location"
                       ><strong>Select Location</strong></label
                     >
@@ -101,36 +114,45 @@
                 </ng-container>
               </ng-container>
 
-              <div>
+              <div class="col remove-padding">
                 <label><strong>&nbsp;</strong></label>
                 <button
                   type="button"
                   class="btn btn-danger"
-                  style="display: inherit; margin-top: -1px; margin-left: 2px"
+                  style="
+                    display: inherit;
+                    margin-top: -1px;
+                    margin-left: 2px;
+                    border-radius: 0;
+                  "
                   (click)="getFailureTypes()"
-                  tooltip="Get PrimaryFindings"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Get PrimaryFindings"
                 >
                   GET
                 </button>
               </div>
             </div>
+
             <div>
-              <mat-button-toggle-group
-                #group="matButtonToggleGroup"
+              <mat-radio-group
+                #group="matRadioGroup"
                 name="fontStyle"
                 [value]="selectedVal"
                 (change)="onValChange(group.value)"
                 aria-label="Font Style"
               >
-                <mat-button-toggle value="count"
-                  >PRIMARYFINDINGS</mat-button-toggle
+                <mat-radio-button value="count"
+                  >PRIMARYFINDINGS</mat-radio-button
                 >
-                <mat-button-toggle value="repaircost"
-                  >REPAIRCOST</mat-button-toggle
+                <mat-radio-button value="repaircost"
+                  >REPAIRCOST</mat-radio-button
                 >
-              </mat-button-toggle-group>
+              </mat-radio-group>
             </div>
-            <div class="col-sm-12 p-0">
+
+            <div class="col-sm-12" style="padding: 10px">
               <div class="row">
                 <div class="col-md-6 mb-2">
                   <h5>PRIMARYFINDINGS</h5>
@@ -185,7 +207,7 @@
       </div>
 
       <div
-        class="col-lg-12 mobile-padding"
+        class="col-lg-12 mobile-padding col-padding"
         style="margin-top: 30px"
         *ngIf="highestRank > 0"
       >
@@ -225,7 +247,9 @@
                           recentRepair.typeName
                         )
                       "
-                      tooltip="click here to view this Item"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="click here to view this Item"
                       [innerHTML]="recentRepair.tag"
                     ></a>
                   </td>
@@ -244,7 +268,9 @@
                         )
                       "
                       style="color: red"
-                      tooltip="click here to view Job Screen"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="click here to view Job Screen"
                       [innerHTML]="recentRepair.jobNumber"
                     ></a>
                   </td>
@@ -291,7 +317,7 @@
         </div>
       </div>
 
-      <div class="col-lg-12 mobile-padding" *ngIf="highestRank > 0">
+      <div class="col-lg-12 mobile-padding col-padding" *ngIf="highestRank > 0">
         <div class="card">
           <div class="card-body">
             <div style="margin-bottom: 10px">
@@ -339,7 +365,9 @@
                             result.typeName
                           )
                         "
-                        tooltip="click here to view this Item"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="click here to view this Item"
                         [innerHTML]="result.tag"
                       ></a>
                     </td>
@@ -362,7 +390,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 mobile-padding" *ngIf="highestRank > 0">
+
+      <div class="col-lg-12 mobile-padding col-padding" *ngIf="highestRank > 0">
         <div class="card">
           <div class="card-body">
             <div style="margin-bottom: 10px">
@@ -393,7 +422,9 @@
                           recentNote.typeName
                         )
                       "
-                      tooltip="click here to view this Item"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="click here to view this Item"
                       [innerHTML]="recentNote.tag"
                     ></a>
                   </td>
@@ -411,7 +442,9 @@
                         )
                       "
                       style="color: red"
-                      tooltip="click here for Notes Screen"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="click here for Notes Screen"
                       [innerHTML]="recentNote.title"
                     ></a>
                   </td>
@@ -440,7 +473,7 @@
         </div>
       </div>
 
-      <div class="col-lg-12 mobile-padding" *ngIf="highestRank > 0">
+      <div class="col-lg-12 mobile-padding col-padding" *ngIf="highestRank > 0">
         <div class="card">
           <div class="card-body">
             <mat-expansion-panel
@@ -494,7 +527,9 @@
                       <a
                         href="javascript:void(0)"
                         (click)="downloadDocuments(document, false)"
-                        tooltip="click here to view this Company Document"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="click here to view this Company Document"
                         [innerHTML]="document.filename"
                       ></a>
                     </td>
@@ -517,16 +552,22 @@
         </div>
       </div>
 
-      <div class="col-lg-12 mobile-padding" *ngIf="highestRank > 0">
+      <div class="col-lg-12 mobile-padding col-padding" *ngIf="highestRank > 0">
         <div class="card">
           <div class="card-body">
-            <div class="card-header" style="background-color: #e02725">
+            <div
+              class="card-header card-header-padding"
+              style="background-color: #e02725"
+            >
               <strong>TracRat System Messages</strong>
             </div>
             <h4 class="card-title mb-0">TracRat System Messages</h4>
             <textarea rows="5" cols="170" [innerHTML]="tracratAnnouncement">
             </textarea>
-            <div class="card-header" style="background-color: #e02725">
+            <div
+              class="card-header card-header-padding"
+              style="background-color: #e02725"
+            >
               <strong>Company Announcement Messages </strong>
             </div>
             <h4
@@ -577,6 +618,82 @@
           height: 120px;
           -webkit-animation: spin 2s linear infinite;
           animation: spin 2s linear infinite;
+        }
+
+        ::ng-deep .cdk-overlay-container #cdk-overlay-0 {
+          bottom: 145.363px;
+          left: 871.588px;
+        }
+
+        ::ng-deep .cdk-overlay-container #cdk-overlay-1 {
+          bottom: 42.1625px;
+          left: 1077.65px;
+        }
+
+        mat-radio-group {
+          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+            0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+          position: relative;
+          display: inline-flex;
+          flex-direction: row;
+          border-radius: 2px;
+          cursor: pointer;
+          white-space: nowrap;
+          overflow: hidden;
+          width: 325px;
+          height: 40px;
+        }
+
+        ::ng-deep
+          mat-radio-group
+          .mat-mdc-radio-button
+          .mdc-radio
+          .mdc-radio__background {
+          width: 14px;
+          height: 14px;
+        }
+
+        ::ng-deep
+          mat-radio-group
+          .mat-mdc-radio-button
+          .mdc-radio
+          .mdc-radio__background
+          .mdc-radio__inner-circle {
+          border-width: 7px;
+        }
+
+        ::ng-deep
+          .mat-mdc-radio-button
+          .mdc-radio
+          .mdc-radio__native-control:enabled:checked
+          + .mdc-radio__background
+          .mdc-radio__outer-circle {
+          border-color: #0d6efd !important;
+        }
+
+        ::ng-deep
+          .mat-mdc-radio-button
+          .mdc-radio
+          .mdc-radio__native-control:enabled
+          + .mdc-radio__background
+          .mdc-radio__inner-circle {
+          border-color: #0d6efd !important;
+        }
+
+        ::ng-deep .hide-location-range .itemType button:after,
+        ::ng-deep .show-location .itemType button:after,
+        ::ng-deep .show-range .itemType button:after {
+          position: relative;
+          right: 0.6rem;
+        }
+
+        ::ng-deep .table .thead-light th {
+          background-color: #e02725;
+          border-color: #a4b7c1;
+        }
+
+        .remove-padding {
+          padding: 0px;
         }
 
         @-webkit-keyframes spin {
@@ -688,7 +805,9 @@
                             repairJob.typeName
                           )
                         "
-                        tooltip="click here to view this Item"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="click here to view this Item"
                         [innerHTML]="repairJob.tag"
                       ></a>
                     </td>
@@ -707,7 +826,9 @@
                           )
                         "
                         style="color: red"
-                        tooltip="click here to view Job Screen"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="click here to view Job Screen"
                         [innerHTML]="repairJob.jobNumber"
                       ></a>
                     </td>

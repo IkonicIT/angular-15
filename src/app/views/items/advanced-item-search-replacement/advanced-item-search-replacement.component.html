@@ -7,7 +7,9 @@
             type="button"
             class="btn btn-outline-danger btn-sm"
             (click)="isExpandAdvancedSearch = !isExpandAdvancedSearch"
-            tooltip="Click here to Show/Change the Search Fields"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click here to Show/Change the Search Fields"
           >
             Show/Change Search Fields Criteria
           </button>
@@ -19,7 +21,9 @@
               <div class="card-body mobile-padding">
                 <button
                   type="button"
-                  tooltip="Search"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Search"
                   class="btn btn-primary"
                   (click)="searchItems()"
                   style="margin-left: 90%"
@@ -229,7 +233,9 @@
                     <button
                       type="button"
                       (click)="clearItem()"
-                      tooltip="Clear"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Clear"
                       class="btn btn-primary"
                     >
                       Clear
@@ -237,7 +243,9 @@
                     <button
                       type="button"
                       (click)="back()"
-                      tooltip="Back to View Item"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Back to View Item"
                       class="btn btn-primary"
                     >
                       Back To Item
@@ -347,7 +355,9 @@
                     <button
                       type="button"
                       (click)="clearRepairNoteQuote()"
-                      tooltip="Clear"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Clear"
                       class="btn btn btn-outline-danger btn-sm"
                     >
                       Clear
@@ -355,7 +365,9 @@
                     <button
                       type="button"
                       (click)="back()"
-                      tooltip="back button"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="back button"
                       class="btn btn btn-outline-danger btn-sm"
                     >
                       Back
@@ -410,7 +422,9 @@
                             <button
                               type="button"
                               class="btn btn-outline-danger btn-sm"
-                              tooltip="View"
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="View"
                               (click)="
                                 goToItemRepair(
                                   repairsearch.itemId,
@@ -455,7 +469,9 @@
                             <button
                               type="button"
                               class="btn btn-outline-danger btn-sm"
-                              tooltip="View "
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="View "
                               (click)="
                                 goToNote(
                                   itemnotessearch.itemId,

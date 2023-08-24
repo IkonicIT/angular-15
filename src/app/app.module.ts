@@ -19,9 +19,14 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+// import { DpDatePickerModule } from 'ng2-date-picker';
+import { provideUserIdleConfig } from 'angular-user-idle';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgPipesModule, OrderByPipe } from 'ngx-pipes';
 import { NgxPasswordToggleModule } from 'ngx-password-toggle';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppCustomPreloader } from './app.custome.preloader';
@@ -131,15 +136,20 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     //NgbDropdownModule,
     BrowserAnimationsModule,
     SelectDropDownModule,
+    //DpDatePickerModule,
+    MatButtonModule,
+    MatRadioModule,
     TabsModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     TooltipModule.forRoot(),
     TreeviewModule.forRoot(),
     TypeaheadModule.forRoot(),
+    BsDatepickerModule.forRoot(),
   ],
   exports: [CommonModule, FormsModule, ReactiveFormsModule],
   providers: [
+    provideUserIdleConfig({ idle: 600, timeout: 300, ping: 120 }),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

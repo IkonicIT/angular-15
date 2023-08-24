@@ -1,7 +1,7 @@
 <div class="app flex-row align-items-center">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-6 cent">
+      <div class="col-md-8 col-padding">
         <div class="card-group">
           <div class="card p-4">
             <div class="card-body">
@@ -34,19 +34,27 @@
                     ><i class="icon-lock"></i
                   ></span>
                   <div class="password-input">
-                    <input
-                      [type]="showPassword ? 'password' : 'text'"
-                      class="form-control loginForm"
-                      [(ngModel)]="password"
-                      placeholder="Password"
-                      name="password"
-                    />
-                    <button (click)="togglePasswordVisibility()">
-                      <i
-                        class="fas"
-                        [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
-                      ></i>
-                    </button>
+                    <form (submit)="onSubmit($event)">
+                      <input
+                        [type]="showPassword ? 'password' : 'text'"
+                        class="form-control loginForm"
+                        [(ngModel)]="password"
+                        placeholder="Password"
+                        name="password"
+                        (keydown.enter)="$event.preventDefault()"
+                        style="padding-right: 12px"
+                      />
+                      <button (click)="togglePasswordVisibility()">
+                        <i
+                          class="fas"
+                          [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                        ></i>
+                      </button>
+                      <input
+                        type="submit"
+                        style="position: absolute; left: -9999px"
+                      />
+                    </form>
                   </div>
                 </div>
                 <div class="row">

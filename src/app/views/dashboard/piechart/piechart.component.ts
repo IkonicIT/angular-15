@@ -109,6 +109,9 @@ export class PiechartComponent implements OnInit {
   repairFlag: string;
   itemTypes: any;
   itemTypeItems: TreeviewItem[];
+  showLocationAndRange: boolean = true;
+  showLocation = false;
+  showRange = false;
   p = 1;
 
   constructor(
@@ -382,6 +385,7 @@ export class PiechartComponent implements OnInit {
       }
     });
   }
+
   getFailureTypes() {
     if (this.companyid == 0 || this.companyid == undefined) {
       this.loader = false;
@@ -436,7 +440,6 @@ export class PiechartComponent implements OnInit {
             this.pieChartCauseLabels = [];
             this.pieChartCauseData.length = 0;
             this.pieChartCauseData = [];
-
             this.pieChartLabels.length = 0;
             this.pieChartLabels = Object.keys(this.failureTypesandPercentage);
             this.pieChartData.length = 0;
@@ -463,12 +466,10 @@ export class PiechartComponent implements OnInit {
       .subscribe((response) => {
         this.spinner.hide();
         this.failureTypesandPercentage = response;
-
         this.pieChartCauseLabels.length = 0;
         this.pieChartCauseLabels = [];
         this.pieChartCauseData.length = 0;
         this.pieChartCauseData = [];
-
         this.pieChartLabels.length = 0;
         this.pieChartLabels = Object.keys(this.failureTypesandPercentage);
         this.pieChartData.length = 0;

@@ -6,16 +6,20 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -56,12 +60,15 @@
               *ngIf="highestRank > 2"
               class="btn btn-primary float-right"
               (click)="goToAddItem()"
-              tooltip="Add a new Item."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add a new Item."
               placement="top"
             >
               Add Item
             </button>
           </p>
+
           <div class="row">
             <div class="form-group col-sm-1"></div>
             <div class="form-group col-sm-5">
@@ -79,7 +86,7 @@
                 placeholder="Enter Item Tag"
               />
             </div>
-            <div class="form-group col-sm-5">
+            <div class="form-group col-sm-5 item-list-after">
               <label for="type">Type Of Item</label>
               <app-dropdown-treeview-select
                 [items]="itemTypeItems"
@@ -90,6 +97,7 @@
             </div>
             <div class="form-group col-sm-1"></div>
           </div>
+
           <div class="row">
             <div class="form-group col-sm-1"></div>
             <div class="form-group col-sm-5">
@@ -110,7 +118,7 @@
                 </option>
               </select>
             </div>
-            <div class="form-group col-sm-5">
+            <div class="form-group col-sm-5 item-list-after">
               <label for="location">Location</label>
               <app-dropdown-treeview-select
                 [items]="locationItems"
@@ -122,20 +130,24 @@
             </div>
             <div class="form-group col-sm-1"></div>
           </div>
+
           <div class="row">
             <div class="form-group col-sm-5"></div>
             <div class="form-group col-sm-2 align-center">
               <button
                 type="button"
                 (click)="getSearchedItems()"
-                tooltip="Search an item"
-                class="btn btn-primary"
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title="Search an item"
+                class="btn btn-primary btn-top item-search"
               >
                 Search
               </button>
             </div>
             <div class="form-group col-sm-5"></div>
           </div>
+
           <div *ngIf="flag == 0">
             <strong>Search Results:</strong>
           </div>

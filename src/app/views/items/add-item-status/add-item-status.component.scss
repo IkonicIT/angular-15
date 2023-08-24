@@ -1,0 +1,68 @@
+.text-right {
+  text-align: right;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-bottom: 16px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.form-control {
+  background-color: #fff;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.modal-body-padding {
+  padding: 0 15px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #c31e1c;
+  border-color: #b81c1a;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #e02725;
+  border-color: #e02725;
+}

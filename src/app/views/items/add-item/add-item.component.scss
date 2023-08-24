@@ -1,5 +1,5 @@
-@import '../../../../../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
-.default-img{
+@import "../../../../../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
+.default-img {
   height: 100px;
   width: 270px;
   text-align: center;
@@ -9,4 +9,100 @@
   background-color: #cccccc;
   opacity: 1;
   cursor: not-allowed;
+}
+
+.text-right {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 16px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.row .col-padding {
+  padding: 0 15px;
+}
+
+.card {
+  border-radius: 0;
+}
+
+.col-padding .card-body {
+  padding: 20px;
+}
+
+.col-padding .modal-body {
+  padding: 16px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.card-body .row .form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.card-body .row .form-group label {
+  margin-bottom: 8px;
+}
+
+.form-group .add-item-background {
+  background-color: #fff;
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  color: #fff;
+  background-color: #e02725;
+  border-color: #e02725;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #c31e1c;
+  border-color: #b81c1a;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #e02725;
+  border-color: #e02725;
+}
+
+.btn.disabled,
+.btn:disabled {
+  opacity: 0.65;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+button {
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
 }

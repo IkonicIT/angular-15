@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -51,7 +55,9 @@
               [disabled]="itemRank < 3"
               class="btn btn-primary float-right"
               (click)="addItemDocument()"
-              tooltip="Add New Note Attachment."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add New Note Attachment."
               placement="top"
             >
               Add Document
@@ -124,7 +130,9 @@
                     type="button"
                     [disabled]="itemRank < 3"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="View Note Attachments"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="View Note Attachments"
                     (click)="download(document)"
                   >
                     View
@@ -134,7 +142,9 @@
                     type="button"
                     [disabled]="itemRank < 4"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Edit Note Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit Note Attachment"
                     (click)="editItemDocument(document)"
                   >
                     Edit
@@ -143,7 +153,9 @@
                     type="button"
                     [disabled]="itemRank < 4 || highestRank == 9"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Delete Note Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete Note Attachment"
                     (click)="openModal(confirmtemplate, document.attachmentid)"
                   >
                     Delete
@@ -166,7 +178,9 @@
       <button
         type="button"
         (click)="back()"
-        tooltip="Back"
+        data-bs-placement="bottom"
+        data-bs-toggle="tooltip"
+        title="Back"
         class="btn btn-primary"
       >
         Back

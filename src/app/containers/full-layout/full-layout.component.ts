@@ -30,7 +30,7 @@ export class FullLayoutComponent implements OnInit {
   itemTypes: any = [];
   selectedType: any = null;
   suggessions: any[] = [];
-  value: any;
+  value: any = 0;
   items: TreeviewItem[];
   config = TreeviewConfig.create({
     hasFilter: false,

@@ -7,6 +7,7 @@ import { User } from '../../models/user';
 
 @Component({
   templateUrl: 'forgot-password.component.html',
+  styleUrls: ['forgot-password.component.css'],
 })
 export class ForgotPasswordComponent {
   user = new User();

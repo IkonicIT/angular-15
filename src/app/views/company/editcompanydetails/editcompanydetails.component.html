@@ -1,21 +1,25 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -41,6 +45,7 @@
             1. Click on 'Delete' button.
           </div>
         </div>
+
         <div class="card-body">
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Company details updated successfully.
@@ -52,7 +57,7 @@
             Entered Company Name already present
           </alert>
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding">
+            <div class="col-sm-12 mobile-padding col-sm-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Editing Company '{{ model.name }}'</strong>
@@ -60,7 +65,7 @@
                 <form name="form" #f="ngForm" novalidate>
                   <div class="card-body">
                     <div class="row">
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="name"
                           >Name <span style="color: red">*</span></label
                         >
@@ -82,7 +87,7 @@
                           placeholder="Enter Company Name"
                         />
                       </div>
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="url">URL</label>
                         <input
                           type="text"
@@ -96,7 +101,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="phone">Phone</label>
                         <input
                           type="number"
@@ -108,7 +113,7 @@
                           placeholder="Enter Phone"
                         />
                       </div>
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="fax">Fax</label>
                         <input
                           type="text"
@@ -122,7 +127,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="AddressLine1">Address Line1</label>
                         <input
                           type="text"
@@ -134,7 +139,7 @@
                           placeholder="Enter Address 1"
                         />
                       </div>
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="AddressLine2">Address Line2</label>
                         <input
                           type="text"
@@ -148,7 +153,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="city">City</label>
                         <input
                           type="text"
@@ -160,7 +165,7 @@
                           placeholder="Enter City"
                         />
                       </div>
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="state">State</label>
                         <input
                           type="text"
@@ -174,7 +179,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="pcode">Postal Code</label>
                         <input
                           type="number"
@@ -187,7 +192,7 @@
                         />
                       </div>
 
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-6 form-group-padding">
                         <label for="status">Status</label>
                         <select
                           class="form-control"
@@ -207,7 +212,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-sm-12">
+                      <div class="form-group col-sm-12 form-group-padding">
                         <label for="desc">Description</label>
                         <textarea
                           id="desc"
@@ -223,7 +228,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-sm-12">
+                      <div class="form-group col-sm-12 form-group-padding">
                         <label for="logo">Add Company Logo: </label>
                         <label for="desc"
                           ><strong>{{ model.companyfilename }}</strong></label
@@ -238,7 +243,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-sm-12">
+                      <div class="form-group col-sm-12 form-group-padding">
                         <label for="companyType">Company Types</label>
 
                         <app-dropdown-treeview-select
@@ -250,7 +255,7 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="isOwnerAdmin === 'true'">
-                      <div class="form-group col-sm-12">
+                      <div class="form-group col-sm-12 form-group-padding">
                         <label for="tracratAnnouncements"
                           >Tracrat Announcements</label
                         >
@@ -267,7 +272,9 @@
                         ></textarea>
                         <button
                           (click)="saveMessage()"
-                          tooltip="Save Message"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Save Message"
                           class="btn btn-primary"
                         >
                           Save Message
@@ -275,7 +282,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-sm-12">
+                      <div class="form-group col-sm-12 form-group-padding">
                         <label for="companyAnnouncements"
                           >Company Announcements</label
                         >
@@ -430,15 +437,19 @@
                       <div class="form-group col-sm-12 text-center">
                         <button
                           (click)="updateCompany()"
-                          tooltip="Update this Company"
-                          class="btn btn-primary"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Update this Company"
+                          class="btn btn-primary btn-right"
                         >
                           Update
                         </button>
                         <button
                           type="button"
                           (click)="cancel()"
-                          tooltip="Cancel Updating Company"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Cancel Updating Company"
                           class="btn btn-primary"
                         >
                           Cancel

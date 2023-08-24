@@ -21,7 +21,9 @@
                   <button
                     type="button"
                     (click)="print()"
-                    tooltip="Click to Print this Page"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Click to Print this Page"
                     class="btn btn-outline-danger btn-sm"
                   >
                     Print
@@ -29,7 +31,9 @@
                   <button
                     type="button"
                     (click)="help()"
-                    tooltip=" Instructions"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title=" Instructions"
                     class="btn btn-outline-danger btn-sm"
                   >
                     Help
@@ -290,7 +294,9 @@
                           [disabled]="addLocationFlag == 0"
                           class="btn btn-primary"
                           (click)="newLocation()"
-                          tooltip=" Click here to add New Location"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title=" Click here to add New Location"
                         >
                           Yes
                         </button>
@@ -298,7 +304,9 @@
                           type="button"
                           class="btn btn-primary"
                           (click)="existingLocation()"
-                          tooltip="Existing Location"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Existing Location"
                         >
                           No
                         </button>
@@ -392,7 +400,9 @@
                         type="button"
                         class="btn btn-primary"
                         (click)="saveLocation()"
-                        tooltip="Save Location"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="Save Location"
                       >
                         Save Location
                       </button>
@@ -537,7 +547,9 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          tooltip="Add new Item"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Add new Item"
                           (click)="saveItem()"
                           *ngIf="highestRank > 2"
                           class="btn btn-primary"
@@ -545,7 +557,9 @@
                           Add
                         </button>
                         <button
-                          tooltip="Cancel"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Cancel"
                           type="button"
                           [routerLink]="['../../../items']"
                           *ngIf="highestRank > 2"
@@ -556,7 +570,9 @@
                         <button
                           (click)="back()"
                           type="button"
-                          tooltip="Back button"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Back button"
                           class="btn btn-primary"
                         >
                           Back

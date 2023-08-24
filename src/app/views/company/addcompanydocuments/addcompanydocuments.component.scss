@@ -1,0 +1,87 @@
+.text-right {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 16px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.modal-body-padding {
+  padding: 0 15px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.table-bordered,
+.table-bordered td,
+.table-bordered th {
+  border: 1px solid #a4b7c1;
+}
+
+.table td,
+.table th {
+  padding: 0.75rem;
+  border-top: 1px solid #a4b7c1;
+}
+
+.table thead th {
+  border-bottom: 2px solid #a4b7c1;
+}
+
+button,
+.card {
+  border-radius: 0;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #c31e1c;
+  border-color: #b81c1a;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #e02725;
+  border-color: #e02725;
+}

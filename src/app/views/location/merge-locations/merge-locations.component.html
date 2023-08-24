@@ -1,24 +1,42 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
-         
-          <button type="button" (click)="help()" tooltip=" Instructions" class="btn btn-outline-danger btn-sm">Help
+          <button
+            type="button"
+            (click)="help()"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
+          >
+            Help
           </button>
-          <div style="text-align: left;border:1px solid;width:fit-content;background-color:whitesmoke;"
-            *ngIf="helpFlag==true">
-            1.To Merge Locations, select the Location you want to Merge from in the first location selector below.<br>
-            2.Then select the Location you would like to Merge into in the second selector.<br>
-            * Pressing 'Merge' will commit your changes. Remember:<br>
-            1.All child locations of the first location will now be children of the second location.<br>
-            2.All items located at the first location will now be located at the second location.<br>
-            3.The first location will be deleted.<br>
-            * Pressing 'Cancel' will bring you back to the Manage Locations screen.
-
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            1.To Merge Locations, select the Location you want to Merge from in
+            the first location selector below.<br />
+            2.Then select the Location you would like to Merge into in the
+            second selector.<br />
+            * Pressing 'Merge' will commit your changes. Remember:<br />
+            1.All child locations of the first location will now be children of
+            the second location.<br />
+            2.All items located at the first location will now be located at the
+            second location.<br />
+            3.The first location will be deleted.<br />
+            * Pressing 'Cancel' will bring you back to the Manage Locations
+            screen.
           </div>
         </div>
- 
+
         <div class="card-body">
           <alert *ngIf="index == 1" type="success" [dismissible]="dismissible">
             Merge location saved successfully.
@@ -27,54 +45,87 @@
             The selected Locations are the same
           </alert>
 
-          <alert type="danger" *ngIf="index ==-1" [dismissible]="dismissible">
+          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
             Please Enter required fields
           </alert>
 
           <div class="modal-body mobile-padding">
-
-            <div class="col-sm-12 mobile-padding">
+            <div class="col-sm-12 mobile-padding modal-body-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Merge Locations</strong>
                 </div>
-                <form name="form" (ngSubmit)="f.form.valid && mergeLocations()" #f="ngForm" novalidate>
+                <form
+                  name="form"
+                  (ngSubmit)="f.form.valid && mergeLocations()"
+                  #f="ngForm"
+                  novalidate
+                >
                   <div class="card-body">
-
-
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="location">Location to be Merged:</label>
 
-                        <app-dropdown-treeview-select [items]="locationItems" [(value)]="model.fromlocationid"
-                         >
+                        <app-dropdown-treeview-select
+                          [items]="locationItems"
+                          [(value)]="model.fromlocationid"
+                        >
                         </app-dropdown-treeview-select>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="location">Location to be Merged into:</label>
+                        <label for="location"
+                          >Location to be Merged into:</label
+                        >
 
-                        <app-dropdown-treeview-select [items]="locationItems" [(value)]="model.tolocationid"
-                          >
+                        <app-dropdown-treeview-select
+                          [items]="locationItems"
+                          [(value)]="model.tolocationid"
+                        >
                         </app-dropdown-treeview-select>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="locationname">New Location Name:<strong class="text-danger">*</strong></label>
-                        <input type="text" class="form-control" [(ngModel)]="model.locationname" name="locationname"
-                          #locationname="ngModel" id="locationname">
+                        <label for="locationname"
+                          >New Location Name:<strong class="text-danger"
+                            >*</strong
+                          ></label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.locationname"
+                          name="locationname"
+                          #locationname="ngModel"
+                          id="locationname"
+                        />
                       </div>
                     </div>
 
-
-
                     <div class="row">
-                      <div class="form-group col-sm-12 tebtn btn-primaryxt-center">
-                        <button tooltip="Mergelocations" class="btn btn-primary">Merge</button>
-                        <button type="button" [routerLink]="['../list']" class="btn btn-primary"
-                          tooltip="Cancel">Cancel</button>
+                      <div
+                        class="form-group col-sm-12 tebtn btn-primaryxt-center"
+                      >
+                        <button
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Mergelocations"
+                          class="btn btn-primary btn-right"
+                        >
+                          Merge
+                        </button>
+                        <button
+                          type="button"
+                          [routerLink]="['../list']"
+                          class="btn btn-primary"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Cancel"
+                        >
+                          Cancel
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -87,8 +138,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-

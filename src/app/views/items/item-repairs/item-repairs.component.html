@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -49,7 +53,9 @@
               type="button"
               [disabled]="itemRank < 3"
               class="btn btn-primary float-right"
-              tooltip="Add Repair."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add Repair."
               [routerLink]="['../../addItemRepair/' + itemId]"
               placement="top"
             >
@@ -144,7 +150,9 @@
                   >
                     <br /><a
                       href="javascript:void(0)"
-                      tooltip="View this ItemRepair Attachment"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="View this ItemRepair Attachment"
                       (click)="downloadFile(attachment)"
                       [innerHTML]="attachment.fileName"
                     ></a>
@@ -280,7 +288,9 @@
                   >
                     <br /><a
                       href="javascript:void(0)"
-                      tooltip="View this ItemRepair Attachment"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="View this ItemRepair Attachment"
                       (click)="download(attachment)"
                       [innerHTML]="attachment.fileName"
                     ></a>
@@ -291,7 +301,9 @@
                     type="button"
                     *ngIf="itemRank > 0"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Click here to View this ItemRepair"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Click here to View this ItemRepair"
                     [routerLink]="[
                       '../../viewItemRepair/' +
                         itemId +
@@ -319,7 +331,9 @@
       <button
         type="button"
         (click)="backToViewItem()"
-        tooltip="Back to View Item"
+        data-bs-placement="bottom"
+        data-bs-toggle="tooltip"
+        title="Back to View Item"
         class="btn btn-primary"
       >
         Back To Item

@@ -6,16 +6,20 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -49,13 +53,15 @@
               [disabled]="highestRank < 7"
               class="btn btn-primary float-right"
               (click)="addDocument()"
-              tooltip="Add Company Document."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add Company Document."
               placement="top"
             >
               Add Document
             </button>
           </p>
-          <div>
+          <div class="select-pagination-option">
             <div class="float-left">
               <span
                 >Show
@@ -120,8 +126,10 @@
                 <td>
                   <button
                     *ngIf="highestRank > 0"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="View this  Company Document"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="View this  Company Document"
                     (click)="download(document)"
                   >
                     View
@@ -129,8 +137,10 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 7"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Edit this Company Document"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit this Company Document"
                     (click)="editDocument(document)"
                   >
                     Edit
@@ -139,7 +149,9 @@
                     type="button"
                     [disabled]="highestRank < 7 || highestRank == 9"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Delete this Company Document"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this Company Document"
                     (click)="openModal(confirmtemplate, document.attachmentid)"
                   >
                     Delete

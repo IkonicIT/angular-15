@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -41,7 +45,9 @@
               type="button"
               [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
               class="btn btn-primary float-right"
-              tooltip="Add ItemRepair Attachment"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add ItemRepair Attachment"
               [routerLink]="[
                 '../../addItemRepairAttachments/' + this.repairlogId
               ]"
@@ -117,7 +123,9 @@
                     type="button"
                     *ngIf="itemRank > 0"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="View this ItemRepair Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="View this ItemRepair Attachment"
                     (click)="download(document)"
                   >
                     View
@@ -127,7 +135,9 @@
                     type="button"
                     [disabled]="itemRank < 5 || itemRank == 4 || itemRank == 5"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Edit this ItemRepair Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit this ItemRepair Attachment"
                     [routerLink]="[
                       '../../editItemRepairAttachments/' +
                         document.entityid +
@@ -141,7 +151,9 @@
                     type="button"
                     [disabled]="itemRank < 6 || itemRank == 9"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Delete this ItemRepair Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this ItemRepair Attachment"
                     (click)="openModal(confirmtemplate, document.attachmentid)"
                   >
                     Delete
@@ -164,7 +176,9 @@
       <button
         type="button"
         (click)="back()"
-        tooltip="Back to view ItemRepair"
+        data-bs-placement="bottom"
+        data-bs-toggle="tooltip"
+        title="Back to view ItemRepair"
         class="btn btn-primary"
       >
         Back

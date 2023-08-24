@@ -6,15 +6,19 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -47,7 +51,9 @@
               type="button"
               class="btn btn-primary float-right"
               [routerLink]="['../addUserType']"
-              tooltip="Add new User Type."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add new User Type."
               placement="top"
             >
               Add User Type
@@ -129,7 +135,9 @@
                 <td>
                   <button
                     type="button"
-                    tooltip="Click here to Manage User Attributes"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Click here to Manage User Attributes"
                     *ngIf="highestRank > 5"
                     class="btn btn-outline-success btn-sm"
                     [routerLink]="['../attributes', type.typeid, companyId]"
@@ -141,8 +149,10 @@
                   <button
                     type="button"
                     *ngIf="highestRank > 5"
-                    class="btn btn-outline-danger btn-sm"
-                    tooltip="Edit this UserType"
+                    class="btn btn-outline-danger btn-sm btn-right"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit this UserType"
                     [routerLink]="['../editUserType', type.typeid, companyId]"
                   >
                     Edit
@@ -151,7 +161,9 @@
                     type="button"
                     *ngIf="highestRank > 5"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Delete this UserType"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this UserType"
                     (click)="openModal(confirmtemplate, type.typeid)"
                     [disabled]="highestRank == 9"
                   >

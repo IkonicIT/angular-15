@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -53,7 +57,9 @@
               [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
               class="btn btn-primary float-right"
               (click)="addItemDocument()"
-              tooltip="Add Item Attachment."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add Item Attachment."
               placement="top"
             >
               Add Document
@@ -128,7 +134,9 @@
                     [disabled]="itemRank < 6 || document.show == false"
                     *ngIf="itemRank > 0"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="View Picture and Set As Default"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="View Picture and Set As Default"
                     data-toggle="modal"
                     (click)="setActiveCompany(document)"
                   >
@@ -139,7 +147,9 @@
                     type="button"
                     *ngIf="itemRank > 0"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Download File"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Download File"
                     (click)="downloadDocuments(document)"
                   >
                     View
@@ -148,7 +158,9 @@
                     type="button"
                     [disabled]="itemRank < 6"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Edit Item Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit Item Attachment"
                     (click)="editItemDocument(document)"
                   >
                     Edit
@@ -157,7 +169,9 @@
                     type="button"
                     [disabled]="itemRank < 6 || highestRank == 9"
                     class="btn btn-outline-danger btn-sm"
-                    tooltip="Delete Item Attachment"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete Item Attachment"
                     (click)="openModal(confirmtemplate, document.attachmentid)"
                   >
                     Delete
@@ -180,7 +194,9 @@
       <button
         type="button"
         (click)="backToViewItem()"
-        tooltip="Back to View Item"
+        data-bs-placement="bottom"
+        data-bs-toggle="tooltip"
+        title="Back to View Item"
         class="btn btn-primary"
       >
         Back To Item
@@ -237,7 +253,9 @@
         <button
           type="button"
           class="btn btn-secondary"
-          tooltip="Click here to Close"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="Click here to Close"
           (click)="myModal.hide()"
         >
           Close
@@ -246,7 +264,9 @@
           type="button"
           [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
           class="btn btn-primary"
-          tooltip="Click here to SetAsDefault Image"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="Click here to SetAsDefault Image"
           (click)="setAsDefault(activeCompanyDocument)"
         >
           Set As Default

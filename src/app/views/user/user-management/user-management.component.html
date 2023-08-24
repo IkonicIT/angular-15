@@ -6,15 +6,19 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -50,7 +54,9 @@
               [disabled]="highestRank < 5"
               class="btn btn-primary float-right"
               (click)="addUser()"
-              tooltip="Add New User."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add New User."
               placement="top"
             >
               Add User
@@ -110,7 +116,9 @@
                       highestRank == 9
                     "
                     (click)="getSecurityRoles(user)"
-                    tooltip="Add SecurityRole"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Add SecurityRole"
                     class="btn btn-outline-danger btn-sm"
                   >
                     Security Roles
@@ -120,8 +128,10 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 5"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="View this User"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="View this User"
                     (click)="viewUser(user)"
                   >
                     View
@@ -132,8 +142,10 @@
                       highestRank < 7 ||
                       (highestRank == 7 && user.isowneradmin === true)
                     "
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Edit this User"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit this User"
                     (click)="editUser(user)"
                   >
                     Edit
@@ -146,7 +158,9 @@
                       highestRank == 9
                     "
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Delete this User"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this User"
                     (click)="openModal(confirmtemplate, user)"
                   >
                     Delete

@@ -68,6 +68,11 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
+  onSubmit(event: Event) {
+    event.preventDefault();
+    // Add any additional form submission logic if needed
+  }
+
   getUserIdByNameForLogged() {
     this.loginService.getUserIdByName(this.userName).subscribe(
       (response) => {

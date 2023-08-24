@@ -1,21 +1,25 @@
 <div class="animated fadeIn" *ngIf="highestRank > 6">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -50,13 +54,15 @@
               type="button"
               class="btn btn-primary float-right"
               [routerLink]="['../add']"
-              tooltip="Add a new Company."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add a new Company."
               placement="top"
             >
               Add Company
             </button>
           </p>
-          <div>
+          <div class="select-pagination-option">
             <div class="float-left">
               <span
                 >Show
@@ -122,7 +128,9 @@
                 <td>
                   <button
                     type="button"
-                    tooltip="Company Attachments"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Company Attachments"
                     class="btn btn-outline-success btn-sm"
                     [routerLink]="['../documents', company.companyid]"
                   >
@@ -133,7 +141,9 @@
                 <td>
                   <button
                     type="button"
-                    tooltip="Company Notes"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Company Notes"
                     class="btn btn-outline-success btn-sm"
                     (click)="companyNotes(company)"
                   >
@@ -143,16 +153,20 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="view this Company"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="view this Company"
                     [routerLink]="['../view', company.companyid]"
                   >
                     View
                   </button>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Edit this Company"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit this Company"
                     [routerLink]="['../edit', company.companyid]"
                   >
                     Edit
@@ -160,7 +174,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Delete this Company"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this Company"
                     [disabled]="highestRank == 9"
                     (click)="openModal(confirmtemplate, company.companyid)"
                   >

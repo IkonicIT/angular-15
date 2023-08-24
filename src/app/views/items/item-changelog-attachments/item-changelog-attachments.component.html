@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -74,7 +78,9 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          tooltip="Update this Document"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Update this Document"
                           class="btn btn-primary"
                         >
                           Update
@@ -82,7 +88,9 @@
                         <button
                           type="button"
                           (click)="cancelEditDocument()"
-                          tooltip="BackToAdd"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="BackToAdd"
                           class="btn btn-primary"
                         >
                           Cancel
@@ -107,7 +115,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -115,7 +125,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -227,7 +239,9 @@
                                 *ngIf="i > 0"
                                 type="button"
                                 (click)="remove(i)"
-                                tooltip=" Click here to remove File"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title=" Click here to remove File"
                               >
                                 Remove
                               </button>
@@ -241,7 +255,9 @@
                         <button
                           type="button"
                           (click)="addNewAttachment()"
-                          tooltip=" Click here to Add File"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title=" Click here to Add File"
                         >
                           Add File
                         </button>
@@ -252,14 +268,18 @@
                       <div class="form-group col-sm-12 text-center">
                         <button
                           class="btn btn-primary"
-                          tooltip="Save this Document"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Save this Document"
                         >
                           Save
                         </button>
                         <button
                           type="button"
                           (click)="cancel()"
-                          tooltip="BackToChangeLog"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="BackToChangeLog"
                           class="btn btn-primary"
                         >
                           Cancel
@@ -352,14 +372,18 @@
                   type="button"
                   [disabled]="itemRank < 3"
                   class="btn btn-outline-danger btn-sm"
-                  tooltip="View this Document"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="View this Document"
                   (click)="download(document)"
                 >
                   View
                 </button>
 
                 <button
-                  tooltip="Edit this Document"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Edit this Document"
                   class="btn btn-outline-danger btn-sm"
                   (click)="editNoteDocument(document)"
                 >
@@ -369,7 +393,9 @@
                   type="button"
                   [disabled]="itemRank < 4"
                   class="btn btn-outline-danger btn-sm"
-                  tooltip="Delete this Document"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Delete this Document"
                   (click)="openModal(confirmtemplate, document.attachmentid)"
                   disabled="highestRank == 9"
                 >

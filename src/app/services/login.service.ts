@@ -21,7 +21,7 @@ export class LoginService {
     this.headers = new HttpHeaders();
     this.headers = this.headers.append(
       'Authorization',
-      'Basic ' + window.btoa('clientid123' + ':' + 'clientsecret123')
+      'Basic ' + window.btoa('ypatel' + ':' + 'tracrat')
     );
     this.headers = this.headers.append(
       'Content-Type',

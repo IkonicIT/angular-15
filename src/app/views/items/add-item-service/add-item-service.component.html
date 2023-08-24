@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -49,7 +53,9 @@
             <button
               type="button"
               class="btn btn-primary float-right"
-              tooltip="Add a new Item Service"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add a new Item Service"
               (click)="openModal(addtemplate)"
               placement="top"
             >
@@ -115,7 +121,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Edit this Type"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit this Type"
                     (click)="openModalForEdit(addtemplate, service.serviceId)"
                   >
                     Edit
@@ -123,7 +131,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Delete this Service"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this Service"
                     (click)="
                       openDeleteModal(confirmtemplate, service.serviceId)
                     "
@@ -232,7 +242,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Edit this Type"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit this Type"
                     (click)="openModalForEdit(addtemplate, service.serviceId)"
                   >
                     Edit
@@ -240,7 +252,9 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    tooltip="Delete this Service"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this Service"
                     (click)="
                       openDeleteModal(confirmtemplate, service.serviceId)
                     "
@@ -267,7 +281,9 @@
       <button
         type="button"
         (click)="back()"
-        tooltip="Back"
+        data-bs-placement="bottom"
+        data-bs-toggle="tooltip"
+        title="Back"
         class="btn btn-primary"
       >
         Back To Item
@@ -366,14 +382,18 @@
         <div class="row">
           <div class="form-group col-sm-12 text-center">
             <button
-              tooltip="Update this Item Service Date"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Update this Item Service Date"
               (click)="saveItemServiceData()"
               class="btn btn-primary"
             >
               Save
             </button>
             <button
-              tooltip="Close popup"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Close popup"
               (click)="closeModel()"
               class="btn btn-primary"
             >

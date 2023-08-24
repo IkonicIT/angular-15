@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -133,7 +137,9 @@
                             type="button"
                             *ngIf="addEditFlag"
                             class="btn btn-primary"
-                            tooltip="Save Order Attribute"
+                            data-bs-placement="bottom"
+                            data-bs-toggle="tooltip"
+                            title="Save Order Attribute"
                             (click)="saveAttributeListOrder(typeAttributes)"
                           >
                             Save Order
@@ -307,7 +313,9 @@
                               type="button"
                               *ngIf="!addEditFlag"
                               class="btn btn-primary"
-                              tooltip="Add new Attribute"
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Add new Attribute"
                               (click)="createAttribute()"
                             >
                               Add
@@ -316,7 +324,9 @@
                               type="button"
                               *ngIf="addEditFlag"
                               class="btn btn-primary"
-                              tooltip="Update Attribute."
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Update Attribute."
                               (click)="editAttribute()"
                             >
                               Update
@@ -325,7 +335,9 @@
                               type="button"
                               *ngIf="addEditFlag"
                               class="btn btn-primary"
-                              tooltip="Add new Attribute."
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Add new Attribute."
                               (click)="newAttribute()"
                             >
                               New
@@ -334,7 +346,9 @@
                               type="button"
                               *ngIf="addEditFlag"
                               class="btn btn-primary"
-                              tooltip="Delete Attribute."
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Delete Attribute."
                               (click)="openModal(confirmtemplate)"
                               [disabled]="highestRank == 9"
                             >
@@ -342,7 +356,9 @@
                             </button>
                             <button
                               type="button"
-                              tooltip="Back"
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Back"
                               (click)="cancelItemAttributes()"
                               class="btn btn-primary"
                             >

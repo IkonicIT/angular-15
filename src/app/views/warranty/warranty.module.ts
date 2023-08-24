@@ -9,6 +9,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { EditWarrantyTypeComponent } from './edit-warranty-type/edit-warranty-type.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+
 @NgModule({
   imports: [
     BsDatepickerModule.forRoot(),

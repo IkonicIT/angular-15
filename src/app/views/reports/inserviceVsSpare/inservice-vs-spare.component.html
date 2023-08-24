@@ -53,8 +53,10 @@
                     <button
                       type="button"
                       (click)="getReport()"
-                      tooltip="Generate Report"
-                      class="btn btn-primary"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Generate Report"
+                      class="btn btn-primary btn-top"
                     >
                       Generate report
                     </button>
@@ -164,7 +166,9 @@
                                       motor.typeName
                                     )
                                   "
-                                  tooltip="click here to view this Item"
+                                  data-bs-placement="bottom"
+                                  data-bs-toggle="tooltip"
+                                  title="click here to view this Item"
                                   [innerHTML]="motor.tag"
                                 ></a>
                               </td>
@@ -282,7 +286,9 @@
                                         motor.typeName
                                       )
                                     "
-                                    tooltip="click here to view this Item"
+                                    data-bs-placement="bottom"
+                                    data-bs-toggle="tooltip"
+                                    title="click here to view this Item"
                                     [innerHTML]="motor.tag"
                                   ></a>
                                 </td>
@@ -391,7 +397,9 @@
                                       motor.typeName
                                     )
                                   "
-                                  tooltip="click here to view this Item"
+                                  data-bs-placement="bottom"
+                                  data-bs-toggle="tooltip"
+                                  title="click here to view this Item"
                                   [innerHTML]="motor.tag"
                                 ></a>
                               </td>
@@ -456,7 +464,9 @@
                     spareItem.typeName
                   )
                 "
-                tooltip="click here to view this Item"
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title="click here to view this Item"
                 [innerHTML]="spareItem.tag"
               ></a>
             </td>
@@ -496,7 +506,9 @@
               <a
                 href="javascript:void(0)"
                 (click)="openModal(mytemplate, spareItem.itemId)"
-                tooltip="click here to view this Item"
+                data-bs-placement="bottom"
+                data-bs-toggle="tooltip"
+                title="click here to view this Item"
                 [innerHTML]="spareItem.tag"
               ></a>
             </td>

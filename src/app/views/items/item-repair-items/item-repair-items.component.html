@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -62,7 +66,9 @@
                           <div class="col-12 col-md-4 float-right">
                             <button
                               type="button"
-                              tooltip=" Add new Repair Item "
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title=" Add new Repair Item "
                               [disabled]="itemType == undefined"
                               (click)="openModal(templateAdd, companyId)"
                               placement="top"
@@ -142,7 +148,9 @@
                             <td>{{ item.repairdescription }}</td>
                             <td>
                               <button
-                                tooltip="Edit Repair Item"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Edit Repair Item"
                                 type="button"
                                 class="btn btn-outline-danger btn-sm"
                                 (click)="editItemrepairItem(item.repairid)"
@@ -150,7 +158,9 @@
                                 Edit
                               </button>
                               <button
-                                tooltip="Delete Repair Item"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Delete Repair Item"
                                 type="button"
                                 class="btn btn-outline-danger btn-sm"
                                 (click)="
@@ -220,7 +230,9 @@
           <button
             type="button"
             class="btn btn-primary"
-            tooltip="Save this repairItem"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Save this repairItem"
             (click)="saveRepairItem()"
           >
             Save

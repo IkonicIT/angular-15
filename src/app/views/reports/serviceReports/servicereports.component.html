@@ -8,7 +8,7 @@
             <br />
 
             <div class="row" style="padding: 15px">
-              <div>
+              <div class="col-md-2">
                 <label for="status"><strong>TimeSpan</strong></label>
                 <select class="form-control" [(ngModel)]="params.type">
                   <option value="monthly">Next Month</option>
@@ -18,7 +18,7 @@
               </div>
               <ng-container [ngSwitch]="params.type">
                 <ng-container *ngSwitchCase="'range'">
-                  <div>
+                  <div class="col-md-2">
                     <label for="status"
                       ><strong>From</strong
                       ><strong class="text-danger"> *</strong></label
@@ -30,7 +30,7 @@
                       ></dp-date-picker>
                     </div>
                   </div>
-                  <div>
+                  <div class="col-md-2">
                     <label for="status"
                       ><strong>To</strong
                       ><strong class="text-danger"> *</strong></label
@@ -45,14 +45,16 @@
                 </ng-container>
               </ng-container>
 
-              <div>
+              <div class="col-md-2">
                 <label><strong>&nbsp;</strong></label>
                 <button
                   type="button"
                   class="btn btn-danger"
                   style="display: inherit; margin-top: -1px; margin-left: 2px"
                   (click)="generateReport()"
-                  tooltip="Get ServiceReports"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Get ServiceReports"
                 >
                   GET
                 </button>
@@ -140,7 +142,9 @@
                                 service.typeName
                               )
                             "
-                            tooltip="click here to view this Item"
+                            data-bs-placement="bottom"
+                            data-bs-toggle="tooltip"
+                            title="click here to view this Item"
                             [innerHTML]="service.tag"
                           ></a>
                         </td>
@@ -256,7 +260,9 @@
                                 service.typeName
                               )
                             "
-                            tooltip="click here to view this Item"
+                            data-bs-placement="bottom"
+                            data-bs-toggle="tooltip"
+                            title="click here to view this Item"
                             [innerHTML]="service.tag"
                           ></a>
                         </td>

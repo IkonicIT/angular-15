@@ -8,7 +8,9 @@
             <button
               type="button"
               class="btn btn-primary float-right"
-              tooltip="Add Notes."
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Add Notes."
               (click)="addNotes()"
               placement="top"
             >
@@ -103,7 +105,9 @@
                 <td>
                   <button
                     type="button"
-                    tooltip="Company Attachments"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Company Attachments"
                     class="btn btn-outline-danger btn-sm"
                     (click)="companyNoteAttachments(note)"
                   >
@@ -113,7 +117,9 @@
                 <td>
                   <button
                     type="button"
-                    tooltip="View Company Note"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="View Company Note"
                     class="btn btn-outline-danger btn-sm margin-bottom-mobile"
                     (click)="viewCompanyNotes(note)"
                   >
@@ -121,7 +127,9 @@
                   </button>
                   <button
                     type="button"
-                    tooltip="Edit Company Note"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Edit Company Note"
                     class="btn btn-outline-danger btn-sm margin-bottom-mobile"
                     (click)="editCompanyNotes(note)"
                   >
@@ -129,7 +137,9 @@
                   </button>
                   <button
                     type="button"
-                    tooltip="Delete Company Note"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete Company Note"
                     class="btn btn-outline-danger btn-sm"
                     (click)="openModal(confirmtemplate, note.journalid)"
                     disabled="highestRank == 9"

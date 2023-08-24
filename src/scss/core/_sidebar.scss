@@ -453,3 +453,16 @@
     }
   }
 }
+
+.sidebar .nav-link.active i,
+.sidebar .navbar .active.dropdown-toggle i,
+.navbar .sidebar .active.dropdown-toggle i {
+  color: #e02725;
+}
+
+.navbar .sidebar .dropdown-toggle:hover,
+.sidebar .nav-link:hover,
+.sidebar .navbar .dropdown-toggle:hover {
+  color: #fff;
+  background: #e02725;
+}

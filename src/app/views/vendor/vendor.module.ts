@@ -16,6 +16,7 @@ import { AddVendorNoteComponent } from './add-vendor-note/add-vendor-note.compon
 import { EditVendorNoteComponent } from './edit-vendor-note/edit-vendor-note.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+
 @NgModule({
   imports: [
     BsDatepickerModule.forRoot(),

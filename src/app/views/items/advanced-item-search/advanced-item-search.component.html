@@ -14,7 +14,9 @@
             type="button"
             class="btn btn-outline-danger btn-sm"
             (click)="isExpandAdvancedSearch = !isExpandAdvancedSearch"
-            tooltip="Click here to Show/Change the Search Fields"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click here to Show/Change the Search Fields"
           >
             Show/Change Search Fields Criteria
           </button>
@@ -34,7 +36,9 @@
               <div class="card-body">
                 <button
                   type="button"
-                  tooltip="Click here to showSearchResults"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Click here to showSearchResults"
                   class="btn btn-primary"
                   (click)="searchItems()"
                   style="margin-left: 90%"
@@ -239,7 +243,9 @@
                     <button
                       type="button"
                       class="btn btn-primary"
-                      tooltip="Click here to showSearchResults"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Click here to showSearchResults"
                       (click)="searchItems()"
                     >
                       Search
@@ -247,7 +253,9 @@
                     <button
                       type="button"
                       (click)="clearItem()"
-                      tooltip="Clear"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Clear"
                       class="btn btn-primary"
                     >
                       Clear
@@ -255,7 +263,9 @@
                     <button
                       type="button"
                       (click)="back()"
-                      tooltip="Back "
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Back "
                       class="btn btn-primary"
                     >
                       Back
@@ -286,7 +296,9 @@
                         margin-left: 2px;
                       "
                       (click)="getDataForFailedItems()"
-                      tooltip="Get PrimaryFindings"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Get PrimaryFindings"
                     >
                       GET
                     </button>
@@ -390,7 +402,9 @@
                     <button
                       type="button"
                       class="btn btn-primary"
-                      tooltip="Click here to showSearchResults"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Click here to showSearchResults"
                       (click)="searchItemRepairNotesRfqModel()"
                     >
                       Search
@@ -398,7 +412,9 @@
                     <button
                       type="button"
                       (click)="clearRepairNoteQuote()"
-                      tooltip="Clear"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Clear"
                       class="btn btn-primary"
                     >
                       Clear
@@ -406,7 +422,9 @@
                     <button
                       type="button"
                       (click)="back()"
-                      tooltip="back button"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="back button"
                       class="btn btn-primary"
                     >
                       Back
@@ -460,7 +478,9 @@
                             <button
                               type="button"
                               class="btn btn-outline-danger btn-sm"
-                              tooltip="View"
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="View"
                               (click)="
                                 goToItemRepair(
                                   repairsearch.itemId,
@@ -505,7 +525,9 @@
                             <button
                               type="button"
                               class="btn btn-outline-danger btn-sm"
-                              tooltip="View "
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="View "
                               (click)="
                                 goToNote(
                                   itemnotessearch.itemId,
@@ -993,7 +1015,9 @@
             class="btn btn-danger"
             style="display: inherit; margin-top: -1px; margin-left: 2px"
             (click)="getFailureTypesPieChart()"
-            tooltip="Get PrimaryFindings"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Get PrimaryFindings"
           >
             GET
           </button>
@@ -1112,7 +1136,9 @@
                       repairJob.typeName
                     )
                   "
-                  tooltip="click here to view this Item"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="click here to view this Item"
                   [innerHTML]="repairJob.tag"
                 ></a>
               </td>
@@ -1131,7 +1157,9 @@
                     )
                   "
                   style="color: red"
-                  tooltip="click here to view Job Screen"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="click here to view Job Screen"
                   [innerHTML]="repairJob.jobNumber"
                 ></a>
               </td>

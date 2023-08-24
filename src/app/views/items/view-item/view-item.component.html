@@ -10,7 +10,9 @@
                   <button
                     type="button"
                     (click)="print()"
-                    tooltip="Click to Print this Page"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Click to Print this Page"
                     class="btn btn-outline-danger btn-sm"
                   >
                     Print
@@ -18,7 +20,9 @@
                   <button
                     type="button"
                     (click)="help()"
-                    tooltip="Instructions"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Instructions"
                     class="btn btn-outline-danger btn-sm"
                   >
                     Help
@@ -58,7 +62,9 @@
                         <button
                           [routerLink]="['../../cloneItem/' + itemId]"
                           [disabled]="itemRank < 3"
-                          tooltip="Clone Item"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Clone Item"
                           class="btn btn-primary margin-bottom-mobile"
                           style="margin-right: 3px"
                         >
@@ -69,7 +75,9 @@
                           class="btn btn-primary margin-bottom-mobile"
                           [routerLink]="['../../itemRepairs/' + itemId]"
                           *ngIf="itemRank > 0"
-                          tooltip="Item Repairs"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Item Repairs"
                           placement="top"
                           style="margin-right: 3px"
                         >
@@ -78,7 +86,9 @@
                         <button
                           [routerLink]="['../../itemNotes/' + itemId + '/' + 0]"
                           *ngIf="itemRank > 0"
-                          tooltip="Notes"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Notes"
                           class="btn btn-primary margin-bottom-mobile"
                           style="margin-right: 3px"
                         >
@@ -92,7 +102,9 @@
                               currentAttachmentId
                           ]"
                           *ngIf="itemRank > 0"
-                          tooltip="Click here to see Item Pictures"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Click here to see Item Pictures"
                           class="btn btn-primary margin-bottom-mobile"
                           style="margin-right: 3px"
                         >
@@ -101,7 +113,9 @@
                         <button
                           [routerLink]="['../../transferItem/' + itemId]"
                           [disabled]="itemRank < 4"
-                          tooltip="Item Transfer"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Item Transfer"
                           class="btn btn-primary margin-bottom-mobile"
                           style="margin-right: 3px"
                         >
@@ -110,14 +124,18 @@
                         <button
                           (click)="GoToWareHousetag()"
                           *ngIf="itemRank > 0"
-                          tooltip="WarehouseTag"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="WarehouseTag"
                           class="btn btn-primary margin-bottom-mobile"
                           style="margin-right: 3px"
                         >
                           WarehouseTag
                         </button>
                         <button
-                          tooltip="Find Replacement"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Find Replacement"
                           [routerLink]="[
                             '/items/advancedSearch/' +
                               itemId +
@@ -131,7 +149,9 @@
                           Find Replacement
                         </button>
                         <button
-                          tooltip="Item Service"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Item Service"
                           (click)="goToItemService()"
                           *ngIf="itemRank > 3"
                           class="btn btn-primary margin-bottom-mobile"
@@ -144,7 +164,9 @@
                           [disabled]="itemRank < 5 || highestRank == 9"
                           class="btn btn-primary margin-bottom-mobile"
                           style="margin-right: 3px"
-                          tooltip="Delete Item"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Delete Item"
                           (click)="openModal(confirmtemplate, itemId)"
                         >
                           Delete
@@ -220,7 +242,9 @@
                           <button
                             type="button"
                             (click)="openMoreChanges()"
-                            tooltip="click here for More Changes Log Feed"
+                            data-bs-placement="bottom"
+                            data-bs-toggle="tooltip"
+                            title="click here for More Changes Log Feed"
                             class="btn btn-primary more-changes"
                           >
                             More Changes
@@ -248,7 +272,9 @@
                             <div class="col-sm-12">
                               <a
                                 (click)="openImage()"
-                                tooltip="click here to see other Pictures"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="click here to see other Pictures"
                                 style="cursor: pointer"
                               >
                                 <img
@@ -705,7 +731,9 @@
                           type="button"
                           [routerLink]="['../../editItem/' + itemId]"
                           [disabled]="itemRank < 4"
-                          tooltip="Edit Item"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Edit Item"
                           class="btn btn-primary"
                         >
                           Edit
@@ -714,7 +742,9 @@
                         <button
                           type="button"
                           (click)="back()"
-                          tooltip="Back"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Back"
                           class="btn btn-primary"
                         >
                           Back
@@ -760,7 +790,9 @@
       <div class="modal-footer">
         <a
           class="btn btn-primary"
-          tooltip="Click here to Manage Pictures"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="Click here to Manage Pictures"
           [routerLink]="[
             '../../attachments/' + itemId + '/' + currentAttachmentId
           ]"
@@ -768,7 +800,9 @@
         >
         <button
           type="button"
-          tooltip="Click here to Close"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="Click here to Close"
           class="btn btn-secondary"
           (click)="myModal.hide()"
         >

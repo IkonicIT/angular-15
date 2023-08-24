@@ -111,7 +111,9 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          tooltip="Update Item Note"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Update Item Note"
                           *ngIf="highestRank > 3"
                           class="btn btn-primary"
                         >
@@ -119,7 +121,9 @@
                         </button>
                         <button
                           type="button"
-                          tooltip="Cancel"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Cancel"
                           (click)="cancelItemNotes()"
                           class="btn btn-outline-danger btn-sm"
                         >
@@ -127,7 +131,9 @@
                         </button>
                         <button
                           type="button"
-                          tooltip="Back to View Item"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Back to View Item"
                           (click)="backToItem()"
                           class="btn btn-outline-danger btn-sm"
                         >

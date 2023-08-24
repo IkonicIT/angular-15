@@ -16,7 +16,9 @@
                   <button
                     type="button"
                     (click)="print()"
-                    tooltip="Click to Print this Page"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Click to Print this Page"
                     class="btn btn-outline-danger btn-sm"
                   >
                     Print
@@ -24,7 +26,9 @@
                   <button
                     type="button"
                     (click)="help()"
-                    tooltip=" Instructions"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title=" Instructions"
                     class="btn btn-outline-danger btn-sm"
                   >
                     Help
@@ -128,7 +132,9 @@
                                 *ngIf="i > 0"
                                 type="button"
                                 (click)="remove(i)"
-                                tooltip=" Click here to remove File"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title=" Click here to remove File"
                               >
                                 Remove
                               </button>
@@ -143,7 +149,9 @@
                         <button
                           type="button"
                           (click)="addNewAttachment()"
-                          tooltip=" Click here to Add File"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title=" Click here to Add File"
                         >
                           Add File
                         </button>
@@ -154,7 +162,9 @@
                       <div class="form-group col-sm-12 text-center">
                         <button
                           class="btn btn-primary"
-                          tooltip="Save ItemRepair Attachment"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Save ItemRepair Attachment"
                         >
                           Save
                         </button>
@@ -163,7 +173,9 @@
                           [routerLink]="[
                             '../../itemRepairAttachments/' + this.repairlogid
                           ]"
-                          tooltip="Back To ItemRepair Attachments"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Back To ItemRepair Attachments"
                           class="btn btn-primary"
                         >
                           Cancel

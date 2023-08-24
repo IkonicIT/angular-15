@@ -7,7 +7,9 @@
             type="button"
             class="btn btn-outline-danger btn-sm"
             (click)="isExpandAdvancedSearch = !isExpandAdvancedSearch"
-            tooltip="Click here to Show/Change the Search Fields"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click here to Show/Change the Search Fields"
           >
             Show/Change Search Fields Criteria
           </button>
@@ -16,7 +18,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -24,7 +28,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -137,7 +143,9 @@
                 <button
                   type="button"
                   (click)="getSearchedItems()"
-                  tooltip="Search an item"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Search an item"
                   class="btn btn-primary"
                 >
                   Search
@@ -145,7 +153,9 @@
                 <button
                   type="button"
                   (click)="clear()"
-                  tooltip="Clear searched Fields"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Clear searched Fields"
                   class="btn btn-primary"
                 >
                   Clear
@@ -154,7 +164,9 @@
                   *ngIf="isExpandAdvancedSearch"
                   type="button"
                   (click)="Hide()"
-                  tooltip="Hide searched Fields"
+                  data-bs-placement="bottom"
+                  data-bs-toggle="tooltip"
+                  title="Hide searched Fields"
                   class="btn btn-primary"
                 >
                   Hide
@@ -237,7 +249,9 @@
 
           <button
             type="button"
-            tooltip="Export results "
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Export results "
             *ngIf="flag == 0"
             (click)="exportAsExcelFileWithMultipleSheets()"
             class="btn btn-primary"

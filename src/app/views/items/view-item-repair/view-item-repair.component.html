@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm"
           >
             Print
@@ -14,7 +16,9 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
             class="btn btn-outline-danger btn-sm"
           >
             Help
@@ -59,7 +63,9 @@
                     class="btn btn-primary margin-bottom-mobile"
                     style="float: right; margin: 5px"
                     (click)="backToViewItem()"
-                    tooltip="Back to View Item"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Back to View Item"
                     class="btn btn-primary"
                   >
                     Back To Item
@@ -69,7 +75,9 @@
                     class="btn btn-primary margin-bottom-mobile"
                     style="float: right; margin: 5px"
                     (click)="back()"
-                    tooltip="Back to Previous Screen"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Back to Previous Screen"
                     class="btn btn-primary"
                   >
                     Back
@@ -79,7 +87,9 @@
                     [disabled]="itemRank < 3 || highestRank == 9"
                     class="btn btn-primary margin-bottom-mobile"
                     style="float: right; margin: 5px"
-                    tooltip="Delete this ItemRepair"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Delete this ItemRepair"
                     (click)="openModal(confirmtemplate, itemRepairId)"
                   >
                     Delete
@@ -89,7 +99,9 @@
                     class="btn btn-primary margin-bottom-mobile"
                     style="float: right; margin: 5px"
                     *ngIf="itemRank > 0"
-                    tooltip="Add Attachments to this ItemRepair"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Add Attachments to this ItemRepair"
                     [routerLink]="[
                       '../../../itemRepairAttachments/' + itemRepairId
                     ]"
@@ -101,7 +113,9 @@
                     class="btn btn-primary margin-bottom-mobile"
                     style="float: right; margin: 5px"
                     [disabled]="itemRank < 3"
-                    tooltip="Update Item Repair"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Update Item Repair"
                     (click)="updateItemRepair()"
                   >
                     Edit
@@ -111,7 +125,9 @@
                     class="btn btn-primary margin-bottom-mobile"
                     style="float: right; margin: 5px"
                     [disabled]="itemRank < 3"
-                    tooltip="Add Repair."
+                    data-bs-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    title="Add Repair."
                     [routerLink]="['../../../addItemRepair/' + itemId]"
                   >
                     Add Repair
@@ -365,7 +381,9 @@
                             >
                               <br /><a
                                 href="javascript:void(0)"
-                                tooltip="View this ItemRepair Attachment"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="View this ItemRepair Attachment"
                                 (click)="downloadFile(attachment)"
                                 >{{ attachment.fileName }}</a
                               >
@@ -376,7 +394,9 @@
                             <button
                               type="button"
                               *ngIf="itemRank > 0"
-                              tooltip="Click here to View this ItemRepair"
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Click here to View this ItemRepair"
                               class="btn btn-outline-danger btn-sm"
                               (click)="ViewItemRepair(repair.repairlogid)"
                             >
@@ -507,7 +527,9 @@
                             >
                               <br /><a
                                 href="javascript:void(0)"
-                                tooltip="View this ItemRepair Attachment"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="View this ItemRepair Attachment"
                                 (click)="download(attachment)"
                                 >{{ attachment.fileName }}</a
                               >
@@ -517,7 +539,9 @@
                             <button
                               type="button"
                               *ngIf="itemRank > 0"
-                              tooltip="Click here to View this ItemRepair"
+                              data-bs-placement="bottom"
+                              data-bs-toggle="tooltip"
+                              title="Click here to View this ItemRepair"
                               class="btn btn-outline-danger btn-sm"
                               (click)="ViewItemRepair(repair.repairlogid)"
                             >

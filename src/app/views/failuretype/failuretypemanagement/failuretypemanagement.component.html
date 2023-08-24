@@ -6,16 +6,20 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            data-bs-placement="bottom"
+            data-bs-toggle="tooltip"
+            title=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -96,7 +100,9 @@
                       <div class="col-sm-4">
                         <app-dropdown-treeview-select
                           [items]="items"
-                          tooltip="Select ItemType to add Primary Findings & causes"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Select ItemType to add Primary Findings & causes"
                           [(value)]="value"
                           (valueChange)="onValueChange($event)"
                         >
@@ -127,7 +133,9 @@
                               *ngFor="let failureType of failureTypes"
                             >
                               <li
-                                tooltip="Select PrimaryFinding to Edit"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Select PrimaryFinding to Edit"
                                 (click)="
                                   getCausesForFailureType(failureType);
                                   editDeleteFlag = true
@@ -241,7 +249,9 @@
                               <button
                                 type="button"
                                 class="btn btn-primary"
-                                tooltip="updatePrimaryFindingAndCauses"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="updatePrimaryFindingAndCauses"
                                 *ngIf="editEnable == 1"
                                 (click)="updateFailureTypeAndCauses()"
                               >
@@ -250,7 +260,9 @@
                               <button
                                 type="button"
                                 class="btn btn-primary"
-                                tooltip="AddPrimaryFindingAndCauses"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="AddPrimaryFindingAndCauses"
                                 [disabled]="newFlag == false"
                                 (click)="addFailureTypeAndCauses()"
                               >
@@ -259,7 +271,9 @@
                               <button
                                 type="button"
                                 class="btn btn-primary"
-                                tooltip="SavePrimaryFindingAndCauses"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="SavePrimaryFindingAndCauses"
                                 *ngIf="addEditFlag"
                                 (click)="saveFailureTypeAndCauses()"
                               >
@@ -268,7 +282,9 @@
                               <button
                                 type="button"
                                 class="btn btn-primary"
-                                tooltip="EditPrimaryFindingAndCauses"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="EditPrimaryFindingAndCauses"
                                 [disabled]="highestRank < 7"
                                 *ngIf="editDeleteFlag == true"
                                 (click)="editFailureType(failuretype)"
@@ -278,7 +294,9 @@
                               <button
                                 type="button"
                                 class="btn btn-primary"
-                                tooltip="DeletePrimaryFindingAndCauses"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="DeletePrimaryFindingAndCauses"
                                 [disabled]="highestRank < 7 || highestRank == 9"
                                 *ngIf="editDeleteFlag == true"
                                 (click)="
@@ -291,7 +309,9 @@
                                 type="button"
                                 class="btn btn-primary"
                                 *ngIf="addFailure == 1"
-                                tooltip="Back"
+                                data-bs-placement="bottom"
+                                data-bs-toggle="tooltip"
+                                title="Back"
                                 (click)="cancelAdd()"
                               >
                                 Cancel

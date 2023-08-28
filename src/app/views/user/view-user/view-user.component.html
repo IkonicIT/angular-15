@@ -1,10 +1,10 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="card-body">
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding">
+            <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Viewing User [User:{{ username }}]</strong>
@@ -93,7 +93,9 @@
                   </div>
                   <div class="row">
                     <div class="form-group col-sm-6">
-                      <label for="req">Receive RFQ Notification :</label>
+                      <label for="req" class="btn-right"
+                        >Receive RFQ Notification :</label
+                      >
                       <input
                         type="checkbox"
                         [(ngModel)]="model.sendreceiverfq"

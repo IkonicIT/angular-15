@@ -39,6 +39,70 @@
   background-color: black;
 }
 
-.btn-top {
-  margin-top: 5px;
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding,
+.text-right,
+.form-group {
+  padding: 0 15px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+}
+
+.card,
+.form-group button,
+.btn-primary {
+  border-radius: 0;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.form-control {
+  background-color: #fff;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.table .thead-light th,
+.table-outline td {
+  padding: 12px;
+}
+
+.table-outline td a {
+  color: #e02725;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.table-outline td a:hover {
+  color: #a21817;
+  text-decoration: underline;
+}
+
+a {
+  text-decoration: none !important;
 }

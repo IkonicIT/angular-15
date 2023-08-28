@@ -18,6 +18,7 @@
 }
 
 thead th {
+  padding: 12px;
   cursor: pointer;
   span {
     visibility: hidden;
@@ -29,6 +30,10 @@ thead th {
       visibility: visible;
     }
   }
+}
+
+tbody td {
+  padding: 12px;
 }
 
 .float-right {
@@ -49,4 +54,44 @@ thead th {
 
 .btn-right {
   margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.select-pagination-option {
+  height: 0;
+}
+
+::ng-deep .ngx-pagination li a {
+  text-decoration: none;
 }

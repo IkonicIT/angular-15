@@ -5,16 +5,20 @@
   border: solid 1px #a4b7c1;
   padding-left: 0px;
 }
+
 .my-pagination ::ng-deep .ngx-pagination .current {
   color: white;
   background-color: red;
 }
+
 .my-pagination ::ng-deep .ngx-pagination a,
 .ngx-pagination button {
   color: red;
   background-color: white;
 }
+
 thead th {
+  padding: 12px;
   cursor: pointer;
   span {
     visibility: hidden;
@@ -27,20 +31,110 @@ thead th {
     }
   }
 }
+
+tbody td {
+  padding: 12px;
+}
+
 .float-right {
   float: right;
 }
+
 .div-search {
   margin-bottom: 1%;
   margin-top: 1%;
 }
+
 .warranty-table {
   width: 40%;
   margin-left: 30%;
   margin-right: 30%;
   text-align: center;
 }
+
 .no-border {
   border-top: 0px;
   padding: 0;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-right,
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+}
+
+.form-control {
+  background-color: #fff;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+::ng-deep .modal-content {
+  border-radius: 0;
+}
+
+.modal-header .close {
+  padding: 1rem;
+  margin: -1rem -1rem -1rem auto;
+}
+
+button.close {
+  background-color: transparent;
+  border: 0;
+}
+
+.close {
+  float: right;
+  font-size: 1.3125rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
 }

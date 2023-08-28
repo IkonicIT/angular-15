@@ -8,7 +8,7 @@
             <br />
 
             <div class="row" style="padding: 15px">
-              <div class="col-md-2">
+              <div class="col-md-2 remove-padding">
                 <label for="status"><strong>TimeSpan</strong></label>
                 <select class="form-control" [(ngModel)]="params.type">
                   <option value="monthly">Next Month</option>
@@ -18,7 +18,7 @@
               </div>
               <ng-container [ngSwitch]="params.type">
                 <ng-container *ngSwitchCase="'range'">
-                  <div class="col-md-2">
+                  <div class="col-md-2 remove-padding">
                     <label for="status"
                       ><strong>From</strong
                       ><strong class="text-danger"> *</strong></label
@@ -30,7 +30,7 @@
                       ></dp-date-picker>
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-2 remove-padding">
                     <label for="status"
                       ><strong>To</strong
                       ><strong class="text-danger"> *</strong></label
@@ -45,7 +45,7 @@
                 </ng-container>
               </ng-container>
 
-              <div class="col-md-2">
+              <div class="col-md-2 button-padding">
                 <label><strong>&nbsp;</strong></label>
                 <button
                   type="button"
@@ -75,7 +75,7 @@
               <div class="card">
                 <div class="card-body">
                   <p class="card-text"><strong>Open Services</strong></p>
-                  <div>
+                  <div class="select-pagination-option">
                     <div class="float-left">
                       <span
                         >Show
@@ -168,7 +168,7 @@
               <div class="card">
                 <div class="card-body">
                   <p class="card-text"><strong>Previous Services</strong></p>
-                  <div>
+                  <div class="select-pagination-option">
                     <div class="float-left">
                       <span
                         >Show

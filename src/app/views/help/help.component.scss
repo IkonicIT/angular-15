@@ -5,12 +5,75 @@
   border: solid 1px #a4b7c1;
   padding-left: 0px;
 }
+
 .my-pagination ::ng-deep .ngx-pagination .current {
   color: white;
   background-color: red;
 }
+
 .my-pagination ::ng-deep .ngx-pagination a,
 .ngx-pagination button {
   color: red;
   background-color: white;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.card {
+  border-radius: 0;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.select-pagination-option {
+  height: 0;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+thead th,
+tbody td {
+  padding: 12px;
+}
+
+tbody td a {
+  color: #e02725;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+tbody td a:hover {
+  color: #a21817;
+  text-decoration: underline;
+}
+
+::ng-deep .ngx-pagination li a {
+  text-decoration: none;
+}
+
+.form-control {
+  background-color: #fff;
 }

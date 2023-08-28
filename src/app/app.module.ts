@@ -60,6 +60,7 @@ import {
 } from './services';
 import { ItemAttributeService } from './services/Items/item-attribute.service';
 import { ForgotPasswordService } from './services/forgot-password.service';
+import { UserAttributesService } from "./services/user-attributes.service";
 import { ResetPasswordService } from './services/reset-password.service';
 import { BroadcasterService } from './services/broadcaster.service';
 import { DashboardService } from './services/dashboard.service';
@@ -165,6 +166,7 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     ResetPasswordService,
     WarrantyManagementService,
     UserManagementService,
+    UserAttributesService,
     UserTypesService,
     CompanyManagementService,
     CompanyDocumentsService,

@@ -106,12 +106,7 @@ export class UserManagementComponent implements OnInit {
     ]);
   }
 
-  viewUser(user: {
-    firstname: string;
-    lastname: string;
-    userid: string;
-    profileid: string;
-  }) {
+  viewUser(user: any) {
     this.broadcasterService.username = user.firstname + ' ' + user.lastname;
     this.router.navigate([
       '/user/viewUser/' + user.userid + '/' + user.profileid,

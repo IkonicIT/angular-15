@@ -1,6 +1,6 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="card-body">
           <p class="card-text" style="font-weight: bold; font-size: 22px">
@@ -13,7 +13,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Click to Print this Page"
-              class="btn btn-outline-danger btn-sm"
+              class="btn btn-outline-danger btn-sm btn-right"
             >
               Print
             </button>
@@ -55,7 +55,7 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New LocationNote"
@@ -70,7 +70,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Location Note"
                   (click)="saveLocationNote()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Save
                 </button>
@@ -81,13 +81,13 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelLocationNotes()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Location Note"
@@ -101,7 +101,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add LocationNote Attachment"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   disabled
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
@@ -253,7 +253,7 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New LocationNote"
@@ -268,14 +268,14 @@
                   title="Save Location Note"
                   (click)="saveLocationNote()"
                   disabled
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Save
                 </button>
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Edit Location Note"
@@ -286,7 +286,7 @@
 
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Location Note"
@@ -301,7 +301,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add LocationNote Attachment"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
                   Attachments
@@ -650,7 +650,7 @@
                 </p>
                 <!-- Large modal -->
                 <div class="card-body">
-                  <div>
+                  <div class="select-pagination-option">
                     <div class="float-left">
                       <span
                         >Show

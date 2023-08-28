@@ -1,15 +1,60 @@
 .my-pagination ::ng-deep .ngx-pagination {
-    margin-bottom: 1rem;
-    margin-top: 25px;
-    width: fit-content;
-    border: solid 1px #a4b7c1;
-    padding-left: 0px;
-  }
-.my-pagination ::ng-deep .ngx-pagination .current{
-    color:white;
-    background-color: red;
-  }
-  .my-pagination ::ng-deep .ngx-pagination a,  .ngx-pagination button {
-    color: red;
-    background-color: white;
-  }
+  margin-bottom: 1rem;
+  margin-top: 25px;
+  width: fit-content;
+  border: solid 1px #a4b7c1;
+  padding-left: 0px;
+}
+
+.my-pagination ::ng-deep .ngx-pagination .current {
+  color: white;
+  background-color: red;
+}
+
+.my-pagination ::ng-deep .ngx-pagination a,
+.ngx-pagination button {
+  color: red;
+  background-color: white;
+}
+
+.form-control {
+  background-color: #fff;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.btn-danger:hover {
+  color: #fff;
+  background-color: #f64846;
+  border-color: #f63c3a;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.remove-padding {
+  padding: 0;
+}
+
+.button-padding {
+  padding: 0 6px;
+}
+
+.float-right {
+  float: right;
+}
+
+.select-pagination-option {
+  height: 0;
+}
+
+thead th,
+tbody td {
+  padding: 12px;
+}

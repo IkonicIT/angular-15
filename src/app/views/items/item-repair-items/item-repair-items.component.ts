@@ -17,7 +17,6 @@ import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 export class ItemRepairItemsComponent implements OnInit {
   itemTypes: any;
   model: any;
-
   globalCompany: any;
   companyId: any;
   companyName: any;
@@ -114,7 +113,7 @@ export class ItemRepairItemsComponent implements OnInit {
       this.index = id;
       this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
     } else {
-      this.index == -1;
+      this.index = -1;
     }
   }
 

@@ -1,6 +1,6 @@
 <div class="animated fadeIn" *ngIf="highestRank > 5">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -58,18 +58,22 @@
                 <form name="form">
                   <div class="card-body">
                     <div class="row">
-                      <div class="col-12">
+                      <div class="col-12 col-padding">
                         <div class="row">
-                          <div class="col-12 col-md-8 margin-bottom-mobile">
+                          <div
+                            class="col-12 col-md-8 margin-bottom-mobile col-padding"
+                          >
                             <p class="card-text">Manage Item Repair Items</p>
                           </div>
-                          <div class="col-12 col-md-4 float-right">
+                          <div class="col-12 col-md-4 float-right col-padding">
                             <button
                               type="button"
                               data-bs-placement="bottom"
                               data-bs-toggle="tooltip"
                               title=" Add new Repair Item "
-                              [disabled]="itemType == undefined"
+                              [disabled]="
+                                itemType === undefined || itemType === ''
+                              "
                               (click)="openModal(templateAdd, companyId)"
                               placement="top"
                               class="btn btn-primary float-right"
@@ -83,7 +87,7 @@
 
                     <div class="col-12 p-0">
                       <div class="row">
-                        <div class="col-md-4 col-12 mt-4">
+                        <div class="col-md-4 col-12 mt-4 col-padding">
                           <span
                             >Show
                             <select
@@ -99,12 +103,14 @@
                           </span>
                         </div>
 
-                        <div class="col-md-4 col-12 div-search mt-4">
+                        <div
+                          class="col-md-4 col-12 div-search mt-4 col-padding"
+                        >
                           <span>Search : </span>
                           <input [(ngModel)]="repairItemFilter" name="filter" />
                         </div>
 
-                        <div class="col-md-4 col-12">
+                        <div class="col-md-4 col-12 col-padding">
                           Select Item Type:
 
                           <app-dropdown-treeview-select
@@ -152,7 +158,7 @@
                                 data-bs-toggle="tooltip"
                                 title="Edit Repair Item"
                                 type="button"
-                                class="btn btn-outline-danger btn-sm"
+                                class="btn btn-outline-danger btn-sm btn-right"
                                 (click)="editItemrepairItem(item.repairid)"
                               >
                                 Edit

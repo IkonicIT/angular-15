@@ -1,9 +1,48 @@
-label{
-    color:#002a64;
-    font-weight: bold;
-  }
-  .form-control[readonly] {
-    background-color: #cccccc;
-    opacity: 1;
-    cursor: not-allowed;
-  }
+label {
+  color: #002a64;
+  font-weight: bold;
+}
+
+.form-control[readonly] {
+  background-color: #cccccc;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}

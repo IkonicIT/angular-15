@@ -145,10 +145,10 @@
                         </select>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="critical">Critical</label>
+                        <label for="critical" class="col-md-12">Critical</label>
                         <input
                           type="checkbox"
-                          class="form-control"
+                          class="form-check-input checkbox-large"
                           [checked]="location.critical"
                           id="critical"
                           name="critical"
@@ -158,10 +158,12 @@
 
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="isvendor">Vendor Location</label>
+                        <label for="isvendor" class="col-md-12"
+                          >Vendor Location</label
+                        >
                         <input
                           type="checkbox"
-                          class="form-control"
+                          class="form-check-input checkbox-large"
                           [checked]="location.isvendor"
                           (change)="location.isvendor = !location.isvendor"
                           id="isvendor"

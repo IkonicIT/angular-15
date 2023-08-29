@@ -1,6 +1,6 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="card-body">
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
@@ -11,7 +11,7 @@
           </alert>
 
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding">
+            <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Add Location Note Attachments</strong>
@@ -125,7 +125,7 @@
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Save Note Attachment"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-right"
                         >
                           Save
                         </button>

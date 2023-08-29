@@ -1,6 +1,6 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="card-body">
           <p class="card-text" style="font-weight: bold; font-size: 22px">
@@ -13,7 +13,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Click to Print this Page"
-              class="btn btn-outline-danger btn-sm"
+              class="btn btn-outline-danger btn-sm btn-right btn-top"
             >
               Print
             </button>
@@ -23,7 +23,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title=" Instructions"
-              class="btn btn-outline-danger btn-sm"
+              class="btn btn-outline-danger btn-sm btn-top"
             >
               Help
             </button>
@@ -52,7 +52,7 @@
                 </p>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New CompanyNote"
@@ -66,7 +66,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Company Note"
                   (click)="saveCompanyNote()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Save
                 </button>
@@ -77,13 +77,13 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelCompanyNotes()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Company Note"
@@ -97,7 +97,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add CompanyNote Attachment"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   disabled
                   [routerLink]="['../../../noteAttachments/' + model.journalid]"
                 >
@@ -109,7 +109,7 @@
                   data-bs-toggle="tooltip"
                   title="Back "
                   (click)="backToItem()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Back
                 </button>
@@ -248,7 +248,7 @@
                 </p>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New CompanyNote"
@@ -263,13 +263,13 @@
                   title="Save Company Note"
                   (click)="saveCompanyNote()"
                   disabled
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Save
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Edit Company Note"
@@ -280,7 +280,7 @@
 
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Company Note"
@@ -294,7 +294,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add CompanyNote Attachment"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
                   Attachments
@@ -446,7 +446,7 @@
                 </p>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New CompanyNote"
@@ -460,7 +460,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Company Note"
                   (click)="updateCompanyNotes()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Save
                 </button>
@@ -471,13 +471,13 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelCompanyNotes()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Company Note"
@@ -491,7 +491,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add CompanyNote Attachment"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
                   Attachments
@@ -637,7 +637,7 @@
                 </p>
 
                 <div class="card-body">
-                  <div>
+                  <div class="select-pagination-option">
                     <div class="float-left">
                       <span
                         >Show

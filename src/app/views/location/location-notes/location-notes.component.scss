@@ -18,6 +18,7 @@
 }
 
 thead th {
+  padding: 12px;
   cursor: pointer;
   span {
     visibility: hidden;
@@ -29,6 +30,10 @@ thead th {
       visibility: visible;
     }
   }
+}
+
+tbody td {
+  padding: 12px;
 }
 
 .float-right {

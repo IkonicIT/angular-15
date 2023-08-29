@@ -1,0 +1,51 @@
+.row {
+  margin: 0 -15px;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.col-padding,
+.text-right,
+.form-group {
+  padding: 0 15px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+thead th,
+tbody td {
+  padding: 12px;
+}
+
+thead th {
+  border-bottom-width: 2px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.form-control {
+  background-color: #fff;
+}

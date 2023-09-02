@@ -1,6 +1,6 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -66,7 +66,7 @@
             Please Enter failure cause
           </alert>
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding">
+            <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <form name="form" #f="ngForm" novalidate>
                   <div class="card-body">
@@ -379,10 +379,10 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="complete">Complete</label>
+                        <label for="complete" class="col-md-12">Complete</label>
                         <input
                           type="checkbox"
-                          class="form-control"
+                          class="form-check-input checkbox-large"
                           [(ngModel)]="model.complete"
                           name="complete"
                           (change)="checkValue(model.complete ? 'A' : 'B')"
@@ -405,7 +405,7 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-right"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Update Item Repair"

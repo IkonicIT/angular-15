@@ -1,13 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { Subject, Observable } from 'rxjs';
-// import 'rxjs/add/operator/toPromise';
+import { Subject } from 'rxjs';
 import { throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { AppConfiguration } from '../configuration';
 import { Router } from '@angular/router';
-import { Http, Headers, Response } from '@angular/http';
 
 @Injectable()
 export class CompanyManagementService {

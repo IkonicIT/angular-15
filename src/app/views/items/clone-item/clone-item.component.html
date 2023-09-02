@@ -1,6 +1,6 @@
 <div class="animated fadeIn" *ngIf="highestRank > 2">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="card-body">
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
@@ -24,7 +24,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Click to Print this Page"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-right btn-top"
                   >
                     Print
                   </button>
@@ -34,7 +34,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title=" Instructions"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-top"
                   >
                     Help
                   </button>
@@ -292,7 +292,7 @@
                         <button
                           type="button"
                           [disabled]="addLocationFlag == 0"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-right"
                           (click)="newLocation()"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
@@ -552,7 +552,7 @@
                           title="Add new Item"
                           (click)="saveItem()"
                           *ngIf="highestRank > 2"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-right"
                         >
                           Add
                         </button>
@@ -563,7 +563,7 @@
                           type="button"
                           [routerLink]="['../../../items']"
                           *ngIf="highestRank > 2"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-right"
                         >
                           Cancel
                         </button>

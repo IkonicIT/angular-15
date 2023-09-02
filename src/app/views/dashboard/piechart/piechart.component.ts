@@ -18,7 +18,7 @@ import { DashboardService } from '../../../services/dashboard.service';
 import * as cloneDeep from 'lodash';
 import { ExcelService } from '../../../services/excel-service';
 import { NgChartsModule } from 'ng2-charts';
-import { ChartType } from 'chart.js';
+import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-piechart',

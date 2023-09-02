@@ -1,3 +1,53 @@
-.margin-right{
-  margin-right:10%;
+.margin-right {
+  margin-right: 10%;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.text-right {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 16px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+thead th,
+tbody td {
+  padding: 12px;
+}
+
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
 }

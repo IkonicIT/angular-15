@@ -1,0 +1,71 @@
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+}
+
+.text-right {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 16px;
+}
+
+.form-control {
+  background-color: #fff;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+thead th,
+tbody td {
+  padding: 12px;
+}
+
+tbody td a {
+  color: #e02725;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+tbody td a:hover {
+  color: #a21817;
+  text-decoration: underline;
+}

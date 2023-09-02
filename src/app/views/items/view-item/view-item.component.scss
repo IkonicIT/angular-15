@@ -1,32 +1,67 @@
-.form-control:disabled, .form-control[readonly] {
+.form-control:disabled,
+.form-control[readonly] {
   background-color: #cccccc;
   opacity: 1;
   cursor: not-allowed;
 }
-label{
-  color:#002a64;
+
+label {
+  color: #002a64;
   font-weight: bold;
 }
-.card-body{
+
+.card-body {
   padding: 0.5em;
 }
-.main>.row{
+
+.main > .row {
   margin-bottom: 1%;
 }
-.scrollPopUp{
+
+.scrollPopUp {
   height: 600px;
   overflow-y: scroll;
 }
+
 #box {
   width: 300px;
   height: 80px;
- padding: 30px;  
-text-align: center;
-  border: 1px solid #002A64;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid #002a64;
 }
-// #image {
-//   margin-right: 0.4px;
-  
-// }
 
+.btn-right {
+  margin-right: 5px;
+}
 
+.btn-top {
+  margin-top: 5px;
+}
+
+.text-right {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 16px;
+}
+
+.card-body {
+  padding: 7px;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}

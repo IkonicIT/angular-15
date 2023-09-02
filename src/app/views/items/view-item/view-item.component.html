@@ -1,10 +1,10 @@
 <div class="animated fadeIn" style="margin-top: -2%" *ngIf="highestRank > 0">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="card-body">
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding">
+            <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="form-group col-sm-12 text-right">
                   <button
@@ -13,7 +13,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Click to Print this Page"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-right btn-top"
                   >
                     Print
                   </button>
@@ -23,7 +23,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Instructions"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-top"
                   >
                     Help
                   </button>
@@ -53,12 +53,14 @@
                 <div class="card-header">
                   <div class="col-12 p-0">
                     <div class="row">
-                      <div class="col-12 col-md-3 margin-bottom-mobile">
+                      <div
+                        class="col-12 col-md-3 margin-bottom-mobile col-padding"
+                      >
                         <strong
                           >Viewing "{{ itemType }}" '{{ itemTag }}'</strong
                         >
                       </div>
-                      <div class="col-12 col-md-9">
+                      <div class="col-12 col-md-9 col-padding">
                         <button
                           [routerLink]="['../../cloneItem/' + itemId]"
                           [disabled]="itemRank < 3"
@@ -290,47 +292,53 @@
                     </div>
 
                     <div class="row">
-                      <div class="col-2">
+                      <div class="col-2 col-padding">
                         <label for="name">Name:</label>
                       </div>
-                      <div class="col-8">
+                      <div class="col-8 col-padding">
                         <span [innerHTML]="model.name"></span>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-4 col-lg-2">
+                      <div class="col-4 col-lg-2 col-padding">
                         <label for="location">Location:</label>
                       </div>
-                      <div class="col-8 col-lg-8">
+                      <div class="col-8 col-lg-8 col-padding">
                         <span [innerHTML]="model.locationPath"></span>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-4 col-lg-2">
+                      <div class="col-4 col-lg-2 col-padding">
                         <label for="description">Description:</label>
                       </div>
-                      <div class="col-8 col-lg-8">
+                      <div class="col-8 col-lg-8 col-padding">
                         <span [innerHTML]="model.description"></span>
                       </div>
                     </div>
 
                     <div class="row">
-                      <div class="col-sm-4" style="margin-bottom: 0px">
+                      <div
+                        class="col-sm-4 col-padding"
+                        style="margin-bottom: 0px"
+                      >
                         <div class="row">
-                          <div class="col-6 col-md-5">
+                          <div class="col-6 col-md-5 col-padding">
                             <label for="price">Purchase price:</label>
                           </div>
-                          <div class="col-6 col-md-5">
+                          <div class="col-6 col-md-5 col-padding">
                             <span [innerHTML]="model.purchasePrice"></span>
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-4" style="margin-bottom: 0px">
+                      <div
+                        class="col-sm-4 col-padding"
+                        style="margin-bottom: 0px"
+                      >
                         <div class="row">
-                          <div class="col-6">
+                          <div class="col-6 col-padding">
                             <label for="date">Purchase Date:</label>
                           </div>
-                          <div class="col-6">
+                          <div class="col-6 col-padding">
                             <span
                               [innerHTML]="
                                 model.purchaseDate | date : 'MM/dd/yyyy'
@@ -377,22 +385,28 @@
                     </div>
 
                     <div class="row">
-                      <div class="col-sm-4" style="margin-bottom: 0px">
+                      <div
+                        class="col-sm-4 col-padding"
+                        style="margin-bottom: 0px"
+                      >
                         <div class="row">
-                          <div class="col-6 col-md-5">
+                          <div class="col-6 col-md-5 col-padding">
                             <label for="warranty">Warranty Type:</label>
                           </div>
-                          <div class="col-6">
+                          <div class="col-6 col-padding">
                             <span [innerHTML]="model.warrantytype"></span>
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-4" style="margin-bottom: 0px">
+                      <div
+                        class="col-sm-4 col-padding"
+                        style="margin-bottom: 0px"
+                      >
                         <div class="row">
-                          <div class="col-6">
+                          <div class="col-6 col-padding">
                             <label for="exp">Warranty Exp:</label>
                           </div>
-                          <div class="col-6">
+                          <div class="col-6 col-padding">
                             <span
                               [innerHTML]="
                                 model.warrantyExpiration | date : 'MM/dd/yyyy'
@@ -401,12 +415,15 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-4" style="margin-bottom: 0px">
+                      <div
+                        class="col-sm-4 col-padding"
+                        style="margin-bottom: 0px"
+                      >
                         <div class="row">
-                          <div class="col-6">
+                          <div class="col-6 col-padding">
                             <label for="spareratio">Desired Spare Ratio:</label>
                           </div>
-                          <div class="col-6">
+                          <div class="col-6 col-padding">
                             <span [innerHTML]="model.desiredSpareRatio"></span>
                           </div>
                         </div>
@@ -414,60 +431,75 @@
                     </div>
                     <div *ngIf="companyId == 1806">
                       <div class="row">
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
                             <div class="form-group col-12 col-md-4">
                               <label for="replacedTag">Replaced Tag_MMS:</label>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span [innerHTML]="model.replacedTag"></span>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
                             <div class="form-group col-12 col-md-4">
                               <label for="groupNumber">Group Number_MMS:</label>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span [innerHTML]="model.groupNumber"></span>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
                             <div class="form-group col-12 col-md-4">
                               <label for="replacedByTag"
                                 >Replaced By Tag_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span [innerHTML]="model.replacedByTag"></span>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6 col-md-5">
+                            <div class="col-6 col-md-5 col-padding">
                               <label for="addReasonCode"
                                 >Add Reason Code_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span [innerHTML]="model.addReasonCode"></span>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="locationPath"
                                 >Location Path_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span [innerHTML]="model.locationPath"></span>
                             </div>
                           </div>
@@ -479,26 +511,32 @@
                         <br />
                       </div>
                       <div class="row">
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6 col-md-5">
+                            <div class="col-6 col-md-5 col-padding">
                               <label for="reservedOnlyFor"
                                 >Reserved only for_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span [innerHTML]="model.reservedOnlyFor"></span>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="reservedForDeptNumber"
                                 >Reserved for Dept Number_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span
                                 [innerHTML]="model.reservedForDeptNumber"
                               ></span>
@@ -508,9 +546,12 @@
                       </div>
                       <br />
                       <div class="row">
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6 col-md-5">
+                            <div class="col-6 col-md-5 col-padding">
                               <label for="QC Fail">QC Fail_MMS</label>
                               <input
                                 type="checkbox"
@@ -522,9 +563,12 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="exp">Critical_MMS:</label>
                               <input
                                 type="checkbox"
@@ -536,9 +580,12 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="exp">File_MMS:</label>
                               <input
                                 type="checkbox"
@@ -552,14 +599,17 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6 col-md-5">
+                            <div class="col-6 col-md-5 col-padding">
                               <label for="criticalLastTestDate"
                                 >Critcal Last Date_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span
                                 [innerHTML]="
                                   model.criticalLastTestDate
@@ -569,14 +619,17 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="inventoriedDate"
                                 >Inventoried Date_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span
                                 [innerHTML]="
                                   model.inventoriedDate | date : 'MM/dd/yyyy'
@@ -585,14 +638,17 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="importedNotReviewed"
                                 >Imported Not Reviewed_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span
                                 [innerHTML]="model.importedNotReviewed"
                               ></span>
@@ -601,26 +657,32 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6 col-md-5">
+                            <div class="col-6 col-md-5 col-padding">
                               <label for="dispositionEmployeeID"
                                 >Disposition Employee Id_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span
                                 [innerHTML]="model.dispositionEmployeeID"
                               ></span>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="createDate">Created Date_MMS:</label>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span
                                 [innerHTML]="
                                   model.createDate | date : 'MM/dd/yyyy'
@@ -629,12 +691,15 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="updatedDate">Updated Date_MMS:</label>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span
                                 [innerHTML]="
                                   model.updatedDate | date : 'MM/dd/yyyy'
@@ -650,12 +715,15 @@
                         <br />
                       </div>
                       <div class="row">
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6 col-md-5">
+                            <div class="col-6 col-md-5 col-padding">
                               <label for="scrapDate">Scrap Date_MMS:</label>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span
                                 [innerHTML]="
                                   model.scrapDate | date : 'MM/dd/yyyy'
@@ -664,34 +732,43 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="scrapLocation"
                                 >Scrap Location_MMS:</label
                               >
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span [innerHTML]="model.scrapLocation"></span>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="scrapperName">Scrap Name_MMS:</label>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span [innerHTML]="model.scrapperName"></span>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4" style="margin-bottom: 0px">
+                        <div
+                          class="col-sm-4 col-padding"
+                          style="margin-bottom: 0px"
+                        >
                           <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <label for="scrapValue">Scrap Value_MMS:</label>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 col-padding">
                               <span [innerHTML]="model.scrapValue"></span>
                             </div>
                           </div>
@@ -706,7 +783,7 @@
 
                     <div class="row">
                       <div
-                        class="col-sm-4"
+                        class="col-sm-4 col-padding"
                         style="margin-bottom: 0px"
                         *ngFor="
                           let eachAttr of model.attributeValues;
@@ -714,10 +791,10 @@
                         "
                       >
                         <div class="row">
-                          <div class="col-6">
+                          <div class="col-6 col-padding">
                             <label [innerHTML]="eachAttr.name">:</label>
                           </div>
-                          <div class="col-6">
+                          <div class="col-6 col-padding">
                             <span>
                               <span>{{ eachAttr.value }}</span>
                             </span>
@@ -734,7 +811,7 @@
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Edit Item"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-right"
                         >
                           Edit
                         </button>

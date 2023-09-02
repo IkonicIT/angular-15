@@ -3,3 +3,51 @@
     opacity: 1;
     cursor: not-allowed;
   }
+
+  .btn-right {
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.text-right {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 16px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.card-header {
+  padding: 12px 20px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding,
+.add-padding {
+  padding: 0 15px;
+}
+
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.checkbox-large {
+  width: 35px;
+  height: calc(1.5em + 0.75rem + 2px);
+  background-color: #fff;
+  margin-left: 50%;
+}

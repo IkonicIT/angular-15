@@ -1,6 +1,6 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -62,7 +62,7 @@
               Add Item Service
             </button>
           </p>
-          <div>
+          <div class="select-pagination-option">
             <div class="float-left">
               <span
                 >Show
@@ -155,11 +155,11 @@
       </div>
     </div>
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="card-body">
           <p class="card-text"><strong>Previous Services</strong></p>
-          <div>
+          <div class="select-pagination-option">
             <div class="float-left">
               <span
                 >Show
@@ -293,7 +293,7 @@
 </div>
 
 <ng-template #addtemplate>
-  <div class="col-lg-12 mobile-padding" style="margin-top: 30px">
+  <div class="col-lg-12 mobile-padding col-padding" style="margin-top: 30px">
     <div class="card">
       <div class="card-header">
         <strong class="card-text"
@@ -356,10 +356,10 @@
         </div>
         <div class="row">
           <div class="form-group col-sm-6">
-            <label for="complete">Complete</label>
+            <label for="complete" class="col-md-12">Complete</label>
             <input
               type="checkbox"
-              class="form-control"
+              class="form-check-input checkbox-large"
               [(ngModel)]="model.complete"
               name="complete"
               (change)="checkValue(model.complete ? 'A' : 'B')"
@@ -386,7 +386,7 @@
               data-bs-toggle="tooltip"
               title="Update this Item Service Date"
               (click)="saveItemServiceData()"
-              class="btn btn-primary"
+              class="btn btn-primary btn-right"
             >
               Save
             </button>

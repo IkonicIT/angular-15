@@ -5,16 +5,20 @@
   border: solid 1px #a4b7c1;
   padding-left: 0px;
 }
+
 .my-pagination ::ng-deep .ngx-pagination .current {
   color: white;
   background-color: red;
 }
+
 .my-pagination ::ng-deep .ngx-pagination a,
 .ngx-pagination button {
   color: red;
   background-color: white;
 }
+
 thead th {
+  padding: 12px;
   cursor: pointer;
   span {
     visibility: hidden;
@@ -27,16 +31,54 @@ thead th {
     }
   }
 }
+
+tbody td {
+  padding: 12px;
+}
+
 .float-right {
   float: right;
 }
+
 .div-search {
   margin-bottom: 1%;
   margin-top: 1%;
 }
+
 .form-control:disabled,
 .form-control[readonly] {
   background-color: #cccccc;
   opacity: 1;
   cursor: not-allowed;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.text-right {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 16px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.float-left {
+  float: left;
 }

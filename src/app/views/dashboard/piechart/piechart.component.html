@@ -3,7 +3,7 @@
     <div class="col-lg-12 mobile-padding">
       <div class="card remove-card-radius">
         <div class="card-body">
-          <alert type="danger" *ngIf="index == -1" [dismissible]="true">
+          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
             Please Select From & To Fields.
           </alert>
           <div>
@@ -165,10 +165,14 @@
                     </h6>
                   </div>
 
-                  <div class="border-charts" *ngIf="pieChartData.length > 0">
+                  <div
+                    class="border-charts"
+                    style="position: relative; height: 300px; width: 592px"
+                    *ngIf="pieChartData.length > 0"
+                  >
                     <canvas
                       baseChart
-                      [data]="pieChartData"
+                      [datasets]="pieChartData"
                       [labels]="pieChartLabels"
                       [plugins]="pieChartPlugins"
                       [legend]="true"
@@ -179,17 +183,19 @@
                     ></canvas>
                   </div>
                 </div>
+
                 <div class="col-md-6 mb-2">
                   <h5 *ngIf="pieChartCauseData.length > 0">
                     Primary Causes for "{{ selectedFailureType }}"
                   </h5>
                   <div
                     class="border-charts"
+                    style="height: 300px; width: 592px"
                     *ngIf="pieChartCauseData.length > 0"
                   >
                     <canvas
                       baseChart
-                      [data]="pieChartCauseData"
+                      [datasets]="pieChartCauseData"
                       [labels]="pieChartCauseLabels"
                       [plugins]="pieChartPlugins"
                       [legend]="true"
@@ -752,7 +758,7 @@
 
       <ng-template #mytemplate>
         <div
-          class="col-lg-12 mobile-padding"
+          class="col-lg-12 mobile-padding col-padding"
           style="margin-top: 30px"
           *ngIf="highestRank > 0"
         >

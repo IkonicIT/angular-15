@@ -66,14 +66,13 @@
           <li class="nav-item dropdown" dropdown placement="bottom right">
             <a
               class="nav-link bew"
-              data-toggle="popover"
+              data-bs-toggle="popover"
               href="#"
               role="button"
               aria-haspopup="true"
               aria-expanded="false"
             >
             </a>
-            <!-- add data-bs-toggle="popover" -->
           </li>
 
           <li class="nav-item">
@@ -93,15 +92,13 @@
         <ul class="nav navbar-nav">
           <li class="nav-item dropdown" dropdown placement="bottom right new">
             <a
+              id="simple-dropdown"
               class="nav-link dropdown-toggle"
               data-bs-toggle="dropdown"
               href="#"
               role="button"
               aria-expanded="false"
             >
-              <!-- add id="simple-dropdown"
-              add data-bs-toggle="dropdown"
-              remove (click)="(false)"-->
               <span class="navbar-toggler-icon"></span>
             </a>
 
@@ -111,7 +108,6 @@
               *dropdownMenu
               aria-labelledby="simple-dropdown"
             >
-              <!-- add appDropdown -->
               <div class="dropdown-header text-center">
                 <strong>Settings</strong>
               </div>

@@ -959,16 +959,16 @@
       </h5>
       <br />
       <div>
-        <mat-button-toggle-group
-          #group="matButtonToggleGroup"
+        <mat-radio-group
+          #group="matRadioGroup"
           name="fontStyle"
           [value]="selectedVal"
           (change)="onValChange(group.value)"
           aria-label="Font Style"
         >
-          <mat-button-toggle value="count">PRIMARYFINDINGS</mat-button-toggle>
-          <mat-button-toggle value="repaircost">REPAIRCOST</mat-button-toggle>
-        </mat-button-toggle-group>
+          <mat-radio-button value="count">PRIMARYFINDINGS</mat-radio-button>
+          <mat-radio-button value="repaircost">REPAIRCOST</mat-radio-button>
+        </mat-radio-group>
       </div>
       <div class="d-flex justify-content-start flex-row">
         <div>

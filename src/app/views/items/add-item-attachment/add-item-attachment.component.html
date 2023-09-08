@@ -62,9 +62,6 @@
                     }}'</strong
                   >
                 </div>
-                <!-- <div>
-                  <strong>Item: "{{itemType}}" '{{itemTag}}'</strong>
-                </div> -->
 
                 <form
                   name="form"
@@ -86,7 +83,7 @@
                           <td>
                             <input
                               type="file"
-                              class="form-control"
+                              class="form-control form-color"
                               (change)="fileChangeListener($event, i)"
                               id="file"
                             />
@@ -96,7 +93,7 @@
                               id="desc"
                               rows="2"
                               cols="4"
-                              class="form-control"
+                              class="form-control form-color"
                               [(ngModel)]="item.description"
                               [name]="'description' + i"
                               placeholder="Enter Description"

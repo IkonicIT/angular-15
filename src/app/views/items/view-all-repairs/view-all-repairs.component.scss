@@ -18,3 +18,60 @@
 ::ng-deep .dp-picker-input {
   height: calc(2.0625rem + 2px) !important;
 }
+
+.form-control {
+  background-color: #fff;
+}
+
+thead th,
+tbody td {
+  padding: 12px;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.btn-danger:hover {
+  color: #fff;
+  background-color: #f64846;
+  border-color: #f63c3a;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+tbody td a:hover {
+  color: #a21817;
+  text-decoration: underline;
+}
+
+tbody td a {
+  color: #e02725;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+label {
+  margin-bottom: 8px;
+}
+
+.remove-padding {
+  padding: 0px;
+}
+
+.remove-right-padding {
+  padding-right: 0;
+}

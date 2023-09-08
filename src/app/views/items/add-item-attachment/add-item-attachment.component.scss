@@ -51,3 +51,23 @@ tbody td {
   background-color: #0d6efd;
   border-color: #0d6efd;
 }
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.form-color {
+  background-color: #fff;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}

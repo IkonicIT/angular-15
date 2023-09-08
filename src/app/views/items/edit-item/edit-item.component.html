@@ -201,7 +201,7 @@
                         >
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control form-color"
                           (change)="
                             openModalForChangeTag(confirmtemplateforTag)
                           "
@@ -225,7 +225,7 @@
                         ><br />
 
                         <span
-                          class="form-control"
+                          class="form-control form-color"
                           style="color: red"
                           *ngIf="
                             isDuplicateTag &&
@@ -236,7 +236,7 @@
                           Tag already exists
                         </span>
                         <span
-                          class="form-control"
+                          class="form-control form-color"
                           style="color: blue"
                           *ngIf="
                             !isDuplicateTag &&
@@ -335,7 +335,7 @@
                         <label for="name">Name</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control form-color"
                           [(ngModel)]="model.name"
                           name="name"
                           #name="ngModel"
@@ -347,7 +347,6 @@
                         <label for="status">
                           Status <strong class="text-danger">*</strong></label
                         >
-
                         <input
                           type="text"
                           readonly
@@ -365,7 +364,7 @@
                         <label for="price">Purchase price</label>
                         <input
                           type="number"
-                          class="form-control"
+                          class="form-control form-color"
                           [(ngModel)]="model.purchasePrice"
                           id="price"
                           name="purchasePrice"
@@ -375,7 +374,7 @@
                         <label for="date">Purchase Date</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control form-color"
                           [(ngModel)]="model.purchaseDate"
                           id="date"
                           name="critical"
@@ -389,7 +388,7 @@
                         <label for="mtbs">MTBS</label>
                         <input
                           type="number"
-                          class="form-control"
+                          class="form-control form-color"
                           [(ngModel)]="model.meanTimeBetweenService"
                           id="mtbs"
                           name="mtbs"
@@ -399,7 +398,7 @@
                         <label for="spareratio">Desired Spare Ratio</label>
                         <input
                           type="number"
-                          class="form-control"
+                          class="form-control form-color"
                           [(ngModel)]="model.desiredSpareRatio"
                           id="spareratio"
                           name="spareratio"
@@ -418,7 +417,7 @@
                       <div class="form-group col-sm-6">
                         <label for="warranty">Warranty Type</label>
                         <select
-                          class="form-control"
+                          class="form-control form-color"
                           [(ngModel)]="model.warrantyTypeId"
                           name="warranty"
                           #warranty="ngModel"
@@ -439,7 +438,7 @@
                         <label for="exp">Warranty Exp.</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control form-color"
                           [(ngModel)]="model.warrantyExpiration"
                           id="exp"
                           name="exp"
@@ -492,7 +491,7 @@
                         <label for="description">Description</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control form-color"
                           [(ngModel)]="model.description"
                           name="description"
                           #description="ngModel"

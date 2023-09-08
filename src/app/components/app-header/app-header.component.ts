@@ -89,7 +89,7 @@ export class AppHeaderComponent implements OnInit {
 
   /* toggleDropdown() {
     //alert('1');
-    let dropdownMenu =
+    let dropdownMenu 
       this.elementRef.nativeElement.querySelector('.dropdown-menu');
     if (dropdownMenu.classList.contains('show')) {
       this.renderer.removeClass(dropdownMenu, 'show');

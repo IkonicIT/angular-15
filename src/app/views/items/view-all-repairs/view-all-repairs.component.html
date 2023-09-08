@@ -6,7 +6,7 @@
       </alert>
     </div>
     <div class="row" style="padding: 15px">
-      <div>
+      <div class="col-md-3 remove-right-padding">
         <label for="status"><strong>TimeSpan</strong></label>
         <select class="form-control" [(ngModel)]="params.type">
           <option value="monthly">Last Month</option>
@@ -16,9 +16,10 @@
           <option value="range">range</option>
         </select>
       </div>
+
       <ng-container [ngSwitch]="params.type">
         <ng-container *ngSwitchCase="'range'">
-          <div>
+          <div class="col-md-2 remove-padding">
             <label for="status"
               ><strong>From</strong
               ><strong class="text-danger"> *</strong></label
@@ -30,7 +31,7 @@
               ></dp-date-picker>
             </div>
           </div>
-          <div>
+          <div class="col-md-2 remove-padding">
             <label for="status"
               ><strong>To</strong><strong class="text-danger"> *</strong></label
             >
@@ -44,7 +45,7 @@
         </ng-container>
       </ng-container>
 
-      <div>
+      <div class="col-md-3 remove-padding">
         <label for="status"><strong>Type</strong></label>
         <select class="form-control" [(ngModel)]="selectedVal">
           <option value="complete">Completed</option>
@@ -52,7 +53,7 @@
         </select>
       </div>
 
-      <div>
+      <div class="col-md-2 remove-padding">
         <label><strong>&nbsp;</strong></label>
         <button
           type="button"
@@ -67,15 +68,7 @@
         </button>
       </div>
     </div>
-    <!-- <div>
-      <mat-button-toggle-group #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)">
-        <mat-button-toggle value="complete">CompletedRepairs</mat-button-toggle>
-        <mat-button-toggle  value="inComplete">IncompletedRepairs</mat-button-toggle>
-       <mat-button-toggle (change)="getCompletedRepairs($event.value)" value="complete">CompletedRepairs</mat-button-toggle>
-      <mat-button-toggle value="completed" (change)="getIncompletedRepairs($event.value)"  value="inComplete"></mat-button-toggle>>IncompletedRepairs</mat-button-toggle> 
 
-      </mat-button-toggle-group>
-    </div> -->
     <div class="card-body" *ngIf="repairsFlag">
       <div style="margin-bottom: 10px">
         <strong class="card-text" style="color: red">Completed Repairs </strong>

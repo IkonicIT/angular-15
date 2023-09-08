@@ -109,3 +109,57 @@ tbody td a:hover {
   color: #a21817;
   text-decoration: underline;
 }
+
+.modal-content {
+  border-radius: 0;
+}
+
+mat-radio-group {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 325px;
+  height: 40px;
+}
+
+::ng-deep
+  mat-radio-group
+  .mat-mdc-radio-button
+  .mdc-radio
+  .mdc-radio__background {
+  width: 14px;
+  height: 14px;
+}
+
+::ng-deep
+  mat-radio-group
+  .mat-mdc-radio-button
+  .mdc-radio
+  .mdc-radio__background
+  .mdc-radio__inner-circle {
+  border-width: 7px;
+}
+
+::ng-deep
+  .mat-mdc-radio-button
+  .mdc-radio
+  .mdc-radio__native-control:enabled:checked
+  + .mdc-radio__background
+  .mdc-radio__outer-circle {
+  border-color: #0d6efd !important;
+}
+
+::ng-deep
+  .mat-mdc-radio-button
+  .mdc-radio
+  .mdc-radio__native-control:enabled
+  + .mdc-radio__background
+  .mdc-radio__inner-circle {
+  border-color: #0d6efd !important;
+}

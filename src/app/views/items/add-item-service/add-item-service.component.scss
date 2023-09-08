@@ -98,3 +98,37 @@ tbody td {
   background-color: #fff;
   margin-left: 50%;
 }
+
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.form-control {
+  background-color: #fff;
+}
+
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+}

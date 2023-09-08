@@ -46,11 +46,11 @@
                     <label>Transferring the following item:</label>
                   </div>
                   <div class="col-md-12 col-padding">
-                    <div class="form-group col-sm-3" style="float: left">
+                    <div class="form-group col-sm-6" style="float: left">
                       <label>Tag:</label>
                       <span>{{ item.tag }}</span>
                     </div>
-                    <div class="form-group col-sm-3" style="float: left">
+                    <div class="form-group col-sm-6" style="float: left">
                       <label for="name">Type:</label>
                       <label> {{ item.typeName }}</label>
                     </div>
@@ -137,7 +137,9 @@
 
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="price">Current Status:</label>
+                        <label for="price" class="btn-right"
+                          >Current Status:</label
+                        >
                         <span style="font-weight: bold">{{ item.status }}</span>
                       </div>
                       <div class="form-group col-sm-6">
@@ -167,7 +169,9 @@
 
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="mtbs">Days in Current Status: </label>
+                        <label for="mtbs" class="btn-right"
+                          >Days in Current Status:
+                        </label>
                         <span style="font-weight: bold"
                           >{{ item.daysInService }}
                         </span>
@@ -202,8 +206,10 @@
                       </alert>
 
                       <div class="form-group col-sm-12">
-                        <label for="location">Transfer To New Location:</label>
-                        <label for="location"
+                        <label for="location" class="btn-right"
+                          >Transfer To New Location:</label
+                        >
+                        <label for="location" class="btn-right"
                           >(Select Location To Add New Location)</label
                         >
                         <button
@@ -481,7 +487,7 @@
                             <td>
                               <button
                                 type="button"
-                                class="btn btn-outline-danger btn-sm mb-1"
+                                class="btn btn-outline-danger btn-sm mb-1 btn-right"
                                 data-bs-placement="bottom"
                                 data-bs-toggle="tooltip"
                                 title="View Item Transfer"

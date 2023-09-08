@@ -18,6 +18,7 @@
 }
 
 thead th {
+  padding: 12px;
   cursor: pointer;
   span {
     visibility: hidden;
@@ -29,6 +30,21 @@ thead th {
       visibility: visible;
     }
   }
+}
+
+tbody td {
+  padding: 12px;
+}
+
+tbody td a {
+  color: #e02725;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+tbody td a:hover {
+  color: #a21817;
+  text-decoration: underline;
 }
 
 .float-right {
@@ -52,6 +68,11 @@ thead th {
 
 .card {
   margin-bottom: 0rem;
+}
+
+.card,
+button {
+  border-radius: 0;
 }
 
 .text-right {

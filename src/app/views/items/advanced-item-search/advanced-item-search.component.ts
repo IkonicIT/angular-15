@@ -203,6 +203,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.initializeData();
     // this.showFailedItemsSearchResults = false;
     // this.showSearchResults = false;
+    this.selectedVal = 'count';
   }
 
   initializeData() {

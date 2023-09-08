@@ -175,3 +175,7 @@ a {
 ::ng-deep .ngx-pagination li a {
   text-decoration: none;
 }
+
+::ng-deep .modal-content {
+  border-radius: 0 !important;
+}

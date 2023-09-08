@@ -72,12 +72,6 @@ export class AddItemRepairsComponent implements OnInit {
       this.globalCompany = value;
       this.companyId = value.companyid;
     });
-    // this.spinner.show();
-    // this.itemManagementService.getAllTransfers(this.itemId).subscribe(response => {
-    //   this.transfers = response;
-    //   this.spinner.hide();
-
-    // });
   }
 
   ngOnInit() {

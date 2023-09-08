@@ -1,6 +1,10 @@
-@import '../../../../../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
-.default-img{
+@import "../../../../../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
+.default-img {
   height: 100px;
   width: 270px;
   text-align: center;
+}
+
+button {
+  border-radius: 0;
 }

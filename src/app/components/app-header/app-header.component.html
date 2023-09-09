@@ -1,20 +1,8 @@
 <header class="app-header navbar">
-  <div
-    class="col-12"
-    style="padding-left: 15px; padding-right: 15px; position: relative"
-  >
-    <div
-      class="row"
-      style="margin-left: -15px; margin-right: -15px; width: 1536px"
-    >
+  <div class="col-12 col-padding">
+    <div class="row row-margin">
       <div
-        class="col-2 col-md-1 col-lg-2 col-sm-1 d-lg-none margin-name-0mobile iphone-1"
-        style="
-          padding-left: 15px;
-          padding-right: 15px;
-          width: 100%;
-          position: relative;
-        "
+        class="col-2 col-md-1 col-lg-2 col-sm-1 d-lg-none margin-name-0mobile iphone-1 col-padding-1"
       >
         <button
           class="navbar-toggler d-lg-none"
@@ -25,32 +13,19 @@
         </button>
       </div>
 
-      <div
-        class="col-5 col-md-2 col-sm-3 pr-0 iphone-2"
-        style="padding-left: 15px; padding-right: 0px; position: relative"
-      >
-        <a
-          class="navbar-brand"
-          href="#"
-          style="padding-left: 16px; padding-right: 16px"
-        ></a>
+      <div class="col-5 col-md-2 col-sm-3 pr-0 iphone-2 col-padding-2">
+        <a class="navbar-brand navbar-padding" href="#"></a>
         <button
-          class="navbar-toggler d-md-down-none"
+          class="navbar-toggler d-md-down-none navbar-toggler-style"
           type="button"
           appSidebarToggler
-          style="
-            padding: 0.25rem 0.75rem;
-            font-size: 1.09375rem;
-            border: 1px solid transparent;
-          "
         >
           <span class="navbar-toggler-icon margin-new-top-one"></span>
         </button>
       </div>
 
       <div
-        class="col-12 col-md-5 col-lg-7 margin-name-0mobile col-sm-4 r-106"
-        style="padding-left: 15px; padding-right: 15px; position: relative"
+        class="col-12 col-md-5 col-lg-7 margin-name-0mobile col-sm-4 r-106 col-padding"
       >
         <span style="color: black; font-weight: bold">Current Roles</span>:<span
           style="color: #e02725; font-weight: bold"
@@ -59,10 +34,9 @@
       </div>
 
       <div
-        class="col-md-3 col-lg-2 col-10 margin-name col-sm-3 iphone-absolute"
-        style="padding-left: 15px; padding-right: 15px; position: relative"
+        class="col-md-3 col-lg-2 col-10 margin-name col-sm-3 iphone-absolute col-padding"
       >
-        <ul class="nav navbar-nav ml-auto float-right" style="float: right">
+        <ul class="nav navbar-nav ml-auto float-right">
           <li class="nav-item dropdown" dropdown placement="bottom right">
             <a
               class="nav-link bew"
@@ -86,27 +60,25 @@
       </div>
 
       <div
-        class="col-2 col-md-1 col-sm-1 margin-name iphone-absolute r-0"
-        style="padding-left: 15px; padding-right: 15px; position: relative"
+        class="col-2 col-md-1 col-sm-1 margin-name iphone-absolute r-0 col-padding"
       >
         <ul class="nav navbar-nav">
-          <li class="nav-item dropdown" dropdown placement="bottom right new">
+          <li class="nav-item dropdown">
             <a
               id="simple-dropdown"
               class="nav-link dropdown-toggle"
-              data-bs-toggle="dropdown"
               href="#"
               role="button"
+              aria-haspopup="true"
               aria-expanded="false"
+              (click)="toggleDropdown($event)"
             >
               <span class="navbar-toggler-icon"></span>
             </a>
 
             <div
               class="dropdown-menu dropdown-menu-right"
-              style="margin-right: 5%; margin-top: 28%"
-              *dropdownMenu
-              aria-labelledby="simple-dropdown"
+              [ngClass]="{ show: isDropdownOpen }"
             >
               <div class="dropdown-header text-center">
                 <strong>Settings</strong>

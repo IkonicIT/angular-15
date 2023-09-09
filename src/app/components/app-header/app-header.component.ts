@@ -9,12 +9,14 @@ import { UserManagementService } from '../../services/user-management.service';
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
+  styleUrls: ['app-header.component.css'],
 })
 export class AppHeaderComponent implements OnInit {
   public currentRole: any;
   public highestRank: any;
   public userName: any = [];
   public roles: string = '';
+  isDropdownOpen: boolean = false;
   userRoles: any = [];
   userId: any;
   data: any;
@@ -85,6 +87,11 @@ export class AppHeaderComponent implements OnInit {
     localStorage.clear();
     sessionStorage.clear();
     this.router.navigate(['/login']);
+  }
+
+  toggleDropdown(event: Event) {
+    event.preventDefault();
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   /* toggleDropdown() {

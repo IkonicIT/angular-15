@@ -17,7 +17,7 @@ import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 @Component({
   selector: 'app-piechart',
   templateUrl: './piechart.component.html',
-  styleUrls: ['./piechart.component.scss']
+  styleUrls: ['./piechart.component.scss'],
 })
 export class PiechartComponent implements OnInit {
   modalRef: BsModalRef;
@@ -75,12 +75,13 @@ export class PiechartComponent implements OnInit {
     plugins: {
       legend: {
         position: 'left',
+        align: 'start',
         labels: {
           font: {
             size: 10
-            //boxWidth: 10,
-            //boxHeight: 2  ,
-          }
+          },
+          boxWidth: 12,
+          boxHeight: 12,
         }
       }
     }
@@ -118,6 +119,7 @@ export class PiechartComponent implements OnInit {
   showLocationAndRange: boolean = true;
   showLocation = false;
   showRange = false;
+  chartFlag: boolean;
   p = 1;
 
   constructor(
@@ -189,7 +191,7 @@ export class PiechartComponent implements OnInit {
     this.getAllTypesWithHierarchy();
     this.broadcasterService.on('piechart').subscribe((data: any) => {
       if (data != 0) {
-     this.clearOldData();
+        this.clearOldData();
         this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
         this.userId = sessionStorage.getItem('userId');
         this.flag = 0;
@@ -239,16 +241,15 @@ export class PiechartComponent implements OnInit {
   }
 
   public chartClicked(e: any): void {
-    let typeMatch;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.userId = sessionStorage.getItem('userId');
+
     const clickedLabel = e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.match(/([a-zA-Z\s-]+)(\d+)/);
-    if (matches && matches.length >= 3) {
-      typeMatch = matches[1].trim();
-    }
-    const type = typeMatch;
+    const matches = clickedLabel.replace(/\d+([,.]\d+)?\s*/g, '');
+    const type = matches;
+
     this.selectedFailureType = type;
+
     if (this.params.type == 'range') {
       var request =
       {
@@ -299,7 +300,7 @@ export class PiechartComponent implements OnInit {
       }
       if (type != "") {
         this.spinner.show();
-        this.dashboardService.getFailureCauses(req).subscribe(data => {          
+        this.dashboardService.getFailureCauses(req).subscribe(data => {
           this.spinner.hide();
           this.failureTypesandPercentageCause = data;
 
@@ -506,9 +507,23 @@ export class PiechartComponent implements OnInit {
 
         this.pieChartLabels = labels.map((label, index) => `${label} ${percentages[index]}`);
         this.pieChartData = [dataset];
+
+        this.chartFlag = this.isDataGreaterThanZero(this.pieChartData[0].data);
+        console.log(this.chartFlag);
       });  
     this.loader = false;
     return;
+  }
+
+  public isDataGreaterThanZero(data: number[] | number[][] | any): boolean {
+    console.log(data);
+    if (Array.isArray(data)) {
+      return data.some(value => value > 0);
+    } else if (typeof data === 'number') {
+      return data > 0;
+    } else {
+      return false;
+    }
   }
 
   setLocation(locid: any) {
@@ -761,16 +776,15 @@ export class PiechartComponent implements OnInit {
   }
   
   public onValChange(val: string) {
-    console.log(val);
     this.selectedVal = val;
-    if(this.selectedVal=='repaircost')
+    if(this.selectedVal==='repaircost')
     {
       this.isRepairFlag=true;
       this.repairFlag='true';
       this.params.type = 'yearly';
       this.getFailureTypes();
     }
-    else if (this.selectedVal=='count'){
+    else if (this.selectedVal==='count'){
       this.isRepairFlag=false;
       this.repairFlag='false';
       this.params.type = 'yearly';

@@ -158,7 +158,10 @@
                   <h5>PRIMARYFINDINGS</h5>
                   <div
                     class="border-charts"
-                    *ngIf="pieChartData.length == 0 && companyid > 0"
+                    *ngIf="
+                      !chartFlag &&
+                      companyid > 0
+                    "
                   >
                     <h6 style="color: red">
                       There are no Repairs in the selected time span.
@@ -168,7 +171,7 @@
                   <div
                     class="border-charts"
                     style="position: relative; height: 300px; width: 592px"
-                    *ngIf="pieChartData.length > 0"
+                    *ngIf="chartFlag"
                   >
                     <canvas
                       baseChart
@@ -191,7 +194,7 @@
                   <div
                     class="border-charts"
                     style="height: 300px; width: 592px"
-                    *ngIf="pieChartCauseData.length > 0"
+                    *ngIf="pieChartCauseLabels.length > 0"
                   >
                     <canvas
                       baseChart
@@ -526,7 +529,10 @@
                           : ['description', 'dateaddedOn', 'addedby']
                           : documentFilter
                         | paginate
-                          : { itemsPerPage: itemsForPagination, currentPage: p }
+                          : {
+                              itemsPerPage: itemsForPagination,
+                              currentPage: p
+                            }
                     "
                   >
                     <td>

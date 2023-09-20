@@ -677,15 +677,16 @@ export class PiechartComponent implements OnInit {
     }
   }
 
-  public getRepairJobs(e: any, template: TemplateRef<any>): void {
+  public getRepairJobs(e: any, template: TemplateRef<any>): void {    
     let causeText;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.userId = sessionStorage.getItem('userId');
     //const cause = e.active[0]._chart.data.labels[e.active[0]._index];
     const clickedLabel = e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.match(/([a-zA-Z\s-]+)(\d+)/);
-    if (matches && matches.length >= 3) {
-      causeText = matches[1].trim();
+    const matches = clickedLabel.match(/^(.*?)\s+\d+(\.\d+)?$/);
+
+    if (matches) {
+      causeText = matches[1];
     }
 
     const cause = causeText;

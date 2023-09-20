@@ -94,10 +94,6 @@ button {
   margin-top: 10px;
 }
 
-::ng-deep .item-list-after .dropdown button:after {
-  right: -27.4rem !important;
-}
-
 .form-control {
   background-color: #fff;
   margin: 10px 0px;
@@ -133,4 +129,31 @@ button {
 
 .item-search {
   border-radius: 0;
+}
+
+::ng-deep .alert-danger {
+  color: #813838;
+  background-color: #fee2e1;
+  border-color: #fdd6d6;
+}
+
+::ng-deep .alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0;
+}
+
+.form-group {
+  padding: 0 15px;
+  margin-bottom: 16px;
+}
+
+::ng-deep ngx-dropdown-treeview .dropdown button {
+  height: 34px;
+}
+
+::ng-deep .item-list-after .dropdown button:after {
+  right: 0.6rem !important;
 }

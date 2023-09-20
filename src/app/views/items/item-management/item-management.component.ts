@@ -8,9 +8,7 @@ import { ItemTypesService } from '../../../services/Items/item-types.service';
 import { WarrantyManagementService } from '../../../services/warranty-management.service';
 import { LocationManagementService } from '../../../services/location-management.service';
 import { ItemManagementService } from '../../../services/Items/item-management.service';
-import { Observable, Observer } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
@@ -106,6 +104,9 @@ export class ItemManagementComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.model.locationid = [
+      new TreeviewItem({ text: 'All', value: 'All' }), 
+    ];
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
     this.getAttributesForSearchDisplay();
@@ -117,6 +118,7 @@ export class ItemManagementComponent implements OnInit {
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
   }
+
   getAttributesForSearchDisplay() {
     this.itemManagementService
       .getAttributesForSearchDisplay(this.companyId)
@@ -129,9 +131,10 @@ export class ItemManagementComponent implements OnInit {
         }
       );
   }
+
   setInitValues() {
     this.searchResults = this.itemManagementService.getItemSearchResults();
-    this.model.typeId = this.itemManagementService.getSearchedItemTypeId();
+    this.model.typeid = this.itemManagementService.getSearchedItemTypeId();
     this.model.statusid = this.itemManagementService.getSearchedItemStatusId();
     this.model.locationid =
       this.itemManagementService.getSearchedItemLocationId();
@@ -143,7 +146,7 @@ export class ItemManagementComponent implements OnInit {
       if (this.route.snapshot.params['type'] == 'all') {
         if (
           (this.model.tag && this.model.tag != '') ||
-          (this.model.typeId != '' && this.model.typeId)
+          (this.model.typeid != '' && this.model.typeid)
         )
           this.getSearchedItems();
         else {
@@ -159,6 +162,7 @@ export class ItemManagementComponent implements OnInit {
       }
     }
   }
+
   itemRepairs(item: { typeid: number; tag: string; itemid: string }) {
     this.itemManagementService.setSearchedItemTypeId(item.typeid);
     this.itemManagementService.setSearchedItemTag(item.tag);
@@ -219,7 +223,7 @@ export class ItemManagementComponent implements OnInit {
       locationid: this.model.locationid ? this.model.locationid : null,
       statusid: this.model.statusid ? this.model.statusid : null,
       tag: this.model.tag ? this.model.tag : null,
-      typeId: this.model.typeId ? this.model.typeId : null,
+      typeid: this.model.typeid ? this.model.typeid : null,
     };
 
     this.searchResults = [];
@@ -229,7 +233,7 @@ export class ItemManagementComponent implements OnInit {
         (response: any) => {
           this.spinner.hide();
           this.itemManagementService.setSearchedItemTag(req.tag);
-          this.itemManagementService.setSearchedItemTypeId(req.typeId);
+          this.itemManagementService.setSearchedItemTypeId(req.typeid);
           this.itemManagementService.setSearchedItemLocationId(req.locationid);
           this.itemManagementService.setSearchedItemStatusId(req.statusid);
 
@@ -288,6 +292,7 @@ export class ItemManagementComponent implements OnInit {
 
     this.excelService.exportAsExcelFile(result, 'itemAdvancedSearchResults');
   }
+
   getSearchedItemsByCompanyId() {
     this.flag = 0;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
@@ -297,7 +302,7 @@ export class ItemManagementComponent implements OnInit {
       locationid: this.model.locationid ? this.model.locationid : null,
       statusid: this.model.statusid ? this.model.statusid : null,
       tag: this.model.tag ? this.model.tag : null,
-      typeId: this.model.typeId ? this.model.typeId : null,
+      typeid: this.model.typeid ? this.model.typeid : null,
     };
     this.searchResults = [];
     this.itemManagementService
@@ -307,7 +312,7 @@ export class ItemManagementComponent implements OnInit {
           this.spinner.hide();
           this.searchResults = response;
           this.itemManagementService.setSearchedItemTag(req.tag);
-          this.itemManagementService.setSearchedItemTypeId(req.typeId);
+          this.itemManagementService.setSearchedItemTypeId(req.typeid);
           this.itemManagementService.setSearchedItemLocationId(req.locationid);
           this.itemManagementService.setSearchedItemStatusId(req.statusid);
           this.itemManagementService.setItemSearchResults(response);
@@ -420,7 +425,7 @@ export class ItemManagementComponent implements OnInit {
   refresh() {
     if (
       (this.model.tag && this.model.tag != '') ||
-      (this.model.typeId != '' && this.model.typeId)
+      (this.model.typeid != '' && this.model.typeid)
     )
       this.getSearchedItems();
     else {
@@ -501,7 +506,7 @@ export class ItemManagementComponent implements OnInit {
         delete obj.statusid;
         delete obj.typeName;
         delete obj.locationid;
-        delete obj.typeId;
+        delete obj.typeid;
         delete obj.itemid;
         delete obj.itemRank;
         delete obj.description;
@@ -544,6 +549,7 @@ export class ItemManagementComponent implements OnInit {
     this.helpFlag = false;
     window.print();
   }
+
   help() {
     this.helpFlag = !this.helpFlag;
   }

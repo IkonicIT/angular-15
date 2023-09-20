@@ -21,7 +21,7 @@
       "
     >
       <div
-        class="col-12 col-md-12 col-lg-3"
+        class="col-12 col-md-12 col-lg-2"
         style="padding-left: 15px; padding-right: 15px; position: relative"
       >
         <ol
@@ -39,7 +39,7 @@
         </ol>
       </div>
       <div
-        class="col-12 p-0 mt-2 col-lg-9 col-md-12 ml-15 mb-1"
+        class="col-12 p-0 mt-2 col-lg-10 col-md-12 ml-15 mb-1"
         style="position: relative"
       >
         <div class="row" style="margin-left: -15px; margin-right: -15px">
@@ -85,7 +85,7 @@
           >
             <input
               [(ngModel)]="itemTag"
-              class="col-7 col-md-6 height iphone-tag"
+              class="col-7 col-md-4 height iphone-tag"
               [disabled]="
                 userSelectedCompany.companyid == 0 || highestRank == 0
               "
@@ -109,7 +109,6 @@
             >
               <app-dropdown-treeview-select
                 [items]="items"
-                id="type1"
                 [(value)]="value"
                 (valueChange)="selectRootItemType($event)"
               >

@@ -27,6 +27,17 @@
   margin-top: -5px;
 }
 
+::ng-deep .treeview-container .row-item {
+  margin-bottom: 0.3rem;
+  flex-wrap: nowrap;
+}
+
+::ng-deep .treeview-container .row-item .fa {
+  width: 0.8rem;
+  cursor: pointer;
+  margin-right: 0.3rem;
+}
+
 .btn-danger,
 .btn-danger.disabled,
 .btn-danger:disabled {

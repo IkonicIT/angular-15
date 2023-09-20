@@ -1,9 +1,7 @@
-import {
-  DefaultTreeviewI18n,
-  TreeviewItem,
-  TreeviewSelection,
-} from 'ngx-treeview';
+import { DefaultTreeviewI18n, TreeviewItem, TreeviewSelection } from 'ngx-treeview';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class DropdownTreeviewSelectI18n extends DefaultTreeviewI18n {
   private internalSelectedItem: TreeviewItem;
 

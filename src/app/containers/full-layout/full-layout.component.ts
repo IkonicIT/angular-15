@@ -11,7 +11,6 @@ import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from '../../services/broadcaster.service';
 import { ReportsService } from '../../services/reports.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { NgxDropdownConfig } from 'ngx-select-dropdown';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,7 +29,7 @@ export class FullLayoutComponent implements OnInit {
   itemTypes: any = [];
   selectedType: any = null;
   suggessions: any[] = [];
-  value: any = 0;
+  value: any;
   items: TreeviewItem[];
   config = TreeviewConfig.create({
     hasFilter: false,
@@ -95,7 +94,6 @@ export class FullLayoutComponent implements OnInit {
           this.userSelectedCompany = company;
         }
       });
-      //     this.selectCompanyFromMasterSearch(this.userSelectedCompany);
     });
     this.isOwnerAminReadOnly = sessionStorage.getItem('IsOwnerAdminReadOnly');
     this.getUserAccessCompanies();
@@ -112,6 +110,9 @@ export class FullLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.items = [
+      new TreeviewItem({ text: 'All', value: 'All' }), 
+    ];
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.isOwnerAminReadOnly = sessionStorage.getItem('IsOwnerAdminReadOnly');
     this.spinner.show();

@@ -7,7 +7,6 @@ import { AppConfiguration } from '../../configuration';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ItemManagementService {
@@ -119,9 +118,11 @@ export class ItemManagementService {
   public getAdvancedItemSearchResults() {
     return this.advancedItemSearchResults;
   }
+
   public setItemSearchResults(results: unknown) {
     this.itemSearchResults = results;
   }
+
   public getItemSearchResults() {
     return this.itemSearchResults;
   }
@@ -129,20 +130,23 @@ export class ItemManagementService {
   public setSearchedItemTag(tag: string) {
     this.searchedItemTag = tag;
   }
+
   public getSearchedItemTag() {
     return this.searchedItemTag;
   }
 
-  public setSearchedItemTypeId(typeId: number) {
-    this.searchedItemTypeId = typeId;
+  public setSearchedItemTypeId(typeid: any) {
+    this.searchedItemTypeId = typeid;
   }
+  
   public getSearchedItemTypeId() {
     return this.searchedItemTypeId;
   }
 
-  public setItemTypeId(typeId: any) {
-    this.itemTypeId = typeId;
+  public setItemTypeId(typeid: any) {
+    this.itemTypeId = typeid;
   }
+
   public getItemTypeId() {
     return this.itemTypeId;
   }
@@ -150,6 +154,7 @@ export class ItemManagementService {
   public setSearchedItemTypeName(name: any) {
     this.searchedItemTypeName = name;
   }
+
   public getSearchedItemTypeName() {
     return this.searchedItemTypeName;
   }
@@ -157,6 +162,7 @@ export class ItemManagementService {
   public setSearchedItemStatusId(statusId: number) {
     this.searchedItemStatusId = statusId;
   }
+
   public getSearchedItemStatusId() {
     return this.searchedItemStatusId;
   }
@@ -164,6 +170,7 @@ export class ItemManagementService {
   public setSearchedItemLocationId(locationId: number) {
     this.searchedItemLocationId = locationId;
   }
+
   public getSearchedItemLocationId() {
     return this.searchedItemLocationId;
   }
@@ -177,37 +184,7 @@ export class ItemManagementService {
     });
   }
 
-  saveItem(item: {
-    attributevalues: any;
-    defaultimageattachmentid: number;
-    description: any;
-    desiredspareratio: any;
-    inserviceon: Date;
-    isinrepair: boolean;
-    isstale: boolean;
-    itemid: number;
-    lastmodifiedby: any;
-    locationid: any;
-    manufacturerid: null;
-    meantimebetweenservice: any;
-    modelnumber: string;
-    name: any;
-    purchasedate: any;
-    purchaseprice: any;
-    repairqual: number;
-    serialnumber: string;
-    companyid: any;
-    statusid: any;
-    tag: any;
-    typeId: any;
-    warrantyexpiration: any;
-    warrantytypeid: any;
-    userid?: string | null;
-    typeName: any;
-    locationName: any;
-    statusname: any;
-    createdDate: string;
-  }) {
+  saveItem(item: any) {
     return this.http
       .post(AppConfiguration.locationRestURL + 'item', item, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -223,50 +200,20 @@ export class ItemManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  checkTag(tagName: string, typeId: string) {
+  checkTag(tagName: string, typeid: string) {
     return this.http
       .get(
         AppConfiguration.locationRestURL +
           'item/checkTagAvailability/' +
           tagName +
           '/' +
-          typeId,
+          typeid,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
   }
 
-  updateItem(item: {
-    attributevalues?: any;
-    defaultimageattachmentid?: any;
-    description?: any;
-    desiredspareratio?: any;
-    inserviceon?: any;
-    isinrepair?: boolean;
-    isstale?: boolean;
-    itemid: any;
-    lastmodifiedby?: any;
-    locationid?: any;
-    manufacturerid?: null;
-    meantimebetweenservice?: any;
-    modelnumber?: string;
-    name?: any;
-    purchasedate?: any;
-    purchaseprice?: any;
-    repairqual?: number;
-    serialnumber?: string;
-    statusid?: any;
-    statusname?: any;
-    companyid?: any;
-    tag?: any;
-    typeId?: any;
-    warrantyexpiration?: any;
-    warrantytypeid?: any;
-    userid?: string | null;
-    typeName?: any;
-    locationName?: any;
-    updatedDate?: string;
-  }) {
+  updateItem(item: any) {
     return this.http
       .put(
         AppConfiguration.locationRestURL + 'item/' + item.itemid,
@@ -340,7 +287,7 @@ export class ItemManagementService {
   }
 
   getAllItems(
-    item: { locationid: any; statusid: any; tag: any; typeId: any },
+    item: { locationid: any; statusid: any; tag: any; typeid: any },
     companyId: string,
     isOwnerAdmin: string | null,
     userId: string | null
@@ -454,24 +401,7 @@ export class ItemManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  saveTransfer(req: {
-    daysinOldStatus: any;
-    details: any;
-    fromLocation: any;
-    fromLocationID: any;
-    itemID: any;
-    jobNumber: any;
-    newStatus: any;
-    oldStatus: any;
-    shippingNumber: any;
-    toLocationID: any;
-    companyID: any;
-    statusID: any;
-    trackingNumber: any;
-    transferDate: any;
-    transferredBy: any;
-    ponumber: any;
-  }) {
+  saveTransfer(req: any) {
     return this.http
       .post(
         AppConfiguration.locationRestURL + 'transferLog',
@@ -490,13 +420,7 @@ export class ItemManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  masterSearch(item: {
-    tag: any;
-    name: any;
-    statusname: any;
-    locationName: any;
-    typeName: any;
-  }) {
+  masterSearch(item: any) {
     return this.http
       .post(
         AppConfiguration.locationRestURL + 'item/masterSearch',
@@ -506,16 +430,7 @@ export class ItemManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getMasterSearchResults(request: {
-    tag: any;
-    attributes:
-      | { attributeName: string; value: any }[]
-      | { attributeName: string; value: any }[]
-      | { attributeName: string; value: any }[];
-    locationName: any;
-    page: any;
-    size: any;
-  }) {
+  getMasterSearchResults(request: any) {
     return this.http
       .post(
         AppConfiguration.locationRestURL + 'item/masterSearchAttributes',
@@ -525,13 +440,7 @@ export class ItemManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getAdvanceSearchPiechart(request: {
-    companyId: any;
-    isByRepairCost: any;
-    startDate: string | null;
-    endDate: string | null;
-    itemIds: any;
-  }) {
+  getAdvanceSearchPiechart(request: any) {
     return this.http
       .post(
         AppConfiguration.locationRestURL + 'advanceSearch/failureTypesChart',
@@ -541,14 +450,7 @@ export class ItemManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getFailureCausesPieChart(request: {
-    companyId: any;
-    failureType: any;
-    isByRepairCost: any;
-    startDate: string | null;
-    endDate: string | null;
-    itemIds: any;
-  }) {
+  getFailureCausesPieChart(request: any) {
     return this.http
       .post(
         AppConfiguration.locationRestURL + 'advanceSearch/failureCausesChart',
@@ -558,16 +460,7 @@ export class ItemManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getRepairJobsByFailureCause(request: {
-    companyId: any;
-    failureType: any;
-    failureCause: any;
-    isOwnerAdmin: any;
-    userId: any;
-    startDate: string | null;
-    endDate: string | null;
-    itemIds: any;
-  }) {
+  getRepairJobsByFailureCause(request: any) {
     return this.http
       .post(
         AppConfiguration.locationRestURL +

@@ -20,8 +20,7 @@ import { ExcelService } from '../../../services/excel-service';
 import * as cloneDeep from 'lodash';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { IDatePickerConfig } from 'ng2-date-picker';
-import { NgChartsModule } from 'ng2-charts';
-import { ChartType } from 'chart.js';
+import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-advanced-item-search',
@@ -77,6 +76,7 @@ export class AdvancedItemSearchComponent implements OnInit {
   public advancedItemSearchRepaiNotesSearchresults: any = {};
   activeTab: number = 0;
   public keys: any = [];
+
   public pieChartPlugins: any = [
     {
       afterLayout: function (chart: any) {
@@ -91,22 +91,34 @@ export class AdvancedItemSearchComponent implements OnInit {
       },
     },
   ];
-  public barChartOptions: any = {
-    legend: {
-      position: 'left',
-      labels: {
-        fontSize: 10,
-        boxWidth: 10,
-        boxHeight: 2,
-      },
-    },
+  
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'left',
+        align: 'start',
+        labels: {
+          font: {
+            size: 10
+          },
+          boxWidth: 12,
+          boxHeight: 12
+        }
+      }
+    }
   };
+
   public pieChartType: ChartType = 'pie';
+
   public chartColors: Array<any> = [];
+
   public pieChartLabels: string[] = [];
-  public pieChartData: any = [];
+  public pieChartData: ChartDataset[] = [];
   public pieChartCauseLabels: string[] = [];
-  public pieChartCauseData: any = [];
+  public pieChartCauseData: ChartDataset[] = [];
+
   repairJobs: any = [];
   modalRef: BsModalRef;
   pieChartModal: BsModalRef;
@@ -696,13 +708,20 @@ export class AdvancedItemSearchComponent implements OnInit {
         this.pieChartCauseLabels = [];
         this.pieChartCauseData.length = 0;
         this.pieChartCauseData = [];
-        this.pieChartLabels.length = 0;
-        this.pieChartLabels = Object.keys(this.failureTypesandPercentage);
-        this.pieChartData.length = 0;
-        this.pieChartLabels.forEach((failureType) => {
-          const percentage = this.failureTypesandPercentage[failureType];
-          this.pieChartData.push(percentage);
-        });
+
+        this.pieChartLabels = [];
+        this.pieChartData = [];
+
+        const labels = Object.keys(this.failureTypesandPercentage);
+        const percentages = Object.values(this.failureTypesandPercentage);
+
+        const dataset: any = {
+          data: percentages,
+          backgroundColor: this.chartColors[0].backgroundColor,
+        };
+
+        this.pieChartLabels = labels.map((label, index) => `${label} ${percentages[index]}`);
+        this.pieChartData = [dataset];
       });
     return;
   }
@@ -732,7 +751,10 @@ export class AdvancedItemSearchComponent implements OnInit {
   public chartHovered(e: any): void {}
 
   public chartClicked(e: any): void {
-    const type = e.active[0]._chart.data.labels[e.active[0]._index];
+    const clickedLabel = e.event.chart.config._config.data.labels[e.active[0].index];
+    const matches = clickedLabel.replace(/\d+([,.]\d+)?\s*/g, '');
+    const type = matches;
+
     this.selectedFailureType = type;
     var request = {
       companyId: this.companyId,
@@ -748,23 +770,39 @@ export class AdvancedItemSearchComponent implements OnInit {
       .subscribe((data) => {
         this.spinner.hide();
         this.failureTypesandPercentageCause = data;
-        this.pieChartCauseLabels.length = 0;
-        this.pieChartCauseData.length = 0;
-        this.pieChartCauseLabels = Object.keys(
+
+        this.pieChartCauseLabels = [];
+        this.pieChartCauseData = [];
+
+        const labels = Object.keys(
           this.failureTypesandPercentageCause
         );
-        this.pieChartCauseLabels.forEach((failureType) => {
-          const percentage = this.failureTypesandPercentageCause[failureType];
-          this.pieChartCauseData.push(percentage);
-        });
+        const percentages = Object.values(this.failureTypesandPercentageCause);
+
+        const dataset: any = {
+          data: percentages,
+          backgroundColor: this.chartColors[0].backgroundColor,
+        };
+
+        this.pieChartCauseLabels = labels.map((label, index) => `${label} ${percentages[index]}`);
+        this.pieChartCauseData = [dataset];
       });
   }
 
   public getRepairJobs(e: any, template: TemplateRef<any>): void {
+    let causeText;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.userId = sessionStorage.getItem('userId');
-    const cause = e.active[0]._chart.data.labels[e.active[0]._index];
+    const clickedLabel = e.event.chart.config._config.data.labels[e.active[0].index];
+    const matches = clickedLabel.match(/^(.*?)\s+\d+(\.\d+)?$/);
+
+    if (matches) {
+      causeText = matches[1];
+    }
+
+    const cause = causeText;
     this.selectedFailureCause = cause;
+
     var request = {
       companyId: this.companyId,
       failureType: this.selectedFailureType,

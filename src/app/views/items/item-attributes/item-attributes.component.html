@@ -1,6 +1,6 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-padding">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
@@ -260,7 +260,7 @@
                         </div>
                         <div class="row">
                           <div class="form-group col-sm-12">
-                            <label for="fReplacement">
+                            <label for="fReplacement" class="btn-right">
                               Use for find Replacement</label
                             >
                             <input
@@ -296,7 +296,9 @@
                         </div>
                         <div class="row">
                           <div class="form-group col-sm-12">
-                            <label for="rField"> Required Field</label>
+                            <label for="rField" class="btn-right">
+                              Required Field</label
+                            >
                             <input
                               type="checkbox"
                               id="rField"
@@ -312,7 +314,7 @@
                             <button
                               type="button"
                               *ngIf="!addEditFlag"
-                              class="btn btn-primary"
+                              class="btn btn-primary btn-right"
                               data-bs-placement="bottom"
                               data-bs-toggle="tooltip"
                               title="Add new Attribute"

@@ -69,7 +69,7 @@ export class ItemAttributesComponent implements OnInit {
   typeList: boolean;
   itemType1: any;
   helpFlag: any = false;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyTypesService: CompanyTypesService,
@@ -108,6 +108,7 @@ export class ItemAttributesComponent implements OnInit {
 
   pageLoadCalls(companyId: string) {
     this.spinner.show();
+    this.loader = true;
     this.itemAttributeService.getAllAttributeTypes().subscribe((response) => {
       this.attributeTypes = response;
     });
@@ -169,10 +170,12 @@ export class ItemAttributesComponent implements OnInit {
     this.index = 0;
     if (typeId != '0') {
       this.spinner.show();
+      this.loader = true;
       this.itemAttributeService
         .getTypeAttributes(typeId)
         .subscribe((response) => {
           this.spinner.hide();
+          this.loader = false;
           this.typeId = typeId;
           this.typeAttributes = response;
           this.typeAttributesLength = this.typeAttributes.length;
@@ -183,10 +186,12 @@ export class ItemAttributesComponent implements OnInit {
   getSearchTypes(attributeTypeId: any) {
     if (attributeTypeId && attributeTypeId != 0 && attributeTypeId != 'null') {
       this.spinner.show();
+      this.loader = true;
       this.itemAttributeService
         .getAllSearchTypes(attributeTypeId)
         .subscribe((response) => {
           this.spinner.hide();
+          this.loader = false;
           this.searchTypes = response;
         });
     }
@@ -203,8 +208,10 @@ export class ItemAttributesComponent implements OnInit {
 
   getItemType(typeId: any) {
     this.spinner.show();
+    this.loader = true;
     this.itemTypesService.getItemTypeDetails(typeId).subscribe((response) => {
       this.spinner.hide();
+      this.loader = false;
       console.log(response);
       this.itemType1 = response;
       if (!this.itemType1.parentid) {
@@ -253,10 +260,12 @@ export class ItemAttributesComponent implements OnInit {
           this.model.attributelistitemResource;
       }
       this.spinner.show();
+      this.loader = true;
       this.itemAttributeService
         .createNewTypeAttribute(request)
         .subscribe((response) => {
           this.spinner.hide();
+          this.loader = false;
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -299,10 +308,12 @@ export class ItemAttributesComponent implements OnInit {
 
   saveAttributeListOrder(typeAttributes: any) {
     this.spinner.show();
+    this.loader = true;
     this.itemAttributeService
       .updateTypeAttributesOrder(typeAttributes)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.index = 4;
         setTimeout(() => {
           this.index = 0;
@@ -318,6 +329,7 @@ export class ItemAttributesComponent implements OnInit {
       this.model.attributetype.attributetypeid != 0
     ) {
       this.spinner.show();
+      this.loader = true;
       var request = {
         attributelistitemResource: null,
         attributenameid: this.model.attributenameid,
@@ -351,6 +363,7 @@ export class ItemAttributesComponent implements OnInit {
         moduleType: 'Item',
       };
       this.spinner.show();
+      this.loader = true;
       if (this.model.attributelistitemResource) {
         request.attributelistitemResource =
           this.model.attributelistitemResource;
@@ -359,6 +372,7 @@ export class ItemAttributesComponent implements OnInit {
         .updateTypeAttributes(request)
         .subscribe((response) => {
           this.spinner.hide();
+          this.loader = false;
           this.getTypeAttributes(this.typeId);
 
           this.index = 2;
@@ -405,6 +419,7 @@ export class ItemAttributesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     var moduleType = 'Item';
     this.itemAttributeService
       .removeItemAttributess(
@@ -418,6 +433,7 @@ export class ItemAttributesComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef?.hide();
           this.getTypeAttributes(this.typeId);
           this.index = 3;
@@ -438,6 +454,7 @@ export class ItemAttributesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

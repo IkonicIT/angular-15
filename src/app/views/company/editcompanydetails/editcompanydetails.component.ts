@@ -50,7 +50,7 @@ export class EditcompanydetailsComponent implements OnInit {
   companyList: any = [];
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false;
   constructor(
     private companyManagementService: CompanyManagementService,
     route: ActivatedRoute,
@@ -69,6 +69,7 @@ export class EditcompanydetailsComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
 
     this.spinner.show();
+    this.loader = true;
     this.companyManagementService.getCompanyDetails(this.companyId).subscribe(
       (response: any) => {
         this.model = response;
@@ -90,6 +91,7 @@ export class EditcompanydetailsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -104,9 +106,11 @@ export class EditcompanydetailsComponent implements OnInit {
             this.items = this.generateHierarchy(this.companyTypes);
           }
           this.spinner.hide();
+          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -141,9 +145,11 @@ export class EditcompanydetailsComponent implements OnInit {
       typeId != 0
     ) {
       this.spinner.show();
+      this.loader = true;
       this.companyAttributesServiceService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.typeAttributes = response;
           if (
             this.model.attributevalues &&
@@ -193,9 +199,11 @@ export class EditcompanydetailsComponent implements OnInit {
           }
 
           this.spinner.hide();
+          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {
@@ -305,11 +313,13 @@ export class EditcompanydetailsComponent implements OnInit {
 
         this.model.attributevalues = this.company.attributevalues;
         this.spinner.show();
+        this.loader = true;
         console.log(JSON.stringify(this.model));
         this.model.announcement.announcementdate = new Date().toISOString();
         this.companyManagementService.updateCompany(this.model).subscribe(
           (response) => {
             this.spinner.hide();
+            this.loader = false;
             window.scroll(0, 0);
             this.index = 1;
             setTimeout(() => {
@@ -324,6 +334,7 @@ export class EditcompanydetailsComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
       }
@@ -336,6 +347,7 @@ export class EditcompanydetailsComponent implements OnInit {
       .saveLogo(formdata, companyId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
       });
   }
 
@@ -349,10 +361,12 @@ export class EditcompanydetailsComponent implements OnInit {
       companyid: -1,
     };
     this.spinner.show();
+    this.loader = true;
     this.companyManagementService
       .saveTracratAnnouncements(req)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
       });
   }
 

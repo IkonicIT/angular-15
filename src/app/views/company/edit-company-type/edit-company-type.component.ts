@@ -32,7 +32,7 @@ export class EditCompanyTypeComponent implements OnInit {
   userName: any;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false
   constructor(
     private companyTypesService: CompanyTypesService,
     router: Router,
@@ -55,6 +55,7 @@ export class EditCompanyTypeComponent implements OnInit {
       console.log('Query params ', this.typeId);
     });
     this.spinner.show();
+    this.loader = true;
     this.companyTypesService.getCompanyType(this.typeId).subscribe(
       (response) => {
         this.model = response;
@@ -75,6 +76,7 @@ export class EditCompanyTypeComponent implements OnInit {
 
   getAllTypes() {
     this.spinner.show();
+    this.loader = true;
     this.companyTypesService
       .getAllCompanyTypesWithHierarchy(this.companyId)
       .subscribe(
@@ -150,11 +152,13 @@ export class EditCompanyTypeComponent implements OnInit {
         moduletype: 'companytype',
       };
       this.spinner.show();
+      this.loader = true;
       this.companyTypesService
         .updateCompanyType(this.typeId, request)
         .subscribe(
           (response) => {
             this.spinner.hide();
+            this.loader = false;
             this.index = 1;
             setTimeout(() => {
               this.index = 0;
@@ -164,6 +168,7 @@ export class EditCompanyTypeComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     }

@@ -28,7 +28,7 @@ export class EditItemNoteAttachementComponent implements OnInit {
   itemTag: any;
   itemType: any;
   dismissible = true;
-
+  loader = false;
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     private companyManagementService: CompanyManagementService,
@@ -61,19 +61,23 @@ export class EditItemNoteAttachementComponent implements OnInit {
     this.itemType = this.broadcasterService.currentItemType;
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
+    this.loader = true;
     this.itemAttachmentsService.getItemDocuments(this.id).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
 
   updateItemNoteAttachment() {
     this.spinner.show();
+    this.loader = true;
     this.model.moduleType = 'itemnotetype';
     this.model.companyID = this.companyId;
     this.model.attachmentUserLogDTO = {
@@ -86,6 +90,7 @@ export class EditItemNoteAttachementComponent implements OnInit {
     this.itemAttachmentsService.updateItemDocument(this.model).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         window.scroll(0, 0);
         this.index = 1;
         setTimeout(() => {
@@ -97,6 +102,7 @@ export class EditItemNoteAttachementComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

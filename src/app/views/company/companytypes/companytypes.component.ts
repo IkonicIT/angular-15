@@ -32,7 +32,7 @@ export class CompanytypesComponent implements OnInit {
   helpFlag: any = false;
   userName: any;
   p: any;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyTypesService: CompanyTypesService,
@@ -68,10 +68,12 @@ export class CompanytypesComponent implements OnInit {
 
   getAllTypes(companyId: string) {
     this.spinner.show();
+    this.loader = true;
     this.types = [];
     this.companyTypesService.getAllCompanyTypes(companyId).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.types = response;
         this.types.forEach((type: { parentid: string }) => {
           if (!type.parentid) {
@@ -81,6 +83,7 @@ export class CompanytypesComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false
       }
     );
   }
@@ -116,17 +119,20 @@ export class CompanytypesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     this.userName = sessionStorage.getItem('userName');
     this.companyTypesService
       .removeCompanyType(this.index, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.getAllTypes(this.companyId);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

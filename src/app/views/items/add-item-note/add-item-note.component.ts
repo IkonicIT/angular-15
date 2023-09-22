@@ -23,7 +23,7 @@ export class AddItemNoteComponent implements OnInit {
   globalCompany: any;
   companyId: any;
   userName: any;
-
+  loader = false;
   constructor(
     private itemNoteService: ItemNotesService,
     private companyManagementService: CompanyManagementService,
@@ -54,14 +54,17 @@ export class AddItemNoteComponent implements OnInit {
 
   getItemDetails() {
     this.spinner.show();
+    this.loader = true;
     this.itemManagementService.getItemDetails(this.itemId).subscribe(
       (response) => {
         this.item = response;
         this.spinner.hide();
+        this.loader = false;
         console.log('item =', this.item);
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -93,9 +96,11 @@ export class AddItemNoteComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
+      this.loader = true;
       this.itemNoteService.saveItemNote(this.model).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -104,6 +109,7 @@ export class AddItemNoteComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }

@@ -29,7 +29,7 @@ export class EditItemAttachmentComponent implements OnInit {
   currentAttachmentId: any;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false;
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     router: Router,
@@ -55,14 +55,17 @@ export class EditItemAttachmentComponent implements OnInit {
     console.log('itemId=' + this.itemId);
     this.router = router;
     this.spinner.show();
+    this.loader = true;
     this.itemAttachmentsService.getItemDocuments(this.attachmentId).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
         this.model.defaultImage = 'false';
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -75,6 +78,7 @@ export class EditItemAttachmentComponent implements OnInit {
 
   updateItemDocument() {
     this.spinner.show();
+    this.loader = true;
     this.model.moduleType = 'itemtype';
     this.model.companyID = this.companyId;
     this.model.updatedDate = new Date();
@@ -87,6 +91,7 @@ export class EditItemAttachmentComponent implements OnInit {
     this.itemAttachmentsService.updateItemDocument(this.model).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         if (
           this.model.defaultImage == 'true' &&
           this.model.contenttype.includes('image')
@@ -103,6 +108,7 @@ export class EditItemAttachmentComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -115,11 +121,13 @@ export class EditItemAttachmentComponent implements OnInit {
 
   setAsDefault(res: { attachmentid: any }) {
     this.spinner.show();
+    this.loader =true;
     this.itemAttachmentsService
       .updateItemDefaultImage(this.itemId, res.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.currentAttachmentId = res.attachmentid;
           this.router.navigate([
             '/items/attachments/' +
@@ -130,6 +138,7 @@ export class EditItemAttachmentComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

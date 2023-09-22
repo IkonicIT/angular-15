@@ -33,7 +33,7 @@ export class AddItemAttachmentComponent implements OnInit {
   addedfiles: any = [];
   setDefault: any = 'false';
   dismissible = true;
-
+  loader = false;
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     private companyManagementService: CompanyManagementService,
@@ -101,9 +101,11 @@ export class AddItemAttachmentComponent implements OnInit {
         },
       };
       this.spinner.show();
+      this.loader = true;
       this.itemAttachmentsService.saveItemMultipleDocuments(req).subscribe(
         (response: any) => {
           this.spinner.hide();
+          this.loader = false;
           if (this.setDefault == 'true') {
             var length = response.length;
             this.setAsDefault(response[length - 1]);
@@ -119,6 +121,7 @@ export class AddItemAttachmentComponent implements OnInit {
 
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -134,11 +137,13 @@ export class AddItemAttachmentComponent implements OnInit {
     var contentype = res.contenttype;
     if (contentype.includes('image')) {
       this.spinner.show();
+      this.loader = true;
       this.itemAttachmentsService
         .updateItemDefaultImage(this.itemId, res.attachmentid)
         .subscribe(
           (response) => {
             this.spinner.hide();
+            this.loader = false;
             this.currentAttachmentId = res.attachmentid;
             this.router.navigate([
               '/items/attachments/' +
@@ -149,6 +154,7 @@ export class AddItemAttachmentComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     } else {

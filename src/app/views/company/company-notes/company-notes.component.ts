@@ -28,6 +28,7 @@ export class CompanyNotesComponent implements OnInit {
   reverse: string = '';
   companyNotesFilter: any = '';
   itemsForPagination: any = 5;
+  loader = false;
   globalCompany: any;
   constructor(
     private modalService: BsModalService,
@@ -55,14 +56,17 @@ export class CompanyNotesComponent implements OnInit {
 
   getAllNotes(companyId: string) {
     this.spinner.show();
+    this.loader = true;
     this.companynotesService.getAllCompanyNotess(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
+        this.loader = false;
         console.log(response);
         this.notes = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -88,16 +92,19 @@ export class CompanyNotesComponent implements OnInit {
         this.index
     );
     this.spinner.show();
+    this.loader = true;
     this.companynotesService
       .removeCompanynotess(this.index, this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.getAllNotes(this.companyId);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

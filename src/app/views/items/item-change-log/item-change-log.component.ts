@@ -35,6 +35,7 @@ export class ItemChangeLogComponent implements OnInit {
   itemType: any;
   helpFlag: any = false;
   p: any;
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
@@ -76,11 +77,13 @@ export class ItemChangeLogComponent implements OnInit {
 
   getAllNotes(companyId: string) {
     this.spinner.show();
+    this.loader = true;
     this.itemNotesService
       .getAllItemChangeLogs(companyId, this.itemId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
+          this.loader = false;
           console.log(response);
           this.notes = response;
           if (this.notes.length == 1) {
@@ -89,6 +92,7 @@ export class ItemChangeLogComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -135,8 +139,10 @@ export class ItemChangeLogComponent implements OnInit {
   goToView(journalid: number) {
     this.journalId = journalid;
     this.spinner.show();
+    this.loader = true;
     this.itemNotesService.getItemNotes(journalid).subscribe((response) => {
       this.spinner.hide();
+      this.loader = false;
       window.scroll(0, 0);
       this.model = response;
 
@@ -167,15 +173,18 @@ export class ItemChangeLogComponent implements OnInit {
 
   downloadDocumentFromDB(document: { new?: boolean; attachmentID?: any }) {
     this.spinner.show();
+    this.loader = true;
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentID)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

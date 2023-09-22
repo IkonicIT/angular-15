@@ -43,7 +43,7 @@ export class ViewItemRepairComponent implements OnInit {
   completedOrder: string;
   reverse: string = '';
   order: string;
-
+  loader = false;
   constructor(
     private itemRepairItemsService: ItemRepairItemsService,
     private companyDocumentsService: CompanyDocumentsService,
@@ -83,12 +83,14 @@ export class ViewItemRepairComponent implements OnInit {
 
   getItemRepairDetails() {
     this.spinner.show();
+    this.loader = true;
     this.itemRepairItemsService
       .getRepairDetailsForView(this.itemRepairId)
       .subscribe((response) => {
         this.model = response;
         this.broadcasterService.itemRepair = this.model;
         this.spinner.hide();
+        this.loader = false;
       });
   }
 
@@ -104,6 +106,7 @@ export class ViewItemRepairComponent implements OnInit {
 
   getAllRepairs() {
     this.spinner.show();
+    this.loader = true;
     this.itemRepairItemsService
       .getAllCompletedRepairs(this.companyId, this.itemId)
       .subscribe((response) => {
@@ -113,6 +116,7 @@ export class ViewItemRepairComponent implements OnInit {
           .subscribe((response) => {
             this.repairs = response;
             this.spinner.hide();
+            this.loader = false;
           });
       });
   }
@@ -125,6 +129,7 @@ export class ViewItemRepairComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
 
     this.itemRepairItemsService
       .removeItemRepair(
@@ -145,6 +150,7 @@ export class ViewItemRepairComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -178,15 +184,18 @@ export class ViewItemRepairComponent implements OnInit {
 
   downloadDocumentFromDB(document: { new?: boolean; attachmentId?: any }) {
     this.spinner.show();
+    this.loader = true;
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

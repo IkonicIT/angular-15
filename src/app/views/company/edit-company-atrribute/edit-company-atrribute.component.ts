@@ -26,6 +26,7 @@ export class EditCompanyAtrributeComponent implements OnInit {
   dismissible = true;
   typeId: number;
   attrId: number;
+  loader = false;
   userName: any;
   constructor(private companynotesService: CompanynotesService, private companyAttributesServiceService: CompanyAttributesServiceService, router: Router,
     private route: ActivatedRoute, private companyTypesService: CompanyTypesService, private spinner: NgxSpinnerService
@@ -78,6 +79,7 @@ export class EditCompanyAtrributeComponent implements OnInit {
       },
         error => {
           this.spinner.hide();
+          this.loader = false;
         });
     }
   }

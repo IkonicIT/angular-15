@@ -47,7 +47,7 @@ export class NotesComponent implements OnInit {
   currentLocationName: any;
   dismissible = true;
   p: any;
-
+  loader = false;
   constructor(
     private locationNotesService: LocationNotesService,
     private locationManagementService: LocationManagementService,
@@ -95,16 +95,19 @@ export class NotesComponent implements OnInit {
 
   getAllNotes(locationId: string) {
     this.spinner.show();
+    this.loader = true;
     this.locationNotesService
       .getAllLocationNotes(this.companyId, locationId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
+          this.loader = false;
           console.log(response);
           this.notes = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -144,10 +147,12 @@ export class NotesComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
+      this.loader = true;
       this.locationNoteService.saveLocationNotes(this.model).subscribe(
         (response) => {
           this.model = response;
           this.spinner.hide();
+          this.loader = false;
           this.model.effectiveon = this.datepipe.transform(
             this.model.effectiveon,
             'MM/dd/yyyy'
@@ -165,6 +170,7 @@ export class NotesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -188,6 +194,7 @@ export class NotesComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.spinner.show();
+      this.loader = true;
       this.model.moduleType = 'locationtype';
       this.model.locationname = this.currentLocationName;
       this.model.effectiveon = new Date(this.model.effectiveon);
@@ -198,6 +205,7 @@ export class NotesComponent implements OnInit {
             'MM/dd/yyyy'
           );
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.viewFlag = true;
           this.newFlag = false;
@@ -211,6 +219,7 @@ export class NotesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -222,10 +231,12 @@ export class NotesComponent implements OnInit {
     this.editFlag = false;
     this.helpFlag = false;
     this.spinner.show();
+    this.loader = true;
     this.locationNotesService
       .getLocationNotes(journalid, this.locationId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
         if (this.model.effectiveon) {
           this.model.effectiveon = new Date(this.model.effectiveon);
@@ -259,15 +270,18 @@ export class NotesComponent implements OnInit {
 
   downloadDocumentFromDB(document: { attachmentID: number }) {
     this.spinner.show();
+    this.loader = true;
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentID)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -367,6 +381,7 @@ export class NotesComponent implements OnInit {
         this.index
     );
     this.spinner.show();
+    this.loader = true;
     this.locationNotesService
       .removeLocationNotes(
         this.model.journalid,
@@ -376,6 +391,7 @@ export class NotesComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.index1 = 4;
           this.refreshCall();
@@ -391,6 +407,7 @@ export class NotesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

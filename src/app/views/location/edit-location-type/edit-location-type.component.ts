@@ -32,6 +32,7 @@ export class EditLocationTypeComponent implements OnInit {
   userName: any;
   dismissible = true;
   helpFlag: any = false;
+  loader = false;
   constructor(
     private locationTypesService: LocationTypesService,
     private companyManagementService: CompanyManagementService,
@@ -57,9 +58,11 @@ export class EditLocationTypeComponent implements OnInit {
 
   getLocationType(typeId: string) {
     this.spinner.show();
+    this.loader = true;
     this.locationTypesService.getLocationTypeDetails(typeId).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         console.log(response);
         this.model = response;
         if (!this.model.parentid) {
@@ -72,12 +75,14 @@ export class EditLocationTypeComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
 
   getAllLocTypes() {
     this.spinner.show();
+    this.loader = true;
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
@@ -91,6 +96,7 @@ export class EditLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -143,9 +149,11 @@ export class EditLocationTypeComponent implements OnInit {
         typespareratio: 0,
       };
       this.spinner.show();
+      this.loader = true;
       this.locationTypesService.updateLocationType(request).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -155,6 +163,7 @@ export class EditLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {

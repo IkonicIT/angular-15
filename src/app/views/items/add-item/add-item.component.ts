@@ -53,7 +53,6 @@ export class AddItemComponent implements OnInit {
   location: any = [];
   dateNow: Date = new Date();
   bsConfig: Partial<BsDatepickerConfig>;
-
   locationValue: any;
   locationItems: TreeviewItem[];
   itemTypeItems: TreeviewItem[];
@@ -76,7 +75,7 @@ export class AddItemComponent implements OnInit {
   reqAttrValidate: any;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false
   constructor(
     private locationManagementService: LocationManagementService,
     private locationTypesService: LocationTypesService,
@@ -119,6 +118,7 @@ export class AddItemComponent implements OnInit {
   getItemTypeAttributesClone(typeId: string) {
     if (typeId && typeId != '0') {
       this.spinner.show();
+      this.loader = true;
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -157,9 +157,11 @@ export class AddItemComponent implements OnInit {
           }
           this.model.locationTypeId = typeId;
           this.spinner.hide();
+          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -182,17 +184,20 @@ export class AddItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
 
   getAllLocTypes() {
     this.spinner.show();
+    this.loader = true;
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.locationTypes = response;
           this.locationTypes.forEach((type: { parentid: string }) => {
             if (!type.parentid) {
@@ -208,6 +213,7 @@ export class AddItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -262,11 +268,13 @@ export class AddItemComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
+    this.loader = true;
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.itemTypes = response;
           if (this.itemTypes && this.itemTypes.length > 0) {
             this.itemTypeItems = this.generateHierarchyForItemTypes(
@@ -277,6 +285,7 @@ export class AddItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -289,21 +298,25 @@ export class AddItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
 
   getWarrantyTypes() {
     this.spinner.show();
+    this.loader = true;
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -312,6 +325,7 @@ export class AddItemComponent implements OnInit {
     this.getTypeName(typeId);
     if (typeId && typeId != '0') {
       this.spinner.show();
+      this.loader = true;
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -327,9 +341,11 @@ export class AddItemComponent implements OnInit {
           });
           this.model.locationTypeId = typeId;
           this.spinner.hide();
+          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -434,6 +450,7 @@ export class AddItemComponent implements OnInit {
       ];
 
       this.spinner.show();
+      this.loader = true;
       this.locationManagementService.saveLocation(request).subscribe(
         (response: any) => {
           this.addedLocationId = response[0].locationid;
@@ -443,6 +460,7 @@ export class AddItemComponent implements OnInit {
               this.locationManagementService.setLocations(response);
 
               this.spinner.hide();
+              this.loader = false;
               this.locationIndex = 1;
               setTimeout(() => {
                 this.index = 0;
@@ -455,6 +473,7 @@ export class AddItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {
@@ -464,6 +483,7 @@ export class AddItemComponent implements OnInit {
 
   refreshCalls() {
     this.spinner.show();
+    this.loader = true
     this.locationManagementService
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe((response) => {
@@ -471,6 +491,7 @@ export class AddItemComponent implements OnInit {
         this.model.locationid = this.addedLocationId;
         this.getLocations();
         this.spinner.hide();
+        this.loader = false;
       });
   }
 
@@ -556,9 +577,11 @@ export class AddItemComponent implements OnInit {
       };
       if (this.reqAttrValidate == false) {
         this.spinner.show();
+        this.loader = true;
         this.itemManagementService.saveItem(req).subscribe(
           (response: any) => {
             this.spinner.hide();
+            this.loader = false;
             this.index = 1;
             window.scroll(0, 0);
             this.itemManagementService.setSearchedItemTag(response.tag);
@@ -570,6 +593,7 @@ export class AddItemComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
       } else {

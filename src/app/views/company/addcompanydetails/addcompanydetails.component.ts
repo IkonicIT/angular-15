@@ -20,7 +20,7 @@ export class AddcompanydetailsComponent implements OnInit {
   file: File;
   dismissible = true;
   helpFlag: any = false;
-
+  loader = true;
   constructor(
     private companyManagementService: CompanyManagementService,
     private companyStatusesService: CompanyStatusesService,
@@ -95,10 +95,12 @@ export class AddcompanydetailsComponent implements OnInit {
           vendor: false,
         };
         this.spinner.show();
+        this.loader = true
         this.companyManagementService.saveCompany(this.model).subscribe(
           (response: any) => {
             this.companyId = response.companyid;
             this.spinner.hide();
+            this.loader = false
             window.scroll(0, 0);
             if (this.file != null) {
               this.AddCompanyLogo(this.companyId);
@@ -108,6 +110,7 @@ export class AddcompanydetailsComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false
           }
         );
       }
@@ -121,6 +124,7 @@ export class AddcompanydetailsComponent implements OnInit {
       .saveLogo(formdata, companyId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false
       });
   }
 

@@ -14,6 +14,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./my-profile.component.scss'],
 })
 export class MyProfileComponent implements OnInit {
+  loader = false;
   model: any = {};
   companyId: any = 0;
   profileId: any;
@@ -56,16 +57,19 @@ export class MyProfileComponent implements OnInit {
 
   getProfile() {
     this.spinner.show();
+    this.loader = true;
     this.loggedInuser = sessionStorage.getItem('userId');
     this.userManagementService.getProfileWithUser(this.loggedInuser).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
         console.log('user  profile ' + this.model.profileid);
         this.getLocationNames(this.loggedInuser, this.companyId);
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -122,6 +126,7 @@ export class MyProfileComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     } else {

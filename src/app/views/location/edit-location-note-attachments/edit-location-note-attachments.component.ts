@@ -27,7 +27,7 @@ export class EditLocationNoteAttachmentsComponent implements OnInit {
   noteName: any;
   locationName: any;
   dismissible = true;
-
+  loader = false;
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
@@ -55,18 +55,22 @@ export class EditLocationNoteAttachmentsComponent implements OnInit {
     this.locationName = this.locationManagementService.currentLocationName;
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
+    this.loader = true;
     this.companyDocumentsService.getCompanyDocuments(this.documentId).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
   updateLocationNoteAttachment() {
     this.spinner.show();
+    this.loader = true;
     this.model.moduleType = 'itemnotetype';
     this.model.companyID = this.companyId;
     this.model.attachmentUserLogDTO = {
@@ -78,6 +82,7 @@ export class EditLocationNoteAttachmentsComponent implements OnInit {
     this.companyDocumentsService.updateCompanyDocument(this.model).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         window.scroll(0, 0);
         this.index = 1;
         setTimeout(() => {
@@ -89,6 +94,7 @@ export class EditLocationNoteAttachmentsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

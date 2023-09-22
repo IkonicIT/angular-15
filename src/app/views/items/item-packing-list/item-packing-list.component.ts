@@ -21,7 +21,7 @@ export class ItemPackingListComponent implements OnInit {
   companyName: string = '';
   order: string = 'date';
   globalCompany: any;
-
+  loader = false;
   constructor(
     private companyManagementService: CompanyManagementService,
     private _location: Location,
@@ -72,15 +72,18 @@ export class ItemPackingListComponent implements OnInit {
 
   getItemTransferDetails(transferLogID: string) {
     this.spinner.show();
+    this.loader = true;
     this.itemManagementService.getItemTransferDetails(transferLogID).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
         this.model.transfeDate = this.model.transfeDate.split(' ')[0];
         this.itemTransfer = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

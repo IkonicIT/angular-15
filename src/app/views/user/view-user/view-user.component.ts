@@ -35,7 +35,7 @@ export class ViewUserComponent implements OnInit {
   locationItems: TreeviewItem[];
   locationsWithHierarchy: any;
   username: any;
-
+  loader = false;
   typeAttributes: any;
   dismissible = true;
   constructor(
@@ -67,20 +67,25 @@ export class ViewUserComponent implements OnInit {
 
   getUserInfo() {
     this.spinner.show();
+    this.loader = true;
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
     this.spinner.hide();
+    this.loader = false;
 
     this.spinner.show();
+    this.loader = true;
     this.userManagementService
       .getprofileWithType(this.userId, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
         this.profileId = response.profileid;
         this.checkCompany();
         this.getTypeAttributes(this.model.userTypeId);
         this.spinner.hide();
+        this.loader = false;
       });
   }
   checkCompany() {
@@ -108,6 +113,7 @@ export class ViewUserComponent implements OnInit {
   getTypeAttributes(typeId: string) {
     if (typeId && typeId != '0') {
       this.spinner.show();
+      this.loader = true;
       this.userAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -158,6 +164,7 @@ export class ViewUserComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -198,23 +205,28 @@ export class ViewUserComponent implements OnInit {
 
   getVendorCompanies() {
     this.spinner.show();
+    this.loader = true;
     this.companyManagementService.getAllVendors(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         console.log(response);
 
         this.allVendors = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
   getUserCompaniesList() {
     this.spinner.show();
+    this.loader = true;
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
     this.spinner.hide();
+    this.loader = false;
   }
 
   cancelUser() {

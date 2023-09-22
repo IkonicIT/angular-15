@@ -69,7 +69,7 @@ export class LocationAttributesComponent implements OnInit {
   itemTypes: any;
   helpFlag: any = false;
   typeName: any;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyTypesService: CompanyTypesService,
@@ -109,6 +109,7 @@ export class LocationAttributesComponent implements OnInit {
 
   pageLoadCalls(companyId: any) {
     this.spinner.show();
+    this.loader = true;
     this.locationAttributeService
       .getAllAttributeTypes()
       .subscribe((response) => {
@@ -131,6 +132,7 @@ export class LocationAttributesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -199,6 +201,7 @@ export class LocationAttributesComponent implements OnInit {
 
   getAllTypes(companyId: any) {
     this.spinner.show();
+    this.loader = true;
     this.locationTypesService
       .getAllLocationTypes(companyId)
       .subscribe((response) => {
@@ -216,14 +219,17 @@ export class LocationAttributesComponent implements OnInit {
     this.index = 0;
     if (typeId != '0') {
       this.spinner.show();
+      this.loader = true;
       this.locationAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.typeAttributes = response;
           this.typeAttributesLength = this.typeAttributes.length;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -231,13 +237,16 @@ export class LocationAttributesComponent implements OnInit {
 
   getAttributeTypes() {
     this.spinner.show();
+    this.loader = true;
     this.locationAttributeService.getAllAttributeTypes().subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.attributeTypes = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -245,15 +254,18 @@ export class LocationAttributesComponent implements OnInit {
   getSearchTypes(attributeTypeId: any) {
     if (attributeTypeId && attributeTypeId != 0 && attributeTypeId != 'null') {
       this.spinner.show();
+      this.loader = true;
       this.locationAttributeService
         .getAllSearchTypes(attributeTypeId)
         .subscribe(
           (response) => {
             this.spinner.hide();
+            this.loader = false;
             this.searchTypes = response;
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     }
@@ -270,10 +282,12 @@ export class LocationAttributesComponent implements OnInit {
 
   saveAttributeListOrder(typeAttributes: any) {
     this.spinner.show();
+    this.loader = true;
     this.itemAttributeService
       .updateTypeAttributesOrder(typeAttributes)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.index = 4;
         setTimeout(() => {
           this.index = 0;
@@ -319,9 +333,11 @@ export class LocationAttributesComponent implements OnInit {
           this.model.attributelistitemResource;
       }
       this.spinner.show();
+      this.loader = true;
       this.locationAttributeService.createNewTypeAttribute(request).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -342,6 +358,7 @@ export class LocationAttributesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {
@@ -380,6 +397,7 @@ export class LocationAttributesComponent implements OnInit {
       this.model.attributetype.attributetypeid != 0
     ) {
       this.spinner.show();
+      this.loader = true;
       var request = {
         attributelistitemResource: null,
         attributenameid: this.model.attributenameid,
@@ -413,6 +431,7 @@ export class LocationAttributesComponent implements OnInit {
         moduleType: 'Location',
       };
       this.spinner.show();
+      this.loader = true;
       if (this.model.attributelistitemResource) {
         request.attributelistitemResource =
           this.model.attributelistitemResource;
@@ -420,6 +439,7 @@ export class LocationAttributesComponent implements OnInit {
       this.locationAttributeService.updateTypeAttributes(request).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.getTypeAttributes(this.typeValue);
           this.index = 2;
           setTimeout(() => {
@@ -439,6 +459,7 @@ export class LocationAttributesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {
@@ -468,6 +489,7 @@ export class LocationAttributesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     var moduleType = 'Location';
     this.locationAttributeService
       .removeLocationAttributess(
@@ -481,6 +503,7 @@ export class LocationAttributesComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.getTypeAttributes(this.typeValue);
           this.index = 3;
@@ -501,6 +524,7 @@ export class LocationAttributesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

@@ -72,6 +72,7 @@ export class CompanyattributesComponent implements OnInit {
   typeList: boolean;
   helpFlag: any = false;
   dismissible = true;
+  loader = false;
 
   constructor(
     private modalService: BsModalService,
@@ -116,7 +117,10 @@ export class CompanyattributesComponent implements OnInit {
     this.highestRank = sessionStorage.getItem('highestRank');
   }
 
+  
+
   pageLoadCalls(companyId: string) {
+    this.loader = true;  
     this.spinner.show();
     this.companyAttributesServiceService
       .getAllAttributeTypes()
@@ -148,8 +152,11 @@ export class CompanyattributesComponent implements OnInit {
 
               this.getTypeAttributes(this.value);
               this.spinner.hide();
+              this.loader = false;
+
             } else {
               this.spinner.hide();
+              this.loader = false;
             }
           });
       });
@@ -204,6 +211,7 @@ export class CompanyattributesComponent implements OnInit {
 
   getAllTypes(companyId: string) {
     this.spinner.show();
+    this.loader = true;
     this.companyTypesService.getAllCompanyTypes(companyId).subscribe(
       (response) => {
         this.cmptypes = response;
@@ -216,6 +224,7 @@ export class CompanyattributesComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -225,14 +234,17 @@ export class CompanyattributesComponent implements OnInit {
     this.index = 0;
     if (typeId != 0) {
       this.spinner.show();
+      this.loader = true;
       this.companyAttributesServiceService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.typeAttributes = response;
           this.typeAttributesLength = this.typeAttributes.length;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -240,13 +252,16 @@ export class CompanyattributesComponent implements OnInit {
 
   getAttributeTypes() {
     this.spinner.show();
+    this.loader = true;
     this.companyAttributesServiceService.getAllAttributeTypes().subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.attributeTypes = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -254,15 +269,18 @@ export class CompanyattributesComponent implements OnInit {
   getSearchTypes(attributeTypeId: any) {
     if (attributeTypeId && attributeTypeId != 0 && attributeTypeId != 'null') {
       this.spinner.show();
+      this.loader = true;
       this.companyAttributesServiceService
         .getAllSearchTypes(attributeTypeId)
         .subscribe(
           (response) => {
             this.spinner.hide();
+            this.loader = false;
             this.searchTypes = response;
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     }
@@ -279,10 +297,12 @@ export class CompanyattributesComponent implements OnInit {
 
   saveAttributeListOrder(typeAttributes: any) {
     this.spinner.show();
+    this.loader = true;
     this.itemAttributeService
       .updateTypeAttributesOrder(typeAttributes)
       .subscribe((response: any) => {
         this.spinner.hide();
+        this.loader = false;
         this.index = 4;
         setTimeout(() => {
           this.index = 0;
@@ -328,11 +348,13 @@ export class CompanyattributesComponent implements OnInit {
           this.model.attributelistitemResource;
       }
       this.spinner.show();
+      this.loader = true;
       this.companyAttributesServiceService
         .createNewTypeAttribute(request)
         .subscribe(
           (response) => {
             this.spinner.hide();
+            this.loader = false;
             this.index = 1;
             setTimeout(() => {
               this.index = 0;
@@ -352,6 +374,7 @@ export class CompanyattributesComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     } else {
@@ -403,6 +426,7 @@ export class CompanyattributesComponent implements OnInit {
 
   editAttribute() {
     this.spinner.show();
+    this.loader = true;
     var request = {
       attributelistitemResource: null,
       attributenameid: this.model.attributenameid,
@@ -434,6 +458,7 @@ export class CompanyattributesComponent implements OnInit {
       moduleType: 'Company',
     };
     this.spinner.show();
+    this.loader = true;
     if (this.model.attributelistitemResource) {
       request.attributelistitemResource = this.model.attributelistitemResource;
     }
@@ -443,6 +468,7 @@ export class CompanyattributesComponent implements OnInit {
         .subscribe(
           (response) => {
             this.spinner.hide();
+            this.loader = false;
             this.getTypeAttributes(this.typeId);
             this.index = 2;
             setTimeout(() => {
@@ -462,6 +488,7 @@ export class CompanyattributesComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     } else {
@@ -495,6 +522,7 @@ export class CompanyattributesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     var moduleType = 'company';
     this.companyAttributesServiceService
       .removeCompanyAttributess(
@@ -508,6 +536,7 @@ export class CompanyattributesComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.getTypeAttributes(this.typeId);
           this.index = 3;
@@ -528,6 +557,7 @@ export class CompanyattributesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

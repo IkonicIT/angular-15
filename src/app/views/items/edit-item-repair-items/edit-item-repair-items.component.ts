@@ -33,7 +33,7 @@ export class EditItemRepairItemsComponent implements OnInit {
   router: Router;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private itemTypesService: ItemTypesService,
@@ -66,20 +66,24 @@ export class EditItemRepairItemsComponent implements OnInit {
     this.itemReairItemsService.getItemRepairItem(this.repairid).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
 
   getAllItemTypes() {
     this.spinner.show();
+    this.loader = true;
     this.itemTypesService
       .getAllItemTypes(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.itemTypes = response;
       });
   }
@@ -87,10 +91,12 @@ export class EditItemRepairItemsComponent implements OnInit {
   getRepairItems() {
     if (this.itemType != '') {
       this.spinner.show();
+      this.loader = true;
       this.itemReairItemsService
         .getAllItemRepairItems(this.companyId, this.itemType)
         .subscribe((response) => {
           this.spinner.hide();
+          this.loader = false;
           this.repairItems = response;
         });
     }
@@ -98,6 +104,7 @@ export class EditItemRepairItemsComponent implements OnInit {
 
   UpdateRepairItem() {
     this.spinner.show();
+    this.loader = true;
     var request = {
       lastmodifiedby: this.userName,
       companyid: this.companyId,
@@ -109,6 +116,7 @@ export class EditItemRepairItemsComponent implements OnInit {
       .updateRepairItemType(request, this.repairid)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.index = 1;
         setTimeout(() => {
           this.index = 0;
@@ -130,14 +138,17 @@ export class EditItemRepairItemsComponent implements OnInit {
 
   confirm(): void {
     this.spinner.show();
+    this.loader = true;
     this.itemReairItemsService.removeRepairItem(this.index).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.modalRef.hide();
         this.getRepairItems();
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

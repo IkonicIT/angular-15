@@ -23,7 +23,7 @@ export class UserLogManagementComponent implements OnInit {
   modalRef: BsModalRef;
   helpFlag: any = false;
   p: any;
-
+  loader = false;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -42,10 +42,12 @@ export class UserLogManagementComponent implements OnInit {
   ngOnInit() {}
   users() {
     this.spinner.show();
+    this.loader = true;
     this.userManagementService
       .getUserview(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.results = response;
         this.setusercount();
       });

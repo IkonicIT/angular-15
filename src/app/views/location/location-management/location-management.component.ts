@@ -44,7 +44,7 @@ export class LocationManagementComponent implements OnInit {
   locationid: any;
   helpFlag: any = false;
   p: any;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
@@ -88,14 +88,17 @@ export class LocationManagementComponent implements OnInit {
 
   getLocations() {
     this.spinner.show();
+    this.loader = true;
     this.locationManagementService.getAllLocations(this.companyId).subscribe(
       (response) => {
         console.log(response);
         this.spinner.hide();
+        this.loader = false;
         this.locations = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -106,6 +109,7 @@ export class LocationManagementComponent implements OnInit {
         this.broadcasterService.locations = response;
         console.log('locations:' + response);
         this.spinner.hide();
+        this.loader = false;
       });
   }
   locationNotes(location: { locationid: string; name: any }) {
@@ -171,6 +175,7 @@ export class LocationManagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     this.locationManagementService
       .removeLocation(this.locationId, this.companyId, this.userName)
       .subscribe(
@@ -182,6 +187,7 @@ export class LocationManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

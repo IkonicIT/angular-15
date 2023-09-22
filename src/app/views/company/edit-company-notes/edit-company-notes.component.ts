@@ -18,7 +18,7 @@ export class EditCompanyNotesComponent implements OnInit {
   private sub: any;
   id: number;
   dismissible = true;
-
+  loader = false;
   constructor(
     private companynotesService: CompanynotesService,
     private router: Router,
@@ -42,11 +42,13 @@ export class EditCompanyNotesComponent implements OnInit {
       console.log('Query params ', this.journalid);
     });
     this.spinner.show();
+    this.loader = true;
     this.companynotesService
       .getCompanynotess(this.journalid, this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.model = response;
           if (this.model.effectiveon) {
             this.model.effectiveon = new Date(this.model.effectiveon);
@@ -58,6 +60,7 @@ export class EditCompanyNotesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -72,6 +75,7 @@ export class EditCompanyNotesComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.spinner.show();
+      this.loader = true;
       this.model.moduleType = 'companyType';
       this.model.effectiveon = new Date(this.model.effectiveon);
       this.companynotesService.updateCompanynotes(this.model).subscribe(

@@ -52,7 +52,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
   itemType: any;
   noteAttachmentTitle: any;
   dismissible = true;
-
+  loader = false;
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
@@ -93,14 +93,17 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
   getAllAttachments(journalId: any) {
     if (journalId != 0) {
       this.spinner.show();
+      this.loader = true;
       this.itemAttachmentsService.getAllItemNoteDocuments(journalId).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           console.log(response);
           this.documents = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -143,9 +146,11 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
         },
       };
       this.spinner.show();
+      this.loader = true;;
       this.itemAttachmentsService.saveItemMultipleDocuments(req).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -159,6 +164,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
 
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -234,15 +240,18 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
 
   downloadDocumentFromDB(document: { isNew?: boolean; attachmentid?: any }) {
     this.spinner.show();
+    this.loader = true;
     this.itemAttachmentsService
       .getItemDocuments(document.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -328,15 +337,18 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
   editNoteDocument(document: { attachmentid: number }) {
     this.EditFlag = true;
     this.spinner.show();
+    this.loader = true;
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.editModel = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     window.scroll(0, 0);
@@ -345,6 +357,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     let userLog = {
       noteType: 'itemchangelogattachment',
       noteName: this.noteAttachmentTitle,
@@ -362,11 +375,13 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.refresh();
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -386,6 +401,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
   }
   updateCompanyDocument() {
     this.spinner.show();
+    this.loader = true;
     this.editModel.moduleType = 'itemnotetype';
     this.editModel.companyID = this.companyId;
     this.editModel.updatedBy = this.userName;
@@ -400,6 +416,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.editIndex = 1;
           setTimeout(() => {
@@ -409,6 +426,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

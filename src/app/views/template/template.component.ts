@@ -31,7 +31,7 @@ export class TemplateComponent implements OnInit {
   currentTemplateName: any;
   highestRank: any;
   dismissible = true;
-
+  loader = false;
   constructor(
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
@@ -50,13 +50,16 @@ export class TemplateComponent implements OnInit {
 
   getAllTemplates(companyId: string) {
     this.spinner.show();
+    this.loader = true;
     this.companyManagementService.getAllTemplates(companyId).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.templates = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -73,9 +76,11 @@ export class TemplateComponent implements OnInit {
         userName: this.userName,
       };
       this.spinner.show();
+      this.loader = true;
       this.companyManagementService.saveCompanyFromTemplate(req).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.savedCompanyName = this.company.name;
           this.company.name = '';
           alert('Company successfully Added from Template,Refreshing List');
@@ -83,6 +88,7 @@ export class TemplateComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -100,12 +106,15 @@ export class TemplateComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     if (this.templateID == 0) {
       this.index = -1;
       this.spinner.hide();
+      this.loader = false;
       this.modalRef.hide();
     } else {
       this.spinner.show();
+      this.loader = true;
       this.setTemplateName(this.templateID);
       this.companyManagementService
         .removeTemplate(
@@ -124,6 +133,7 @@ export class TemplateComponent implements OnInit {
           this.templateID = 0;
           this.getAllTemplates(this.companyId);
           this.spinner.hide();
+          this.loader = false;
         });
     }
   }
@@ -153,6 +163,7 @@ export class TemplateComponent implements OnInit {
         includeAllElements: false,
       };
       this.spinner.show();
+      this.loader = true;
       this.companyManagementService.saveTemplate(req).subscribe(
         (response: any) => {
           this.savedTemplateName = response.name;
@@ -162,10 +173,12 @@ export class TemplateComponent implements OnInit {
           }, 5000);
           this.model = {};
           this.spinner.hide();
+          this.loader = false;
           this.getAllTemplates(this.companyId);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }

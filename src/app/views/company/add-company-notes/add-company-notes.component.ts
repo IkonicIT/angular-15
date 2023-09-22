@@ -19,7 +19,7 @@ export class AddCompanyNotesComponent implements OnInit {
   router: Router;
   bsConfig: Partial<BsDatepickerConfig>;
   userName: any;
-
+  loader = false;
   constructor(private companynotesService: CompanynotesService, router: Router, private route: ActivatedRoute, private spinner: NgxSpinnerService) {
     this.router = router;
   }
@@ -66,6 +66,7 @@ export class AddCompanyNotesComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
+      this.loader = true;
       this.companynotesService.saveCompanynotes(this.model).subscribe(response => {
         this.spinner.hide();
         window.scroll(0, 0);
@@ -76,6 +77,7 @@ export class AddCompanyNotesComponent implements OnInit {
       },
         error => {
           this.spinner.hide();
+          this.loader = false;
         });
     }
   }

@@ -34,7 +34,7 @@ export class CompanystatusesComponent implements OnInit {
   helpFlag: any = false;
   dismissible = true;
   p: any;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
@@ -64,15 +64,18 @@ export class CompanystatusesComponent implements OnInit {
 
   getStatuses() {
     this.spinner.show();
+    this.loader = true;
     this.statuses = [];
     this.companyStatusService.getAllCompanyStatuses(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         console.log(response);
         this.statuses = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -96,11 +99,13 @@ export class CompanystatusesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     this.companyStatusService
       .removeCompanyStatus(this.index, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.index1 = 1;
           setTimeout(() => {
@@ -110,6 +115,7 @@ export class CompanystatusesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

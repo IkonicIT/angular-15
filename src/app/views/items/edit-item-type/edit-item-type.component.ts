@@ -33,7 +33,7 @@ export class EditItemTypeComponent implements OnInit {
   userName: any;
   helpFlag: any = false;
   dismissible = true;
-  
+  loader = false;
   constructor(
     private itemTypesService: ItemTypesService,
     private companyManagementService: CompanyManagementService,
@@ -60,8 +60,10 @@ export class EditItemTypeComponent implements OnInit {
 
   getItemType(typeId: string) {
     this.spinner.show();
+    this.loader = true
     this.itemTypesService.getItemTypeDetails(typeId).subscribe((response) => {
       this.spinner.hide();
+      this.loader = false
       console.log(response);
       this.model = response;
       if (!this.model.parentid) {
@@ -130,8 +132,10 @@ export class EditItemTypeComponent implements OnInit {
           : 0.2,
       };
       this.spinner.show();
+      this.loader = true;
       this.itemTypesService.updateItemType(request).subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.index = 1;
         setTimeout(() => {
           this.index = 0;
@@ -151,10 +155,12 @@ export class EditItemTypeComponent implements OnInit {
 
   getAllItemTypesWithHierarchy() {
     this.spinner.show();
+    this.loader = true;
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.broadcasterService.itemTypeHierarchy = response;
       });
   }

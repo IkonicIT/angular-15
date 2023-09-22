@@ -41,7 +41,7 @@ export class AddItemServiceComponent implements OnInit {
   dismissible = true;
   inCompletedServicesFilter: any;
   completedServicesFilter: any;
-
+  loader = false;
   constructor(
     private broadcasterService: BroadcasterService,
     private route: ActivatedRoute,
@@ -65,14 +65,17 @@ export class AddItemServiceComponent implements OnInit {
 
   initData() {
     this.spinner.show();
+    this.loader = true;
     this.itemServiceManagementService.getAllItemServices(this.itemId).subscribe(
       (response: any) => {
         this.completedServices = response.completedServices;
         this.incompletedServices = response.inCompletedServices;
         this.spinner.hide();
+        this.loader = false;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
     //staticly given as this will not be changed
@@ -130,9 +133,11 @@ export class AddItemServiceComponent implements OnInit {
         updatedBy: this.userName,
       };
       this.spinner.show();
+      this.loader = true;
       this.itemServiceManagementService.saveItemService(addRequest).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.index = 1;
           this.initData();
           setTimeout(() => {
@@ -142,6 +147,7 @@ export class AddItemServiceComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {
@@ -164,11 +170,13 @@ export class AddItemServiceComponent implements OnInit {
         updatedBy: this.userName,
       };
       this.spinner.show();
+      this.loader = true;
       this.itemServiceManagementService
         .updateItemService(updateRequest, this.model.serviceId)
         .subscribe(
           (response) => {
             this.spinner.hide();
+            this.loader = false;
             this.index = 1;
             this.initData();
             setTimeout(() => {
@@ -178,6 +186,7 @@ export class AddItemServiceComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     }
@@ -228,6 +237,7 @@ export class AddItemServiceComponent implements OnInit {
     this.editFlag = true;
     this.addFlag = false;
     this.spinner.show();
+    this.loader = true;
     this.itemServiceManagementService.getServiceById(serviceId).subscribe(
       (response) => {
         this.model = response;
@@ -247,9 +257,11 @@ export class AddItemServiceComponent implements OnInit {
           }
         }
         this.spinner.hide();
+        this.loader = false;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
@@ -271,6 +283,7 @@ export class AddItemServiceComponent implements OnInit {
 
   confirm(): void {
     this.spinner.show();
+    this.loader = true;
     this.itemServiceManagementService
       .deleteItemServiceById(this.serviceId)
       .subscribe(
@@ -280,6 +293,7 @@ export class AddItemServiceComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false
         }
       );
   }

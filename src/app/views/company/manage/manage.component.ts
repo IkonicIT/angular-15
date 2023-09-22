@@ -47,6 +47,7 @@ export class ManageComponent implements OnInit {
   currentCompanyName: any;
   entityname: any;
   p: any;
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
@@ -92,6 +93,7 @@ export class ManageComponent implements OnInit {
 
   getAllNotes(companyId: string) {
     this.spinner.show();
+    this.loader = true;
     this.companynotesService.getAllCompanyNotess(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
@@ -100,6 +102,7 @@ export class ManageComponent implements OnInit {
       },
       (error: any) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -139,6 +142,7 @@ export class ManageComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
+      this.loader = true
       this.companynotesService.saveCompanynotes(this.model).subscribe(
         (response: any) => {
           this.model = response;
@@ -147,6 +151,7 @@ export class ManageComponent implements OnInit {
             'MM/dd/yyyy'
           );
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.viewFlag = true;
           this.newFlag = false;
@@ -160,6 +165,7 @@ export class ManageComponent implements OnInit {
         },
         (error: any) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -184,6 +190,7 @@ export class ManageComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.spinner.show();
+      this.loader = true;
       this.model.moduleType = 'companytype';
       this.model.effectiveon = new Date(this.model.effectiveon);
       this.companynotesService.updateCompanynotes(this.model).subscribe(
@@ -193,6 +200,7 @@ export class ManageComponent implements OnInit {
             'MM/dd/yyyy'
           );
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.viewFlag = true;
           this.newFlag = false;
@@ -207,6 +215,7 @@ export class ManageComponent implements OnInit {
         },
         (error: any) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -219,10 +228,12 @@ export class ManageComponent implements OnInit {
     this.helpFlag = false;
 
     this.spinner.show();
+    this.loader = true;
     this.companynotesService
       .getCompanynotess(journalid, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
 
         if (this.model.effectiveon) {
@@ -259,15 +270,18 @@ export class ManageComponent implements OnInit {
 
   downloadDocumentFromDB(document: { attachmentID: any }) {
     this.spinner.show();
+    this.loader = true;
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentID)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
+          this.loader = false;
           this.downloadDocument(response);
         },
         (error: any) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -372,11 +386,13 @@ export class ManageComponent implements OnInit {
         this.index
     );
     this.spinner.show();
+    this.loader = true;
     this.companynotesService
       .removeCompanynotess(this.model.journalid, this.userName)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.getAllNotes(this.companyId);
           this.index1 = 4;
@@ -393,6 +409,7 @@ export class ManageComponent implements OnInit {
         },
         (error: any) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

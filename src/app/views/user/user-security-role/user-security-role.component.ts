@@ -56,7 +56,7 @@ export class UserSecurityRoleComponent implements OnInit {
   p: any;
   dismissible = true;
   roleFilter: any;
-
+  loader = false;
   constructor(
     router: Router,
     private route: ActivatedRoute,
@@ -70,6 +70,7 @@ export class UserSecurityRoleComponent implements OnInit {
   ) {
     this.router = router;
     this.spinner.show();
+    this.loader = true;
     this.profileId = route.snapshot.params['profileId'];
     this.loggedInuser = sessionStorage.getItem('userId');
     this.userId = route.snapshot.params['userId'];
@@ -83,6 +84,7 @@ export class UserSecurityRoleComponent implements OnInit {
     this.username = this.broadcasterService.username;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.spinner.hide();
+    this.loader = false;
   }
 
   ngOnInit() {
@@ -99,11 +101,13 @@ export class UserSecurityRoleComponent implements OnInit {
       this.companyManagementService.getAllCompaniesForOwnerAdmin().subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           console.log(response);
           this.companies = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
       console.log('all  companies for owner Admin' + this.companies);
@@ -117,6 +121,7 @@ export class UserSecurityRoleComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     }
@@ -129,6 +134,7 @@ export class UserSecurityRoleComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -142,6 +148,7 @@ export class UserSecurityRoleComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -156,6 +163,7 @@ export class UserSecurityRoleComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     if (this.isOwnerAdmin == 'true') {
       this.spinner.show();
+      this.loader = true;
       this.locationManagementService
         .getAllLocationsWithHierarchy(companyId)
         .subscribe((response) => {
@@ -170,9 +178,11 @@ export class UserSecurityRoleComponent implements OnInit {
             );
           }
           this.spinner.hide();
+          this.loader = false;
         });
     } else {
       this.spinner.show();
+      this.loader = true;
       this.locationManagementService
         .getAllLocationsWithHierarchyforUser(companyId, userId)
         .subscribe((response) => {
@@ -187,6 +197,7 @@ export class UserSecurityRoleComponent implements OnInit {
             );
           }
           this.spinner.hide();
+          this.loader = false;
         });
     }
   }
@@ -227,12 +238,14 @@ export class UserSecurityRoleComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
 
   getAllLevels(companyId: string) {
     this.spinner.show();
+    this.loader = true;
     if (this.isOwnerAdmin == 'true') {
       this.levels = [
         {
@@ -271,10 +284,12 @@ export class UserSecurityRoleComponent implements OnInit {
           (response) => {
             this.levels = response;
             this.spinner.hide();
+            this.loader = false;
             console.log('user levels are' + this.levels);
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     }
@@ -286,16 +301,19 @@ export class UserSecurityRoleComponent implements OnInit {
 
   updateStatus(profileId: string, companyid: string, statusroles: any) {
     this.spinner.show();
+    this.loader = true;
     if (
       this.statusroles.isowneradmin == true &&
       this.statusroles.isOwnerAdminReadOnly == true
     ) {
       this.isSelected = 0;
       this.spinner.hide();
+      this.loader = false;
     } else if (this.statusroles.isOwnerAdminReadOnly == true) {
       this.isSelected = 1;
       this.statusroles.isowneradmin = 'true';
       this.spinner.show();
+      this.loader = true;
       this.userManagementService
         .updateStatus(profileId, companyid, statusroles)
         .subscribe(
@@ -306,15 +324,18 @@ export class UserSecurityRoleComponent implements OnInit {
             }, 7000);
             this.getProfile();
             this.spinner.hide();
+            this.loader = false;
             console.log('user status roles updated' + response);
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     } else {
       this.isSelected = 1;
       this.spinner.show();
+      this.loader = true;
       this.userManagementService
         .updateStatus(profileId, companyid, statusroles)
         .subscribe(
@@ -325,10 +346,12 @@ export class UserSecurityRoleComponent implements OnInit {
             }, 7000);
             this.getProfile();
             this.spinner.hide();
+            this.loader = false;
             console.log('user status roles updated' + response);
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
     }
@@ -336,6 +359,7 @@ export class UserSecurityRoleComponent implements OnInit {
 
   updateAccess(profileId: string, accessroles: any) {
     this.spinner.show();
+    this.loader = true;
     this.userManagementService.updateAccess(profileId, accessroles).subscribe(
       (response) => {
         window.scroll(0, 0);
@@ -344,10 +368,12 @@ export class UserSecurityRoleComponent implements OnInit {
           this.index = 0;
         }, 7000);
         this.spinner.hide();
+        this.loader = false;
         console.log('user accessroles updated' + response);
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -370,6 +396,7 @@ export class UserSecurityRoleComponent implements OnInit {
         companyid: this.userSecurityRole.companyid,
       };
       this.spinner.show();
+      this.loader = true;
       this.userManagementService.addSecurityRole(req).subscribe((response) => {
         window.scroll(0, 0);
         this.index = 1;
@@ -377,6 +404,7 @@ export class UserSecurityRoleComponent implements OnInit {
           this.index = 0;
         }, 7000);
         this.spinner.hide();
+        this.loader = false;
         this.getAllRoles();
         this.model = {};
       });
@@ -407,6 +435,7 @@ export class UserSecurityRoleComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     this.userManagementService
       .removeRole(this.companyId, this.locationId, this.userId, this.userName)
       .subscribe(
@@ -418,6 +447,7 @@ export class UserSecurityRoleComponent implements OnInit {
           }, 7000);
 
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
 
           console.log('user deleted');
@@ -425,6 +455,7 @@ export class UserSecurityRoleComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

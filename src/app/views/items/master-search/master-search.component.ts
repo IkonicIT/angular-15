@@ -29,7 +29,7 @@ export class MasterSearchComponent implements OnInit {
   dismissible = true;
   order: string;
   reverse: string;
-
+  loader = false;
   constructor(
     private itemManagementService: ItemManagementService,
     private spinner: NgxSpinnerService,
@@ -62,6 +62,7 @@ export class MasterSearchComponent implements OnInit {
       this.index = 0;
       this.isExpandAdvancedSearch = false;
       this.spinner.show();
+      this.loader = true;
       var req = {
         tag: this.model.tag ? this.model.tag : null,
         name: this.model.name ? this.model.name : null,
@@ -75,6 +76,7 @@ export class MasterSearchComponent implements OnInit {
         .masterSearch(req)
         .subscribe((response: any) => {
           this.spinner.hide();
+          this.loader = false;
           this.searchResults = response;
 
           this.itemManagementService.setItemMasterSearchResults(

@@ -19,7 +19,7 @@ export class EditVendorAttachmentComponent implements OnInit {
   router: Router;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false;
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     router: Router,
@@ -48,6 +48,7 @@ export class EditVendorAttachmentComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -60,6 +61,7 @@ export class EditVendorAttachmentComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

@@ -21,7 +21,7 @@ export class AddLocationNoteComponent implements OnInit {
   globalCompany: any;
   companyId: any;
   userName: any;
-
+  loader = false;
   constructor(
     private locationNoteService: LocationNotesService,
     private companyManagementService: CompanyManagementService,
@@ -73,9 +73,11 @@ export class AddLocationNoteComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
+      this.loader = true;
       this.locationNoteService.saveLocationNotes(this.model).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -84,6 +86,7 @@ export class AddLocationNoteComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }

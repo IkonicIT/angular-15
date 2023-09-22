@@ -9,6 +9,7 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { isUndefined, isNull } from 'is-what';
+import { focusTrapModule } from 'ngx-bootstrap/modal/modal.module';
 
 @Component({
   selector: 'app-edit-location-details',
@@ -50,7 +51,7 @@ export class EditLocationDetailsComponent implements OnInit {
   reqAttrValidate: any;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false;
   constructor(
     private locationManagementService: LocationManagementService,
     private companyManagementService: CompanyManagementService,
@@ -132,6 +133,7 @@ export class EditLocationDetailsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -157,6 +159,7 @@ export class EditLocationDetailsComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
+    this.loader = true;
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
@@ -171,6 +174,7 @@ export class EditLocationDetailsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -180,6 +184,7 @@ export class EditLocationDetailsComponent implements OnInit {
       this.locationAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.typeAttributes = response;
           console.log('attrlength ' + this.location.attributevalues.length);
           if (
@@ -220,6 +225,7 @@ export class EditLocationDetailsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -227,6 +233,7 @@ export class EditLocationDetailsComponent implements OnInit {
 
   getLocation() {
     this.spinner.show();
+    this.loader = true;
     this.locationManagementService
       .getLocationDetails(this.locationId)
       .subscribe(
@@ -250,6 +257,7 @@ export class EditLocationDetailsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -258,9 +266,11 @@ export class EditLocationDetailsComponent implements OnInit {
       (response) => {
         this.vendors = response;
         this.spinner.hide();
+        this.loader = false;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -388,6 +398,7 @@ export class EditLocationDetailsComponent implements OnInit {
     }
     if (this.reqAttrValidate == false) {
       this.spinner.show();
+      this.loader = true;
       this.locationManagementService.updateLocation(request).subscribe(
         (response) => {
           if (this.addedlocations && this.addedlocations.length > 0) {
@@ -396,10 +407,12 @@ export class EditLocationDetailsComponent implements OnInit {
               .subscribe((response) => {});
           }
           this.spinner.hide();
+          this.loader = false;
           this.refreshCalls();
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {
@@ -410,6 +423,7 @@ export class EditLocationDetailsComponent implements OnInit {
 
   refreshCalls() {
     this.spinner.show();
+    this.loader = true;
     this.locationManagementService
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe((response) => {
@@ -417,15 +431,18 @@ export class EditLocationDetailsComponent implements OnInit {
         this.router.navigate(['/location/list']);
         console.log('locations:' + response);
         this.spinner.hide();
+        this.loader = false;
       });
   }
 
   cloneaddressfromParentLoc() {
     this.spinner.show();
+    this.loader = true;
     this.locationManagementService
       .cloneaddressfromParentLoc(this.value, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
+        this.loader = false;
         this.location.address1 = response.address1;
         this.location.address2 = response.address2;
         this.location.city = response.city;

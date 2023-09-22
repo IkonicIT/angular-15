@@ -34,7 +34,7 @@ export class CompanydocumentsComponent implements OnInit {
   highestRank: any;
   helpFlag: any = false;
   p: any;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
@@ -73,14 +73,17 @@ export class CompanydocumentsComponent implements OnInit {
 
   getAllDocuments(companyId: string) {
     this.spinner.show();
+    this.loader = true;
     this.companyDocumentsService.getAllCompanyDocuments(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
+        this.loader = false;
         console.log(response);
         this.documents = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -111,16 +114,19 @@ export class CompanydocumentsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     this.companyDocumentsService
       .removeCompanyDocuments(this.index, this.companyId, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.refresh();
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -151,15 +157,18 @@ export class CompanydocumentsComponent implements OnInit {
 
   downloadDocumentFromDB(document: { attachmentid: number }) {
     this.spinner.show();
+    this.loader = true;
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

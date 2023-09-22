@@ -35,7 +35,7 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
   helpFlag: any = false;
   itemRepair: any;
   dismissible = true;
-
+  loader = false;
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     private companyDocumentsService: CompanyDocumentsService,
@@ -88,6 +88,7 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
         delete jsonArr[i]['file'];
       }
       this.spinner.show();
+      this.loader = true;
       var req = {
         attachmentResourceList: jsonArr,
         attachmentUserLogDTO: {
@@ -100,6 +101,7 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
       this.itemAttachmentsService.saveItemMultipleDocuments(req).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -111,6 +113,7 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }

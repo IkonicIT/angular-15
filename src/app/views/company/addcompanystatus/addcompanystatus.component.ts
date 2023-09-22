@@ -22,7 +22,7 @@ export class AddcompanystatusComponent implements OnInit {
   userName: any;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false;
   constructor(
     private companyStatusesService: CompanyStatusesService,
     private companyManagementService: CompanyManagementService,
@@ -69,9 +69,11 @@ export class AddcompanystatusComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
+      this.loader = true;
       this.companyStatusesService.saveCompanyStatus(this.model).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -81,6 +83,7 @@ export class AddcompanystatusComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }

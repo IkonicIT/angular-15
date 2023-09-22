@@ -28,7 +28,7 @@ export class AdvancedSearchResultsComponent implements OnInit {
   order: string;
   reverse: string = '';
   dismissible = true;
-
+  loader = false;
   constructor(
     private itemManagementService: ItemManagementService,
     private router: Router,
@@ -113,6 +113,7 @@ export class AdvancedSearchResultsComponent implements OnInit {
 
     (error: any) => {
       this.spinner.hide();
+      this.loader = false;
     };
   }
   getAttributesForSearchDisplay() {
@@ -124,6 +125,7 @@ export class AdvancedSearchResultsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

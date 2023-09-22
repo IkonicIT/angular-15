@@ -10,7 +10,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   styleUrls: ['./add-vendor-note.component.scss']
 })
 export class AddVendorNoteComponent implements OnInit {
-
+  loader = false;
   model: any = {};
   index: number = 0;
 
@@ -66,13 +66,16 @@ export class AddVendorNoteComponent implements OnInit {
         "moduleType": "vendorType"
       };
       this.spinner.show();
+      this.loader = true;
       this.companynotesService.saveCompanynotes(this.model).subscribe(response => {
         this.spinner.hide();
+        this.loader = false;
         window.scroll(0, 0);
         this.index = 1;
       },
         error => {
           this.spinner.hide();
+          this.loader = false;
         });
     }
   }

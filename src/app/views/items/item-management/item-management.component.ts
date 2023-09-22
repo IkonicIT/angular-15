@@ -69,7 +69,7 @@ export class ItemManagementComponent implements OnInit {
   itemType: any;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false
   constructor(
     private modalService: BsModalService,
     private locationManagementService: LocationManagementService,
@@ -111,6 +111,7 @@ export class ItemManagementComponent implements OnInit {
     this.itemType = this.broadcasterService.currentItemType;
     this.getAttributesForSearchDisplay();
     this.spinner.show();
+    this.loader = true
     this.getLocations();
     this.broadcasterService.on('refreshlist').subscribe((data) => {
       this.setInitValues();
@@ -128,6 +129,7 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false
         }
       );
   }
@@ -171,6 +173,7 @@ export class ItemManagementComponent implements OnInit {
 
   getLocations() {
     this.spinner.show();
+    this.loader = true
     this.locations = this.broadcasterService.locations;
     if (this.locations && this.locations.length > 0) {
       this.locationItems = [];
@@ -219,6 +222,7 @@ export class ItemManagementComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
+    this.loader = true
     var req = {
       locationid: this.model.locationid ? this.model.locationid : null,
       statusid: this.model.statusid ? this.model.statusid : null,
@@ -232,6 +236,7 @@ export class ItemManagementComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.spinner.hide();
+          this.loader = false
           this.itemManagementService.setSearchedItemTag(req.tag);
           this.itemManagementService.setSearchedItemTypeId(req.typeid);
           this.itemManagementService.setSearchedItemLocationId(req.locationid);
@@ -275,6 +280,7 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false
         }
       );
   }
@@ -298,6 +304,7 @@ export class ItemManagementComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
+    this.loader = true
     var req = {
       locationid: this.model.locationid ? this.model.locationid : null,
       statusid: this.model.statusid ? this.model.statusid : null,
@@ -310,6 +317,7 @@ export class ItemManagementComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.spinner.hide();
+          this.loader = false
           this.searchResults = response;
           this.itemManagementService.setSearchedItemTag(req.tag);
           this.itemManagementService.setSearchedItemTypeId(req.typeid);
@@ -351,6 +359,7 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false
         }
       );
   }
@@ -376,11 +385,13 @@ export class ItemManagementComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
+    this.loader = true
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false
           this.itemTypes = response;
           if (this.itemTypes && this.itemTypes.length > 0) {
             this.itemTypeItems = this.generateHierarchyForItemTypes(
@@ -390,12 +401,14 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false
         }
       );
   }
 
   getItemStatus() {
     this.spinner.show();
+    this.loader = true
     this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
       (response) => {
         this.statuses = response;
@@ -403,21 +416,25 @@ export class ItemManagementComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false
       }
     );
   }
 
   getWarrantyTypes() {
     this.spinner.show();
+    this.loader = true
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false 
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false
         }
       );
   }

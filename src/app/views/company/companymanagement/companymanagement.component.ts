@@ -26,7 +26,7 @@ export class CompanymanagementComponent implements OnInit {
   router: Router;
   helpFlag: any = false;
   p: any;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
@@ -56,6 +56,7 @@ export class CompanymanagementComponent implements OnInit {
 
   getAllCompniesList() {
     this.spinner.show();
+    this.loader = true;
     this.companyManagementService.getAllCompanyDetails().subscribe(
       (response: any) => {
         this.spinner.hide();
@@ -64,6 +65,7 @@ export class CompanymanagementComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -91,15 +93,18 @@ export class CompanymanagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     this.companyManagementService.removeCompany(this.index).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.modalRef.hide();
         alert('Company successfully deleted,Refreshing List ');
         this.companyManagementService.setCompaniesListModified(true);
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

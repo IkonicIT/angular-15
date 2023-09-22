@@ -41,7 +41,7 @@ export class ItemNoteAttachementsComponent implements OnInit {
   p: any;
   itemTag: any;
   itemType: any;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private itemAttachmentsService: ItemAttachmentsService,
@@ -87,14 +87,17 @@ export class ItemNoteAttachementsComponent implements OnInit {
 
   getAllDocuments(itemId: string) {
     this.spinner.show();
+    this.loader = true;
     this.itemAttachmentsService.getAllItemNoteDocuments(itemId).subscribe(
       (response: any) => {
         this.spinner.hide();
+        this.loader = false;
         console.log(response);
         this.documents = response;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -127,6 +130,7 @@ export class ItemNoteAttachementsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     let userLog = {
       noteType: 'itemnoteattachment',
       noteName: this.entityname,
@@ -143,11 +147,13 @@ export class ItemNoteAttachementsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.modalRef.hide();
           this.getAllDocuments(this.itemId);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -178,15 +184,18 @@ export class ItemNoteAttachementsComponent implements OnInit {
 
   downloadDocumentFromDB(document: { attachmentid: number }) {
     this.spinner.show();
+    this.loader = true;
     this.itemAttachmentsService
       .getItemDocuments(document.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

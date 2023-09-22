@@ -58,7 +58,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
   loggedInuser: string | null;
   order: string;
   reverse: string;
-
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private locationManagementService: LocationManagementService,
@@ -154,12 +154,14 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
+    this.loader = true;
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe(
         (response: any) => {
           this.itemTypes = response;
           this.spinner.hide();
+          this.loader = false;
           if (this.itemTypes && this.itemTypes.length > 0) {
             this.itemTypeItems = this.generateHierarchyForItemTypes(
               this.itemTypes
@@ -172,19 +174,23 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
 
   getItemStatus() {
     this.spinner.show();
+    this.loader = true;
     this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
       (response: any) => {
         this.statuses = response;
         this.spinner.hide();
+        this.loader = false;
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -202,10 +208,12 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
 
     if (typeId != '0') {
       this.spinner.show();
+      this.loader = true;
       this.itemAttributeService
         .getTypeAttributes(typeId)
         .subscribe((response) => {
           this.spinner.hide();
+          this.loader = false;
           this.itemModel.attributevalues = response;
           this.attributesValuesList = this.itemModel.attributevalues;
           this.itemAttributeService
@@ -266,11 +274,13 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
 
     console.log(JSON.stringify(request));
     this.spinner.show();
+    this.loader = true;
     this.itemManagementService
       .getAdvancedSearchItems(request)
       .subscribe((response) => {
         this.itemManagementService.setAdvancedItemSearchResults(response);
         this.spinner.hide();
+        this.loader = false;
         this.showSearchResults = true;
         this.broadcasterService.broadcast('advancedsearchresults', 'reload');
       });
@@ -302,6 +312,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
       userId: this.loggedInuser,
     };
     this.spinner.show();
+    this.loader = true;
     this.itemManagementService
       .getAdvancedSearchItemRepairNotesRfq(request)
       .subscribe((response: any) => {
@@ -316,6 +327,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
         console.log('this.repairlogList is' + response.repairlogList);
         console.log('this.RFQsList is' + response.rfqsList);
         this.spinner.hide();
+        this.loader = false;
       });
   }
 

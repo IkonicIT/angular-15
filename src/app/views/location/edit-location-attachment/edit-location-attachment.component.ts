@@ -22,7 +22,7 @@ export class EditLocationAttachmentComponent implements OnInit {
   userName: any;
   locationId: any;
   dismissible = true;
-
+  loader = false;
   constructor(
     private locationAttachmentsService: LocationAttachmentsService,
     private companyManagementService: CompanyManagementService,
@@ -42,15 +42,18 @@ export class EditLocationAttachmentComponent implements OnInit {
     console.log('compaanyid=' + this.companyId);
     this.router = router;
     this.spinner.show();
+    this.loader = true;
     this.locationAttachmentsService
       .getLocationDocuments(this.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.model = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -61,6 +64,7 @@ export class EditLocationAttachmentComponent implements OnInit {
 
   updateLocationDocument() {
     this.spinner.show();
+    this.loader = true;
     this.model.moduleType = 'locationtype';
     this.model.companyID = this.companyId;
     this.model.adddedby = this.userName;
@@ -69,6 +73,7 @@ export class EditLocationAttachmentComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -78,6 +83,7 @@ export class EditLocationAttachmentComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

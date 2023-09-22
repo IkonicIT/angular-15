@@ -21,7 +21,7 @@ export class EditVendorNoteComponent implements OnInit {
   router: Router;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false;
   constructor(
     private companynotesService: CompanynotesService,
     router: Router,
@@ -63,6 +63,7 @@ export class EditVendorNoteComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }

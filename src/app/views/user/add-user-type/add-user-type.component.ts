@@ -32,7 +32,7 @@ export class AddUserTypeComponent implements OnInit {
   userName: any;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false;
   constructor(
     private userTypesService: UserTypesService,
     private companyManagementService: CompanyManagementService,
@@ -56,11 +56,13 @@ export class AddUserTypeComponent implements OnInit {
 
   getAllUserTypes() {
     this.spinner.show();
+    this.loader = true;
     this.userTypesService
       .getAllUserTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.userTypes = response;
           var self = this;
           if (this.userTypes && this.userTypes.length > 0) {
@@ -71,6 +73,7 @@ export class AddUserTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -121,9 +124,11 @@ export class AddUserTypeComponent implements OnInit {
         typespareratio: 0,
       };
       this.spinner.show();
+      this.loader = true;
       this.userTypesService.saveUserType(request).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -133,6 +138,7 @@ export class AddUserTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {

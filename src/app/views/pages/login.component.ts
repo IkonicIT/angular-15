@@ -21,7 +21,6 @@ export class LoginComponent {
   date: any;
   loading = false;
   submitted = false;
-
   constructor(
     router: Router,
     private loginService: LoginService,
@@ -82,11 +81,13 @@ export class LoginComponent {
         sessionStorage.setItem('userName', response.username);
         this.getProfile();
         this.spinner.hide();
+        this.loader = false;
       },
       (error) => {
         console.log(error);
         this.loginError = true;
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -105,6 +106,7 @@ export class LoginComponent {
             console.log(error);
             this.loginError = true;
             this.spinner.hide();
+            this.loader = false;
           }
         );
 
@@ -112,6 +114,7 @@ export class LoginComponent {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

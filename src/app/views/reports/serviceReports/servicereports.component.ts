@@ -33,7 +33,7 @@ export class serviceReportsComponent implements OnInit {
   incompletedServices: any = [];
   inCompletedServicesFilter: any;
   completedServicesFilter: any;
-
+  loader = false;
   constructor(
     private broadcasterService: BroadcasterService,
     private spinner: NgxSpinnerService,
@@ -92,9 +92,11 @@ export class serviceReportsComponent implements OnInit {
       endDate: this.params.to ? this.params.to.format('YYYY-MM-DD') : '',
     };
     this.spinner.show();
+    this.loader = true;
     this.reportsService.generateServiceReport(request).subscribe(
       (response: any) => {
         this.spinner.hide();
+        this.loader = false;
         this.completedServices = response.completedServices;
         this.incompletedServices = response.inCompletedServices;
         this.report = response;
@@ -103,6 +105,7 @@ export class serviceReportsComponent implements OnInit {
       },
       (error: any) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

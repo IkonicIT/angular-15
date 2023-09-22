@@ -10,6 +10,7 @@ import { ItemManagementService } from '../../../services/Items/item-management.s
 import { WarrantyManagementService } from '../../../services';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from '../../../services/broadcaster.service';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-add-item-repairs',
@@ -49,7 +50,7 @@ export class AddItemRepairsComponent implements OnInit {
   failurecauses: any = {};
   details: any;
   helpFlag: any = false;
-
+  loader = false
   constructor(
     private itemNoteService: ItemNotesService,
     private companyManagementService: CompanyManagementService,
@@ -84,11 +85,13 @@ export class AddItemRepairsComponent implements OnInit {
 
   getFailureTypes() {
     this.spinner.show();
+    this.loader = true
     this.itemRepairItemsService
       .getAllFailureTypesForEditItemRepair(this.companyId, this.details.typeId)
       .subscribe((response) => {
         this.failureTypesandcauses = response;
         this.spinner.hide();
+        this.loader = false
         this.failureTypes = Object.keys(this.failureTypesandcauses);
         console.log(this.failureTypesandcauses);
         console.log('new failuretype list is' + this.failureTypes);
@@ -97,6 +100,7 @@ export class AddItemRepairsComponent implements OnInit {
 
   getItemDetails() {
     this.spinner.show();
+    this.loader = true
     this.itemManagementService
       .getItemById(this.itemId)
       .subscribe((response: any) => {
@@ -115,6 +119,7 @@ export class AddItemRepairsComponent implements OnInit {
         }
         this.getFailureTypes();
         this.spinner.hide();
+        this.loader = false
       });
   }
 
@@ -134,6 +139,7 @@ export class AddItemRepairsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false
       }
     );
   }
@@ -184,15 +190,18 @@ export class AddItemRepairsComponent implements OnInit {
 
   getWarrantyTypes() {
     this.spinner.show();
+    this.loader = true
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false
           this.warrantyTpes = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false
         }
       );
     this.getItemDetails();
@@ -203,6 +212,7 @@ export class AddItemRepairsComponent implements OnInit {
     let causes = faliurecausetemp[0];
     causes = causes + '\n' + this.model.newfailurecause;
     this.spinner.show();
+    this.loader = true
     var request = {
       failuretypeid: 0,
       itemtypeid: this.details.typeId,
@@ -213,6 +223,7 @@ export class AddItemRepairsComponent implements OnInit {
       .updateFailureTypeAndCauses(request, request.failuretypeid)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false
       });
   }
 
@@ -328,6 +339,7 @@ export class AddItemRepairsComponent implements OnInit {
     };
     console.log(JSON.stringify(this.model));
     this.spinner.show();
+    this.loader = true
     this.itemRepairItemsService.saveItemRepair(this.model).subscribe(
       (response: any) => {
         this.spinner.hide();
@@ -345,6 +357,7 @@ export class AddItemRepairsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false
       }
     );
   }

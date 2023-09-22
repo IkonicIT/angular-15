@@ -31,6 +31,7 @@ export class AddLocationTypeComponent implements OnInit {
   userName: any;
   dismissible = true;
   helpFlag: any = false;
+  loader = false;
   constructor(
     private locationTypesService: LocationTypesService,
     private router: Router,
@@ -54,11 +55,13 @@ export class AddLocationTypeComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
+    this.loader = true;
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.locationsTypes = response;
           var self = this;
           if (this.locationsTypes && this.locationsTypes.length > 0) {
@@ -68,6 +71,7 @@ export class AddLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -117,9 +121,11 @@ export class AddLocationTypeComponent implements OnInit {
         typespareratio: 0,
       };
       this.spinner.show();
+      this.loader = true;
       this.locationTypesService.saveLocationType(request).subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -129,6 +135,7 @@ export class AddLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {

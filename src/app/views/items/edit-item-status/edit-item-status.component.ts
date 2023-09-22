@@ -24,7 +24,7 @@ export class EditItemStatusComponent implements OnInit {
   oldStatus: any;
   length: number;
   dismissible = true;
-
+  loader = false;
   constructor(
     private itemStatusService: ItemStatusService,
     private companyManagementService: CompanyManagementService,
@@ -43,10 +43,12 @@ export class EditItemStatusComponent implements OnInit {
       console.log('compaanyid=' + this.companyId);
     });
     this.spinner.show();
+    this.loader = true;
     this.itemStatusService
       .getItemStatus(this.statusId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
         this.oldStatus = this.model.status;
       });
@@ -82,10 +84,12 @@ export class EditItemStatusComponent implements OnInit {
         oldStatus: this.oldStatus,
       };
       this.spinner.show();
+      this.loader = true;
       this.itemStatusService
         .updateItemStatus(this.model)
         .subscribe((response) => {
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {

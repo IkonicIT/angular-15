@@ -31,7 +31,7 @@ export class ItemStatusComponent implements OnInit {
   highestRank: any;
   helpFlag: any = false;
   p: any;
-  
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
@@ -61,10 +61,12 @@ export class ItemStatusComponent implements OnInit {
 
   getStatuses() {
     this.spinner.show();
+    this.loader = true;
     this.itemStatusService
       .getAllItemStatuses(this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
+        this.loader = false;
         console.log(response);
         this.statuses = response;
       });
@@ -87,10 +89,12 @@ export class ItemStatusComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     this.itemStatusService
       .removeItemStatus(this.index, this.userName)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.modalRef.hide();
         this.getStatuses();
       });

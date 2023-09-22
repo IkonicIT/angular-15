@@ -28,7 +28,7 @@ export class ItemMasterSearchComponent implements OnInit {
   helpFlag: any = false;
   dismissible = true;
   index: any;
-
+  loader = false;
   constructor(
     private itemManagementService: ItemManagementService,
     private spinner: NgxSpinnerService,
@@ -111,10 +111,12 @@ export class ItemMasterSearchComponent implements OnInit {
       size: itemsPerPage,
     };
     this.spinner.show();
+    this.loader = true;
     this.itemManagementService
       .getMasterSearchResults(request)
       .subscribe((response: any) => {
         this.spinner.hide();
+        this.loader = false;
         this.masterSearchResults = response;
 
         if (response.length > 0) {
@@ -168,10 +170,12 @@ export class ItemMasterSearchComponent implements OnInit {
       size: this.totalRows,
     };
     this.spinner.show();
+    this.loader = true;
     const data = await this.itemManagementService
       .getMasterSearchResults(request)
       .toPromise();
     this.spinner.hide();
+    this.loader = false;
     this.exportSearchResults = data;
     this.exportAsExcelFile();
   }
@@ -287,10 +291,12 @@ export class ItemMasterSearchComponent implements OnInit {
         size: this.totalRows,
       };
       this.spinner.show();
+      this.loader = true;
       const data = await this.itemManagementService
         .getMasterSearchResults(request)
         .toPromise();
       this.spinner.hide();
+      this.loader = false;
       this.masterSearchResults = data;
       this.showAllTable = true;
       this.showTable = false;

@@ -15,7 +15,7 @@ export class ForgotPasswordComponent {
   username: string = '';
   loginError: any = false;
   public forgotPasswordForm_show: boolean = true;
-
+  loader = false;
   index: number;
   constructor(
     private forgotPasswordService: ForgotPasswordService,
@@ -30,9 +30,11 @@ export class ForgotPasswordComponent {
     this.email = formData.value.email;
     this.username = formData.value.username;
     this.spinner.show();
+    this.loader = true;
     this.forgotPasswordService.forgotPasswordAPI(this.user.username).subscribe(
       (response: any) => {
         this.spinner.hide();
+        this.loader = false;
         this.loginError = false;
         if (response.status == 'Success') {
           this.email = formData.value.email;
@@ -45,6 +47,7 @@ export class ForgotPasswordComponent {
         console.log(error);
 
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

@@ -77,7 +77,7 @@ export class CloneItemComponent implements OnInit {
   reqAttrValidate: any;
   helpFlag: any = false;
   dismissible = true;
-
+  loader = false;
   constructor(
     private locationManagementService: LocationManagementService,
     private locationTypesService: LocationTypesService,
@@ -135,17 +135,20 @@ export class CloneItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false
       }
     );
   }
 
   getAllLocTypes() {
     this.spinner.show();
+    this.loader = true;
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.locationTypes = response;
           this.locationTypes.forEach((type: { parentid: string }) => {
             if (!type.parentid) {
@@ -161,6 +164,7 @@ export class CloneItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }
@@ -214,9 +218,11 @@ export class CloneItemComponent implements OnInit {
 
   getItemDetails() {
     this.spinner.show();
+    this.loader = true;
     this.itemManagementService.getItemById(this.itemId).subscribe(
       (response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
         this.model.name = null;
         this.model.statusId = null;
@@ -235,6 +241,7 @@ export class CloneItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -260,7 +267,7 @@ export class CloneItemComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
-
+    this.loader = true;
     this.itemTypes = this.broadcasterService.itemTypeHierarchy;
     if (this.itemTypes && this.itemTypes.length > 0) {
       this.itemTypeItems = this.generateHierarchyForItemTypes(this.itemTypes);
@@ -276,21 +283,25 @@ export class CloneItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
 
   getWarrantyTypes() {
     this.spinner.show();
+    this.loader = true;
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false
         }
       );
   }
@@ -298,6 +309,7 @@ export class CloneItemComponent implements OnInit {
   getItemTypeAttributes(typeId: string) {
     if (typeId && typeId != '0') {
       this.spinner.show();
+      this.loader = true;
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -318,9 +330,11 @@ export class CloneItemComponent implements OnInit {
             });
           }
           this.spinner.hide();
+          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }
@@ -400,6 +414,7 @@ export class CloneItemComponent implements OnInit {
       ];
 
       this.spinner.show();
+      this.loader = true;
       this.locationManagementService.saveLocation(request).subscribe(
         (response: any) => {
           this.addedLocationId = response[0].locationid;
@@ -409,6 +424,7 @@ export class CloneItemComponent implements OnInit {
               this.locationManagementService.setLocations(response);
 
               this.spinner.hide();
+              this.loader = false;
               this.locationIndex = 1;
               setTimeout(() => {
                 this.index = 0;
@@ -420,6 +436,7 @@ export class CloneItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     } else {
@@ -429,6 +446,7 @@ export class CloneItemComponent implements OnInit {
 
   refreshCalls() {
     this.spinner.show();
+    this.loader = true;
     this.locationManagementService
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe((response) => {
@@ -437,6 +455,7 @@ export class CloneItemComponent implements OnInit {
         this.getLocations();
         console.log('locations:' + response);
         this.spinner.hide();
+        this.loader = false;
       });
   }
 
@@ -528,9 +547,11 @@ export class CloneItemComponent implements OnInit {
       };
       if (this.reqAttrValidate == false) {
         this.spinner.show();
+        this.loader = true;
         this.itemManagementService.saveItem(req).subscribe(
           (response: any) => {
             this.spinner.hide();
+            this.loader = false;
             this.router.navigate(['/items/viewItem/' + response.itemid]);
             this.index = 1;
             this.itemManagementService.setSearchedItemTag(response.tag);
@@ -542,6 +563,7 @@ export class CloneItemComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
+            this.loader = false;
           }
         );
       } else {

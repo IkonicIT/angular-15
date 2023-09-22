@@ -20,7 +20,7 @@ export class EditItemNoteComponent implements OnInit {
   highestRank: any;
   id: number;
   dismissible = true;
-
+  loader = false;
   constructor(
     private itemNotesService: ItemNotesService,
     private router: Router,
@@ -32,8 +32,10 @@ export class EditItemNoteComponent implements OnInit {
     this.itemId = route.snapshot.params['itemId'];
     this.router = router;
     this.spinner.show();
+    this.loader = true;
     this.itemNotesService.getItemNotes(this.journalid).subscribe((response) => {
       this.spinner.hide();
+      this.loader = false;
       this.model = response;
       if (this.model.effectiveon) {
         this.model.effectiveon = new Date(this.model.effectiveon);
@@ -58,6 +60,7 @@ export class EditItemNoteComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.spinner.show();
+      this.loader = true;
       this.model.moduleType = 'itemtype';
       this.model.effectiveon = new Date(this.model.effectiveon);
       this.itemNotesService.updateItemNotes(this.model).subscribe(
@@ -67,6 +70,7 @@ export class EditItemNoteComponent implements OnInit {
             'MM/dd/yyyy'
           );
           this.spinner.hide();
+          this.loader = false;
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -75,6 +79,7 @@ export class EditItemNoteComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     }

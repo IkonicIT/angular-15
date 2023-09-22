@@ -48,7 +48,7 @@ export class EditItemRepairsComponent implements OnInit {
   failurecauses: any = {};
   userName: any;
   helpFlag: any = false;
-
+  loader = false;
   constructor(
     private companyManagementService: CompanyManagementService,
     private locationManagementService: LocationManagementService,
@@ -83,15 +83,18 @@ export class EditItemRepairsComponent implements OnInit {
 
   getWarrantyTypes() {
     this.spinner.show();
+    this.loader = true;
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
+          this.loader = false;
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
     this.getItemDetails();
@@ -99,10 +102,12 @@ export class EditItemRepairsComponent implements OnInit {
 
   getItemRepairDetails() {
     this.spinner.show();
+    this.loader = true;
     this.itemRepairItemsService
       .getRepairDetailsForView(this.itemRepairId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.model = response;
 
         if (this.model.failuretype == '') {
@@ -145,6 +150,7 @@ export class EditItemRepairsComponent implements OnInit {
 
   getItemDetails() {
     this.spinner.show();
+    this.loader = true;
     this.itemManagementService
       .getItemById(this.itemId)
       .subscribe((response: any) => {
@@ -162,6 +168,7 @@ export class EditItemRepairsComponent implements OnInit {
           );
         }
         this.spinner.hide();
+        this.loader = false;
       });
   }
 
@@ -218,6 +225,7 @@ export class EditItemRepairsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -250,6 +258,7 @@ export class EditItemRepairsComponent implements OnInit {
     let causes = faliurecausetemp[0];
     causes = causes + '\n' + this.model.newfailurecause;
     this.spinner.show();
+    this.loader = true;
     var request = {
       failuretypeid: 0,
       itemtypeid: this.details.typeId,
@@ -260,6 +269,7 @@ export class EditItemRepairsComponent implements OnInit {
       .updateFailureTypeAndCauses(request, request.failuretypeid)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
       });
   }
 
@@ -375,9 +385,11 @@ export class EditItemRepairsComponent implements OnInit {
     };
     console.log(JSON.stringify(this.model));
     this.spinner.show();
+    this.loader = true;
     this.itemRepairItemsService.updateItemRepair(this.model).subscribe(
       (response: any) => {
         this.spinner.hide();
+        this.loader = false;
         window.scroll(0, 0);
         this.index = 1;
         setTimeout(() => {
@@ -392,6 +404,7 @@ export class EditItemRepairsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }

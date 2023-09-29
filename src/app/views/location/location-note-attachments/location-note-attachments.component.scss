@@ -99,3 +99,22 @@ thead th {
 .select-pagination-option {
   height: 0;
 }
+
+::ng-deep .row .alert-danger {
+  padding: 12px 20px;
+  color: #813838;
+  background-color: #fee2e1;
+  border-color: #fdd6d6;
+  border-radius: 0;
+}
+
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+}
+
+::ng-deep .alert-dismissible .btn-close {
+  opacity: 0;
+}

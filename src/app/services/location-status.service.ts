@@ -10,9 +10,7 @@ import { AppConfiguration } from '../configuration';
 export class LocationStatusService {
   public serviceURL = AppConfiguration.typeStatusRestURL + 'status';
   public isProd = false;
-  private authToken = sessionStorage.getItem('auth_token')
-    ? sessionStorage.getItem('auth_token')
-    : '';
+  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -32,11 +30,7 @@ export class LocationStatusService {
 
   updateLocationStatus(locationStatus: { statusid: string }) {
     return this.http
-      .put(
-        this.serviceURL + '/' + locationStatus.statusid,
-        locationStatus,
-        this.httpOptions
-      )
+      .put(this.serviceURL + '/' + locationStatus.statusid, locationStatus, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -48,10 +42,7 @@ export class LocationStatusService {
 
   getAllLocationStatuses(locationId: string) {
     return this.http
-      .get(
-        this.serviceURL + '/getAllStatusByCompanyId/locationtype/' + locationId,
-        this.httpOptions
-      )
+      .get(this.serviceURL + '/getAllStatusByCompanyId/locationtype/' + locationId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

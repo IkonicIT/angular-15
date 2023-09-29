@@ -11,9 +11,7 @@ import { HttpParams } from '@angular/common/http';
 export class LocationAttachmentsService {
   public serviceURL = AppConfiguration.typeStatusRestURL + 'attachment';
   public isProd = false;
-  private authToken = sessionStorage.getItem('auth_token')
-    ? sessionStorage.getItem('auth_token')
-    : '';
+  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -33,11 +31,7 @@ export class LocationAttachmentsService {
 
   updateLocationDocument(company: { attachmentid: string }) {
     return this.http
-      .put(
-        this.serviceURL + '/' + company.attachmentid,
-        company,
-        this.httpOptions
-      )
+      .put(this.serviceURL + '/' + company.attachmentid, company, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -49,14 +43,7 @@ export class LocationAttachmentsService {
 
   getAllLocationDocuments(companyId: any, locationId: string) {
     return this.http
-      .get(
-        this.serviceURL +
-          '/getAllAttachments/locationtype/' +
-          locationId +
-          '/' +
-          locationId,
-        this.httpOptions
-      )
+      .get(this.serviceURL + '/getAllAttachments/locationtype/' + locationId + '/' + locationId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -66,10 +53,7 @@ export class LocationAttachmentsService {
     username: string
   ) {
     return this.http
-      .delete(
-        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
-        this.httpOptions
-      )
+      .delete(this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -91,10 +75,7 @@ export class LocationAttachmentsService {
     };
 
     return this.http
-      .delete(
-        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
-        httpOptions
-      )
+      .delete(this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username, httpOptions)
       .pipe(catchError(this.handleError));
   }
 

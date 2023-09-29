@@ -26,52 +26,19 @@ export class CompanyTypesService {
     private http: HttpClient
   ) {}
 
-  saveCompanyType(type: {
-    attributesearchdisplay: number;
-    company: { companyid: any };
-    description: any;
-    entitytypeid: number;
-    hostingfee: any;
-    ishidden: boolean;
-    lastmodifiedby: any;
-    moduleType: string;
-    name: any;
-    parentid: { typeid: any };
-    typeid: number;
-    typemtbs: number;
-    typespareratio: number;
-  }) {
+  saveCompanyType(type: any) {
     return this.http
       .post(this.serviceURL, type, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  updateCompanyType(
-    typeId: string | number,
-    companyType: {
-      attributesearchdisplay: number;
-      company: { companyid: number };
-      description: any;
-      entitytypeid: any;
-      hostingfee: any;
-      ishidden: boolean;
-      lastmodifiedby: any;
-      moduleType: string;
-      name: any;
-      parentid: { typeid: any };
-      typeList: any;
-      typeid: number;
-      typemtbs: number;
-      typespareratio: number;
-      moduletype: string;
-    }
-  ) {
+  updateCompanyType(typeId: any, companyType: any) {
     return this.http
       .put(this.serviceURL + '/' + typeId, companyType, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  getCompanyType(typeId: string | number) {
+  getCompanyType(typeId: any) {
     return this.http
       .get(this.serviceURL + '/' + typeId, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -79,19 +46,13 @@ export class CompanyTypesService {
 
   getAllCompanyTypes(companyId: string) {
     return this.http
-      .get(
-        this.serviceURL + '/getAllType/companytype/' + companyId,
-        this.httpOptions
-      )
+      .get(this.serviceURL + '/getAllType/companytype/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllCompanyTypesWithHierarchy(companyId: string | number) {
     return this.http
-      .get(
-        this.serviceURL + '/getAllTypeWithHierarchy/companytype/' + companyId,
-        this.httpOptions
-      )
+      .get(this.serviceURL + '/getAllTypeWithHierarchy/companytype/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

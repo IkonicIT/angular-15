@@ -164,8 +164,7 @@ export class CompanyattributesComponent implements OnInit {
 
   generateHierarchy(typeList: any) {
     var items: any = [];
-    typeList.forEach(
-      (type: { typeList: string | any[]; name: any; typeid: any }) => {
+    typeList.forEach((type: any) => {
         var children = [];
         if (type.typeList && type.typeList.length > 0) {
           children = this.generateHierarchy(type.typeList);
@@ -184,7 +183,7 @@ export class CompanyattributesComponent implements OnInit {
   }
 
   setTypeName(typeId: any) {
-    this.cmptypes.forEach((type: { typeid: any; name: any }) => {
+    this.cmptypes.forEach((type: any) => {
       if ((type.typeid = typeId)) {
         this.typeName = type.name;
       }
@@ -330,9 +329,7 @@ export class CompanyattributesComponent implements OnInit {
         name: this.model.name,
         searchmodifier: '',
         searchtype: {
-          attributesearchtypeid: this.model.searchtype
-            ? this.model.searchtype.attributesearchtypeid
-            : 0,
+          attributesearchtypeid: this.model.searchtype ? this.model.searchtype.attributesearchtypeid : 0,
         },
         tooltip: this.model.tooltip,
         companyId: this.companyId,
@@ -431,9 +428,7 @@ export class CompanyattributesComponent implements OnInit {
       attributelistitemResource: null,
       attributenameid: this.model.attributenameid,
       attributetype: {
-        attributetypeid: this.model.attributetype
-          ? this.model.attributetype.attributetypeid
-          : 0,
+        attributetypeid: this.model.attributetype ? this.model.attributetype.attributetypeid : 0,
       },
       displayorder: this.model.displayorder,
       ismanufacturer: false,
@@ -445,8 +440,7 @@ export class CompanyattributesComponent implements OnInit {
       lastmodifiedby: this.username,
       searchtype: {
         attributesearchtypeid:
-          this.model.searchtype &&
-          this.model.searchtype.attributesearchtypeid != 'null'
+          this.model.searchtype && this.model.searchtype.attributesearchtypeid != 'null'
             ? this.model.searchtype.attributesearchtypeid
             : 0,
       },

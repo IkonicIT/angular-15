@@ -117,8 +117,7 @@ export class EditcompanydetailsComponent implements OnInit {
 
   generateHierarchy(typeList: any) {
     var items: any = [];
-    typeList.forEach(
-      (type: { typeList: string | any[]; name: any; typeid: any }) => {
+    typeList.forEach((type: any) => {
         var children = [];
         if (type.typeList && type.typeList.length > 0) {
           children = this.generateHierarchy(type.typeList);
@@ -137,13 +136,7 @@ export class EditcompanydetailsComponent implements OnInit {
   }
 
   getAttributes(typeId: any) {
-    if (
-      typeId &&
-      typeId != '' &&
-      typeId != undefined &&
-      typeId != 'undefined' &&
-      typeId != 0
-    ) {
+    if (typeId && typeId != '' && typeId != undefined && typeId != 'undefined' && typeId != 0) {
       this.spinner.show();
       this.loader = true;
       this.companyAttributesServiceService.getTypeAttributes(typeId).subscribe(
@@ -180,12 +173,7 @@ export class EditcompanydetailsComponent implements OnInit {
             );
           } else {
             this.model.attributevalues = [];
-            this.typeAttributes.forEach(
-              (attr: {
-                type: { entitytypeid: any; lastmodifiedby: any };
-                value: any;
-                tooltip: any;
-              }) => {
+            this.typeAttributes.forEach((attr: any) => {
                 this.model.attributevalues.push({
                   attributename: attr,
                   entityid: this.companyId,
@@ -246,12 +234,7 @@ export class EditcompanydetailsComponent implements OnInit {
   }
   updateCompany() {
     this.company.attributevalues = [];
-    this.typeAttributes.forEach(
-      (attr: {
-        type: { entitytypeid: any; lastmodifiedby: any };
-        value: any;
-        tooltip: any;
-      }) => {
+    this.typeAttributes.forEach((attr: any) => {
         this.company.attributevalues.push({
           attributename: attr,
           entityid: this.companyId,

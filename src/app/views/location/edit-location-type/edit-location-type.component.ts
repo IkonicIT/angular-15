@@ -103,8 +103,7 @@ export class EditLocationTypeComponent implements OnInit {
 
   generateHierarchy(typeList: any) {
     var items: any = [];
-    typeList.forEach(
-      (type: { typeList: string | any[]; name: any; typeid: any }) => {
+    typeList.forEach((type: any) => {
         var children = [];
         if (type.typeList && type.typeList.length > 0) {
           children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})

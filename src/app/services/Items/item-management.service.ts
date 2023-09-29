@@ -13,9 +13,7 @@ export class ItemManagementService {
   databaseIndex: number = 0;
   currentGlobalCompany: any;
   public globalCompanyChange: Subject<any> = new Subject<any>();
-  private authToken = sessionStorage.getItem('auth_token')
-    ? sessionStorage.getItem('auth_token')
-    : '';
+  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -57,7 +55,7 @@ export class ItemManagementService {
     return this.count;
   }
 
-  public setCompletedRepairs(result: never[]) {
+  public setCompletedRepairs(result: any[]) {
     this.completedRepairs = result;
   }
 
@@ -65,13 +63,7 @@ export class ItemManagementService {
     return this.completedRepairs;
   }
 
-  public setViewAllRepairs(result: {
-    selectedVal?: string;
-    repairFlag?: boolean;
-    paramsType?: any;
-    startDate?: any;
-    endDate?: any;
-  }) {
+  public setViewAllRepairs(result: any) {
     this.viewAllRepairs = result;
   }
 
@@ -79,7 +71,7 @@ export class ItemManagementService {
     return this.viewAllRepairs;
   }
 
-  public setInCompletedRepairs(result: never[]) {
+  public setInCompletedRepairs(result: any[]) {
     this.inCompletedRepairs = result;
   }
 
@@ -111,7 +103,7 @@ export class ItemManagementService {
     return this.advancedItemSearchRepaiNotesSearchresults;
   }
 
-  public setAdvancedItemSearchResults(result: unknown) {
+  public setAdvancedItemSearchResults(result: any) {
     this.advancedItemSearchResults = result;
   }
 
@@ -119,15 +111,16 @@ export class ItemManagementService {
     return this.advancedItemSearchResults;
   }
 
-  public setItemSearchResults(results: unknown) {
+  public setItemSearchResults(results: any) {
     this.itemSearchResults = results;
+    console.log(this.itemSearchResults);
   }
 
   public getItemSearchResults() {
     return this.itemSearchResults;
   }
 
-  public setSearchedItemTag(tag: string) {
+  public setSearchedItemTag(tag: any) {
     this.searchedItemTag = tag;
   }
 
@@ -135,16 +128,16 @@ export class ItemManagementService {
     return this.searchedItemTag;
   }
 
-  public setSearchedItemTypeId(typeid: any) {
-    this.searchedItemTypeId = typeid;
+  public setSearchedItemTypeId(typeId: any) {
+    this.searchedItemTypeId = typeId;
   }
   
   public getSearchedItemTypeId() {
     return this.searchedItemTypeId;
   }
 
-  public setItemTypeId(typeid: any) {
-    this.itemTypeId = typeid;
+  public setItemTypeId(typeId: any) {
+    this.itemTypeId = typeId;
   }
 
   public getItemTypeId() {
@@ -167,7 +160,7 @@ export class ItemManagementService {
     return this.searchedItemStatusId;
   }
 
-  public setSearchedItemLocationId(locationId: number) {
+  public setSearchedItemLocationId(locationId: any) {
     this.searchedItemLocationId = locationId;
   }
 
@@ -192,171 +185,90 @@ export class ItemManagementService {
 
   saveFailureType(failureType: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL + 'itemrepair/failureTypeAndCause/',
-        failureType,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'itemrepair/failureTypeAndCause/', failureType, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  checkTag(tagName: string, typeid: string) {
+  checkTag(tagName: string, typeId: string) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL +
-          'item/checkTagAvailability/' +
-          tagName +
-          '/' +
-          typeid,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'item/checkTagAvailability/' + tagName + '/' + typeId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   updateItem(item: any) {
     return this.http
-      .put(
-        AppConfiguration.locationRestURL + 'item/' + item.itemid,
-        item,
-        this.httpOptions
-      )
+      .put(AppConfiguration.locationRestURL + 'item/' + item.itemid, item, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  removeItem(
-    itemId: string,
-    companyId: string,
-    username: string,
-    tag: string,
-    type: string
-  ) {
+  removeItem(itemId: any, companyId: any, username: any, tag: any, type: any) {
     return this.http
-      .delete(
-        AppConfiguration.locationRestURL +
-          'item/' +
-          itemId +
-          '/' +
-          companyId +
-          '/' +
-          username +
-          '/' +
-          tag +
-          '/' +
-          type,
-        { responseType: 'text' }
+      .delete(AppConfiguration.locationRestURL + 'item/' + itemId + '/' + companyId + '/' + 
+                username + '/' + tag + '/' + type, { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));
   }
 
   getItemDetails(itemId: any) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL + 'item/' + itemId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'item/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getItemById(itemId: string | number) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL + 'item/getItem/' + itemId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'item/getItem/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getJournalLog(itemId: string) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL + 'item/journal/' + itemId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'item/journal/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getItemTransferDetails(transferLogId: string) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL +
-          'transferLog/getTransfer/' +
-          transferLogId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'transferLog/getTransfer/' + transferLogId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  getAllItems(
-    item: { locationid: any; statusid: any; tag: any; typeid: any },
-    companyId: string,
-    isOwnerAdmin: string | null,
-    userId: string | null
-  ) {
+  getAllItems(item: any, companyId: any, isOwnerAdmin: any, userId: any) {
+    console.log(AppConfiguration.locationRestURL + "item/search/"+companyId+"/"+isOwnerAdmin+"/"+userId ,item ,this.httpOptions);
     return this.http
-      .post(
-        AppConfiguration.locationRestURL +
-          'item/search/' +
-          companyId +
-          '/' +
-          isOwnerAdmin +
-          '/' +
-          userId,
-        item,
-        this.httpOptions
+      .post(AppConfiguration.locationRestURL + 'item/search/' + companyId + '/' + isOwnerAdmin + '/' + userId,
+              item, this.httpOptions
       )
       .pipe(catchError(this.handleError));
   }
 
   getItemSuggessions(tagName: string, companyId: string) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL +
-          'item/suggestions/' +
-          tagName +
-          '/' +
-          companyId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'item/suggestions/' + tagName + '/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAdvancedSearchItems(request: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL + 'advanceSearch',
-        request,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'advanceSearch', request, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAttributesForSearchDisplay(companyId: string) {
     return this.http
-      .get(
-        AppConfiguration.typeRestURL +
-          '/getattributesforsearchdisplay/' +
-          companyId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.typeRestURL + '/getattributesforsearchdisplay/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getLastRepairAndRepairBy(itemId: string) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL + 'item/warehouseTag/' + itemId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'item/warehouseTag/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAdvancedSearchItemRepairNotesRfq(request: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL + 'advanceSearch/repairLogNote',
-        request,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'advanceSearch/repairLogNote', request, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -381,113 +293,67 @@ export class ItemManagementService {
 
   itemTransfer(transfer: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL + 'transferLog',
-        transfer,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'transferLog', transfer, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllTransfers(itemId: string) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL +
-          'transferLog/getAllTransfers' +
-          '/' +
-          itemId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'transferLog/getAllTransfers' + '/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   saveTransfer(req: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL + 'transferLog',
-        req,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'transferLog', req, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAttributesForReplacements(itemId: string | null) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL + 'item/findReplacement/' + itemId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'item/findReplacement/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   masterSearch(item: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL + 'item/masterSearch',
-        item,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'item/masterSearch', item, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getMasterSearchResults(request: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL + 'item/masterSearchAttributes',
-        request,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'item/masterSearchAttributes', request, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAdvanceSearchPiechart(request: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL + 'advanceSearch/failureTypesChart',
-        request,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'advanceSearch/failureTypesChart', request, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getFailureCausesPieChart(request: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL + 'advanceSearch/failureCausesChart',
-        request,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'advanceSearch/failureCausesChart', request, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getRepairJobsByFailureCause(request: any) {
     return this.http
-      .post(
-        AppConfiguration.locationRestURL +
-          'advanceSearch/repairJobsByFailureCause',
-        request,
-        this.httpOptions
-      )
+      .post(AppConfiguration.locationRestURL + 'advanceSearch/repairJobsByFailureCause', request, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   deleteItemTransferLog(transferLogId: string) {
     return this.http
-      .delete(
-        AppConfiguration.locationRestURL + 'transferLog/' + transferLogId,
-        { responseType: 'text' }
-      )
+      .delete(AppConfiguration.locationRestURL + 'transferLog/' + transferLogId, { responseType: 'text' })
       .pipe(catchError(this.handleError));
   }
 
   getDataForFailedItems(companyId: any) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL +
-          'item/getFailedItemsTwiceInYear/' +
-          companyId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + 'item/getFailedItemsTwiceInYear/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 }

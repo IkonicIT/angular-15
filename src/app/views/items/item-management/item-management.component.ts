@@ -70,6 +70,7 @@ export class ItemManagementComponent implements OnInit {
   helpFlag: any = false;
   dismissible = true;
   loader = false
+  
   constructor(
     private modalService: BsModalService,
     private locationManagementService: LocationManagementService,
@@ -104,9 +105,6 @@ export class ItemManagementComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.model.locationid = [
-      new TreeviewItem({ text: 'All', value: 'All' }), 
-    ];
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
     this.getAttributesForSearchDisplay();
@@ -136,21 +134,18 @@ export class ItemManagementComponent implements OnInit {
 
   setInitValues() {
     this.searchResults = this.itemManagementService.getItemSearchResults();
-    this.model.typeid = this.itemManagementService.getSearchedItemTypeId();
+    this.model.typeId = this.itemManagementService.getSearchedItemTypeId();
     this.model.statusid = this.itemManagementService.getSearchedItemStatusId();
-    this.model.locationid =
-      this.itemManagementService.getSearchedItemLocationId();
+    this.model.locationid = this.itemManagementService.getSearchedItemLocationId();
     this.value = this.model.locationid;
     this.model.tag = this.itemManagementService.getSearchedItemTag();
 
     this.searchResultKeys = Object.keys(this.searchResults);
     if (this.searchResultKeys.length == 0) {
       if (this.route.snapshot.params['type'] == 'all') {
-        if (
-          (this.model.tag && this.model.tag != '') ||
-          (this.model.typeid != '' && this.model.typeid)
-        )
+        if ((this.model.tag && this.model.tag != '') || (this.model.typeId != '' && this.model.typeId)) {
           this.getSearchedItems();
+        }
         else {
           this.getSearchedItemsByCompanyId();
         }
@@ -165,7 +160,7 @@ export class ItemManagementComponent implements OnInit {
     }
   }
 
-  itemRepairs(item: { typeid: number; tag: string; itemid: string }) {
+  itemRepairs(item: any) {
     this.itemManagementService.setSearchedItemTypeId(item.typeid);
     this.itemManagementService.setSearchedItemTag(item.tag);
     this.router.navigate(['/items/itemRepairs/' + item.itemid]);
@@ -186,14 +181,10 @@ export class ItemManagementComponent implements OnInit {
     var items: TreeviewItem[] = [];
     locList.forEach((loc) => {
       var children: TreeviewItem[] = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
+      if (loc.parentLocationResourceList && loc.parentLocationResourceList.length > 0) {
         children = this.generateHierarchy(loc.parentLocationResourceList);
       }
-      items.push(
-        new TreeviewItem({
+      items.push(new TreeviewItem({
           text: loc.name,
           value: loc.locationid,
           collapsed: true,
@@ -222,30 +213,30 @@ export class ItemManagementComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
-    this.loader = true
+    this.loader = true;
+
     var req = {
       locationid: this.model.locationid ? this.model.locationid : null,
       statusid: this.model.statusid ? this.model.statusid : null,
       tag: this.model.tag ? this.model.tag : null,
-      typeid: this.model.typeid ? this.model.typeid : null,
+      typeId: this.model.typeId ? this.model.typeId : null,
     };
 
     this.searchResults = [];
     this.itemManagementService
       .getAllItems(req, this.companyId, this.isOwnerAdmin, this.loggedInuser)
-      .subscribe(
-        (response: any) => {
+      .subscribe((response: any) => {
+
           this.spinner.hide();
           this.loader = false
           this.itemManagementService.setSearchedItemTag(req.tag);
-          this.itemManagementService.setSearchedItemTypeId(req.typeid);
+          this.itemManagementService.setSearchedItemTypeId(req.typeId);
           this.itemManagementService.setSearchedItemLocationId(req.locationid);
-          this.itemManagementService.setSearchedItemStatusId(req.statusid);
-
+          this.itemManagementService.setSearchedItemStatusId(req.statusid);          
           this.itemManagementService.setItemSearchResults(response);
           this.searchResults = response;
-
           this.searchResultKeys = Object.keys(this.searchResults);
+
           this.dynLst = [];
           for (let item of this.searchResultKeys) {
             const dnobj = { itemsForPagination: 5, p: 1 };
@@ -309,7 +300,7 @@ export class ItemManagementComponent implements OnInit {
       locationid: this.model.locationid ? this.model.locationid : null,
       statusid: this.model.statusid ? this.model.statusid : null,
       tag: this.model.tag ? this.model.tag : null,
-      typeid: this.model.typeid ? this.model.typeid : null,
+      typeId: this.model.typeId ? this.model.typeId : null,
     };
     this.searchResults = [];
     this.itemManagementService
@@ -320,7 +311,7 @@ export class ItemManagementComponent implements OnInit {
           this.loader = false
           this.searchResults = response;
           this.itemManagementService.setSearchedItemTag(req.tag);
-          this.itemManagementService.setSearchedItemTypeId(req.typeid);
+          this.itemManagementService.setSearchedItemTypeId(req.typeId);
           this.itemManagementService.setSearchedItemLocationId(req.locationid);
           this.itemManagementService.setSearchedItemStatusId(req.statusid);
           this.itemManagementService.setItemSearchResults(response);
@@ -442,7 +433,7 @@ export class ItemManagementComponent implements OnInit {
   refresh() {
     if (
       (this.model.tag && this.model.tag != '') ||
-      (this.model.typeid != '' && this.model.typeid)
+      (this.model.typeId != '' && this.model.typeId)
     )
       this.getSearchedItems();
     else {
@@ -523,7 +514,7 @@ export class ItemManagementComponent implements OnInit {
         delete obj.statusid;
         delete obj.typeName;
         delete obj.locationid;
-        delete obj.typeid;
+        delete obj.typeId;
         delete obj.itemid;
         delete obj.itemRank;
         delete obj.description;

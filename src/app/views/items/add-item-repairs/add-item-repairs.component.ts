@@ -25,7 +25,6 @@ export class AddItemRepairsComponent implements OnInit {
     secondaryTypeAndCauses: [],
   };
   index: number = 0;
-  // date = Date.now();
   itemId: number = 0;
   private sub: any;
   id: number;
@@ -124,8 +123,7 @@ export class AddItemRepairsComponent implements OnInit {
   }
 
   setWarrantyType(warrantytypeid: any) {
-    this.warrantyTpes.forEach(
-      (element: { warrantytypeid: any; warrantytype: any }) => {
+    this.warrantyTpes.forEach((element: any) => {
         if (element.warrantytypeid == warrantytypeid)
           this.model.warrantytype = element.warrantytype;
       }
@@ -288,24 +286,14 @@ export class AddItemRepairsComponent implements OnInit {
     this.model = {
       tag: this.model.tag,
       typeName: this.model.typeName,
-      actualcompletion:
-        this.model.actualcompletion != null
-          ? this.model.actualcompletion
-          : null,
+      actualcompletion: this.model.actualcompletion != null ? this.model.actualcompletion : null,
       complete: this.model.complete ? this.model.complete : false,
       completedby: this.model.completedby,
       dateacknowledged: new Date(),
       dateinitiated: new Date(),
-      estimatedcompletion:
-        this.model.estimatedcompletion != null
-          ? this.model.estimatedcompletion
-          : null,
-      failurecause:
-        this.model.failurecause != 0
-          ? this.model.failurecause
-          : this.model.newfailurecause,
-      failuredate:
-        this.model.failuredate != null ? this.model.failuredate : null,
+      estimatedcompletion: this.model.estimatedcompletion != null ? this.model.estimatedcompletion : null,
+      failurecause: this.model.failurecause != 0 ? this.model.failurecause : this.model.newfailurecause,
+      failuredate: this.model.failuredate != null ? this.model.failuredate : null,
       failuretype: this.model.failuretype ? this.model.failuretype : null,
       iswarranty: true,
       itemid: this.itemId,
@@ -315,23 +303,16 @@ export class AddItemRepairsComponent implements OnInit {
       repaircompanyid: this.model.repaircompanyid,
       repaircost: this.model.repaircost ? this.model.repaircost : 0,
       repairjobstatus: this.model.repairjobstatus,
-      repairlocationid: this.model.repairlocationid
-        ? this.model.repairlocationid
-        : 0,
+      repairlocationid: this.model.repairlocationid ? this.model.repairlocationid : 0,
       repairlogid: 0,
       repairnotes: this.model.repairnotes ? this.model.repairnotes : '',
-      repairvendornumber: this.model.repairvendornumber
-        ? this.model.repairvendornumber
-        : 0,
+      repairvendornumber: this.model.repairvendornumber ? this.model.repairvendornumber : 0,
       rfqnumber: 0,
       title: this.model.title ? this.model.title : '',
       transferlogid: 0,
       warrantytype: this.model.warrantytype ? this.model.warrantytype : '',
-      warrantytypeid:
-        this.model.warrantytypeid != undefined ? this.model.warrantytypeid : 0,
-      warrantyexpiration: this.model.warrantyexpiration
-        ? this.model.warrantyexpiration
-        : null,
+      warrantytypeid: this.model.warrantytypeid != undefined ? this.model.warrantytypeid : 0,
+      warrantyexpiration: this.model.warrantyexpiration ? this.model.warrantyexpiration : null,
       userName: this.userName,
       secondaryTypeAndCauses: this.model.secondaryTypeAndCauses,
       companyId: this.companyId,
@@ -397,8 +378,7 @@ export class AddItemRepairsComponent implements OnInit {
 
   setWarrantyTypeID() {
     if (this.model.warrantytype && this.model.warrantytype != '') {
-      this.warrantyTpes.forEach(
-        (element: { warrantytype: any; warrantytypeid: any }) => {
+      this.warrantyTpes.forEach((element: any) => {
           if (element.warrantytype == this.model.warrantytype)
             this.model.warrantytypeid = element.warrantytypeid;
         }

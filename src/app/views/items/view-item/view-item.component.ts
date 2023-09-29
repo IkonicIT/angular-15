@@ -216,7 +216,7 @@ export class ViewItemComponent implements OnInit {
   }
 
   setWarrantyType(response: any) {
-    response.forEach((element: { warrantytypeid: any; warrantytype: any }) => {
+    response.forEach((element: any) => {
       if (element.warrantytypeid == this.model.warrantyTypeId)
         this.model.warrantytype = element.warrantytype;
     });

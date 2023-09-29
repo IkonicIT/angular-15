@@ -33,6 +33,7 @@ export class CompanytypesComponent implements OnInit {
   userName: any;
   p: any;
   loader = false;
+  
   constructor(
     private modalService: BsModalService,
     private companyTypesService: CompanyTypesService,
@@ -104,13 +105,13 @@ export class CompanytypesComponent implements OnInit {
     });
   }
 
-  editCompanyType(company: { typeid: any }) {
+  editCompanyType(company: any) {
     this.router.navigate(['/company/editCompanyType/'], {
       queryParams: { q: this.companyId, a: company.typeid },
     });
   }
 
-  gotoAttributesForType(companyType: { typeid: string }) {
+  gotoAttributesForType(companyType: any) {
     this.router.navigate([
       '/company/attributes/' + companyType.typeid + '/' + this.companyId,
     ]);

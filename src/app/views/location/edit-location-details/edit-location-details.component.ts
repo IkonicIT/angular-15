@@ -249,9 +249,7 @@ export class EditLocationDetailsComponent implements OnInit {
             this.value = this.location.parentID;
           }
 
-          this.locationManagementService.setSearchedLocationTypeId(
-            this.location.typeId
-          );
+          this.locationManagementService.setSearchedLocationTypeId(this.location.typeId);
           this.getTypeAttributes(this.location.typeId);
           this.typeID = this.location.typeId;
         },
@@ -365,15 +363,9 @@ export class EditLocationDetailsComponent implements OnInit {
             company: {
               companyid: this.companyId,
             },
-            criticalflag: this.location.critical
-              ? this.location.critical
-              : false,
-            description: this.location.description
-              ? this.location.description
-              : '',
-            desiredspareratio: this.location.desiredspareratio
-              ? this.location.desiredspareratio
-              : 0,
+            criticalflag: this.location.critical ? this.location.critical : false,
+            description: this.location.description ? this.location.description : '',
+            desiredspareratio: this.location.desiredspareratio ? this.location.desiredspareratio : 0,
             isvendor: this.location.isvendor ? this.location.isvendor : false,
             lastmodifiedby: this.userName,
             locationid: 0,
@@ -381,17 +373,13 @@ export class EditLocationDetailsComponent implements OnInit {
             parentLocation: {
               locationid: this.value ? this.value : 0,
             },
-            postalcode: this.location.postalcode
-              ? this.location.postalcode
-              : '',
+            postalcode: this.location.postalcode ? this.location.postalcode : '',
             state: this.location.state ? this.location.state : '',
             statusid: this.location.statusid ? this.location.statusid : 0,
             vendorCompany: {
               companyid: 0,
             },
-            attributevalues: this.location.attributevalues
-              ? this.location.attributevalues
-              : null,
+            attributevalues: this.location.attributevalues ? this.location.attributevalues : null,
           });
         }
       });

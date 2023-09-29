@@ -297,52 +297,30 @@ export class ItemTransferComponent implements OnInit {
       }
       var request = [
         {
-          address1: this.locationModel.addressLineOne
-            ? this.locationModel.addressLineOne
-            : '',
-          address2: this.locationModel.addressLineTwo
-            ? this.locationModel.addressLineTwo
-            : '',
+          address1: this.locationModel.addressLineOne ? this.locationModel.addressLineOne : '',
+          address2: this.locationModel.addressLineTwo ? this.locationModel.addressLineTwo : '',
           city: this.locationModel.city ? this.locationModel.city : '',
-          typeId: this.locationModel.locationTypeId
-            ? this.locationModel.locationTypeId
-            : '',
+          typeId: this.locationModel.locationTypeId ? this.locationModel.locationTypeId : '',
           company: {
             companyid: this.companyId,
           },
-          criticalflag: this.locationModel.critical
-            ? this.locationModel.critical
-            : false,
-          description: this.locationModel.description
-            ? this.locationModel.description
-            : '',
-          desiredspareratio: this.locationModel.sRatio
-            ? this.locationModel.sRatio
-            : 0,
-          isvendor: this.locationModel.vLocation
-            ? this.locationModel.vLocation
-            : false,
+          criticalflag: this.locationModel.critical ? this.locationModel.critical : false,
+          description: this.locationModel.description ? this.locationModel.description : '',
+          desiredspareratio: this.locationModel.sRatio ? this.locationModel.sRatio : 0,
+          isvendor: this.locationModel.vLocation ? this.locationModel.vLocation : false,
           lastmodifiedby: this.userName,
           locationid: 0,
-          name: this.locationModel.locationName
-            ? this.locationModel.locationName
-            : '',
+          name: this.locationModel.locationName ? this.locationModel.locationName : '',
           parentLocation: {
             locationid: this.model.locationid ? this.model.locationid : 0,
           },
-          postalcode: this.locationModel.postalCode
-            ? this.locationModel.postalCode
-            : '',
+          postalcode: this.locationModel.postalCode ? this.locationModel.postalCode : '',
           state: this.locationModel.state ? this.locationModel.state : '',
-          statusid: this.locationModel.statusid
-            ? this.locationModel.statusid
-            : 0,
+          statusid: this.locationModel.statusid ? this.locationModel.statusid : 0,
           vendorCompany: {
             companyid: 0,
           },
-          attributevalues: this.locationModel.attributevalues
-            ? this.locationModel.attributevalues
-            : null,
+          attributevalues: this.locationModel.attributevalues ? this.locationModel.attributevalues : null,
         },
       ];
 

@@ -200,11 +200,7 @@ export class EditUserComponent implements OnInit {
             );
           } else {
             this.model.attributevalues = [];
-            this.typeAttributes.forEach(
-              (attr: {
-                type: { entitytypeid: any; lastmodifiedby: any };
-                value: any;
-              }) => {
+            this.typeAttributes.forEach((attr: any) => {
                 this.model.attributevalues.push({
                   attributename: attr,
                   entityid: this.profileId,

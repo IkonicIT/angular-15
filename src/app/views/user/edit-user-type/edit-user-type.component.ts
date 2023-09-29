@@ -114,7 +114,7 @@ export class EditUserTypeComponent implements OnInit {
   }
 
   updateUserType() {
-    if (this.model.name && this.model.parentid.typeid != this.userTypeId) {
+    if (this.model.name && (this.model.parentid.typeid != this.userTypeId)) {
       var request = {
         attributesearchdisplay: 0,
         description: this.model.description,

@@ -397,10 +397,7 @@ export class AdvancedItemSearchComponent implements OnInit {
             var attributeValue = attr.value.trim();
             var lastchar = attributeValue.substr(attributeValue.length - 1);
             if (lastchar == '.' || lastchar == ',') {
-              attributeValue = attributeValue.substr(
-                0,
-                attributeValue.length - 1
-              );
+              attributeValue = attributeValue.substr(0, attributeValue.length - 1);
             }
             let listItem = {
               attributeNameID: attr.attributenameid,

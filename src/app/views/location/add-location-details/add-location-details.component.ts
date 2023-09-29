@@ -218,16 +218,10 @@ export class AddLocationDetailsComponent implements OnInit {
         this.addedlocations.forEach((loc: any) => {
           if (loc.locationName && loc.locationName != '') {
             request.push({
-              address1: this.model.addressLineOne
-                ? this.model.addressLineOne
-                : '',
-              address2: this.model.addressLineTwo
-                ? this.model.addressLineTwo
-                : '',
+              address1: this.model.addressLineOne ? this.model.addressLineOne : '',
+              address2: this.model.addressLineTwo ? this.model.addressLineTwo : '',
               city: this.model.city ? this.model.city : '',
-              typeId: this.model.locationTypeId
-                ? this.model.locationTypeId
-                : '',
+              typeId: this.model.locationTypeId ? this.model.locationTypeId : '',
               company: {
                 companyid: this.companyId,
               },

@@ -14,6 +14,7 @@ export class LoginService {
   public headers: any;
   public authToken: any;
   private httpOptions: any;
+
   constructor(
     @Inject(SESSION_STORAGE) private storage: StorageService,
     private http: HttpClient
@@ -55,50 +56,23 @@ export class LoginService {
   }
 
   getUserIdByName(userName: string): Observable<any> {
-    this.authToken = sessionStorage.getItem('auth_token')
-      ? sessionStorage.getItem('auth_token')
-      : '';
+    this.authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
     return this.http
-      .get(
-        this.locationRestURL +
-          'users/' +
-          userName +
-          '?access_token=' +
-          this.authToken
-      )
+      .get(this.locationRestURL + 'users/' + userName + '?access_token=' + this.authToken)
       .pipe(catchError(this.handleError));
   }
 
   getProfileByUserId(userId: string): Observable<any> {
-    this.authToken = sessionStorage.getItem('auth_token')
-      ? sessionStorage.getItem('auth_token')
-      : '';
+    this.authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
     return this.http
-      .get(
-        this.locationRestURL +
-          'profile/user/' +
-          userId +
-          '?access_token=' +
-          this.authToken
-      )
+      .get(this.locationRestURL + 'profile/user/' + userId + '?access_token=' + this.authToken)
       .pipe(catchError(this.handleError));
   }
 
-  getRolesForALoggedInUser(
-    userName: string,
-    companyid: string
-  ): Observable<any> {
-    this.authToken = sessionStorage.getItem('auth_token')
-      ? sessionStorage.getItem('auth_token')
-      : '';
+  getRolesForALoggedInUser(userName: string, companyid: string): Observable<any> {
+    this.authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
     return this.http
-      .get(
-        this.locationRestURL +
-          'userSecurity/getAllRolesForLoggedInUser/' +
-          userName +
-          '/' +
-          companyid +
-          '?access_token=' +
+      .get(this.locationRestURL + 'userSecurity/getAllRolesForLoggedInUser/' + userName + '/' + companyid + '?access_token=' +
           this.authToken
       )
       .pipe(catchError(this.handleError));

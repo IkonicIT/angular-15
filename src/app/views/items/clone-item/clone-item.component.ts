@@ -364,52 +364,30 @@ export class CloneItemComponent implements OnInit {
       }
       var request = [
         {
-          address1: this.locationModel.addressLineOne
-            ? this.locationModel.addressLineOne
-            : '',
-          address2: this.locationModel.addressLineTwo
-            ? this.locationModel.addressLineTwo
-            : '',
+          address1: this.locationModel.addressLineOne ? this.locationModel.addressLineOne : '',
+          address2: this.locationModel.addressLineTwo ? this.locationModel.addressLineTwo : '',
           city: this.locationModel.city ? this.locationModel.city : '',
-          typeId: this.locationModel.locationTypeId
-            ? this.locationModel.locationTypeId
-            : '',
+          typeId: this.locationModel.locationTypeId ? this.locationModel.locationTypeId : '',
           company: {
             companyid: this.companyId,
           },
-          criticalflag: this.locationModel.critical
-            ? this.locationModel.critical
-            : false,
-          description: this.locationModel.description
-            ? this.locationModel.description
-            : '',
-          desiredspareratio: this.locationModel.sRatio
-            ? this.locationModel.sRatio
-            : 0,
-          isvendor: this.locationModel.vLocation
-            ? this.locationModel.vLocation
-            : false,
+          criticalflag: this.locationModel.critical ? this.locationModel.critical : false,
+          description: this.locationModel.description ? this.locationModel.description : '',
+          desiredspareratio: this.locationModel.sRatio ? this.locationModel.sRatio : 0,
+          isvendor: this.locationModel.vLocation ? this.locationModel.vLocation : false,
           lastmodifiedby: this.userName,
           locationid: 0,
-          name: this.locationModel.locationName
-            ? this.locationModel.locationName
-            : '',
+          name: this.locationModel.locationName ? this.locationModel.locationName : '',
           parentLocation: {
             locationid: this.model.locationId ? this.model.locationId : 0,
           },
-          postalcode: this.locationModel.postalCode
-            ? this.locationModel.postalCode
-            : '',
+          postalcode: this.locationModel.postalCode ? this.locationModel.postalCode : '',
           state: this.locationModel.state ? this.locationModel.state : '',
-          statusid: this.locationModel.statusid
-            ? this.locationModel.statusid
-            : 0,
+          statusid: this.locationModel.statusid ? this.locationModel.statusid : 0,
           vendorCompany: {
             companyid: 0,
           },
-          attributevalues: this.locationModel.attributevalues
-            ? this.locationModel.attributevalues
-            : null,
+          attributevalues: this.locationModel.attributevalues ? this.locationModel.attributevalues : null,
         },
       ];
 
@@ -461,20 +439,13 @@ export class CloneItemComponent implements OnInit {
 
   saveItem() {
     if (
-      this.model.typeId &&
-      this.model.typeId != 0 &&
-      this.model.tag &&
-      this.model.tag != '' &&
-      this.model.statusId &&
-      this.model.statusId != 0 &&
-      !this.isDuplicateTag &&
-      this.model.locationId
+      this.model.typeId && this.model.typeId != 0 && this.model.tag && this.model.tag != '' &&
+      this.model.statusId && this.model.statusId != 0 && !this.isDuplicateTag && this.model.locationId
     ) {
       //this.getLocationNameAndStatusNameFromId(this.model.locationId, this.model.statusId);
       this.model.attributevalues = [];
       if (this.typeAttributes && this.typeAttributes.length > 0) {
-        this.typeAttributes.forEach(
-          (attr: { type: { entitytypeid: any }; value: null }) => {
+        this.typeAttributes.forEach((attr: any) => {
             this.model.attributevalues.push({
               attributename: attr,
               entityid: this.itemId,
@@ -506,14 +477,10 @@ export class CloneItemComponent implements OnInit {
         }
       );
       var req = {
-        attributevalues: this.model.attributevalues
-          ? this.model.attributevalues
-          : null,
+        attributevalues: this.model.attributevalues ? this.model.attributevalues : null,
         defaultimageattachmentid: 0,
         description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.desiredSpareRatio
-          ? this.model.desiredSpareRatio
-          : 0,
+        desiredspareratio: this.model.desiredSpareRatio ? this.model.desiredSpareRatio : 0,
         inserviceon: this.dateNow,
         isinrepair: false,
         isstale: false,
@@ -522,9 +489,7 @@ export class CloneItemComponent implements OnInit {
         locationid: this.model.locationId ? this.model.locationId : 0,
         companyid: this.companyId,
         manufacturerid: null,
-        meantimebetweenservice: this.model.meanTimeBetweenService
-          ? this.model.meanTimeBetweenService
-          : 0,
+        meantimebetweenservice: this.model.meanTimeBetweenService ? this.model.meanTimeBetweenService : 0,
         modelnumber: 'string',
         name: this.model.name ? this.model.name : '',
         purchasedate: this.model.purchaseDate ? this.model.purchaseDate : '',
@@ -534,12 +499,8 @@ export class CloneItemComponent implements OnInit {
         statusid: this.model.statusId ? this.model.statusId : 0,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyExpiration
-          ? this.model.warrantyExpiration
-          : '',
-        warrantytypeid: this.model.warrantyTypeId
-          ? this.model.warrantyTypeId
-          : 0,
+        warrantyexpiration: this.model.warrantyExpiration ? this.model.warrantyExpiration : '',
+        warrantytypeid: this.model.warrantyTypeId ? this.model.warrantyTypeId : 0,
         typeName: this.model.typeName,
         locationName: this.model.locationName,
         statusname: this.model.statusName,

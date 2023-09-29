@@ -20,9 +20,6 @@ export class AddUserTypeComponent implements OnInit {
   globalCompany: any = {};
   userTypes: any;
   companyName: any;
-  // broadcasterService: any;
-  //items: any[];
-
   value: any;
   items: TreeviewItem[];
   config = TreeviewConfig.create({

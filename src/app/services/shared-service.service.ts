@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
 
 @Injectable()
 export class SharedServiceService {
-
   data: any;
   dataChange: Observable<any>;
 
-  constructor() {
-
-  }
+  constructor() {}
 
   setData(data: any) {
     this.data = data;
   }
-
 }

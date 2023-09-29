@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
-// import 'rxjs/add/operator/toPromise';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -10,9 +9,7 @@ import { AppConfiguration } from '../configuration';
 export class CompanyAttributesServiceService {
   databaseIndex: number = 1;
   public isProd = false;
-  private authToken = sessionStorage.getItem('auth_token')
-    ? sessionStorage.getItem('auth_token')
-    : '';
+  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -26,37 +23,13 @@ export class CompanyAttributesServiceService {
 
   saveCompanyAttributes(attributes: any) {
     return this.http
-      .post(
-        AppConfiguration.companyRestURL + 'add',
-        attributes,
-        this.httpOptions
-      )
+      .post(AppConfiguration.companyRestURL + 'add', attributes, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  updateTypeAttributes(attribute: {
-    attributelistitemResource?: null;
-    attributenameid: any;
-    attributetype?: { attributetypeid: any };
-    displayorder?: any;
-    ismanufacturer?: boolean;
-    isrequired?: any;
-    isrequiredformatch?: boolean;
-    name?: any;
-    searchmodifier?: string;
-    companyId?: string;
-    lastmodifiedby?: any;
-    searchtype?: { attributesearchtypeid: any };
-    tooltip?: any;
-    type?: { typeid: any; name: any };
-    moduleType?: string;
-  }) {
+  updateTypeAttributes(attribute: any) {
     return this.http
-      .put(
-        AppConfiguration.attributeRestURL + '/' + attribute.attributenameid,
-        attribute,
-        this.httpOptions
-      )
+      .put(AppConfiguration.attributeRestURL + '/' + attribute.attributenameid, attribute, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -70,50 +43,23 @@ export class CompanyAttributesServiceService {
 
   getTypeAttributes(typeId: string) {
     return this.http
-      .get(
-        AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllAttributeTypes() {
     return this.http
-      .get(
-        AppConfiguration.attributeRestURL + '/getAllAttributetypes',
-        this.httpOptions
-      )
+      .get(AppConfiguration.attributeRestURL + '/getAllAttributetypes', this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllSearchTypes(attributeType: string) {
     return this.http
-      .get(
-        AppConfiguration.attributeRestURL +
-          '/getAllAttributeSearchType/' +
-          attributeType,
-        this.httpOptions
-      )
+      .get(AppConfiguration.attributeRestURL + '/getAllAttributeSearchType/' + attributeType, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  createNewTypeAttribute(attribute: {
-    attributelistitemResource: null;
-    attributenameid: number;
-    attributetype: { attributetypeid: any };
-    displayorder: any;
-    ismanufacturer: boolean;
-    isrequired: any;
-    isrequiredformatch: boolean;
-    name: any;
-    searchmodifier: string;
-    searchtype: { attributesearchtypeid: any };
-    tooltip: any;
-    companyId: string;
-    lastmodifiedby: any;
-    type: { typeid: any; name: any };
-    moduleType: string;
-  }) {
+  createNewTypeAttribute(attribute: any) {
     return this.http
       .post(AppConfiguration.attributeRestURL, attribute, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -121,10 +67,7 @@ export class CompanyAttributesServiceService {
 
   getAllCompanyAttributes() {
     return this.http
-      .get(
-        AppConfiguration.companyRestURL + 'getAllCompanies',
-        this.httpOptions
-      )
+      .get(AppConfiguration.companyRestURL + 'getAllCompanies', this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -137,22 +80,8 @@ export class CompanyAttributesServiceService {
     moduleType: string
   ) {
     return this.http
-      .delete(
-        AppConfiguration.attributeRestURL +
-          '/' +
-          attributeId +
-          '/' +
-          companyid +
-          '/' +
-          username +
-          '/' +
-          attributeName +
-          '/' +
-          typeName +
-          '/' +
-          moduleType,
-        { responseType: 'text' }
-      )
+      .delete(AppConfiguration.attributeRestURL + '/' + attributeId + '/' + companyid + '/' + username +
+          '/' + attributeName + '/' + typeName + '/' + moduleType, { responseType: 'text' })
       .pipe(catchError(this.handleError));
   }
 

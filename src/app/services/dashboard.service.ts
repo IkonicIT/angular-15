@@ -27,93 +27,37 @@ export class DashboardService {
       .pipe(catchError(this.handleError));
   }
 
-  getFailureTypePercentage(req: {
-    companyId: number;
-    locationId: any;
-    timeFrame: any;
-    isOwnerAdmin: any;
-    userId: any;
-    isByRepairCost: string;
-    typeId: any;
-  }) {
+  getFailureTypePercentage(req: any) {
     return this.http
       .post(this.serviceURL + 'primaryFindingsChart', req)
       .pipe(catchError(this.handleError));
   }
 
-  getFailureTypePercentageInRange(request: {
-    companyId: number;
-    locationId: any;
-    timeFrame: any;
-    isOwnerAdmin: any;
-    userId: any;
-    isByRepairCost: string;
-    startDate: any;
-    endDate: any;
-    typeId: any;
-  }) {
+  getFailureTypePercentageInRange(request: any) {
     return this.http
       .post(this.serviceURL + 'primaryFindingsChartInRange', request)
       .pipe(catchError(this.handleError));
   }
 
-  getFailureCauses(body: {
-    companyId: number;
-    timeFrame: any;
-    locationId: any;
-    failureType: any;
-    isOwnerAdmin: any;
-    userId: any;
-    isByRepairCost: string;
-    typeId: any;
-  }) {
+  getFailureCauses(body: any) {
     return this.http
       .post(this.serviceURL + 'causesChart', body)
       .pipe(catchError(this.handleError));
   }
   
-  getFailureCausePercentageInRange(failureCause: {
-    companyId: number;
-    locationId: any;
-    failureType: any;
-    isOwnerAdmin: any;
-    userId: any;
-    startDate: any;
-    endDate: any;
-    isByRepairCost: string;
-    typeId: any;
-  }) {
+  getFailureCausePercentageInRange(failureCause: any) {
     return this.http
       .post(this.serviceURL + 'causesChartInRange', failureCause)
       .pipe(catchError(this.handleError));
   }
 
-  getRecentJobsByCause(failuretype: {
-    companyId: number;
-    timeFrame: any;
-    locationId: any;
-    failureType: any;
-    failureCause: any;
-    isOwnerAdmin: any;
-    userId: any;
-    typeId: any;
-  }) {
+  getRecentJobsByCause(failuretype: any) {
     return this.http
       .post(this.serviceURL + 'repairJobsByFailureCause', failuretype)
       .pipe(catchError(this.handleError));
   }
 
-  getRecentJobsByCauseinRange(failuretype: {
-    companyId: number;
-    locationId: any;
-    failureType: any;
-    failureCause: any;
-    isOwnerAdmin: any;
-    userId: any;
-    startDate: any;
-    endDate: any;
-    typeId: any;
-  }) {
+  getRecentJobsByCauseinRange(failuretype: any) {
     return this.http
       .post(this.serviceURL + 'repairJobsByFailureCauseInRange', failuretype)
       .pipe(catchError(this.handleError));

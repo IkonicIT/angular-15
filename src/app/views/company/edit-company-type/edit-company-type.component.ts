@@ -33,6 +33,7 @@ export class EditCompanyTypeComponent implements OnInit {
   helpFlag: any = false;
   dismissible = true;
   loader = false
+
   constructor(
     private companyTypesService: CompanyTypesService,
     router: Router,
@@ -58,6 +59,7 @@ export class EditCompanyTypeComponent implements OnInit {
     this.loader = true;
     this.companyTypesService.getCompanyType(this.typeId).subscribe(
       (response) => {
+        this.loader = false;
         this.model = response;
         if (!this.model.parentid) {
           this.model.parentid = {
@@ -70,6 +72,7 @@ export class EditCompanyTypeComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
+        this.loader = false;
       }
     );
   }
@@ -80,8 +83,9 @@ export class EditCompanyTypeComponent implements OnInit {
     this.companyTypesService
       .getAllCompanyTypesWithHierarchy(this.companyId)
       .subscribe(
-        (response) => {
+        (response) => {          
           this.spinner.hide();
+          this.loader = false;
           this.cmpTypes = response;
           var self = this;
           if (this.cmpTypes && this.cmpTypes.length > 0) {
@@ -90,6 +94,7 @@ export class EditCompanyTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
+          this.loader = false;
         }
       );
   }

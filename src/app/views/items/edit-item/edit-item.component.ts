@@ -233,12 +233,11 @@ export class EditItemComponent implements OnInit {
 
   getTypeName(typeId: any) {
     let typeName;
-    this.itemTypes.forEach(
-      (type: { typeid: any; name: any; typeList: any[] }) => {
+    this.itemTypes.forEach((type: any) => {
         if (type.typeid == typeId) {
           typeName = type.name;
         } else if (type.typeList.length >= 1) {
-          type.typeList.forEach((type) => {
+          type.typeList.forEach((type: any) => {
             if (type.typeid == typeId) {
               typeName = type.name;
             }
@@ -294,7 +293,6 @@ export class EditItemComponent implements OnInit {
   }
 
   getItemTypeAttributes(typeId: string) {
-    // this.getTypeName(typeId);
     if (typeId && typeId != '0') {
       this.spinner.show();
       this.loader = true;
@@ -328,15 +326,10 @@ export class EditItemComponent implements OnInit {
 
   updateItem() {
     if (
-      this.model.typeId &&
-      this.model.typeId != 0 &&
-      this.model.tag &&
-      this.model.tag != '' &&
-      !this.isDuplicateTag
+      this.model.typeId && this.model.typeId != 0 && this.model.tag && this.model.tag != '' && !this.isDuplicateTag
     ) {
       this.item.attributevalues = [];
-      this.typeAttributes.forEach(
-        (attr: { type: { entitytypeid: any }; value: null }) => {
+      this.typeAttributes.forEach((attr: any) => {
           this.item.attributevalues.push({
             attributename: attr,
             entityid: this.itemId,
@@ -373,14 +366,10 @@ export class EditItemComponent implements OnInit {
         }
       );
       var req = {
-        attributevalues: this.item.attributevalues
-          ? this.item.attributevalues
-          : null,
+        attributevalues: this.item.attributevalues ? this.item.attributevalues : null,
         defaultimageattachmentid: this.model.defaultImageAttachmentId,
         description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.desiredSpareRatio
-          ? this.model.desiredSpareRatio
-          : 0,
+        desiredspareratio: this.model.desiredSpareRatio ? this.model.desiredSpareRatio : 0,
         inserviceon: this.model.inServiceOn,
         isinrepair: false,
         isstale: false,
@@ -388,9 +377,7 @@ export class EditItemComponent implements OnInit {
         lastmodifiedby: this.userName,
         locationid: this.model.locationId ? this.model.locationId : 0,
         manufacturerid: null,
-        meantimebetweenservice: this.model.meanTimeBetweenService
-          ? this.model.meanTimeBetweenService
-          : 0,
+        meantimebetweenservice: this.model.meanTimeBetweenService ? this.model.meanTimeBetweenService : 0,
         modelnumber: 'string',
         name: this.model.name ? this.model.name : '',
         purchasedate: this.model.purchaseDate ? this.model.purchaseDate : '',
@@ -402,12 +389,8 @@ export class EditItemComponent implements OnInit {
         companyid: this.companyId,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyExpiration
-          ? this.model.warrantyExpiration
-          : '',
-        warrantytypeid: this.model.warrantyTypeId
-          ? this.model.warrantyTypeId
-          : 0,
+        warrantyexpiration: this.model.warrantyExpiration ? this.model.warrantyExpiration : '',
+        warrantytypeid: this.model.warrantyTypeId ? this.model.warrantyTypeId : 0,
         userid: sessionStorage.getItem('userId'),
         typeName: this.model.typeName,
         locationName: this.model.locationName,

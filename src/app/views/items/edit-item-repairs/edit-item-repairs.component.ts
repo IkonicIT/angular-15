@@ -333,24 +333,15 @@ export class EditItemRepairsComponent implements OnInit {
 
   updateItemRepair() {
     this.model = {
-      actualcompletion: this.model.actualcompletion
-        ? this.model.actualcompletion
-        : null,
+      actualcompletion: this.model.actualcompletion ? this.model.actualcompletion : null,
       complete: this.model.complete ? this.model.complete : false,
       completedby: this.model.completedby,
       dateacknowledged: this.model.dateacknowledged,
       dateinitiated: this.model.dateinitiated,
-      estimatedcompletion: this.model.estimatedcompletion
-        ? this.model.estimatedcompletion
-        : null,
-      failurecause:
-        this.model.failurecause != 0
-          ? this.model.failurecause
-          : this.model.newfailurecause,
-      failuredate:
-        this.model.failuredate != null ? this.model.failuredate : null,
-      failuretype:
-        this.model.failuretype != null ? this.model.failuretype : null,
+      estimatedcompletion: this.model.estimatedcompletion ? this.model.estimatedcompletion : null,
+      failurecause: this.model.failurecause != 0 ? this.model.failurecause : this.model.newfailurecause,
+      failuredate: this.model.failuredate != null ? this.model.failuredate : null,
+      failuretype: this.model.failuretype != null ? this.model.failuretype : null,
       iswarranty: true,
       itemid: this.itemId,
       itemtype: this.model.itemtype,
@@ -359,24 +350,17 @@ export class EditItemRepairsComponent implements OnInit {
       repaircompanyid: this.model.repaircompanyid,
       repaircost: this.model.repaircost ? this.model.repaircost : 0,
       repairjobstatus: this.model.repairjobstatus,
-      repairlocationid: this.model.repairlocationid
-        ? this.model.repairlocationid
-        : 0,
+      repairlocationid: this.model.repairlocationid ? this.model.repairlocationid : 0,
       repairlogid: this.model.repairlogid,
       repairnotes: this.model.repairnotes ? this.model.repairnotes : '',
-      repairvendornumber: this.model.repairvendornumber
-        ? this.model.repairvendornumber
-        : 0,
+      repairvendornumber: this.model.repairvendornumber ? this.model.repairvendornumber : 0,
       repairVendorName: this.vendor.name ? this.vendor.name : '',
       rfqnumber: 0,
       title: this.model.title ? this.model.title : '',
       transferlogid: 0,
       warrantytype: this.model.warrantytype ? this.model.warrantytype : '',
-      warrantytypeid:
-        this.model.warrantytypeid != undefined ? this.model.warrantytypeid : 0,
-      warrantyexpiration: this.model.warrantyexpiration
-        ? this.model.warrantyexpiration
-        : null,
+      warrantytypeid: this.model.warrantytypeid != undefined ? this.model.warrantytypeid : 0,
+      warrantyexpiration: this.model.warrantyexpiration ? this.model.warrantyexpiration : null,
       userName: this.userName,
       tag: this.model.tag,
       secondaryTypeAndCauses: this.model.secondaryTypeAndCauses,
@@ -443,8 +427,7 @@ export class EditItemRepairsComponent implements OnInit {
 
   setWarrantyTypeID() {
     if (this.model.warrantytype && this.model.warrantytype != '') {
-      this.warrantyTypes.forEach(
-        (element: { warrantytype: any; warrantytypeid: any }) => {
+      this.warrantyTypes.forEach((element: any) => {
           if (element.warrantytype == this.model.warrantytype)
             this.model.warrantytypeid = element.warrantytypeid;
         }

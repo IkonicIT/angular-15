@@ -20,7 +20,8 @@ export class AddcompanydetailsComponent implements OnInit {
   file: File;
   dismissible = true;
   helpFlag: any = false;
-  loader = true;
+  loader = false;
+
   constructor(
     private companyManagementService: CompanyManagementService,
     private companyStatusesService: CompanyStatusesService,

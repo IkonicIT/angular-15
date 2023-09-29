@@ -13,9 +13,7 @@ export class UserTypesService {
   currentGlobalCompany: any;
   public globalCompanyChange: Subject<any> = new Subject<any>();
   public serviceURL = AppConfiguration.typeRestURL;
-  private authToken = sessionStorage.getItem('auth_token')
-    ? sessionStorage.getItem('auth_token')
-    : '';
+  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -27,42 +25,13 @@ export class UserTypesService {
     private http: HttpClient
   ) {}
 
-  saveUserType(type: {
-    attributesearchdisplay: number;
-    company: { companyid: number };
-    description: any;
-    entitytypeid: number;
-    hostingfee: any;
-    ishidden: boolean;
-    lastmodifiedby: any;
-    moduleType: string;
-    name: any;
-    parentid: { typeid: any };
-    typeid: number;
-    typemtbs: number;
-    typespareratio: number;
-  }) {
+  saveUserType(type: any) {
     return this.http
       .post(this.serviceURL, type, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  updateUserType(type: {
-    attributesearchdisplay?: number;
-    description?: any;
-    entitytypeid?: any;
-    hostingfee?: any;
-    ishidden?: boolean;
-    lastmodifiedby?: any;
-    moduleType?: string;
-    name?: any;
-    parentid?: { typeid: any };
-    company?: { companyid: any };
-    typeList?: any;
-    typeid: any;
-    typemtbs?: number;
-    typespareratio?: number;
-  }) {
+  updateUserType(type: any) {
     return this.http
       .put(this.serviceURL + '/' + type.typeid, type, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -76,19 +45,13 @@ export class UserTypesService {
 
   getAllUserTypes(companyId: string | number) {
     return this.http
-      .get(
-        this.serviceURL + '/getAllType/usertype/' + companyId,
-        this.httpOptions
-      )
+      .get(this.serviceURL + '/getAllType/usertype/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllUserTypesWithHierarchy(companyId: number) {
     return this.http
-      .get(
-        this.serviceURL + '/getAllTypeWithHierarchy/usertype/' + companyId,
-        this.httpOptions
-      )
+      .get(this.serviceURL + '/getAllTypeWithHierarchy/usertype/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

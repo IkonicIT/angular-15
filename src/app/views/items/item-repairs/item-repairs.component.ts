@@ -49,6 +49,7 @@ export class ItemRepairsComponent implements OnInit {
   itemType: any;
   helpFlag: any = false;
   loader = false;
+  
   constructor(
     private modalService: BsModalService,
     private itemManagementService: ItemManagementService,

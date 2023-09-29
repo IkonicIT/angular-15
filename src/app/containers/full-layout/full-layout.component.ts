@@ -68,6 +68,7 @@ export class FullLayoutComponent implements OnInit {
   masterSearchFlag: any = 'false';
   isOwnerAminReadOnly: any;
   loader = false;
+
   public constructor(
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
@@ -130,7 +131,6 @@ export class FullLayoutComponent implements OnInit {
   }
 
   getUserAccessCompanies() {
-    //this.getProfile();
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     if (this.isOwnerAdmin == 'true' || this.isOwnerAminReadOnly == 'true') {
       this.companyManagementService.getAllCompanyDetails().subscribe(
@@ -494,10 +494,7 @@ export class FullLayoutComponent implements OnInit {
     this.itemTag = '';
     if (this.router.url != '/items/lists/all') {
       this.router.navigate(['/items/lists/all']);
-      this.spinner.show();
-      this.loader = true
-      setTimeout(()=>this.loader = false,2000)
-      
+      this.spinner.show();      
     } else {
       this.broadcasterService.broadcast('refreshlist', true);
     }

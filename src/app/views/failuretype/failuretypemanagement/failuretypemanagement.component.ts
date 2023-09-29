@@ -269,11 +269,7 @@ export class FailuretypemanagementComponent implements OnInit {
     this.loader = true
 
     this.itemRepairItemsService
-      .deleteFailureTypeAndCauses(
-        this.failureTypeId,
-        this.companyId,
-        this.userName
-      )
+      .deleteFailureTypeAndCauses(this.failureTypeId, this.companyId, this.userName)
       .subscribe((response) => {
         this.spinner.hide();
         this.index = 3;

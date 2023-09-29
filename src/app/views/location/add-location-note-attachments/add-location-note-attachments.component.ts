@@ -168,7 +168,6 @@ export class AddLocationNoteAttachmentsComponent implements OnInit {
         fileInfo['entityid'] = this.entityId;
         fileInfo['isNew'] = 1;
         fileInfo['moduleType'] = 'itemnotetype';
-        //fileInfo['entitytypeid'] = 1;
         fileInfo['filename'] = this.fileName;
         console.log(this.addedfiles);
       };

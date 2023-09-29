@@ -9,6 +9,7 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Location } from '@angular/common';
 import { CompanynotesService } from '../../../services';
 import { CompanyDocumentsService } from '../../../services';
+
 @Component({
   selector: 'app-manage',
   templateUrl: './manage.component.html',
@@ -48,6 +49,7 @@ export class ManageComponent implements OnInit {
   entityname: any;
   p: any;
   loader = false;
+
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
@@ -87,7 +89,6 @@ export class ManageComponent implements OnInit {
     console.log('highestRank is' + this.highestRank);
     this.model.date = new Date();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
-
     this.model.effectiveon = new Date();
   }
 
@@ -97,6 +98,7 @@ export class ManageComponent implements OnInit {
     this.companynotesService.getAllCompanyNotess(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
+        this.loader = false;
         console.log(response);
         this.notes = response;
       },
@@ -115,6 +117,7 @@ export class ManageComponent implements OnInit {
     this.model = [];
     this.model.effectiveon = new Date();
   }
+
   saveCompanyNote() {
     if (!this.model.entityname || !this.model.effectiveon) {
       this.index1 = -1;
@@ -184,6 +187,7 @@ export class ManageComponent implements OnInit {
     this.newFlag = false;
     this.helpFlag = false;
   }
+  
   updateCompanyNotes() {
     if (!this.model.entityname || !this.model.effectiveon) {
       this.index1 = -1;
@@ -246,6 +250,7 @@ export class ManageComponent implements OnInit {
       });
     window.scroll(0, 0);
   }
+  
   cancelCompanyNotes() {
     this.newFlag = true;
     this.editFlag = false;

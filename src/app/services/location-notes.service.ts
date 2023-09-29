@@ -11,9 +11,7 @@ import { HttpParams } from '@angular/common/http';
 export class LocationNotesService {
   public serviceURL = AppConfiguration.typeStatusRestURL + 'notes';
   public isProd = false;
-  private authToken = sessionStorage.getItem('auth_token')
-    ? sessionStorage.getItem('auth_token')
-    : '';
+  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -33,11 +31,7 @@ export class LocationNotesService {
 
   updateLocationNotes(locationNote: { journalid: string }) {
     return this.http
-      .put(
-        this.serviceURL + '/' + locationNote.journalid,
-        locationNote,
-        this.httpOptions
-      )
+      .put(this.serviceURL + '/' + locationNote.journalid, locationNote, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -49,14 +43,7 @@ export class LocationNotesService {
 
   getAllLocationNotes(companyId: string, locationId: string) {
     return this.http
-      .get(
-        this.serviceURL +
-          '/getAllNotes/locationtype/' +
-          companyId +
-          '/' +
-          locationId,
-        this.httpOptions
-      )
+      .get(this.serviceURL + '/getAllNotes/locationtype/' + companyId + '/' + locationId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -71,11 +58,7 @@ export class LocationNotesService {
     return throwError(() => 'Something bad happened; please try again later.');
   }
 
-  removeLocationNotes(
-    id: string,
-    userName: string,
-    locationName: string | number | boolean
-  ) {
+  removeLocationNotes(id: string, userName: string, locationName: string | number | boolean) {
     let params = new HttpParams();
     params = params.append('location', locationName);
     var httpOptions = {

@@ -30,6 +30,7 @@ export class AddcompanydocumentsComponent implements OnInit {
   userName: any;
   helpFlag: any = false;
   loader = false;
+  
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,

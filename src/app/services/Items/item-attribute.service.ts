@@ -10,9 +10,7 @@ import { throwError } from 'rxjs';
 @Injectable()
 export class ItemAttributeService {
   public globalCompanyChange: Subject<any> = new Subject<any>();
-  private authToken = sessionStorage.getItem('auth_token')
-    ? sessionStorage.getItem('auth_token')
-    : '';
+  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -26,21 +24,13 @@ export class ItemAttributeService {
 
   saveItemAttributes(attributes: any) {
     return this.http
-      .post(
-        AppConfiguration.companyRestURL + 'add',
-        attributes,
-        this.httpOptions
-      )
+      .post(AppConfiguration.companyRestURL + 'add', attributes, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   updateTypeAttributes(attribute: { attributenameid: string }) {
     return this.http
-      .put(
-        AppConfiguration.attributeRestURL + '/' + attribute.attributenameid,
-        attribute,
-        this.httpOptions
-      )
+      .put(AppConfiguration.attributeRestURL + '/' + attribute.attributenameid, attribute, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -52,39 +42,25 @@ export class ItemAttributeService {
 
   getTypeAttributes(typeId: string) {
     return this.http
-      .get(
-        AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAttributesForFindReplacement(itemId: string) {
     return this.http
-      .get(
-        AppConfiguration.locationRestURL + '/item/findReplacement/' + itemId,
-        this.httpOptions
-      )
+      .get(AppConfiguration.locationRestURL + '/item/findReplacement/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllAttributeTypes() {
     return this.http
-      .get(
-        AppConfiguration.attributeRestURL + '/getAllAttributetypes',
-        this.httpOptions
-      )
+      .get(AppConfiguration.attributeRestURL + '/getAllAttributetypes', this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllSearchTypes(attributeType: string) {
     return this.http
-      .get(
-        AppConfiguration.attributeRestURL +
-          '/getAllAttributeSearchType/' +
-          attributeType,
-        this.httpOptions
-      )
+      .get(AppConfiguration.attributeRestURL + '/getAllAttributeSearchType/' + attributeType, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -96,10 +72,7 @@ export class ItemAttributeService {
 
   getAllItemAttributes() {
     return this.http
-      .get(
-        AppConfiguration.companyRestURL + 'getAllCompanies',
-        this.httpOptions
-      )
+      .get(AppConfiguration.companyRestURL + 'getAllCompanies', this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -112,22 +85,8 @@ export class ItemAttributeService {
     moduleType: string
   ) {
     return this.http
-      .delete(
-        AppConfiguration.attributeRestURL +
-          '/' +
-          attributeId +
-          '/' +
-          companyid +
-          '/' +
-          username +
-          '/' +
-          attributeName +
-          '/' +
-          typeName +
-          '/' +
-          moduleType,
-        this.httpOptions
-      )
+      .delete(AppConfiguration.attributeRestURL + '/' + attributeId + '/' + companyid + '/' + username + '/' +
+          attributeName + '/' + typeName + '/' + moduleType, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

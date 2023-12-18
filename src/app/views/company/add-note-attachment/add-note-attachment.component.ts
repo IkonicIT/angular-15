@@ -31,6 +31,7 @@ export class AddNoteAttachmentComponent implements OnInit {
   helpFlag: any = false;
   noteName: any;
   loader = false;
+  
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     private companyManagementService: CompanyManagementService,
@@ -64,6 +65,7 @@ export class AddNoteAttachmentComponent implements OnInit {
     this.noteName = this.broadcasterService.currentNoteAttachmentTitle;
     this.addedfiles.push({ file: '', description: '' });
   }
+
   saveNoteDocument() {
     var noFileChosen = true;
     var addedFiles = this.addedfiles;

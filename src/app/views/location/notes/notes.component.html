@@ -169,7 +169,7 @@
                 <input
                   class="form-control"
                   type="text"
-                  class="form-control"
+                  class="form-control form-control-bgcolor"
                   [(ngModel)]="model.entityname"
                   name="title"
                   #title="ngModel"
@@ -183,7 +183,7 @@
                 >
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control form-control-bgcolor"
                   [(ngModel)]="model.effectiveon"
                   name="date"
                   #date="ngModel"
@@ -199,7 +199,7 @@
                 <label for="job">JOB Number</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control form-control-bgcolor"
                   [(ngModel)]="model.jobnumber"
                   name="job"
                   #job="ngModel"
@@ -211,7 +211,7 @@
                 <label for="po">PO Number</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control form-control-bgcolor"
                   [(ngModel)]="model.ponumber"
                   id="po"
                   name="po"
@@ -231,7 +231,7 @@
                   cols="4"
                   name="details"
                   #details="ngModel"
-                  class="form-control"
+                  class="form-control form-control-bgcolor"
                   [(ngModel)]="model.entry"
                   placeholder="Enter Description"
                 ></textarea>
@@ -455,7 +455,7 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New LocationNote"
@@ -470,7 +470,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Location Note"
                   (click)="updateLocationNotes()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Save
                 </button>
@@ -482,14 +482,14 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelLocationNotes()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Cancel
                 </button>
                 <button
                   [disabled]="highestRank < 6 || highestRank == 9"
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Location Note"
@@ -503,7 +503,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add LocationNote Attachment"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
                   Attachments
@@ -791,7 +791,11 @@
         Click(Yes) to permanently delete this Note or Click(No) to discard this
         action.
       </p>
-      <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
+      <button
+        type="button"
+        class="btn btn-primary btn-right"
+        (click)="confirm()"
+      >
         Yes
       </button>
       <button type="button" class="btn btn-primary" (click)="decline()">

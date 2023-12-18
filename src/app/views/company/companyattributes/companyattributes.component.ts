@@ -215,7 +215,7 @@ export class CompanyattributesComponent implements OnInit {
       (response) => {
         this.cmptypes = response;
         this.companyType = this.typeId;
-        this.cmptypes.forEach((type: { parentid: string }) => {
+        this.cmptypes.forEach((type: any) => {
           if (!type.parentid) {
             type.parentid = 'Top Level';
           }
@@ -239,6 +239,7 @@ export class CompanyattributesComponent implements OnInit {
           this.spinner.hide();
           this.loader = false;
           this.typeAttributes = response;
+          console.log(this.typeAttributes);
           this.typeAttributesLength = this.typeAttributes.length;
         },
         (error) => {

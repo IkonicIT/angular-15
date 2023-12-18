@@ -85,7 +85,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-right"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="View this Note Attachment"
@@ -96,7 +96,7 @@
 
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-right"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this Note Attachment"
@@ -111,7 +111,7 @@
                     data-bs-toggle="tooltip"
                     title="Delete this Note Attachment"
                     (click)="openModal(confirmtemplate, document.attachmentid)"
-                    disabled="highestRank == 9"
+                    [disabled]="highestRank == 9"
                   >
                     Delete
                   </button>

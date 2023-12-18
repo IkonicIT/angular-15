@@ -20,7 +20,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-// import { DpDatePickerModule } from 'ng2-date-picker';
+import { NgxSortableModule } from 'ngx-sortable'
 import { provideUserIdleConfig } from 'angular-user-idle';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgPipesModule, OrderByPipe } from 'ngx-pipes';
@@ -132,6 +132,7 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     NgChartsModule,
     NgPipesModule,
     DropdownTreeviewModule,
+    NgxSortableModule,
     NgxSpinnerModule,
     // NgxPasswordToggleModule,
     //NgbDropdownModule,

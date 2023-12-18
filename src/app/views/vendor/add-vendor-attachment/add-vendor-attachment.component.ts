@@ -25,6 +25,7 @@ export class AddVendorAttachmentComponent implements OnInit {
   helpFlag: any = false;
   dismissible = true;
   loader = false;
+
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
@@ -86,7 +87,7 @@ export class AddVendorAttachmentComponent implements OnInit {
     this.router.navigate(['/vendor/documents/' + this.companyId]);
   }
 
-  fileChangeListener($event: { target: any }): void {
+  fileChangeListener($event: any): void {
     this.readThis($event.target);
   }
 
@@ -102,10 +103,12 @@ export class AddVendorAttachmentComponent implements OnInit {
       self.fileType = myReader.result.split(',')[0].split(':')[1].split(';')[0];
     };
   }
+
   print() {
     this.helpFlag = false;
     window.print();
   }
+
   help() {
     this.helpFlag = !this.helpFlag;
   }

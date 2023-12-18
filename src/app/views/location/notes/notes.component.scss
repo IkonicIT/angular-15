@@ -58,7 +58,7 @@ button {
   margin-right: 5px;
 }
 
-.form-control {
+.form-control-bgcolor {
   background-color: #fff;
 }
 
@@ -103,4 +103,15 @@ tbody td {
 
 ::ng-deep .alert-dismissible .btn-close {
   opacity: 0;
+}
+
+a {
+  color: #e02725;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover {
+  color: #a21817;
+  text-decoration: underline;
 }

@@ -90,3 +90,7 @@ button {
 ::ng-deep .alert-dismissible .btn-close {
   opacity: 0;
 }
+
+::ng-deep .alert {
+  border-radius: 0;
+}

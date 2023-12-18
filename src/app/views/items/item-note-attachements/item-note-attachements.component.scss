@@ -35,3 +35,64 @@
 ::ng-deep .alert-dismissible .btn-close {
   opacity: 0;
 }
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding,
+.text-right,
+.form-group {
+  padding: 0 15px;
+}
+
+.text-right {
+  text-align: right;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.card,
+button {
+  border-radius: 0;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.float-right {
+  float: right;
+  border-radius: 0;
+}
+
+.select-pagination-option {
+  height: 0;
+}
+
+thead th,
+tbody td {
+  padding: 12px;
+}

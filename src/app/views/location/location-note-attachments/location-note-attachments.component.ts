@@ -38,6 +38,8 @@ export class LocationNoteAttachmentsComponent implements OnInit {
   locationName: any;
   entityname: any;
   loader = false;
+  highestRank: any;
+
   constructor(
     private modalService: BsModalService,
     private itemAttachmentsService: ItemAttachmentsService,

@@ -110,8 +110,6 @@
                           (valueChange)="onValueChange($event)"
                         >
                         </app-dropdown-treeview-select>
-                        
-                        
                       </div>
                       <div class="col-sm-8"></div>
                     </div>
@@ -124,7 +122,7 @@
                             [name]="'attributesList'"
                             [listStyle]="listStyle"
                           >
-                            <ng-template let-item>
+                            <ng-template let-item="item">
                               <ul
                                 (click)="
                                   setSelectedAttribute(item);
@@ -137,7 +135,7 @@
                                   addEditFlag = true
                                 "
                               >
-                                <a> {{ item?.name }} </a>
+                                <a> {{ item.name }} </a>
                               </ul>
                             </ng-template>
                           </ngx-sortable>
@@ -145,7 +143,7 @@
                             <button
                               type="button"
                               *ngIf="addEditFlag"
-                              class="btn btn-primary"
+                              class="btn btn-primary btn-top"
                               data-bs-placement="bottom"
                               data-bs-toggle="tooltip"
                               title="Save Order Attribute"
@@ -307,7 +305,9 @@
                               class="form-group col-sm-12"
                               style="padding: 0 15px; margin-bottom: 16px"
                             >
-                              <label for="rField" class="btn-right"> Required Field</label>
+                              <label for="rField" class="btn-right">
+                                Required Field</label
+                              >
                               <input
                                 type="checkbox"
                                 id="rField"
@@ -341,7 +341,7 @@
                                 data-bs-toggle="tooltip"
                                 title="Edit this Attribute"
                                 *ngIf="addEditFlag && highestRank > 6"
-                                class="btn btn-primary"
+                                class="btn btn-primary btn-right"
                                 (click)="editAttribute()"
                               >
                                 Update
@@ -352,7 +352,7 @@
                                 data-bs-toggle="tooltip"
                                 title="Add New Attribute"
                                 *ngIf="addEditFlag && highestRank > 6"
-                                class="btn btn-primary"
+                                class="btn btn-primary btn-right"
                                 (click)="newAttribute()"
                               >
                                 New
@@ -363,7 +363,7 @@
                                 data-bs-toggle="tooltip"
                                 title="Delete this  Attribute"
                                 *ngIf="addEditFlag && highestRank > 6"
-                                class="btn btn-primary"
+                                class="btn btn-primary btn-right"
                                 (click)="openModal(confirmtemplate)"
                                 [disabled]="highestRank == 9"
                               >

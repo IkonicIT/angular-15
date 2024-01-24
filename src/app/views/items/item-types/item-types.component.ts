@@ -30,6 +30,7 @@ export class ItemTypesComponent implements OnInit {
   userName: any;
   p: any;
   typeFilter: any = '';
+  loader = false;
 
   constructor(
     private modalService: BsModalService,
@@ -52,10 +53,12 @@ export class ItemTypesComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
+    this.loader = true;
     this.itemTypesService
       .getAllItemTypes(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.locationsTypes = response;
         this.locationsTypes.forEach((type: { parentid: any }) => {
           if (!type.parentid) {
@@ -85,11 +88,13 @@ export class ItemTypesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.loader = true;
     this.userName = sessionStorage.getItem('userName');
     this.itemTypesService
       .removeItemType(this.index, this.userName)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false
         this.modalRef?.hide();
         this.refreshCalls();
       });
@@ -102,10 +107,12 @@ export class ItemTypesComponent implements OnInit {
 
   getAllItemTypesWithHierarchy() {
     this.spinner.show();
+    this.loader = true;
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
+        this.loader = false;
         this.broadcasterService.itemTypeHierarchy = response;
       });
   }

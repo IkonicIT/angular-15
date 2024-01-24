@@ -159,7 +159,7 @@
                   <div
                     class="border-charts"
                     *ngIf="
-                      !chartFlag &&
+                    !chartFlag &&
                       companyid > 0
                     "
                   >
@@ -175,6 +175,7 @@
                   >
                     <canvas
                       baseChart
+                    
                       [datasets]="pieChartData"
                       [labels]="pieChartLabels"
                       [plugins]="pieChartPlugins"
@@ -198,6 +199,7 @@
                   >
                     <canvas
                       baseChart
+                      
                       [datasets]="pieChartCauseData"
                       [labels]="pieChartCauseLabels"
                       [plugins]="pieChartPlugins"

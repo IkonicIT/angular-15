@@ -12,7 +12,9 @@ import { Router } from '@angular/router';
 export class AddcompanydetailsComponent implements OnInit {
   model: any = {};
   index: number = 0;
-  statuses: any[] = [];
+  statuses: any = [];
+  globalCompany: any = {};
+  
   companyId: any;
   userName: any;
   companyList: any[] = [];
@@ -31,6 +33,27 @@ export class AddcompanydetailsComponent implements OnInit {
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
+    this.globalCompany = this.companyManagementService.getGlobalCompany();
+    this.companyId = this.globalCompany.companyid;
+    this.getStatuses()
+  }
+
+  getStatuses() {
+    this.spinner.show();
+    this.loader = true;
+    this.statuses = [];
+    this.companyStatusesService.getAllCompanyStatuses(this.companyId).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.loader = false;
+        console.log(response);
+        this.statuses = response;
+      },
+      (error) => {
+        this.spinner.hide();
+        this.loader = false;
+      }
+    );
   }
 
   back() {

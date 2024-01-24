@@ -275,6 +275,7 @@ export class FullLayoutComponent implements OnInit {
           }
           this.itemManagementService.setItemTypes(response);
           this.spinner.hide();
+          this.loader = false;
           this.router.navigate(['/dashboard']);
         });
     } else {
@@ -317,6 +318,7 @@ export class FullLayoutComponent implements OnInit {
           }
           this.itemManagementService.setItemTypes(response);
           this.spinner.hide();
+          this.loader = false;
           this.router.navigate(['/dashboard']);
         });
     }
@@ -441,6 +443,7 @@ export class FullLayoutComponent implements OnInit {
           }
           this.itemManagementService.setItemTypes(response);
           this.spinner.hide();
+          this.loader = false;
           this.router.navigate(['/dashboard']);
         });
     }
@@ -494,7 +497,8 @@ export class FullLayoutComponent implements OnInit {
     this.itemTag = '';
     if (this.router.url != '/items/lists/all') {
       this.router.navigate(['/items/lists/all']);
-      this.spinner.show();      
+      this.spinner.show();
+      this.loader = true;      
     } else {
       this.broadcasterService.broadcast('refreshlist', true);
     }

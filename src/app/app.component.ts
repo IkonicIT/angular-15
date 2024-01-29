@@ -67,9 +67,9 @@ export class AppComponent implements OnInit {
         .updateLogoutDate(this.userId)
         .subscribe((response) => {});
 
-      localStorage.clear();
-      sessionStorage.clear();
-      this.router.navigate(['/login']);
+      //localStorage.clear();
+      //sessionStorage.clear();
+      //this.router.navigate(['/login']);
       console.log('logged out...!');
       this.modalService.hide(1);
     });

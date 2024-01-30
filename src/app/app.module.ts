@@ -151,7 +151,7 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
   ],
   exports: [CommonModule, FormsModule, ReactiveFormsModule],
   providers: [
-    provideUserIdleConfig({ idle: 60, timeout: 300, ping: 120 }),
+    provideUserIdleConfig({ idle: 600, timeout: 300, ping: 120 }),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

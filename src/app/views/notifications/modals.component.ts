@@ -16,11 +16,11 @@ export class ModalsComponent implements OnInit {
   }
   decline(): void {
     this.message = 'Declined!';
-    this.modalService.hide(1);
+    this.modalService.hide();
 
   }
   confirm(): void {
-    this.modalService.hide(1);
+    this.modalService.hide();
   }
 }
 

@@ -19,18 +19,7 @@ export class LoginService {
     @Inject(SESSION_STORAGE) private storage: StorageService,
     private http: HttpClient
   ) {
-    this.headers = new HttpHeaders();
-    this.headers = this.headers.append(
-      'Authorization',
-      'Basic ' + window.btoa('ypatel' + ':' + 'tracrat')
-    );
-    this.headers = this.headers.append(
-      'Content-Type',
-      'application/x-www-form-urlencoded'
-    );
-    this.httpOptions = {
-      headers: this.headers,
-    };
+   
   }
 
   private handleError(error: any) {
@@ -45,6 +34,18 @@ export class LoginService {
   }
 
   loginAuth(obj: any): Observable<any> {
+    this.headers = new HttpHeaders();
+    this.headers = this.headers.append(
+      'Authorization',
+      'Basic ' + window.btoa(obj.userName + ':' + obj.password)
+    );
+    this.headers = this.headers.append(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+    this.httpOptions = {
+      headers: this.headers,
+    };
     let params = new HttpParams()
       .set('grant_type', 'password')
       .set('username', obj.userName)

@@ -112,6 +112,12 @@ export class CompanystatusesComponent implements OnInit {
             this.index1 = 0;
           }, 7000);
           this.getStatuses();
+          const currentPage = this.p;
+        const statusesCount = this.statuses.length - 1;
+        const maxPageAvailable = Math.ceil(statusesCount / this.itemsForPagination);
+        if (currentPage > maxPageAvailable){
+          this.p--;
+        }
         },
         (error) => {
           this.spinner.hide();

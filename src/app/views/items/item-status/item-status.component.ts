@@ -86,6 +86,8 @@ export class ItemStatusComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
+  
+
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
@@ -97,6 +99,12 @@ export class ItemStatusComponent implements OnInit {
         this.loader = false;
         this.modalRef.hide();
         this.getStatuses();
+        const currentPage = this.p;
+        const statusCount = this.statuses.length - 1;
+        const maxPageAvailable = Math.ceil(statusCount / this.itemsForPagination);
+        if (currentPage > maxPageAvailable){
+          this.p--;
+        }
       });
   }
 

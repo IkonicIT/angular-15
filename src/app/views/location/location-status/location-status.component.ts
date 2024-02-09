@@ -101,6 +101,12 @@ export class LocationStatusComponent implements OnInit {
           this.loader = false;
           this.modalRef.hide();
           this.getStatuses();
+          const currentPage = this.p;
+        const statusesCount = this.statuses.length - 1;
+        const maxPageAvailable = Math.ceil(statusesCount / this.itemsForPagination);
+        if (currentPage > maxPageAvailable){
+          this.p--;
+        }
         },
         (error) => {
           this.spinner.hide();

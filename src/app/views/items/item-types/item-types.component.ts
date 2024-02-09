@@ -97,6 +97,12 @@ export class ItemTypesComponent implements OnInit {
         this.loader = false
         this.modalRef?.hide();
         this.refreshCalls();
+        const currentPage = this.p;
+        const locationTypeCount = this.locationsTypes.length - 1;
+        const maxPageAvailable = Math.ceil(locationTypeCount / this.itemsForPagination);
+        if (currentPage > maxPageAvailable){
+          this.p--;
+        }
       });
   }
 

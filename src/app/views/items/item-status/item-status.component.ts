@@ -103,7 +103,7 @@ export class ItemStatusComponent implements OnInit {
         const statusCount = this.statuses.length - 1;
         const maxPageAvailable = Math.ceil(statusCount / this.itemsForPagination);
         if (currentPage > maxPageAvailable){
-          this.p--;
+          this.p = maxPageAvailable;
         }
       });
   }
@@ -126,5 +126,13 @@ export class ItemStatusComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+  onChange(e: any) {
+    const currentPage = this.p;
+    const statusCount = this.statuses.length - 1;
+    const maxPageAvailable = Math.ceil(statusCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
   }
 }

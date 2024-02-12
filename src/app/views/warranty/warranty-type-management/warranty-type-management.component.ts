@@ -53,6 +53,15 @@ export class WarrantyTypeManagementComponent implements OnInit {
     });
   }
 
+  onChange(e: any) {
+    const currentPage = this.p;
+    const warrentytypesCount = this.warrantyTypes.length - 1;
+    const maxPageAvailable = Math.ceil(warrentytypesCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
+  }
+
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();

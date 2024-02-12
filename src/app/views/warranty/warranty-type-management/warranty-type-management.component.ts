@@ -53,15 +53,6 @@ export class WarrantyTypeManagementComponent implements OnInit {
     });
   }
 
-  onChange(e: any) {
-    const currentPage = this.p;
-    const warrentytypesCount = this.warrantyTypes.length - 1;
-    const maxPageAvailable = Math.ceil(warrentytypesCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
-      this.p = maxPageAvailable;
-    }
-  }
-
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
@@ -149,6 +140,12 @@ export class WarrantyTypeManagementComponent implements OnInit {
           this.loader = false
           this.modalRef?.hide();
           this.refresh();
+          const currentPage = this.p;
+          const warrentytypesCount = this.warrantyTypes.length - 1;
+          const maxPageAvailable = Math.ceil(warrentytypesCount / this.itemsForPagination);
+          if (currentPage > maxPageAvailable){
+            this.p = maxPageAvailable;
+          }
         },
         (error) => {
           this.spinner.hide();
@@ -187,4 +184,13 @@ export class WarrantyTypeManagementComponent implements OnInit {
   help() {
     this.helpFlag = !this.helpFlag;
   }
+  onChange(e: any) {
+    const currentPage = this.p;
+    const warrentytypesCount = this.warrantyTypes.length - 1;
+    const maxPageAvailable = Math.ceil(warrentytypesCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
+  }
 }
+

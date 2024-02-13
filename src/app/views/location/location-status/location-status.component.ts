@@ -139,4 +139,13 @@ export class LocationStatusComponent implements OnInit {
   help() {
     this.helpFlag = !this.helpFlag;
   }
+
+  onChange(e: any){
+    const currentPage = this.p;
+        const statusesCount = this.statuses.length - 1;
+        const maxPageAvailable = Math.ceil(statusesCount / this.itemsForPagination);
+        if (currentPage > maxPageAvailable){
+          this.p--;
+        }
+  }
 }

@@ -147,4 +147,13 @@ export class ItemTypesComponent implements OnInit {
   help() {
     this.helpFlag = !this.helpFlag;
   }
+
+  onChange(e : any){
+    const currentPage = this.p;
+        const itemTypeCount = this.locationsTypes.length - 1;
+        const maxPageAvailable = Math.ceil(itemTypeCount / this.itemsForPagination);
+        if (currentPage > maxPageAvailable){
+          this.p = maxPageAvailable;
+        }
+  }
 }

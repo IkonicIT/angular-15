@@ -166,8 +166,8 @@ export class ItemRepairItemsComponent implements OnInit {
         this.modalRef.hide();
         this.getRepairItems();
         const currentPage = this.p;
-    const repairItemsCount = this.repairItems.length - 1;
-    const maxPageAvailable = Math.ceil(repairItemsCount / this.itemsForPagination);
+    const repairItemsCount = this.repairItems.length;
+    const maxPageAvailable = Math.ceil(repairItemsCount / this.itemsForPagination) - 1;
     if (currentPage > maxPageAvailable){
       this.p = maxPageAvailable;
     }
@@ -199,7 +199,7 @@ export class ItemRepairItemsComponent implements OnInit {
 
   onChange(e: any) {
     const currentPage = this.p;
-    const repairItemsCount = this.repairItems.length - 1;
+    const repairItemsCount = this.repairItems.length;
     const maxPageAvailable = Math.ceil(repairItemsCount / this.itemsForPagination);
     if (currentPage > maxPageAvailable){
       this.p = maxPageAvailable;

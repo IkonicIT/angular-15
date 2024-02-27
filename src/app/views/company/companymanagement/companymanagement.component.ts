@@ -101,6 +101,12 @@ export class CompanymanagementComponent implements OnInit {
         this.modalRef.hide();
         alert('Company successfully deleted,Refreshing List ');
         this.companyManagementService.setCompaniesListModified(true);
+        const currentPage = this.p;
+        const companiesCount = this.companies.length;
+        const maxPageAvailable = Math.ceil(companiesCount / this.itemsForPagination);
+        if (currentPage > maxPageAvailable){
+          this.p = maxPageAvailable;
+        }
       },
       (error) => {
         this.spinner.hide();
@@ -132,5 +138,14 @@ export class CompanymanagementComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+
+  onChange(e: any){
+    const currentPage = this.p;
+        const companiesCount = this.companies.length;
+        const maxPageAvailable = Math.ceil(companiesCount / this.itemsForPagination);
+        if (currentPage > maxPageAvailable){
+          this.p = maxPageAvailable;
+        }
   }
 }

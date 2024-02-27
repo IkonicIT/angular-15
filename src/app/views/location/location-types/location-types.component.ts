@@ -101,6 +101,12 @@ export class LocationTypesComponent implements OnInit {
           this.loader = false;
           this.modalRef?.hide();
           this.getAllLocTypes();
+          const currentPage = this.p;
+    const locationTypesCount = this.locationsTypes.length;
+    const maxPageAvailable = Math.ceil(locationTypesCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
         },
         (error) => {
           this.spinner.hide();
@@ -132,5 +138,14 @@ export class LocationTypesComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+
+  onChange(e: any){
+    const currentPage = this.p;
+    const locationTypesCount = this.locationsTypes.length;
+    const maxPageAvailable = Math.ceil(locationTypesCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
   }
 }

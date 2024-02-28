@@ -75,7 +75,14 @@ export class UserLogManagementComponent implements OnInit {
     this.router.navigate(['user/viewuserlog/' + result.username]);
   }
 
-  confirm(): void {}
+  confirm(): void {
+    const currentPage = this.p;
+    const userCount = this.results.length-1;
+    const maxPageAvailable = Math.ceil(userCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
+  }
 
   decline(): void {
     this.message = 'Declined!';
@@ -89,5 +96,14 @@ export class UserLogManagementComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+
+  onChange(e:any){
+    const currentPage = this.p;
+    const userCount = this.results.length;
+    const maxPageAvailable = Math.ceil(userCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
   }
 }

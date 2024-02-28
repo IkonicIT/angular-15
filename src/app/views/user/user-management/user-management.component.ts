@@ -143,6 +143,12 @@ export class UserManagementComponent implements OnInit {
       .subscribe((response) => {
         this.modalRef.hide();
         this.getUsers();
+        const currentPage = this.p;
+    const userCount = this.users.length-1;
+    const maxPageAvailable = Math.ceil(userCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
       });
   }
 
@@ -169,5 +175,14 @@ export class UserManagementComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+
+  onChange(e:any){
+    const currentPage = this.p;
+    const userCount = this.users.length;
+    const maxPageAvailable = Math.ceil(userCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
   }
 }

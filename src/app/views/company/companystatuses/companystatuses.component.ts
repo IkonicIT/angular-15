@@ -147,7 +147,7 @@ export class CompanystatusesComponent implements OnInit {
 
   onChange(e: any) {
     const currentPage = this.p;
-    const statusCount = this.statuses.length - 1;
+    const statusCount = this.statuses.length;
     const maxPageAvailable = Math.ceil(statusCount / this.itemsForPagination);
     if (currentPage > maxPageAvailable){
       this.p = maxPageAvailable;

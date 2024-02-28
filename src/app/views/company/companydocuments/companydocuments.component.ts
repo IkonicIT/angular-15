@@ -259,7 +259,7 @@ export class CompanydocumentsComponent implements OnInit {
 
   onChange(e : any){
     const currentPage = this.p;
-    const DocumentCount = this.documents.length - 1;
+    const DocumentCount = this.documents.length;
     const maxPageAvailable = Math.ceil(DocumentCount / this.itemsForPagination);
     if (currentPage > maxPageAvailable){
       this.p = maxPageAvailable;

@@ -101,6 +101,12 @@ export class CompanyNotesComponent implements OnInit {
           this.loader = false;
           this.modalRef.hide();
           this.getAllNotes(this.companyId);
+          const currentPage = this.p;
+          const notesCount = this.notes.length-1;
+          const maxPageAvailable = Math.ceil(notesCount / this.itemsForPagination);
+          if (currentPage > maxPageAvailable){
+            this.p = maxPageAvailable;
+          }
         },
         (error) => {
           this.spinner.hide();
@@ -146,5 +152,13 @@ export class CompanyNotesComponent implements OnInit {
       }
     }
     this.order = value;
+  }
+  onChange(e:any){
+    const currentPage = this.p;
+    const notesCount = this.notes.length;
+    const maxPageAvailable = Math.ceil(notesCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
   }
 }

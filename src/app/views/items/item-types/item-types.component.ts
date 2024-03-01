@@ -150,7 +150,7 @@ export class ItemTypesComponent implements OnInit {
 
   onChange(e : any){
     const currentPage = this.p;
-        const itemTypeCount = this.locationsTypes.length - 1;
+        const itemTypeCount = this.locationsTypes.length;
         const maxPageAvailable = Math.ceil(itemTypeCount / this.itemsForPagination);
         if (currentPage > maxPageAvailable){
           this.p = maxPageAvailable;

@@ -109,7 +109,7 @@ export class AddcompanydetailsComponent implements OnInit {
             hostingfee: 0,
             ishidden: true,
             lastmodifiedby: '',
-            name: '',
+            name: this.model.primaryContactName ? this.model.primaryContactName:'',
             parentid: 0,
             typeid: 0,
             typemtbs: 0,

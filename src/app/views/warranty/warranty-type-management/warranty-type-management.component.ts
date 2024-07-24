@@ -31,7 +31,7 @@ export class WarrantyTypeManagementComponent implements OnInit {
   helpFlag: any = false;
   userName: any;
   dismissible = true;
-  loader = false
+  loader = false;
   p: any;
   type: any;
   constructor(
@@ -76,7 +76,30 @@ export class WarrantyTypeManagementComponent implements OnInit {
 
   refresh() {
     this.warrantyTypes = [];
-    this.ngOnInit();
+    this.spinner.show();
+    this.loader = true;
+    this.warrantyManagementService
+      .getAllWarrantyTypes(this.companyId)
+      .subscribe(
+        (response: any) => {
+          this.spinner.hide();
+          this.loader = false;
+          this.warrantyTypes = response;
+          const totalWarrantyTypesCount = this.warrantyTypes.length;
+          const maxPageAvailable = Math.ceil(
+            totalWarrantyTypesCount / this.itemsForPagination
+          );
+
+          // Check if the current page exceeds the maximum available page
+          if (this.p > maxPageAvailable) {
+            this.p = maxPageAvailable;
+          }
+        },
+        (error) => {
+          this.spinner.hide();
+          this.loader = false;
+        }
+      );
   }
 
   saveWarraty() {
@@ -137,15 +160,9 @@ export class WarrantyTypeManagementComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false
+          this.loader = false;
           this.modalRef?.hide();
           this.refresh();
-          const currentPage = this.p;
-          const warrentytypesCount = this.warrantyTypes.length - 1;
-          const maxPageAvailable = Math.ceil(warrentytypesCount / this.itemsForPagination);
-          if (currentPage > maxPageAvailable){
-            this.p = maxPageAvailable;
-          }
         },
         (error) => {
           this.spinner.hide();
@@ -187,10 +204,11 @@ export class WarrantyTypeManagementComponent implements OnInit {
   onChange(e: any) {
     const currentPage = this.p;
     const warrentytypesCount = this.warrantyTypes.length - 1;
-    const maxPageAvailable = Math.ceil(warrentytypesCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
+    const maxPageAvailable = Math.ceil(
+      warrentytypesCount / this.itemsForPagination
+    );
+    if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }
 }
-

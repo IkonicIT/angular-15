@@ -158,10 +158,7 @@
                   <h5>PRIMARYFINDINGS</h5>
                   <div
                     class="border-charts"
-                    *ngIf="
-                    !chartFlag &&
-                      companyid > 0
-                    "
+                    *ngIf="!chartFlag && companyid > 0"
                   >
                     <h6 style="color: red">
                       There are no Repairs in the selected time span.
@@ -175,7 +172,6 @@
                   >
                     <canvas
                       baseChart
-                    
                       [datasets]="pieChartData"
                       [labels]="pieChartLabels"
                       [plugins]="pieChartPlugins"
@@ -199,7 +195,6 @@
                   >
                     <canvas
                       baseChart
-                      
                       [datasets]="pieChartCauseData"
                       [labels]="pieChartCauseLabels"
                       [plugins]="pieChartPlugins"
@@ -586,7 +581,7 @@
             </div>
             <h4
               class="card-title mb-0"
-              [innerHTML]="companyName + 'Messages'"
+              [innerHTML]="companyName + ' Messages'"
             ></h4>
             <textarea
               rows="5"
@@ -970,5 +965,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

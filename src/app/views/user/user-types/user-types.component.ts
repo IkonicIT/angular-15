@@ -58,6 +58,14 @@ export class UserTypesComponent implements OnInit {
         this.spinner.hide();
         this.loader = false;
         this.userTypes = response;
+        const totalWarrantyTypesCount = this.userTypes.length;
+        const maxPageAvailable = Math.ceil(
+          totalWarrantyTypesCount / this.itemsForPagination
+        );
+        // Check if the current page exceeds the maximum available page
+        if (this.p > maxPageAvailable) {
+          this.p = maxPageAvailable;
+        }
         this.userTypes.forEach((type: { parentid: any }) => {
           if (!type.parentid) {
             type.parentid = this.companyName;

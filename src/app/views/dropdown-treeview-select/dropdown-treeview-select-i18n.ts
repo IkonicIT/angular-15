@@ -1,4 +1,8 @@
-import { DefaultTreeviewI18n, TreeviewItem, TreeviewSelection } from 'ngx-treeview';
+import {
+  DefaultTreeviewI18n,
+  TreeviewItem,
+  TreeviewSelection,
+} from 'ngx-treeview';
 import { Injectable } from '@angular/core';
 
 @Injectable()

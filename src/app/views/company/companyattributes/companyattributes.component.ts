@@ -120,8 +120,8 @@ export class CompanyattributesComponent implements OnInit {
   
 
   pageLoadCalls(companyId: string) {
-    this.loader = true;  
     this.spinner.show();
+    this.loader = true; 
     this.companyAttributesServiceService
       .getAllAttributeTypes()
       .subscribe((response) => {

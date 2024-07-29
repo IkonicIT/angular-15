@@ -72,8 +72,11 @@ export class CompanynotesService {
   }
 
   removeCompanynotess(id: string, userName: string) {
+    const url = `${this.serviceURL}/${id}/${userName}`;
+    console.log('removeCompanynotess URL:', url);
+    console.log('removeCompanynotess authToken:', this.authToken);
     return this.http
-      .delete(this.serviceURL + '/' + id + '/' + userName, this.httpOptions)
+      .delete(url, { ...this.httpOptions, responseType: 'text' })
       .pipe(catchError(this.handleError));
   }
 }

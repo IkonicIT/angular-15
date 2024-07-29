@@ -165,7 +165,7 @@ export class UserManagementService {
     addedBy: string
   ) {
     return this.http
-      .delete('users/' + userid + '/' + profileId + '/' + companyId + '/' + userName + '/' + addedBy, 
+      .delete(AppConfiguration.locationRestURL+'users/' + userid + '/' + profileId + '/' + companyId + '/' + userName + '/' + addedBy, 
         { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));

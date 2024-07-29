@@ -63,7 +63,7 @@
             <div class="float-left">
               <span
                 >Show
-                <select [(ngModel)]="itemsForPagination">
+                <select [(ngModel)]="itemsForPagination" (change) = "onChange($event.target)">
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>

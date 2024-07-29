@@ -14,6 +14,7 @@ import * as cloneDeep from 'lodash';
 import { ExcelService } from '../../../services/excel-service';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 
+
 @Component({
   selector: 'app-piechart',
   templateUrl: './piechart.component.html',
@@ -141,6 +142,7 @@ export class PiechartComponent implements OnInit {
       this.params.year = new Date().getFullYear();
       this.params.charttype = 'company';
       this.params.type = 'yearly';
+      this.spinner.show();
       this.loader = true;
       this.authToken = sessionStorage.getItem('auth_token');
       this.chartColors = [
@@ -269,6 +271,7 @@ export class PiechartComponent implements OnInit {
         this.dashboardService.
           getFailureCausePercentageInRange(request).subscribe(data => {
             this.spinner.hide();
+            this.loader = false
             this.failureTypesandPercentageCause = data;
 
             this.pieChartCauseLabels = [];
@@ -304,6 +307,7 @@ export class PiechartComponent implements OnInit {
         this.loader = true
         this.dashboardService.getFailureCauses(req).subscribe(data => {
           this.spinner.hide();
+          this.loader = false
           this.failureTypesandPercentageCause = data;
 
           this.pieChartCauseLabels = [];
@@ -332,6 +336,7 @@ export class PiechartComponent implements OnInit {
       this.loader = true
       this.companyDocumentsService.getAllCompanyDocuments(this.companyid).subscribe(response => {
         this.spinner.hide();
+        this.loader = false;
         this.documents = response;
       },
         error => {
@@ -456,7 +461,8 @@ export class PiechartComponent implements OnInit {
           "isByRepairCost":this.repairFlag,
           "startDate":this.params.from.format('YYYY-MM-DD'),
           "endDate":this.params.to.format('YYYY-MM-DD'),
-          "typeId":this.typeId ? this.typeId :0
+          "typeId":this.typeId ? this.typeId :0,
+          "vendorId": 0
         }
         this.dashboardService.getFailureTypePercentageInRange(request).subscribe(response => {
           this.spinner.hide();
@@ -496,7 +502,8 @@ export class PiechartComponent implements OnInit {
         "isOwnerAdmin": this.isOwnerAdmin,
         "userId": this.userId,
         "isByRepairCost":this.repairFlag,
-        "typeId":this.typeId ? this.typeId :0
+        "typeId":this.typeId ? this.typeId :0,
+        "vendorId": 0
       }
       this.dashboardService.getFailureTypePercentage(req).subscribe(response => {
         this.spinner.hide();
@@ -525,7 +532,7 @@ export class PiechartComponent implements OnInit {
         this.chartFlag = this.isDataGreaterThanZero(this.pieChartData[0].data);
         console.log(this.chartFlag);
       });  
-    this.loader = false;
+    // this.loader = false;
     return;
   }
 
@@ -615,6 +622,7 @@ export class PiechartComponent implements OnInit {
     this.loader = true
     this.companyDocumentsService.getCompanyDocuments(attachmentId).subscribe(response => {
       this.spinner.hide();
+      this.loader = false;
       this.downloadDocument(response);
     },
       error => {

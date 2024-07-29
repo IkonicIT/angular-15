@@ -92,6 +92,7 @@
                             >Show
                             <select
                               [(ngModel)]="itemsForPagination"
+                              (change)="onChange($event.target)"
                               name="pagination"
                             >
                               <option>5</option>

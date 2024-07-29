@@ -130,6 +130,12 @@ export class CompanytypesComponent implements OnInit {
           this.loader = false;
           this.modalRef.hide();
           this.getAllTypes(this.companyId);
+          const currentPage = this.p;
+    const typesCount = this.types.length-1;
+    const maxPageAvailable = Math.ceil(typesCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
         },
         (error) => {
           this.spinner.hide();
@@ -160,5 +166,14 @@ export class CompanytypesComponent implements OnInit {
   }
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+
+  onChange(e:any){
+    const currentPage = this.p;
+    const typesCount = this.types.length;
+    const maxPageAvailable = Math.ceil(typesCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
   }
 }

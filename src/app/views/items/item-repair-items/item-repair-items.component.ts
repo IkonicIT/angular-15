@@ -165,6 +165,12 @@ export class ItemRepairItemsComponent implements OnInit {
         this.loader = false;
         this.modalRef.hide();
         this.getRepairItems();
+        const currentPage = this.p;
+    const repairItemsCount = this.repairItems.length;
+    const maxPageAvailable = Math.ceil(repairItemsCount / this.itemsForPagination) - 1;
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
       },
       (error) => {
         this.spinner.hide();
@@ -189,5 +195,14 @@ export class ItemRepairItemsComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+
+  onChange(e: any) {
+    const currentPage = this.p;
+    const repairItemsCount = this.repairItems.length;
+    const maxPageAvailable = Math.ceil(repairItemsCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
   }
 }

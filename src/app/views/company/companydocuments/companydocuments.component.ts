@@ -123,6 +123,12 @@ export class CompanydocumentsComponent implements OnInit {
           this.loader = false;
           this.modalRef.hide();
           this.refresh();
+          const currentPage = this.p;
+    const DocumentCount = this.documents.length - 1;
+    const maxPageAvailable = Math.ceil(DocumentCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
         },
         (error) => {
           this.spinner.hide();
@@ -249,5 +255,14 @@ export class CompanydocumentsComponent implements OnInit {
   }
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+
+  onChange(e : any){
+    const currentPage = this.p;
+    const DocumentCount = this.documents.length;
+    const maxPageAvailable = Math.ceil(DocumentCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable){
+      this.p = maxPageAvailable;
+    }
   }
 }

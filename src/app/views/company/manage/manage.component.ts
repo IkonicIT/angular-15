@@ -9,6 +9,7 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Location } from '@angular/common';
 import { CompanynotesService } from '../../../services';
 import { CompanyDocumentsService } from '../../../services';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-manage',
@@ -145,7 +146,7 @@ export class ManageComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
-      this.loader = true
+      this.loader = true;
       this.companynotesService.saveCompanynotes(this.model).subscribe(
         (response: any) => {
           this.model = response;
@@ -187,7 +188,7 @@ export class ManageComponent implements OnInit {
     this.newFlag = false;
     this.helpFlag = false;
   }
-  
+
   updateCompanyNotes() {
     if (!this.model.entityname || !this.model.effectiveon) {
       this.index1 = -1;
@@ -250,7 +251,7 @@ export class ManageComponent implements OnInit {
       });
     window.scroll(0, 0);
   }
-  
+
   cancelCompanyNotes() {
     this.newFlag = true;
     this.editFlag = false;
@@ -384,35 +385,31 @@ export class ManageComponent implements OnInit {
 
   confirm(): void {
     this.message = 'Confirmed!';
-    console.log(
-      'removeCompanynotess companyId=' +
-        this.companyId +
-        ',index==' +
-        this.index
-    );
+    console.log('Deleting note with journalid:', this.model.journalid);
+    this.modalRef.hide();
     this.spinner.show();
     this.loader = true;
     this.companynotesService
       .removeCompanynotess(this.model.journalid, this.userName)
       .subscribe(
         (response: any) => {
+          console.log('Delete response:', response);
           this.spinner.hide();
           this.loader = false;
-          this.modalRef.hide();
           this.getAllNotes(this.companyId);
-          this.index1 = 4;
-          this.refreshCall();
-          this.model = [];
+          this.model = {};
           this.model.effectiveon = new Date();
           this.newFlag = true;
           this.editFlag = false;
           this.viewFlag = false;
           this.helpFlag = false;
+          this.index1 = 4;
           setTimeout(() => {
             this.index1 = 0;
           }, 7000);
         },
         (error: any) => {
+          console.error('Delete error:', error);
           this.spinner.hide();
           this.loader = false;
         }

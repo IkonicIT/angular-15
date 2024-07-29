@@ -54,21 +54,52 @@ export class ItemWareHouseTagComponent implements OnInit {
       });
 
     setTimeout(() => {
-      this.print();
+       this.print();
     }, 3000);
   }
 
   ngOnInit() {}
 
+  // print(): void {
+  //   let printContents, popupWin: any;
+  //   printContents = document.getElementById('print-section')!.innerHTML;
+  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=100%');
+  //   popupWin?.document.open();
+  //   popupWin?.document.write(printContents);
+  //   popupWin?.focus();
+  //   popupWin?.print();
+  //   popupWin?.document.close();
+  // }
+
   print(): void {
-    let printContents, popupWin: any;
-    printContents = document.getElementById('print-section')!.innerHTML;
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=100%');
-    popupWin?.document.open();
-    popupWin?.document.write(printContents);
-    popupWin?.focus();
-    popupWin?.print();
-    popupWin?.document.close();
+    const printContents = document.getElementById('print-section');
+    
+    if (printContents) {
+      // Create a temporary iframe to hold the print contents
+      let printFrame:any = document.createElement('iframe');
+      printFrame.style.display = 'none';
+      document.body.appendChild(printFrame);
+  
+      printFrame.contentDocument.open();
+      printFrame.contentDocument.write(`
+        <html>
+          <head>
+            <title>Print</title>
+          </head>
+          <body>${printContents.innerHTML}</body>
+        </html>
+      `);
+      printFrame.contentDocument.close();
+  
+      // Wait for content to be loaded before printing
+      printFrame.contentWindow.onafterprint = () => {
+        // Close the iframe after printing
+        document.body.removeChild(printFrame);
+      };
+  
+      // Initiate the print dialog
+      printFrame.contentWindow.print();
+    }
   }
 
   back() {

@@ -1,6 +1,19 @@
-import { Component, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
-import { TreeviewConfig, TreeviewItem, DropdownTreeviewComponent, TreeviewI18n, TreeviewHelper, 
-         DropdownDirective} from 'ngx-treeview';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  OnChanges,
+} from '@angular/core';
+import {
+  TreeviewConfig,
+  TreeviewItem,
+  DropdownTreeviewComponent,
+  TreeviewI18n,
+  TreeviewHelper,
+  DropdownDirective,
+} from 'ngx-treeview';
 import { DropdownTreeviewSelectI18n } from './dropdown-treeview-select-i18n';
 import { isNil } from 'lodash';
 
@@ -16,7 +29,8 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
   @Input() value: any;
   @Output() valueChange = new EventEmitter<any>();
 
-  @ViewChild(DropdownTreeviewComponent, { static: false }) dropdownTreeviewComponent: DropdownTreeviewComponent;
+  @ViewChild(DropdownTreeviewComponent, { static: false })
+  dropdownTreeviewComponent: DropdownTreeviewComponent;
   dropdownDirective: DropdownDirective;
   filterText: string;
   private dropdownTreeviewSelectI18n: DropdownTreeviewSelectI18n;
@@ -47,7 +61,10 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
 
   private updateSelectedItem() {
     if (!isNil(this.items)) {
-      const selectedItem = TreeviewHelper.findItemInList(this.items, this.value);
+      const selectedItem = TreeviewHelper.findItemInList(
+        this.items,
+        this.value
+      );
       if (selectedItem) {
         this.selectItem(selectedItem);
       } else {

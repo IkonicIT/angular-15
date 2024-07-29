@@ -7,6 +7,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { UserManagementService } from './services/user-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ModalsComponent } from './views/notifications/modals.component';
 
 @Component({
   selector: 'body',
@@ -41,7 +42,7 @@ export class AppComponent implements OnInit {
     this.userIdle.onTimerStart().subscribe((count) => {
       console.log(count);
       if (count == 1) {
-        //this.modalService.show(ModalComponent, { backdrop: 'static' });
+        this.modalService.show(ModalsComponent, { backdrop: 'static' });
       }
       var eventList = [
         'click',
@@ -66,9 +67,9 @@ export class AppComponent implements OnInit {
         .updateLogoutDate(this.userId)
         .subscribe((response) => {});
 
-      localStorage.clear();
-      sessionStorage.clear();
-      this.router.navigate(['/login']);
+      //localStorage.clear();
+      //sessionStorage.clear();
+      //this.router.navigate(['/login']);
       console.log('logged out...!');
       this.modalService.hide(1);
     });

@@ -8,7 +8,7 @@ import { filter } from 'rxjs/operators';
     ngFor
     let-breadcrumb
     [ngForOf]="breadcrumbs"
-    let-last="last"
+    let-last=last
   >
     <li
       class="breadcrumb-item"
@@ -17,13 +17,13 @@ import { filter } from 'rxjs/operators';
           breadcrumb.url.substring(breadcrumb.url.length - 1) == '/') ||
         (breadcrumb.label.title && last)
       "
-      [ngClass]="{ active: last }"
+      [ngClass]="{active: last}"
     >
       <ng-container *ngIf="breadcrumb.url != '/'; else other">
-        <a *ngIf="!last" routerLink="breadcrumb.url">{{
+        <a *ngIf="!last" [routerLink]="breadcrumb.url">{{
           breadcrumb.label.title
         }}</a>
-        <span *ngIf="last" routerLink="breadcrumb.url">{{
+        <span *ngIf="last" [routerLink]="breadcrumb.url">{{
           breadcrumb.label.title
         }}</span>
       </ng-container>

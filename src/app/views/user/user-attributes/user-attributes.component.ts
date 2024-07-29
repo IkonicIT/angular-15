@@ -268,7 +268,9 @@ export class UserAttributesComponent implements OnInit {
         companyId: this.companyId,
         lastmodifiedby: this.username,
         searchtype: {
-          attributesearchtypeid: this.model.searchtype ? this.model.searchtype.attributesearchtypeid : 0,
+          attributesearchtypeid: this.model.searchtype
+            ? this.model.searchtype.attributesearchtypeid
+            : 0,
         },
         tooltip: this.model.tooltip,
         type: {
@@ -344,10 +346,14 @@ export class UserAttributesComponent implements OnInit {
         attributelistitemResource: null,
         attributenameid: this.model.attributenameid,
         attributetype: {
-          attributetypeid: this.model.attributetype ? this.model.attributetype.attributetypeid : 0,
+          attributetypeid: this.model.attributetype
+            ? this.model.attributetype.attributetypeid
+            : 0,
         },
         displayorder: this.typeAttributesLength + 1,
-        ismanufacturer: this.model.ismanufacturer ? this.model.ismanufacturer : false,
+        ismanufacturer: this.model.ismanufacturer
+          ? this.model.ismanufacturer
+          : false,
         isrequired: this.model.isrequired ? this.model.isrequired : false,
         isrequiredformatch: false,
         name: this.model.name,
@@ -355,8 +361,11 @@ export class UserAttributesComponent implements OnInit {
         companyId: this.companyId,
         lastmodifiedby: this.username,
         searchtype: {
-          attributesearchtypeid: this.model.searchtype && this.model.searchtype.attributesearchtypeid != 'null'
-              ? this.model.searchtype.attributesearchtypeid : 0,
+          attributesearchtypeid:
+            this.model.searchtype &&
+            this.model.searchtype.attributesearchtypeid != 'null'
+              ? this.model.searchtype.attributesearchtypeid
+              : 0,
         },
         tooltip: this.model.tooltip,
         type: {

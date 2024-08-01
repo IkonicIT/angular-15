@@ -5,6 +5,7 @@ import {
   EventEmitter,
   ViewChild,
   OnChanges,
+  ElementRef,
 } from '@angular/core';
 import {
   TreeviewConfig,
@@ -31,6 +32,8 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
 
   @ViewChild(DropdownTreeviewComponent, { static: false })
   dropdownTreeviewComponent: DropdownTreeviewComponent;
+  @ViewChild('myfckvi') myFocusText: ElementRef;
+
   dropdownDirective: DropdownDirective;
   filterText: string;
   private dropdownTreeviewSelectI18n: DropdownTreeviewSelectI18n;
@@ -74,6 +77,7 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
   }
 
   private selectItem(item: TreeviewItem): void {
+    this.myFocusText.nativeElement.click();
     if (this.dropdownTreeviewSelectI18n.selectedItem !== item) {
       this.dropdownTreeviewSelectI18n.selectedItem = item;
       if (this.dropdownTreeviewComponent) {

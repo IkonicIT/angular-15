@@ -317,6 +317,11 @@ export class AddItemRepairsComponent implements OnInit {
       secondaryTypeAndCauses: this.model.secondaryTypeAndCauses,
       companyId: this.companyId,
       isactive: 1,
+      isVendorWarranty: this.model.isVendorWarranty ? this.model.isVendorWarranty : 0,
+      repairType: this.model.repairType  ? this.model.repairType : "",
+      vendor: {
+        vendorId:this.model.vendorId ? this.model.vendorId :0
+      }
     };
     console.log(JSON.stringify(this.model));
     this.spinner.show();

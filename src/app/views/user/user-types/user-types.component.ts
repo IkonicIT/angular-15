@@ -139,4 +139,14 @@ export class UserTypesComponent implements OnInit {
   help() {
     this.helpFlag = !this.helpFlag;
   }
+  onChange(e: any) {
+    const totalUserTypesCount = this.userTypes.length;
+    const maxPageAvailable = Math.ceil(
+      totalUserTypesCount / this.itemsForPagination
+    );
+    // Check if the current page exceeds the maximum available page
+    if (this.p > maxPageAvailable) {
+      this.p = maxPageAvailable;
+    }
+  }
 }

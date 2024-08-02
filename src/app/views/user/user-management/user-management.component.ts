@@ -170,4 +170,14 @@ export class UserManagementComponent implements OnInit {
   help() {
     this.helpFlag = !this.helpFlag;
   }
+  onChange(e: any) {
+    const totalWarrantyTypesCount = this.users.length;
+    const maxPageAvailable = Math.ceil(
+      totalWarrantyTypesCount / this.itemsForPagination
+    );
+    // Check if the current page exceeds the maximum available page
+    if (this.p > maxPageAvailable) {
+      this.p = maxPageAvailable;
+    }
+  }
 }

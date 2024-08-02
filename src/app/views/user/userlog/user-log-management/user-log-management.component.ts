@@ -14,6 +14,7 @@ export class UserLogManagementComponent implements OnInit {
   companyId: any;
   globalCompany: any;
   results: any;
+  userlogs: any;
   itemsForPagination: any = 5;
   loggedinuserscount: number = 0;
   order: string = 'firstname';
@@ -46,6 +47,7 @@ export class UserLogManagementComponent implements OnInit {
     this.userManagementService
       .getUserview(this.companyId)
       .subscribe((response) => {
+        this.userlogs = response;
         this.spinner.hide();
         this.loader = false;
         this.results = response;
@@ -89,5 +91,15 @@ export class UserLogManagementComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+  onChange(e: any) {
+    const totalUserLogCount = this.userlogs.length;
+    const maxPageAvailable = Math.ceil(
+      totalUserLogCount / this.itemsForPagination
+    );
+    // Check if the current page exceeds the maximum available page
+    if (this.p > maxPageAvailable) {
+      this.p = maxPageAvailable;
+    }
   }
 }

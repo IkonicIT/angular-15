@@ -16,6 +16,11 @@
   color: red;
   background-color: white;
 }
+.btn-group-gap {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Adjust the gap as needed */
+}
 
 thead th {
   cursor: pointer;

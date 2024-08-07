@@ -116,7 +116,7 @@
                           [name]="'attributesList'"
                           [listStyle]="listStyle"
                         >
-                          <ng-template let-item>
+                          <ng-template let-item="item">
                             <ul
                               (click)="
                                 setSelectedAttribute(item);
@@ -294,7 +294,9 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class="form-group col-sm-12 text-center">
+                          <div
+                            class="form-group col-sm-12 text-center btn-group-gap"
+                          >
                             <button
                               type="button"
                               *ngIf="!addEditFlag"

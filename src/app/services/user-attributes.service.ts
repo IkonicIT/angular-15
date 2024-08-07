@@ -12,7 +12,9 @@ export class UserAttributesService {
   databaseIndex: number = 0;
   currentGlobalCompany: any;
   public globalCompanyChange: Subject<any> = new Subject<any>();
-  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
+  private authToken = sessionStorage.getItem('auth_token')
+    ? sessionStorage.getItem('auth_token')
+    : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -26,13 +28,21 @@ export class UserAttributesService {
 
   saveUserAttributes(attributes: any) {
     return this.http
-      .post(AppConfiguration.companyRestURL + 'add', attributes, this.httpOptions)
+      .post(
+        AppConfiguration.companyRestURL + 'add',
+        attributes,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   updateTypeAttributes(attribute: any) {
     return this.http
-      .put(AppConfiguration.attributeRestURL + '/' + attribute.attributenameid, attribute, this.httpOptions)
+      .put(
+        AppConfiguration.attributeRestURL + '/' + attribute.attributenameid,
+        attribute,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -44,19 +54,30 @@ export class UserAttributesService {
 
   getTypeAttributes(typeId: string) {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId, this.httpOptions)
+      .get(
+        AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllAttributeTypes() {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributetypes', this.httpOptions)
+      .get(
+        AppConfiguration.attributeRestURL + '/getAllAttributetypes',
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllSearchTypes(attributeType: string) {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributeSearchType/' + attributeType, this.httpOptions)
+      .get(
+        AppConfiguration.attributeRestURL +
+          '/getAllAttributeSearchType/' +
+          attributeType,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -80,9 +101,10 @@ export class UserAttributesService {
     typeName: string,
     moduleType: string
   ) {
+    const url = `${AppConfiguration.attributeRestURL}/${attributeId}/${companyid}/${username}/${attributeName}/${typeName}/${moduleType}`;
+
     return this.http
-      .delete(AppConfiguration.attributeRestURL + '/' + attributeId + '/' + companyid + '/' + username +
-          '/' + attributeName + '/' + typeName + '/' + moduleType, this.httpOptions)
+      .delete(url, { ...this.httpOptions, responseType: 'text' })
       .pipe(catchError(this.handleError));
   }
 

@@ -438,6 +438,7 @@ export class UserAttributesComponent implements OnInit {
 
   confirm(): void {
     this.message = 'Confirmed!';
+    this.modalRef?.hide();
     this.spinner.show();
     this.loader = true;
     var moduleType = 'User';
@@ -454,7 +455,6 @@ export class UserAttributesComponent implements OnInit {
         (response) => {
           this.spinner.hide();
           this.loader = false;
-          this.modalRef?.hide();
           this.getTypeAttributes(this.value);
           this.index = 3;
           setTimeout(() => {

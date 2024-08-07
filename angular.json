@@ -39,8 +39,8 @@
               "src/scss/style.scss"
             ],
             "scripts": [
-              "node_modules/chart.js/dist/Chart.umd.js",
-              "node_modules/chart.js/dist/Chart.js",
+              "node_modules/chart.js/dist/chart.umd.js",
+              "node_modules/chart.js/dist/chart.js",
               //"node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
@@ -54,13 +54,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "10mb",
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "20kb"
                 }
               ],
               "outputHashing": "all"

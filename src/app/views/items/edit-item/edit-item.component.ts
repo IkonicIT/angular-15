@@ -19,7 +19,6 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Location } from '@angular/common';
 import { isUndefined, isNull } from 'is-what';
 import { DomSanitizer } from '@angular/platform-browser';
-import { faL } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-edit-item',
@@ -234,17 +233,16 @@ export class EditItemComponent implements OnInit {
   getTypeName(typeId: any) {
     let typeName;
     this.itemTypes.forEach((type: any) => {
-        if (type.typeid == typeId) {
-          typeName = type.name;
-        } else if (type.typeList.length >= 1) {
-          type.typeList.forEach((type: any) => {
-            if (type.typeid == typeId) {
-              typeName = type.name;
-            }
-          });
-        }
+      if (type.typeid == typeId) {
+        typeName = type.name;
+      } else if (type.typeList.length >= 1) {
+        type.typeList.forEach((type: any) => {
+          if (type.typeid == typeId) {
+            typeName = type.name;
+          }
+        });
       }
-    );
+    });
     return typeName;
   }
 
@@ -326,19 +324,22 @@ export class EditItemComponent implements OnInit {
 
   updateItem() {
     if (
-      this.model.typeId && this.model.typeId != 0 && this.model.tag && this.model.tag != '' && !this.isDuplicateTag
+      this.model.typeId &&
+      this.model.typeId != 0 &&
+      this.model.tag &&
+      this.model.tag != '' &&
+      !this.isDuplicateTag
     ) {
       this.item.attributevalues = [];
       this.typeAttributes.forEach((attr: any) => {
-          this.item.attributevalues.push({
-            attributename: attr,
-            entityid: this.itemId,
-            entitytypeid: attr.type.entitytypeid,
-            lastmodifiedby: this.userName,
-            value: attr.value != null ? attr.value : '',
-          });
-        }
-      );
+        this.item.attributevalues.push({
+          attributename: attr,
+          entityid: this.itemId,
+          entitytypeid: attr.type.entitytypeid,
+          lastmodifiedby: this.userName,
+          value: attr.value != null ? attr.value : '',
+        });
+      });
 
       this.reqAttrValidate = false;
       this.item.attributevalues.forEach(
@@ -366,10 +367,14 @@ export class EditItemComponent implements OnInit {
         }
       );
       var req = {
-        attributevalues: this.item.attributevalues ? this.item.attributevalues : null,
+        attributevalues: this.item.attributevalues
+          ? this.item.attributevalues
+          : null,
         defaultimageattachmentid: this.model.defaultImageAttachmentId,
         description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.desiredSpareRatio ? this.model.desiredSpareRatio : 0,
+        desiredspareratio: this.model.desiredSpareRatio
+          ? this.model.desiredSpareRatio
+          : 0,
         inserviceon: this.model.inServiceOn,
         isinrepair: false,
         isstale: false,
@@ -377,7 +382,9 @@ export class EditItemComponent implements OnInit {
         lastmodifiedby: this.userName,
         locationid: this.model.locationId ? this.model.locationId : 0,
         manufacturerid: null,
-        meantimebetweenservice: this.model.meanTimeBetweenService ? this.model.meanTimeBetweenService : 0,
+        meantimebetweenservice: this.model.meanTimeBetweenService
+          ? this.model.meanTimeBetweenService
+          : 0,
         modelnumber: 'string',
         name: this.model.name ? this.model.name : '',
         purchasedate: this.model.purchaseDate ? this.model.purchaseDate : '',
@@ -389,8 +396,12 @@ export class EditItemComponent implements OnInit {
         companyid: this.companyId,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyExpiration ? this.model.warrantyExpiration : '',
-        warrantytypeid: this.model.warrantyTypeId ? this.model.warrantyTypeId : 0,
+        warrantyexpiration: this.model.warrantyExpiration
+          ? this.model.warrantyExpiration
+          : '',
+        warrantytypeid: this.model.warrantyTypeId
+          ? this.model.warrantyTypeId
+          : 0,
         userid: sessionStorage.getItem('userId'),
         typeName: this.model.typeName,
         locationName: this.model.locationName,

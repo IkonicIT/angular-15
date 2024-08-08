@@ -447,7 +447,7 @@
                 </p>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New ItemNote"
@@ -461,7 +461,7 @@
                   title="Save Item Note"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   (click)="updateItemNotes()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Save
                 </button>
@@ -472,14 +472,14 @@
                   title="Cancel the Changes for this Note"
                   *ngIf="itemRank > 3"
                   (click)="cancelItemNotes()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   [disabled]="itemRank < 6 || highestRank == 9"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Item Note"
@@ -492,7 +492,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add ItemNote Attachment"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
                   Attachments
@@ -502,7 +502,7 @@
                   data-bs-toggle="tooltip"
                   title="Back to View Item"
                   (click)="backToItem()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                 >
                   Back To Item
                 </button>
@@ -882,5 +882,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

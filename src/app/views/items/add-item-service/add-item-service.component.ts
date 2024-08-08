@@ -293,7 +293,7 @@ export class AddItemServiceComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
+          this.loader = false;
         }
       );
   }

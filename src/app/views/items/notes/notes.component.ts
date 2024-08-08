@@ -32,7 +32,7 @@ export class NotesComponent implements OnInit {
   companyName: string = '';
   itemRank: any;
   itemNotesFilter: any = '';
-  itemsForPagination: any = 10;
+  itemsForPagination: any = 5;
   order: string = 'date';
   reverse: string = '';
   authToken: any;
@@ -109,6 +109,15 @@ export class NotesComponent implements OnInit {
         console.log(response);
         this.notes = response;
         this.showAll = this.notes.length;
+        const totalWarrantyTypesCount = this.notes.length;
+        const maxPageAvailable = Math.ceil(
+          totalWarrantyTypesCount / this.itemsForPagination
+        );
+
+        // Check if the current page exceeds the maximum available page
+        if (this.p > maxPageAvailable) {
+          this.p = maxPageAvailable;
+        }
       },
       (error) => {
         this.spinner.hide();
@@ -197,7 +206,7 @@ export class NotesComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.spinner.show();
-      this.loader =true;
+      this.loader = true;
       this.model.moduleType = 'itemtype';
       this.model.effectiveon = new Date(this.model.effectiveon);
       this.model.itemTypeName = this.itemType;
@@ -440,5 +449,15 @@ export class NotesComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+  onChange(e: any) {
+    const totalWarrantyTypesCount = this.notes.length;
+    const maxPageAvailable = Math.ceil(
+      totalWarrantyTypesCount / this.itemsForPagination
+    );
+    // Check if the current page exceeds the maximum available page
+    if (this.p > maxPageAvailable) {
+      this.p = maxPageAvailable;
+    }
   }
 }

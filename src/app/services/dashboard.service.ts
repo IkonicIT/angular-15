@@ -44,7 +44,7 @@ export class DashboardService {
       .post(this.serviceURL + 'causesChart', body)
       .pipe(catchError(this.handleError));
   }
-  
+
   getFailureCausePercentageInRange(failureCause: any) {
     return this.http
       .post(this.serviceURL + 'causesChartInRange', failureCause)

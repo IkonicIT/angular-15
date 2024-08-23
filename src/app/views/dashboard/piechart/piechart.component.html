@@ -167,7 +167,12 @@
 
                   <div
                     class="border-charts"
-                    style="position: relative; height: 300px; width: 592px"
+                    style="
+                      position: relative;
+                      height: 300px;
+                      width: 592px;
+                      padding: 10px;
+                    "
                     *ngIf="chartFlag"
                   >
                     <canvas
@@ -190,7 +195,7 @@
                   </h5>
                   <div
                     class="border-charts"
-                    style="height: 300px; width: 592px"
+                    style="height: 300px; width: 592px; padding: 10px"
                     *ngIf="pieChartCauseLabels.length > 0"
                   >
                     <canvas
@@ -774,7 +779,7 @@
                 <button
                   type="button"
                   (click)="CloseModel()"
-                  class="btn btn-outline-danger btn-sm float-right"
+                  class="btn btn-outline-danger btn-sm float-right space"
                 >
                   Close
                 </button>

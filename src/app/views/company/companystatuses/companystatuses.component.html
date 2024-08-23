@@ -35,7 +35,12 @@
           </div>
         </div>
 
-        <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible">
+        <alert
+          *ngIf="index1 == 1"
+          type="success"
+          [dismissible]="dismissible"
+          class="space"
+        >
           Company Status Deleted successfully.
         </alert>
         <div class="card-body">
@@ -57,7 +62,10 @@
             <div class="float-left">
               <span
                 >Show
-                <select [(ngModel)]="itemsForPagination" (change) = "onChange($event.target)">
+                <select
+                  [(ngModel)]="itemsForPagination"
+                  (change)="onChange($event.target)"
+                >
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
@@ -252,4 +260,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-

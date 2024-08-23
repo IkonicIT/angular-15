@@ -3,31 +3,35 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
-          <button
-            type="button"
-            (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
-          >
-            Print
-          </button>
-          <button
-            type="button"
-            (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm"
-          >
-            Help
-          </button>
+          <div class="style">
+            <button
+              type="button"
+              (click)="print()"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Click to Print this Page"
+              class="btn btn-outline-danger btn-sm"
+            >
+              Print
+            </button>
+            <button
+              type="button"
+              (click)="help()"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title=" Instructions"
+              class="btn btn-outline-danger btn-sm"
+            >
+              Help
+            </button>
+          </div>
           <div
             style="
               text-align: left;
               border: 1px solid;
               width: fit-content;
+              margin-left: 20px;
+              padding: 10px;
               background-color: whitesmoke;
             "
             *ngIf="helpFlag == true"
@@ -172,7 +176,7 @@
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Save Note Attachment"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-right btn-top"
                         >
                           Save
                         </button>
@@ -182,7 +186,7 @@
                           data-bs-toggle="tooltip"
                           title="Cancel"
                           (click)="cancelItemDocument()"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-top"
                         >
                           Cancel
                         </button>

@@ -12,7 +12,7 @@
             </h4>
             <br />
 
-            <div class="row" style="padding: 15px">
+            <div class="row" style="padding: 15px; gap: 5px">
               <div class="col remove-padding">
                 <label for="status"><strong>Chart Type</strong></label>
                 <select
@@ -119,12 +119,7 @@
                 <button
                   type="button"
                   class="btn btn-danger"
-                  style="
-                    display: inherit;
-                    margin-top: -1px;
-                    margin-left: 2px;
-                    border-radius: 0;
-                  "
+                  style="display: inherit; margin-top: -1px; border-radius: 0"
                   (click)="getFailureTypes()"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"

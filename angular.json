@@ -35,17 +35,18 @@
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/material-design-icons/iconfont/material-icons.css",
               "node_modules/ngx-spinner/animations/ball-circus.css",
-              //"node_modules/ngx-select-dropdown/dist/assets/style.css",
+              "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
+
               "src/scss/style.scss"
             ],
             "scripts": [
               "node_modules/chart.js/dist/chart.umd.js",
               "node_modules/chart.js/dist/chart.js",
-              //"node_modules/popper.js/dist/umd/popper.min.js",
+
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              //"node_modules/jquery/dist/jquery.min.js",
+
               "node_modules/lodash/lodash.js"
             ]
           },

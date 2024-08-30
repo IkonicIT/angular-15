@@ -112,13 +112,11 @@ export class FullLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.items = [
-      new TreeviewItem({ text: 'All', value: 'All' }), 
-    ];
+    this.items = [new TreeviewItem({ text: 'All', value: 'All' })];
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.isOwnerAminReadOnly = sessionStorage.getItem('IsOwnerAdminReadOnly');
     this.spinner.show();
-    this.loader = true
+    this.loader = true;
     this.authToken = sessionStorage.getItem('auth_token');
   }
 
@@ -151,16 +149,16 @@ export class FullLayoutComponent implements OnInit {
             this.userSelectedCompany
           );
           this.spinner.hide();
-          this.loader = false
+          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
+          this.loader = false;
         }
       );
     } else {
       this.spinner.show();
-      this.loader = true
+      this.loader = true;
       this.loggedInuser = sessionStorage.getItem('userId');
       if (this.loggedInuser == null) {
         this.router.navigate(['/login']);
@@ -202,7 +200,7 @@ export class FullLayoutComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false
+            this.loader = false;
           }
         );
       this.companyManagementService.setGlobalCompany(this.userCompanies[0]);
@@ -327,7 +325,7 @@ export class FullLayoutComponent implements OnInit {
   getCompanyLogo(companyid: any) {
     this.noLogo = false;
     this.spinner.show();
-    this.loader = true
+    this.loader = true;
     this.companyManagementService.getLogo(companyid).subscribe(
       (response: any) => {
         if (response.logo != null)
@@ -336,11 +334,11 @@ export class FullLayoutComponent implements OnInit {
           );
         else this.noLogo = true;
         this.spinner.hide();
-        this.loader = false
+        this.loader = false;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
+        this.loader = false;
       }
     );
   }
@@ -479,7 +477,7 @@ export class FullLayoutComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
+        this.loader = false;
       }
     );
   }
@@ -498,7 +496,7 @@ export class FullLayoutComponent implements OnInit {
     if (this.router.url != '/items/lists/all') {
       this.router.navigate(['/items/lists/all']);
       this.spinner.show();
-      this.loader = true;      
+      this.loader = true;
     } else {
       this.broadcasterService.broadcast('refreshlist', true);
     }

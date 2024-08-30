@@ -42,6 +42,7 @@ export class AddItemServiceComponent implements OnInit {
   inCompletedServicesFilter: any;
   completedServicesFilter: any;
   loader = false;
+  index1: number = 0;
   constructor(
     private broadcasterService: BroadcasterService,
     private route: ActivatedRoute,
@@ -70,7 +71,9 @@ export class AddItemServiceComponent implements OnInit {
       (response: any) => {
         this.completedServices = response.completedServices;
         this.incompletedServices = response.inCompletedServices;
-        this.spinner.hide();
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 2000);
         this.loader = false;
       },
       (error) => {
@@ -136,7 +139,9 @@ export class AddItemServiceComponent implements OnInit {
       this.loader = true;
       this.itemServiceManagementService.saveItemService(addRequest).subscribe(
         (response) => {
-          this.spinner.hide();
+          setTimeout(() => {
+            this.spinner.hide();
+          }, 2000);
           this.loader = false;
           this.index = 1;
           this.initData();
@@ -175,7 +180,9 @@ export class AddItemServiceComponent implements OnInit {
         .updateItemService(updateRequest, this.model.serviceId)
         .subscribe(
           (response) => {
-            this.spinner.hide();
+            setTimeout(() => {
+              this.spinner.hide();
+            }, 2000);
             this.loader = false;
             this.index = 1;
             this.initData();
@@ -256,7 +263,9 @@ export class AddItemServiceComponent implements OnInit {
             this.model.serviceCause = 0;
           }
         }
-        this.spinner.hide();
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 2000);
         this.loader = false;
       },
       (error) => {
@@ -289,7 +298,12 @@ export class AddItemServiceComponent implements OnInit {
       .subscribe(
         (response) => {
           this.deleteModalRef.hide();
+          this.index1 = 1;
+
           this.initData();
+          setTimeout(() => {
+            this.index1 = 0;
+          }, 2000);
         },
         (error) => {
           this.spinner.hide();

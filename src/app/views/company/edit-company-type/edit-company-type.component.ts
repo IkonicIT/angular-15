@@ -32,7 +32,7 @@ export class EditCompanyTypeComponent implements OnInit {
   userName: any;
   helpFlag: any = false;
   dismissible = true;
-  loader = false
+  loader = false;
 
   constructor(
     private companyTypesService: CompanyTypesService,
@@ -56,10 +56,9 @@ export class EditCompanyTypeComponent implements OnInit {
       console.log('Query params ', this.typeId);
     });
     this.spinner.show();
-    this.loader = true;
+
     this.companyTypesService.getCompanyType(this.typeId).subscribe(
       (response) => {
-        this.loader = false;
         this.model = response;
         if (!this.model.parentid) {
           this.model.parentid = {
@@ -72,20 +71,19 @@ export class EditCompanyTypeComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getAllTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.companyTypesService
       .getAllCompanyTypesWithHierarchy(this.companyId)
       .subscribe(
-        (response) => {          
+        (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.cmpTypes = response;
           var self = this;
           if (this.cmpTypes && this.cmpTypes.length > 0) {
@@ -94,7 +92,6 @@ export class EditCompanyTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -157,13 +154,13 @@ export class EditCompanyTypeComponent implements OnInit {
         moduletype: 'companytype',
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyTypesService
         .updateCompanyType(this.typeId, request)
         .subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.index = 1;
             setTimeout(() => {
               this.index = 0;
@@ -173,7 +170,6 @@ export class EditCompanyTypeComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     }

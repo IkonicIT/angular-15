@@ -46,17 +46,16 @@ export class VendorManagementComponent implements OnInit {
 
   ngOnInit() {
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.getAllVendorDetails(this.companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.vendors = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
     this.currentRole = sessionStorage.getItem('currentRole');
@@ -83,17 +82,16 @@ export class VendorManagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.removeVendor(this.index).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.modalRef?.hide();
         this.refresh();
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }

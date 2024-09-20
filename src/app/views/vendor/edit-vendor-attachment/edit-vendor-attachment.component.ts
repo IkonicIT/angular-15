@@ -48,7 +48,6 @@ export class EditVendorAttachmentComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -61,7 +60,6 @@ export class EditVendorAttachmentComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }

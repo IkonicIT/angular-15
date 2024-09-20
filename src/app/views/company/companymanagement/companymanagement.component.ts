@@ -56,7 +56,7 @@ export class CompanymanagementComponent implements OnInit {
 
   getAllCompniesList() {
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.getAllCompanyDetails().subscribe(
       (response: any) => {
         this.spinner.hide();
@@ -65,7 +65,6 @@ export class CompanymanagementComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -93,24 +92,25 @@ export class CompanymanagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.removeCompany(this.index).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.modalRef.hide();
         alert('Company successfully deleted,Refreshing List ');
         this.companyManagementService.setCompaniesListModified(true);
         const currentPage = this.p;
         const companiesCount = this.companies.length;
-        const maxPageAvailable = Math.ceil(companiesCount / this.itemsForPagination);
-        if (currentPage > maxPageAvailable){
+        const maxPageAvailable = Math.ceil(
+          companiesCount / this.itemsForPagination
+        );
+        if (currentPage > maxPageAvailable) {
           this.p = maxPageAvailable;
         }
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -140,12 +140,14 @@ export class CompanymanagementComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e: any){
+  onChange(e: any) {
     const currentPage = this.p;
-        const companiesCount = this.companies.length;
-        const maxPageAvailable = Math.ceil(companiesCount / this.itemsForPagination);
-        if (currentPage > maxPageAvailable){
-          this.p = maxPageAvailable;
-        }
+    const companiesCount = this.companies.length;
+    const maxPageAvailable = Math.ceil(
+      companiesCount / this.itemsForPagination
+    );
+    if (currentPage > maxPageAvailable) {
+      this.p = maxPageAvailable;
+    }
   }
 }

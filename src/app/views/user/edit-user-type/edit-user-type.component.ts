@@ -59,10 +59,10 @@ export class EditUserTypeComponent implements OnInit {
 
   getUserType(typeId: any) {
     this.spinner.show();
-    this.loader = true;
+
     this.userTypesService.getUserTypeDetails(typeId).subscribe((response) => {
       this.spinner.hide();
-      this.loader = false;
+
       console.log(response);
       this.model = response;
       if (!this.model.parentid) {
@@ -89,7 +89,6 @@ export class EditUserTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -114,7 +113,7 @@ export class EditUserTypeComponent implements OnInit {
   }
 
   updateUserType() {
-    if (this.model.name && (this.model.parentid.typeid != this.userTypeId)) {
+    if (this.model.name && this.model.parentid.typeid != this.userTypeId) {
       var request = {
         attributesearchdisplay: 0,
         description: this.model.description,
@@ -136,11 +135,11 @@ export class EditUserTypeComponent implements OnInit {
         typespareratio: 0,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.userTypesService.updateUserType(request).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -150,7 +149,6 @@ export class EditUserTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {
@@ -163,12 +161,12 @@ export class EditUserTypeComponent implements OnInit {
   }
   getAllUserTypesWithHierarchy() {
     this.spinner.show();
-    this.loader = true;
+
     this.userTypesService
       .getAllUserTypesWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.broadcasterService.userTypeHierarchy = response;
       });
   }

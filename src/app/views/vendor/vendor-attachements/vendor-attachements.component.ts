@@ -53,17 +53,16 @@ export class VendorAttachementsComponent implements OnInit {
 
   getAllDocuments(comapnyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService.getAllCompanyDocuments(comapnyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.documents = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -94,19 +93,18 @@ export class VendorAttachementsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .removeCompanyDocuments(this.index, this.companyId, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.refresh();
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

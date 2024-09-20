@@ -126,7 +126,6 @@ export class AddLocationDetailsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -138,7 +137,6 @@ export class AddLocationDetailsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -218,10 +216,16 @@ export class AddLocationDetailsComponent implements OnInit {
         this.addedlocations.forEach((loc: any) => {
           if (loc.locationName && loc.locationName != '') {
             request.push({
-              address1: this.model.addressLineOne ? this.model.addressLineOne : '',
-              address2: this.model.addressLineTwo ? this.model.addressLineTwo : '',
+              address1: this.model.addressLineOne
+                ? this.model.addressLineOne
+                : '',
+              address2: this.model.addressLineTwo
+                ? this.model.addressLineTwo
+                : '',
               city: this.model.city ? this.model.city : '',
-              typeId: this.model.locationTypeId ? this.model.locationTypeId : '',
+              typeId: this.model.locationTypeId
+                ? this.model.locationTypeId
+                : '',
               company: {
                 companyid: this.companyId,
               },
@@ -250,14 +254,13 @@ export class AddLocationDetailsComponent implements OnInit {
       }
       if (this.reqAttrValidate == false) {
         this.spinner.show();
-        this.loader = true;
+
         this.locationManagementService.saveLocation(request).subscribe(
           (response) => {
             this.refreshCalls();
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {
@@ -296,13 +299,13 @@ export class AddLocationDetailsComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.locationTypes = response;
           this.locationTypes.forEach((type: any) => {
             if (!type.parentid) {
@@ -318,7 +321,6 @@ export class AddLocationDetailsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -326,7 +328,7 @@ export class AddLocationDetailsComponent implements OnInit {
   getTypeAttributes(typeId: string, event: any) {
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
+
       this.locationAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -342,11 +344,9 @@ export class AddLocationDetailsComponent implements OnInit {
           });
           this.model.locationTypeId = typeId;
           this.spinner.hide();
-          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -360,19 +360,18 @@ export class AddLocationDetailsComponent implements OnInit {
         this.router.navigate(['/location/list']);
         console.log('locations:' + response);
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
   cloneaddressfromParentLoc() {
     if (this.model.locationName != undefined) {
       this.spinner.show();
-      this.loader = true;
+
       this.locationManagementService
         .cloneaddressfromParentLoc(this.value, this.companyId)
         .subscribe((response: any) => {
-          this.spinner.hide()
-          this.loader = false;
+          this.spinner.hide();
+
           this.index = 3;
           setTimeout(() => {
             this.index = 0;
@@ -390,7 +389,6 @@ export class AddLocationDetailsComponent implements OnInit {
         this.index = 0;
       }, 7000);
       this.spinner.hide();
-      this.loader = false;
     }
   }
   print() {

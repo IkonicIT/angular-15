@@ -69,12 +69,12 @@ export class AddItemStatusComponent implements OnInit {
         underrepair: this.model.underrepair ? this.model.underrepair : false,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.itemStatusService
         .saveItemStatus(this.model)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {

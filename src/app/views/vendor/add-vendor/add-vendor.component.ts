@@ -90,17 +90,16 @@ export class AddVendorComponent implements OnInit {
         vendor: true,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyManagementService.saveVendor(this.model).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

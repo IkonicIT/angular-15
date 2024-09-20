@@ -47,7 +47,7 @@ export class ResetPasswordComponent {
         )
       ) {
         this.spinner.show();
-        this.loader = true;
+
         let request = {
           password: this.user.password,
           resetToken: this.resetTokenfromUrl,
@@ -55,7 +55,7 @@ export class ResetPasswordComponent {
         this.resetPasswordService.resetPasswordAPI(request).subscribe(
           (response: any) => {
             this.spinner.hide();
-            this.loader = false;
+
             console.log(
               `password reset submitted successfully response is `,
               response
@@ -72,7 +72,6 @@ export class ResetPasswordComponent {
             this.index = 0;
             this.loginError = true;
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {

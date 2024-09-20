@@ -16,7 +16,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class AddCompanyAtrributeComponent implements OnInit {
   model: any = {};
   index: number = 0;
-  loader = false
+  loader = false;
   cmptypes: any[] = [];
   currentRole: any;
   highestRank: any;
@@ -69,7 +69,7 @@ export class AddCompanyAtrributeComponent implements OnInit {
       this.model.companyId = this.companyId;
       this.model.typeId = this.companyType;
       this.spinner.show();
-      this.loader = true
+
       this.companyAttributesServiceService
         .saveCompanyAttributes(this.model)
         .subscribe(
@@ -79,7 +79,6 @@ export class AddCompanyAtrributeComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     }

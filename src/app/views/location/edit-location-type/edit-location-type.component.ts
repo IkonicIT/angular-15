@@ -58,11 +58,11 @@ export class EditLocationTypeComponent implements OnInit {
 
   getLocationType(typeId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.locationTypesService.getLocationTypeDetails(typeId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.model = response;
         if (!this.model.parentid) {
@@ -75,14 +75,13 @@ export class EditLocationTypeComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
@@ -96,7 +95,6 @@ export class EditLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -104,20 +102,19 @@ export class EditLocationTypeComponent implements OnInit {
   generateHierarchy(typeList: any) {
     var items: any = [];
     typeList.forEach((type: any) => {
-        var children = [];
-        if (type.typeList && type.typeList.length > 0) {
-          children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
-        }
-        items.push(
-          new TreeviewItem({
-            text: type.name,
-            value: type.typeid,
-            collapsed: true,
-            children: children,
-          })
-        );
+      var children = [];
+      if (type.typeList && type.typeList.length > 0) {
+        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
       }
-    );
+      items.push(
+        new TreeviewItem({
+          text: type.name,
+          value: type.typeid,
+          collapsed: true,
+          children: children,
+        })
+      );
+    });
     return items;
   }
 
@@ -148,11 +145,11 @@ export class EditLocationTypeComponent implements OnInit {
         typespareratio: 0,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.locationTypesService.updateLocationType(request).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -162,7 +159,6 @@ export class EditLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {

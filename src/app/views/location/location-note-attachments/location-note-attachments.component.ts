@@ -79,17 +79,16 @@ export class LocationNoteAttachmentsComponent implements OnInit {
 
   getAllDocuments(entityId: string, noteId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService.getAllItemNoteDocuments(noteId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.documents = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -125,7 +124,7 @@ export class LocationNoteAttachmentsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     let userLog = {
       noteType: 'locationnoteattachment',
       noteName: this.entityname,
@@ -141,13 +140,12 @@ export class LocationNoteAttachmentsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getAllDocuments(this.noteId, this.noteId);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -178,18 +176,17 @@ export class LocationNoteAttachmentsComponent implements OnInit {
 
   downloadDocumentFromDB(document: { isNew?: boolean; attachmentid?: any }) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

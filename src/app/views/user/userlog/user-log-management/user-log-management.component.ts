@@ -43,13 +43,13 @@ export class UserLogManagementComponent implements OnInit {
   ngOnInit() {}
   users() {
     this.spinner.show();
-    this.loader = true;
+
     this.userManagementService
       .getUserview(this.companyId)
       .subscribe((response) => {
         this.userlogs = response;
         this.spinner.hide();
-        this.loader = false;
+
         this.results = response;
         this.setusercount();
       });

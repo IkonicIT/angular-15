@@ -108,11 +108,11 @@ export class AddItemNoteAttachementComponent implements OnInit {
         },
       };
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttachmentsService.saveItemMultipleDocuments(req).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -125,7 +125,6 @@ export class AddItemNoteAttachementComponent implements OnInit {
 
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

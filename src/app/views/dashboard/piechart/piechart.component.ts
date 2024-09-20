@@ -146,7 +146,7 @@ export class PiechartComponent implements OnInit {
     this.params.charttype = 'company';
     this.params.type = 'yearly';
     this.spinner.show();
-    this.loader = true;
+
     this.authToken = sessionStorage.getItem('auth_token');
     this.chartColors = [
       {
@@ -270,12 +270,12 @@ export class PiechartComponent implements OnInit {
       };
       if (type != '') {
         this.spinner.show();
-        this.loader = true;
+
         this.dashboardService
           .getFailureCausePercentageInRange(request)
           .subscribe((data) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.failureTypesandPercentageCause = data;
 
             this.pieChartCauseLabels = [];
@@ -311,10 +311,10 @@ export class PiechartComponent implements OnInit {
       };
       if (type != '') {
         this.spinner.show();
-        this.loader = true;
+
         this.dashboardService.getFailureCauses(req).subscribe((data) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.failureTypesandPercentageCause = data;
 
           this.pieChartCauseLabels = [];
@@ -344,18 +344,17 @@ export class PiechartComponent implements OnInit {
   getCompanyDocuments() {
     if (this.documents.length < 1) {
       this.spinner.show();
-      this.loader = true;
+
       this.companyDocumentsService
         .getAllCompanyDocuments(this.companyid)
         .subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.documents = response;
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     }
@@ -364,12 +363,12 @@ export class PiechartComponent implements OnInit {
   getLocations() {
     if (this.isOwnerAdmin == 'true') {
       this.spinner.show();
-      this.loader = true;
+
       this.locationManagementService
         .getAllLocationsWithHierarchy(this.companyid)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.allLocations = response;
           this.broadcasterService.locations = response;
           if (this.allLocations && this.allLocations.length > 0) {
@@ -379,12 +378,12 @@ export class PiechartComponent implements OnInit {
         });
     } else {
       this.spinner.show();
-      this.loader = true;
+
       this.locationManagementService
         .getAllLocationsWithHierarchyforUser(this.companyid, this.userId)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.broadcasterService.locations = response;
           this.allLocations = response;
           if (this.allLocations && this.allLocations.length > 0) {
@@ -408,12 +407,12 @@ export class PiechartComponent implements OnInit {
       return false;
     } else {
       this.spinner.show();
-      this.loader = true;
+
       this.dashboardService
         .getRecentData(this.companyid, this.isOwnerAdmin, this.userId)
         .subscribe((response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.recentRepairs = response.repairResource;
           this.recentlyAddedItems = response.recentItemResource;
           this.recentlyAddedItemsKeys = Object.keys(this.recentlyAddedItems);
@@ -439,7 +438,6 @@ export class PiechartComponent implements OnInit {
 
   getFailureTypes() {
     if (this.companyid == 0 || this.companyid == undefined) {
-      this.loader = false;
       return false;
     }
 
@@ -465,7 +463,7 @@ export class PiechartComponent implements OnInit {
           this.locationId = 0;
         }
         this.spinner.show();
-        this.loader = true;
+
         var request = {
           companyId: this.companyid,
           locationId: this.locationId,
@@ -482,7 +480,7 @@ export class PiechartComponent implements OnInit {
           .getFailureTypePercentageInRange(request)
           .subscribe((response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.index = 0;
             this.failureTypesandPercentage = response;
             this.period =
@@ -515,7 +513,7 @@ export class PiechartComponent implements OnInit {
       }
     }
     this.spinner.show();
-    this.loader = true;
+
     var req = {
       companyId: this.companyid,
       locationId: this.locationId != undefined ? this.locationId : 0,
@@ -530,7 +528,7 @@ export class PiechartComponent implements OnInit {
       .getFailureTypePercentage(req)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.failureTypesandPercentage = response;
 
         this.pieChartCauseLabels.length = 0;
@@ -556,7 +554,7 @@ export class PiechartComponent implements OnInit {
 
         this.chartFlag = this.isDataGreaterThanZero(this.pieChartData[0].data);
       });
-    // this.loader = false;
+    //
     return;
   }
 
@@ -664,16 +662,15 @@ export class PiechartComponent implements OnInit {
       attachmentId = document.attachmentid;
     }
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService.getCompanyDocuments(attachmentId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.downloadDocument(response);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -799,12 +796,12 @@ export class PiechartComponent implements OnInit {
       };
       if (cause != '') {
         this.spinner.show();
-        this.loader = true;
+
         this.dashboardService
           .getRecentJobsByCauseinRange(request)
           .subscribe((data) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.repairJobs = data;
             this.openModal(template);
           });
@@ -822,10 +819,10 @@ export class PiechartComponent implements OnInit {
       };
       if (cause != '') {
         this.spinner.show();
-        this.loader = true;
+
         this.dashboardService.getRecentJobsByCause(req).subscribe((data) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.repairJobs = data;
           this.openModal(template);
         });

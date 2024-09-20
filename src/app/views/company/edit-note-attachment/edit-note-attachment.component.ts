@@ -54,22 +54,21 @@ export class EditNoteAttachmentComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.noteName = this.broadcasterService.currentNoteAttachmentTitle;
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService.getCompanyDocuments(this.documentId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
       },
       (error: any) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
   updateCompanyNoteAttachment() {
     this.spinner.show();
-    this.loader = true;
+
     this.model.moduleType = 'itemnotetype';
     this.model.companyID = this.companyId;
     this.model.attachmentUserLogDTO = {
@@ -91,7 +90,6 @@ export class EditNoteAttachmentComponent implements OnInit {
       },
       (error: any) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }

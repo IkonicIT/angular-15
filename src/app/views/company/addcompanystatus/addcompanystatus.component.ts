@@ -78,11 +78,12 @@ export class AddcompanystatusComponent implements OnInit {
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
-          }, 7000);
-          this.router.navigate(['/company/statuses']);
+            this.router.navigate(['/company/statuses']);
+          }, 1000);
         },
         (error) => {
           this.spinner.hide();
+
         }
       );
     }

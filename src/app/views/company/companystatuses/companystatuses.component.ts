@@ -72,6 +72,14 @@ export class CompanystatusesComponent implements OnInit {
 
         console.log(response);
         this.statuses = response;
+        const totalWarrantyTypesCount = this.statuses.length;
+        const maxPageAvailable = Math.ceil(
+          totalWarrantyTypesCount / this.itemsForPagination
+        );
+        // Check if the current page exceeds the maximum available page
+        if (this.p > maxPageAvailable) {
+          this.p = maxPageAvailable;
+        }
       },
       (error) => {
         this.spinner.hide();
@@ -111,6 +119,7 @@ export class CompanystatusesComponent implements OnInit {
             this.index1 = 0;
           }, 7000);
           this.getStatuses();
+
           const currentPage = this.p;
           const statusesCount = this.statuses.length - 1;
           const maxPageAvailable = Math.ceil(
@@ -119,6 +128,7 @@ export class CompanystatusesComponent implements OnInit {
           if (currentPage > maxPageAvailable) {
             this.p = maxPageAvailable;
           }
+
         },
         (error) => {
           this.spinner.hide();

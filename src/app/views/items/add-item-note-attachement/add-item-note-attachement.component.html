@@ -3,7 +3,8 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
-          <button
+          <div class="style">
+             <button
             type="button"
             (click)="print()"
             data-bs-placement="bottom"
@@ -23,11 +24,14 @@
           >
             Help
           </button>
+          </div>
           <div
             style="
               text-align: left;
               border: 1px solid;
               width: fit-content;
+              margin-left: 20px;
+              padding: 10px;
               background-color: whitesmoke;
             "
             *ngIf="helpFlag == true"

@@ -73,17 +73,16 @@ export class CompanydocumentsComponent implements OnInit {
 
   getAllDocuments(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService.getAllCompanyDocuments(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.documents = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -114,25 +113,26 @@ export class CompanydocumentsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .removeCompanyDocuments(this.index, this.companyId, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.refresh();
           const currentPage = this.p;
-    const DocumentCount = this.documents.length - 1;
-    const maxPageAvailable = Math.ceil(DocumentCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
-      this.p = maxPageAvailable;
-    }
+          const DocumentCount = this.documents.length - 1;
+          const maxPageAvailable = Math.ceil(
+            DocumentCount / this.itemsForPagination
+          );
+          if (currentPage > maxPageAvailable) {
+            this.p = maxPageAvailable;
+          }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -163,18 +163,17 @@ export class CompanydocumentsComponent implements OnInit {
 
   downloadDocumentFromDB(document: { attachmentid: number }) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -257,11 +256,11 @@ export class CompanydocumentsComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e : any){
+  onChange(e: any) {
     const currentPage = this.p;
     const DocumentCount = this.documents.length;
     const maxPageAvailable = Math.ceil(DocumentCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
+    if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

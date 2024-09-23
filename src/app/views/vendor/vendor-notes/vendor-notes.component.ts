@@ -57,17 +57,16 @@ export class VendorNotesComponent implements OnInit {
 
   getAllNotes(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.companynotesService.getAllCompanyNotess(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.notes = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -87,7 +86,7 @@ export class VendorNotesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     console.log(
       'removeCompanynotess companyId=' +
         this.companyId +
@@ -99,13 +98,12 @@ export class VendorNotesComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getAllNotes(this.companyId);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -141,4 +139,3 @@ export class VendorNotesComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 }
-

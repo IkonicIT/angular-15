@@ -53,13 +53,13 @@ export class AddCompanyTypeComponent implements OnInit {
 
   getAllTypes(companyId: string | number) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyTypesService
       .getAllCompanyTypesWithHierarchy(companyId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.cmpTypes = response;
           var self = this;
           if (this.cmpTypes && this.cmpTypes.length > 0) {
@@ -69,7 +69,6 @@ export class AddCompanyTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -120,12 +119,12 @@ export class AddCompanyTypeComponent implements OnInit {
         typespareratio: 0,
       };
       this.spinner.show();
-      this.loader = true;
+
       console.log(JSON.stringify(request));
       this.companyTypesService.saveCompanyType(request).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -135,7 +134,6 @@ export class AddCompanyTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

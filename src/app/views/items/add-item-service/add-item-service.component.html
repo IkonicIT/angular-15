@@ -44,6 +44,14 @@
             it to reporting
           </div>
         </div>
+        <alert
+          *ngIf="index1 == 1"
+          type="success"
+          [dismissible]="dismissible"
+          class="space"
+        >
+          Item Service Deleted successfully.
+        </alert>
         <div class="card-body">
           <p class="card-text">
             Manage Item Service "{{ itemType }}" '{{ itemTag }}'
@@ -120,7 +128,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this Type"
@@ -437,9 +445,7 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-1%, -1%);
   "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
+></div>
 <style>
   .loader {
     position: absolute;

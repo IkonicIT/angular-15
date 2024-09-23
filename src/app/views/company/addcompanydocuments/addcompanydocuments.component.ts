@@ -30,7 +30,7 @@ export class AddcompanydocumentsComponent implements OnInit {
   userName: any;
   helpFlag: any = false;
   loader = false;
-  
+
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
@@ -94,11 +94,11 @@ export class AddcompanydocumentsComponent implements OnInit {
         attachmentUserLogDTO: {},
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyDocumentsService.saveCompanyMultipleDocuments(req).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -108,7 +108,6 @@ export class AddcompanydocumentsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

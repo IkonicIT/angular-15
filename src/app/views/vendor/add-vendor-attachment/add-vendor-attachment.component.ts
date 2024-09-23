@@ -67,17 +67,16 @@ export class AddVendorAttachmentComponent implements OnInit {
         moduleType: 'vendortype',
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyDocumentsService.saveCompanyDocument(req).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

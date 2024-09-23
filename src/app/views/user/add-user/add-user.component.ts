@@ -40,7 +40,7 @@ export class AddUserComponent implements OnInit {
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
-    this.loader = true;
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
 
     if (this.globalCompany) {
@@ -51,13 +51,12 @@ export class AddUserComponent implements OnInit {
       this.companyManagementService.getAllCompaniesForOwnerAdmin().subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           console.log(response);
           this.allCompanies = response;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
       console.log('all  companies for owner Admin' + this.allCompanies);
@@ -67,13 +66,12 @@ export class AddUserComponent implements OnInit {
         .subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             console.log(response);
             this.allCompanies = response;
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       console.log('all vendor companies' + this.allCompanies);
@@ -181,7 +179,7 @@ export class AddUserComponent implements OnInit {
         addedBy: this.userName,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.userManagementService
         .saveUser(req, this.companyId)
         .subscribe((response) => {
@@ -191,7 +189,7 @@ export class AddUserComponent implements OnInit {
             this.index = 0;
           }, 7000);
           this.spinner.hide();
-          this.loader = false;
+
           this.router.navigate(['/user/list']);
         });
     } else {

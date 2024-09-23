@@ -28,7 +28,7 @@ export class EditVendorComponent implements OnInit {
 
   ngOnInit() {
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.getVendorDetails(this.companyId).subscribe(
       (response) => {
         this.model = response;
@@ -38,17 +38,14 @@ export class EditVendorComponent implements OnInit {
             (response: any) => {
               this.statuses = response;
               this.spinner.hide();
-              this.loader = false;
             },
             (error) => {
               this.spinner.hide();
-              this.loader = false;
             }
           );
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -67,17 +64,16 @@ export class EditVendorComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
-      this.loader = true;
+
       this.companyManagementService.updateVendor(this.model).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

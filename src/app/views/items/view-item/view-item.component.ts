@@ -108,11 +108,11 @@ export class ViewItemComponent implements OnInit {
 
   getItemDetails() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemManagementService.getItemById(this.itemId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         this.currentAttachmentId = this.model.defaultImageAttachmentId;
         if (this.currentAttachmentId != 0) this.getItemDefaultImage();
@@ -123,7 +123,6 @@ export class ViewItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -139,13 +138,13 @@ export class ViewItemComponent implements OnInit {
 
   getItemDefaultImage() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService
       .getItemDocuments(this.currentAttachmentId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           if (response.isNew)
             this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
               `data:image/png;base64, ${response.attachmentFile}`
@@ -159,14 +158,13 @@ export class ViewItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
 
   getAttachments() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService.getAllItemPictures(this.itemId).subscribe(
       (response: any) => {
         this.itemAttachments = response;
@@ -190,12 +188,11 @@ export class ViewItemComponent implements OnInit {
             }
           );
         this.spinner.hide();
-        this.loader = false;
+
         this.myModal.show();
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -210,7 +207,6 @@ export class ViewItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -229,7 +225,6 @@ export class ViewItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -255,13 +250,13 @@ export class ViewItemComponent implements OnInit {
 
   refreshCall() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemManagementService
       .getItemById(this.itemId)
       .subscribe((response: any) => {
         this.currentAttachmentId = response.defaultImageAttachmentId;
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
       });
   }
@@ -282,7 +277,7 @@ export class ViewItemComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.itemManagementService
       .removeItem(
@@ -295,7 +290,7 @@ export class ViewItemComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.itemManagementService.deleteFlag = 1;
           this.itemManagementService.itemSearchResults = [];
@@ -307,7 +302,6 @@ export class ViewItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

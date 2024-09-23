@@ -91,7 +91,7 @@ export class InserviceVsSpareComponent implements OnInit {
 
   getReport() {
     this.spinner.show();
-    this.loader = true;
+
     let request = {
       companyId: this.companyId,
       hp: this.model.hp ? this.model.hp : null,
@@ -101,7 +101,7 @@ export class InserviceVsSpareComponent implements OnInit {
     this.reportsService.generateISandSpareReport(request).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.report.inServiceAndSpareMotors = response.inServiceAndSpareMotors;
         this.report.unmatchedServiceMotors = response.unmatchedServiceMotors;
         this.report.unmatchedSpareMotors = response.unmatchedSpareMotors;
@@ -114,8 +114,6 @@ export class InserviceVsSpareComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
-
       }
     );
   }
@@ -183,19 +181,15 @@ export class InserviceVsSpareComponent implements OnInit {
 
   openModal(template: TemplateRef<any>, itemId: any) {
     this.spinner.show();
-    this.loader = true;
 
     this.reportsService.getSpareMotor(itemId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
 
         this.spareItem = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
-
       }
     );
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });

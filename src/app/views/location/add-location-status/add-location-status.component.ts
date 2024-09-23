@@ -69,12 +69,12 @@ export class AddLocationStatusComponent implements OnInit {
         underrepair: true,
       };
       this.spinner.show();
-      this.loader = true;
+
       console.log(JSON.stringify(this.model));
       this.locationStatusService.saveLocationStatus(this.model).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -84,7 +84,6 @@ export class AddLocationStatusComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

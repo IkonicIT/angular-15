@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { P404Component } from './404.component';
 import { P500Component } from './500.component';
 import { LoginComponent } from './login.component';
@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { ResetPasswordComponent } from './reset-password.component';
 import { NgxPasswordToggleModule } from 'ngx-password-toggle';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { NgxPasswordToggleModule } from 'ngx-password-toggle';
     FormsModule,
     ReactiveFormsModule,
     PagesRoutingModule,
+    NgxSpinnerModule,
     // NgxPasswordToggleModule,
   ],
   declarations: [
@@ -26,5 +28,6 @@ import { NgxPasswordToggleModule } from 'ngx-password-toggle';
     ForgotPasswordComponent,
     ResetPasswordComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PagesModule {}

@@ -91,18 +91,17 @@ export class ItemAttachmentsComponent implements OnInit {
 
   getAllDocuments(itemId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService.getAllItemDocuments(itemId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.documents = response;
         this.setShowFlagBasedOncontentType(this.documents);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -147,7 +146,7 @@ export class ItemAttachmentsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     let userLog = {
       itemTag: this.itemTag,
       itemTypeName: this.itemType,
@@ -158,29 +157,26 @@ export class ItemAttachmentsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getAllDocuments(this.itemId);
           if (this.currentAttachmentId == this.index) {
             this.spinner.show();
-            this.loader = true;
+
             this.itemAttachmentsService
               .updateItemDefaultImage(this.itemId, 0)
               .subscribe(
                 (response) => {
                   this.spinner.hide();
-                  this.loader = false;
                 },
                 (error) => {
                   this.spinner.hide();
-                  this.loader = false;
                 }
               );
           }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -211,18 +207,17 @@ export class ItemAttachmentsComponent implements OnInit {
 
   downloadDocumentFromDB(document: { isNew?: boolean; attachmentid?: any }) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService
       .getItemDocuments(document.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -305,13 +300,13 @@ export class ItemAttachmentsComponent implements OnInit {
     this.activeCompanyDocument = companyDocument;
     if (companyDocument.isNew) {
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttachmentsService
         .getItemDocuments(companyDocument.attachmentid)
         .subscribe(
           (response: any) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
               `data:image/png;base64, ${response.attachmentFile}`
             );
@@ -319,7 +314,6 @@ export class ItemAttachmentsComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     } else {
@@ -334,13 +328,13 @@ export class ItemAttachmentsComponent implements OnInit {
 
   setAsDefault(companyDocument: { attachmentid: any }) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService
       .updateItemDefaultImage(this.itemId, companyDocument.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.msg = 2;
           this.currentAttachmentId = companyDocument.attachmentid;
           setTimeout(() => {
@@ -349,7 +343,6 @@ export class ItemAttachmentsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     this.myModal.hide();

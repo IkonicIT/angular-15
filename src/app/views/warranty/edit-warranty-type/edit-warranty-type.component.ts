@@ -45,18 +45,17 @@ export class EditWarrantyTypeComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.warrantytypeid = this.route.snapshot.params['warrantyId'];
     this.spinner.show();
-    this.loader = true;
+
     this.warrantyManagementService
       .getWarrantyType(this.warrantytypeid)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.warrantyType = response.warrantytype;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -73,18 +72,17 @@ export class EditWarrantyTypeComponent implements OnInit {
         userName: this.userName,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.warrantyManagementService
         .updateWarrantyType(req, this.warrantytypeid)
         .subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.index = 1;
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     }

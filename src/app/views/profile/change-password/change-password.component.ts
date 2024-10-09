@@ -45,11 +45,11 @@ export class ChangePasswordComponent implements OnInit {
         )
       ) {
         this.spinner.show();
-        this.loader = true;
+
         this.userManagementService.changePassword(req).subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.user = response;
 
             this.index = 1;
@@ -63,7 +63,6 @@ export class ChangePasswordComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {

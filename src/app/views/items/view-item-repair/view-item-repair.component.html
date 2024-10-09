@@ -141,63 +141,67 @@
               <div class="card">
                 <form name="form" #f="ngForm" novalidate>
                   <div class="card-body">
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label>Tag:</label>
+                        <label class="pr5">Tag:</label>
                         <span>{{ model.tag }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label>Type:</label>
+                        <label class="pr5">Type:</label>
                         <span>{{ model.itemtype }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="warrantyType">Warranty Type:</label>
+                        <label class="pr5" for="warrantyType"
+                          >Warranty Type:</label
+                        >
                         <span>{{ model.warrantytype }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="warrantyExp">warranty Exp:</label>
+                        <label class="pr5" for="warrantyExp"
+                          >warranty Exp:</label
+                        >
                         <span>{{
                           model.warrantyexpiration | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="job">JOB Number :</label>
+                        <label class="pr5" for="job">JOB Number :</label>
                         <span>{{ model.jobnumber }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="po">PO Number :</label>
+                        <label class="pr5" for="po">PO Number :</label>
                         <span>{{ model.ponumber }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="job">Location :</label>
+                        <label class="pr5" for="job">Location :</label>
                         <span>{{ model.repairLocationName }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="title">Title:</label>
+                        <label class="pr5" for="title">Title:</label>
                         <span>{{ model.title }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="vendor">Vendor:</label>
+                        <label class="pr5" for="vendor">Vendor:</label>
                         <span>{{ model.repairVendorName }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="details">Details:</label>
+                        <label class="pr5" for="details">Details:</label>
                         <span>{{ model.repairnotes }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="estimatedDate"
+                        <label class="pr5" for="estimatedDate"
                           >Estimated Completion Date:</label
                         >
                         <span>{{
@@ -205,52 +209,64 @@
                         }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="repairCost">Repair Cost:</label>
+                        <label class="pr5" for="repairCost">Repair Cost:</label>
                         <span>{{ model.repaircost | currency }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="repairstatus">Repair Status:</label>
+                        <label class="pr5" for="repairstatus"
+                          >Repair Status:</label
+                        >
                         <span>{{ model.repairjobstatus }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="failureDate">Failure Date:</label>
+                        <label class="pr5" for="failureDate"
+                          >Failure Date:</label
+                        >
                         <span>{{
                           model.failuredate | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="failuretype">Failure Type:</label>
+                        <label class="pr5" for="failuretype"
+                          >Failure Type:</label
+                        >
                         <span>{{ model.failuretype }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="failurecause">Failure Cause:</label>
+                        <label class="pr5" for="failurecause"
+                          >Failure Cause:</label
+                        >
                         <span>{{ model.failurecause }}</span>
                       </div>
                     </div>
-                    <div class="row">
-                      <label>Secondary Findings and Causes:</label>
+                    <div class="row space">
+                      <label class="pr5">Secondary Findings and Causes:</label>
                     </div>
                     <ng-container
                       *ngFor="let sitem of model.secondaryTypeAndCauses"
                     >
-                      <div class="row">
+                      <div class="row space">
                         <div class="form-group col-sm-6">
-                          <label for="failuretype">Failure Type:</label>
+                          <label class="pr5" for="failuretype"
+                            >Failure Type:</label
+                          >
                           <span>{{ sitem.failuretype }}</span>
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="failurecause">Failure Cause:</label>
+                          <label class="pr5" for="failurecause"
+                            >Failure Cause:</label
+                          >
                           <span>{{ sitem.failurecause }}</span>
                         </div>
                       </div>
                     </ng-container>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="complete">Complete:</label>
+                        <label class="pr5" for="complete">Complete:</label>
                         <input
                           type="checkbox"
                           [(ngModel)]="model.complete"
@@ -260,20 +276,24 @@
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="actualCompletion">Actual Completion:</label>
+                        <label class="pr5" for="actualCompletion"
+                          >Actual Completion:</label
+                        >
                         <span>{{
                           model.actualcompletion | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="Completed By">Completed By:</label>
+                        <label class="pr5" for="Completed By"
+                          >Completed By:</label
+                        >
                         <span>{{ model.completedby }}</span>
                       </div>
                     </div>
 
-                    <div class="row"></div>
+                    <div class="row space"></div>
                   </div>
                 </form>
               </div>
@@ -573,7 +593,11 @@
         Click(Yes) to permanently delete this ItemRepair or Click(No) to discard
         This action.
       </p>
-      <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
+      <button
+        type="button"
+        class="btn btn-primary btn-right"
+        (click)="confirm()"
+      >
         Yes
       </button>
       <button type="button" class="btn btn-primary" (click)="decline()">
@@ -684,5 +708,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

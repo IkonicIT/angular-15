@@ -25,7 +25,7 @@ export class EditcompanystatusComponent implements OnInit {
   oldStatus: any;
   length: any;
   dismissible = true;
-  loader = false
+  loader = false;
   constructor(
     private companyStatusesService: CompanyStatusesService,
     private companyManagementService: CompanyManagementService,
@@ -53,17 +53,16 @@ export class EditcompanystatusComponent implements OnInit {
 
     console.log('companyi=' + this.companyId);
     this.spinner.show();
-    this.loader = true;
+
     this.companyStatusesService.getCompanyStatus(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false
+
         this.model = response;
         this.oldStatus = this.model.status;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
@@ -97,11 +96,11 @@ export class EditcompanystatusComponent implements OnInit {
         oldStatus: this.oldStatus,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyStatusesService.updateCompanyStatus(this.model).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -111,7 +110,6 @@ export class EditcompanystatusComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
     }

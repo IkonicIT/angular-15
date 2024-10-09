@@ -30,12 +30,12 @@ export class EditLocationNoteComponent implements OnInit {
     this.locationId = route.snapshot.params['locId'];
     this.router = router;
     this.spinner.show();
-    this.loader = true;
+
     this.locationNotesService
       .getLocationNotes(this.journalid, this.locationId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         if (this.model.effectiveon) {
           this.model.effectiveon = new Date(this.model.effectiveon);
@@ -55,7 +55,7 @@ export class EditLocationNoteComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.spinner.show();
-      this.loader = true;
+
       this.model.moduleType = 'locationtype';
       this.model.effectiveon = new Date(this.model.effectiveon);
       this.locationNotesService.updateLocationNotes(this.model).subscribe(
@@ -65,7 +65,7 @@ export class EditLocationNoteComponent implements OnInit {
             'MM/dd/yyyy'
           );
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -74,7 +74,6 @@ export class EditLocationNoteComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

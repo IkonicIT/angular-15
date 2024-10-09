@@ -13,27 +13,27 @@ export class EditVendorAttachmentComponent implements OnInit {
   index: number = 0;
   date = Date.now();
   companyId: number = 0;
+  dismissible: boolean = true; // Add this line
   documentId: number = 0;
   private sub: any;
   id: number;
   router: Router;
   helpFlag: any = false;
-  dismissible = true;
-  loader = false;
+  vendorId: any;
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.companyId = route.snapshot.params['id'];
+    this.vendorId = route.snapshot.params['id'];
     console.log('compaanyid=' + this.companyId);
     this.router = router;
   }
 
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe((params) => {
-      this.companyId = +params['q'] || 0;
+      this.vendorId = +params['q'] || 0;
       console.log('Query params ', this.companyId);
     });
 
@@ -42,32 +42,33 @@ export class EditVendorAttachmentComponent implements OnInit {
       console.log('Query params ', this.documentId);
     });
 
-    this.companyDocumentsService.getCompanyDocuments(this.documentId).subscribe(
-      (response) => {
-        this.model = response;
-      },
-      (error) => {
-        this.spinner.hide();
-        this.loader = false;
-      }
-    );
+    this.companyDocumentsService
+      .getVendorDocument(this.documentId.toString())
+      .subscribe(
+        (response) => {
+          this.model = response;
+        },
+        (error) => {
+          this.spinner.hide();
+        }
+      );
   }
 
   updateVendorDocument() {
-    this.companyDocumentsService.updateCompanyDocument(this.model).subscribe(
+    this.companyDocumentsService.updateVendorDocument(this.model).subscribe(
       (response) => {
         window.scroll(0, 0);
         this.index = 1;
+        this.router.navigate(['/vendor/documents/' + this.vendorId]);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   cancelVendorDocument() {
-    this.router.navigate(['/vendor/documents/' + this.companyId]);
+    this.router.navigate(['/vendor/documents/' + this.vendorId]);
   }
   print() {
     this.helpFlag = false;

@@ -31,7 +31,7 @@ export class AddNoteAttachmentComponent implements OnInit {
   helpFlag: any = false;
   noteName: any;
   loader = false;
-  
+
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     private companyManagementService: CompanyManagementService,
@@ -101,11 +101,11 @@ export class AddNoteAttachmentComponent implements OnInit {
         },
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyDocumentsService.saveCompanyMultipleDocuments(req).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -117,7 +117,6 @@ export class AddNoteAttachmentComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

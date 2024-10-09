@@ -60,25 +60,23 @@ export class UserManagementComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     if (this.isOwnerAdmin == 'true') {
       this.spinner.show();
-      this.loader = true;
+
       this.userManagementService
         .getAllUsersAsOwnerAdmin(this.companyId)
         .subscribe((response) => {
           console.log(response);
           this.users = response;
           this.spinner.hide();
-          this.loader = false;
         });
     } else {
       this.spinner.show();
-      this.loader = true;
+
       this.userManagementService
         .getAllUsers(this.companyId)
         .subscribe((response) => {
           console.log(response);
           this.users = response;
           this.spinner.hide();
-          this.loader = false;
         });
     }
   }
@@ -131,7 +129,7 @@ export class UserManagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.userManagementService
       .removeUser(
         this.index,

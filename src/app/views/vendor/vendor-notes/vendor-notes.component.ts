@@ -5,6 +5,7 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { CompanynotesService } from '../../../services/companynotes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-vendor-notes',
@@ -13,7 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class VendorNotesComponent implements OnInit {
   companyId: string;
-  model: any;
+  model: any = {};
   p: any;
   index: string = 'companydocument';
   notes: any[] = [];
@@ -28,58 +29,93 @@ export class VendorNotesComponent implements OnInit {
   itemsForPagination: any = 5;
   globalCompany: any;
   helpFlag: any = false;
-  loader = false;
+  vendorId: string;
+  index1: any;
+  viewFlag: any = false;
+  editFlag: any = false;
+  newFlag: any = true;
+  highestRank: any;
+  vendorNoteId: number = 0;
+  public dismissible: boolean = true;
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
     private companynotesService: CompanynotesService,
+    public datepipe: DatePipe,
+
     router: Router,
     route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.companyId = route.snapshot.params['id'];
+    this.vendorId = route.snapshot.params['id'];
     this.router = router;
-
-    console.log('companuyid=' + this.companyId);
+    this.getAllNotes(this.vendorId);
     if (this.companyId) {
-      this.getAllNotes(this.companyId);
+      this.getAllNotes(this.vendorId);
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
       this.companyId = value.companyid;
-      this.getAllNotes(this.companyId);
+      this.getAllNotes(this.vendorId);
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.highestRank = sessionStorage.getItem('highestRank');
+  }
 
-  getAllNotes(companyId: string) {
+  getAllNotes(vendorId: string) {
+    this.addNotes();
     this.spinner.show();
-    this.loader = true;
-    this.companynotesService.getAllCompanyNotess(companyId).subscribe(
+    this.companynotesService.getAllVendorNotes(vendorId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
-        console.log(response);
         this.notes = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
-  addVendorNotes() {
-    console.log(this.companyId);
-    this.router.navigate(['/vendor/addVendorNotes/'], {
-      queryParams: { q: this.companyId },
-    });
+  saveVendorNotes() {
+    if (!this.model.name || !this.model.createdDate) {
+      this.index1 = -1;
+      window.scroll(0, 0);
+    } else {
+      this.model = {
+        vendorNoteId: 0,
+        createdBy: 'Yogi Patel',
+        createdDate: this.model.createdDate,
+        name: this.model.name,
+        jobnumber: this.model.jobnumber,
+        ponumber: this.model.ponumber,
+        details: this.model.details,
+        isNew: true,
+        vendorId: this.vendorId,
+      };
+      this.spinner.show();
+      this.companynotesService.saveVendorNotes(this.model).subscribe(
+        (response: any) => {
+          this.spinner.hide();
+          window.scroll(0, 0);
+          this.index1 = 1;
+          setTimeout(() => {
+            this.index1 = 0;
+          }, 3000);
+
+          this.getAllNotes(this.vendorId);
+        },
+        (error) => {
+          this.spinner.hide();
+        }
+      );
+    }
   }
 
-  openModal(template: TemplateRef<any>, id: string) {
+  openModal(template: TemplateRef<any>, id: any) {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
@@ -87,40 +123,120 @@ export class VendorNotesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
-    console.log(
-      'removeCompanynotess companyId=' +
-        this.companyId +
-        ',index==' +
-        this.index
+    this.companynotesService.removeVendorNotes(this.index).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        this.modalRef.hide();
+        this.index1 = 4;
+        setTimeout(() => {
+          this.index1 = 0;
+        }, 2000);
+        this.getAllNotes(this.vendorId);
+      },
+      (error) => {
+        this.spinner.hide();
+      }
     );
-    this.companynotesService
-      .removeCompanynotess(this.index, this.companyId)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.loader = false;
-          this.modalRef.hide();
-          this.getAllNotes(this.companyId);
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
   }
 
-  editVendorNotes(notes: { journalid: any }) {
-    this.router.navigate(['/vendor/editNotes/'], {
-      queryParams: { q: this.companyId, a: notes.journalid },
+  viewVendorNote(noteId: any) {
+    this.viewFlag = true;
+    this.newFlag = false;
+    this.editFlag = false;
+    this.helpFlag = false;
+    this.spinner.show();
+    this.companynotesService
+      .getVendorNotes(noteId)
+      .subscribe((response: any) => {
+        this.spinner.hide();
+        this.model = response;
+        if (this.model.createdDate) {
+          this.model.createdDate = new Date(this.model.createdDate);
+          this.model.createdDate = this.datepipe.transform(
+            this.model.createdDate,
+            'MM/dd/yyyy'
+          );
+        }
+      });
+    window.scroll(0, 0);
+  }
+
+  backToVendor() {
+    this.router.navigate(['vendor/list/'], {
+      queryParams: { q: this.vendorId },
     });
   }
 
+  goToAttachments(vendorNoteId: string) {
+    // Update this line
+    console.log('attachement:', vendorNoteId);
+    this.router.navigate(['vendor/note/documents/' + vendorNoteId], {
+      queryParams: { q: this.vendorId },
+    });
+  }
+
+  updateVendorNotes() {
+    if (!this.model.name || !this.model.createdDate) {
+      this.index1 = -1;
+      window.scroll(0, 0);
+    } else {
+      this.companynotesService.updateVenodrNotes(this.model).subscribe(
+        (response: any) => {
+          this.model.effectiveon = this.datepipe.transform(
+            this.model.effectiveon,
+            'MM/dd/yyyy'
+          );
+          this.spinner.hide();
+          window.scroll(0, 0);
+          this.viewFlag = true;
+          this.newFlag = false;
+          this.editFlag = false;
+          this.helpFlag = false;
+          this.refreshCall();
+          this.index1 = 2;
+          setTimeout(() => {
+            this.index1 = 0;
+          }, 3000);
+        },
+        (error) => {
+          this.spinner.hide();
+        }
+      );
+    }
+  }
+
+  refreshCall() {
+    this.getAllNotes(this.vendorId);
+  }
+
+  cancelVendorNotes() {
+    this.newFlag = true;
+    this.editFlag = false;
+    this.viewFlag = false;
+    this.helpFlag = false;
+    this.model = [];
+    this.model.effectiveon = new Date();
+  }
+
+  addNotes() {
+    this.newFlag = true;
+    this.editFlag = false;
+    this.viewFlag = false;
+    this.helpFlag = false;
+    this.model = [];
+    this.model.effectiveon = new Date();
+  }
+
+  editNote() {
+    this.editFlag = true;
+    this.viewFlag = false;
+    this.newFlag = false;
+    this.helpFlag = false;
+  }
   decline(): void {
     this.message = 'Declined!';
     this.modalRef.hide();
   }
-
   setOrder(value: string) {
     if (this.order === value) {
       if (this.reverse == '') {
@@ -131,14 +247,11 @@ export class VendorNotesComponent implements OnInit {
     }
     this.order = value;
   }
-
   print() {
     this.helpFlag = false;
     window.print();
   }
-
   help() {
     this.helpFlag = !this.helpFlag;
   }
 }
-

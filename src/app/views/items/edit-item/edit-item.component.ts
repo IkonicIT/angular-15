@@ -158,11 +158,11 @@ export class EditItemComponent implements OnInit {
 
   getItemDetails() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemManagementService.getItemById(this.itemId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         this.currentItemTag = this.model.tag;
         this.currentAttachmentId = this.model.defaultImageAttachmentId;
@@ -181,7 +181,6 @@ export class EditItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -254,25 +253,23 @@ export class EditItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getWarrantyTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -285,7 +282,6 @@ export class EditItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -293,7 +289,7 @@ export class EditItemComponent implements OnInit {
   getItemTypeAttributes(typeId: string) {
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -312,11 +308,9 @@ export class EditItemComponent implements OnInit {
             });
           }
           this.spinner.hide();
-          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -409,11 +403,11 @@ export class EditItemComponent implements OnInit {
       };
       if (this.reqAttrValidate == false) {
         this.spinner.show();
-        this.loader = true;
+
         this.itemManagementService.updateItem(req).subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.index = 1;
             if (this.model.tag != this.currentItemTag) {
               this.broadcasterService.currentItemTag = this.model.tag;
@@ -427,7 +421,6 @@ export class EditItemComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {
@@ -465,12 +458,11 @@ export class EditItemComponent implements OnInit {
 
   refreshCall() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemManagementService
       .getItemById(this.itemId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
 
         this.model = response;
 
@@ -504,7 +496,7 @@ export class EditItemComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.itemManagementService
       .removeItem(
         this.itemId,
@@ -516,7 +508,7 @@ export class EditItemComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.itemManagementService.deleteFlag = 1;
           this.itemManagementService.itemSearchResults = [];
@@ -528,7 +520,6 @@ export class EditItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -559,7 +550,7 @@ export class EditItemComponent implements OnInit {
 
   getAttachments() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService.getAllItemPictures(this.itemId).subscribe(
       (response: any) => {
         this.itemAttachments = response;
@@ -583,25 +574,24 @@ export class EditItemComponent implements OnInit {
             }
           );
         this.spinner.hide();
-        this.loader = false;
+
         this.myModal.show();
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getItemDefaultImage() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService
       .getItemDocuments(this.currentAttachmentId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           if (response.isNew)
             this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
               `data:image/png;base64, ${response.attachmentFile}`
@@ -615,7 +605,6 @@ export class EditItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

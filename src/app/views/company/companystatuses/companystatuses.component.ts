@@ -64,12 +64,12 @@ export class CompanystatusesComponent implements OnInit {
 
   getStatuses() {
     this.spinner.show();
-    this.loader = true;
+
     this.statuses = [];
     this.companyStatusService.getAllCompanyStatuses(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.statuses = response;
         const totalWarrantyTypesCount = this.statuses.length;
@@ -83,7 +83,6 @@ export class CompanystatusesComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -107,23 +106,32 @@ export class CompanystatusesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.companyStatusService
       .removeCompanyStatus(this.index, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.index1 = 1;
           setTimeout(() => {
             this.index1 = 0;
           }, 7000);
           this.getStatuses();
+
+          const currentPage = this.p;
+          const statusesCount = this.statuses.length - 1;
+          const maxPageAvailable = Math.ceil(
+            statusesCount / this.itemsForPagination
+          );
+          if (currentPage > maxPageAvailable) {
+            this.p = maxPageAvailable;
+          }
+
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

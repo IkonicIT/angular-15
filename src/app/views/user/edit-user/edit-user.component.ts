@@ -80,26 +80,24 @@ export class EditUserComponent implements OnInit {
 
   getUserInfo() {
     this.spinner.show();
-    this.loader = true;
+
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
     this.spinner.hide();
-    this.loader = false;
 
     this.spinner.show();
-    this.loader = true;
+
     this.userManagementService
       .getprofileWithType(this.userId, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         this.email = this.model.email;
         this.profileId = response.profileid;
         this.checkCompany();
         this.getTypeAttributes(this.model.userTypeId);
         this.spinner.hide();
-        this.loader = false;
       });
   }
   checkCompany() {
@@ -167,7 +165,7 @@ export class EditUserComponent implements OnInit {
   getTypeAttributes(typeId: string) {
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
+
       this.userAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -201,20 +199,18 @@ export class EditUserComponent implements OnInit {
           } else {
             this.model.attributevalues = [];
             this.typeAttributes.forEach((attr: any) => {
-                this.model.attributevalues.push({
-                  attributename: attr,
-                  entityid: this.profileId,
-                  entitytypeid: attr.type.entitytypeid,
-                  lastmodifiedby: attr.type.lastmodifiedby,
-                  value: attr.value,
-                });
-              }
-            );
+              this.model.attributevalues.push({
+                attributename: attr,
+                entityid: this.profileId,
+                entitytypeid: attr.type.entitytypeid,
+                lastmodifiedby: attr.type.lastmodifiedby,
+                value: attr.value,
+              });
+            });
           }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -274,7 +270,7 @@ export class EditUserComponent implements OnInit {
         addedBy: this.username,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.userManagementService
         .updateUser(this.userId, req)
         .subscribe((response) => {
@@ -284,7 +280,7 @@ export class EditUserComponent implements OnInit {
             this.index = 0;
           }, 7000);
           this.spinner.hide();
-          this.loader = false;
+
           this.router.navigate(['/user/list']);
         });
     } else {
@@ -306,29 +302,27 @@ export class EditUserComponent implements OnInit {
 
   getVendorCompanies() {
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.getAllVendors(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
 
         this.allVendors = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getUserCompaniesList() {
     this.spinner.show();
-    this.loader = true;
+
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
     this.spinner.hide();
-    this.loader = false;
   }
 
   cancelUser() {

@@ -56,17 +56,16 @@ export class CompanyNotesComponent implements OnInit {
 
   getAllNotes(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.companynotesService.getAllCompanyNotess(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.notes = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -92,25 +91,26 @@ export class CompanyNotesComponent implements OnInit {
         this.index
     );
     this.spinner.show();
-    this.loader = true;
+
     this.companynotesService
       .removeCompanynotess(this.index, this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getAllNotes(this.companyId);
           const currentPage = this.p;
-          const notesCount = this.notes.length-1;
-          const maxPageAvailable = Math.ceil(notesCount / this.itemsForPagination);
-          if (currentPage > maxPageAvailable){
+          const notesCount = this.notes.length - 1;
+          const maxPageAvailable = Math.ceil(
+            notesCount / this.itemsForPagination
+          );
+          if (currentPage > maxPageAvailable) {
             this.p = maxPageAvailable;
           }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -142,7 +142,7 @@ export class CompanyNotesComponent implements OnInit {
     this.message = 'Declined!';
     this.modalRef.hide();
   }
-  
+
   setOrder(value: string) {
     if (this.order === value) {
       if (this.reverse == '') {
@@ -153,11 +153,11 @@ export class CompanyNotesComponent implements OnInit {
     }
     this.order = value;
   }
-  onChange(e:any){
+  onChange(e: any) {
     const currentPage = this.p;
     const notesCount = this.notes.length;
     const maxPageAvailable = Math.ceil(notesCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
+    if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

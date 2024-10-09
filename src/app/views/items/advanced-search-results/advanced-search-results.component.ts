@@ -113,7 +113,6 @@ export class AdvancedSearchResultsComponent implements OnInit {
 
     (error: any) => {
       this.spinner.hide();
-      this.loader = false;
     };
   }
   getAttributesForSearchDisplay() {
@@ -125,7 +124,6 @@ export class AdvancedSearchResultsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

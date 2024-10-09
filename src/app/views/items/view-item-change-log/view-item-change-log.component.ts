@@ -29,10 +29,10 @@ export class ViewItemChangeLogComponent implements OnInit {
     this.itemId = route.snapshot.params['itemId'];
     this.router = router;
     this.spinner.show();
-    this.loader = true;
+
     this.itemNotesService.getItemNotes(this.journalid).subscribe((response) => {
       this.spinner.hide();
-      this.loader = false;
+
       this.model = response;
       if (this.model.enteredon) {
         this.model.enteredon = new Date(this.model.enteredon);

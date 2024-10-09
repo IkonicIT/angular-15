@@ -95,13 +95,13 @@ export class MergeLocationsComponent implements OnInit {
         newLocationName: this.model.locationname,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.locationManagementService
         .mergeLocations(req, this.companyId)
         .subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.index = 1;
             setTimeout(() => {
               this.index = 0;
@@ -111,7 +111,6 @@ export class MergeLocationsComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     } else {
@@ -122,7 +121,7 @@ export class MergeLocationsComponent implements OnInit {
   }
   refreshCalls() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationManagementService
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe((response) => {
@@ -130,7 +129,6 @@ export class MergeLocationsComponent implements OnInit {
         this.router.navigate(['/location/list']);
         console.log('locations:' + response);
         this.spinner.hide();
-        this.loader = false;
       });
   }
 

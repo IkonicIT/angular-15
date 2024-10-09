@@ -362,8 +362,20 @@ export class AppSidebarNavComponent {
           },
           {
             name: 'Vendor',
-            url: '/vendor/list',
-            icon: 'fa fa-user-circle',
+            url: '',
+            icon: 'fa fa-sitemap',
+            children: [
+              {
+                name: 'Manage Vendors',
+                url: '/vendor/list',
+                icon: 'fa fa-sitemap',
+              },
+              {
+                name: 'Vendor Dashboard',
+                url: '/vendor/vendorDashboard',
+                icon: 'fa fa-sitemap',
+              },
+            ],
           },
           {
             name: 'Warranty',
@@ -512,8 +524,20 @@ export class AppSidebarNavComponent {
           // },
           {
             name: 'Vendor',
-            url: '/vendor/list',
-            icon: 'fa fa-user-circle',
+            url: '',
+            icon: 'fa fa-sitemap',
+            children: [
+              {
+                name: 'Manage Vendors',
+                url: '/vendor/list',
+                icon: 'fa fa-sitemap',
+              },
+              {
+                name: 'Vendor Dashboard',
+                url: '/vendor/vendorDashboard',
+                icon: 'fa fa-sitemap',
+              },
+            ],
           },
           {
             name: 'Warranty',
@@ -666,8 +690,20 @@ export class AppSidebarNavComponent {
           },
           {
             name: 'Vendor',
-            url: '/vendor/list',
-            icon: 'fa fa-user-circle',
+            url: '',
+            icon: 'fa fa-sitemap',
+            children: [
+              {
+                name: 'Manage Vendors',
+                url: '/vendor/list',
+                icon: 'fa fa-sitemap',
+              },
+              {
+                name: 'Vendor Dashboard',
+                url: '/vendor/vendorDashboard',
+                icon: 'fa fa-sitemap',
+              },
+            ],
           },
           {
             name: 'Warranty',
@@ -841,8 +877,20 @@ export class AppSidebarNavComponent {
           },
           {
             name: 'Vendor',
-            url: '/vendor/list',
-            icon: 'fa fa-user-circle',
+            url: '',
+            icon: 'fa fa-sitemap',
+            children: [
+              {
+                name: 'Manage Vendors',
+                url: '/vendor/list',
+                icon: 'fa fa-sitemap',
+              },
+              {
+                name: 'Vendor Dashboard',
+                url: '/vendor/vendorDashboard',
+                icon: 'fa fa-sitemap',
+              },
+            ],
           },
           {
             name: 'Warranty',

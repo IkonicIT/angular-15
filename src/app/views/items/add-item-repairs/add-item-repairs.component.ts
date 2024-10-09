@@ -128,7 +128,7 @@ export class AddItemRepairsComponent implements OnInit {
   }
 
   getAllVendors() {
-    this.companyManagementService.getAllVendorDetails(this.companyId).subscribe(
+    this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
         this.vendors = response;
       },

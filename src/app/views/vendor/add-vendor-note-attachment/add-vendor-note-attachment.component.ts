@@ -5,17 +5,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
-  selector: 'app-add-vendor-attachment',
-  templateUrl: './add-vendor-attachment.component.html',
-  styleUrls: ['./add-vendor-attachment.component.scss'],
+  selector: 'app-add-vendor-note-attachment',
+  templateUrl: './add-vendor-note-attachment.component.html',
+  styleUrls: ['./add-vendor-note-attachment.component.scss'],
 })
-export class AddVendorAttachmentComponent implements OnInit {
+export class AddVendorNoteAttachmentComponent implements OnInit {
   model: any = {};
   index: number = 0;
   date = Date.now();
-  companyId: number = 0;
   dismissible: boolean = true; // Add this line
-
+  companyId: number = 0;
   vendorName: string;
   private sub: any;
   id: number;
@@ -29,6 +28,7 @@ export class AddVendorAttachmentComponent implements OnInit {
   public file: File;
   userName: any;
   vendorId: any;
+  vendorNoteId: any;
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
@@ -42,6 +42,8 @@ export class AddVendorAttachmentComponent implements OnInit {
       this.companyId = value.companyid;
       this.userName = sessionStorage.getItem('userName');
     });
+    this.vendorNoteId = route.snapshot.params['id'];
+    console.log('VendorNoteId:', this.vendorNoteId);
     this.router = router;
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
@@ -55,9 +57,8 @@ export class AddVendorAttachmentComponent implements OnInit {
   }
 
   saveCompanyDocument() {
-    var noFileChosen = true;
-    var addedFiles = this.addedfiles;
-    addedFiles.forEach(function (element: any) {
+    let noFileChosen = true;
+    this.addedfiles.forEach((element: any) => {
       if (element.attachmentFile === undefined) {
         noFileChosen = false;
       }
@@ -94,7 +95,7 @@ export class AddVendorAttachmentComponent implements OnInit {
           setTimeout(() => {
             this.index = 0;
           }, 3000);
-          this.router.navigate(['/vendor/documents/' + this.vendorId]);
+          this.router.navigate(['/vendor/note/documents/' + this.vendorNoteId]);
         },
         (error) => {
           this.spinner.hide();
@@ -103,36 +104,8 @@ export class AddVendorAttachmentComponent implements OnInit {
     }
   }
 
-  // saveVendorDocument() {
-  //   if (!this.fileName) {
-  //     this.index = -1;
-  //     window.scroll(0, 0);
-  //   } else {
-  //     let req = {
-  //       "createdBy": "Yogi Patel",
-  //       "attachmentFile": this.fileContent,
-  //       "vendorAttachmentId": 0,
-  //       "contenttype": this.fileType,
-  //       "description": this.model.description,
-  //       "filename": this.fileName,
-  //       "moduleType": "vendortype",
-  //       "isNew": true,
-  //       "createdDate":new Date().toISOString(),
-  //     };
-  //     this.spinner.show();
-  //     this.companyDocumentsService.saveVendorDocument(req).subscribe(response => {
-  //       this.spinner.hide();
-  //       window.scroll(0, 0);
-  //       this.index = 1;
-  //     },
-  //       error => {
-  //         this.spinner.hide();
-  //       });
-  //   }
-  // }
-
   cancelVendorDocument() {
-    this.router.navigate(['/vendor/documents/' + this.vendorId]);
+    this.router.navigate(['/vendor/note/documents/' + this.vendorNoteId]);
   }
 
   print() {
@@ -157,7 +130,7 @@ export class AddVendorAttachmentComponent implements OnInit {
     this.index = 0;
     this.addedfiles.push({ file: '', description: '' });
   }
-  readThis(inputValue: any, fileIndex: any): void {
+  readThis(inputValue: any, fileIndex: number): void {
     if (inputValue.files && inputValue.files[0]) {
       this.file = inputValue.files[0];
       this.fileName = this.file.name;
@@ -181,8 +154,10 @@ export class AddVendorAttachmentComponent implements OnInit {
         fileInfo['vendorAttachmentId'] = 0;
         fileInfo['contenttype'] = this.fileType;
         fileInfo['isNew'] = 1;
-        fileInfo['moduleType'] = 'companytype';
         fileInfo['filename'] = this.fileName;
+        fileInfo['vendorNote'] = {
+          vendorNoteId: this.vendorNoteId,
+        };
         fileInfo['createdDate'] = new Date().toISOString();
         console.log(this.addedfiles);
       };

@@ -61,19 +61,17 @@ export class AddUserComponent implements OnInit {
       );
       console.log('all  companies for owner Admin' + this.allCompanies);
     } else {
-      this.companyManagementService
-        .getAllVendorDetails(this.companyId)
-        .subscribe(
-          (response) => {
-            this.spinner.hide();
+      this.companyManagementService.getAllVendorDetails().subscribe(
+        (response) => {
+          this.spinner.hide();
 
-            console.log(response);
-            this.allCompanies = response;
-          },
-          (error) => {
-            this.spinner.hide();
-          }
-        );
+          console.log(response);
+          this.allCompanies = response;
+        },
+        (error) => {
+          this.spinner.hide();
+        }
+      );
       console.log('all vendor companies' + this.allCompanies);
     }
   }

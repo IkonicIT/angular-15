@@ -12,14 +12,21 @@ export class CompanyDocumentsService {
   databaseIndex: number = 1;
   public serviceURL = AppConfiguration.typeStatusRestURL + 'attachment';
   public isProd = false;
-  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
+  public vendorAttachmentsURL = AppConfiguration.vendorAttachments;
+
+  private authToken = sessionStorage.getItem('auth_token')
+    ? sessionStorage.getItem('auth_token')
+    : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
     }),
   };
 
-  constructor(@Inject(SESSION_STORAGE) private storage: StorageService, private http: HttpClient) {}
+  constructor(
+    @Inject(SESSION_STORAGE) private storage: StorageService,
+    private http: HttpClient
+  ) {}
 
   saveCompanyDocument(document: any) {
     // console.log(this.serviceURL, document, this.httpOptions);
@@ -30,19 +37,31 @@ export class CompanyDocumentsService {
 
   saveCompanyDocumentNew(document: any) {
     return this.http
-      .post(this.serviceURL + '/createNewAttachment', document, this.httpOptions)
+      .post(
+        this.serviceURL + '/createNewAttachment',
+        document,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   saveCompanyMultipleDocuments(attachList: any) {
     return this.http
-      .post(this.serviceURL + '/createMultipleAttachments', attachList, this.httpOptions)
+      .post(
+        this.serviceURL + '/createMultipleAttachments',
+        attachList,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   updateCompanyDocument(company: { attachmentid: string }) {
     return this.http
-      .put(this.serviceURL + '/' + company.attachmentid, company, this.httpOptions)
+      .put(
+        this.serviceURL + '/' + company.attachmentid,
+        company,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -54,19 +73,85 @@ export class CompanyDocumentsService {
 
   getAllCompanyDocuments(companyId: string | number) {
     return this.http
-      .get(this.serviceURL + '/getAllAttachments/companytype/' + companyId, this.httpOptions)
+      .get(
+        this.serviceURL + '/getAllAttachments/companytype/' + companyId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllRepairDocuments(companyId: string) {
     return this.http
-      .get(this.serviceURL + '/getAllAttachments/itemrepairtype/' + companyId, this.httpOptions)
+      .get(
+        this.serviceURL + '/getAllAttachments/itemrepairtype/' + companyId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+  getAllVendorDocuments(vendorId: any) {
+    return this.http
+      .get(
+        this.vendorAttachmentsURL + '/getAllVendorAttachments/' + vendorId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
-  removeCompanyDocuments(attachmentId: string, companyid: string, username: string) {
+  removeCompanyDocuments(
+    attachmentId: string,
+    companyid: string,
+    username: string
+  ) {
     return this.http
-      .delete(this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username, { responseType: 'text' })
+      .delete(
+        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
+        { responseType: 'text' }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  saveVendorMultipleDocuments(document: any) {
+    return this.http
+      .post(
+        this.vendorAttachmentsURL + '/createMultipleAttachments',
+        document,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getVendorDocument(attachmentId: string) {
+    return this.http
+      .get(this.vendorAttachmentsURL + '/' + attachmentId, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  updateVendorDocument(vendorAttactment: any) {
+    return this.http
+      .put(
+        this.vendorAttachmentsURL + '/' + vendorAttactment.vendorAttachmentId,
+        vendorAttactment,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getAllVendorNoteDocuments(vendorNoteId: any) {
+    return this.http
+      .get(
+        this.vendorAttachmentsURL +
+          '/getAllVendorNoteAttachments/' +
+          vendorNoteId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  removeVendorDocument(vendorAttachmentId: any) {
+    return this.http
+      .delete(this.vendorAttachmentsURL + '/' + vendorAttachmentId, {
+        responseType: 'text',
+      })
       .pipe(catchError(this.handleError));
   }
 
@@ -81,7 +166,12 @@ export class CompanyDocumentsService {
       .pipe(catchError(this.handleError));
   }
 
-  removeCompanyNoteDocuments(attachmentId: string, companyid: string, username: string, userLog: any) {
+  removeCompanyNoteDocuments(
+    attachmentId: string,
+    companyid: string,
+    username: string,
+    userLog: any
+  ) {
     let params = new HttpParams();
     params = params.append('noteType', userLog.noteType);
     params = params.append('noteName', userLog.noteName);
@@ -93,7 +183,10 @@ export class CompanyDocumentsService {
     };
 
     return this.http
-      .delete(this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username, httpOptions)
+      .delete(
+        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
+        httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 

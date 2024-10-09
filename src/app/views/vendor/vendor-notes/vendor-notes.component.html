@@ -3,15 +3,12 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
-          <p class="card-text" style="font-weight: bold; font-size: 22px">
-            Vendor Notes:
-          </p>
           <div class="form-group col-sm-12 text-right">
             <button
               type="button"
               (click)="print()"
               tooltip="Click to Print this Page"
-              class="btn btn-outline-danger btn-sm"
+              class="btn btn-outline-danger btn-sm btn-right"
             >
               Print
             </button>
@@ -38,6 +35,10 @@
               * Pressing 'Cancel' will undo the changes you've made.
             </div>
           </div>
+          <p class="card-text" style="font-weight: bold; font-size: 22px">
+            Vendor Notes:
+          </p>
+
           <div *ngIf="newFlag == true">
             <div class="row">
               <div class="form-group col-sm-12 text-right">

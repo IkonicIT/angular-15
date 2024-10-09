@@ -1,14 +1,12 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12 col-padding">
+    <div class="col-lg-12">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
             type="button"
             (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
+            tooltip="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
@@ -16,10 +14,8 @@
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            tooltip="Instructions"
+            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Help
           </button>
@@ -46,21 +42,29 @@
         </div>
 
         <div class="card-body">
-          <p class="card-text">
-            Manage Documents
-            <button
-              type="button"
-              class="btn btn-primary float-right"
-              (click)="addDocument()"
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="Add Dcoument."
-              placement="top"
-            >
-              Add Document
-            </button>
-          </p>
-          <div class="select-pagination-option">
+          <div>
+            <p class="card-text">Manage vendor Documents</p>
+            <div class="float float-right">
+              <button
+                type="button"
+                class="btn btn-primary btn-right"
+                (click)="addDocument()"
+                tooltip="Add Dcoument."
+              >
+                Add Document
+              </button>
+              &nbsp;
+              <button
+                type="button"
+                class="btn btn-primary btn-right"
+                (click)="backToVendor()"
+                tooltip="Back to Vendor"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+          <div>
             <div class="float-left">
               <span
                 >Show
@@ -78,6 +82,7 @@
             <span>Search : </span>
             <input [(ngModel)]="vendorDocumentFilter" />
           </div>
+          &nbsp;&nbsp;
           <table
             class="table table-responsive-sm table-hover table-outline mb-0"
           >
@@ -92,14 +97,14 @@
                 </th>
                 <th
                   [class.active]="order === 'dateadded'"
-                  (click)="setOrder('dateadded')"
+                  (click)="setOrder('createdDate')"
                 >
                   Added<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
                   [class.active]="order === 'addedby'"
-                  (click)="setOrder('addedby')"
+                  (click)="setOrder('createdBy')"
                 >
                   By<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -126,31 +131,27 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm btn-right"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Download Attachment"
-                    (click)="downloadDocument(document)"
+                    tooltip="Download Attachment"
+                    (click)="getVendorAttachment(document)"
                   >
-                    Download
+                    View
                   </button>
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm btn-right"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Edit Attachment"
+                    tooltip="Edit Attachment"
                     (click)="editDocument(document)"
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Delete Attachment"
-                    (click)="openModal(confirmtemplate, document.attachmentid)"
-                    disabled="highestRank == 9"
+                    class="btn btn-outline-danger btn-sm btn-right"
+                    tooltip="Delete Attachment"
+                    (click)="
+                      openModal(confirmtemplate, document.vendorAttachmentId)
+                    "
+                    [disabled]="highestRank == 9"
                   >
                     Delete
                   </button>
@@ -178,110 +179,8 @@
     <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
       Yes
     </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
+    <button type="button" class="btn btn-primary btn-right" (click)="decline()">
       No
     </button>
   </div>
 </ng-template>
-
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

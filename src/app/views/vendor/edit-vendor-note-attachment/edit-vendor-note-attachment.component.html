@@ -8,7 +8,7 @@
               type="button"
               (click)="print()"
               tooltip="Click to Print this Page"
-              class="btn btn-outline-danger btn-sm btn-right btn-top"
+              class="btn btn-outline-danger btn-sm"
             >
               Print
             </button>
@@ -16,7 +16,7 @@
               type="button"
               (click)="help()"
               tooltip="Instructions"
-              class="btn btn-outline-danger btn-sm btn-right btn-top"
+              class="btn btn-outline-danger btn-sm"
             >
               Help
             </button>
@@ -43,10 +43,10 @@
           </div>
 
           <div class="card-body">
-            <p class="card-text">Edit Vendor Documents</p>
+            <p class="card-text">Edit Vendor Note Documents</p>
 
             <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
-              Vendor Documents Updated successfully.
+              VendorNote Documents Updated successfully.
             </alert>
 
             <div class="modal-body mobile-padding">
@@ -124,7 +124,7 @@
                         <div class="form-group col-sm-12 text-center">
                           <button
                             tooltip="Update Attachment"
-                            class="btn btn-primary btn-right"
+                            class="btn btn-primary"
                           >
                             Update
                           </button>
@@ -132,7 +132,7 @@
                             type="button"
                             tooltip="Cancel"
                             (click)="cancelVendorDocument()"
-                            class="btn btn-outline-danger btn-sm btn-right"
+                            class="btn btn-outline-danger btn-sm"
                           >
                             Cancel
                           </button>

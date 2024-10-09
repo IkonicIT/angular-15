@@ -1,100 +1,111 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { CompanyDocumentsService } from '../../../services/company-documents.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'app-vendor-attachements',
-  templateUrl: './vendor-attachements.component.html',
-  styleUrls: ['./vendor-attachements.component.scss'],
+  selector: 'app-manage-vendor-note-attachment',
+  templateUrl: './manage-vendor-note-attachment.component.html',
+  styleUrls: ['./manage-vendor-note-attachment.component.scss'],
 })
-export class VendorAttachementsComponent implements OnInit {
-  companyId: string;
-  model: any;
+export class ManageVendorNoteAttachmentComponent implements OnInit {
+  entityId: string;
+  vendorNoteId: string;
   p: any;
-  userName: any;
-  highestRank: number;
-  index: string = 'companydocument';
+  companyId: string;
+  companyName: any;
+  model: any;
+  index: string = '';
   documents: any[] = [];
+  highestRank: number;
   route: ActivatedRoute;
   router: Router;
   message: string;
   modalRef: BsModalRef;
-  vendorName: string = '';
   order: string = 'description';
   reverse: string = '';
-  vendorDocumentFilter: any = '';
+  documentFilter: any = '';
   itemsForPagination: any = 5;
+  userName: any;
   globalCompany: any;
-  helpFlag: any = false;
-  vendorId: any;
   authToken: any;
+  entityname: any;
+  helpFlag: any = false;
   vendorAttachment: any;
+  vendorId: any;
+  private sub: any;
   constructor(
     private modalService: BsModalService,
-    private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
+    private companyDocumentsService: CompanyDocumentsService,
     router: Router,
     route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.vendorId = route.snapshot.params['id'];
-    this.authToken = sessionStorage.getItem('auth_token');
+    this.vendorNoteId = route.snapshot.params['id'];
+    console.log('VendorNoteId in manage vendor note att:' + this.vendorNoteId);
     this.router = router;
     this.route = route;
-
-    console.log('VendorId = ' + this.vendorId);
-    if (this.vendorId) {
-      this.getAllDocuments(this.vendorId);
+    if (this.companyId) {
+      this.getAllDocuments(this.vendorNoteId);
+    } else {
+      this.globalCompany = this.companyManagementService.getGlobalCompany();
+      this.companyId = this.globalCompany.companyid;
+      this.getAllDocuments(this.vendorNoteId);
     }
+    this.companyManagementService.globalCompanyChange.subscribe((value) => {
+      this.globalCompany = value;
+      this.companyName = value.name;
+      this.companyId = value.companyid;
+    });
   }
 
   ngOnInit() {
+    this.sub = this.route.queryParams.subscribe((params) => {
+      this.vendorId = +params['q'] || 0;
+      console.log('Query params of VendorNoteId ', this.vendorNoteId);
+    });
     this.userName = sessionStorage.getItem('userName');
   }
 
-  getAllDocuments(vendorId: any) {
+  getAllDocuments(vendorNoteId: string) {
     this.spinner.show();
-    this.companyDocumentsService.getAllVendorDocuments(vendorId).subscribe(
-      (response: any) => {
-        this.spinner.hide();
-        console.log(response);
-        this.documents = response;
-      },
-      (error: any) => {
-        this.spinner.hide();
-      }
-    );
+    this.companyDocumentsService
+      .getAllVendorNoteDocuments(vendorNoteId)
+      .subscribe(
+        (response) => {
+          this.spinner.hide();
+          console.log(response);
+          this.documents = response as any[];
+        },
+        (error) => {
+          this.spinner.hide();
+        }
+      );
   }
-
-  refresh() {
-    this.documents = [];
-    this.getAllDocuments(this.vendorId);
-  }
-  openModal(template: TemplateRef<any>, id: any) {
+  refresh() {}
+  openModal(template: TemplateRef<any>, id: string) {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
-  addDocument() {
+  addVendorNoteAttachments() {
     console.log(this.companyId);
-    this.router.navigate(['/vendor/addDocument/'], {
-      queryParams: { q: this.vendorId },
-    });
+    this.router.navigate([
+      '/vendor/addVendorNoteDocument/' + this.vendorNoteId,
+    ]);
   }
-  editDocument(document: any) {
-    this.router.navigate(['/vendor/editDocument/'], {
-      queryParams: { q: this.vendorId, a: document.vendorAttachmentId },
-    });
-  }
-
-  backToVendor() {
-    this.router.navigate(['vendor/list/'], {
-      queryParams: { q: this.vendorId },
-    });
+  editVendorNoteDocument(document: any) {
+    this.router.navigate(
+      ['/vendor/editVendorNoteDocument/' + document.vendorAttachmentId],
+      { queryParams: { q: this.vendorNoteId } }
+    );
   }
 
+  back() {
+    this.router.navigate(['/vendor/notes/' + this.vendorId]);
+  }
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
@@ -102,7 +113,7 @@ export class VendorAttachementsComponent implements OnInit {
       (response) => {
         this.spinner.hide();
         this.modalRef.hide();
-        this.refresh();
+        this.getAllDocuments(this.vendorNoteId);
       },
       (error) => {
         this.spinner.hide();
@@ -124,12 +135,6 @@ export class VendorAttachementsComponent implements OnInit {
     }
     this.order = value;
   }
-
-  // downloadDocument(companyDocument) {
-  //   var blob = this.companyDocumentsService.b64toBlob(companyDocument.attachmentFile, companyDocument.contenttype); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
-  //   saveAs(blob, companyDocument.filename);
-  // }
-
   getVendorAttachment(document: any): void {
     this.companyDocumentsService
       .getVendorDocument(document.vendorAttachmentId)

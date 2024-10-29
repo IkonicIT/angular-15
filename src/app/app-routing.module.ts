@@ -24,6 +24,8 @@ import { ThemeModule } from './views/theme/theme.module';
 import { WidgetsModule } from './views/widgets/widgets.module';
 import { NotificationsModule } from './views/notifications/notifications.module';
 import { IconsModule } from './views/icons/icons.module';
+import { PartsModule } from './views/parts/parts.module';
+import { CranesModule } from './views/cranes/cranes.module';
 
 export const routes: Routes = [
   {
@@ -108,6 +110,16 @@ export const routes: Routes = [
           import('./views/template/template.module').then(
             (x) => TemplateModule
           ),
+      },
+      {
+        path: 'parts',
+        loadChildren: () =>
+          import('./views/parts/parts.module').then((x) => PartsModule),
+      },
+      {
+        path: 'cranes',
+        loadChildren: () =>
+          import('./views/cranes/cranes.module').then((x) => CranesModule),
       },
       {
         path: 'reports',

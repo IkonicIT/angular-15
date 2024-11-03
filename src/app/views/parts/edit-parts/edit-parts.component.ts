@@ -148,8 +148,8 @@ export class EditPartComponent implements OnInit {
     });
   }
 
-  navigateToParts(): void {
-    this.router.navigateByUrl(`parts/parts/${this.frame}`);
+  navigateToParts() {
+    this.location.back();
   }
 
   updatePart(): void {
@@ -169,6 +169,7 @@ export class EditPartComponent implements OnInit {
           setTimeout(() => {
             this.successMessage = '';
             this.cdr.detectChanges();
+            this.navigateToParts();
           }, 3000); // 3 seconds
         });
     }

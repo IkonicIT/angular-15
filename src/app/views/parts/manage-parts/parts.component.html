@@ -13,10 +13,10 @@
                     <p *ngIf="errorMessage1" class="alert alert-danger">
                       {{ errorMessage1 }}
                     </p>
-                    <div class="col-6 d-flex flex-column">
+                    <div class="col-6 d-flex flex-column m-2">
                       <input
                         type="text"
-                        class="form-control"
+                        class="form-control bg-white"
                         [(ngModel)]="frame"
                         placeholder="Enter Frame"
                         name="frame"
@@ -118,7 +118,15 @@
                     <div class="d-flex justify-content-end">
                       <button
                         class="btn btn-danger"
-                        [disabled]="highestRank != 8"
+                        [disabled]="highestRank < 5"
+                        (click)="navigateToParts(selectedPartDetails.partid)"
+                      >
+                        Notes
+                      </button>
+                      &nbsp;&nbsp;
+                      <button
+                        class="btn btn-danger"
+                        [disabled]="highestRank < 5"
                         (click)="navigateToEdit(selectedPartDetails.partid)"
                       >
                         Edit

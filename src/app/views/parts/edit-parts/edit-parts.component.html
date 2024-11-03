@@ -5,137 +5,141 @@
       <div class="card">
         <div class="container">
           <h2 class="text-danger">Edit Parts</h2>
-          <form [formGroup]="partForm" (ngSubmit)="updatePart()">
+          <form class="m-4" [formGroup]="partForm" (ngSubmit)="updatePart()">
             <p *ngIf="successMessage" class="alert alert-success">
               {{ successMessage }}
             </p>
-            <div class="d-flex flex-row justify-content-center col-md-12">
+            <div class="d-flex flex-row justify-content-center col-md-12 gap-4">
               <div class="form-group col-md-6">
-                <label for="prdes1">PRDES1</label>
+                <label class="ms-2" for="prdes1">PRDES1</label>
                 <input
                   id="prdes1"
                   formControlName="prdes1"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
               <div class="form-group col-md-6">
-                <label for="prdes2">PRDES2</label>
+                <label class="ms-2" for="prdes2">PRDES2</label>
                 <input
                   id="prdes2"
                   formControlName="prdes2"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
             </div>
 
-            <div class="d-flex flex-row justify-content-center col-md-12">
+            <div class="d-flex flex-row justify-content-center col-md-12 gap-4">
               <div class="form-group col-md-6">
-                <label for="prcorp">PRCORP</label>
+                <label class="ms-2" for="prcorp">PRCORP</label>
                 <input
                   id="prcorp"
                   formControlName="prcorp"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
               <div class="form-group col-md-6">
-                <label for="prstrm">PRSTRM</label>
+                <label class="ms-2" for="prstrm">PRSTRM</label>
                 <input
                   id="prstrm"
                   formControlName="prstrm"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
             </div>
 
-            <div class="d-flex flex-row justify-content-center col-md-12">
+            <div class="d-flex flex-row justify-content-center col-md-12 gap-4">
               <div class="form-group col-md-6">
-                <label for="prstat">PRSTAT</label>
+                <label class="ms-2" for="prstat">PRSTAT</label>
                 <input
                   id="prstat"
                   formControlName="prstat"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
               <div class="form-group col-md-6">
-                <label for="prbloc">PRBLOC</label>
+                <label class="ms-2" for="prbloc">PRBLOC</label>
                 <input
                   id="prbloc"
                   formControlName="prbloc"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
             </div>
 
-            <div class="d-flex flex-row justify-content-center col-md-12">
+            <div class="d-flex flex-row justify-content-center col-md-12 gap-4">
               <div class="form-group col-md-6">
-                <label for="prsect">PRSECT</label>
+                <label class="ms-2" for="prsect">PRSECT</label>
                 <input
                   id="prsect"
                   formControlName="prsect"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
               <div class="form-group col-md-6">
-                <label for="prqnty">PRQNTY</label>
+                <label class="ms-2" for="prqnty">PRQNTY</label>
                 <input
                   id="prqnty"
                   formControlName="prqnty"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
             </div>
 
-            <div class="d-flex flex-row justify-content-center col-md-12">
+            <div class="d-flex flex-row justify-content-center col-md-12 gap-4">
               <div class="form-group col-md-6">
-                <label for="prhvn1">PRHVN1</label>
+                <label class="ms-2" for="prhvn1">PRHVN1</label>
                 <input
                   id="prhvn1"
                   formControlName="prhvn1"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
               <div class="form-group col-md-6">
-                <label for="prhvn2">PRHVN2</label>
+                <label class="ms-2" for="prhvn2">PRHVN2</label>
                 <input
                   id="prhvn2"
                   formControlName="prhvn2"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
             </div>
 
-            <div class="d-flex flex-row justify-content-center col-md-12">
+            <div class="d-flex flex-row justify-content-center col-md-12 gap-4">
               <div class="form-group col-md-6">
-                <label for="prunmo">PRUNMO</label>
+                <label class="ms-2" for="prunmo">PRUNMO</label>
                 <input
                   id="prunmo"
                   formControlName="prunmo"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
               <div class="form-group col-md-6">
-                <label for="prunmd">PRUNMD</label>
+                <label class="ms-2" for="prunmd">PRUNMD</label>
                 <input
                   id="prunmd"
                   formControlName="prunmd"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
             </div>
-            <div class="d-flex flex-row justify-content-center col-md-12">
+            <div class="d-flex flex-row justify-content-center col-md-12 gap-4">
               <div class="form-group col-md-12">
-                <label for="prwrd1">PRWRD1</label>
+                <label class="ms-2" for="prwrd1">PRWRD1</label>
                 <input
                   id="prwrd1"
                   formControlName="prwrd1"
-                  class="form-control"
+                  class="form-control m-2 bg-white"
                 />
               </div>
             </div>
 
             <div class="d-flex flex-row justify-content-center">
-              <button type="submit" class="btn btn-primary">Update</button>
-              <button class="btn btn-primary ml-3" (click)="navigateToParts()">
+              <button type="submit" class="btn btn-primary me-2">Update</button>
+              <button
+                class="btn btn-primary ml-3"
+                (click)="navigateToParts()"
+                type="button"
+              >
                 Back
               </button>
             </div>

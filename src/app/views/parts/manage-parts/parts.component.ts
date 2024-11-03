@@ -15,6 +15,7 @@ export class PartsComponent implements OnInit {
   highestRank: any;
   frame: string = '';
   parts: any[] = [];
+  frameParts: any;
   selectedPartDetails: any = null;
   errorMessage1: string;
   errorMessage2: string;
@@ -25,19 +26,26 @@ export class PartsComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute
   ) {}
+
   ngOnInit() {
+    // const partId = this.route.snapshot.paramMap.get('id');
+    // if (partId) {
+    //   this.partsService.getPartData(+partId).subscribe(data => {
+    //     this.onMpvpClick(partId)
+    //   });
+    // }
     this.userName = sessionStorage.getItem('userName') || '';
-    this.highestRank = sessionStorage.getItem('highestRank') || '';
-    this.route.params.subscribe((params) => {
-      this.frame = params['frame'];
-      this.onSearch();
-    });
+    this.highestRank = sessionStorage.getItem('highestRank');
+    this.frame = sessionStorage.getItem('frameParts') || '';
+    this.onSearch();
   }
 
   onSearch() {
     if (this.frame) {
+      console.log('frameParts:', this.frame);
+      sessionStorage.setItem('frameParts', this.frame);
       this.spinner.show();
-      this.partsService.getParts(this.frame).subscribe((response: any[]) => {
+      this.partsService.getParts(this.frame).subscribe((response) => {
         if (response.length === 0) {
           this.errorMessage1 = 'No Data Found';
           this.selectedPartDetails = null;
@@ -61,7 +69,7 @@ export class PartsComponent implements OnInit {
   onMpvpClick(mpvp: string) {
     this.spinner.show();
     this.partsService.getPartDetails(mpvp).subscribe(
-      (response: any) => {
+      (response) => {
         if (response.length === 0) {
           this.spinner.hide();
           this.selectedPartDetails = null;
@@ -119,5 +127,9 @@ export class PartsComponent implements OnInit {
 
   navigateToEdit(bmkey1: number): void {
     this.router.navigateByUrl(`parts/edit/${bmkey1}/${this.frame}`);
+  }
+
+  navigateToParts(partId: number): void {
+    this.router.navigateByUrl(`parts/manageNotes/${partId}/${this.frame}`);
   }
 }

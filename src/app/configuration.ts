@@ -15,4 +15,5 @@ export class AppConfiguration {
 
   public static forgotPasswordURL =
     'https://gotracrat.in:8085/api/v1/password/';
+  public static cliffsURL = 'https://gotracrat.in:8088';
 }

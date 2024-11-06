@@ -4,6 +4,7 @@ import { CranesService } from 'src/app/services/cranes.service';
 import { Location } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-cranes',
@@ -12,22 +13,22 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class EditCranesComponent implements OnInit {
   craneData: any = {};
-  router: any;
   highestRank: any;
   successMessage: string;
-
+  bmkey1: any;
   constructor(
     private route: ActivatedRoute,
     private cranesService: CranesService,
     private location: Location,
     private cdr: ChangeDetectorRef,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    const bmkey1 = this.route.snapshot.paramMap.get('id');
-    if (bmkey1) {
-      this.cranesService.getCranesInfoData(bmkey1).subscribe((data) => {
+    this.bmkey1 = this.route.snapshot.paramMap.get('id');
+    if (this.bmkey1) {
+      this.cranesService.getCranesInfoData(this.bmkey1).subscribe((data) => {
         this.craneData = data;
       });
     }
@@ -46,7 +47,7 @@ export class EditCranesComponent implements OnInit {
       }, 3000);
       this.cranesService
         .updateCraneData(this.craneData.bmkey1, this.craneData)
-        .subscribe((response: any) => {
+        .subscribe((response) => {
           this.successMessage = 'Crane updated successfully';
           this.cdr.detectChanges();
           window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
@@ -54,6 +55,13 @@ export class EditCranesComponent implements OnInit {
           setTimeout(() => {
             this.successMessage = '';
             this.cdr.detectChanges();
+            this.router.navigate([`/cranes`], {
+              queryParams: {
+                bmdrnk: this.craneData.bmdrnk,
+                bmkey: this.craneData.bmkey1,
+                bmkey2: this.craneData.bmkey2.bmkey1,
+              },
+            });
           }, 3000); // 3 seconds
         });
     }

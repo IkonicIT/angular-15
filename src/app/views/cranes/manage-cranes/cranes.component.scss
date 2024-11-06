@@ -49,3 +49,9 @@ td {
   border: solid black 1px;
   margin-top: 16px;
 }
+
+.rowAlign {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}

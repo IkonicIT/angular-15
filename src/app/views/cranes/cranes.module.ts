@@ -10,6 +10,15 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 // import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import { CranesService } from 'src/app/services/cranes.service';
 import { EditCranesComponent } from './edit-cranes/edit-cranes.component';
+import { CraneNotesComponent } from './crane-notes/crane-notes.component';
+import { AddCraneNoteComponent } from './add-crane-note/add-crane-note.component';
+import { EditCraneNoteComponent } from './edit-crane-note/edit-crane-note.component';
+import { CraneNoteAttachementsComponent } from './crane-note-attachements/crane-note-attachements.component';
+import { AddCraneNoteAttachmentComponent } from './add-crane-note-attachment/add-crane-note-attachment.component';
+import { EditCraneNoteAttachmentComponent } from './edit-crane-note-attachment/edit-crane-note-attachment.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgPipesModule } from 'ngx-pipes';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; // Import BsDatepickerModule
 
 @NgModule({
   imports: [
@@ -18,11 +27,23 @@ import { EditCranesComponent } from './edit-cranes/edit-cranes.component';
     TooltipModule.forRoot(),
     AlertModule.forRoot(),
     TreeviewModule.forRoot(),
+    BsDatepickerModule.forRoot(), // Add BsDatepickerModule here
     DropdownTreeviewModule,
     CranesRoutingModule,
+    NgPipesModule,
     // NgxPasswordToggleModule,
+    NgxPaginationModule, // Add NgxPaginationModule here
   ],
   providers: [CranesService],
-  declarations: [CranesComponent, EditCranesComponent],
+  declarations: [
+    CranesComponent,
+    EditCranesComponent,
+    CraneNotesComponent,
+    AddCraneNoteComponent,
+    EditCraneNoteComponent,
+    CraneNoteAttachementsComponent,
+    AddCraneNoteAttachmentComponent,
+    EditCraneNoteAttachmentComponent,
+  ],
 })
 export class CranesModule {}

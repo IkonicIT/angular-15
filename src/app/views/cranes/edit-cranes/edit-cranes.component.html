@@ -4,8 +4,9 @@
       <div class="card">
         <div class="card-body">
           <!-- src/app/views/cranes/edit-cranes/edit-cranes.component.html -->
-          <div class="edit-crane-container">
-            <h2 class="text-danger">Edit Crane</h2>
+          <div class="edit-crane-container m-5">
+            <h2 class="text-danger m-n5 pb-3">Edit Crane</h2>
+
             <form (ngSubmit)="updateCrane()">
               <p *ngIf="successMessage" class="alert alert-success">
                 {{ successMessage }}
@@ -18,7 +19,7 @@
                     id="bmdrnk"
                     [(ngModel)]="craneData.bmdrnk"
                     name="bmdrnk"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -28,7 +29,7 @@
                     id="bmdes1"
                     [(ngModel)]="craneData.bmdes1"
                     name="bmdes1"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
               </div>
@@ -41,7 +42,7 @@
                     id="bmdes2"
                     [(ngModel)]="craneData.bmdes2"
                     name="bmdes2"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -51,7 +52,7 @@
                     id="bmdes3"
                     [(ngModel)]="craneData.bmdes3"
                     name="bmdes3"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
               </div>
@@ -64,7 +65,7 @@
                     id="bmdrno"
                     [(ngModel)]="craneData.bmdrno"
                     name="bmdrno"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -74,7 +75,7 @@
                     id="bmsto1"
                     [(ngModel)]="craneData.bmsto1"
                     name="bmsto1"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
               </div>
@@ -87,7 +88,7 @@
                     id="bmsto2"
                     [(ngModel)]="craneData.bmsto2"
                     name="bmsto2"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -97,7 +98,7 @@
                     id="bmqtyu"
                     [(ngModel)]="craneData.bmqtyu"
                     name="bmqtyu"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
               </div>
@@ -110,7 +111,7 @@
                     id="bmcomm"
                     [(ngModel)]="craneData.bmcomm"
                     name="bmcomm"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -120,7 +121,7 @@
                     id="bmnot1"
                     [(ngModel)]="craneData.bmnot1"
                     name="bmnot1"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
               </div>
@@ -133,7 +134,7 @@
                     id="bmnot2"
                     [(ngModel)]="craneData.bmnot2"
                     name="bmnot2"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -143,7 +144,7 @@
                     id="bmnot3"
                     [(ngModel)]="craneData.bmnot3"
                     name="bmnot3"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
               </div>
@@ -156,7 +157,7 @@
                     id="bmbin1"
                     [(ngModel)]="craneData.bmbin1"
                     name="bmbin1"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -166,7 +167,7 @@
                     id="bmbin2"
                     [(ngModel)]="craneData.bmbin2"
                     name="bmbin2"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
               </div>
@@ -179,7 +180,7 @@
                     id="bmdrnk"
                     [(ngModel)]="craneData.bmdrnk"
                     name="bmdrnk"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -189,7 +190,7 @@
                     id="bmdes1"
                     [(ngModel)]="craneData.bmdes1"
                     name="bmdes1"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
               </div>
@@ -202,14 +203,21 @@
                     id="bmfram"
                     [(ngModel)]="craneData.bmfram"
                     name="bmfram"
-                    class="form-control"
+                    class="form-control bg-white"
                   />
                 </div>
               </div>
               <!-- Add other fields similarly -->
               <div class="d-flex flex-row justify-content-center">
-                <button type="submit" class="btn btn-danger">Update</button>
                 <button
+                  type="submit"
+                  class="btn btn-danger me-1"
+                  (click)="updateCrane()"
+                >
+                  Update
+                </button>
+                <button
+                  type="button"
                   class="btn btn-danger ml-3"
                   (click)="navigateToCranes()"
                 >

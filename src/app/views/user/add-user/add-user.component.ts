@@ -4,6 +4,7 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { UserManagementService } from '../../../services/user-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgModel } from '@angular/forms';
+import { TreeviewItem } from 'ngx-treeview'; // Add this import
 
 @Component({
   selector: 'app-add-user',
@@ -26,7 +27,9 @@ export class AddUserComponent implements OnInit {
   helpFlag: any = false;
   userName: any;
   dismissible = true;
-  loader = false;
+  vendors: any = [];
+  vendorItems: TreeviewItem[]; // Add this property
+
   constructor(
     router: Router,
     private route: ActivatedRoute,
@@ -40,7 +43,7 @@ export class AddUserComponent implements OnInit {
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
-
+    this.loadVendors();
     this.globalCompany = this.companyManagementService.getGlobalCompany();
 
     if (this.globalCompany) {
@@ -51,7 +54,6 @@ export class AddUserComponent implements OnInit {
       this.companyManagementService.getAllCompaniesForOwnerAdmin().subscribe(
         (response) => {
           this.spinner.hide();
-
           console.log(response);
           this.allCompanies = response;
         },
@@ -59,21 +61,59 @@ export class AddUserComponent implements OnInit {
           this.spinner.hide();
         }
       );
+      // this.companyManagementService.getAllVendorDetails().subscribe(
+      //   (response) => {
+      //     this.spinner.hide();
+      //     this.vendors = response;
+      //   },
+      //   (error) => {
+      //     this.spinner.hide();
+      //   }
+      // );
       console.log('all  companies for owner Admin' + this.allCompanies);
     } else {
-      this.companyManagementService.getAllVendorDetails().subscribe(
-        (response) => {
-          this.spinner.hide();
-
-          console.log(response);
-          this.allCompanies = response;
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+      // this.companyManagementService.getAllVendorDetails().subscribe(
+      //   (response) => {
+      //     this.spinner.hide();
+      //     console.log(response);
+      //     this.allCompanies = response;
+      //   },
+      //   (error) => {
+      //     this.spinner.hide();
+      //   }
+      // );
       console.log('all vendor companies' + this.allCompanies);
     }
+  }
+
+  loadVendors() {
+    this.spinner.show();
+    this.companyManagementService.getAllVendorDetails().subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.vendors = response;
+        this.vendorItems = this.convertVendorsToTreeviewItems(this.vendors);
+      },
+      (error) => {
+        this.spinner.hide();
+        console.error('Error loading vendors:', error);
+      }
+    );
+  }
+
+  convertVendorsToTreeviewItems(vendors: any[]): TreeviewItem[] {
+    return vendors.map(
+      (vendor) =>
+        new TreeviewItem({
+          text: vendor.name,
+          value: vendor.vendorId,
+        })
+    );
+  }
+
+  onVendorChange(value: any) {
+    this.model.vendorId = value;
+    // Add any additional logic you want to perform when the vendor selection changes
   }
 
   checkUserName(event: any) {
@@ -119,6 +159,7 @@ export class AddUserComponent implements OnInit {
   saveUser() {
     console.log(JSON.stringify(this.model));
     console.log('user name is' + this.model.name);
+    console.log('vendorId:', this.model.vendorId);
     if (
       this.model.name &&
       this.model.email &&
@@ -128,11 +169,16 @@ export class AddUserComponent implements OnInit {
       this.model.confirmPassword &&
       this.model.companyid &&
       this.model.password == this.model.confirmPassword &&
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.model.email) &&
+      /\S+@\S+\.\S+/.test(this.model.email) &&
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(
         this.model.password
       )
     ) {
+      if (this.model.isVendor == true && !this.model.vendorId) {
+        this.index = -5;
+        window.scroll(0, 0);
+        return;
+      }
       var req = {
         applicationid: '2E8DCDA9-84CE-4A7F-B8EB-CBD5E815656B',
         username: this.model.name,
@@ -175,9 +221,12 @@ export class AddUserComponent implements OnInit {
         hidepricing: true,
         companyid: this.model.companyid ? this.model.companyid : this.companyId,
         addedBy: this.userName,
+        isVendor: this.model.isVendor,
+        vendorResource: {
+          vendorId: this.model.vendorId,
+        },
       };
       this.spinner.show();
-
       this.userManagementService
         .saveUser(req, this.companyId)
         .subscribe((response) => {
@@ -187,15 +236,12 @@ export class AddUserComponent implements OnInit {
             this.index = 0;
           }, 7000);
           this.spinner.hide();
-
           this.router.navigate(['/user/list']);
         });
     } else {
       window.scroll(0, 0);
       this.index = -1;
-      if (
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.model.email)
-      ) {
+      if (/\S+@\S+\.\S+/.test(this.model.email)) {
         if (
           /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(
             this.model.password

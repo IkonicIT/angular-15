@@ -16,7 +16,7 @@
               <div class="col remove-padding">
                 <label for="status"><strong>Chart Type</strong></label>
                 <select
-                  class="form-control"
+                  class="form-control custom-dropdown"
                   [(ngModel)]="params.charttype"
                   (change)="setLocationId()"
                 >
@@ -260,7 +260,7 @@
                     ></a>
                   </td>
 
-                  <td [innerHTML]="recentRepair.ponumber"></td>
+                  <td [innerHTML]="recentRepair.poNumber"></td>
                   <td>
                     <a
                       href="javascript:void(0)"
@@ -290,7 +290,7 @@
                   </td>
                   <td [innerHTML]="recentRepair.location"></td>
                   <td [innerHTML]="recentRepair.vendor"></td>
-                  <td [innerHTML]="recentRepair.repaircost | currency"></td>
+                  <td [innerHTML]="recentRepair.repairCost | currency"></td>
                   <td
                     [innerHTML]="
                       recentRepair.actualCompletionDate | date : 'MM/dd/yyyy'
@@ -769,7 +769,7 @@
             <div class="card-body">
               <div style="margin-bottom: 10px">
                 <strong class="card-text"
-                  >Repairs under: "{{ selectedFailureCause }}"</strong
+                  >Repairs under: "{{ selectedFailureType }}"</strong
                 >
                 <button
                   type="button"

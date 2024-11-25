@@ -26,4 +26,19 @@
 // Custom styles
 @import "custom";
 
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+.custom-dropdown {
+  appearance: none; /* Remove default styling */
+  -webkit-appearance: none; /* For Safari */
+  -moz-appearance: none; /* For Firefox */
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,5" fill="grey"/></svg>')
+    no-repeat right 10px center; /* Custom arrow */
+  background-size: 10px; /* Size of the arrow */
+  padding-right: 30px; /* Space for the arrow */
+}
+
+.custom-dropdown:focus {
+  outline: none; /* Remove outline on focus */
+  border-color: #000000; /* Change border color on focus */
+}

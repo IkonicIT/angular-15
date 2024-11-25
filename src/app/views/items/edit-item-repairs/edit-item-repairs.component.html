@@ -57,7 +57,7 @@
           </alert>
 
           <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
-            Please Enter PO number,Job number and Failure Date
+            Please Enter PO number,Job number,Vendor and Failure Date
           </alert>
           <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
             Please Select Failure Type & Failure Cause
@@ -72,11 +72,11 @@
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label>Tag:</label>
+                        <label>Tag: </label>
                         <label>{{ model.tag }}</label>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label>Type:</label>
+                        <label>Type: </label>
                         <label>{{ model.itemtype }}</label>
                       </div>
                     </div>
@@ -84,7 +84,7 @@
                       <div class="form-group col-sm-6">
                         <label for="warrantyType">Warranty Type</label>
                         <select
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.warrantytype"
                           (change)="setWarrantyTypeID()"
                           name="type"
@@ -101,9 +101,9 @@
                         </select>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="warrantyExp">warranty Exp.</label>
+                        <label for="warrantyExp">Warranty Exp.</label>
                         <input
-                          class="form-control"
+                          class="form-control bg-white"
                           [disabled]="model.warrantytype == 0"
                           [bsConfig]="bsConfig"
                           bsDatepicker
@@ -122,7 +122,7 @@
                         >
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.jobnumber"
                           name="job"
                           #job="ngModel"
@@ -137,7 +137,7 @@
                         >
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.ponumber"
                           id="po"
                           name="po"
@@ -160,7 +160,7 @@
                         <label for="title">Title</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.title"
                           id="title"
                           name="title"
@@ -171,27 +171,25 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="vendor">Choose Vendor</label>
-                        <select
-                          class="form-control"
-                          [(ngModel)]="model.repaircompanyid"
-                          name="vendor"
-                          #vendor="ngModel"
-                          id="vendor"
-                        >
-                          <option
-                            [ngValue]="vendor.companyid"
-                            *ngFor="let vendor of vendors"
+                        <label for="vendor">
+                          Vendor<strong
+                            *ngIf="highestRank == 2"
+                            class="text-danger"
+                            >*</strong
                           >
-                            {{ vendor.name }}
-                          </option>
-                        </select>
+                        </label>
+                        <app-dropdown-treeview-select
+                          [items]="vendorItems"
+                          [(value)]="model.vendor.vendorId"
+                          (valueChange)="onVendorChange($event)"
+                        >
+                        </app-dropdown-treeview-select>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="details">Details</label>
                         <textarea
                           type="text"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.repairnotes"
                           id="details"
                           name="details"
@@ -202,12 +200,39 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
+                        <label for="repairType">Repair Type</label>
+                        <select
+                          class="form-control bg-white"
+                          [(ngModel)]="model.repairType"
+                          name="repairType"
+                          #repairType="ngModel"
+                          id="repairType"
+                        >
+                          <option value="priority/Rush">Priority/Rush</option>
+                          <option value="straight time">Straight Time</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <div style="margin-right: 90px">
+                          <label for="vendorWarranty">Vendor Warranty</label>
+                          <input
+                            type="checkbox"
+                            class="form-check-input checkbox-large"
+                            [(ngModel)]="model.isVendorWarranty"
+                            id="vendorWarranty"
+                            name="vendorWarranty"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-6">
                         <label for="estimatedDate"
                           >Estimated Completion Date</label
                         >
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.estimatedcompletion"
                           id="estimateddate"
                           name="estimateddate"
@@ -218,7 +243,7 @@
                         <label for="repairCost">Repair Cost</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.repaircost"
                           id="repairCost"
                           name="repairCost"
@@ -231,7 +256,7 @@
                         <label for="repairstatus">Repair Status</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.repairjobstatus"
                           name="repairstatus"
                           #repairstatus="ngModel"
@@ -245,7 +270,7 @@
                         >
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.failuredate"
                           id="failuredate"
                           name="failuredate"
@@ -258,7 +283,7 @@
                         <div class="form-group">
                           <label for="failuretype">Primary Findings </label>
                           <select
-                            class="form-control"
+                            class="form-control bg-white"
                             [(ngModel)]="model.failuretype"
                             name="failuretype"
                             #failuretype="ngModel"
@@ -299,7 +324,7 @@
                               >
                                 <td>
                                   <select
-                                    class="form-control"
+                                    class="form-control bg-white"
                                     [(ngModel)]="sitem.failuretype"
                                     [ngModelOptions]="{ standalone: true }"
                                   >
@@ -313,7 +338,7 @@
                                 </td>
                                 <td>
                                   <select
-                                    class="form-control"
+                                    class="form-control bg-white"
                                     [disabled]="sitem.failuretype == null"
                                     [(ngModel)]="sitem.failurecause"
                                     [ngModelOptions]="{ standalone: true }"
@@ -348,7 +373,7 @@
                       <div class="form-group col-sm-6">
                         <label for="failurecause">Failure Cause</label>
                         <select
-                          class="form-control"
+                          class="form-control bg-white"
                           [disabled]="model.failuretype == null"
                           [(ngModel)]="model.failurecause"
                           name="failurecause"
@@ -367,7 +392,7 @@
                           <label for="failurecause">Or</label>
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control bg-white"
                             *ngIf="model.failuretype != null"
                             [(ngModel)]="model.newfailurecause"
                             name="newfailurecause"
@@ -394,7 +419,7 @@
                         <label for="actualCompletion">Actual Completion</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.actualcompletion"
                           id="actualcompletion"
                           name="actualcompletion"
@@ -435,107 +460,3 @@
     </div>
   </div>
 </div>
-
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
-  .loader {
-    position: absolute;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>
-
-

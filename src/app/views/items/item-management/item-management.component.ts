@@ -240,6 +240,12 @@ export class ItemManagementComponent implements OnInit {
           this.itemManagementService.setSearchedItemStatusId(req.statusid);
           this.itemManagementService.setItemSearchResults(response);
           this.searchResults = response;
+          console.log(
+            'searchResults1:',
+            this.searchResults,
+            this.searchResults[this.itemType]
+          );
+
           this.searchResultKeys = Object.keys(this.searchResults);
 
           this.dynLst = [];
@@ -314,6 +320,7 @@ export class ItemManagementComponent implements OnInit {
           this.spinner.hide();
 
           this.searchResults = response;
+          console.log('searchResults:', this.searchResults);
           this.itemManagementService.setSearchedItemTag(req.tag);
           this.itemManagementService.setSearchedItemTypeId(req.typeId);
           this.itemManagementService.setSearchedItemLocationId(req.locationid);

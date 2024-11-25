@@ -770,6 +770,8 @@ export class AdvancedItemSearchComponent implements OnInit {
     const type = matches;
 
     this.selectedFailureType = type;
+    console.log('selectedFailureCause33', this.selectedFailureCause);
+
     var request = {
       companyId: this.companyId,
       failureType: this.selectedFailureType,
@@ -810,7 +812,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.userId = sessionStorage.getItem('userId');
     const clickedLabel =
       e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.match(/^(.*?)\s+\d+(\.\d+)?$/);
+    const matches = clickedLabel.match(/\d+\.\d+\s*/g, '');
 
     if (matches) {
       causeText = matches[1];
@@ -818,6 +820,7 @@ export class AdvancedItemSearchComponent implements OnInit {
 
     const cause = causeText;
     this.selectedFailureCause = cause;
+    console.log('selectedFailureCause3', this.selectedFailureCause);
 
     var request = {
       companyId: this.companyId,

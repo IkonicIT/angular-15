@@ -1,14 +1,12 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12 col-padding">
+    <div class="col-lg-12">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
             type="button"
             (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
+            tooltip="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
@@ -16,9 +14,7 @@
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
+            tooltip=" Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
@@ -53,7 +49,7 @@
             Please Enter Required fields
           </alert>
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding col-padding">
+            <div class="col-sm-12 mobile-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Editing User [User:{{ username }}]</strong>
@@ -68,7 +64,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="lType">User Name</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -108,36 +104,21 @@
                         </span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="vendor">Primary Company</label
-                        ><strong class="text-danger">*</strong>
-                        <input
-                          type="checkbox"
-                          [(ngModel)]="model.vendor"
-                          name="vendor"
-                          #vendor="ngModel"
-                          id="vendor"
-                          (change)="checkValue(model.vendor ? 'A' : 'B')"
-                          style="margin-left: 100px"
-                        />&nbsp; Vendor
+                        <label for="commpanyid">Select Company</label
+                        ><strong class="text-danger"> *</strong>
                         <select
                           class="form-control"
                           [(ngModel)]="model.companyid"
-                          name="companyid"
+                          name="commpanyid"
                           #companyid="ngModel"
+                          id="commpanyid"
                         >
+                          <!-- <option value="0" selected="true">Select Company</option>-->
                           <option
                             [ngValue]="company.companyid"
                             *ngFor="let company of allCompanies"
-                            [selected]="isUserCompany === true"
                           >
                             {{ company.name }}
-                          </option>
-                          <option
-                            [ngValue]="vendor.companyid"
-                            *ngFor="let vendor of allVendors"
-                            [selected]="isVendor === true"
-                          >
-                            {{ vendor.name }}
                           </option>
                         </select>
                       </div>
@@ -145,7 +126,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fname">First Name</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -157,7 +138,7 @@
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="lName">Last Name</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -195,7 +176,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="email">E-mail</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -272,7 +253,7 @@
                       </div>
                     </div>
 
-                    <div class="row">
+                    <div *ngIf="model.isVendor != true" class="row">
                       <div class="form-group col-sm-6">
                         <label for="location">User's Top Location</label>
 
@@ -294,9 +275,32 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="req" class="btn-right"
-                          >Receive RFQ Notification</label
+                        <label for="isVendor" class="me-1">Vendor </label>
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="model.isVendor"
+                          name="isVendor"
+                          #req="ngModel"
+                          id="isVendor"
+                        />
+                      </div>
+                      <div *ngIf="model.isVendor" class="form-group col-sm-6">
+                        <label for="vendor">
+                          Select Vendor<strong class="text-danger"> *</strong>
+                        </label>
+                        <app-dropdown-treeview-select
+                          [items]="vendorItems"
+                          [(value)]="model.vendorResource.vendorId"
+                          (valueChange)="onVendorChange($event)"
                         >
+                        </app-dropdown-treeview-select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="req" class="me-1"
+                          >Receive RFQ Notification
+                        </label>
                         <input
                           type="checkbox"
                           [(ngModel)]="model.sendreceiverfq"
@@ -310,18 +314,14 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Update this User"
+                          tooltip="Update this User"
                           class="btn btn-primary btn-right"
                         >
                           Update
                         </button>
                         <button
                           type="button"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Cancel"
+                          tooltip="Cancel"
                           (click)="cancelUser()"
                           class="btn btn-primary"
                         >
@@ -405,43 +405,39 @@
                                 eachAttr.attributetype.attributetypeid == 5
                               "
                             >
-                              <label
-                                class="form-check-label margin-right"
-                                for="radio1"
+                              <label class="form-check-label" for="radio1"
                                 >&nbsp;
                                 <input
-                                  class="form-check-input"
                                   type="radio"
                                   [(ngModel)]="eachAttr.value"
                                   name="radios{{ i }}"
                                   id="radio1"
                                   value="Y"
                                   checked
-                                />Y&nbsp;&nbsp;&nbsp;&nbsp;
+                                />
+                                Y&nbsp;&nbsp;&nbsp;&nbsp;
                               </label>
-                              <label
-                                class="form-check-label margin-right"
-                                for="radio2"
+                              <label class="form-check-label ms-2" for="radio2"
                                 >&nbsp;
                                 <input
-                                  class="form-check-input"
                                   type="radio"
                                   [(ngModel)]="eachAttr.value"
                                   name="radios{{ i }}"
                                   id="radio2"
                                   value="N"
-                                />N&nbsp;&nbsp;&nbsp;&nbsp;
+                                />
+                                N&nbsp;&nbsp;&nbsp;&nbsp;
                               </label>
-                              <label class="form-check-label" for="radio3"
+                              <label class="form-check-label ms-2" for="radio3"
                                 >&nbsp;
                                 <input
-                                  class="form-check-input"
                                   type="radio"
                                   [(ngModel)]="eachAttr.value"
                                   name="radios{{ i }}"
                                   id="radio3"
                                   value="N/A"
-                                />N/A
+                                />
+                                N/A
                               </label>
                             </div>
                             <textarea
@@ -469,105 +465,3 @@
     </div>
   </div>
 </div>
-
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

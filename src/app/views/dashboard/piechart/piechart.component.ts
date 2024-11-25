@@ -38,6 +38,7 @@ export class PiechartComponent implements OnInit {
   isOwnerAdmin: any;
   typeId: any = 0;
   index: number = 0;
+  failureType: any;
   userId: any;
   year: any;
   flag: any;
@@ -250,10 +251,17 @@ export class PiechartComponent implements OnInit {
 
     const clickedLabel =
       e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.replace(/\d+\.\d+\s*/g, '');
+    const matches = clickedLabel.replace(/\b\d+(\.\d+)?\b\s*/g, '');
     const type = matches;
+    const failureType = matches;
+    sessionStorage.setItem('failureType', matches);
 
     this.selectedFailureType = type;
+    console.log(
+      'selectedFailureCause11',
+      this.selectedFailureType,
+      clickedLabel
+    );
 
     if (this.params.type == 'range') {
       var request = {
@@ -770,30 +778,38 @@ export class PiechartComponent implements OnInit {
     let causeText;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.userId = sessionStorage.getItem('userId');
+    this.failureType = sessionStorage.getItem('failureType');
     //const cause = e.active[0]._chart.data.labels[e.active[0]._index];
     const clickedLabel =
       e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.match(/^(.*?)\s+\d+(\.\d+)?$/);
+    const matches = clickedLabel.replace(/\b\d+(\.\d+)?\b\s*/g, '');
+    const type = matches;
 
-    if (matches) {
-      causeText = matches[1];
-    }
-
+    this.selectedFailureType = type;
     const cause = causeText;
-    this.selectedFailureCause = cause;
+    console.log(
+      'selectedFailureCause1',
+      this.selectedFailureType,
+      clickedLabel
+    );
 
     if (this.params.type == 'range') {
       var request = {
         companyId: this.companyid,
         locationId: this.locationId != null ? this.locationId : 0,
-        failureType: this.selectedFailureType,
-        failureCause: this.selectedFailureCause,
+        failureType: this.failureType,
+        failureCause: this.selectedFailureType,
         isOwnerAdmin: this.isOwnerAdmin,
         userId: this.userId,
         startDate: this.params.from.format('YYYY-MM-DD'),
         endDate: this.params.to.format('YYYY-MM-DD'),
         typeId: this.typeId ? this.typeId : 0,
       };
+      console.log(
+        'selectedFailureCause:',
+        this.selectedFailureCause,
+        this.selectedFailureType
+      );
       if (cause != '') {
         this.spinner.show();
 
@@ -811,12 +827,17 @@ export class PiechartComponent implements OnInit {
         companyId: this.companyid,
         timeFrame: this.timeFrame,
         locationId: this.locationId != null ? this.locationId : 0,
-        failureType: this.selectedFailureType,
-        failureCause: this.selectedFailureCause,
+        failureType: this.failureType,
+        failureCause: this.selectedFailureType,
         isOwnerAdmin: this.isOwnerAdmin,
         userId: this.userId,
         typeId: this.typeId ? this.typeId : 0,
       };
+      console.log(
+        'selectedFailureCause1:',
+        this.selectedFailureCause,
+        this.selectedFailureType
+      );
       if (cause != '') {
         this.spinner.show();
 
@@ -897,20 +918,59 @@ export class PiechartComponent implements OnInit {
 
   exportToExel() {
     const clonedsearchResults: any = cloneDeep(this.repairJobs);
+
+    // Validate and clean the data
     clonedsearchResults.forEach((obj: any) => {
       if (this.highestRank <= 5) {
-        delete obj.repairCost;
+        delete obj.repairCost; // Remove repairCost if highestRank is <= 5
       }
-      delete obj.actualCompletion;
-      delete obj.attachmentList;
-      delete obj.attachmentListFromXml;
-      delete obj.rank;
-      delete obj.complete;
-      delete obj.dateAdded;
-      delete obj.itemId;
-      delete obj.repairLogId;
+
+      // Ensure all required fields are present and valid
+      obj.actualCompletion = obj.actualCompletion || 'N/A';
+      obj.attachmentList = obj.attachmentList || [];
+      obj.attachmentListFromXml = obj.attachmentListFromXml || [];
+      obj.rank = obj.rank || 0;
+      obj.complete = obj.complete ?? false; // Use nullish coalescing
+      obj.dateAdded = obj.dateAdded
+        ? new Date(obj.dateAdded).toISOString()
+        : new Date().toISOString();
+      obj.itemId = obj.itemId || 0;
+      obj.repairLogId = obj.repairLogId || 0;
+
+      // Set default for NaN values
+      obj.repairLogId = isNaN(obj.repairLogId) ? 0 : obj.repairLogId;
+      obj.itemId = isNaN(obj.itemId) ? 0 : obj.itemId;
+      obj.rank = isNaN(obj.rank) ? 0 : obj.rank;
+      obj.repairCost = isNaN(obj.repairCost) ? 0 : obj.repairCost;
     });
-    this.excelService.exportAsExcelFile(clonedsearchResults, 'RepairJobs');
+
+    // Log cleaned data for debugging
+    console.log('Exporting data:', clonedsearchResults);
+
+    // Convert objects to array of arrays for compatibility
+    const exportData = clonedsearchResults.map((obj: any) => ({
+      repairLogId: obj.repairLogId || 0,
+      itemId: obj.itemId || 0,
+      tag: obj.tag || 'N/A',
+      typeName: obj.typeName || 'N/A',
+      poNumber: obj.poNumber || 'N/A',
+      jobNumber: obj.jobNumber || 'N/A',
+      location: obj.location || 'N/A',
+      vendor: obj.vendor || 'N/A',
+      repairCost: obj.repairCost || 0,
+      actualCompletion: obj.actualCompletion || 'N/A',
+      rank: obj.rank || 0,
+      complete: obj.complete ?? false,
+      actualCompletionDate: obj.actualCompletionDate || 'N/A',
+      dateAdded: obj.dateAdded || new Date().toISOString(),
+      failureType: obj.failureType || 'N/A',
+      failureCause: obj.failureCause || 'N/A',
+    }));
+
+    console.log('Prepared data for export:', exportData);
+
+    // Proceed with exporting
+    this.excelService.exportAsExcelFile(exportData, 'RepairJobs');
   }
 
   getFailureTypeAndCause(failureType: string, failureCause: string) {

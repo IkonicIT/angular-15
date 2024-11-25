@@ -1,22 +1,27 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { BroadcasterService } from '../../../services/broadcaster.service';
+import { BroadcasterService } from 'src/app/services/broadcaster.service';
 import { IDatePickerConfig } from 'ng2-date-picker';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TreeviewItem } from 'ngx-treeview';
-import { LocationManagementService } from '../../../services/location-management.service';
+import { LocationManagementService } from 'src/app/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import {
-  CompanyDocumentsService,
-  CompanyManagementService,
-  ItemManagementService,
-  ItemTypesService,
-} from '../../../services/index';
+// import {
+//   CompanyDocumentsService,
+//   CompanyManagementService,
+//   ItemManagementService,
+//   ItemTypesService,
+// } from 'src/app/services;
+
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { CompanyDocumentsService } from 'src/app/services';
+import { CompanyManagementService } from 'src/app/services';
+import { ItemManagementService } from 'src/app/services';
+import { ItemTypesService } from 'src/app/services';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { DashboardService } from '../../../services/dashboard.service';
+import { DashboardService } from 'src/app/services/dashboard.service';
 import * as cloneDeep from 'lodash';
-import { ExcelService } from '../../../services/excel-service';
+import { ExcelService } from 'src/app/services/excel-service';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 
 @Component({
@@ -250,10 +255,11 @@ export class PiechartComponent implements OnInit {
 
     const clickedLabel =
       e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.replace(/\d+\.\d+\s*/g, '');
+    const matches = clickedLabel.replace(/^(.*?)\s+\d+(\.\d+)?$/);
     const type = matches;
 
     this.selectedFailureType = type;
+    console.log('selectedFailureCause22', this.selectedFailureCause);
 
     if (this.params.type == 'range') {
       var request = {
@@ -773,7 +779,7 @@ export class PiechartComponent implements OnInit {
     //const cause = e.active[0]._chart.data.labels[e.active[0]._index];
     const clickedLabel =
       e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.match(/^(.*?)\s+\d+(\.\d+)?$/);
+    const matches = clickedLabel.match(/\d+\.\d+\s*/g, '');
 
     if (matches) {
       causeText = matches[1];
@@ -781,6 +787,7 @@ export class PiechartComponent implements OnInit {
 
     const cause = causeText;
     this.selectedFailureCause = cause;
+    console.log('selectedFailureCause2', this.selectedFailureCause);
 
     if (this.params.type == 'range') {
       var request = {

@@ -155,7 +155,7 @@
                           <strong class="text-danger">*</strong></label
                         >
                         <select
-                          class="form-control add-item-background"
+                          class="form-control add-item-background custom-dropdown"
                           [(ngModel)]="model.statusid"
                           name="status"
                           #status="ngModel"
@@ -223,7 +223,7 @@
                       <div class="form-group col-sm-6">
                         <label for="warranty">Warranty Type</label>
                         <select
-                          class="form-control add-item-background"
+                          class="form-control add-item-background custom-dropdown"
                           [(ngModel)]="model.warrantytypeid"
                           name="warranty"
                           #warranty="ngModel"
@@ -358,7 +358,7 @@
                         <div class="form-group col-sm-6">
                           <label for="status">Status</label>
                           <select
-                            class="form-control"
+                            class="form-control custom-dropdown"
                             [(ngModel)]="locationModel.statusid"
                             name="status"
                             #status="ngModel"
@@ -474,7 +474,7 @@
                           />
                           <select
                             *ngIf="eachAttr.attributetype.attributetypeid == 4"
-                            class="form-control"
+                            class="form-control custom-dropdown"
                             [tooltip]="eachAttr.tooltip"
                             [(ngModel)]="eachAttr.value"
                             name="select{{ index }}"

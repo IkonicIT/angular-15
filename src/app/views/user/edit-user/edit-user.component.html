@@ -107,7 +107,7 @@
                         <label for="commpanyid">Select Company</label
                         ><strong class="text-danger"> *</strong>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.companyid"
                           name="commpanyid"
                           #companyid="ngModel"
@@ -384,7 +384,7 @@
                               *ngIf="
                                 eachAttr.attributetype.attributetypeid == 4
                               "
-                              class="form-control"
+                              class="form-control custom-dropdown"
                               [(ngModel)]="eachAttr.value"
                               name="select{{ i }}"
                               #type="ngModel"

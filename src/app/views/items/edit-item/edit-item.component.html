@@ -417,7 +417,7 @@
                       <div class="form-group col-sm-6">
                         <label for="warranty">Warranty Type</label>
                         <select
-                          class="form-control form-color"
+                          class="form-control form-color custom-dropdown"
                           [(ngModel)]="model.warrantyTypeId"
                           name="warranty"
                           #warranty="ngModel"
@@ -556,7 +556,7 @@
                               *ngIf="
                                 eachAttr.attributetype.attributetypeid == 4
                               "
-                              class="form-control"
+                              class="form-control custom-dropdown"
                               [(ngModel)]="eachAttr.value"
                               name="select{{ i }}"
                               #type="ngModel"
@@ -850,5 +850,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

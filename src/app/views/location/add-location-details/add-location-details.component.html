@@ -129,7 +129,7 @@
                       <div class="form-group col-sm-6">
                         <label for="status">Status</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.statusid"
                           name="status"
                           #status="ngModel"
@@ -185,7 +185,7 @@
                       <div class="form-group col-sm-12">
                         <label for="vendor">Vendors</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.vendorCompany.companyid"
                           name="vendor"
                           #vendor="ngModel"
@@ -352,7 +352,7 @@
                           />
                           <select
                             *ngIf="eachAttr.attributetype.attributetypeid == 4"
-                            class="form-control"
+                            class="form-control custom-dropdown"
                             [tooltip]="eachAttr.tooltip"
                             [(ngModel)]="eachAttr.value"
                             name="select{{ index }}"

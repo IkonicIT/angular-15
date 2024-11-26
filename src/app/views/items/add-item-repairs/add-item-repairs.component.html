@@ -83,7 +83,7 @@
                       <div class="form-group col-sm-6">
                         <label for="warrantyType">Warranty Type</label>
                         <select
-                          class="form-control form-color"
+                          class="form-control form-color custom-dropdown"
                           [(ngModel)]="model.warrantytype"
                           (change)="setWarrantyTypeID()"
                           name="type"
@@ -203,7 +203,7 @@
                       <div class="form-group col-sm-6">
                         <label for="repairType">Repair Type</label>
                         <select
-                          class="form-control form-color"
+                          class="form-control form-color custom-dropdown"
                           [(ngModel)]="model.repairType"
                           name="repairType"
                           #repairType="ngModel"
@@ -286,7 +286,7 @@
                     <!-- <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="name">Service Duration</label>
-                        <select class="form-control"  name="serviceduration" 
+                        <select class="form-control custom-dropdown"  name="serviceduration" 
                         [(ngModel)]="model.serviceDuration" #serviceDuration="ngModel"  id="serviceduration" 
                         (change)="setServiceDate(model.serviceDuration)">
                           <option value="30">30 days</option>
@@ -304,7 +304,7 @@
                       <div class="form-group col-sm-6">
                         <label for="failuretype">Primary Findings </label>
                         <select
-                          class="form-control form-color"
+                          class="form-control form-color custom-dropdown"
                           [(ngModel)]="model.failuretype"
                           name="failuretype"
                           #failuretype="ngModel"
@@ -348,7 +348,7 @@
                               >
                                 <td>
                                   <select
-                                    class="form-control"
+                                    class="form-control custom-dropdown"
                                     [(ngModel)]="sitem.failuretype"
                                     [ngModelOptions]="{ standalone: true }"
                                   >
@@ -362,7 +362,7 @@
                                 </td>
                                 <td>
                                   <select
-                                    class="form-control"
+                                    class="form-control custom-dropdown"
                                     [disabled]="sitem.failuretype == null"
                                     [(ngModel)]="sitem.failurecause"
                                     [ngModelOptions]="{ standalone: true }"
@@ -397,7 +397,7 @@
                       <div class="form-group col-sm-6">
                         <label for="failurecause">Failure Cause</label>
                         <select
-                          class="form-control form-color"
+                          class="form-control form-color custom-dropdown"
                           [disabled]="model.failuretype == null"
                           [(ngModel)]="model.failurecause"
                           name="failurecause"

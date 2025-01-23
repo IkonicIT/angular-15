@@ -216,11 +216,12 @@ export class PiechartComponent implements OnInit {
         this.getAllItemTypes();
         this.companyName =
           this.companyManagementService.getGlobalCompany().name;
+        sessionStorage.setItem('companyName', this.companyName);
       } else {
         this.highestRank = 0;
       }
     });
-
+    this.companyName = sessionStorage.getItem('companyName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
   }

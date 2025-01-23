@@ -187,7 +187,7 @@
                       <label for="status">Status</label>
                       <select
                         disabled
-                        class="form-control"
+                        class="form-control custom-dropdown"
                         [(ngModel)]="model.statusid"
                         name="status"
                         #status="ngModel"
@@ -322,7 +322,6 @@
     </div>
   </div>
 </div>
-
 
 <div
   *ngIf="loader"

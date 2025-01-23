@@ -195,7 +195,7 @@
                       <div class="form-group col-sm-6 form-group-padding">
                         <label for="status">Status</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.statusid"
                           name="status"
                           #status="ngModel"
@@ -351,7 +351,7 @@
 
                           <select
                             *ngIf="eachAttr.attributetype.attributetypeid == 4"
-                            class="form-control"
+                            class="form-control custom-dropdown"
                             [tooltip]="eachAttr.tooltip"
                             triggers="focus"
                             placement="top"

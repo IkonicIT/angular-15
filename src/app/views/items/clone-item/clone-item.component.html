@@ -157,7 +157,7 @@
                           ></label
                         >
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.statusId"
                           name="status"
                           #status="ngModel"
@@ -225,7 +225,7 @@
                       <div class="form-group col-sm-6">
                         <label for="warranty">Warranty Type</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.warrantyTypeId"
                           name="warranty"
                           #warranty="ngModel"
@@ -356,7 +356,7 @@
                         <div class="form-group col-sm-6">
                           <label for="status">Status</label>
                           <select
-                            class="form-control"
+                            class="form-control custom-dropdown"
                             [(ngModel)]="locationModel.statusid"
                             name="status"
                             #status="ngModel"
@@ -472,7 +472,7 @@
                           />
                           <select
                             *ngIf="eachAttr.attributetype.attributetypeid == 4"
-                            class="form-control"
+                            class="form-control custom-dropdown"
                             [tooltip]="eachAttr.tooltip"
                             [(ngModel)]="eachAttr.value"
                             name="select{{ i }}"
@@ -691,5 +691,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

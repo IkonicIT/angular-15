@@ -16,6 +16,11 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
 import { ExcelService } from '../../../services/excel-service';
 import * as cloneDeep from 'lodash';
 
+export interface Attribute {
+  name: string; // Assuming name is a string
+  value: string; // Assuming value is a string
+}
+
 @Component({
   selector: 'app-item-management',
   templateUrl: './item-management.component.html',
@@ -61,7 +66,7 @@ export class ItemManagementComponent implements OnInit {
   isOwnerAdmin: string | null;
   loggedInuser: string | null;
   searchResults: any[] = [];
-  public attributesSearchDisplay = [];
+  public attributesSearchDisplay: Attribute[] = [];
   public searchResultKeys: any = [];
   public dynLst: Array<any> = [];
   flag: any;
@@ -109,7 +114,6 @@ export class ItemManagementComponent implements OnInit {
     this.itemType = this.broadcasterService.currentItemType;
     this.getAttributesForSearchDisplay();
     this.spinner.show();
-
     this.getLocations();
     this.broadcasterService.on('refreshlist').subscribe((data) => {
       this.setInitValues();
@@ -117,7 +121,6 @@ export class ItemManagementComponent implements OnInit {
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
   }
-
   getAttributesForSearchDisplay() {
     this.itemManagementService
       .getAttributesForSearchDisplay(this.companyId)
@@ -130,7 +133,6 @@ export class ItemManagementComponent implements OnInit {
         }
       );
   }
-
   setInitValues() {
     this.searchResults = this.itemManagementService.getItemSearchResults();
     this.model.typeId = this.itemManagementService.getSearchedItemTypeId();
@@ -170,7 +172,6 @@ export class ItemManagementComponent implements OnInit {
 
   getLocations() {
     this.spinner.show();
-
     this.locations = this.broadcasterService.locations;
     if (this.locations && this.locations.length > 0) {
       this.locationItems = [];
@@ -219,7 +220,6 @@ export class ItemManagementComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
-
     var req = {
       locationid: this.model.locationid ? this.model.locationid : null,
       statusid: this.model.statusid ? this.model.statusid : null,
@@ -233,11 +233,11 @@ export class ItemManagementComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-
           this.itemManagementService.setSearchedItemTag(req.tag);
           this.itemManagementService.setSearchedItemTypeId(req.typeId);
           this.itemManagementService.setSearchedItemLocationId(req.locationid);
           this.itemManagementService.setSearchedItemStatusId(req.statusid);
+
           this.itemManagementService.setItemSearchResults(response);
           this.searchResults = response;
           console.log(
@@ -247,7 +247,11 @@ export class ItemManagementComponent implements OnInit {
           );
 
           this.searchResultKeys = Object.keys(this.searchResults);
-
+          console.log(
+            'searchResultKeys:',
+            this.searchResultKeys,
+            this.searchResultKeys.length
+          );
           this.dynLst = [];
           for (let item of this.searchResultKeys) {
             const dnobj = { itemsForPagination: 5, p: 1 };
@@ -299,13 +303,11 @@ export class ItemManagementComponent implements OnInit {
 
     this.excelService.exportAsExcelFile(result, 'itemAdvancedSearchResults');
   }
-
   getSearchedItemsByCompanyId() {
     this.flag = 0;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
-
     var req = {
       locationid: this.model.locationid ? this.model.locationid : null,
       statusid: this.model.statusid ? this.model.statusid : null,
@@ -318,7 +320,6 @@ export class ItemManagementComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-
           this.searchResults = response;
           console.log('searchResults:', this.searchResults);
           this.itemManagementService.setSearchedItemTag(req.tag);
@@ -327,6 +328,11 @@ export class ItemManagementComponent implements OnInit {
           this.itemManagementService.setSearchedItemStatusId(req.statusid);
           this.itemManagementService.setItemSearchResults(response);
           this.searchResultKeys = Object.keys(this.searchResults);
+          console.log(
+            'searchResultKeys1:',
+            this.searchResultKeys,
+            this.searchResultKeys.length
+          );
           this.dynLst = [];
           for (let item of this.searchResultKeys) {
             const dnobj = { itemsForPagination: 5, p: 1 };
@@ -334,6 +340,7 @@ export class ItemManagementComponent implements OnInit {
           }
           if (this.searchResultKeys.length == 0) {
             this.flag = 1;
+            console.log
           }
           if (this.searchResultKeys.length == 1) {
             let key: any;
@@ -386,13 +393,11 @@ export class ItemManagementComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
-
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-
           this.itemTypes = response;
           if (this.itemTypes && this.itemTypes.length > 0) {
             this.itemTypeItems = this.generateHierarchyForItemTypes(
@@ -408,7 +413,6 @@ export class ItemManagementComponent implements OnInit {
 
   getItemStatus() {
     this.spinner.show();
-
     this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
       (response) => {
         this.statuses = response;
@@ -422,13 +426,11 @@ export class ItemManagementComponent implements OnInit {
 
   getWarrantyTypes() {
     this.spinner.show();
-
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-
           this.warrantyTypes = response;
         },
         (error) => {
@@ -452,18 +454,15 @@ export class ItemManagementComponent implements OnInit {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
-
   openModal2(template: TemplateRef<any>) {
     this.modalRef2 = this.modalService.show(template, { class: 'second' });
   }
-
   closeFirstModal() {
     this.modalRef?.hide();
     this.modalRef = null;
   }
 
   editItemRepair() {}
-
   goToAddItem() {
     this.router.navigate(['/items/addItem']);
   }
@@ -558,13 +557,10 @@ export class ItemManagementComponent implements OnInit {
     );
   }
 
-  confirm(): void {}
-
   print() {
     this.helpFlag = false;
     window.print();
   }
-
   help() {
     this.helpFlag = !this.helpFlag;
   }

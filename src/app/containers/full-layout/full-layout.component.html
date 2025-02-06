@@ -157,6 +157,10 @@
             >
               Master search
             </button>
+            &nbsp;
+            <button (click)="navigateToMasterPieCharts()"   
+            *ngIf="isOwnerAdmin =='true' && userSelectedCompany.companyid==0" data-placement="bottom" tooltip = "click here for Master PieCharts " class="btn btn-danger masterSearch">Master PieCharts</button>
+
           </div>
         </div>
       </div>

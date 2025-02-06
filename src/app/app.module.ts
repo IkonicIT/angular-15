@@ -148,6 +148,7 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     //DpDatePickerModule,
     MatButtonModule,
     MatRadioModule,
+    TabsModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     TooltipModule.forRoot(),

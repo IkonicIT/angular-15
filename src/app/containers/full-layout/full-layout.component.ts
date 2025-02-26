@@ -82,7 +82,7 @@ export class FullLayoutComponent implements OnInit {
     private reportsService: ReportsService,
     private sanitizer: DomSanitizer
   ) {
-    this.spinner.show();
+    this.spinner.hide();
     this.loader = true;
     this.companyManagementService.companyListChange.subscribe((value) => {
       this.broadcasterService.selectedCompanyId = 0;

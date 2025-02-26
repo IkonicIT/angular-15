@@ -36,6 +36,7 @@ export class AddItemNoteAttachementComponent implements OnInit {
   itemTag: any;
   itemType: any;
   loader = false;
+  highestRank : any;
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     private companyManagementService: CompanyManagementService,
@@ -67,6 +68,7 @@ export class AddItemNoteAttachementComponent implements OnInit {
       this.broadcasterService.currentNoteAttachmentTitle;
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
+    this.highestRank = sessionStorage.getItem('highestRank');
     this.userName = sessionStorage.getItem('userName');
     this.addedfiles.push({ file: '', description: '' });
   }

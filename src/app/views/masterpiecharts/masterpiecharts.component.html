@@ -171,15 +171,17 @@
   <ng-template #mytemplate>
   
   
-    <div class="col-lg-12 mobile-padding" style="margin-top: 30px" >
-      <div class="card">
-        <div class="card-body">
+    <div class="col-lg-12 mobile-padding" style="margin-top: 30px; padding: 15px;" >
+      <div class="card" style="padding: 10px;">
+        <div class="card-body" style="padding: 15px;">
           <div style="margin-bottom: 10px;"><strong class="card-text">Repairs under:
               "{{selectedFailureType}}"</strong>
-              <button type="button" (click)="exportAsExcelFileWithMultipleSheets()"
-              class="btn btn-outline-danger btn-sm float-right" >Export to Excel</button>
-              <button type="button" (click)="CloseModel()"
-              class="btn btn-outline-danger btn-sm float-right">Close</button>
+              <div style="float: right; display: flex; gap: 2px;">
+                <button type="button" (click)="exportAsExcelFileWithMultipleSheets()"
+                class="btn btn-outline-danger btn-sm float-right" >Export to Excel</button>
+                <button type="button" (click)="CloseModel()"
+                class="btn btn-outline-danger btn-sm float-right">Close</button>
+              </div>
           </div>
           <table class="table table-responsive-sm  table-responsive-md table-hover table-outline mb-0">
             <thead class="thead-light">

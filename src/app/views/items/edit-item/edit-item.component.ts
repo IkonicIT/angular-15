@@ -81,6 +81,7 @@ export class EditItemComponent implements OnInit {
   helpFlag: any = false;
   dismissible = true;
   loader = false;
+  highestRank : any;
   constructor(
     private locationManagementService: LocationManagementService,
     private companyManagementService: CompanyManagementService,
@@ -119,6 +120,7 @@ export class EditItemComponent implements OnInit {
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
     this.itemRank = this.broadcasterService.itemRank;
+    this.highestRank = sessionStorage.getItem('highestRank');
     if (this.itemId) {
       this.getAllLocationsWithHierarchy();
       this.getJournalLog();

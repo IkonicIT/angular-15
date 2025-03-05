@@ -67,7 +67,6 @@ export class FullLayoutComponent implements OnInit {
   companyId: any;
   masterSearchFlag: any = 'false';
   isOwnerAminReadOnly: any;
-  loader = false;
 
   public constructor(
     private companyManagementService: CompanyManagementService,
@@ -82,8 +81,10 @@ export class FullLayoutComponent implements OnInit {
     private reportsService: ReportsService,
     private sanitizer: DomSanitizer
   ) {
-    this.spinner.hide();
-    this.loader = true;
+
+  
+    this.spinner.show();
+
     this.companyManagementService.companyListChange.subscribe((value) => {
       this.broadcasterService.selectedCompanyId = 0;
       this.router.navigate(['']);
@@ -116,7 +117,6 @@ export class FullLayoutComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.isOwnerAminReadOnly = sessionStorage.getItem('IsOwnerAdminReadOnly');
     this.spinner.show();
-    this.loader = true
     this.authToken = sessionStorage.getItem('auth_token');
   }
 
@@ -149,16 +149,13 @@ export class FullLayoutComponent implements OnInit {
             this.userSelectedCompany
           );
           this.spinner.hide();
-          this.loader = false
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
     } else {
       this.spinner.show();
-      this.loader = true
       this.loggedInuser = sessionStorage.getItem('userId');
       if (this.loggedInuser == null) {
         this.router.navigate(['/login']);
@@ -196,11 +193,9 @@ export class FullLayoutComponent implements OnInit {
             );
 
             this.spinner.hide();
-            this.loader = false
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false
           }
         );
       this.companyManagementService.setGlobalCompany(this.userCompanies[0]);
@@ -244,7 +239,6 @@ export class FullLayoutComponent implements OnInit {
       this.userName = sessionStorage.getItem('userName');
       this.locationManagementService.setLocations([]);
       this.spinner.show();
-      this.loader = true;
       this.companyManagementService.setGlobalCompany(userSelectedCompany);
       this.broadcasterService.selectedCompanyId = userSelectedCompany.companyid;
       this.itemTypesService
@@ -273,7 +267,6 @@ export class FullLayoutComponent implements OnInit {
           }
           this.itemManagementService.setItemTypes(response);
           this.spinner.hide();
-          this.loader = false;
           this.router.navigate(['/dashboard']);
         });
     } else {
@@ -287,7 +280,6 @@ export class FullLayoutComponent implements OnInit {
       this.userName = sessionStorage.getItem('userName');
       this.locationManagementService.setLocations([]);
       this.spinner.show();
-      this.loader = true;
       this.companyManagementService.setGlobalCompany(userSelectedCompany);
       this.broadcasterService.selectedCompanyId = userSelectedCompany.companyid;
       this.itemTypesService
@@ -316,7 +308,6 @@ export class FullLayoutComponent implements OnInit {
           }
           this.itemManagementService.setItemTypes(response);
           this.spinner.hide();
-          this.loader = false;
           this.router.navigate(['/dashboard']);
         });
     }
@@ -325,7 +316,6 @@ export class FullLayoutComponent implements OnInit {
   getCompanyLogo(companyid: any) {
     this.noLogo = false;
     this.spinner.show();
-    this.loader = true;
     this.companyManagementService.getLogo(companyid).subscribe(
       (response: any) => {
         if (response.logo != null)
@@ -334,11 +324,9 @@ export class FullLayoutComponent implements OnInit {
           );
         else this.noLogo = true;
         this.spinner.hide();
-        this.loader = false;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -388,7 +376,6 @@ export class FullLayoutComponent implements OnInit {
       this.userName = sessionStorage.getItem('userName');
       this.locationManagementService.setLocations([]);
       this.spinner.show();
-      this.loader = true;
       this.companyManagementService.setGlobalCompany(userSelectedCompany1);
       this.broadcasterService.selectedCompanyId =
         userSelectedCompany1.companyid;
@@ -441,7 +428,6 @@ export class FullLayoutComponent implements OnInit {
           }
           this.itemManagementService.setItemTypes(response);
           this.spinner.hide();
-          this.loader = false;
           this.router.navigate(['/dashboard']);
         });
     }
@@ -477,7 +463,6 @@ export class FullLayoutComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -496,7 +481,6 @@ export class FullLayoutComponent implements OnInit {
     if (this.router.url != '/items/lists/all') {
       this.router.navigate(['/items/lists/all']);
       this.spinner.show();
-      this.loader = true;
     } else {
       this.broadcasterService.broadcast('refreshlist', true);
     }
@@ -520,11 +504,9 @@ export class FullLayoutComponent implements OnInit {
     this.router.navigate(['/items/masterSearch']);
   }
 
-  
   navigateToMasterPieCharts() {
     this.itemManagementService.setItemMasterSearchResults([]);
     this.itemManagementService.masterSearchModel = {};
     this.router.navigate(['/masterpiecharts']);
   }
-  
 }

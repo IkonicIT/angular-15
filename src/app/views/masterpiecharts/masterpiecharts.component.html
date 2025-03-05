@@ -1,185 +1,299 @@
 <div class="animated fadeIn">
-    <div class="row">
-      <div class="col-lg-12 mobile-padding">
-        <div class="card">
-  
-          <div class="card-body">
-            <alert type="danger" *ngIf="index ==-1" [dismissible]="dismissible">
-              Please Select From & To Fields.
-            </alert>
-            <div>
-  
-              <h4 class="card-title mb-0" style="color: red;">PRIMARY FINDINGS & CAUSES</h4><br>
-              
-                <div  class="row" style="padding: 15px;">
-                    <div>
-                    <label for="status"><strong>TimeSpan</strong></label>
-                    <select class="form-control" [(ngModel)]="params.type">
-                      <option value="monthly">Last Month</option>
-                      <option value="quarterly">Last Quarter</option>
-                      <option value="yearly">Last Year </option>
-                      <option value="lasttwoyears">Last Two Years</option>
-                      <option value="range">range</option>
-                    </select>
-                  </div>
-                  <ng-container [ngSwitch]="params.type">
-                    <ng-container *ngSwitchCase="'range'">
-                      <div>
-                        <label for="status"><strong>From</strong><strong class="text-danger"> *</strong></label>
-                        <div>
-                          <dp-date-picker [(ngModel)]="params.from" theme="dp-material"></dp-date-picker>
-                        </div>
-                      </div>
-                      <div>
-                        <label for="status"><strong>To</strong><strong class="text-danger"> *</strong></label>
-                        <div>
-                          <dp-date-picker [(ngModel)]="params.to" theme="dp-material"></dp-date-picker>
-                        </div>
-                      </div>
-                    </ng-container>
-                  </ng-container>
-                  <div>
-                    <label><strong>&nbsp;</strong></label>
-                    <button type="button" class="btn btn-danger" style="display: inherit;
-                    margin-top: -1px;
-                    margin-left: 2px;" (click)="getFailureTypes()" tooltip="Get PrimaryFindings">GET</button>
-                  </div>
-                </div>
-                <div>
-                <mat-button-toggle-group #group="matButtonToggleGroup"  name="fontStyle" [value]="selectedVal" (change)="onValChange(group.value)" aria-label="Font Style">
-                  <mat-button-toggle   value="count">PRIMARYFINDINGS</mat-button-toggle> 
-                 <mat-button-toggle  value="repaircost">REPAIRCOST</mat-button-toggle>
-                 
-               </mat-button-toggle-group>
+  <div class="row">
+    <div class="col-lg-12 mobile-padding">
+      <div class="card">
+        <div class="card-body">
+          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+            Please Select From & To Fields.
+          </alert>
+          <div>
+            <h4 class="card-title mb-0" style="color: red">
+              PRIMARY FINDINGS & CAUSES
+            </h4>
+            <br />
+
+            <div
+              class="d-flex flex-row justify-conten-start"
+              style="padding: 15px; gap: 5px"
+            >
+              <div class="col remove-padding" style="max-width: 20%">
+                <label for="status"><strong>TimeSpan</strong></label>
+                <select
+                  class="form-control custom-dropdown"
+                  [(ngModel)]="params.type"
+                >
+                  <option value="monthly">Last Month</option>
+                  <option value="quarterly">Last Quarter</option>
+                  <option value="yearly">Last Year</option>
+                  <option value="lasttwoyears">Last Two Years</option>
+                  <option value="range">range</option>
+                </select>
               </div>
-              <div class="col-sm-12 p-0">
-                  <div class="row">
-                    <div class="col-md-6 mb-2">
-                      <h5>PRIMARYFINDINGS</h5>
-                      <div class="border-charts" *ngIf="pieChartData.length==0">
-                        <h6 style="color:red ">There are no Repairs in the selected time span. </h6>
-                      </div>
-                      <div class="border-charts" *ngIf="pieChartData.length>0">
-                        <canvas baseChart  [datasets]="pieChartData" [labels]="pieChartLabels"
-                          [plugins]="pieChartPlugins" [legend]="true" [options]="barChartOptions" [type]="pieChartType"
-                          (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-                      </div>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                      <h5 *ngIf="pieChartCauseData.length>0">Primary Causes for "{{selectedFailureType}}" </h5>
-                      <div class="border-charts" *ngIf="pieChartCauseData.length>0">
-                        <canvas baseChart  [datasets]="pieChartCauseData" [labels]="pieChartCauseLabels"
-                          [plugins]="pieChartPlugins" [legend]="true" [options]="barChartOptions" [type]="pieChartType"
-                          (chartHover)="chartHovered($event)" (chartClick)="getRepairJobs($event,mytemplate)"></canvas>
-                      </div>
+              <ng-container [ngSwitch]="params.type">
+                <ng-container *ngSwitchCase="'range'">
+                  <div>
+                    <label for="status"
+                      ><strong>From</strong
+                      ><strong class="text-danger"> *</strong></label
+                    >
+                    <div>
+                      <dp-date-picker
+                        [(ngModel)]="params.from"
+                        theme="dp-material"
+                      ></dp-date-picker>
                     </div>
                   </div>
+                  <div>
+                    <label for="status"
+                      ><strong>To</strong
+                      ><strong class="text-danger"> *</strong></label
+                    >
+                    <div>
+                      <dp-date-picker
+                        [(ngModel)]="params.to"
+                        theme="dp-material"
+                      ></dp-date-picker>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+              <div>
+                <label><strong>&nbsp;</strong></label>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  style="display: inherit; margin-top: -1px; margin-left: 2px"
+                  (click)="getFailureTypes()"
+                  tooltip="Get PrimaryFindings"
+                >
+                  GET
+                </button>
+              </div>
+            </div>
+            <div class="m-2">
+              <mat-button-toggle-group
+                #group="matButtonToggleGroup"
+                name="fontStyle"
+                [value]="selectedVal"
+                (change)="onValChange(group.value)"
+                aria-label="Font Style"
+              >
+                <mat-button-toggle value="count"
+                  >PRIMARYFINDINGS</mat-button-toggle
+                >
+                <mat-button-toggle value="repaircost"
+                  >REPAIRCOST</mat-button-toggle
+                >
+              </mat-button-toggle-group>
+            </div>
+            <div class="col-sm-12 m-3">
+              <div class="row">
+                <div class="col-md-6 mb-2">
+                  <h5>PRIMARYFINDINGS</h5>
+                  <div class="border-charts" *ngIf="!chartFlag">
+                    <h6 style="color: red">
+                      There are no Repairs in the selected time span.
+                    </h6>
+                  </div>
+                  <div
+                    class="border-charts"
+                    style="
+                      position: relative;
+                      height: 300px;
+                      width: 592px;
+                      padding: 10px;
+                    "
+                    *ngIf="pieChartData.length > 0 && chartFlag"
+                  >
+                    <canvas
+                      baseChart
+                      [datasets]="pieChartData"
+                      [labels]="pieChartLabels"
+                      [plugins]="pieChartPlugins"
+                      [legend]="true"
+                      [options]="barChartOptions"
+                      [type]="pieChartType"
+                      (chartHover)="chartHovered($event)"
+                      (chartClick)="chartClicked($event)"
+                    ></canvas>
+                  </div>
                 </div>
+                <div class="col-md-6 mb-2">
+                  <h5 *ngIf="pieChartCauseData.length > 0">
+                    Primary Causes for "{{ selectedFailureType }}"
+                  </h5>
+                  <div
+                    class="border-charts"
+                    style="height: 300px; width: 592px; padding: 10px"
+                    *ngIf="pieChartCauseData.length > 0"
+                  >
+                    <canvas
+                      baseChart
+                      [datasets]="pieChartCauseData"
+                      [labels]="pieChartCauseLabels"
+                      [plugins]="pieChartPlugins"
+                      [legend]="true"
+                      [options]="barChartOptions"
+                      [type]="pieChartType"
+                      (chartHover)="chartHovered($event)"
+                      (chartClick)="getRepairJobs($event, mytemplate)"
+                    ></canvas>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-  
-  
-        <div *ngIf="loader" style="
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0,0,0,0.5);
-      z-index: 2;
-      cursor: pointer;
-  ">
-          <div _ngcontent-c0="" id="loader"></div>
-        </div>
-        <style>
-          #loader {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            z-index: 1;
-            width: 150px;
-            height: 150px;
-            margin: -75px 0 0 -75px;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid red;
-            ;
-            width: 120px;
-            height: 120px;
-            -webkit-animation: spin 2s linear infinite;
-            animation: spin 2s linear infinite;
+      </div>
+
+      <div
+        *ngIf="loader"
+        style="
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 2;
+          cursor: pointer;
+        "
+      >
+        <div _ngcontent-c0="" id="loader"></div>
+      </div>
+      <style>
+        #loader {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          z-index: 1;
+          width: 150px;
+          height: 150px;
+          margin: -75px 0 0 -75px;
+          border: 16px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 16px solid red;
+          width: 120px;
+          height: 120px;
+          -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+          0% {
+            -webkit-transform: rotate(0deg);
           }
-  
-          @-webkit-keyframes spin {
-            0% {
-              -webkit-transform: rotate(0deg);
-            }
-  
-            100% {
-              -webkit-transform: rotate(360deg);
-            }
+
+          100% {
+            -webkit-transform: rotate(360deg);
           }
-  
-          @keyframes spin {
-            0% {
-              transform: rotate(0deg);
-            }
-  
-            100% {
-              transform: rotate(360deg);
-            }
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
           }
-  
-          /* Add animation to "page content" */
-          .animate-bottom {
-            position: relative;
-            -webkit-animation-name: animatebottom;
-            -webkit-animation-duration: 1s;
-            animation-name: animatebottom;
-            animation-duration: 1s
+
+          100% {
+            transform: rotate(360deg);
           }
-  
-          @-webkit-keyframes animatebottom {
-            from {
-              bottom: -100px;
-              opacity: 0
-            }
-  
-            to {
-              bottom: 0px;
-              opacity: 1
-            }
+        }
+
+        /* Add animation to "page content" */
+        .animate-bottom {
+          position: relative;
+          -webkit-animation-name: animatebottom;
+          -webkit-animation-duration: 1s;
+          animation-name: animatebottom;
+          animation-duration: 1s;
+        }
+
+        @-webkit-keyframes animatebottom {
+          from {
+            bottom: -100px;
+            opacity: 0;
           }
-  
-          @keyframes animatebottom {
-            from {
-              bottom: -100px;
-              opacity: 0
-            }
-  
-            to {
-              bottom: 0;
-              opacity: 1
-            }
+
+          to {
+            bottom: 0px;
+            opacity: 1;
           }
+
+        }
+
+        @keyframes animatebottom {
+          from {
+            bottom: -100px;
+            opacity: 0;
+          }
+
+          to {
+            bottom: 0;
+            opacity: 1;
+          }
+        }
+      </style>
+
+      <ng-template #mytemplate>
+        <div class="col-lg-12 mobile-padding" style="margin-top: 30px">
+          <div class="card">
+            <div class="card-body">
+              <div style="margin-bottom: 10px">
+                <strong class="card-text"
+                  >Repairs under: "{{ selectedFailureType }}"</strong
+                >
+                <button
+                  type="button"
+                  (click)="exportAsExcelFileWithMultipleSheets()"
+                  class="btn btn-outline-danger btn-sm float-right"
+                >
+                  Export to Excel
+                </button>
+                <button
+                  type="button"
+                  (click)="CloseModel()"
+                  class="btn btn-outline-danger btn-sm float-right"
+                >
+                  Close
+                </button>
+              </div>
+              <table
+                class="table table-responsive-sm table-responsive-md table-hover table-outline mb-0"
+              >
+                <thead class="thead-light">
+                  <tr>
+                    <th>Tag#</th>
+                    <th>PO Number</th>
+                    <th>Job Number</th>
+                    <th>Location</th>
+                    <th>Vendor</th>
+                    <th>Repair Cost</th>
+                    <th>Actual Completion Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let repairJob of repairJobs">
+                    <!-- <td><a href="javascript:void(0)"
+
         </style>
   
   
   <ng-template #mytemplate>
   
   
-    <div class="col-lg-12 mobile-padding" style="margin-top: 30px" >
-      <div class="card">
-        <div class="card-body">
+    <div class="col-lg-12 mobile-padding" style="margin-top: 30px; padding: 15px;" >
+      <div class="card" style="padding: 10px;">
+        <div class="card-body" style="padding: 15px;">
           <div style="margin-bottom: 10px;"><strong class="card-text">Repairs under:
               "{{selectedFailureType}}"</strong>
-              <button type="button" (click)="exportAsExcelFileWithMultipleSheets()"
-              class="btn btn-outline-danger btn-sm float-right" >Export to Excel</button>
-              <button type="button" (click)="CloseModel()"
-              class="btn btn-outline-danger btn-sm float-right">Close</button>
+              <div style="float: right; display: flex; gap: 2px;">
+                <button type="button" (click)="exportAsExcelFileWithMultipleSheets()"
+                class="btn btn-outline-danger btn-sm float-right" >Export to Excel</button>
+                <button type="button" (click)="CloseModel()"
+                class="btn btn-outline-danger btn-sm float-right">Close</button>
+              </div>
           </div>
           <table class="table table-responsive-sm  table-responsive-md table-hover table-outline mb-0">
             <thead class="thead-light">
@@ -197,6 +311,7 @@
             <tbody>
               <tr *ngFor="let repairJob of repairJobs ">
                 <!-- <td><a href="javascript:void(0)"
+
                     (click)="goToView(repairJob.itemId,repairJob.rank,repairJob.tag,repairJob.typeName)"
                     tooltip="click here to view this Item" [innerHTML]="repairJob.tag"></a></td>
   
@@ -204,23 +319,26 @@
                 <td><a href="javascript:void(0)"
                     (click)="goToItemRepair(repairJob.itemId, repairJob.repairLogId,repairJob.rank,repairJob.tag,repairJob.typeName)"
                     style="color:red" tooltip="click here to view Job Screen" [innerHTML]="repairJob.jobNumber"></a></td> -->
-                <td [innerHTML]="repairJob.tag"></td>
-    
-                <td [innerHTML]="repairJob.poNumber"></td>
-                <td [innerHTML]="repairJob.jobNumber"></td>
-  
-                <td [innerHTML]="repairJob.location"></td>
-                <td [innerHTML]="repairJob.vendor"></td>
-                <td [innerHTML]="repairJob.repairCost | currency"></td>
-                <td [innerHTML]="repairJob.actualCompletionDate | date:'MM/dd/yyyy'" ></td>
-  
-              </tr>
-  
-            </tbody>
-  
-          </table>
-  
+                    <td [innerHTML]="repairJob.tag"></td>
+
+                    <td [innerHTML]="repairJob.poNumber"></td>
+                    <td [innerHTML]="repairJob.jobNumber"></td>
+
+                    <td [innerHTML]="repairJob.location"></td>
+                    <td [innerHTML]="repairJob.vendor"></td>
+                    <td [innerHTML]="repairJob.repairCost | currency"></td>
+                    <td
+                      [innerHTML]="
+                        repairJob.actualCompletionDate | date : 'MM/dd/yyyy'
+                      "
+                    ></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-      </div>
+      </ng-template>
     </div>
-  </ng-template>
+  </div>
+</div>

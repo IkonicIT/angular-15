@@ -239,20 +239,23 @@
                             >
                               <label for="listValues">List Values</label>
                               <div class="row">
+                                <div class="col-sm-5">
                                 <input
-                                  style="margin-left: 2%"
+                                  
                                   type="text"
-                                  class="form-control col-sm-5"
+                                  class="form-control"
                                   [(ngModel)]="listItem"
                                   name="lItem"
                                   #lItem="ngModel"
                                   id="listValues"
                                   placeholder="Enter List value"
                                 />
+                              </div>
+                              <div class="col-sm-5">
                                 <select
                                   name="listItems"
                                   style="margin-left: 2%"
-                                  class="form-control col-sm-5 custom-dropdown"
+                                  class="form-control custom-dropdown"
                                 >
                                   <option
                                     *ngFor="
@@ -263,9 +266,11 @@
                                   </option>
                                 </select>
                               </div>
+                              </div>
                               <button
                                 type="button"
                                 class="btn btn-primary btn-list"
+                                style="margin-top: 8px;"
                                 (click)="addListItem()"
                               >
                                 Add to List

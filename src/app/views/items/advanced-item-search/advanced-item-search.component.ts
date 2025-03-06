@@ -59,7 +59,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  loader = false;
+  // loader = false;
   advancedsearchflag: number = 0;
   searchresults: any = {};
   isOwnerAdmin: any;
@@ -328,7 +328,7 @@ export class AdvancedItemSearchComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
-    this.loader = true;
+    // this.loader = true;
     var self = this;
 
     this.itemTypes = this.broadcasterService.itemTypeHierarchy;
@@ -349,18 +349,18 @@ export class AdvancedItemSearchComponent implements OnInit {
 
   getItemStatus() {
     this.spinner.show();
-    this.loader = true;
+    // this.loader = true;
     this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
       (response: any) => {
         this.statuses = response;
         this.spinner.hide();
-        this.loader = false;
+        // this.loader = false;
         this.isloaded = true;
       },
       (error) => {
         this.spinner.hide();
         this.isloaded = true;
-        this.loader = false;
+        // this.loader = false;
       }
     );
   }
@@ -369,7 +369,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.currentAttributeValues = [];
     if (typeId != '0' && typeId != undefined) {
       this.spinner.show();
-      this.loader = true;
+      // this.loader = true;
       this.itemAttributeService
         .getTypeAttributes(typeId)
         .subscribe((response: any) => {
@@ -377,7 +377,7 @@ export class AdvancedItemSearchComponent implements OnInit {
           if (this.currentAttributeValues.length == 0)
             this.itemModel.attributevalues = response;
           this.spinner.hide();
-          this.loader = false;
+          // this.loader = false;
         });
     } else {
       this.itemModel.attributevalues = [];
@@ -427,7 +427,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     };
 
     this.spinner.show();
-    this.loader = true;
+    // this.loader = true;
     this.searchResults = [];
     this.searchResultKeys = [];
     this.itemManagementService
@@ -470,7 +470,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       userId: this.loggedInuser,
     };
     this.spinner.show();
-    this.loader = true;
+    // this.loader = true;
     this.itemManagementService
       .getAdvancedSearchItemRepairNotesRfq(request)
       .subscribe((response: any) => {
@@ -490,7 +490,7 @@ export class AdvancedItemSearchComponent implements OnInit {
         this.RFQsList = response.rfqsList;
 
         this.spinner.hide();
-        this.loader = false;
+        // this.loader = false;
       });
   }
 
@@ -781,7 +781,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       itemIds: this.itemIds,
     };
     this.spinner.show();
-    this.loader = true;
+    // this.loader = true;
     this.itemManagementService
       .getFailureCausesPieChart(request)
       .subscribe((data) => {
@@ -834,12 +834,12 @@ export class AdvancedItemSearchComponent implements OnInit {
     };
     if (cause != '') {
       this.spinner.show();
-      this.loader = true;
+      // this.loader = true;
       this.itemManagementService
         .getRepairJobsByFailureCause(request)
         .subscribe((data) => {
           this.spinner.hide();
-          this.loader = false;
+          // this.loader = false;
           this.repairJobs = data;
           this.openModal(template);
         });
@@ -886,7 +886,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       this.isExpandAdvancedSearch = false;
       this.isTimeSpanSelected = 0;
       this.spinner.show;
-      this.loader = true;
+      // this.loader = true;
       this.itemManagementService
         .getDataForFailedItems(this.companyId)
         .subscribe((response: any) => {
@@ -967,7 +967,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     }
     (error: any) => {
       this.spinner.hide();
-      this.loader = false;
+      // this.loader = false;
     };
   }
 

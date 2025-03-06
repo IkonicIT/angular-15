@@ -5,6 +5,20 @@
   align-items: center;
 }
 
+.btn-danger,
+.btn-danger.disabled,
+.btn-danger:disabled {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-danger:hover {
+  color: #fff;
+  background-color: #f64846;
+  border-color: #f63c3a;
+}
+
 canvas {
   flex-grow: 1; /* Allows the chart to grow and fill the space */
 }

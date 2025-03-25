@@ -11,8 +11,9 @@
 .btn-right {
   margin-right: 5px;
 }
-
-button,
+button{
+   border-radius: 0;
+ }
 .card {
   border-radius: 0;
   padding: 0;

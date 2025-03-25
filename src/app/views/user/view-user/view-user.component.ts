@@ -198,7 +198,7 @@ export class ViewUserComponent implements OnInit {
   getVendorCompanies() {
     this.spinner.show();
 
-    this.companyManagementService.getAllVendors(this.companyId).subscribe(
+    this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
         this.spinner.hide();
 

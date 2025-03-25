@@ -12,11 +12,14 @@ import { BroadcasterService } from '../../services/broadcaster.service';
 import { ReportsService } from '../../services/reports.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './full-layout.component.html',
   styleUrls: ['./full-layout.component.css'],
 })
+
+
 export class FullLayoutComponent implements OnInit {
   noLogo: boolean;
   imageSource: any;
@@ -31,10 +34,11 @@ export class FullLayoutComponent implements OnInit {
   suggessions: any[] = [];
   value: any;
   items: TreeviewItem[];
-  config = TreeviewConfig.create({
-    hasFilter: false,
-    hasCollapseExpand: false,
-  });
+ config = TreeviewConfig.create({
+  hasFilter: true,               // Enable search filter
+  hasCollapseExpand: true,       // Allow collapse/expand
+                    // Auto width based on content
+});
   authToken: any;
   userSecurityRoles: any = [];
   rolesListForLoggedInUser: any = [];
@@ -50,6 +54,7 @@ export class FullLayoutComponent implements OnInit {
     searchOnKey: 'name',
     search: true,
     height: '500px',
+    width: 'auto',
     placeholder: 'Select Company',
     customComparator: this.orderData,
     limitTo: 0,
@@ -127,6 +132,8 @@ export class FullLayoutComponent implements OnInit {
         this.suggessions = response;
       });
   }
+
+  
 
   getUserAccessCompanies() {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');

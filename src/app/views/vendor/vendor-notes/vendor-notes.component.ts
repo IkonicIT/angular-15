@@ -36,13 +36,14 @@ export class VendorNotesComponent implements OnInit {
   newFlag: any = true;
   highestRank: any;
   vendorNoteId: number = 0;
+  userName:any;
   public dismissible: boolean = true;
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
     private companynotesService: CompanynotesService,
-    public datepipe: DatePipe,
+    public datePipe: DatePipe,
 
     router: Router,
     route: ActivatedRoute,
@@ -64,6 +65,7 @@ export class VendorNotesComponent implements OnInit {
 
   ngOnInit() {
     this.highestRank = sessionStorage.getItem('highestRank');
+    this.userName = sessionStorage.getItem('userName');
   }
 
   getAllNotes(vendorId: string) {
@@ -87,7 +89,7 @@ export class VendorNotesComponent implements OnInit {
     } else {
       this.model = {
         vendorNoteId: 0,
-        createdBy: 'Yogi Patel',
+        createdBy: this.userName,
         createdDate: this.model.createdDate,
         name: this.model.name,
         jobnumber: this.model.jobnumber,
@@ -152,7 +154,7 @@ export class VendorNotesComponent implements OnInit {
         this.model = response;
         if (this.model.createdDate) {
           this.model.createdDate = new Date(this.model.createdDate);
-          this.model.createdDate = this.datepipe.transform(
+          this.model.createdDate = this.datePipe.transform(
             this.model.createdDate,
             'MM/dd/yyyy'
           );
@@ -180,9 +182,15 @@ export class VendorNotesComponent implements OnInit {
       this.index1 = -1;
       window.scroll(0, 0);
     } else {
+      this.model.updatedDate = this.datePipe.transform(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+      this.model.updatedBy = this.userName;
+      const parsedDate = new Date(this.model.createdDate);
+    
+    // Format it into the desired format
+      this.model.createdDate = this.datePipe.transform(parsedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
       this.companynotesService.updateVenodrNotes(this.model).subscribe(
         (response: any) => {
-          this.model.effectiveon = this.datepipe.transform(
+          this.model.effectiveon = this.datePipe.transform(
             this.model.effectiveon,
             'MM/dd/yyyy'
           );

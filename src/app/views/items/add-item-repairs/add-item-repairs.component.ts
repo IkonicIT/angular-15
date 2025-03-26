@@ -277,14 +277,14 @@ export class AddItemRepairsComponent implements OnInit {
         !this.model.jobnumber ||
         !this.model.ponumber ||
         !this.model.failuredate ||
-        this.model.complete == true ||
-        !this.model.vendorId
+        this.model.complete == true
+       // !this.model.vendorId
       ) {
         if (
           !this.model.jobnumber ||
           !this.model.ponumber ||
-          !this.model.failuredate ||
-          !this.model.vendorId
+          !this.model.failuredate
+       //   !this.model.vendorId
         ) {
           this.index = -1;
           window.scroll(0, 0);

@@ -215,6 +215,17 @@
                     </div>
                     <div class="row space">
                       <div class="form-group col-sm-6">
+                        <label for="VendorWarranty">Vendor Warranty:</label>
+                        <input type="checkbox" [(ngModel)]="model.isVendorWarranty" name="VendorWarranty" #VendorWarranty="ngModel"
+                        id="VendorWarranty">
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="repairCost">Repair Type:</label>
+                        <span>{{model.repairType}}</span>
+                      </div>
+                    </div>
+                    <div class="row space">
+                      <div class="form-group col-sm-6">
                         <label class="pr5" for="repairstatus"
                           >Repair Status:</label
                         >

@@ -325,8 +325,8 @@ export class EditItemRepairsComponent implements OnInit {
       if (
         !this.model.jobnumber ||
         !this.model.ponumber ||
-        !this.model.failuredate ||
-        !this.model.vendor.vendorId
+        !this.model.failuredate
+   //     !this.model.vendor.vendorId
       ) {
         this.index = -1;
         window.scroll(0, 0);

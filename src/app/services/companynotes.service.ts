@@ -73,7 +73,7 @@ export class CompanynotesService {
   getAllCompanyNotess(companyId: any) {
     return this.http
       .get(
-        this.serviceURL + '/getAllVendorNotes/' + companyId + '/' + companyId,
+        this.serviceURL + '/getAllNotes/' + 'companytype' + '/' + companyId + '/' + companyId,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));

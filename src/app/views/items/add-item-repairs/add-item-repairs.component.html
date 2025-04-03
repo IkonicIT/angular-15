@@ -304,7 +304,7 @@
                       <div class="form-group col-sm-6">
                         <label for="failuretype">Primary Findings </label>
                         <select
-                          class="form-control form-color custom-dropdown"
+                          class="form-control form-color custom-dropdown mb-3"
                           [(ngModel)]="model.failuretype"
                           name="failuretype"
                           #failuretype="ngModel"
@@ -384,7 +384,7 @@
                                     type="button"
                                     class="btn btn-primary"
                                     (click)="removeSecondaryFindings(i)"
-                                    disabled="highestRank == 9"
+                                    [disabled]="highestRank == 9"
                                   >
                                     Delete
                                   </button>

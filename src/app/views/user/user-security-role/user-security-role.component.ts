@@ -8,8 +8,6 @@ import {
   CompanyManagementService,
   LocationManagementService,
 } from '../../../services/index';
-import text from '@angular/core';
-import THIS_EXPR from '@angular/compiler';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 

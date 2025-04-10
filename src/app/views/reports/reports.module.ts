@@ -8,7 +8,6 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { TreeviewModule } from 'ngx-treeview';
 import { DropdownTreeviewModule } from '../dropdown-treeview-select/dropdown-treeview.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgPipesModule } from 'ngx-pipes';
@@ -23,7 +22,6 @@ import { DpDatePickerModule } from 'ng2-date-picker';
     TreeviewModule.forRoot(),
     DropdownTreeviewModule,
     ReportsRoutingModule,
-    // NgxPasswordToggleModule,
     MatTabsModule,
     NgxPaginationModule,
     NgPipesModule,

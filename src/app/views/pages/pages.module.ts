@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { ResetPasswordComponent } from './reset-password.component';
-import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ReactiveFormsModule,
     PagesRoutingModule,
     NgxSpinnerModule,
-    // NgxPasswordToggleModule,
   ],
   declarations: [
     P404Component,

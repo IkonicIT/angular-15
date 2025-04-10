@@ -10,6 +10,11 @@ import { UserManagementService } from '../../../services/user-management.service
 })
 export class ChangePasswordComponent implements OnInit {
   model: any = {};
+  showPassword = {
+    current: false,
+    new: false,
+    confirm: false
+  };
   user: any = {};
   index: number;
   dismissible = true;
@@ -78,4 +83,9 @@ export class ChangePasswordComponent implements OnInit {
       }
     }
   }
+
+  togglePasswordVisibility(field: 'current' | 'new' | 'confirm') {
+    this.showPassword[field] = !this.showPassword[field];
+  }  
+
 }

@@ -7,7 +7,6 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { TreeviewModule } from 'ngx-treeview';
 import { DropdownTreeviewModule } from '../dropdown-treeview-select/dropdown-treeview.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-// import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import { CranesService } from 'src/app/services/cranes.service';
 import { EditCranesComponent } from './edit-cranes/edit-cranes.component';
 import { CraneNotesComponent } from './crane-notes/crane-notes.component';
@@ -31,7 +30,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; // Import BsDatep
     DropdownTreeviewModule,
     CranesRoutingModule,
     NgPipesModule,
-    // NgxPasswordToggleModule,
     NgxPaginationModule, // Add NgxPaginationModule here
   ],
   providers: [CranesService],

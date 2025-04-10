@@ -7,7 +7,6 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { TreeviewModule } from 'ngx-treeview';
 import { DropdownTreeviewModule } from '../dropdown-treeview-select/dropdown-treeview.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 
 @NgModule({
   imports: [
@@ -18,7 +17,6 @@ import { NgxPasswordToggleModule } from 'ngx-password-toggle';
     TreeviewModule.forRoot(),
     DropdownTreeviewModule,
     TemplateRoutingModule,
-    // NgxPasswordToggleModule,
   ],
   declarations: [TemplateComponent],
 })

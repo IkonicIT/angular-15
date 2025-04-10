@@ -8,7 +8,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TreeviewModule } from 'ngx-treeview';
 import { DropdownTreeviewModule } from '../dropdown-treeview-select/dropdown-treeview.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-// import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgPipesModule } from 'ngx-pipes';
 import { PartsService } from 'src/app/services/parts.service';
@@ -31,7 +30,6 @@ import { EditPartNoteComponent } from './edit-part-note/edit-part-note.component
     TreeviewModule.forRoot(),
     DropdownTreeviewModule,
     PartsRoutingModule,
-    // NgxPasswordToggleModule,
     NgxPaginationModule,
     NgPipesModule,
     ReactiveFormsModule,

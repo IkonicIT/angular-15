@@ -1,7 +1,7 @@
 <div class="animated fadeIn" *ngIf="highestRank > 0">
   <div class="row">
     <div class="col-lg-12 mobile-padding">
-      <div class="card remove-card-radius">
+      <div class="card remove-card-radius marginAlignment">
         <div class="card-body">
           <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
             Please Select From & To Fields.
@@ -163,16 +163,7 @@
                     </h6>
                   </div>
 
-                  <div
-                    class="border-charts"
-                    style="
-                      position: relative;
-                      height: 300px;
-                      width: 592px;
-                      padding: 10px;
-                    "
-                    *ngIf="chartFlag"
-                  >
+                  <div class="border-charts" *ngIf="chartFlag">
                     <canvas
                       baseChart
                       [datasets]="pieChartData"
@@ -193,7 +184,6 @@
                   </h5>
                   <div
                     class="border-charts"
-                    style="height: 300px; width: 592px; padding: 10px"
                     *ngIf="pieChartCauseLabels.length > 0"
                   >
                     <canvas
@@ -227,7 +217,7 @@
                 >RECENT REPAIRS
               </strong>
             </div>
-            <div class="m-2">
+            <div class="m-2 x_Scrolling">
               <table
                 class="table table-responsive-sm table-responsive-md table-hover table-outline mb-0"
               >
@@ -336,7 +326,7 @@
                 >RECENTLY ADDED ITEMS
               </strong>
             </div>
-            <div *ngFor="let itemType of recentlyAddedItemsKeys" class="m-2">
+            <div *ngFor="let itemType of recentlyAddedItemsKeys" class="m-2 x_Scrolling">
               <div class="type-header mb-1">
                 <strong [innerHTML]="itemType"></strong>
               </div>
@@ -410,7 +400,7 @@
                 >RECENTLY ADDED NOTES
               </strong>
             </div>
-            <div class="m-2">
+            <div class="m-2 x_Scrolling">
               <table class="table table-hover table-outline">
                 <thead class="thead-light">
                   <tr>
@@ -765,20 +755,20 @@
                 >
                 <div style="float: right; display: flex; gap: 2px">
                   <button
-                  type="button"
-                  (click)="exportToExel()"
-                  class="btn btn-outline-danger btn-sm float-right rounded"
-                  *ngIf="highestRank > 5"
-                >
-                  Export to Excel
-                </button>
-                <button
-                  type="button"
-                  (click)="CloseModel()"
-                  class="btn btn-outline-danger btn-sm float-right rounded"
-                >
-                  Close
-                </button>
+                    type="button"
+                    (click)="exportToExel()"
+                    class="btn btn-outline-danger btn-sm float-right rounded"
+                    *ngIf="highestRank > 5"
+                  >
+                    Export to Excel
+                  </button>
+                  <button
+                    type="button"
+                    (click)="CloseModel()"
+                    class="btn btn-outline-danger btn-sm float-right rounded"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
               <table

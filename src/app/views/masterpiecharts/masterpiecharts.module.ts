@@ -7,7 +7,6 @@ import { AlertModule } from 'ngx-bootstrap/alert'; // Ensure correct import
 import { TreeviewModule } from "ngx-treeview";
 import { DropdownTreeviewModule } from "../dropdown-treeview-select/dropdown-treeview.module";
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-// import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatButtonModule} from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -25,7 +24,6 @@ import { DashboardService } from 'src/app/services/dashboard.service';
     TreeviewModule.forRoot(),
     DropdownTreeviewModule,
     TemplateRoutingModule,
-    // NgxPasswordToggleModule,
     DropdownTreeviewModule,
     NgPipesModule,
     MatButtonModule,

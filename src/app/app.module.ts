@@ -25,7 +25,6 @@ import { NgxSortableModule } from 'ngx-sortable';
 import { provideUserIdleConfig } from 'angular-user-idle';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgPipesModule, OrderByPipe } from 'ngx-pipes';
-import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -141,7 +140,6 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     DropdownTreeviewModule,
     NgxSortableModule,
     NgxSpinnerModule,
-    // NgxPasswordToggleModule,
     //NgbDropdownModule,
     BrowserAnimationsModule,
     SelectDropDownModule,

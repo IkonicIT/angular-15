@@ -166,8 +166,9 @@
                       <div class="form-group col-md-6">
                         <label for="password">Password</label
                         ><strong class="text-danger"> *</strong>
+                        <div class="input-group">
                         <input
-                          type="password"
+                          [type]="showPassword.password ? 'text' : 'password'"
                           class="form-control"
                           [(ngModel)]="model.password"
                           name="password"
@@ -175,26 +176,45 @@
                           id="password"
                           pattern=" /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/"
                           ngModel
-                          passwordToggle
                           required
                         />
+                        <div class="input-group-append">
+                          <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            (click)="togglePasswordVisibility('password')"
+                        >
+                            <i class="fa" [ngClass]="showPassword.password ? 'fa-eye-slash' : 'fa-eye'"></i>
+                          </button>
+                        </div>
                       </div>
+                    </div>
                       <div class="form-group col-md-6">
                         <label for="cPassword">Confirm Password</label
                         ><strong class="text-danger"> *</strong>
+                        <div class="input-group">
                         <input
-                          type="password"
+                          [type]="showPassword.confirmPassword ? 'text' : 'password'"
                           class="form-control"
                           [(ngModel)]="model.confirmPassword"
                           name="cPassword"
                           #cPassword="ngModel"
                           id="cPassword"
                           ngModel
-                          passwordToggle
                           required
                         />
+                        <div class="input-group-append">
+                          <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            (click)="togglePasswordVisibility('confirmPassword')"
+                        >
+                            <i class="fa" [ngClass]="showPassword.confirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                          </button>
+                        </div>
                       </div>
                     </div>
+                  </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fname">First Name</label

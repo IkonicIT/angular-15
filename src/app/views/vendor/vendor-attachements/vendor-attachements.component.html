@@ -43,29 +43,28 @@
 
         <div class="card-body">
           <div>
-            <p class="card-text">Manage vendor Documents</p>
-            <div class="float float-right">
+            <p class="card-text">Manage vendor Documents
+              <button
+              type="button"
+              class="btn btn-primary btn-right float-right"
+              (click)="backToVendor()"
+              tooltip="Back to Vendor"
+            >
+              Back
+            </button>
+            &nbsp;
               <button
                 type="button"
-                class="btn btn-primary btn-right"
+                class="float-right btn btn-primary btn-right"
                 (click)="addDocument()"
                 tooltip="Add Dcoument."
               >
                 Add Document
               </button>
-              &nbsp;
-              <button
-                type="button"
-                class="btn btn-primary btn-right"
-                (click)="backToVendor()"
-                tooltip="Back to Vendor"
-              >
-                Back
-              </button>
-            </div>
+              </p>
           </div>
           <div>
-            <div class="float-left">
+            <div class="float-left mt-3">
               <span
                 >Show
                 <select [(ngModel)]="itemsForPagination">

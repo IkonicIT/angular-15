@@ -13,6 +13,10 @@ import { TreeviewItem } from 'ngx-treeview'; // Add this import
 })
 export class AddUserComponent implements OnInit {
   model: any = {};
+  showPassword = {
+    password: false,
+    confirmPassword: false
+  };
   index: number = 0;
   router: Router;
   isNameCheckVisible = false;
@@ -276,4 +280,7 @@ export class AddUserComponent implements OnInit {
   help() {
     this.helpFlag = !this.helpFlag;
   }
+  togglePasswordVisibility(field: 'password' | 'confirmPassword') {
+    this.showPassword[field] = !this.showPassword[field];
+  }  
 }

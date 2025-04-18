@@ -129,7 +129,7 @@ export class AdvancedItemSearchComponent implements OnInit {
   };
   public params: any = {};
   selectedVal: string;
-  public repairFlag: any;
+  public repairFlag: string;
   failureTypesandPercentage: any = {};
   public itemIds: any = [];
   selectedFailureType: any;
@@ -765,8 +765,8 @@ export class AdvancedItemSearchComponent implements OnInit {
 
   public chartClicked(e: any): void {
     const clickedLabel =
-      e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.replace(/\d+\.\d+\s*/g, '');
+    e.event.chart.config._config.data.labels[e.active[0].index];
+    const matches = clickedLabel.replace(/\b\d+(\.\d+)?\b\s*/g, '').trim();
     const type = matches;
 
     this.selectedFailureType = type;
@@ -775,7 +775,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     var request = {
       companyId: this.companyId,
       failureType: this.selectedFailureType,
-      isByRepairCost: this.repairFlag,
+      isByRepairCost: Boolean(this.repairFlag),
       startDate: this.datepipe.transform(this.startDate, 'yyyy-MM-dd'),
       endDate: this.datepipe.transform(this.endDate, 'yyyy-MM-dd'),
       itemIds: this.itemIds,

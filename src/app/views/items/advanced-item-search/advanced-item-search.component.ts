@@ -812,15 +812,11 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.userId = sessionStorage.getItem('userId');
     const clickedLabel =
       e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.match(/\d+\.\d+\s*/g, '');
-
-    if (matches) {
-      causeText = matches[1];
-    }
-
-    const cause = causeText;
-    this.selectedFailureCause = cause;
-    console.log('selectedFailureCause3', this.selectedFailureCause);
+      const matches = clickedLabel.replace(/\b\d+(\.\d+)?\b\s*/g, '').trim();
+      const cause = matches;
+  
+      this.selectedFailureCause = cause;
+      console.log('selectedFailureCause33', this.selectedFailureCause);
 
     var request = {
       companyId: this.companyId,

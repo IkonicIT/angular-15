@@ -44,7 +44,7 @@ export class ItemRepairAttachmentsComponent implements OnInit {
   highestRank: any;
   helpFlag: any = false;
   itemRepair: any;
-  loader =false;
+  loader = false;
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
@@ -89,19 +89,18 @@ export class ItemRepairAttachmentsComponent implements OnInit {
 
   getAllDocuments() {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .getAllRepairDocuments(this.repairlogId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           console.log(response);
           this.documents = response;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -119,7 +118,7 @@ export class ItemRepairAttachmentsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     let userLog = {
       itemTag: this.itemRepair.tag,
       itemTypeName: this.itemRepair.itemtype,
@@ -136,13 +135,12 @@ export class ItemRepairAttachmentsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.refresh();
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -173,18 +171,17 @@ export class ItemRepairAttachmentsComponent implements OnInit {
 
   downloadDocumentFromDB(document: { isNew?: boolean; attachmentid?: any }) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService
       .getItemDocuments(document.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

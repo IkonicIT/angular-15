@@ -52,17 +52,15 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
     console.log('repairlogid=' + this.documentId);
     this.router = router;
     this.spinner.show();
-    this.loader = true;
 
     this.companyDocumentsService.getCompanyDocuments(this.documentId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -74,7 +72,7 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
 
   updateItemRepairDocument() {
     this.spinner.show();
-    this.loader = true;
+
     this.model.moduleType = 'itemrepairtype';
     this.model.companyID = this.companyId;
     this.model.attachmentUserLogDTO = {
@@ -87,7 +85,7 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
     this.companyDocumentsService.updateCompanyDocument(this.model).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         window.scroll(0, 0);
         this.index = 1;
         setTimeout(() => {
@@ -99,7 +97,6 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }

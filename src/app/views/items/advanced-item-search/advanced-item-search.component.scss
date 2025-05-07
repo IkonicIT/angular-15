@@ -114,6 +114,15 @@ tbody td a:hover {
   border-radius: 0;
 }
 
+.modal {
+  z-index: 1050 !important;
+}
+
+.cdk-overlay-container {
+  position: fixed;
+  z-index: 3000 !important;
+}
+
 .float-right {
   float: right;
 }

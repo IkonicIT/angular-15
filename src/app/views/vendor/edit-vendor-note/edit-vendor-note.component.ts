@@ -63,7 +63,6 @@ export class EditVendorNoteComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

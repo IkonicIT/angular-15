@@ -16,7 +16,6 @@ import { UserAttributesComponent } from './user-attributes/user-attributes.compo
 import { TreeviewModule } from "ngx-treeview";
 import { DropdownTreeviewModule } from "../dropdown-treeview-select/dropdown-treeview.module";
 import { NgxSortableModule } from 'ngx-sortable';
-import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ViewUserComponent } from './view-user/view-user.component';
 import { UserLogManagementComponent } from './userlog/user-log-management/user-log-management.component';
@@ -33,7 +32,6 @@ import { ViewuserLogComponent } from './userlog/viewuser-log/viewuser-log.compon
     DropdownTreeviewModule,
     AlertModule.forRoot(),
     UserRoutingModule,
-    // NgxPasswordToggleModule
   ],
   declarations: [UserManagementComponent, AddUserComponent, EditUserComponent, UserSecurityRoleComponent, UserTypesComponent, AddUserTypeComponent, EditUserTypeComponent, UserAttributesComponent, ViewUserComponent, UserLogManagementComponent, ViewuserLogComponent]
 })

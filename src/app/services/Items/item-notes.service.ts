@@ -94,9 +94,9 @@ export class ItemNotesService {
       }),
       params: params,
     };
-
+    const url = `${this.serviceURL}/${id}/${userName}`;
     return this.http
-      .delete(this.serviceURL + '/' + id + '/' + userName, httpOptions)
+      .delete(url, { ...this.httpOptions, responseType: 'text' })
       .pipe(catchError(this.handleError));
   }
 }

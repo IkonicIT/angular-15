@@ -49,7 +49,7 @@ export class ItemRepairsComponent implements OnInit {
   itemType: any;
   helpFlag: any = false;
   loader = false;
-  
+
   constructor(
     private modalService: BsModalService,
     private itemManagementService: ItemManagementService,
@@ -90,7 +90,7 @@ export class ItemRepairsComponent implements OnInit {
 
   getAllRepairs() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemRepairItemsService
       .getAllCompletedRepairs(this.companyId, this.itemId)
       .subscribe((response) => {
@@ -100,7 +100,6 @@ export class ItemRepairsComponent implements OnInit {
           .subscribe((response) => {
             this.repairs = response;
             this.spinner.hide();
-            this.loader = false;
           });
       });
   }
@@ -154,18 +153,17 @@ export class ItemRepairsComponent implements OnInit {
 
   downloadDocumentFromDB(document: { attachmentId: number }) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

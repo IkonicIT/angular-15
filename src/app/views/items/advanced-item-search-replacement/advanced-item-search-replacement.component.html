@@ -68,7 +68,7 @@
                   <div class="form-group col-sm-6">
                     <label for="status">Status</label>
                     <select
-                      class="form-control"
+                      class="form-control custom-dropdown"
                       [(ngModel)]="itemModel.status"
                       name="status"
                       #status="ngModel"
@@ -148,7 +148,7 @@
                         />
                         <select
                           *ngIf="eachAttr.attributetype.attributetypeid == 4"
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="eachAttr.value"
                           name="select{{ i }}"
                           #type="ngModel"
@@ -327,7 +327,7 @@
                   <div class="form-group col-sm-12">
                     <label for="vendor">Vendor</label>
                     <select
-                      class="form-control"
+                      class="form-control custom-dropdown"
                       [(ngModel)]="repairModel.vendorId"
                       name="vendor"
                       #vendor="ngModel"
@@ -613,5 +613,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

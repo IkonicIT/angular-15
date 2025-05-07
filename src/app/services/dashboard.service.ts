@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { AppConfiguration } from '../configuration';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class DashboardService {
@@ -33,6 +34,10 @@ export class DashboardService {
       .pipe(catchError(this.handleError));
   }
 
+  getFailureTypePercentageMasterPieCharts(req: any): Observable<any> {
+    return this.http.post(AppConfiguration.locationRestURL + "masterpiecharts/failureTypeChart",req);
+  }
+
   getFailureTypePercentageInRange(request: any) {
     return this.http
       .post(this.serviceURL + 'primaryFindingsChartInRange', request)
@@ -44,7 +49,14 @@ export class DashboardService {
       .post(this.serviceURL + 'causesChart', body)
       .pipe(catchError(this.handleError));
   }
-  
+
+  getFailureCausesMasterPieCharts(body: any) {
+    return this.http.post(AppConfiguration.locationRestURL + "masterpiecharts/failureCausesChart", body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   getFailureCausePercentageInRange(failureCause: any) {
     return this.http
       .post(this.serviceURL + 'causesChartInRange', failureCause)
@@ -55,6 +67,13 @@ export class DashboardService {
     return this.http
       .post(this.serviceURL + 'repairJobsByFailureCause', failuretype)
       .pipe(catchError(this.handleError));
+  }
+
+  getRecentJobsByCauseMasterPieCharts(failuretype: any) {
+    return this.http.post(AppConfiguration.locationRestURL + "masterpiecharts/repairJobsByFailureCause", failuretype)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getRecentJobsByCauseinRange(failuretype: any) {

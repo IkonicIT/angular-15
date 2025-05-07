@@ -1,0 +1,67 @@
+parts.component.css form {
+  margin-bottom: 16px;
+}
+
+.parts-table {
+  width: 100%;
+  border: solid black 1px;
+  margin-top: 16px;
+}
+
+.parts-table th,
+.parts-table td {
+  padding: 8px;
+  text-align: left;
+}
+
+.parts-table th {
+  background-color: #e02725;
+  color: #333;
+}
+
+.parts-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.parts-table tr:hover {
+  background-color: #ddd;
+}
+
+.parts-table th,
+.parts-table td button {
+  cursor: pointer;
+}
+
+.parts-table td button {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.parts-table td button:hover {
+  text-decoration: none;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 16px;
+  margin-top: 16px;
+  background-color: #f9f9f9;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.card p {
+  margin: 8px 0;
+}
+
+.button-styles {
+  border-width: 0px;
+  height: 32px;
+  width: 80px;
+}

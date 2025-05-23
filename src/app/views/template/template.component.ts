@@ -64,15 +64,20 @@ export class TemplateComponent implements OnInit {
   }
 
   saveCompany() {
+    let req: any;
     if (this.templateID == 0) {
       this.index = -1;
     } else if (this.company.name == undefined) {
       this.index = -2;
     } else {
-      var req = {
+       req = {
         templateId: this.templateID,
         companyName: this.company.name,
         userName: this.userName,
+        isPartnerCompany: this.highestRank === '10' ? true : false
+      };    
+      if (this.highestRank === '10') {
+        req.userId = sessionStorage.getItem('userId');
       };
       this.spinner.show();
 

@@ -22,6 +22,7 @@ export class AddcompanydetailsComponent implements OnInit {
   file: File;
   dismissible = true;
   helpFlag: any = false;
+  highestRank: any;
   loader = false;
 
   constructor(
@@ -33,6 +34,7 @@ export class AddcompanydetailsComponent implements OnInit {
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
+    this.highestRank = parseInt(sessionStorage.getItem("highestRank") || "0", 10);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyId = this.globalCompany.companyid;
     //this.getStatuses()
@@ -118,6 +120,7 @@ export class AddcompanydetailsComponent implements OnInit {
           },
           url: this.model.url ? this.model.url : '',
           vendor: false,
+          isPartnerCompany: this.model.isPartnerCompany ? true : false
         };
         this.spinner.show();
 

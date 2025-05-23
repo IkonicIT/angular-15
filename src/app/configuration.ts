@@ -1,9 +1,9 @@
 export class AppConfiguration {
-  public static companyRestURL = 'https://gotracrat.in:8085/api/company/';
+  public static companyRestURL = 'http://localhost:8085/api/company/';
   public isProd = false;
   public static vendorRestURL = 'https://gotracrat.in:8087/api/v1/vendor/';
   public static vendorNoteURL = 'https://gotracrat.in:8088/api/vendor/note';
-  public static templateRestURL = 'https://gotracrat.in:8085/api/v1/template/';
+  public static templateRestURL = 'http://localhost:8085/api/v1/template/';
   public static typeStatusRestURL = 'https://gotracrat.in:8088/api/';
   public static typeRestURL = 'https://gotracrat.in:8088/api/type';
   public static attributeRestURL =

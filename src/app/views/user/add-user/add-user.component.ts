@@ -4,7 +4,7 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { UserManagementService } from '../../../services/user-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgModel } from '@angular/forms';
-import { TreeviewItem } from 'ngx-treeview'; // Add this import
+import { TreeviewItem } from 'ngx-treeview';
 
 @Component({
   selector: 'app-add-user',
@@ -32,7 +32,8 @@ export class AddUserComponent implements OnInit {
   userName: any;
   dismissible = true;
   vendors: any = [];
-  vendorItems: TreeviewItem[]; // Add this property
+  vendorItems: TreeviewItem[];
+  userId:any;
 
   constructor(
     router: Router,
@@ -53,9 +54,11 @@ export class AddUserComponent implements OnInit {
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyid;
     }
-    this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
-    if (this.isOwnerAdmin == 'true') {
-      this.companyManagementService.getAllCompaniesForOwnerAdmin().subscribe(
+   const isOwnerAdmin = sessionStorage.getItem("IsOwnerAdmin") === "true";
+   this.userId = sessionStorage.getItem('userId') ;
+   const highestRank = parseInt(sessionStorage.getItem("highestRank") || "0", 10);
+    if (highestRank === 10) {
+        this.companyManagementService.getCompanyNames(this.userId).subscribe(
         (response) => {
           this.spinner.hide();
           console.log(response);
@@ -65,27 +68,18 @@ export class AddUserComponent implements OnInit {
           this.spinner.hide();
         }
       );
-      // this.companyManagementService.getAllVendorDetails().subscribe(
-      //   (response) => {
-      //     this.spinner.hide();
-      //     this.vendors = response;
-      //   },
-      //   (error) => {
-      //     this.spinner.hide();
-      //   }
-      // );
       console.log('all  companies for owner Admin' + this.allCompanies);
     } else {
-      // this.companyManagementService.getAllVendorDetails().subscribe(
-      //   (response) => {
-      //     this.spinner.hide();
-      //     console.log(response);
-      //     this.allCompanies = response;
-      //   },
-      //   (error) => {
-      //     this.spinner.hide();
-      //   }
-      // );
+       this.companyManagementService.getAllCompaniesForOwnerAdmin().subscribe(
+        (response) => {
+          this.spinner.hide();
+          console.log(response);
+          this.allCompanies = response;
+        },
+        (error) => {
+          this.spinner.hide();
+        }
+      )
       console.log('all vendor companies' + this.allCompanies);
     }
   }
@@ -117,7 +111,6 @@ export class AddUserComponent implements OnInit {
 
   onVendorChange(value: any) {
     this.model.vendorId = value;
-    // Add any additional logic you want to perform when the vendor selection changes
   }
 
   checkUserName(event: any) {

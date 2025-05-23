@@ -76,7 +76,7 @@ export class TemplateComponent implements OnInit {
         userName: this.userName,
         isPartnerCompany: this.highestRank === '10' ? true : false
       };    
-      if (this.highestRank === '10') {
+      if (this.highestRank === '10' || '0') {
         req.userId = sessionStorage.getItem('userId');
       };
       this.spinner.show();

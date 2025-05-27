@@ -1,0 +1,15 @@
+name: Auto-assign reviewer VihanshY to PRs created by anudeep749 and rajeshwar96
+
+on:
+  pull_request: 
+    types: [opened, reopened, synchronize]
+
+jobs:
+  auto_assign_reviewer:
+    runs-on: ubuntu-latest
+    if: github.actor == 'anudeep749' || github.actor == 'rajeshwar96'
+    steps:
+      - name: Assign reviewer VihanshY
+        uses: peter-evans/reviewers@v1
+        with:
+          reviewers: VihanshY

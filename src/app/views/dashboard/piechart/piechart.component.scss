@@ -143,13 +143,13 @@ button {
 
 .btn-outline-danger:hover {
   color: #fff;
-  background-color: #f86c6b;
-  border-color: #f86c6b;
+  background-color: #E02725;
+  border-color: #E02725;
 }
 
 .btn-outline-danger {
-  color: #f86c6b;
-  border-color: #f86c6b;
+  color: #E02725;
+  border-color: #E02725;
 }
 
 a {
@@ -178,4 +178,24 @@ a {
 
 ::ng-deep .modal-content {
   border-radius: 0 !important;
+}
+
+.space {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.marginAlignment{
+  margin: 0 15px;
+}
+.x_Scrolling {
+  overflow-x:auto
+}
+textarea {
+    resize: vertical;
+    width: 100%;
 }

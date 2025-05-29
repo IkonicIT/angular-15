@@ -22,6 +22,7 @@ export class AddcompanydetailsComponent implements OnInit {
   file: File;
   dismissible = true;
   helpFlag: any = false;
+  highestRank: any;
   loader = false;
 
   constructor(
@@ -33,6 +34,7 @@ export class AddcompanydetailsComponent implements OnInit {
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
+    this.highestRank = parseInt(sessionStorage.getItem("highestRank") || "0", 10);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyId = this.globalCompany.companyid;
     //this.getStatuses()
@@ -40,18 +42,17 @@ export class AddcompanydetailsComponent implements OnInit {
 
   getStatuses() {
     this.spinner.show();
-    this.loader = true;
+
     this.statuses = [];
     this.companyStatusesService.getAllCompanyStatuses(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.statuses = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -119,14 +120,15 @@ export class AddcompanydetailsComponent implements OnInit {
           },
           url: this.model.url ? this.model.url : '',
           vendor: false,
+          isPartnerCompany: this.model.isPartnerCompany ? true : false
         };
         this.spinner.show();
-        this.loader = true;
+
         this.companyManagementService.saveCompany(this.model).subscribe(
           (response: any) => {
             this.companyId = response.companyid;
             this.spinner.hide();
-            this.loader = false;
+
             window.scroll(0, 0);
             if (this.file != null) {
               this.AddCompanyLogo(this.companyId);
@@ -136,7 +138,6 @@ export class AddcompanydetailsComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       }
@@ -150,7 +151,6 @@ export class AddcompanydetailsComponent implements OnInit {
       .saveLogo(formdata, companyId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
       });
   }
 

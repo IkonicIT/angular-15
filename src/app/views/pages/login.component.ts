@@ -28,11 +28,10 @@ export class LoginComponent {
     private userManagementService: UserManagementService
   ) {
     this.router = router;
-    this.loader = true;
 
     setTimeout(() => {
       console.log('hide');
-      this.loader = false;
+      this.spinner.hide();
     }, 2000);
     if (
       sessionStorage.getItem('auth_token') &&
@@ -47,18 +46,18 @@ export class LoginComponent {
       userName: this.userName,
       password: this.password,
     };
-    this.loader = true;
+    this.spinner.show();
     this.loginService.loginAuth(req).subscribe(
       (response) => {
         sessionStorage.setItem('auth_token', response.access_token);
         console.log(response.access_token);
-        this.loader = false;
+
         this.getUserIdByNameForLogged();
       },
       (error) => {
         console.log(error);
         this.loginError = true;
-        this.loader = false;
+        this.spinner.hide();
       }
     );
   }
@@ -80,14 +79,11 @@ export class LoginComponent {
         sessionStorage.setItem('userId', response.userid);
         sessionStorage.setItem('userName', response.username);
         this.getProfile();
-        this.spinner.hide();
-        this.loader = false;
       },
       (error) => {
         console.log(error);
         this.loginError = true;
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -103,18 +99,17 @@ export class LoginComponent {
         this.userManagementService.updateLoginDate(this.user).subscribe(
           (response) => {},
           (error) => {
-            console.log(error);
+            console.log('error: ', error);
             this.loginError = true;
+
             this.spinner.hide();
-            this.loader = false;
           }
         );
-
+        this.spinner.hide();
         this.router.navigate(['/dashboard']);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }

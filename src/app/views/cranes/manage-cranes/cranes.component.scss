@@ -1,0 +1,57 @@
+.cranes-container {
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+input {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border: 1px solid grey;
+  margin-top: 20px;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}
+
+.bmdrnk-link {
+  color: blue;
+  cursor: pointer;
+}
+
+.bmdrnk-link:hover {
+  text-decoration: underline;
+}
+
+.parts-table {
+  width: 100%;
+  border: solid black 1px;
+  margin-top: 16px;
+}
+
+.rowAlign {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}

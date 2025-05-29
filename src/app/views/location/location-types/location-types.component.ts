@@ -51,12 +51,12 @@ export class LocationTypesComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationsTypes = [];
     this.locationTypesService.getAllLocationTypes(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.locationsTypes = response;
         this.locationsTypes.forEach((type: { parentid: any }) => {
           if (!type.parentid) {
@@ -66,7 +66,6 @@ export class LocationTypesComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -91,26 +90,27 @@ export class LocationTypesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.userName = sessionStorage.getItem('userName');
     this.locationTypesService
       .removeLocationType(this.index, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef?.hide();
           this.getAllLocTypes();
           const currentPage = this.p;
-    const locationTypesCount = this.locationsTypes.length;
-    const maxPageAvailable = Math.ceil(locationTypesCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
-      this.p = maxPageAvailable;
-    }
+          const locationTypesCount = this.locationsTypes.length;
+          const maxPageAvailable = Math.ceil(
+            locationTypesCount / this.itemsForPagination
+          );
+          if (currentPage > maxPageAvailable) {
+            this.p = maxPageAvailable;
+          }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -140,11 +140,13 @@ export class LocationTypesComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e: any){
+  onChange(e: any) {
     const currentPage = this.p;
     const locationTypesCount = this.locationsTypes.length;
-    const maxPageAvailable = Math.ceil(locationTypesCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
+    const maxPageAvailable = Math.ceil(
+      locationTypesCount / this.itemsForPagination
+    );
+    if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

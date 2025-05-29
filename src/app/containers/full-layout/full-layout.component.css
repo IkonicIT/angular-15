@@ -19,56 +19,29 @@
   height: 34px;
 }
 
-.goSearch {
-  pointer-events: visible;
-  border-radius: 0;
-  line-height: 1.1;
-  height: 33px;
-  margin-top: -5px;
-}
-
-::ng-deep .treeview-container .row-item {
-  margin-bottom: 0.3rem;
-  flex-wrap: nowrap;
-}
-
-::ng-deep .treeview-container .row-item .fa {
-  width: 0.8rem;
-  cursor: pointer;
-  margin-right: 0.3rem;
-}
-
-.btn-danger,
-.btn-danger.disabled,
-.btn-danger:disabled {
-  color: #fff;
-  background-color: #f86c6b;
-  border-color: #f86c6b;
-}
-
-.btn-danger:hover {
-  color: #fff;
-  background-color: #f64846;
-  border-color: #f63c3a;
-}
-
-.btn.disabled,
-.btn:disabled {
-  opacity: 0.65;
-}
-
-.masterSearch,
-.advancedSearch {
-  border-radius: 0;
-  line-height: 1.1;
-  height: 34px;
-  margin-top: -2px;
-}
-
 .img-side-logo {
   /* margin-right: 10px;  */
   /* margin-top: -16px; */
   max-width: 160px;
+}
+
+.ngx-dropdown-container[_ngcontent-yxf-c7]
+  .ngx-dropdown-list-container[_ngcontent-yxf-c7] {
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 999999999;
+  width: auto !important;
+  background-clip: padding-box;
+  background: white;
+  position: absolute;
+  box-shadow: 5px 5px 5px #00000036;
+}
+
+.text-overflow-button {
+  background-color: #f86c6b;
 }
 
 bs-tooltip-container {
@@ -169,4 +142,41 @@ bs-tooltip-container {
   .ml-15 {
     margin-left: 7px;
   }
+}
+
+.main {
+  /* margin-top: 55px; */
+  flex: 1;
+}
+
+.side-bar-margin {
+  margin-top: 55px;
+}
+
+
+/* Add these styles for the dropdown */
+:host ::ng-deep .ngx-dropdown-container {
+  width: auto !important;
+  min-width: 200px;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container {
+  width: auto !important;
+  min-width: 100%;
+}
+
+/* Remove dropdown arrow */
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button::after {
+  display: none !important;
+}
+
+:host ::ng-deep .dropdown-toggle::after {
+  display: none !important;
 }

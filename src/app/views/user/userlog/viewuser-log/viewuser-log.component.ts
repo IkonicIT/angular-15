@@ -44,13 +44,12 @@ export class ViewuserLogComponent implements OnInit {
 
   getUserLogInfo() {
     this.spinner.show();
-    this.loader = true;
+
     this.userManagementService
       .getUserlogData(this.companyId, this.username)
       .subscribe((response) => {
         this.results = response;
         this.spinner.hide();
-        this.loader = false;
       });
   }
 

@@ -1,0 +1,116 @@
+.my-pagination :ng-deep .ngx-pagination {
+  margin-bottom: 1rem;
+  margin-top: 25px;
+  width: fit-content;
+  border: solid 1px #a4b7c1;
+  padding-left: 0px;
+}
+
+.my-pagination :ng-deep .ngx-pagination .current {
+  color: white;
+  background-color: red;
+}
+
+.my-pagination :ng-deep .ngx-pagination a,
+.ngx-pagination button {
+  color: red;
+  background-color: white;
+}
+
+thead th {
+  padding: 12px;
+  cursor: pointer;
+  span {
+    visibility: hidden;
+  }
+  &.active {
+    color: #000;
+
+    span {
+      visibility: visible;
+    }
+  }
+}
+
+tbody td {
+  padding: 12px;
+}
+
+.float-right {
+  float: right;
+}
+
+.div-search {
+  margin-bottom: 1%;
+  margin-top: 1%;
+}
+
+.text-right {
+  text-align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 16px;
+}
+
+.btn-right {
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.row {
+  margin: 0 -15px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+button,
+.card {
+  border-radius: 0;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.select-pagination-option {
+  height: 0;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.select-pagination-option {
+  height: 0;
+}
+
+::ng-deep .row .alert-danger {
+  padding: 12px 20px;
+  color: #813838;
+  background-color: #fee2e1;
+  border-color: #fdd6d6;
+  border-radius: 0;
+}
+
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+}
+
+::ng-deep .alert-dismissible .btn-close {
+  opacity: 0;
+}

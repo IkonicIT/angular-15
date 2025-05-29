@@ -1,0 +1,171 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="form-group col-sm-12 text-right">
+          <button
+            type="button"
+            (click)="print()"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Print
+          </button>
+          <button
+            type="button"
+            (click)="help()"
+            tooltip="Instructions"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Help
+          </button>
+          <div
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
+            *ngIf="helpFlag == true"
+          >
+            Note: Mandatory Fields are required.<br />
+            *To create a new note:<br />
+            1.Click the 'AddNotes' button.<br />
+            2.Enter the data for the new note.<br />
+            3.Click the 'Save' button.<br />
+            *To edit an existing note: <br />
+            1.click the 'Edit' button.<br />
+            2.Make the necessary changes.<br />
+            3.Click the 'Update' button.<br />
+            *To delete an existing note: <br />
+            1.Click the 'Delete' button.
+          </div>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">Edit Notes</p>
+
+          <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
+            Vendor Notes successfully.
+          </alert>
+
+          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+            Please Enter Title
+          </alert>
+
+          <div class="modal-body mobile-padding">
+            <div class="col-sm-12 mobile-padding">
+              <div class="card">
+                <form
+                  name="form"
+                  (ngSubmit)="f.form.valid && updateNotes()"
+                  #f="ngForm"
+                  novalidate
+                >
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="title">Title</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="model._id"
+                          name="journalid"
+                          #_id="ngModel"
+                          id="_id"
+                          hidden
+                        />
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.name"
+                          name="title"
+                          #title="ngModel"
+                          id="title"
+                          placeholder="Enter Title"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="date">Date</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [bsConfig]="bsConfig"
+                          [(ngModel)]="model.createdDate"
+                          name="date"
+                          #date="ngModel"
+                          id="date"
+                          placeholder="Enter Date"
+                          bsDatepicker
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="job">JOB Number</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.jobnumber"
+                          name="job"
+                          #job="ngModel"
+                          id="job"
+                          placeholder="Enter JOB Number"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="po">PO Number</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="model.ponumber"
+                          id="po"
+                          name="po"
+                          #po="ngModel"
+                          placeholder="Enter PO Number"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="details">Details</label>
+                        <textarea
+                          id="details"
+                          name="textarea-input"
+                          rows="2"
+                          cols="4"
+                          name="details"
+                          #details="ngModel"
+                          class="form-control"
+                          [(ngModel)]="model.details"
+                          placeholder="Enter Description"
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button tooltip="Update Note" class="btn btn-primary">
+                          Update
+                        </button>
+                        <button
+                          type="button"
+                          tooltip="Cancel"
+                          (click)="cancelVendorNotes()"
+                          class="btn btn-outline-danger btn-sm"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

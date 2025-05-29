@@ -133,7 +133,6 @@ export class EditLocationDetailsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -159,7 +158,7 @@ export class EditLocationDetailsComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
@@ -174,7 +173,6 @@ export class EditLocationDetailsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -184,7 +182,7 @@ export class EditLocationDetailsComponent implements OnInit {
       this.locationAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.typeAttributes = response;
           console.log('attrlength ' + this.location.attributevalues.length);
           if (
@@ -225,7 +223,6 @@ export class EditLocationDetailsComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -233,7 +230,7 @@ export class EditLocationDetailsComponent implements OnInit {
 
   getLocation() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationManagementService
       .getLocationDetails(this.locationId)
       .subscribe(
@@ -249,26 +246,25 @@ export class EditLocationDetailsComponent implements OnInit {
             this.value = this.location.parentID;
           }
 
-          this.locationManagementService.setSearchedLocationTypeId(this.location.typeId);
+          this.locationManagementService.setSearchedLocationTypeId(
+            this.location.typeId
+          );
           this.getTypeAttributes(this.location.typeId);
           this.typeID = this.location.typeId;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
   getAllVendors() {
-    this.companyManagementService.getAllVendorDetails(this.companyId).subscribe(
+    this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
         this.vendors = response;
         this.spinner.hide();
-        this.loader = false;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -363,9 +359,15 @@ export class EditLocationDetailsComponent implements OnInit {
             company: {
               companyid: this.companyId,
             },
-            criticalflag: this.location.critical ? this.location.critical : false,
-            description: this.location.description ? this.location.description : '',
-            desiredspareratio: this.location.desiredspareratio ? this.location.desiredspareratio : 0,
+            criticalflag: this.location.critical
+              ? this.location.critical
+              : false,
+            description: this.location.description
+              ? this.location.description
+              : '',
+            desiredspareratio: this.location.desiredspareratio
+              ? this.location.desiredspareratio
+              : 0,
             isvendor: this.location.isvendor ? this.location.isvendor : false,
             lastmodifiedby: this.userName,
             locationid: 0,
@@ -373,20 +375,24 @@ export class EditLocationDetailsComponent implements OnInit {
             parentLocation: {
               locationid: this.value ? this.value : 0,
             },
-            postalcode: this.location.postalcode ? this.location.postalcode : '',
+            postalcode: this.location.postalcode
+              ? this.location.postalcode
+              : '',
             state: this.location.state ? this.location.state : '',
             statusid: this.location.statusid ? this.location.statusid : 0,
             vendorCompany: {
               companyid: 0,
             },
-            attributevalues: this.location.attributevalues ? this.location.attributevalues : null,
+            attributevalues: this.location.attributevalues
+              ? this.location.attributevalues
+              : null,
           });
         }
       });
     }
     if (this.reqAttrValidate == false) {
       this.spinner.show();
-      this.loader = true;
+
       this.locationManagementService.updateLocation(request).subscribe(
         (response) => {
           if (this.addedlocations && this.addedlocations.length > 0) {
@@ -395,12 +401,11 @@ export class EditLocationDetailsComponent implements OnInit {
               .subscribe((response) => {});
           }
           this.spinner.hide();
-          this.loader = false;
+
           this.refreshCalls();
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {
@@ -411,7 +416,7 @@ export class EditLocationDetailsComponent implements OnInit {
 
   refreshCalls() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationManagementService
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe((response) => {
@@ -419,18 +424,17 @@ export class EditLocationDetailsComponent implements OnInit {
         this.router.navigate(['/location/list']);
         console.log('locations:' + response);
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
   cloneaddressfromParentLoc() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationManagementService
       .cloneaddressfromParentLoc(this.value, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.location.address1 = response.address1;
         this.location.address2 = response.address2;
         this.location.city = response.city;

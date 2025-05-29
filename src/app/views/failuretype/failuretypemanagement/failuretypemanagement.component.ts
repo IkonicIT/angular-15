@@ -85,7 +85,7 @@ export class FailuretypemanagementComponent implements OnInit {
 
   pageLoadCalls(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemTypesService
       .getAllItemTypesWithHierarchy(companyId)
       .subscribe((response) => {
@@ -95,7 +95,6 @@ export class FailuretypemanagementComponent implements OnInit {
           self.items = this.generateHierarchy(this.itemTypes);
         }
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
@@ -137,14 +136,13 @@ export class FailuretypemanagementComponent implements OnInit {
 
   getFailureTypes(typeId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemRepairItemsService
       .getAllFailureTypes(this.companyId, typeId)
       .subscribe((response) => {
         this.failureTypesandcauses = response;
         this.failureTypes = Object.keys(this.failureTypesandcauses);
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
@@ -172,7 +170,7 @@ export class FailuretypemanagementComponent implements OnInit {
   saveFailureTypeAndCauses() {
     this.typeId = this.value;
     this.spinner.show();
-    this.loader = true;
+
     if (this.model.failuretype && this.typeId != undefined) {
       var request = {
         itemtypeid: this.typeId,
@@ -185,7 +183,7 @@ export class FailuretypemanagementComponent implements OnInit {
         .saveFailureTypeAndCauses(request)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -204,7 +202,7 @@ export class FailuretypemanagementComponent implements OnInit {
         });
     } else {
       this.spinner.hide();
-      this.loader = false;
+
       window.scroll(0, 0);
       this.index = -1;
     }
@@ -216,7 +214,7 @@ export class FailuretypemanagementComponent implements OnInit {
 
     this.failureTypeId = parseInt(this.failureTypeId);
     this.spinner.show();
-    this.loader = true;
+
     if (this.model.failuretype && this.typeId != undefined) {
       var request = {
         failuretypeid: this.failureTypeId,
@@ -230,7 +228,7 @@ export class FailuretypemanagementComponent implements OnInit {
         .updateFailureTypeAndCauses(request, this.failureTypeId)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 2;
           setTimeout(() => {
             this.index = 0;
@@ -239,7 +237,7 @@ export class FailuretypemanagementComponent implements OnInit {
           this.failureTypeAndCausesPayload = response;
         });
       this.spinner.hide();
-      this.loader = false;
+
       this.newFlag = false;
       this.addFailure = 0;
       this.model.failuretype = null;
@@ -252,7 +250,7 @@ export class FailuretypemanagementComponent implements OnInit {
       this.editEnable = 0;
     } else {
       this.spinner.hide();
-      this.loader = false;
+
       window.scroll(0, 0);
       this.index = -1;
     }
@@ -266,16 +264,19 @@ export class FailuretypemanagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.typeId = this.value;
     this.spinner.show();
-    this.loader = true;
 
     this.itemRepairItemsService
-      .deleteFailureTypeAndCauses(this.failureTypeId, this.companyId, this.userName)
+      .deleteFailureTypeAndCauses(
+        this.failureTypeId,
+        this.companyId,
+        this.userName
+      )
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.index = 3;
         setTimeout(() => {
           this.index = 0;
@@ -284,7 +285,7 @@ export class FailuretypemanagementComponent implements OnInit {
         this.failureTypeAndCausesPayload = response;
       });
     this.spinner.hide();
-    this.loader = false;
+
     this.modalRef?.hide();
     this.addFailure = 0;
     this.model.failuretype = null;

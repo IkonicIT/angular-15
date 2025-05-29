@@ -177,7 +177,7 @@ export class FullLayoutComponent implements OnInit {
             this.userCompanies = this.orderPipe.transform(response, 'name');
             if (this.userCompanies.length == 1) {
               this.userSelectedCompany1 = this.userCompanies[0].name;
-              this.selectRootCompany(this.userCompanies[0]);
+              this.selectRootCompany({ value: this.userCompanies[0] });
               this.companyManagementService.setGlobalCompany(
                 this.userCompanies[0]
               );

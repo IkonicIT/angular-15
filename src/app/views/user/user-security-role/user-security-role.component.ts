@@ -239,6 +239,10 @@ export class UserSecurityRoleComponent implements OnInit {
     if (this.isOwnerAdmin == 'true') {
       this.levels = [
         {
+          roleId: 'DBA0906C-D9DE-4C81-9515-967D67D15C8B',
+          roleName: 'Partner Admin',
+        },
+        {
           roleId: '0204551E-1DE2-4991-893C-39EFECB8F0FC',
           roleName: 'Super Admin',
         },
@@ -266,7 +270,7 @@ export class UserSecurityRoleComponent implements OnInit {
         },
       ];
     } else {
-      this.userName = sessionStorage.getItem('userName'); // loggedInUserName
+      this.userName = sessionStorage.getItem('userName');
 
       this.companyManagementService
         .getLevelsByUserName(this.userName, companyId)

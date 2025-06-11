@@ -205,10 +205,18 @@ export class CompanyManagementService {
     return Math.floor(Math.random() * 6 + 1);
   }
 
-  getAllVendorDetails(companyId: string) {
+  getAllVendorDetails() {
     return this.http
-      .get(
-        AppConfiguration.vendorRestURL + 'getAllCompaniesForUser/' + companyId
+      .get(AppConfiguration.vendorRestURL + 'getAllVendorsList')
+      .pipe(catchError(this.handleError));
+  }
+
+  getAllVendorRepairs(vendorRequest: any) {
+    return this.http
+      .post(
+        AppConfiguration.locationRestURL +
+          'itemrepair/getAllItemRepairsByVendorInLocation/',
+        vendorRequest
       )
       .pipe(catchError(this.handleError));
   }
@@ -233,9 +241,9 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  saveVendor(company: any) {
+  saveVendor(vendor: any) {
     return this.http
-      .post(AppConfiguration.vendorRestURL + 'addVendor', company)
+      .post(AppConfiguration.vendorRestURL, vendor)
       .pipe(catchError(this.handleError));
   }
 
@@ -245,9 +253,9 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  updateVendor(company: { companyid: string }) {
+  updateVendor(vendor: any) {
     return this.http
-      .put(AppConfiguration.vendorRestURL + '' + company.companyid, company)
+      .put(AppConfiguration.vendorRestURL + vendor.vendorId, vendor)
       .pipe(catchError(this.handleError));
   }
 

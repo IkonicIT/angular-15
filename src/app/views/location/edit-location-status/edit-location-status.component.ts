@@ -43,17 +43,16 @@ export class EditLocationStatusComponent implements OnInit {
       console.log('compaanyid=' + this.companyId);
     });
     this.spinner.show();
-    this.loader = true;
+
     this.locationStatusService.getLocationStatus(this.statusId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         this.oldStatus = this.model.status;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -92,11 +91,11 @@ export class EditLocationStatusComponent implements OnInit {
         oldStatus: this.oldStatus,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.locationStatusService.updateLocationStatus(this.model).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -106,7 +105,6 @@ export class EditLocationStatusComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

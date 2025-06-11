@@ -117,11 +117,9 @@ export class CompanyattributesComponent implements OnInit {
     this.highestRank = sessionStorage.getItem('highestRank');
   }
 
-  
-
   pageLoadCalls(companyId: string) {
     this.spinner.show();
-    this.loader = true; 
+
     this.companyAttributesServiceService
       .getAllAttributeTypes()
       .subscribe((response) => {
@@ -152,11 +150,8 @@ export class CompanyattributesComponent implements OnInit {
 
               this.getTypeAttributes(this.value);
               this.spinner.hide();
-              this.loader = false;
-
             } else {
               this.spinner.hide();
-              this.loader = false;
             }
           });
       });
@@ -165,20 +160,19 @@ export class CompanyattributesComponent implements OnInit {
   generateHierarchy(typeList: any) {
     var items: any = [];
     typeList.forEach((type: any) => {
-        var children = [];
-        if (type.typeList && type.typeList.length > 0) {
-          children = this.generateHierarchy(type.typeList);
-        }
-        items.push(
-          new TreeviewItem({
-            text: type.name,
-            value: type.typeid,
-            collapsed: true,
-            children: children,
-          })
-        );
+      var children = [];
+      if (type.typeList && type.typeList.length > 0) {
+        children = this.generateHierarchy(type.typeList);
       }
-    );
+      items.push(
+        new TreeviewItem({
+          text: type.name,
+          value: type.typeid,
+          collapsed: true,
+          children: children,
+        })
+      );
+    });
     return items;
   }
 
@@ -210,7 +204,7 @@ export class CompanyattributesComponent implements OnInit {
 
   getAllTypes(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyTypesService.getAllCompanyTypes(companyId).subscribe(
       (response) => {
         this.cmptypes = response;
@@ -223,7 +217,6 @@ export class CompanyattributesComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -233,18 +226,17 @@ export class CompanyattributesComponent implements OnInit {
     this.index = 0;
     if (typeId != 0) {
       this.spinner.show();
-      this.loader = true;
+
       this.companyAttributesServiceService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.typeAttributes = response;
           console.log(this.typeAttributes);
           this.typeAttributesLength = this.typeAttributes.length;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -252,16 +244,15 @@ export class CompanyattributesComponent implements OnInit {
 
   getAttributeTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.companyAttributesServiceService.getAllAttributeTypes().subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.attributeTypes = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -269,18 +260,17 @@ export class CompanyattributesComponent implements OnInit {
   getSearchTypes(attributeTypeId: any) {
     if (attributeTypeId && attributeTypeId != 0 && attributeTypeId != 'null') {
       this.spinner.show();
-      this.loader = true;
+
       this.companyAttributesServiceService
         .getAllSearchTypes(attributeTypeId)
         .subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.searchTypes = response;
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     }
@@ -297,12 +287,12 @@ export class CompanyattributesComponent implements OnInit {
 
   saveAttributeListOrder(typeAttributes: any) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttributeService
       .updateTypeAttributesOrder(typeAttributes)
       .subscribe((response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.index = 4;
         setTimeout(() => {
           this.index = 0;
@@ -330,7 +320,9 @@ export class CompanyattributesComponent implements OnInit {
         name: this.model.name,
         searchmodifier: '',
         searchtype: {
-          attributesearchtypeid: this.model.searchtype ? this.model.searchtype.attributesearchtypeid : 0,
+          attributesearchtypeid: this.model.searchtype
+            ? this.model.searchtype.attributesearchtypeid
+            : 0,
         },
         tooltip: this.model.tooltip,
         companyId: this.companyId,
@@ -346,13 +338,13 @@ export class CompanyattributesComponent implements OnInit {
           this.model.attributelistitemResource;
       }
       this.spinner.show();
-      this.loader = true;
+
       this.companyAttributesServiceService
         .createNewTypeAttribute(request)
         .subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.index = 1;
             setTimeout(() => {
               this.index = 0;
@@ -372,7 +364,6 @@ export class CompanyattributesComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     } else {
@@ -424,12 +415,14 @@ export class CompanyattributesComponent implements OnInit {
 
   editAttribute() {
     this.spinner.show();
-    this.loader = true;
+
     var request = {
       attributelistitemResource: null,
       attributenameid: this.model.attributenameid,
       attributetype: {
-        attributetypeid: this.model.attributetype ? this.model.attributetype.attributetypeid : 0,
+        attributetypeid: this.model.attributetype
+          ? this.model.attributetype.attributetypeid
+          : 0,
       },
       displayorder: this.model.displayorder,
       ismanufacturer: false,
@@ -441,7 +434,8 @@ export class CompanyattributesComponent implements OnInit {
       lastmodifiedby: this.username,
       searchtype: {
         attributesearchtypeid:
-          this.model.searchtype && this.model.searchtype.attributesearchtypeid != 'null'
+          this.model.searchtype &&
+          this.model.searchtype.attributesearchtypeid != 'null'
             ? this.model.searchtype.attributesearchtypeid
             : 0,
       },
@@ -453,7 +447,7 @@ export class CompanyattributesComponent implements OnInit {
       moduleType: 'Company',
     };
     this.spinner.show();
-    this.loader = true;
+
     if (this.model.attributelistitemResource) {
       request.attributelistitemResource = this.model.attributelistitemResource;
     }
@@ -463,7 +457,7 @@ export class CompanyattributesComponent implements OnInit {
         .subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.getTypeAttributes(this.typeId);
             this.index = 2;
             setTimeout(() => {
@@ -483,7 +477,6 @@ export class CompanyattributesComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     } else {
@@ -517,7 +510,7 @@ export class CompanyattributesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     var moduleType = 'company';
     this.companyAttributesServiceService
       .removeCompanyAttributess(
@@ -531,7 +524,7 @@ export class CompanyattributesComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getTypeAttributes(this.typeId);
           this.index = 3;
@@ -552,7 +545,6 @@ export class CompanyattributesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

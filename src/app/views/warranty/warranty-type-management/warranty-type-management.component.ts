@@ -56,18 +56,17 @@ export class WarrantyTypeManagementComponent implements OnInit {
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
-    this.loader = true;
+
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     this.currentRole = sessionStorage.getItem('currentRole');
@@ -77,13 +76,13 @@ export class WarrantyTypeManagementComponent implements OnInit {
   refresh() {
     this.warrantyTypes = [];
     this.spinner.show();
-    this.loader = true;
+
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.warrantyTypes = response;
           const totalWarrantyTypesCount = this.warrantyTypes.length;
           const maxPageAvailable = Math.ceil(
@@ -97,7 +96,6 @@ export class WarrantyTypeManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -114,18 +112,17 @@ export class WarrantyTypeManagementComponent implements OnInit {
         userName: this.userName,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.warrantyManagementService.saveWarrantyType(req).subscribe(
         (response) => {
           this.warrantyType = undefined;
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef?.hide();
           this.refresh();
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -148,7 +145,7 @@ export class WarrantyTypeManagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.setwarrantyType(this.index);
     this.warrantyManagementService
       .removeWarrantyType(
@@ -160,13 +157,12 @@ export class WarrantyTypeManagementComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef?.hide();
           this.refresh();
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

@@ -69,19 +69,18 @@ export class LocationNotesComponent implements OnInit {
 
   getAllNotes(locationId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.locationNotesService
       .getAllLocationNotes(this.companyId, locationId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           console.log(response);
           this.notes = response;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -105,12 +104,12 @@ export class LocationNotesComponent implements OnInit {
   openModalView(template: TemplateRef<any>, id: number) {
     this.journalid = id;
     this.spinner.show();
-    this.loader = true;
+
     this.locationNotesService
       .getLocationNotes(this.journalid, this.locationId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         if (this.model.effectiveon) {
           this.model.effectiveon = new Date(this.model.effectiveon);
@@ -132,20 +131,19 @@ export class LocationNotesComponent implements OnInit {
         this.index
     );
     this.spinner.show();
-    this.loader = true;
+
     let locName = 'data';
     this.locationNotesService
       .removeLocationNotes(this.index, this.locationId, locName)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getAllNotes(this.locationId);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

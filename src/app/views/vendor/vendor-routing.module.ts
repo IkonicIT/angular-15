@@ -9,6 +9,10 @@ import { EditVendorAttachmentComponent } from './edit-vendor-attachment/edit-ven
 import { VendorNotesComponent } from './vendor-notes/vendor-notes.component';
 import { EditVendorNoteComponent } from './edit-vendor-note/edit-vendor-note.component';
 import { AddVendorNoteComponent } from './add-vendor-note/add-vendor-note.component';
+import { VendorDashBoardComponent } from './vendor-dashboard/vendor-dashboard.component';
+import { ManageVendorNoteAttachmentComponent } from './manage-vendor-note-attachment/manage-vendor-note-attachment.component';
+import { AddVendorNoteAttachmentComponent } from './add-vendor-note-attachment/add-vendor-note-attachment.component';
+import { EditVendorNoteAttachmentComponent } from './edit-vendor-note-attachment/edit-vendor-note-attachment.component';
 
 const routes: Routes = [
   {
@@ -21,6 +25,13 @@ const routes: Routes = [
         path: '',
         redirectTo: 'list',
         pathMatch: 'full',
+      },
+      {
+        path: 'vendorDashboard', // This should match the URL you are trying to navigate to
+        component: VendorDashBoardComponent,
+        data: {
+          title: 'Vendor Dashboard',
+        },
       },
       {
         path: 'list',
@@ -69,6 +80,27 @@ const routes: Routes = [
         component: VendorNotesComponent,
         data: {
           title: 'Vendor Notes',
+        },
+      },
+      {
+        path: 'note/documents/:id',
+        component: ManageVendorNoteAttachmentComponent,
+        data: {
+          title: 'Documents',
+        },
+      },
+      {
+        path: 'addVendorNoteDocument/:id',
+        component: AddVendorNoteAttachmentComponent,
+        data: {
+          title: 'Add Vendor Documents',
+        },
+      },
+      {
+        path: 'editVendorNoteDocument/:id',
+        component: EditVendorNoteAttachmentComponent,
+        data: {
+          title: 'Add Vendor Documents',
         },
       },
       {

@@ -69,21 +69,21 @@ export class AddcompanystatusComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
-      this.loader = true;
+
       this.companyStatusesService.saveCompanyStatus(this.model).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
-          }, 7000);
-          this.router.navigate(['/company/statuses']);
+            this.router.navigate(['/company/statuses']);
+          }, 1000);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
+
         }
       );
     }

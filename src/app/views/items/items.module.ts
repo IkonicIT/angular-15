@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemManagementComponent } from './item-management/item-management.component';
 import { ItemTypesComponent } from './item-types/item-types.component';
@@ -67,6 +67,8 @@ import { ItemMasterSearchComponent } from './item-master-search/item-master-sear
 import { NgChartsModule } from 'ng2-charts';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { MatRadioModule } from '@angular/material/radio';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -79,6 +81,7 @@ import { MatRadioModule } from '@angular/material/radio';
     AlertModule.forRoot(),
     ItemRoutingModule,
     TypeaheadModule,
+    NgxSpinnerModule,
     TreeviewModule.forRoot(),
     ModalModule,
     DropdownTreeviewModule,
@@ -143,5 +146,6 @@ import { MatRadioModule } from '@angular/material/radio';
     AddItemServiceComponent,
     ItemMasterSearchComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ItemsModule {}

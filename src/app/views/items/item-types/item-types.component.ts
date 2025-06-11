@@ -53,12 +53,12 @@ export class ItemTypesComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemTypesService
       .getAllItemTypes(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.locationsTypes = response;
         this.locationsTypes.forEach((type: { parentid: any }) => {
           if (!type.parentid) {
@@ -88,19 +88,21 @@ export class ItemTypesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.userName = sessionStorage.getItem('userName');
     this.itemTypesService
       .removeItemType(this.index, this.userName)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false
+
         this.modalRef?.hide();
         this.refreshCalls();
         const currentPage = this.p;
         const locationTypeCount = this.locationsTypes.length - 1;
-        const maxPageAvailable = Math.ceil(locationTypeCount / this.itemsForPagination);
-        if (currentPage > maxPageAvailable){
+        const maxPageAvailable = Math.ceil(
+          locationTypeCount / this.itemsForPagination
+        );
+        if (currentPage > maxPageAvailable) {
           this.p--;
         }
       });
@@ -113,12 +115,12 @@ export class ItemTypesComponent implements OnInit {
 
   getAllItemTypesWithHierarchy() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.broadcasterService.itemTypeHierarchy = response;
       });
   }
@@ -148,12 +150,12 @@ export class ItemTypesComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e : any){
+  onChange(e: any) {
     const currentPage = this.p;
-        const itemTypeCount = this.locationsTypes.length;
-        const maxPageAvailable = Math.ceil(itemTypeCount / this.itemsForPagination);
-        if (currentPage > maxPageAvailable){
-          this.p = maxPageAvailable;
-        }
+    const itemTypeCount = this.locationsTypes.length;
+    const maxPageAvailable = Math.ceil(itemTypeCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable) {
+      this.p = maxPageAvailable;
+    }
   }
 }

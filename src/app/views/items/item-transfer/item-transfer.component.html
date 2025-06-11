@@ -148,7 +148,7 @@
                           <strong class="text-danger">*</strong></label
                         >
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.newStatus"
                           name="newStatus"
                           #newStatus="ngModel"
@@ -279,7 +279,7 @@
                         <div class="form-group col-sm-6">
                           <label for="status">Status</label>
                           <select
-                            class="form-control"
+                            class="form-control custom-dropdown"
                             [(ngModel)]="locationModel.statusid"
                             name="status"
                             #status="ngModel"
@@ -535,7 +535,11 @@
         Click(Yes) to permanently delete this Item Transfer Log or Click(No) to
         discard This action.
       </p>
-      <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
+      <button
+        type="button"
+        class="btn btn-primary btn-right"
+        (click)="confirm()"
+      >
         Yes
       </button>
       <button type="button" class="btn btn-primary" (click)="decline()">

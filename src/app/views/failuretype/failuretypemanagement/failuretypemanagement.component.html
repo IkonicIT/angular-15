@@ -273,6 +273,7 @@
                                 title="SavePrimaryFindingAndCauses"
                                 *ngIf="addEditFlag"
                                 (click)="saveFailureTypeAndCauses()"
+                                style="border-radius: 6px;"
                               >
                                 Save
                               </button>
@@ -285,6 +286,7 @@
                                 [disabled]="highestRank < 7"
                                 *ngIf="editDeleteFlag == true"
                                 (click)="editFailureType(failuretype)"
+                                style="border-radius: 6px;"
                               >
                                 Edit
                               </button>
@@ -299,6 +301,7 @@
                                 (click)="
                                   openModal(confirmtemplate, failureTypeId)
                                 "
+                                style="border-radius: 6px;"
                               >
                                 Delete
                               </button>
@@ -310,6 +313,7 @@
                                 data-bs-toggle="tooltip"
                                 title="Back"
                                 (click)="cancelAdd()"
+                                style="border-radius: 6px;"
                               >
                                 Cancel
                               </button>

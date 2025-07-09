@@ -7,12 +7,13 @@
 
 <div class="container-fluid p-0">
   <app-header></app-header>
+
   <div class="side-bar-margin">
     <app-sidebar></app-sidebar>
   </div>
+
   <!-- Main content -->
   <main class="main">
-    <!-- Breadcrumb -->
     <div
       class="row"
       style="
@@ -30,41 +31,44 @@
           style="
             float: left;
             border-bottom: none;
-            padding-left: 24px;
-            padding-right: 16px;
-            padding-top: 12px;
+            margin-left: 64px;
+            padding-top: 16px;
             padding-bottom: 12px;
+            width: auto;
           "
         >
           <app-breadcrumbs></app-breadcrumbs>
         </ol>
       </div>
-      <div
-        class="col-12 p-0 mt-2 col-lg-10 col-md-12 ml-15 mb-1"
-        style="position: relative"
-      >
-        <div class="row" style="margin-left: -15px; margin-right: -15px">
-          <div
-            class="col-12"
-            style="padding-left: 15px; padding-right: 15px; position: relative"
-          ></div>
-          <div
-            class="col-5 pr-1 margin-mobile margin-new margin-pixel-2 col-sm-3 col-md-5 iphone-5s-1"
-            style="padding-left: 15px; padding-right: 4px; position: relative"
-          >
-            <a
-              *ngIf="userSelectedCompany.companyid != 0 && !noLogo"
-              class="float-left show-land-new"
-            >
-              <img class="img-side-logo" [src]="imageSource" />
-            </a>
 
-            <div
+      <div
+        class="col-12 col-md-12 col-lg-10"
+        style="
+          display: flex;
+          flex-wrap: nowrap;
+          align-items: center;
+          gap: 8px;
+          padding: 8px;
+          border-bottom: 1px solid #ccc;
+          overflow-x: visible;
+        "
+      >
+        <a
+          *ngIf="userSelectedCompany.companyid != 0 && !noLogo"
+          style="display: inline-flex; align-items: center;"
+        >
+          <img
+            [src]="imageSource"
+            style="height: 50px; max-width: 100%; object-fit: contain;"
+          />
+        </a>
+
+                  <div
               class="btn-group float-right margin-new-top"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="click here to Manage Companies"
-              style="float: right"
+              style="float: right; margin-left:64px"
             >
               <ngx-select-dropdown
                 [(ngModel)]="userSelectedCompany1"
@@ -79,108 +83,77 @@
                 This account has been disabled for this company. <br />
               </alert>
             </div>
-          </div>
+        <input
+          [(ngModel)]="itemTag"
+          [disabled]="userSelectedCompany.companyid == 0 || highestRank == 0"
+          [typeahead]="suggessions"
+          (ngModelChange)="getSuggessions(itemTag)"
+          typeaheadOptionField="tag"
+          (keyup.enter)="navigateToItems()"
+          placeholder="#Tag"
+          style="
+            flex: 0 0 80px;
+            padding: 4px;
+            min-width: 80px;
+          "
+        />
 
-          <div
-            class="col-12 col-md-4 p-0 margin-new-top mobile-new-padding col-sm-6 center-landscape iphone-5s-2"
-          >
-            <input
-              [(ngModel)]="itemTag"
-              class="col-7 col-md-4 height iphone-tag"
-              [disabled]="
-                userSelectedCompany.companyid == 0 || highestRank == 0
-              "
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="Enter Item Tag"
-              [typeahead]="suggessions"
-              (ngModelChange)="getSuggessions(itemTag)"
-              typeaheadOptionField="tag"
-              (keyup.enter)="navigateToItems()"
-              placeholder="#Tag"
-            />
+        <div style="flex: 0 1 160px;">
+          <app-dropdown-treeview-select
+            [items]="items"
+            [(value)]="value"
+            (valueChange)="selectRootItemType($event)"
+          ></app-dropdown-treeview-select>
+        </div>
 
-            <div
-              class="btn-group remove-radius-1"
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="Select Item Type"
-              dropdown
-              style="padding-left: 4px; padding-right: 4px"
-            >
-              <app-dropdown-treeview-select
-                [items]="items"
-                [(value)]="value"
-                (valueChange)="selectRootItemType($event)"
-              >
-              </app-dropdown-treeview-select>
-            </div>
-            <button
-              (click)="navigateToItems()"
-              [disabled]="
-                userSelectedCompany.companyid == 0 || highestRank == 0
-              "
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="click here to Search"
-              class="btn btn-danger goSearch"
-            >
-              GO
-            </button>
-          </div>
-          <div
-            *ngIf="masterSearchFlag == 'false'"
-            class="col-12 col-md-3 p-0 margin-tag col-sm-3 iphone-5s-3"
+        <button
+          (click)="navigateToItems()"
+          [disabled]="userSelectedCompany.companyid == 0 || highestRank == 0"
+          class="btn btn-danger"
+          style="padding: 5px 10px;"
+        >
+          GO
+        </button>
+
+         <div style="margin-left: auto; display: flex; gap: 8px; min-width: max-content;">
+        <button
+          *ngIf="masterSearchFlag == 'false'"
+          (click)="navigateToAdvanceItemSearch()"
+          [disabled]="userSelectedCompany.companyid == 0 || highestRank == 0"
+          class="btn btn-danger"
+          style="padding: 5px 10px; "
+        >
+          Advanced search
+        </button>
+        </div>
+        <div style="margin-left: auto; display: flex; gap: 8px; min-width: max-content;">
+          <button
+            *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyid == 0"
+            (click)="navigateToMasterSearch()"
+            class="btn btn-danger"
+            style="padding: 5px 10px;"
           >
-            <button
-              (click)="navigateToAdvanceItemSearch()"
-              [disabled]="
-                userSelectedCompany.companyid == 0 || highestRank == 0
-              "
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="click here for Advance Item search "
-              class="btn btn-danger advancedSearch"
-            >
-              Advanced search
-            </button>
-          </div>
-          <div class="col-12 col-md-3 p-0 margin-tag col-sm-3 iphone-5s-3">
-            <button
-              (click)="navigateToMasterSearch()"
-              *ngIf="
-                isOwnerAdmin == 'true' && userSelectedCompany.companyid == 0
-              "
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="click here for Master Item search "
-              class="btn btn-danger masterSearch"
-            >
-              Master search
-            </button>
-            &nbsp;
-            <button
-              (click)="navigateToMasterPieCharts()"
-              *ngIf="
-                isOwnerAdmin == 'true' && userSelectedCompany.companyid == 0
-              "
-              data-placement="bottom"
-              tooltip="click here for Master PieCharts "
-              class="btn btn-danger masterSearch"
-            >
-              Master PieCharts
-            </button>
-          </div>
+            Master search
+          </button>
+
+          <button
+            *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyid == 0"
+            (click)="navigateToMasterPieCharts()"
+            class="btn btn-danger"
+            style="padding: 5px 10px; margin-right: 64px;"
+          >
+            Master PieCharts
+          </button>
         </div>
       </div>
     </div>
 
-    <div style="margin-left: 15px; margin-right: 15px">
+    <div style="margin-left: 15px; margin-right: 15px;">
       <router-outlet></router-outlet>
     </div>
   </main>
+
   <div>
     <app-footer></app-footer>
   </div>
 </div>
-

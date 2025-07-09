@@ -148,6 +148,7 @@
                               data-bs-toggle="tooltip"
                               title="Save Order Attribute"
                               (click)="saveAttributeListOrder(typeAttributes)"
+                              style="border-radius: 6px;"
                             >
                               Save Order
                             </button>
@@ -337,6 +338,7 @@
                                 [disabled]="typeId == 0"
                                 class="btn btn-primary btn-right"
                                 (click)="createAttribute()"
+                                style="border-radius: 6px;"
                               >
                                 Add
                               </button>
@@ -348,6 +350,7 @@
                                 *ngIf="addEditFlag && highestRank > 6"
                                 class="btn btn-primary btn-right"
                                 (click)="editAttribute()"
+                                style="border-radius: 6px;"
                               >
                                 Update
                               </button>
@@ -359,6 +362,7 @@
                                 *ngIf="addEditFlag && highestRank > 6"
                                 class="btn btn-primary btn-right"
                                 (click)="newAttribute()"
+                                style="border-radius: 6px;"
                               >
                                 New
                               </button>
@@ -371,6 +375,7 @@
                                 class="btn btn-primary btn-right"
                                 (click)="openModal(confirmtemplate)"
                                 [disabled]="highestRank == 9"
+                                style="border-radius: 6px;"
                               >
                                 Remove
                               </button>
@@ -381,6 +386,7 @@
                                 title="Back"
                                 (click)="cancelCompanyAttributes()"
                                 class="btn btn-primary"
+                                style="border-radius: 6px;"
                               >
                                 Back
                               </button>

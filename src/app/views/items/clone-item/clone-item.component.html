@@ -231,7 +231,7 @@
                       </div>
 
                       <button type="button" class="btn btn-primary" (click)="saveLocation()" data-bs-placement="bottom"
-                        data-bs-toggle="tooltip" title="Save Location">
+                        data-bs-toggle="tooltip" title="Save Location" style="border-radius: 6px;">
                         Save Location
                       </button>
                     </div>
@@ -299,15 +299,15 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Add new Item"
-                          (click)="saveItem()" *ngIf="highestRank > 2" class="btn btn-primary btn-right">
+                          (click)="saveItem()" *ngIf="highestRank > 2" class="btn btn-primary btn-right" style="border-radius: 6px;">
                           Add
                         </button>
                         <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Cancel" type="button"
-                          [routerLink]="['../../../items']" *ngIf="highestRank > 2" class="btn btn-primary btn-right">
+                          [routerLink]="['../../../items']" *ngIf="highestRank > 2" class="btn btn-primary btn-right" style="border-radius: 6px;">
                           Cancel
                         </button>
                         <button (click)="back()" type="button" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                          title="Back button" class="btn btn-primary">
+                          title="Back button" class="btn btn-primary" style="border-radius: 6px;">
                           Back
                         </button>
                       </div>

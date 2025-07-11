@@ -99,11 +99,17 @@
         />
 
         <div style="flex: 0 1 160px;">
-          <app-dropdown-treeview-select
-            [items]="items"
-            [(value)]="value"
-            (valueChange)="selectRootItemType($event)"
-          ></app-dropdown-treeview-select>
+         <select
+  #selectRef
+  class="form-control custom-dropdown"
+  [(ngModel)]="value"
+  (change)="selectRootItemType(selectRef.value)"
+>
+  <option *ngFor="let item of items" [value]="item.value">
+    {{ item.text }}
+  </option>
+</select>
+
         </div>
 
         <button

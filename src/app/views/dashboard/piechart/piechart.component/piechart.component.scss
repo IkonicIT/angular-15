@@ -188,3 +188,48 @@ a {
 .btn-top {
   margin-top: 5px;
 }
+/* Match height, border, background, padding, font */
+::ng-deep .itemType .dropdown-treeview > button {
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px); /* Matches Bootstrap form-control height */
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Match hover/focus styles */
+::ng-deep .itemType .dropdown-treeview > button:hover,
+::ng-deep .itemType .dropdown-treeview > button:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Make caret look like select */
+::ng-deep .itemType .dropdown-treeview > button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  width: 0.65rem;
+  height: 0.4rem;
+  transform: translateY(-50%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='none' stroke='%23666' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+}
+
+/* Remove default Bootstrap .btn styles */
+::ng-deep .itemType .dropdown-treeview > button.btn {
+  background-image: none;
+  box-shadow: none;
+}

@@ -149,12 +149,14 @@
                       <div class="form-group col-sm-6">
                         <label for="location">Location</label>
 
-                        <app-dropdown-treeview-select
-                          class="form-color"
-                          [items]="locationItems"
-                          [(value)]="model.repairlocationid"
-                        >
-                        </app-dropdown-treeview-select>
+                      <select
+  class="form-control custom-dropdown form-color"
+  [(ngModel)]="model.repairlocationid">
+  <option *ngFor="let loc of locationItems" [value]="loc.value">
+    {{ loc.text }}
+  </option>
+</select>
+
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="title">Title</label>

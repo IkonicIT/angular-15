@@ -104,12 +104,18 @@
                       </div>
 
                       <div class="col-sm-4 company-type-dropdown">
-                        <app-dropdown-treeview-select
-                          [items]="items"
-                          [(value)]="value"
-                          (valueChange)="onValueChange($event)"
-                        >
-                        </app-dropdown-treeview-select>
+                        <select
+  #dropdown
+  id="itemType"
+  class="form-control custom-dropdown"
+  [(ngModel)]="value"
+  (change)="onValueChange(dropdown.value)"
+>
+  <option *ngFor="let item of items" [value]="item.value">
+    {{ item.text }}
+  </option>
+</select>
+
                       </div>
                       <div class="col-sm-8"></div>
                     </div>

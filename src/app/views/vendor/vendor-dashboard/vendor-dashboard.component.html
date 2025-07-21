@@ -16,12 +16,16 @@
       </div>
       <div class="container-width">
         <label for="location"><strong>Select Location</strong></label>
-        <app-dropdown-treeview-select
-          [items]="locations"
-          id="location"
-          [(value)]="locationId"
-        >
-        </app-dropdown-treeview-select>
+      <div class="dropdown-wrapper">
+  <app-dropdown-treeview-select
+    [items]="locations"
+    id="location"
+    [(value)]="locationId"
+  >
+  </app-dropdown-treeview-select>
+  <span class="dropdown-arrow">&#9662;</span> <!-- medium arrow -->
+</div>
+
       </div>
 
       <div class="container-width">

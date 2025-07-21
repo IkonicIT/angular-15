@@ -74,3 +74,25 @@ button,
   background-color: #e02725;
   border-color: #e02725;
 }
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;       /* Medium size */
+  font-weight: normal;   /* Not bold */
+  color: #555;           /* Subtle but visible */
+  line-height: 1;
+}

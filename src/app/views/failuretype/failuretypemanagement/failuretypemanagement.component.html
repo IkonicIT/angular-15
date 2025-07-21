@@ -98,15 +98,18 @@
                       </div>
 
                       <div class="col-sm-4 col-padding">
-                        <app-dropdown-treeview-select
-                          [items]="items"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Select ItemType to add Primary Findings & causes"
-                          [(value)]="value"
-                          (valueChange)="onValueChange($event)"
-                        >
-                        </app-dropdown-treeview-select>
+                      <div class="dropdown-wrapper" 
+     data-bs-toggle="tooltip"
+     data-bs-placement="bottom"
+     title="Select ItemType to add Primary Findings & causes">
+  <app-dropdown-treeview-select
+    [items]="items"
+    [(value)]="value"
+    (valueChange)="onValueChange($event)">
+  </app-dropdown-treeview-select>
+  <span class="dropdown-arrow">&#9662;</span> <!-- Medium arrow -->
+</div>
+
                       </div>
                       <div class="col-sm-8 col-padding"></div>
                     </div>

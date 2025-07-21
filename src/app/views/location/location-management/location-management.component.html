@@ -58,6 +58,7 @@
               data-bs-toggle="tooltip"
               title="Merge Locations"
               placement="top"
+               style="border-radius: 6px; margin-right: 2px;"
             >
               MergeLocations
             </button>
@@ -71,6 +72,7 @@
               data-bs-toggle="tooltip"
               title="Add a new Location."
               placement="top"
+               style="border-radius: 6px; margin-right: 2px;"
             >
               Add Location
             </button>
@@ -85,13 +87,15 @@
             <div class="form-group col-sm-8 form-group-margin">
               <label for="loc">Location</label>
 
-              <app-dropdown-treeview-select
-                [items]="items"
-                [(value)]="locationid"
-                id="loc"
-                (valueChange)="onValueChange($event)"
-              >
-              </app-dropdown-treeview-select>
+              <div class="custom-dropdown-wrapper">
+  <app-dropdown-treeview-select
+    [items]="items"
+    [(value)]="locationid"
+    id="loc"
+    (valueChange)="onValueChange($event)">
+  </app-dropdown-treeview-select>
+  <span class="custom-dropdown-arrow">&#9662;</span>
+</div>
             </div>
           </div>
 

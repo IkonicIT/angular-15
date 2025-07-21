@@ -116,10 +116,18 @@
                       <div class="form-group col-sm-6">
                         <label for="type">Type Of Item
                           <strong class="text-danger">*</strong></label>
-
-                        <app-dropdown-treeview-select [items]="itemTypeItems" id="type" [(value)]="model.typeId"
-                          (valueChange)="getItemTypeAttributes(model.typeId)">
-                        </app-dropdown-treeview-select>
+<select
+  class="form-control custom-dropdown"
+  id="type"
+  [(ngModel)]="model.typeId"
+  name="type"
+  (change)="getItemTypeAttributes(model.typeId)"
+>
+  <option [value]="null">Select Item Type</option>
+  <option *ngFor="let item of itemTypeItems" [value]="item.value">
+    {{ item.text }}
+  </option>
+</select>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="tag">Item Tag#
@@ -370,7 +378,7 @@
                           Update
                         </button>
                         <button type="button" (click)="back()" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                          title="Back to ViewItem" class="btn btn-primary">
+                          title="Back to ViewItem" class="btn btn-primary" style="border-radius: 6px;">
                           Back
                         </button>
                       </div>

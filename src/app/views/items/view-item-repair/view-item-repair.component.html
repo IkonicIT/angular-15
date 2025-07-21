@@ -79,6 +79,7 @@
                     data-bs-toggle="tooltip"
                     title="Back to Previous Screen"
                     class="btn btn-primary"
+                    style="border-radius: 6px;"
                   >
                     Back
                   </button>
@@ -91,6 +92,7 @@
                     data-bs-toggle="tooltip"
                     title="Delete this ItemRepair"
                     (click)="openModal(confirmtemplate, itemRepairId)"
+                    style="border-radius: 6px;"
                   >
                     Delete
                   </button>
@@ -105,6 +107,7 @@
                     [routerLink]="[
                       '../../../itemRepairAttachments/' + itemRepairId
                     ]"
+                    style="border-radius: 6px;"
                   >
                     Attachments
                   </button>
@@ -117,6 +120,7 @@
                     data-bs-toggle="tooltip"
                     title="Update Item Repair"
                     (click)="updateItemRepair()"
+                    style="border-radius: 6px;"
                   >
                     Edit
                   </button>
@@ -128,6 +132,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Add Repair."
+                    style="border-radius: 6px;"
                     [routerLink]="['../../../addItemRepair/' + itemId]"
                   >
                     Add Repair

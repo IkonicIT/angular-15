@@ -149,12 +149,17 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="location">Location</label>
-
-                        <app-dropdown-treeview-select
-                          [items]="locationItems"
-                          [(value)]="model.repairlocationid"
-                        >
-                        </app-dropdown-treeview-select>
+<select
+  class="form-control bg-white custom-dropdown"
+  id="location"
+  [(ngModel)]="model.repairlocationid"
+  name="location"
+>
+  <option [value]="null">Select Location</option>
+  <option *ngFor="let loc of locationItems" [value]="loc.value">
+    {{ loc.text }}
+  </option>
+</select>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="title">Title</label>
@@ -178,12 +183,18 @@
                             >*</strong
                           >
                         </label>
-                        <app-dropdown-treeview-select
-                          [items]="vendorItems"
-                          [(value)]="model.vendor.vendorId"
-                          (valueChange)="onVendorChange($event)"
-                        >
-                        </app-dropdown-treeview-select>
+                     <select
+  class="form-control bg-white custom-dropdown"
+  id="vendor"
+  [(ngModel)]="model.vendor.vendorId"
+  name="vendor"
+  (change)="onVendorChange(model.vendor.vendorId)"
+>
+  <option [value]="null">Select Vendor</option>
+  <option *ngFor="let vendor of vendorItems" [value]="vendor.value">
+    {{ vendor.text }}
+  </option>
+</select>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="details">Details</label>
@@ -435,6 +446,7 @@
                           data-bs-toggle="tooltip"
                           title="Update Item Repair"
                           (click)="saveItemRepair()"
+                          style="border-radius: 6px;"
                         >
                           Save
                         </button>
@@ -445,6 +457,7 @@
                           data-bs-toggle="tooltip"
                           title="Back To View Item Repair"
                           class="btn btn-primary"
+                          style="border-radius: 6px;"
                         >
                           Back
                         </button>

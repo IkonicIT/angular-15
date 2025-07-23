@@ -17,7 +17,7 @@
                 placeholder="Enter BMDRNK"
               />
               <div class="d-flex flex-row justify-content-center">
-                <button class="bg-danger" (click)="handleSearch()">
+                <button class="bg-danger" (click)="handleSearch()" style="border-radius: 6px;">
                   Search
                 </button>
               </div>
@@ -90,6 +90,7 @@
                 *ngIf="historyStack.length > 1"
                 (click)="goBack()"
                 type="button"
+                style="border-radius: 6px;"
               >
                 Back
               </button>

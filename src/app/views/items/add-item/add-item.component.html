@@ -55,11 +55,18 @@
                       <div class="form-group col-sm-6">
                         <label for="type">Item Type
                           <strong class="text-danger">*</strong></label>
-                        <app-dropdown-treeview-select [items]="itemTypeItems" [(value)]="model.typeId" id="type"
-                          (valueChange)="
-                            getItemTypeAttributes(model.typeId, $event)
-                          ">
-                        </app-dropdown-treeview-select>
+                      <select
+  #dropdown
+  id="type"
+  class="form-control custom-dropdown"
+  [(ngModel)]="model.typeId"
+  (change)="getItemTypeAttributes(model.typeId, dropdown.value)"
+>
+  <option *ngFor="let item of itemTypeItems" [value]="item.value">
+    {{ item.text }}
+  </option>
+</select>
+
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="tag">Item Tag#
@@ -160,10 +167,18 @@
                       <div class="form-group col-sm-12">
                         <label for="location">Location
                           <strong class="text-danger">*</strong></label>
+<select
+  #dropdown
+  id="location"
+  class="form-control custom-dropdown"
+  [(ngModel)]="model.locationid"
+  (change)="onValueChange(dropdown.value)"
+>
+  <option *ngFor="let loc of locationItems" [value]="loc.value">
+    {{ loc.text }}
+  </option>
+</select>
 
-                        <app-dropdown-treeview-select [items]="locationItems" [(value)]="model.locationid"
-                          (valueChange)="onValueChange($event)">
-                        </app-dropdown-treeview-select>
                       </div>
                     </div>
 
@@ -206,11 +221,17 @@
                         <div class="form-group col-sm-6">
                           <label for="type">Type Of Location
                             <strong class="text-danger">*</strong></label>
-                          <app-dropdown-treeview-select [items]="locationTypeItems" id="type"
-                            [(value)]="locationModel.locationTypeId" (valueChange)="
-                              getItemTypeAttributesClone(model.locationTypeId)
-                            ">
-                          </app-dropdown-treeview-select>
+                          <select
+  id="type"
+  class="form-control custom-dropdown"
+  [(ngModel)]="locationModel.locationTypeId"
+  (change)="getItemTypeAttributesClone(locationModel.locationTypeId)"
+>
+  <option *ngFor="let item of locationTypeItems" [value]="item.value">
+    {{ item.text }}
+  </option>
+</select>
+
                         </div>
                       </div>
 
@@ -238,7 +259,8 @@
                       </div>
 
                       <button type="button" class="btn btn-primary" (click)="saveLocation()" data-bs-placement="bottom"
-                        data-bs-toggle="tooltip" title="Save Location">
+                        data-bs-toggle="tooltip" title="Save Location"
+                        style="border-radius: 6px;">
                         Save Location
                       </button>
                     </div>
@@ -309,11 +331,13 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button class="btn btn-primary btn-right" (click)="saveItem()" data-bs-placement="bottom"
-                          data-bs-toggle="tooltip" title="Save Item">
+                          data-bs-toggle="tooltip" title="Save Item"
+                          style="border-radius: 6px;">
                           Save
                         </button>
                         <button type="button" [routerLink]="['../../items']" data-bs-placement="bottom"
-                          data-bs-toggle="tooltip" title="Cancel" class="btn btn-primary">
+                          data-bs-toggle="tooltip"
+                          style="border-radius: 6px;" title="Cancel" class="btn btn-primary">
                           Cancel
                         </button>
                       </div>

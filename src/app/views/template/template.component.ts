@@ -72,6 +72,7 @@ export class TemplateComponent implements OnInit {
     } else {
        req = {
         templateId: this.templateID,
+      
         companyName: this.company.name,
         userName: this.userName,
         isPartnerCompany: this.highestRank === '10' ? true : false
@@ -84,11 +85,9 @@ export class TemplateComponent implements OnInit {
       this.companyManagementService.saveCompanyFromTemplate(req).subscribe(
         (response) => {
           this.spinner.hide();
-
-          this.savedCompanyName = this.company.name;
-          this.company.name = '';
-          alert('Company successfully Added from Template,Refreshing List');
-          this.companyManagementService.setCompaniesListModified(true);
+    this.savedCompanyName = this.company.name;
+    this.company.name = '';
+    this.companyManagementService.setCompaniesListModified(true);
         },
         (error) => {
           this.spinner.hide();

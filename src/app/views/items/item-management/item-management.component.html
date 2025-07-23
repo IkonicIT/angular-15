@@ -58,6 +58,7 @@
               (click)="goToAddItem()"
               tooltip="Add a new Item."
               placement="top"
+               style="border-radius: 6px;"
             >
               Add Item
             </button>
@@ -79,15 +80,19 @@
                 placeholder="Enter Item Tag"
               />
             </div>
-            <div class="form-group col-sm-5">
-              <label for="type" class="mb-2">Type Of Item</label>
-              <app-dropdown-treeview-select
-                [items]="itemTypeItems"
-                id="type"
-                [(value)]="model.typeId"
-              >
-              </app-dropdown-treeview-select>
-            </div>
+           <div class="form-group col-sm-5">
+  <label for="type" class="mb-2">Type Of Item</label>
+  <div class="custom-dropdown-wrapper">
+    <app-dropdown-treeview-select
+      [items]="itemTypeItems"
+      id="type"
+      [(value)]="model.typeId">
+    </app-dropdown-treeview-select>
+    <span class="custom-dropdown-arrow">&#9662;</span>
+  </div>
+</div>
+
+
             <div class="form-group col-sm-1"></div>
           </div>
           <div class="row">
@@ -110,16 +115,19 @@
                 </option>
               </select>
             </div>
-            <div class="form-group col-sm-5">
-              <label for="location" class="mb-2">Location</label>
-              <app-dropdown-treeview-select
-                [items]="locationItems"
-                [(value)]="value"
-                id="location"
-                (valueChange)="onValueChange($event)"
-              >
-              </app-dropdown-treeview-select>
-            </div>
+           <div class="form-group col-sm-5">
+  <label for="location" class="mb-2">Location</label>
+  <div class="custom-dropdown-wrapper">
+    <app-dropdown-treeview-select
+      [items]="locationItems"
+      [(value)]="value"
+      id="location"
+      (valueChange)="onValueChange($event)">
+    </app-dropdown-treeview-select>
+    <span class="custom-dropdown-arrow">&#9662;</span>
+  </div>
+</div>
+
             <div class="form-group col-sm-1"></div>
           </div>
           <div class="row">
@@ -130,6 +138,7 @@
                 (click)="getSearchedItems()"
                 tooltip="Search an item"
                 class="btn btn-primary"
+                style="border-radius: 6px;"
               >
                 Search
               </button>

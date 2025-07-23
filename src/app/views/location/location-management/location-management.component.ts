@@ -41,7 +41,6 @@ export class LocationManagementComponent implements OnInit {
   searchresults: any = {};
   isOwnerAdmin: any;
   loggedInuser: string | null;
-  locationid: any;
   helpFlag: any = false;
   p: any;
   loader = false;
@@ -110,10 +109,10 @@ export class LocationManagementComponent implements OnInit {
         this.spinner.hide();
       });
   }
-  locationNotes(location: { locationid: string; name: any }) {
-    this.locationManagementService.currentLocationId = location.locationid;
+  locationNotes(location: { locationId: string; name: any }) {
+    this.locationManagementService.currentLocationId = location.locationId;
     this.locationManagementService.currentLocationName = location.name;
-    this.router.navigate(['/location/locationNote/' + location.locationid]);
+    this.router.navigate(['/location/locationNote/' + location.locationId]);
   }
 
   InitData() {
@@ -143,7 +142,7 @@ export class LocationManagementComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -153,7 +152,7 @@ export class LocationManagementComponent implements OnInit {
   }
 
   onValueChange(val: any) {
-    this.locationid = val;
+    this.locationId = val;
     console.log(val);
     this.router.navigate([
       '/location/editLocation/' + val + '/' + this.companyId,

@@ -87,7 +87,7 @@
 
               <app-dropdown-treeview-select
                 [items]="items"
-                [(value)]="locationid"
+                [(value)]="locationId"
                 id="loc"
                 (valueChange)="onValueChange($event)"
               >
@@ -165,7 +165,7 @@
                     title="Update this Location"
                     [routerLink]="[
                       '../editLocation',
-                      location.locationid,
+                      location.locationId,
                       companyId
                     ]"
                   >
@@ -178,7 +178,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this Location"
-                    (click)="openModal(confirmtemplate, location.locationid)"
+                    (click)="openModal(confirmtemplate, location.locationId)"
                   >
                     Delete
                   </button>

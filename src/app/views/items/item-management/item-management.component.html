@@ -239,7 +239,7 @@
                           href="javascript:void(0)"
                           (click)="
                             goToView(
-                              result.itemid,
+                              result.itemId,
                               result.itemRank,
                               result.tag,
                               result.typeName
@@ -249,7 +249,7 @@
                         ></a>
                       </td>
                       <td [innerHTML]="result.locationPath"></td>
-                      <td [innerHTML]="result.statusname"></td>
+                      <td [innerHTML]="result.statusName"></td>
                       <ng-container *ngIf="result && result.attributeNameList">
                         <td
                           *ngFor="let attr of result.attributeNameList"

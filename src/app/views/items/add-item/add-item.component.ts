@@ -227,7 +227,7 @@ export class AddItemComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -400,37 +400,37 @@ export class AddItemComponent implements OnInit {
           company: {
             companyid: this.companyId,
           },
-          criticalflag: this.locationModel.critical
+          criticalFlag: this.locationModel.critical
             ? this.locationModel.critical
             : false,
           description: this.locationModel.description
             ? this.locationModel.description
             : '',
-          desiredspareratio: this.locationModel.sRatio
+          desiredSpareRatio: this.locationModel.sRatio
             ? this.locationModel.sRatio
             : 0,
-          isvendor: this.locationModel.vLocation
+          isVendor: this.locationModel.vLocation
             ? this.locationModel.vLocation
             : false,
-          lastmodifiedby: this.userName,
-          locationid: 0,
+          lastModifiedBy: this.userName,
+          locationId: 0,
           name: this.locationModel.locationName
             ? this.locationModel.locationName
             : '',
           parentLocation: {
-            locationid: this.model.locationid ? this.model.locationid : 0,
+            locationId: this.model.locationid ? this.model.locationid : 0,
           },
-          postalcode: this.locationModel.postalCode
+          postalCode: this.locationModel.postalCode
             ? this.locationModel.postalCode
             : '',
           state: this.locationModel.state ? this.locationModel.state : '',
-          statusid: this.locationModel.statusid
+          statusId: this.locationModel.statusid
             ? this.locationModel.statusid
             : 0,
           vendorCompany: {
             companyid: 0,
           },
-          attributevalues: this.locationModel.attributevalues
+          attributeValues: this.locationModel.attributevalues
             ? this.locationModel.attributevalues
             : null,
         },
@@ -524,38 +524,38 @@ export class AddItemComponent implements OnInit {
         }
       );
       var req = {
-        attributevalues: this.model.attributevalues,
-        defaultimageattachmentid: 0,
+        attributeValues: this.model.attributevalues,
+        defaultImageAttachmentId: 0,
         description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.spareRatio ? this.model.spareRatio : 0,
-        inserviceon: this.dateNow,
-        isinrepair: false,
-        isstale: false,
-        itemid: 0,
-        lastmodifiedby: this.userName,
-        locationid: this.model.locationid ? this.model.locationid : 0,
-        manufacturerid: null,
-        meantimebetweenservice: this.model.mtbs ? this.model.mtbs : 0,
-        modelnumber: 'string',
+        desiredSpareRatio: this.model.spareRatio ? this.model.spareRatio : 0,
+        inServiceOn: this.dateNow,
+        isInRepair: false,
+        isStale: false,
+        itemId: 0,
+        lastModifiedBy: this.userName,
+        locationId: this.model.locationid ? this.model.locationid : 0,
+        manufacturerId: null,
+        meanTimeBetweenService: this.model.mtbs ? this.model.mtbs : 0,
+        modelNumber: 'string',
         name: this.model.name ? this.model.name : '',
-        purchasedate: this.model.purchasedate ? this.model.purchasedate : '',
-        purchaseprice: this.model.purchaseprice ? this.model.purchaseprice : 0,
-        repairqual: 0,
-        serialnumber: '',
-        companyid: this.companyId,
-        statusid: this.model.statusid ? this.model.statusid : 0,
+        purchaseDate: this.model.purchasedate ? this.model.purchasedate : '',
+        purchasePrice: this.model.purchaseprice ? this.model.purchaseprice : 0,
+        repairQual: 0,
+        serialNumber: '',
+        companyId: this.companyId,
+        statusId: this.model.statusid ? this.model.statusid : 0,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyexpiration
+        warrantyExpiration: this.model.warrantyexpiration
           ? this.model.warrantyexpiration
           : '',
-        warrantytypeid: this.model.warrantytypeid
+        warrantyTypeId: this.model.warrantytypeid
           ? this.model.warrantytypeid
           : 0,
-        userid: sessionStorage.getItem('userId'),
+        userId: sessionStorage.getItem('userId'),
         typeName: this.typeName,
         locationName: this.model.locationName,
-        statusname: this.model.statusName,
+        statusName: this.model.statusName,
         createdDate: new Date().toISOString(),
       };
       if (this.reqAttrValidate == false) {

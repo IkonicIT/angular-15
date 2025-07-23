@@ -109,7 +109,7 @@ export class AddLocationDetailsComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -189,25 +189,25 @@ export class AddLocationDetailsComponent implements OnInit {
           company: {
             companyid: this.companyId,
           },
-          criticalflag: this.model.critical ? this.model.critical : false,
+          criticalFlag: this.model.critical ? this.model.critical : false,
           description: this.model.description ? this.model.description : '',
-          desiredspareratio: this.model.sRatio ? this.model.sRatio : 0,
-          isvendor: this.model.vLocation ? this.model.vLocation : false,
-          lastmodifiedby: this.userName,
-          locationid: 0,
+          desiredSpareRatio: this.model.sRatio ? this.model.sRatio : 0,
+          isVendor: this.model.vLocation ? this.model.vLocation : false,
+          lastModifiedBy: this.userName,
+          locationId: 0,
           name: this.model.locationName ? this.model.locationName : '',
           parentLocation: {
-            locationid: this.value ? this.value : 0,
+            locationId: this.value ? this.value : 0,
           },
-          postalcode: this.model.postalCode ? this.model.postalCode : '',
+          postalCode: this.model.postalCode ? this.model.postalCode : '',
           state: this.model.state ? this.model.state : '',
-          statusid: this.model.statusid ? this.model.statusid : 0,
+          statusId: this.model.statusid ? this.model.statusid : 0,
           vendorCompany: {
             companyid: this.model.vendorCompany.companyid
               ? this.model.vendorCompany.companyid
               : 0,
           },
-          attributevalues: this.model.attributevalues
+          attributeValues: this.model.attributevalues
             ? this.model.attributevalues
             : null,
         },
@@ -229,23 +229,23 @@ export class AddLocationDetailsComponent implements OnInit {
               company: {
                 companyid: this.companyId,
               },
-              criticalflag: this.model.critical ? this.model.critical : false,
+              criticalFlag: this.model.critical ? this.model.critical : false,
               description: this.model.description ? this.model.description : '',
-              desiredspareratio: this.model.sRatio ? this.model.sRatio : 0,
-              isvendor: this.model.vLocation ? this.model.vLocation : false,
-              lastmodifiedby: this.userName,
-              locationid: 0,
+              desiredSpareRatio: this.model.sRatio ? this.model.sRatio : 0,
+              isVendor: this.model.vLocation ? this.model.vLocation : false,
+              lastModifiedBy: this.userName,
+              locationId: 0,
               name: loc.locationName ? loc.locationName : '',
               parentLocation: {
-                locationid: this.value ? this.value : 0,
+                locationId: this.value ? this.value : 0,
               },
-              postalcode: this.model.postalCode ? this.model.postalCode : '',
+              postalCode: this.model.postalCode ? this.model.postalCode : '',
               state: this.model.state ? this.model.state : '',
-              statusid: this.model.statusid ? this.model.statusid : 0,
+              statusId: this.model.statusid ? this.model.statusid : 0,
               vendorCompany: {
                 companyid: 0,
               },
-              attributevalues: this.model.attributevalues
+              attributeValues: this.model.attributevalues
                 ? this.model.attributevalues
                 : null,
             });

@@ -22,7 +22,7 @@ export class EditLocationDetailsComponent implements OnInit {
   statuses: any;
   location: any = {
     parentLocation: {
-      locationid: 0,
+      locationId: 0,
     },
   };
   locationId: any;
@@ -110,7 +110,7 @@ export class EditLocationDetailsComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -237,13 +237,13 @@ export class EditLocationDetailsComponent implements OnInit {
         (response) => {
           this.location = response;
 
-          if (this.location.parentID == null) {
+          if (this.location.parentId == null) {
             this.value = -1;
             this.location.parentLocation = {
-              locationid: 0,
+              locationId: 0,
             };
           } else {
-            this.value = this.location.parentID;
+            this.value = this.location.parentId;
           }
 
           this.locationManagementService.setSearchedLocationTypeId(
@@ -275,7 +275,7 @@ export class EditLocationDetailsComponent implements OnInit {
       this.location.typeId &&
       this.location.typeId != 0
     ) {
-      if (this.location.locationid == this.value) {
+      if (this.location.locationId == this.value) {
         this.index = -3;
         window.scroll(0, 0);
       } else {
@@ -295,7 +295,7 @@ export class EditLocationDetailsComponent implements OnInit {
           attributename: attr,
           entityid: this.locationId,
           entitytypeid: attr.type.entitytypeid,
-          lastmodifiedby: attr.type.lastmodifiedby,
+          lastModifiedby: attr.type.lastmodifiedby,
           value: attr.value,
         });
       });
@@ -318,7 +318,7 @@ export class EditLocationDetailsComponent implements OnInit {
       }
     });
     var request = {
-      locationid: this.location.locationid,
+      locationId: this.location.locationId,
       address1: this.location.address1 ? this.location.address1 : '',
       address2: this.location.address2 ? this.location.address2 : '',
       city: this.location.city ? this.location.city : '',
@@ -326,26 +326,26 @@ export class EditLocationDetailsComponent implements OnInit {
       company: {
         companyid: this.companyId,
       },
-      criticalflag: this.location.critical ? this.location.critical : false,
+      criticalFlag: this.location.critical ? this.location.critical : false,
       description: this.location.description ? this.location.description : '',
-      desiredspareratio: this.location.desiredspareratio
-        ? this.location.desiredspareratio
+      desiredSpareRatio: this.location.desiredSpareRatio
+        ? this.location.desiredSpareRatio
         : 0,
-      isvendor: this.location.isvendor ? this.location.isvendor : false,
-      lastmodifiedby: this.userName,
+      isVendor: this.location.isVendor ? this.location.isVendor : false,
+      lastModifiedBy: this.userName,
       name: this.location.name ? this.location.name : '',
       parentLocation: {
-        locationid: this.value ? this.value : 0,
+        locationId: this.value ? this.value : 0,
       },
-      postalcode: this.location.postalcode ? this.location.postalcode : '',
+      postalCode: this.location.postalCode ? this.location.postalCode : '',
       state: this.location.state ? this.location.state : '',
-      statusid: this.location.statusid ? this.location.statusid : 0,
+      statusId: this.location.statusId ? this.location.statusId : 0,
       parentLocationResourceList: this.location.parentLocationResourceList,
       vendorCompany: {
         companyid: 0,
       },
-      attributevalues: this.location.attributevalues
-        ? this.location.attributevalues
+      attributeValues: this.location.attributeValues
+        ? this.location.attributeValues
         : null,
     };
     if (this.addedlocations && this.addedlocations.length > 0) {
@@ -359,32 +359,32 @@ export class EditLocationDetailsComponent implements OnInit {
             company: {
               companyid: this.companyId,
             },
-            criticalflag: this.location.critical
+            criticalFlag: this.location.critical
               ? this.location.critical
               : false,
             description: this.location.description
               ? this.location.description
               : '',
-            desiredspareratio: this.location.desiredspareratio
-              ? this.location.desiredspareratio
+            desiredSpareRatio: this.location.desiredSpareRatio
+              ? this.location.desiredSpareRatio
               : 0,
-            isvendor: this.location.isvendor ? this.location.isvendor : false,
-            lastmodifiedby: this.userName,
-            locationid: 0,
+            isVendor: this.location.isVendor ? this.location.isVendor : false,
+            lastModifiedBy: this.userName,
+            locationId: 0,
             name: loc.locationName ? loc.locationName : '',
             parentLocation: {
-              locationid: this.value ? this.value : 0,
+              locationId: this.value ? this.value : 0,
             },
-            postalcode: this.location.postalcode
-              ? this.location.postalcode
+            postalCode: this.location.postalCode
+              ? this.location.postalCode
               : '',
             state: this.location.state ? this.location.state : '',
-            statusid: this.location.statusid ? this.location.statusid : 0,
+            statusId: this.location.statusId ? this.location.statusId : 0,
             vendorCompany: {
               companyid: 0,
             },
-            attributevalues: this.location.attributevalues
-              ? this.location.attributevalues
+            attributeValues: this.location.attributeValues
+              ? this.location.attributeValues
               : null,
           });
         }
@@ -392,7 +392,7 @@ export class EditLocationDetailsComponent implements OnInit {
     }
     if (this.reqAttrValidate == false) {
       this.spinner.show();
-
+      console.log("@395",request);
       this.locationManagementService.updateLocation(request).subscribe(
         (response) => {
           if (this.addedlocations && this.addedlocations.length > 0) {

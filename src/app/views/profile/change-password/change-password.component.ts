@@ -38,10 +38,10 @@ export class ChangePasswordComponent implements OnInit {
       this.model.newPassword == this.model.confirmPassword
     ) {
       var req = {
-        currentpassword: this.model.currentPassword,
-        newpassword: this.model.newPassword,
-        confirmpassword: this.model.confirmPassword,
-        lastpasswordchangeddate: this.model.date,
+        currentPassword: this.model.currentPassword,
+        newPassword: this.model.newPassword,
+        confirmPassword: this.model.confirmPassword,
+        lastPasswordChangedDate: this.model.date,
         userid: sessionStorage.getItem('userId'),
       };
       if (

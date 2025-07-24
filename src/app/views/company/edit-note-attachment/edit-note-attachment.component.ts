@@ -13,7 +13,7 @@ export class EditNoteAttachmentComponent implements OnInit {
   model: any = {};
   index: number = 0;
   date = Date.now();
-  itemid: number = 0;
+  itemId: number = 0;
   documentId: any;
   private sub: any;
   id: number;

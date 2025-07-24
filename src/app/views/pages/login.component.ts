@@ -95,7 +95,7 @@ export class LoginComponent {
         sessionStorage.setItem('IsOwnerAdminReadOnly', response.acceptedterms);
 
         this.date = new Date();
-        this.user.userid = this.userId;
+        this.user.userId = this.userId;
         this.userManagementService.updateLoginDate(this.user).subscribe(
           (response) => {},
           (error) => {

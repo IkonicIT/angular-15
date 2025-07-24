@@ -198,7 +198,7 @@ export class CloneItemComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -370,37 +370,37 @@ export class CloneItemComponent implements OnInit {
           company: {
             companyid: this.companyId,
           },
-          criticalflag: this.locationModel.critical
+          criticalFlag: this.locationModel.critical
             ? this.locationModel.critical
             : false,
           description: this.locationModel.description
             ? this.locationModel.description
             : '',
-          desiredspareratio: this.locationModel.sRatio
+          desiredSpareRatio: this.locationModel.sRatio
             ? this.locationModel.sRatio
             : 0,
-          isvendor: this.locationModel.vLocation
+          isVendor: this.locationModel.vLocation
             ? this.locationModel.vLocation
             : false,
-          lastmodifiedby: this.userName,
-          locationid: 0,
+          lastModifiedBy: this.userName,
+          locationId: 0,
           name: this.locationModel.locationName
             ? this.locationModel.locationName
             : '',
           parentLocation: {
-            locationid: this.model.locationId ? this.model.locationId : 0,
+            locationId: this.model.locationId ? this.model.locationId : 0,
           },
-          postalcode: this.locationModel.postalCode
+          postalCode: this.locationModel.postalCode
             ? this.locationModel.postalCode
             : '',
           state: this.locationModel.state ? this.locationModel.state : '',
-          statusid: this.locationModel.statusid
+          statusId: this.locationModel.statusid
             ? this.locationModel.statusid
             : 0,
           vendorCompany: {
             companyid: 0,
           },
-          attributevalues: this.locationModel.attributevalues
+          attributeValues: this.locationModel.attributevalues
             ? this.locationModel.attributevalues
             : null,
         },
@@ -495,43 +495,43 @@ export class CloneItemComponent implements OnInit {
         }
       );
       var req = {
-        attributevalues: this.model.attributevalues
+        attributeValues: this.model.attributevalues
           ? this.model.attributevalues
           : null,
-        defaultimageattachmentid: 0,
+        defaultImageAttachmentId: 0,
         description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.desiredSpareRatio
+        desiredSpareRatio: this.model.desiredSpareRatio
           ? this.model.desiredSpareRatio
           : 0,
-        inserviceon: this.dateNow,
-        isinrepair: false,
-        isstale: false,
-        itemid: 0,
-        lastmodifiedby: this.userName,
-        locationid: this.model.locationId ? this.model.locationId : 0,
-        companyid: this.companyId,
-        manufacturerid: null,
-        meantimebetweenservice: this.model.meanTimeBetweenService
+        inServiceOn: this.dateNow,
+        isInRepair: false,
+        isStale: false,
+        itemId: 0,
+        lastModifiedBy: this.userName,
+        locationId: this.model.locationId ? this.model.locationId : 0,
+        companyId: this.companyId,
+        manufacturerId: null,
+        meanTimeBetweenService: this.model.meanTimeBetweenService
           ? this.model.meanTimeBetweenService
           : 0,
-        modelnumber: 'string',
+        modelNumber: 'string',
         name: this.model.name ? this.model.name : '',
-        purchasedate: this.model.purchaseDate ? this.model.purchaseDate : '',
-        purchaseprice: this.model.purchasePrice ? this.model.purchasePrice : 0,
-        repairqual: 0,
-        serialnumber: '',
-        statusid: this.model.statusId ? this.model.statusId : 0,
+        purchaseDate: this.model.purchaseDate ? this.model.purchaseDate : '',
+        purchasePrice: this.model.purchasePrice ? this.model.purchasePrice : 0,
+        repairQual: 0,
+        serialNumber: '',
+        statusId: this.model.statusId ? this.model.statusId : 0,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyExpiration
+        warrantyExpiration: this.model.warrantyExpiration
           ? this.model.warrantyExpiration
           : '',
-        warrantytypeid: this.model.warrantyTypeId
+        warrantyTypeId: this.model.warrantyTypeId
           ? this.model.warrantyTypeId
           : 0,
         typeName: this.model.typeName,
         locationName: this.model.locationName,
-        statusname: this.model.statusName,
+        statusName: this.model.statusName,
         createdDate: new Date().toISOString(),
       };
       if (this.reqAttrValidate == false) {

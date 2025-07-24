@@ -108,7 +108,7 @@ export class MasterSearchComponent implements OnInit {
               });
               if (count == 1) {
                 this.items[key].forEach((obj: any) => {
-                  itemId = obj.itemid;
+                  itemId = obj.itemId;
                   rank = obj.itemRank;
                   tag = obj.tag;
                   typeName = obj.typeName;
@@ -195,7 +195,7 @@ export class MasterSearchComponent implements OnInit {
           robj[atr.name] = atr.value;
         });
 
-        delete obj.itemid;
+        delete obj.itemId;
         delete obj.locationid;
         delete obj.companyid;
         delete obj.companyName;

@@ -167,7 +167,7 @@ export class ItemManagementComponent implements OnInit {
   itemRepairs(item: any) {
     this.itemManagementService.setSearchedItemTypeId(item.typeid);
     this.itemManagementService.setSearchedItemTag(item.tag);
-    this.router.navigate(['/items/itemRepairs/' + item.itemid]);
+    this.router.navigate(['/items/itemRepairs/' + item.itemId]);
   }
 
   getLocations() {
@@ -193,7 +193,7 @@ export class ItemManagementComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -221,8 +221,8 @@ export class ItemManagementComponent implements OnInit {
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
     var req = {
-      locationid: this.model.locationid ? this.model.locationid : null,
-      statusid: this.model.statusid ? this.model.statusid : null,
+      locationId: this.model.locationid ? this.model.locationid : null,
+      statusId: this.model.statusid ? this.model.statusid : null,
       tag: this.model.tag ? this.model.tag : null,
       typeId: this.model.typeId ? this.model.typeId : null,
     };
@@ -235,8 +235,8 @@ export class ItemManagementComponent implements OnInit {
           this.spinner.hide();
           this.itemManagementService.setSearchedItemTag(req.tag);
           this.itemManagementService.setSearchedItemTypeId(req.typeId);
-          this.itemManagementService.setSearchedItemLocationId(req.locationid);
-          this.itemManagementService.setSearchedItemStatusId(req.statusid);
+          this.itemManagementService.setSearchedItemLocationId(req.locationId);
+          this.itemManagementService.setSearchedItemStatusId(req.statusId);
 
           this.itemManagementService.setItemSearchResults(response);
           this.searchResults = response;
@@ -273,7 +273,7 @@ export class ItemManagementComponent implements OnInit {
             });
             if (count == 1) {
               this.searchResults[key].forEach((obj: any) => {
-                itemId = obj.itemid;
+                itemId = obj.itemId;
                 rank = obj.itemRank;
                 tag = obj.tag;
                 typeName = obj.typeName;
@@ -309,8 +309,8 @@ export class ItemManagementComponent implements OnInit {
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
     var req = {
-      locationid: this.model.locationid ? this.model.locationid : null,
-      statusid: this.model.statusid ? this.model.statusid : null,
+      locationId: this.model.locationid ? this.model.locationid : null,
+      statusId: this.model.statusid ? this.model.statusid : null,
       tag: this.model.tag ? this.model.tag : null,
       typeId: this.model.typeId ? this.model.typeId : null,
     };
@@ -324,8 +324,8 @@ export class ItemManagementComponent implements OnInit {
           console.log('searchResults:', this.searchResults);
           this.itemManagementService.setSearchedItemTag(req.tag);
           this.itemManagementService.setSearchedItemTypeId(req.typeId);
-          this.itemManagementService.setSearchedItemLocationId(req.locationid);
-          this.itemManagementService.setSearchedItemStatusId(req.statusid);
+          this.itemManagementService.setSearchedItemLocationId(req.locationId);
+          this.itemManagementService.setSearchedItemStatusId(req.statusId);
           this.itemManagementService.setItemSearchResults(response);
           this.searchResultKeys = Object.keys(this.searchResults);
           console.log(

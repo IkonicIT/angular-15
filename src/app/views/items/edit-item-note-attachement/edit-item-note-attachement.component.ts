@@ -17,7 +17,7 @@ export class EditItemNoteAttachementComponent implements OnInit {
   companyName: string;
   globalCompany: any;
   date = Date.now();
-  itemid: number = 0;
+  itemId: number = 0;
   documentId: number = 0;
   private sub: any;
   userName: any;
@@ -49,7 +49,7 @@ export class EditItemNoteAttachementComponent implements OnInit {
       this.companyId = this.globalCompany.companyid;
     }
     this.id = route.snapshot.params['id'];
-    this.itemid = route.snapshot.params['journalId'];
+    this.itemId = route.snapshot.params['journalId'];
     this.documentId = route.snapshot.params['itemId'];
     this.router = router;
   }
@@ -96,7 +96,7 @@ export class EditItemNoteAttachementComponent implements OnInit {
           this.index = 0;
         }, 7000);
         this.router.navigate([
-          '/items/noteAttachments/' + this.documentId + '/' + this.itemid,
+          '/items/noteAttachments/' + this.documentId + '/' + this.itemId,
         ]);
       },
       (error) => {
@@ -107,7 +107,7 @@ export class EditItemNoteAttachementComponent implements OnInit {
 
   cancelItemNoteAttachment() {
     this.router.navigate([
-      '/items/noteAttachments/' + this.documentId + '/' + this.itemid,
+      '/items/noteAttachments/' + this.documentId + '/' + this.itemId,
     ]);
   }
 

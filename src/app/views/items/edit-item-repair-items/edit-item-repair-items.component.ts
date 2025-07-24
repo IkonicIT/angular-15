@@ -120,6 +120,7 @@ export class EditItemRepairItemsComponent implements OnInit {
         setTimeout(() => {
           this.index = 0;
         }, 7000);
+          this.router.navigate(['/items/repairItems']);
         this.getRepairItems();
       });
   }

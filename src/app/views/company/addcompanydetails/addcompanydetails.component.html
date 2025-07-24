@@ -105,6 +105,10 @@
                           placeholder="Enter URL"
                         />
                       </div>
+                        <div class="form-check ms-3 mb-2">
+                          <input type="checkbox" class="form-check-input" [(ngModel)]="model.isPartnerCompany" name="isPartnerCompany" id="isPartnerCompany">
+                          <label class="form-check-label" for="isPartnerCompany">Partner Company</label>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -206,7 +210,7 @@
                         <label for="status">Status</label>
 
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.status"
                           name="status"
                           #status="ngModel"
@@ -294,6 +298,7 @@
                           data-bs-toggle="tooltip"
                           title="Save Company"
                           class="btn btn-primary btn-right"
+                          style="border-radius: 6px;"
                         >
                           Save
                         </button>
@@ -304,6 +309,7 @@
                           data-bs-toggle="tooltip"
                           title="Back button"
                           class="btn btn-primary"
+                          style="border-radius: 6px;"
                         >
                           Back
                         </button>
@@ -420,5 +426,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

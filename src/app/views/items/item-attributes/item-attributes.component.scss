@@ -12,6 +12,11 @@
   padding-right: 15px;
   margin-bottom: 16px;
 }
+.btn-group-gap {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Adjust the gap as needed */
+}
 
 .btn-outline-danger:hover {
   color: #fff;

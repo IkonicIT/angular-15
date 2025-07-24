@@ -1,301 +1,737 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12 col-padding">
+    <div class="col-lg-12">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
-          <button
-            type="button"
-            (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
-          >
-            Print
-          </button>
-          <button
-            type="button"
-            (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
-          >
-            Help
-          </button>
-          <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
-          >
-            Note: Mandatory Fields are required.<br />
-            *To create a new note:<br />
-            1.Click the 'AddNotes' button.<br />
-            2.Enter the data for the new note.<br />
-            3.Click the 'Save' button.<br />
-            *To edit an existing note: <br />
-            1.click the 'Edit' button.<br />
-            2.Make the necessary changes.<br />
-            3.Click the 'Update' button.<br />
-            *To delete an existing note: <br />
-            1.Click the 'Delete' button.
-          </div>
-        </div>
-
         <div class="card-body">
-          <p class="card-text">
-            Manage {{ vendorName }} Notes
+          <div class="form-group col-sm-12 text-right">
             <button
               type="button"
-              class="btn btn-primary float-right"
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="Add Notes."
-              (click)="addVendorNotes()"
-              placement="top"
+              (click)="print()"
+              tooltip="Click to Print this Page"
+              class="btn btn-outline-danger btn-sm btn-right"
             >
-              Add Notes
+              Print
             </button>
-          </p>
-          <div class="select-pagination-option">
-            <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="itemsForPagination">
-                  <option>5</option>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                </select>
-                entries
-              </span>
+            <button
+              type="button"
+              (click)="help()"
+              tooltip=" Instructions"
+              class="btn btn-outline-danger btn-sm"
+            >
+              Help
+            </button>
+            <div
+              style="
+                text-align: left;
+                border: 1px solid;
+                width: fit-content;
+                background-color: whitesmoke;
+              "
+              *ngIf="helpFlag == true"
+            >
+              * To create a Note <br />
+              1.Enter the information <br />
+              2.Click the 'Save' button <br />
+              * Pressing 'Cancel' will undo the changes you've made.
             </div>
           </div>
-          <div class="float-right div-search">
-            <span>Search : </span>
-            <input [(ngModel)]="vendorNotesFilter" />
-          </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
-            <thead class="thead-light">
-              <tr>
-                <th
-                  [class.active]="order === 'enteredon'"
-                  (click)="setOrder('enteredon')"
-                >
-                  Date<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th
-                  [class.active]="order === 'entry'"
-                  (click)="setOrder('entry')"
-                >
-                  Title<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th
-                  [class.active]="order === 'jobnumber'"
-                  (click)="setOrder('jobnumber')"
-                >
-                  Job<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th
-                  [class.active]="order === 'ponumber'"
-                  (click)="setOrder('ponumber')"
-                >
-                  PO<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th
-                  [class.active]="order === 'enteredby'"
-                  (click)="setOrder('enteredby')"
-                >
-                  By <span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let note of notes
-                    | orderBy : reverse + order
-                    | filterBy
-                      : [
-                          'enteredon',
-                          'entry',
-                          'jobnumber',
-                          'ponumber',
-                          'enteredby'
-                        ]
-                      : vendorNotesFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
-                "
-              >
-                <td>{{ note.enteredon | date : "dd/mm/yyyy" }}</td>
-                <td>{{ note.entry }}</td>
-                <td>{{ note.jobnumber }}</td>
-                <td>{{ note.ponumber }}</td>
-                <td>{{ note.enteredby }}</td>
+          <p class="card-text" style="font-weight: bold; font-size: 22px">
+            Vendor Notes:
+          </p>
 
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-outline-danger btn-sm btn-right"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Edit Note"
-                    (click)="editVendorNotes(note)"
+          <div *ngIf="newFlag == true">
+            <div class="row">
+              <div class="form-group col-sm-12 text-right">
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  class="btn btn-primary btn-right"
+                  tooltip="Add New Vendor Note"
+                  (click)="addNotes()"
+                >
+                  New
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  tooltip="Save Vendor Note"
+                  (click)="saveVendorNotes()"
+                  class="btn btn-primary btn-right"
+                >
+                  Save
+                </button>
+                <button
+                  *ngIf="highestRank > 5"
+                  type="button"
+                  tooltip="Cancel the Changes for this Note"
+                  (click)="backToVendor()"
+                  class="btn btn-primary btn-right"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-right"
+                  tooltip="Delete Vendor Note"
+                  disabled
+                  (click)="openModal(confirmtemplate, model.vendorNoteId)"
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  tooltip=" Add Vendor Note Attachment"
+                  class="btn btn-primary btn-right"
+                  disabled
+                  (click)="goToAttachments(model.vendorNoteId)"
+                >
+                  Attachments
+                </button>
+                <button
+                  type="button"
+                  tooltip="Back"
+                  (click)="backToVendor()"
+                  class="btn btn-primary btn-right"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+            <alert
+              *ngIf="index1 == 1"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note was successfully Saved
+            </alert>
+            <alert
+              *ngIf="index1 == 2"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note was successfully Updated
+            </alert>
+
+            <alert
+              type="danger"
+              *ngIf="index1 == -1"
+              [dismissible]="dismissible"
+            >
+              Please Enter Title and Date
+            </alert>
+
+            <alert
+              type="success"
+              *ngIf="index1 == 4"
+              [dismissible]="dismissible"
+            >
+              Note was successfully Deleted
+            </alert>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="title"
+                  >Title <strong class="text-danger">*</strong></label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="model.vendorNoteId"
+                  name="vendorNoteId"
+                  #vendorNoteId="ngModel"
+                  id="_id"
+                  hidden
+                />
+                <input
+                  class="form-control"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.name"
+                  name="title"
+                  #title="ngModel"
+                  id="title"
+                  placeholder="Enter Title"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="date"
+                  >Date <strong class="text-danger">*</strong></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.createdDate"
+                  name="date"
+                  #date="ngModel"
+                  id="date"
+                  placeholder="Enter Date"
+                  bsDatepicker
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="job">JOB Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.jobnumber"
+                  name="job"
+                  #job="ngModel"
+                  id="job"
+                  placeholder="Enter JOB Number"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="po">PO Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.ponumber"
+                  id="po"
+                  name="po"
+                  #po="ngModel"
+                  placeholder="Enter PO Number"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <label for="details">Details</label>
+                <textarea
+                  id="details"
+                  name="textarea-input"
+                  rows="2"
+                  cols="4"
+                  name="details"
+                  #details="ngModel"
+                  class="form-control"
+                  [(ngModel)]="model.details"
+                  placeholder="Enter Description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="viewFlag == true">
+            <div class="row">
+              <div class="form-group col-sm-12 text-right">
+                <p style="text-align: left">
+                  <strong>Viewing Vendor Note'</strong>
+                </p>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  class="btn btn-primary btn-right"
+                  tooltip="Add New Vendor Note"
+                  (click)="addNotes()"
+                >
+                  New
+                </button>
+                <button
+                  type="button"
+                  tooltip="Save Vendor Note"
+                  disabled
+                  class="btn btn-primary btn-right"
+                >
+                  Save
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  class="btn btn-primary btn-right"
+                  tooltip="Edit vendor Note"
+                  (click)="editNote()"
+                >
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-primary btn-right"
+                  tooltip="Delete Vendor Note"
+                  disabled
+                  (click)="openModal(confirmtemplate, model.vendorNoteId)"
+                >
+                  Delete
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  tooltip=" Add Vendor Note Attachment"
+                  class="btn btn-primary btn-right"
+                  (click)="goToAttachments(model.vendorNoteId)"
+                >
+                  Attachments
+                </button>
+                <button
+                  type="button"
+                  tooltip="Back"
+                  (click)="backToVendor()"
+                  class="btn btn-primary btn-right"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+            <alert
+              *ngIf="index1 == 1"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for Vendor was successfully Saved
+            </alert>
+            <alert
+              *ngIf="index1 == 2"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for 'Vendor: -- ' was successfully Updated
+            </alert>
+
+            <alert
+              type="danger"
+              *ngIf="index1 == -1"
+              [dismissible]="dismissible"
+            >
+              Please Enter Title and Date
+            </alert>
+
+            <alert
+              type="success"
+              *ngIf="index1 == 4"
+              [dismissible]="dismissible"
+            >
+              Note for Vendor was successfully Deleted
+            </alert>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="title"
+                  >Title <strong class="text-danger">*</strong></label
+                >
+                <input
+                  type="text"
+                  class="form-control backgroundColor"
+                  [(ngModel)]="model.vendorNoteId"
+                  name="vendorNoteId"
+                  #vendorNoteId="ngModel"
+                  id="_id"
+                  hidden
+                />
+                <input
+                  readonly
+                  class="form-control backgroundColor"
+                  type="text"
+                  [(ngModel)]="model.name"
+                  name="title"
+                  #title="ngModel"
+                  id="title"
+                  placeholder="Enter Title"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="date"
+                  >Date <strong class="text-danger">*</strong></label
+                >
+                <input
+                  readonly
+                  class="form-control backgroundColor"
+                  type="text"
+                  [(ngModel)]="model.createdDate"
+                  name="date"
+                  #date="ngModel"
+                  id="date"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="job">JOB Number</label>
+                <input
+                  readonly
+                  type="text"
+                  class="form-control backgroundColor"
+                  [(ngModel)]="model.jobnumber"
+                  name="job"
+                  #job="ngModel"
+                  id="job"
+                  placeholder="Enter JOB Number"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="po">PO Number</label>
+                <input
+                  readonly
+                  type="text"
+                  class="form-control backgroundColor"
+                  [(ngModel)]="model.ponumber"
+                  id="po"
+                  name="po"
+                  #po="ngModel"
+                  placeholder="Enter PO Number"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <label for="details">Details</label>
+                <textarea
+                  readonly
+                  id="details"
+                  name="textarea-input"
+                  rows="2"
+                  cols="4"
+                  name="details"
+                  #details="ngModel"
+                  class="form-control backgroundColor"
+                  [(ngModel)]="model.details"
+                  placeholder="Enter Description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="editFlag == true">
+            <div class="row">
+              <div class="form-group col-sm-12 text-right">
+                <p style="text-align: left">
+                  <strong>Editing Vendor Note</strong>
+                </p>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  class="btn btn-primary btn-right"
+                  tooltip="Add New Vendor Note"
+                  (click)="addNotes()"
+                  style="border-radius: 6px;"
+                >
+                  New
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  tooltip="Save Vendor Note"
+                  (click)="updateVendorNotes()"
+                  class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
+                >
+                  Update
+                </button>
+
+                <button
+                  *ngIf="highestRank > 5"
+                  type="button"
+                  tooltip="Cancel the Changes for this Note"
+                  (click)="backToVendor()"
+                  class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
+                >
+                  Cancel
+                </button>
+                <button
+                  [disabled]="highestRank < 6 || highestRank == 9"
+                  type="button"
+                  class="btn btn-primary btn-right"
+                  tooltip="Delete Vendor Note"
+                  (click)="openModal(confirmtemplate, model.vendorNoteId)"
+                  style="border-radius: 6px;"
+                >
+                  Delete
+                </button>
+                <button
+                  [disabled]="highestRank < 6"
+                  type="button"
+                  tooltip=" Add Vendor Note Attachment"
+                  class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
+                  (click)="goToAttachments(model.vendorNoteId)"
+                >
+                  Attachments
+                </button>
+                <button
+                  type="button"
+                  tooltip="Back"
+                  (click)="backToVendor()"
+                  class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+            <alert
+              *ngIf="index1 == 1"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for 'Vendor: -- ' was successfully Saved
+            </alert>
+            <alert
+              *ngIf="index1 == 2"
+              type="success"
+              [dismissible]="dismissible"
+            >
+              Note for 'Vendor: -- ' was successfully Updated
+            </alert>
+
+            <alert
+              type="danger"
+              *ngIf="index1 == -1"
+              [dismissible]="dismissible"
+            >
+              Please Enter Title and Date
+            </alert>
+
+            <alert
+              type="success"
+              *ngIf="index1 == 4"
+              [dismissible]="dismissible"
+            >
+              Note for 'Vendor: -- ' was successfully Deleted
+            </alert>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="title"
+                  >Title <strong class="text-danger">*</strong></label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="model.vendorNoteId"
+                  name="vendorNoteId"
+                  #vendorNoteId="ngModel"
+                  id="_id"
+                  hidden
+                />
+                <input
+                  readonly
+                  type="text"
+                  class="form-control backgroundColor"
+                  [(ngModel)]="model.name"
+                  name="title"
+                  #title="ngModel"
+                  id="title"
+                  placeholder="Enter Title"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="date"
+                  >Date <strong class="text-danger">*</strong></label
+                >
+
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.createdDate"
+                  name="date"
+                  #date="ngModel"
+                  id="date"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label for="job">JOB Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.jobnumber"
+                  name="job"
+                  #job="ngModel"
+                  id="job"
+                  placeholder="Enter JOB Number"
+                />
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="po">PO Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.ponumber"
+                  id="po"
+                  name="po"
+                  #po="ngModel"
+                  placeholder="Enter PO Number"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-12">
+                <label for="details">Details</label>
+                <textarea
+                  id="details"
+                  name="textarea-input"
+                  rows="2"
+                  cols="4"
+                  name="details"
+                  #details="ngModel"
+                  class="form-control"
+                  [(ngModel)]="model.details"
+                  placeholder="Enter Description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="animated fadeIn" *ngIf="highestRank > 4">
+            <!--/.row-->
+            <div class="row">
+              <div class="col-lg-12">
+                <p class="card-text" style="font-weight: bold; font-size: 18px">
+                  Current Notes:
+                </p>
+                <!-- Large modal -->
+                <div class="card-body">
+                  <div>
+                    <div class="float-left">
+                      <span
+                        >Show
+                        <select [(ngModel)]="itemsForPagination">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select>
+                        entries
+                      </span>
+                    </div>
+                  </div>
+                  <div class="float-right div-search">
+                    <span>Search : </span>
+                    <input [(ngModel)]="vendorNotesFilter" />
+                  </div>
+                  <table
+                    class="table table-responsive-sm table-hover table-outline mb-0"
                   >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Delete Note"
-                    (click)="openModal(confirmtemplate, note.journalid)"
-                    disabled="highestRank == 9"
+                    <thead class="thead-light">
+                      <tr>
+                        <th
+                          [class.active]="order === 'createdDate'"
+                          (click)="setOrder('createdDate')"
+                        >
+                          Date<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="order === 'name'"
+                          (click)="setOrder('name')"
+                        >
+                          Title<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="order === 'jobnumber'"
+                          (click)="setOrder('jobnumber')"
+                        >
+                          Job<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="order === 'ponumber'"
+                          (click)="setOrder('ponumber')"
+                        >
+                          PO<span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+                        <th
+                          [class.active]="order === 'createdBy'"
+                          (click)="setOrder('createdBy')"
+                        >
+                          By <span [hidden]="reverse == ''">▼</span
+                          ><span [hidden]="reverse != ''">▲</span>
+                        </th>
+
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let note of notes
+                            | orderBy : reverse + order
+                            | filterBy
+                              : [
+                                  'createdDate',
+                                  'name',
+                                  'jobnumber',
+                                  'ponumber',
+                                  'createdBy'
+                                ]
+                              : vendorNotesFilter
+                            | paginate
+                              : {
+                                  itemsPerPage: itemsForPagination,
+                                  currentPage: p
+                                }
+                        "
+                      >
+                        <td>{{ note.createdDate | date : "MM/dd/yyyy" }}</td>
+                        <td>{{ note.name }}</td>
+                        <td>{{ note.jobnumber }}</td>
+                        <td>{{ note.ponumber }}</td>
+                        <td>{{ note.createdBy }}</td>
+                        <!-- <td>
+                          <ng-container *ngFor="let attachment of note.attachmentList">
+                            <br><a href="javascript:void(0)" tooltip="Click here to View this NoteAttachment"
+                              (click)="download(attachment)">{{attachment.fileName}}</a>
+                          </ng-container>
+                        </td> -->
+
+                        <td>
+                          <button
+                            type="button"
+                            class="btn btn-outline-danger btn-sm"
+                            tooltip="Click here to View this Note"
+                            (click)="viewVendorNote(note.vendorNoteId)"
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <pagination-controls
+                    class="my-pagination"
+                    (pageChange)="p = $event"
+                    [autoHide]="true"
                   >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <pagination-controls
-            class="my-pagination"
-            (pageChange)="p = $event"
-            [autoHide]="true"
-          ></pagination-controls>
+                  </pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <ng-template #confirmtemplate>
+    <div class="modal-body text-center">
+      <p>
+        Click(Yes) to permanently delete this Note or Click(No) to discard this
+        action.
+      </p>
+      <button
+        type="button"
+        class="btn btn-primary btn-right"
+        (click)="confirm()"
+      >
+        Yes
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary btn-right"
+        (click)="decline()"
+      >
+        No
+      </button>
+    </div>
+  </ng-template>
 </div>
-
-<ng-template #confirmtemplate>
-  <div class="modal-body text-center">
-    <p>
-      Click(Yes) to permanently delete this VendorNote or Click(No) to discard
-      This action.
-    </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
-  </div>
-</ng-template>
-
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

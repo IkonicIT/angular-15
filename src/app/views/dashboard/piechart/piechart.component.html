@@ -1,7 +1,7 @@
 <div class="animated fadeIn" *ngIf="highestRank > 0">
   <div class="row">
     <div class="col-lg-12 mobile-padding">
-      <div class="card remove-card-radius">
+      <div class="card remove-card-radius marginAlignment">
         <div class="card-body">
           <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
             Please Select From & To Fields.
@@ -12,129 +12,114 @@
             </h4>
             <br />
 
-            <div class="row" style="padding: 15px">
-              <div class="col remove-padding">
-                <label for="status"><strong>Chart Type</strong></label>
-                <select
-                  class="form-control"
-                  [(ngModel)]="params.charttype"
-                  (change)="setLocationId()"
-                >
-                  <option value="company">Company</option>
-                  <option value="location">Location</option>
-                </select>
-              </div>
-              <div
-                class="col remove-padding remove-radius"
-                [ngClass]="{ 'hide-location-range': !showLocationAndRange }"
-              >
-                <label for="status"><strong>Item Type</strong></label>
-                <app-dropdown-treeview-select
-                  [items]="itemTypeItems"
-                  id="type"
-                  [(value)]="typeId"
-                  class="itemType"
-                >
-                </app-dropdown-treeview-select>
-              </div>
-              <div class="col remove-padding">
-                <label for="status"><strong>TimeSpan</strong></label>
-                <select class="form-control" [(ngModel)]="params.type">
-                  <option value="monthly">Last Month</option>
-                  <option value="quarterly">Last Quarter</option>
-                  <option value="yearly">Last Year</option>
-                  <option value="lasttwoyears">Last Two Years</option>
-                  <option value="range">range</option>
-                </select>
-              </div>
+          <div class="row" style="padding: 13px; gap: 5px">
 
-              <ng-container [ngSwitch]="params.type">
-                <ng-container *ngSwitchCase="'location'" style="padding: 0px">
-                  <div
-                    class="col"
-                    style="padding: 0px"
-                    [ngClass]="{ 'show-location': showLocation }"
-                  >
-                    <label for="location"
-                      ><strong>Select Location</strong></label
-                    >
-                    <app-dropdown-treeview-select
-                      [items]="locations"
-                      [(value)]="locationId"
-                      (valueChange)="setLocation(locationId)"
-                    >
-                    </app-dropdown-treeview-select>
-                  </div>
-                </ng-container>
+  <div class="col remove-padding" style="min-width: 180px;">
+    <label for="chartType"><strong>Chart Type</strong></label>
+    <select
+      id="chartType"
+      class="form-control custom-dropdown"
+      [(ngModel)]="params.charttype"
+      (change)="setLocationId()"
+    >
+      <option value="company">Company</option>
+      <option value="location">Location</option>
+    </select>
+  </div>
 
-                <ng-container *ngSwitchCase="'range'">
-                  <div
-                    class="col remove-padding"
-                    [ngClass]="{ 'show-range': showRange }"
-                  >
-                    <label for="status"
-                      ><strong>From</strong
-                      ><strong class="text-danger"> *</strong></label
-                    >
-                    <div>
-                      <dp-date-picker
-                        [(ngModel)]="params.from"
-                        theme="dp-material"
-                      ></dp-date-picker>
-                    </div>
-                  </div>
-                  <div class="col remove-padding">
-                    <label for="status"
-                      ><strong>To</strong
-                      ><strong class="text-danger"> *</strong></label
-                    >
-                    <div>
-                      <dp-date-picker
-                        [(ngModel)]="params.to"
-                        theme="dp-material"
-                      ></dp-date-picker>
-                    </div>
-                  </div>
-                </ng-container>
-              </ng-container>
+ <div
+  class="col remove-padding remove-radius"
+  [ngClass]="{ 'hide-location-range': !showLocationAndRange }"
+>
+  <label for="status"><strong>Item Type</strong></label>
+  <div class="custom-dropdown-wrapper">
+    <app-dropdown-treeview-select
+      [items]="itemTypeItems"
+      id="type"
+      [(value)]="typeId"
+      class="itemType"
+    >
+    </app-dropdown-treeview-select>
+    <span class="custom-dropdown-arrow">&#9662;</span>
+  </div>
+</div>
 
-              <ng-container [ngSwitch]="params.charttype">
-                <ng-container *ngSwitchCase="'location'">
-                  <div class="col location-padding">
-                    <label for="location"
-                      ><strong>Select Location</strong></label
-                    >
-                    <app-dropdown-treeview-select
-                      [items]="locations"
-                      [(value)]="locationId"
-                      (valueChange)="setLocation(locationId)"
-                    >
-                    </app-dropdown-treeview-select>
-                  </div>
-                </ng-container>
-              </ng-container>
+  <div class="col remove-padding" style="min-width: 180px;">
+    <label for="timeSpan"><strong>TimeSpan</strong></label>
+    <select
+      id="timeSpan"
+      class="form-control custom-dropdown"
+      [(ngModel)]="params.type"
+    >
+      <option value="monthly">Last Month</option>
+      <option value="quarterly">Last Quarter</option>
+      <option value="yearly">Last Year</option>
+      <option value="lasttwoyears">Last Two Years</option>
+      <option value="range">Range</option>
+    </select>
+  </div>
 
-              <div class="col remove-padding">
-                <label><strong>&nbsp;</strong></label>
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  style="
-                    display: inherit;
-                    margin-top: -1px;
-                    margin-left: 2px;
-                    border-radius: 0;
-                  "
-                  (click)="getFailureTypes()"
-                  data-bs-placement="bottom"
-                  data-bs-toggle="tooltip"
-                  title="Get PrimaryFindings"
-                >
-                  GET
-                </button>
-              </div>
-            </div>
+  <div
+    class="col remove-padding"
+    style="min-width: 220px;"
+    *ngIf="params.charttype === 'location'"
+  >
+    <label for="location"><strong>Location</strong></label>
+    <select
+    id="locationType"
+    class="form-control custom-dropdown"
+    [(ngModel)]="locationId"
+    (change)="setLocation(locationId)"
+  >
+    <option *ngFor="let loc of locations" [value]="loc.value">
+      {{ loc.text }}
+    </option>
+  </select>
+  </div>
 
+  <div
+    class="col remove-padding"
+    *ngIf="params.type === 'range'"
+    style="min-width: 180px;"
+  >
+    <label for="fromDate"><strong>From</strong><strong class="text-danger"> *</strong></label>
+    <div>
+      <dp-date-picker
+        [(ngModel)]="params.from"
+        theme="dp-material"
+      ></dp-date-picker>
+    </div>
+  </div>
+
+  <div
+    class="col remove-padding"
+    *ngIf="params.type === 'range'"
+    style="min-width: 180px;"
+  >
+    <label for="toDate"><strong>To</strong><strong class="text-danger"> *</strong></label>
+    <div>
+      <dp-date-picker
+        [(ngModel)]="params.to"
+        theme="dp-material"
+      ></dp-date-picker>
+    </div>
+  </div>
+
+  <div class="col-auto remove-padding d-flex align-items-end" >
+    <label><strong>&nbsp;</strong></label>
+    <button
+      type="button"
+      class="btn btn-danger"
+      style="display: inherit; margin-top: -1px; border-radius: 6px; width: 100%;"
+      (click)="getFailureTypes()"
+      data-bs-placement="bottom"
+      data-bs-toggle="tooltip"
+      title="Get PrimaryFindings"
+    >
+      GET
+    </button>
+  </div>
+</div>
             <div>
               <mat-radio-group
                 #group="matRadioGroup"
@@ -152,7 +137,7 @@
               </mat-radio-group>
             </div>
 
-            <div class="col-sm-12" style="padding: 10px">
+            <div class="col-sm-12" style="padding-left: 2px; padding-top: 5px;">
               <div class="row">
                 <div class="col-md-6 mb-2">
                   <h5>PRIMARYFINDINGS</h5>
@@ -165,11 +150,7 @@
                     </h6>
                   </div>
 
-                  <div
-                    class="border-charts"
-                    style="position: relative; height: 300px; width: 592px"
-                    *ngIf="chartFlag"
-                  >
+                  <div class="border-charts" *ngIf="chartFlag">
                     <canvas
                       baseChart
                       [datasets]="pieChartData"
@@ -190,7 +171,6 @@
                   </h5>
                   <div
                     class="border-charts"
-                    style="height: 300px; width: 592px"
                     *ngIf="pieChartCauseLabels.length > 0"
                   >
                     <canvas
@@ -224,101 +204,103 @@
                 >RECENT REPAIRS
               </strong>
             </div>
-            <table
-              class="table table-responsive-sm table-responsive-md table-hover table-outline mb-0"
-            >
-              <thead class="thead-light">
-                <tr>
-                  <th>Tag#</th>
-                  <th>PO Number</th>
-                  <th>Job Number</th>
-                  <th>Failue Type & Cause</th>
-                  <th>Location</th>
-                  <th>Vendor</th>
-                  <th>Repair Cost</th>
-                  <th>Actual Completion Date</th>
-                  <th>Attachments</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let recentRepair of recentRepairs">
-                  <td>
-                    <a
-                      href="javascript:void(0)"
-                      (click)="
-                        goToView(
-                          recentRepair.itemId,
-                          recentRepair.rank,
-                          recentRepair.tag,
-                          recentRepair.typeName
-                        )
-                      "
-                      data-bs-placement="bottom"
-                      data-bs-toggle="tooltip"
-                      title="click here to view this Item"
-                      [innerHTML]="recentRepair.tag"
-                    ></a>
-                  </td>
-
-                  <td [innerHTML]="recentRepair.ponumber"></td>
-                  <td>
-                    <a
-                      href="javascript:void(0)"
-                      (click)="
-                        goToItemRepair(
-                          recentRepair.itemId,
-                          recentRepair.repairLogId,
-                          recentRepair.rank,
-                          recentRepair.tag,
-                          recentRepair.typeName
-                        )
-                      "
-                      style="color: red"
-                      data-bs-placement="bottom"
-                      data-bs-toggle="tooltip"
-                      title="click here to view Job Screen"
-                      [innerHTML]="recentRepair.jobNumber"
-                    ></a>
-                  </td>
-                  <td>
-                    {{
-                      getFailureTypeAndCause(
-                        recentRepair.failureType,
-                        recentRepair.failureCause
-                      )
-                    }}
-                  </td>
-                  <td [innerHTML]="recentRepair.location"></td>
-                  <td [innerHTML]="recentRepair.vendor"></td>
-                  <td [innerHTML]="recentRepair.repaircost | currency"></td>
-                  <td
-                    [innerHTML]="
-                      recentRepair.actualCompletionDate | date : 'MM/dd/yyyy'
-                    "
-                  ></td>
-                  <td>
-                    <ng-container
-                      *ngFor="
-                        let attachment of recentRepair.attachmentListFromXml
-                      "
-                    >
-                      <br /><a
+            <div class="m-2 x_Scrolling">
+              <table
+                class="table table-responsive-sm table-responsive-md table-hover table-outline mb-0"
+              >
+                <thead class="thead-light">
+                  <tr>
+                    <th>Tag#</th>
+                    <th>PO Number</th>
+                    <th>Job Number</th>
+                    <th>Failue Type & Cause</th>
+                    <th>Location</th>
+                    <th>Vendor</th>
+                    <th>Repair Cost</th>
+                    <th>Actual Completion Date</th>
+                    <th>Attachments</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let recentRepair of recentRepairs">
+                    <td>
+                      <a
                         href="javascript:void(0)"
-                        (click)="downloadDocuments(attachment, true)"
-                        [innerHTML]="attachment.fileName"
+                        (click)="
+                          goToView(
+                            recentRepair.itemId,
+                            recentRepair.rank,
+                            recentRepair.tag,
+                            recentRepair.typeName
+                          )
+                        "
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="click here to view this Item"
+                        [innerHTML]="recentRepair.tag"
                       ></a>
-                    </ng-container>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <button
-              type="button"
-              (click)="viewAllRepairs()"
-              class="btn btn-outline-danger btn-sm float-right"
-            >
-              See All
-            </button>
+                    </td>
+
+                    <td [innerHTML]="recentRepair.poNumber"></td>
+                    <td>
+                      <a
+                        href="javascript:void(0)"
+                        (click)="
+                          goToItemRepair(
+                            recentRepair.itemId,
+                            recentRepair.repairLogId,
+                            recentRepair.rank,
+                            recentRepair.tag,
+                            recentRepair.typeName
+                          )
+                        "
+                        style="color: red"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="click here to view Job Screen"
+                        [innerHTML]="recentRepair.jobNumber"
+                      ></a>
+                    </td>
+                    <td>
+                      {{
+                        getFailureTypeAndCause(
+                          recentRepair.failureType,
+                          recentRepair.failureCause
+                        )
+                      }}
+                    </td>
+                    <td [innerHTML]="recentRepair.location"></td>
+                    <td [innerHTML]="recentRepair.vendor"></td>
+                    <td [innerHTML]="recentRepair.repairCost | currency"></td>
+                    <td
+                      [innerHTML]="
+                        recentRepair.actualCompletionDate | date : 'MM/dd/yyyy'
+                      "
+                    ></td>
+                    <td>
+                      <ng-container
+                        *ngFor="
+                          let attachment of recentRepair.attachmentListFromXml
+                        "
+                      >
+                        <br /><a
+                          href="javascript:void(0)"
+                          (click)="downloadDocuments(attachment, true)"
+                          [innerHTML]="attachment.fileName"
+                        ></a>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button
+                type="button"
+                (click)="viewAllRepairs()"
+                class="btn btn-outline-danger btn-sm float-right btn-top"
+              >
+                See All
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -331,8 +313,8 @@
                 >RECENTLY ADDED ITEMS
               </strong>
             </div>
-            <div *ngFor="let itemType of recentlyAddedItemsKeys">
-              <div class="type-header">
+            <div *ngFor="let itemType of recentlyAddedItemsKeys" class="m-2 x_Scrolling">
+              <div class="type-header mb-1">
                 <strong [innerHTML]="itemType"></strong>
               </div>
               <table
@@ -405,76 +387,78 @@
                 >RECENTLY ADDED NOTES
               </strong>
             </div>
-            <table class="table table-hover table-outline mb-0">
-              <thead class="thead-light">
-                <tr>
-                  <th>Tag#</th>
-                  <th>Title</th>
-                  <th>Date</th>
-                  <th>Details</th>
-                  <th>Attachments</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let recentNote of recentNotes">
-                  <td>
-                    <a
-                      href="javascript:void(0)"
-                      (click)="
-                        goToView(
-                          recentNote.itemId,
-                          recentNote.rank,
-                          recentNote.tag,
-                          recentNote.typeName
-                        )
-                      "
-                      data-bs-placement="bottom"
-                      data-bs-toggle="tooltip"
-                      title="click here to view this Item"
-                      [innerHTML]="recentNote.tag"
-                    ></a>
-                  </td>
-
-                  <td>
-                    <a
-                      href="javascript:void(0)"
-                      (click)="
-                        goToNote(
-                          recentNote.journalId,
-                          recentNote.itemId,
-                          recentNote.rank,
-                          recentNote.tag,
-                          recentNote.typeName
-                        )
-                      "
-                      style="color: red"
-                      data-bs-placement="bottom"
-                      data-bs-toggle="tooltip"
-                      title="click here for Notes Screen"
-                      [innerHTML]="recentNote.title"
-                    ></a>
-                  </td>
-                  <!-- <td>{{recentNote.title}}</td> -->
-                  <td
-                    [innerHTML]="recentNote.addedOn | date : 'MM/dd/yyyy'"
-                  ></td>
-                  <td [innerHTML]="recentNote.details"></td>
-                  <td>
-                    <ng-container
-                      *ngFor="
-                        let attachment of recentNote.attachmentListFromXml
-                      "
-                    >
-                      <br /><a
+            <div class="m-2 x_Scrolling">
+              <table class="table table-hover table-outline">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Tag#</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Details</th>
+                    <th>Attachments</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let recentNote of recentNotes">
+                    <td>
+                      <a
                         href="javascript:void(0)"
-                        (click)="downloadDocuments(attachment, true)"
-                        [innerHTML]="attachment.fileName"
+                        (click)="
+                          goToView(
+                            recentNote.itemId,
+                            recentNote.rank,
+                            recentNote.tag,
+                            recentNote.typeName
+                          )
+                        "
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="click here to view this Item"
+                        [innerHTML]="recentNote.tag"
                       ></a>
-                    </ng-container>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+
+                    <td>
+                      <a
+                        href="javascript:void(0)"
+                        (click)="
+                          goToNote(
+                            recentNote.journalId,
+                            recentNote.itemId,
+                            recentNote.rank,
+                            recentNote.tag,
+                            recentNote.typeName
+                          )
+                        "
+                        style="color: red"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="click here for Notes Screen"
+                        [innerHTML]="recentNote.title"
+                      ></a>
+                    </td>
+                    <!-- <td>{{recentNote.title}}</td> -->
+                    <td
+                      [innerHTML]="recentNote.addedOn | date : 'MM/dd/yyyy'"
+                    ></td>
+                    <td [innerHTML]="recentNote.details"></td>
+                    <td>
+                      <ng-container
+                        *ngFor="
+                          let attachment of recentNote.attachmentListFromXml
+                        "
+                      >
+                        <br /><a
+                          href="javascript:void(0)"
+                          (click)="downloadDocuments(attachment, true)"
+                          [innerHTML]="attachment.fileName"
+                        ></a>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -570,47 +554,32 @@
             >
               <strong>TracRat System Messages</strong>
             </div>
-            <h4 class="card-title mb-0">TracRat System Messages</h4>
-            <textarea rows="5" cols="170" [innerHTML]="tracratAnnouncement">
-            </textarea>
+            <div class="m-2">
+              <h4 class="card-title mb-0">TracRat System Messages</h4>
+              <textarea rows="5" cols="170" [innerHTML]="tracratAnnouncement">
+              </textarea>
+            </div>
             <div
               class="card-header card-header-padding"
               style="background-color: #e02725"
             >
               <strong>Company Announcement Messages </strong>
             </div>
-            <h4
-              class="card-title mb-0"
-              [innerHTML]="companyName + ' Messages'"
-            ></h4>
-            <textarea
-              rows="5"
-              cols="170"
-              [innerHTML]="companyAnnouncement"
-            ></textarea>
+            <div class="m-2">
+              <h4
+                class="card-title mb-0"
+                [innerHTML]="companyName + ' Messages'"
+              ></h4>
+              <textarea
+                rows="5"
+                cols="170"
+                [innerHTML]="companyAnnouncement"
+              ></textarea>
+            </div>
           </div>
         </div>
       </div>
 
-      <div
-        *ngIf="loader"
-        style="
-          position: fixed;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(0, 0, 0, 0.5);
-          z-index: 2;
-          cursor: pointer;
-          -ms-transform: translate(-50%, -50%);
-          transform: translate(-1%, -1%);
-        "
-      >
-        <div _ngcontent-c0="" id="loader"></div>
-      </div>
       <style>
         loader {
           position: absolute;
@@ -761,31 +730,33 @@
 
       <ng-template #mytemplate>
         <div
-          class="col-lg-12 mobile-padding col-padding"
-          style="margin-top: 30px"
+          class="col-lg-12 mobile-padding"
+          style="margin-top: 30px; padding: 15px"
           *ngIf="highestRank > 0"
         >
-          <div class="card">
-            <div class="card-body">
+          <div class="card" style="padding: 10px">
+            <div class="card-body" style="padding: 15px">
               <div style="margin-bottom: 10px">
                 <strong class="card-text"
-                  >Repairs under: "{{ selectedFailureCause }}"</strong
+                  >Repairs under: "{{ selectedFailureType }}"</strong
                 >
-                <button
-                  type="button"
-                  (click)="CloseModel()"
-                  class="btn btn-outline-danger btn-sm float-right"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  (click)="exportToExel()"
-                  class="btn btn-outline-danger btn-sm float-right"
-                  *ngIf="highestRank > 5"
-                >
-                  Export to Excel
-                </button>
+                <div style="float: right; display: flex; gap: 2px">
+                  <button
+                    type="button"
+                    (click)="exportToExel()"
+                    class="btn btn-outline-danger btn-sm float-right rounded"
+                    *ngIf="highestRank > 5"
+                  >
+                    Export to Excel
+                  </button>
+                  <button
+                    type="button"
+                    (click)="CloseModel()"
+                    class="btn btn-outline-danger btn-sm float-right rounded"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
               <table
                 class="table table-responsive-sm table-responsive-md table-hover table-outline mb-0"
@@ -863,105 +834,3 @@
     </div>
   </div>
 </div>
-
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
-  .loader {
-    position: absolute;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

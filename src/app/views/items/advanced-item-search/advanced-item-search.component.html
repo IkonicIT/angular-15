@@ -49,12 +49,15 @@
                   <div class="form-group col-sm-6">
                     <label for="itemId">Item Type</label>
                     <span>
-                      <app-dropdown-treeview-select
-                        [items]="itemTypeItems"
-                        [(value)]="value"
-                        (valueChange)="getTypeAttributes($event)"
-                      >
-                      </app-dropdown-treeview-select>
+                   <select
+  class="form-control custom-dropdown"
+  [(ngModel)]="value"
+  (change)="getTypeAttributes(value)">
+  <option *ngFor="let item of itemTypeItems" [value]="item.value">
+    {{ item.text }}
+  </option>
+</select>
+
                     </span>
                   </div>
                   <div class="form-group col-sm-6">
@@ -84,7 +87,7 @@
                   <div class="form-group col-sm-6">
                     <label for="status">Status</label>
                     <select
-                      class="form-control"
+                      class="form-control custom-dropdown"
                       [(ngModel)]="itemModel.status"
                       name="status"
                       #status="ngModel"
@@ -114,13 +117,16 @@
                   <div class="form-group col-sm-6">
                     <label for="loc">Location</label>
 
-                    <app-dropdown-treeview-select
-                      [items]="items"
-                      [(value)]="itemModel.locationId"
-                      id="loc"
-                      (valueChange)="onValueChange($event)"
-                    >
-                    </app-dropdown-treeview-select>
+                  <select
+  id="loc"
+  class="form-control custom-dropdown"
+  [(ngModel)]="itemModel.locationId"
+  (change)="onValueChange(itemModel.locationId)">
+  <option *ngFor="let item of items" [value]="item.value">
+    {{ item.text }}
+  </option>
+</select>
+
                   </div>
                 </div>
                 <div class="row">
@@ -165,7 +171,7 @@
                         />
                         <select
                           *ngIf="eachAttr.attributetype.attributetypeid == 4"
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="eachAttr.value"
                           name="select{{ i }}"
                           #type="ngModel"
@@ -257,6 +263,7 @@
                       data-bs-toggle="tooltip"
                       title="Clear"
                       class="btn btn-primary btn-right"
+                      style="border-radius: 6px;"
                     >
                       Clear
                     </button>
@@ -267,6 +274,7 @@
                       data-bs-toggle="tooltip"
                       title="Back "
                       class="btn btn-primary"
+                      style="border-radius: 6px;"
                     >
                       Back
                     </button>
@@ -282,7 +290,10 @@
                 <div class="d-flex justify-content-start flex-row">
                   <div>
                     <label for="status"><strong>TimeSpan</strong></label>
-                    <select class="form-control" [(ngModel)]="params.type">
+                    <select
+                      class="form-control custom-dropdown"
+                      [(ngModel)]="params.type"
+                    >
                       <option value="yearly">Last Year</option>
                     </select>
                   </div>
@@ -299,6 +310,7 @@
                       data-bs-placement="bottom"
                       data-bs-toggle="tooltip"
                       title="Get PrimaryFindings"
+                      style="border-radius: 6px;"
                     >
                       GET
                     </button>
@@ -381,7 +393,7 @@
                   <div class="form-group col-sm-12">
                     <label for="vendor">Vendor</label>
                     <select
-                      class="form-control"
+                      class="form-control custom-dropdown"
                       [(ngModel)]="repairModel.vendorId"
                       name="vendor"
                       #vendor="ngModel"
@@ -973,7 +985,10 @@
       <div class="d-flex justify-content-start flex-row">
         <div>
           <label for="status"><strong>TimeSpan</strong></label>
-          <select class="form-control" [(ngModel)]="params.type">
+          <select
+            class="form-control custom-dropdown"
+            [(ngModel)]="params.type"
+          >
             <option value="monthly">Last Month</option>
             <option value="quarterly">Last Quarter</option>
             <option value="yearly">Last Year</option>
@@ -1018,6 +1033,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Get PrimaryFindings"
+            style="border-radius: 6px;"
           >
             GET
           </button>
@@ -1192,7 +1208,7 @@
   </div>
 </ng-template>
 
-<div
+ <!-- <div
   *ngIf="loader"
   style="
     position: fixed;
@@ -1209,7 +1225,7 @@
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+<div _ngcontent-c0="" class="loader"></div>
 </div>
 <style>
   .loader {
@@ -1292,6 +1308,4 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
-</style>
-
-
+</style> -->

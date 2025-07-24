@@ -94,3 +94,26 @@ button {
 ::ng-deep .alert {
   border-radius: 0;
 }
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;     /* Medium size arrow */
+  color: #555;
+}

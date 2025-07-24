@@ -1,0 +1,103 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header bg-danger">
+          <h4>Cranes</h4>
+        </div>
+        <div class="card-body">
+          <div class="cranes-container">
+            <div class="search-container">
+              <p *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+              </p>
+              <input
+                type="text"
+                [(ngModel)]="searchKey"
+                placeholder="Enter BMDRNK"
+              />
+              <div class="d-flex flex-row justify-content-center">
+                <button class="bg-danger" (click)="handleSearch()" style="border-radius: 6px;">
+                  Search
+                </button>
+              </div>
+              <p *ngIf="this.data[0].bmkey2.bmdes1" class="mt-2 text-primary">
+                <strong>{{ this.data[0].bmkey2.bmdes1 }}</strong>
+              </p>
+            </div>
+            <table
+              class="table parts-table table-responsive-sm table-hover mb-0"
+              *ngIf="data.length > 0"
+            >
+              <thead>
+                <tr>
+                  <th class="bg-danger">BMKEY1</th>
+                  <th class="bg-danger">BMKEY2</th>
+                  <th class="bg-danger">BMDRNK</th>
+                  <th class="bg-danger">Description</th>
+                  <th class="bg-danger">BMDRNO</th>
+                  <th class="bg-danger">BMQTYU</th>
+                  <th class="bg-danger">Notes</th>
+                  <th class="bg-danger">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of data">
+                  <td>{{ item.bmkey1 }}</td>
+                  <td>{{ item.bmkey2.bmkey1 }}</td>
+                  <td
+                    (click)="handleBMDRNKClick(item.bmkey1, item.bmdrnk)"
+                    class="bmdrnk-link"
+                  >
+                    {{ item.bmdrnk }}
+                  </td>
+                  <td>
+                    {{ item.bmdes1 }}{{ item.bmdes2 ? ", " + item.bmdes2 : ""
+                    }}{{ item.bmdes3 ? ", " + item.bmdes3 : "" }}
+                  </td>
+                  <td>{{ item.bmdrno }}</td>
+                  <td>{{ item.bmqtyu }}</td>
+                  <td>
+                    {{ item.bmnot1 }}{{ item.bmnot2 ? ", " + item.bmnot2 : ""
+                    }}{{ item.bmnot3 ? ", " + item.bmnot3 : "" }}
+                  </td>
+                  <td>
+                    <div class="rowAlign">
+                      <button
+                        [disabled]="highestRank < 5"
+                        class="btn btn-danger"
+                        (click)="navigateToEdit(item.bmkey1)"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        class="btn btn-danger"
+                        tooltip="Crane Notes"
+                        [disabled]="highestRank < 5"
+                        (click)="navigateToCraneNotes(item.bmkey1)"
+                      >
+                        Notes
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Back button -->
+            <div class="d-flex justify-content-center">
+              <button
+                class="btn btn-danger mt-2"
+                *ngIf="historyStack.length > 1"
+                (click)="goBack()"
+                type="button"
+                style="border-radius: 6px;"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

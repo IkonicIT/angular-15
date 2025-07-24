@@ -1,0 +1,129 @@
+<div class="col-lg-12 mobile-padding" *ngIf="highestRank > 0">
+  <div class="card">
+    <h4 class="card-title" style="color: red; padding: 25px">
+      Get Vendor Data
+    </h4>
+    <br />
+    <div class="row alignment">
+      <div class="container-width">
+        <label for="vendor"><strong>Vendor</strong></label>
+        <app-dropdown-treeview-select
+          [items]="vendorItems"
+          [(value)]="vendorId"
+          (valueChange)="onVendorChange($event)"
+        >
+        </app-dropdown-treeview-select>
+      </div>
+      <div class="container-width">
+        <label for="location"><strong>Select Location</strong></label>
+      <div class="dropdown-wrapper">
+  <app-dropdown-treeview-select
+    [items]="locations"
+    id="location"
+    [(value)]="locationId"
+  >
+  </app-dropdown-treeview-select>
+  <span class="dropdown-arrow">&#9662;</span> <!-- medium arrow -->
+</div>
+
+      </div>
+
+      <div class="container-width">
+        <label><strong>&nbsp;</strong></label>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="display: inherit; margin-top: 0px; margin-left: 0px; border-radius: 6px;"
+          (click)="getVendorData()"
+          
+        >
+          GET
+        </button>
+      </div>
+    </div>
+    <div *ngIf="index == 1" class="card-body">
+      <button
+        type="button"
+        tooltip="Export results "
+        (click)="exportAsExcelFileWithMultipleSheets()"
+        class="btn btn-primary"
+      >
+        Export to Excel
+      </button>
+      <div *ngFor="let company of companies" class="company-container">
+        <div class="type-header mb-3">
+          <strong>{{ company }}</strong>
+        </div>
+        <table
+          class="table table-responsive-sm table-responsive-md table-hover table-outline mb-0"
+        >
+          <thead class="thead-light">
+            <tr>
+              <th>JobNumber</th>
+              <th>Tag</th>
+              <th>Date Received</th>
+              <th>RFQ Number</th>
+              <th>PO Number</th>
+              <th>Estimated ShipDate</th>
+              <th>Completed</th>
+              <th>MFG</th>
+              <th>HP</th>
+              <th>Speed</th>
+              <th>Frame</th>
+              <th>Attachments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of vendorRepairs[company]">
+              <td>{{ result.jobNumber }}</td>
+              <td>{{ result.tag }}</td>
+              <td>{{ result.dateReceived | date : "MM/dd/yyyy" }}</td>
+              <td>{{ result.rfqNumber }}</td>
+              <td>{{ result.poNumber }}</td>
+              <td>{{ result.estimatedShipDate }}</td>
+              <td>{{ result.completed }}</td>
+              <td>
+                <ng-container *ngFor="let attribute of result.attributeValues">
+                  <span *ngIf="attribute.name === 'Mfg'">{{
+                    attribute.value
+                  }}</span>
+                </ng-container>
+              </td>
+              <td>
+                <ng-container *ngFor="let attribute of result.attributeValues">
+                  <span *ngIf="attribute.name === 'HP/KW/KVA'">{{
+                    attribute.value
+                  }}</span>
+                </ng-container>
+              </td>
+              <td>
+                <ng-container *ngFor="let attribute of result.attributeValues">
+                  <span *ngIf="attribute.name === 'Speed'">{{
+                    attribute.value
+                  }}</span>
+                </ng-container>
+              </td>
+              <td>
+                <ng-container *ngFor="let attribute of result.attributeValues">
+                  <span *ngIf="attribute.name === 'Frame'">{{
+                    attribute.value
+                  }}</span>
+                </ng-container>
+              </td>
+              <td>
+                <ng-container *ngFor="let attachment of result.attachmentList">
+                  <br /><a
+                    href="javascript:void(0)"
+                    (click)="downloadDocuments(attachment, true)"
+                    >{{ attachment.filename }}</a
+                  >
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

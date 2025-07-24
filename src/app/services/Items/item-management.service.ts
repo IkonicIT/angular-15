@@ -197,7 +197,7 @@ export class ItemManagementService {
 
   updateItem(item: any) {
     return this.http
-      .put(AppConfiguration.locationRestURL + 'item/' + item.itemid, item, this.httpOptions)
+      .put(AppConfiguration.locationRestURL + 'item/' + item.itemId, item, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

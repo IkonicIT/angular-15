@@ -1,9 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { CompanyDocumentsService } from '../../../services/company-documents.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router, ActivatedRoute } from '@angular/router';
-import { saveAs } from 'file-saver';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -16,6 +15,7 @@ export class VendorAttachementsComponent implements OnInit {
   model: any;
   p: any;
   userName: any;
+  highestRank: number;
   index: string = 'companydocument';
   documents: any[] = [];
   route: ActivatedRoute;
@@ -29,7 +29,9 @@ export class VendorAttachementsComponent implements OnInit {
   itemsForPagination: any = 5;
   globalCompany: any;
   helpFlag: any = false;
-  loader = false;
+  vendorId: any;
+  authToken: any;
+  vendorAttachment: any;
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
@@ -38,12 +40,14 @@ export class VendorAttachementsComponent implements OnInit {
     route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.companyId = route.snapshot.params['id'];
+    this.vendorId = route.snapshot.params['id'];
+    this.authToken = sessionStorage.getItem('auth_token');
     this.router = router;
     this.route = route;
-    console.log('companuyid=' + this.companyId);
-    if (this.companyId) {
-      this.getAllDocuments(this.companyId);
+
+    console.log('VendorId = ' + this.vendorId);
+    if (this.vendorId) {
+      this.getAllDocuments(this.vendorId);
     }
   }
 
@@ -51,71 +55,65 @@ export class VendorAttachementsComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  getAllDocuments(comapnyId: string) {
+  getAllDocuments(vendorId: any) {
     this.spinner.show();
-    this.loader = true;
-    this.companyDocumentsService.getAllCompanyDocuments(comapnyId).subscribe(
+    this.companyDocumentsService.getAllVendorDocuments(vendorId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
         console.log(response);
         this.documents = response;
       },
-      (error) => {
+      (error: any) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   refresh() {
     this.documents = [];
-    this.getAllDocuments(this.companyId);
+    this.getAllDocuments(this.vendorId);
   }
-
-  openModal(template: TemplateRef<any>, id: string) {
+  openModal(template: TemplateRef<any>, id: any) {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
-
   addDocument() {
     console.log(this.companyId);
     this.router.navigate(['/vendor/addDocument/'], {
-      queryParams: { q: this.companyId },
+      queryParams: { q: this.vendorId },
+    });
+  }
+  editDocument(document: any) {
+    this.router.navigate(['/vendor/editDocument/'], {
+      queryParams: { q: this.vendorId, a: document.vendorAttachmentId },
     });
   }
 
-  editDocument(document: { attachmentid: any }) {
-    this.router.navigate(['/vendor/editDocument/'], {
-      queryParams: { q: this.companyId, a: document.attachmentid },
+  backToVendor() {
+    this.router.navigate(['vendor/list/'], {
+      queryParams: { q: this.vendorId },
     });
   }
 
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
-    this.companyDocumentsService
-      .removeCompanyDocuments(this.index, this.companyId, this.userName)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.loader = false;
-          this.modalRef.hide();
-          this.refresh();
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
+    this.companyDocumentsService.removeVendorDocument(this.index).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.modalRef.hide();
+        this.refresh();
+      },
+      (error) => {
+        this.spinner.hide();
+      }
+    );
   }
 
   decline(): void {
     this.message = 'Declined!';
     this.modalRef.hide();
   }
-
   setOrder(value: string) {
     if (this.order === value) {
       if (this.reverse == '') {
@@ -127,23 +125,85 @@ export class VendorAttachementsComponent implements OnInit {
     this.order = value;
   }
 
-  downloadDocument(companyDocument: {
-    attachmentFile: string;
-    contenttype: string;
-    filename: string | undefined;
-  }) {
+  // downloadDocument(companyDocument) {
+  //   var blob = this.companyDocumentsService.b64toBlob(companyDocument.attachmentFile, companyDocument.contenttype); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
+  //   saveAs(blob, companyDocument.filename);
+  // }
+
+  getVendorAttachment(document: any): void {
+    this.companyDocumentsService
+      .getVendorDocument(document.vendorAttachmentId)
+      .subscribe((data: any) => {
+        this.vendorAttachment = data;
+        this.openAttachment();
+      });
+  }
+
+  openAttachment(): void {
+    if (this.isImage()) {
+      // Open image in a new tab
+      const imageWindow = window.open();
+      if (imageWindow) {
+        imageWindow.document.write(
+          `<img src="data:${this.vendorAttachment.contenttype};base64,${this.vendorAttachment.attachmentFile}" />`
+        );
+      }
+    } else {
+      // Download the attachment
+      const blob = this.base64ToBlob(
+        this.vendorAttachment.attachmentFile,
+        this.vendorAttachment.contenttype
+      );
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = this.vendorAttachment.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
+
+  isImage(): boolean {
+    return (
+      this.vendorAttachment &&
+      this.vendorAttachment.contenttype.startsWith('image')
+    );
+  }
+
+  private base64ToBlob(base64: string, contentType: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: contentType });
+  }
+
+  downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
       companyDocument.contenttype
-    ); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
-    saveAs(blob, companyDocument.filename);
+    );
+    var fileURL = URL.createObjectURL(blob);
+
+    window.open(fileURL);
   }
 
   print() {
     this.helpFlag = false;
     window.print();
   }
-
   help() {
     this.helpFlag = !this.helpFlag;
   }

@@ -79,7 +79,7 @@ export class ViewAllRepairsComponent implements OnInit {
 
   getAllCompletedRepairs() {
     this.spinner.show();
-    this.loader = true;
+
     this.flag = 1;
     this.repairsFlag = true;
     this.setTimeFrame();
@@ -97,13 +97,12 @@ export class ViewAllRepairsComponent implements OnInit {
     this.dashboardService.getAllRepairs(req).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.completedRepairs = response;
         this.itemManagementService.setCompletedRepairs(response);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -133,7 +132,7 @@ export class ViewAllRepairsComponent implements OnInit {
 
   getIncompletedRepairs() {
     this.spinner.show();
-    this.loader = true;
+
     this.flag = 0;
     this.setTimeFrame();
     var req = {
@@ -150,13 +149,12 @@ export class ViewAllRepairsComponent implements OnInit {
     this.dashboardService.getAllRepairs(req).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.inCompletedRepairs = response;
         this.itemManagementService.setInCompletedRepairs(response);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -198,19 +196,18 @@ export class ViewAllRepairsComponent implements OnInit {
   downloadDocument(companyDocument: { isNew?: number; attachmentId?: any }) {
     this.document = {};
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .getCompanyDocuments(companyDocument.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.document = response;
           this.downloadFromDB();
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

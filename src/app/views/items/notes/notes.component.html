@@ -69,6 +69,7 @@
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   (click)="saveItemNote()"
                   class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
                 >
                   Save
                 </button>
@@ -80,6 +81,7 @@
                   *ngIf="itemRank > 3 && itemRank != 4 && itemRank != 5"
                   (click)="cancelItemNotes()"
                   class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
                 >
                   Cancel
                 </button>
@@ -91,6 +93,7 @@
                   title="Delete Item Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
+                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -101,6 +104,7 @@
                   title=" Add ItemNote Attachment"
                   class="btn btn-primary btn-right"
                   [routerLink]="['../../noteAttachments/' + model.journalid]"
+                  style="border-radius: 6px;"
                 >
                   Attachments
                 </button>
@@ -110,6 +114,7 @@
                   title="Back to View Item"
                   (click)="backToItem()"
                   class="btn btn-primary"
+                  style="border-radius: 6px;"
                 >
                   Back To Item
                 </button>
@@ -447,10 +452,11 @@
                 </p>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New ItemNote"
+                  style="border-radius: 6px;"
                   (click)="addNotes()"
                 >
                   New
@@ -461,7 +467,8 @@
                   title="Save Item Note"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   (click)="updateItemNotes()"
-                  class="btn btn-primary"
+                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right"
                 >
                   Save
                 </button>
@@ -472,18 +479,20 @@
                   title="Cancel the Changes for this Note"
                   *ngIf="itemRank > 3"
                   (click)="cancelItemNotes()"
-                  class="btn btn-primary"
+                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   [disabled]="itemRank < 6 || highestRank == 9"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Item Note"
                   (click)="openModal(confirmtemplate)"
+                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -492,7 +501,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add ItemNote Attachment"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
                   (click)="goToAttachments(model.journalid, model.entityname)"
                 >
                   Attachments
@@ -502,7 +511,8 @@
                   data-bs-toggle="tooltip"
                   title="Back to View Item"
                   (click)="backToItem()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
                 >
                   Back To Item
                 </button>
@@ -640,11 +650,14 @@
                     <div class="float-left">
                       <span
                         >Show
-                        <select [(ngModel)]="itemsForPagination">
+                        <select
+                          [(ngModel)]="itemsForPagination"
+                          (change)="onChange($event.target)"
+                        >
                           <option>5</option>
                           <option>10</option>
                           <option>25</option>
-                          <option>showAll</option>
+                          <option>50</option>
                         </select>
                         entries
                       </span>
@@ -882,5 +895,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

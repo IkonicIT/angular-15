@@ -62,7 +62,7 @@ export class MasterSearchComponent implements OnInit {
       this.index = 0;
       this.isExpandAdvancedSearch = false;
       this.spinner.show();
-      this.loader = true;
+
       var req = {
         tag: this.model.tag ? this.model.tag : null,
         name: this.model.name ? this.model.name : null,
@@ -76,7 +76,7 @@ export class MasterSearchComponent implements OnInit {
         .masterSearch(req)
         .subscribe((response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.searchResults = response;
 
           this.itemManagementService.setItemMasterSearchResults(
@@ -108,7 +108,7 @@ export class MasterSearchComponent implements OnInit {
               });
               if (count == 1) {
                 this.items[key].forEach((obj: any) => {
-                  itemId = obj.itemid;
+                  itemId = obj.itemId;
                   rank = obj.itemRank;
                   tag = obj.tag;
                   typeName = obj.typeName;
@@ -195,7 +195,7 @@ export class MasterSearchComponent implements OnInit {
           robj[atr.name] = atr.value;
         });
 
-        delete obj.itemid;
+        delete obj.itemId;
         delete obj.locationid;
         delete obj.companyid;
         delete obj.companyName;

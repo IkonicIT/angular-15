@@ -70,9 +70,9 @@ export class LocationManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  updateLocation(location: { locationid: string }) {
+  updateLocation(location: { locationId: string }) {
     return this.http
-      .put(AppConfiguration.locationRestURL + 'location/' + location.locationid, location, this.httpOptions)
+      .put(AppConfiguration.locationRestURL + 'location/' + location.locationId, location, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

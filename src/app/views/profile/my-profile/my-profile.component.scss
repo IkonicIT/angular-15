@@ -63,3 +63,9 @@ button {
 .float-right {
   float: right;
 }
+.no-arrows::-webkit-inner-spin-button,
+.no-arroes::-webkit-outer-spin-button{
+   -webkit-appearance:none;
+   margin:0;
+}
+

@@ -5,10 +5,10 @@
         Please select From and To Dates to get data in range
       </alert>
     </div>
-    <div class="row" style="padding: 15px">
-      <div class="col-md-3 remove-right-padding">
+    <div class="row" style="padding: 10px; gap: 5px">
+      <div class="col-md-2 remove-right-padding">
         <label for="status"><strong>TimeSpan</strong></label>
-        <select class="form-control" [(ngModel)]="params.type">
+        <select class="form-control custom-dropdown" [(ngModel)]="params.type">
           <option value="monthly">Last Month</option>
           <option value="quarterly">Last Quarter</option>
           <option value="yearly">Last Year</option>
@@ -45,9 +45,9 @@
         </ng-container>
       </ng-container>
 
-      <div class="col-md-3 remove-padding">
+      <div class="col-md-2 remove-padding">
         <label for="status"><strong>Type</strong></label>
-        <select class="form-control" [(ngModel)]="selectedVal">
+        <select class="form-control custom-dropdown" [(ngModel)]="selectedVal">
           <option value="complete">Completed</option>
           <option value="inComplete">Incompleted</option>
         </select>
@@ -63,6 +63,7 @@
           data-bs-placement="bottom"
           data-bs-toggle="tooltip"
           title="Get All Repairs in selected time span"
+          style="border-radius: 6px;"
         >
           GET
         </button>
@@ -112,7 +113,7 @@
             *ngFor="
               let recentRepair of completedRepairs
                 | filterBy
-                  : ['tag', 'jobNumber', 'ponumber', 'location', 'vendor']
+                  : ['tag', 'jobNumber', 'poNumber', 'location', 'vendor']
                   : completedRepairsFilter
                 | paginate
                   : {
@@ -140,7 +141,7 @@
               >
             </td>
 
-            <td>{{ recentRepair.ponumber }}</td>
+            <td>{{ recentRepair.poNumber }}</td>
             <td>
               <a
                 href="javascript:void(0)"
@@ -170,8 +171,10 @@
             </td>
             <td>{{ recentRepair.location }}</td>
             <td>{{ recentRepair.vendor }}</td>
-            <td>{{ recentRepair.repaircost | currency }}</td>
-            <td>{{ recentRepair.actualCompletion }}</td>
+            <td>{{ recentRepair.repairCost | currency }}</td>
+            <td>
+              {{ recentRepair.actualCompletionDate | date : "MM/dd/yyyy" }}
+            </td>
             <td>
               <ng-container
                 *ngFor="let attachment of recentRepair.attachmentListFromXml"
@@ -237,7 +240,7 @@
             *ngFor="
               let recentRepair of inCompletedRepairs
                 | filterBy
-                  : ['tag', 'jobNumber', 'ponumber', 'location', 'vendor']
+                  : ['tag', 'jobNumber', 'poNumber', 'location', 'vendor']
                   : inCompletedRepairsFilter
                 | paginate
                   : {
@@ -265,7 +268,7 @@
               >
             </td>
 
-            <td>{{ recentRepair.ponumber }}</td>
+            <td>{{ recentRepair.poNumber }}</td>
             <td>
               <a
                 href="javascript:void(0)"
@@ -295,8 +298,10 @@
             </td>
             <td>{{ recentRepair.location }}</td>
             <td>{{ recentRepair.vendor }}</td>
-            <td>{{ recentRepair.repaircost | currency }}</td>
-            <td>{{ recentRepair.actualCompletion }}</td>
+            <td>{{ recentRepair.repairCost | currency }}</td>
+            <td>
+              {{ recentRepair.actualCompletionDate | date : "MM/dd/yyyy" }}
+            </td>
             <td>
               <ng-container
                 *ngFor="let attachment of recentRepair.attachmentListFromXml"
@@ -421,5 +426,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

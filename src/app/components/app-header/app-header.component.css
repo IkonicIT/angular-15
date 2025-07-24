@@ -1,55 +1,43 @@
-.col-padding {
-  padding: 0 15px;
-  position: relative;
-}
-
-.col-padding-1 {
-  padding: 0 15px;
-  position: relative;
+.header-fixed .app-header {
+  position: fixed;
+  z-index: 1020;
   width: 100%;
 }
 
-.col-padding-2 {
-  padding-left: 15px;
-  padding-right: 0px;
-  position: relative;
+.app-header.navbar {
+  position: fixed;
+  flex-direction: row;
+  height: 55px;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
 }
 
-.row-margin {
-  margin-left: -15px;
-  margin-right: -15px;
-  width: 1536px;
+.container {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  width: 100%;
+  height: 55px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  flex-direction: row;
+  height: 55px;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  border-bottom: 1px solid #a4b7c1;
+  z-index: 1000;
 }
 
-.navbar-padding {
-  padding-left: 16px;
-  padding-right: 16px;
+
+/* Remove dropdown arrow */
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button::after {
+  display: none !important;
 }
 
-.navbar-toggler-style {
-  padding: 0.25rem 0.75rem;
-  font-size: 1.09375rem;
-  border: 1px solid transparent;
-}
-
-.float-right {
-  float: right;
-}
-
-.dropdown-menu .dropdown-item:hover {
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.dropdown-menu .dropdown-item:active {
-  background-color: #e02725;
-  color: #fff;
-}
-
-.navbar-nav .dropdown-toggle::after {
-  display: none;
-}
-
-.navbar-toggler:focus {
-  box-shadow: none !important;
+:host ::ng-deep .dropdown-toggle::after {
+  display: none !important;
 }

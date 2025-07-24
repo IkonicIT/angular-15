@@ -44,6 +44,14 @@
             it to reporting
           </div>
         </div>
+        <alert
+          *ngIf="index1 == 1"
+          type="success"
+          [dismissible]="dismissible"
+          class="space"
+        >
+          Item Service Deleted successfully.
+        </alert>
         <div class="card-body">
           <p class="card-text">
             Manage Item Service "{{ itemType }}" '{{ itemTag }}'
@@ -120,7 +128,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this Type"
@@ -241,7 +249,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this Type"
@@ -285,6 +293,7 @@
         data-bs-toggle="tooltip"
         title="Back"
         class="btn btn-primary"
+        style="border-radius: 6px;"
       >
         Back To Item
       </button>
@@ -328,7 +337,7 @@
           <div class="form-group col-sm-6">
             <label for="serviceCause">Service Cause</label>
             <select
-              class="form-control"
+              class="form-control custom-dropdown"
               [(ngModel)]="model.serviceCause"
               name="serviceCause"
               #serviceCause="ngModel"
@@ -387,6 +396,7 @@
               title="Update this Item Service Date"
               (click)="saveItemServiceData()"
               class="btn btn-primary btn-right"
+              style="border-radius: 6px;"
             >
               Save
             </button>
@@ -396,6 +406,7 @@
               title="Close popup"
               (click)="closeModel()"
               class="btn btn-primary"
+              style="border-radius: 6px;"
             >
               Close
             </button>
@@ -437,9 +448,7 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-1%, -1%);
   "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
+></div>
 <style>
   .loader {
     position: absolute;
@@ -522,5 +531,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

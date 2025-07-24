@@ -116,7 +116,7 @@
                           [name]="'attributesList'"
                           [listStyle]="listStyle"
                         >
-                          <ng-template let-item>
+                          <ng-template let-item="item">
                             <ul
                               (click)="
                                 setSelectedAttribute(item);
@@ -141,6 +141,7 @@
                             data-bs-placement="bottom"
                             data-bs-toggle="tooltip"
                             title="Save Order Attribute"
+                            style="border-radius: 6px;"
                             (click)="saveAttributeListOrder(typeAttributes)"
                           >
                             Save Order
@@ -172,7 +173,7 @@
                               <strong class="text-danger">*</strong></label
                             >
                             <select
-                              class="form-control"
+                              class="form-control custom-dropdown"
                               [(ngModel)]="model.attributetype.attributetypeid"
                               name="Toa"
                               id="Toa"
@@ -239,7 +240,7 @@
                               <select
                                 name="listItems"
                                 style="margin-left: 2%"
-                                class="form-control col-sm-5"
+                                class="form-control col-sm-5 custom-dropdown"
                               >
                                 <option
                                   *ngFor="
@@ -263,7 +264,7 @@
                           <div class="form-group col-sm-12">
                             <label for="sType">Search Type</label>
                             <select
-                              class="form-control"
+                              class="form-control custom-dropdown"
                               [(ngModel)]="
                                 model.searchtype.attributesearchtypeid
                               "
@@ -294,7 +295,9 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class="form-group col-sm-12 text-center">
+                          <div
+                            class="form-group col-sm-12 text-center btn-group-gap"
+                          >
                             <button
                               type="button"
                               *ngIf="!addEditFlag"
@@ -303,6 +306,7 @@
                               data-bs-toggle="tooltip"
                               title="Add new Attribute."
                               (click)="createAttribute()"
+                              style="border-radius: 6px;"
                             >
                               Add
                             </button>
@@ -313,6 +317,7 @@
                               data-bs-placement="bottom"
                               data-bs-toggle="tooltip"
                               title="Update this Attribute"
+                              style="border-radius: 6px;"
                               (click)="editAttribute()"
                             >
                               Update
@@ -324,6 +329,7 @@
                               data-bs-placement="bottom"
                               data-bs-toggle="tooltip"
                               title="Add new Attribute"
+                              style="border-radius: 6px;"
                               (click)="newAttribute()"
                             >
                               New
@@ -337,6 +343,7 @@
                               title="Delete this Attribute."
                               (click)="openModal(confirmtemplate)"
                               [disabled]="highestRank == 9"
+                              style="border-radius: 6px;"
                             >
                               Remove
                             </button>
@@ -347,6 +354,7 @@
                               title="Back"
                               (click)="cancelLocationAttributes()"
                               class="btn btn-primary"
+                              style="border-radius: 6px;"
                             >
                               Back
                             </button>

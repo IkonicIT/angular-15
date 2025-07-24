@@ -52,6 +52,7 @@
                 '../../addItemRepairAttachments/' + this.repairlogId
               ]"
               placement="top"
+               style="border-radius: 6px;"
             >
               Add Document
             </button>
@@ -122,7 +123,7 @@
                   <button
                     type="button"
                     *ngIf="itemRank > 0"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-right"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="View this ItemRepair Attachment"
@@ -134,13 +135,13 @@
                   <button
                     type="button"
                     [disabled]="itemRank < 5 || itemRank == 4 || itemRank == 5"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-right"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this ItemRepair Attachment"
                     [routerLink]="[
                       '../../editItemRepairAttachments/' +
-                        document.entityid +
+                      this.repairlogId +
                         '/' +
                         document.attachmentid
                     ]"
@@ -180,6 +181,7 @@
         data-bs-toggle="tooltip"
         title="Back to view ItemRepair"
         class="btn btn-primary"
+        style="border-radius: 6px;"
       >
         Back
       </button>
@@ -303,5 +305,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

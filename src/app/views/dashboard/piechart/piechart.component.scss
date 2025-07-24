@@ -69,14 +69,14 @@ tbody td {
 .btn-danger.disabled,
 .btn-danger:disabled {
   color: #fff;
-  background-color: #f86c6b;
-  border-color: #f86c6b;
+     background-color: #e02725;
+  border-color: #e02725;
 }
 
 .btn-danger:hover {
-  color: #fff;
-  background-color: #f64846;
-  border-color: #f63c3a;
+  color: #fff; 
+   background-color: #c31e1c;
+  border-color: #b81c1a;
 }
 
 .btn.disabled,
@@ -143,13 +143,13 @@ button {
 
 .btn-outline-danger:hover {
   color: #fff;
-  background-color: #f86c6b;
-  border-color: #f86c6b;
+  background-color: #E02725;
+  border-color: #E02725;
 }
 
 .btn-outline-danger {
-  color: #f86c6b;
-  border-color: #f86c6b;
+  color: #E02725;
+  border-color: #E02725;
 }
 
 a {
@@ -178,4 +178,63 @@ a {
 
 ::ng-deep .modal-content {
   border-radius: 0 !important;
+}
+
+.space {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+
+.marginAlignment{
+  margin: 0 15px;
+}
+.x_Scrolling {
+  overflow-x:auto
+}
+textarea {
+    resize: vertical;
+    width: 100%;
+}
+.custom-dropdown-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.custom-dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+}
+
+.custom-dropdown-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+  color: #555;
+  z-index: 1;
+}
+.custom-dropdown-wrapper .custom-dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,5" fill="grey"/></svg>')
+    no-repeat right 10px center;
+  background-size: 10px;
+  padding-right: 30px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 38px;
+  padding-left: 10px;
+}
+
+.custom-dropdown-wrapper .custom-dropdown:focus {
+  outline: none;
+  border-color: #000000;
 }

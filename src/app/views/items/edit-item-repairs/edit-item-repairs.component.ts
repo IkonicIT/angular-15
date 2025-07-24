@@ -8,7 +8,7 @@ import { ItemRepairItemsService } from '../../../services/Items/item-repair-item
 import { ItemManagementService } from '../../../services/Items/item-management.service';
 import { WarrantyManagementService } from '../../../services';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
-import { BroadcasterService } from '../../../services/broadcaster.service';
+import { BroadcasterService } from 'src/app/services/broadcaster.service';
 import { Location } from '@angular/common';
 
 @Component({
@@ -36,11 +36,13 @@ export class EditItemRepairsComponent implements OnInit {
   companyId: any;
   itemRepairId: any;
   transfers: any = [];
-
+  highestRank: any;
   warrantyTypes: any = [];
   failureTypes: any = [];
   locations: any = [];
   vendors: any;
+  fullVendors: any;
+  vendorItems: TreeviewItem[];
   locationItems: TreeviewItem[];
   failureTypesandcauses: any = {};
   failurecausesp: any = [];
@@ -48,7 +50,7 @@ export class EditItemRepairsComponent implements OnInit {
   failurecauses: any = {};
   userName: any;
   helpFlag: any = false;
-  loader = false;
+
   constructor(
     private companyManagementService: CompanyManagementService,
     private locationManagementService: LocationManagementService,
@@ -83,18 +85,15 @@ export class EditItemRepairsComponent implements OnInit {
 
   getWarrantyTypes() {
     this.spinner.show();
-    this.loader = true;
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     this.getItemDetails();
@@ -102,12 +101,10 @@ export class EditItemRepairsComponent implements OnInit {
 
   getItemRepairDetails() {
     this.spinner.show();
-    this.loader = true;
     this.itemRepairItemsService
       .getRepairDetailsForView(this.itemRepairId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
         this.model = response;
 
         if (this.model.failuretype == '') {
@@ -147,16 +144,13 @@ export class EditItemRepairsComponent implements OnInit {
         }
       });
   }
-
   getItemDetails() {
     this.spinner.show();
-    this.loader = true;
     this.itemManagementService
       .getItemById(this.itemId)
       .subscribe((response: any) => {
         this.model.itemtype = response.typeName;
         this.details = response;
-        this.getFailureTypes();
         if (response.warrantyTypeId != 0) {
           this.model.warrantytypeid = response.warrantyTypeId;
           this.setWarrantyType(response.warrantyTypeId);
@@ -167,8 +161,42 @@ export class EditItemRepairsComponent implements OnInit {
             this.model.warrantyexpiration
           );
         }
+        if (this.model.itemtype === 'AC Motor') {
+          this.getAcMotorFailureTypesAndCauses();
+        } else if (this.model.itemtype === 'DC Motor') {
+          this.getDcMotorFailureTypesAndCauses();
+        } else {
+          this.getFailureTypes();
+        }
         this.spinner.hide();
-        this.loader = false;
+      });
+  }
+
+  getAcMotorFailureTypesAndCauses() {
+    this.spinner.show();
+    this.itemRepairItemsService
+      .getAcMotorFailureTypesAndCauses()
+      .subscribe((response) => {
+        this.failureTypesandcauses = response;
+        this.spinner.hide();
+        this.failureTypes = Object.keys(this.failureTypesandcauses);
+        console.log(this.failureTypesandcauses);
+        console.log('new failuretype list is' + this.failureTypes);
+        this.getItemRepairDetails();
+      });
+  }
+
+  getDcMotorFailureTypesAndCauses() {
+    this.spinner.show();
+    this.itemRepairItemsService
+      .getDcMotorFailureTypesAndCauses()
+      .subscribe((response) => {
+        this.failureTypesandcauses = response;
+        this.spinner.hide();
+        this.failureTypes = Object.keys(this.failureTypesandcauses);
+        console.log(this.failureTypesandcauses);
+        console.log('new failuretype list is' + this.failureTypes);
+        this.getItemRepairDetails();
       });
   }
 
@@ -178,7 +206,6 @@ export class EditItemRepairsComponent implements OnInit {
         this.model.warrantytype = element.warrantytype;
     });
   }
-
   getLocations() {
     this.locations = this.broadcasterService.locations;
     if (this.locations && this.locations.length > 0) {
@@ -209,7 +236,7 @@ export class EditItemRepairsComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -217,17 +244,35 @@ export class EditItemRepairsComponent implements OnInit {
     });
     return items;
   }
-
   getAllVendors() {
-    this.companyManagementService.getAllVendorDetails(this.companyId).subscribe(
+    this.spinner.show();
+    this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
-        this.vendors = response;
+        this.fullVendors = response;
+        this.vendorItems = this.generateVendorHierarchy(this.fullVendors);
+        this.spinner.hide();
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
+  }
+
+  generateVendorHierarchy(vendors: any[]): TreeviewItem[] {
+    return vendors.map(
+      (vendor) =>
+        new TreeviewItem({
+          text: vendor.name,
+          value: vendor.vendorId,
+          collapsed: true,
+          children: [],
+        })
+    );
+  }
+
+  onVendorChange(value: any) {
+    this.model.vendorId = value;
+    // Add any additional logic you want to perform when the vendor selection changes
   }
 
   getFailureTypes() {
@@ -258,7 +303,6 @@ export class EditItemRepairsComponent implements OnInit {
     let causes = faliurecausetemp[0];
     causes = causes + '\n' + this.model.newfailurecause;
     this.spinner.show();
-    this.loader = true;
     var request = {
       failuretypeid: 0,
       itemtypeid: this.details.typeId,
@@ -269,10 +313,8 @@ export class EditItemRepairsComponent implements OnInit {
       .updateFailureTypeAndCauses(request, request.failuretypeid)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
       });
   }
-
   saveItemRepair() {
     if (
       !this.model.jobnumber ||
@@ -284,6 +326,7 @@ export class EditItemRepairsComponent implements OnInit {
         !this.model.jobnumber ||
         !this.model.ponumber ||
         !this.model.failuredate
+   //     !this.model.vendor.vendorId
       ) {
         this.index = -1;
         window.scroll(0, 0);
@@ -333,15 +376,24 @@ export class EditItemRepairsComponent implements OnInit {
 
   updateItemRepair() {
     this.model = {
-      actualcompletion: this.model.actualcompletion ? this.model.actualcompletion : null,
+      actualcompletion: this.model.actualcompletion
+        ? this.model.actualcompletion
+        : null,
       complete: this.model.complete ? this.model.complete : false,
       completedby: this.model.completedby,
       dateacknowledged: this.model.dateacknowledged,
       dateinitiated: this.model.dateinitiated,
-      estimatedcompletion: this.model.estimatedcompletion ? this.model.estimatedcompletion : null,
-      failurecause: this.model.failurecause != 0 ? this.model.failurecause : this.model.newfailurecause,
-      failuredate: this.model.failuredate != null ? this.model.failuredate : null,
-      failuretype: this.model.failuretype != null ? this.model.failuretype : null,
+      estimatedcompletion: this.model.estimatedcompletion
+        ? this.model.estimatedcompletion
+        : null,
+      failurecause:
+        this.model.failurecause != 0
+          ? this.model.failurecause
+          : this.model.newfailurecause,
+      failuredate:
+        this.model.failuredate != null ? this.model.failuredate : null,
+      failuretype:
+        this.model.failuretype != null ? this.model.failuretype : null,
       iswarranty: true,
       itemid: this.itemId,
       itemtype: this.model.itemtype,
@@ -350,30 +402,42 @@ export class EditItemRepairsComponent implements OnInit {
       repaircompanyid: this.model.repaircompanyid,
       repaircost: this.model.repaircost ? this.model.repaircost : 0,
       repairjobstatus: this.model.repairjobstatus,
-      repairlocationid: this.model.repairlocationid ? this.model.repairlocationid : 0,
+      repairlocationid: this.model.repairlocationid
+        ? this.model.repairlocationid
+        : 0,
       repairlogid: this.model.repairlogid,
       repairnotes: this.model.repairnotes ? this.model.repairnotes : '',
-      repairvendornumber: this.model.repairvendornumber ? this.model.repairvendornumber : 0,
+      repairvendornumber: this.model.repairvendornumber
+        ? this.model.repairvendornumber
+        : 0,
       repairVendorName: this.vendor.name ? this.vendor.name : '',
       rfqnumber: 0,
       title: this.model.title ? this.model.title : '',
       transferlogid: 0,
       warrantytype: this.model.warrantytype ? this.model.warrantytype : '',
-      warrantytypeid: this.model.warrantytypeid != undefined ? this.model.warrantytypeid : 0,
-      warrantyexpiration: this.model.warrantyexpiration ? this.model.warrantyexpiration : null,
+      warrantytypeid:
+        this.model.warrantytypeid != undefined ? this.model.warrantytypeid : 0,
+      warrantyexpiration: this.model.warrantyexpiration
+        ? this.model.warrantyexpiration
+        : null,
       userName: this.userName,
       tag: this.model.tag,
       secondaryTypeAndCauses: this.model.secondaryTypeAndCauses,
       companyId: this.companyId,
       isactive: 1,
+      isVendorWarranty: this.model.isVendorWarranty
+        ? this.model.isVendorWarranty
+        : 0,
+      repairType: this.model.repairType ? this.model.repairType : '',
+      vendor: {
+        vendorId: this.model.vendor.vendorId,
+      },
     };
     console.log(JSON.stringify(this.model));
     this.spinner.show();
-    this.loader = true;
     this.itemRepairItemsService.updateItemRepair(this.model).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
         window.scroll(0, 0);
         this.index = 1;
         setTimeout(() => {
@@ -388,11 +452,9 @@ export class EditItemRepairsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
-
   cancelItemEditRepair() {
     this._location.back();
   }
@@ -409,7 +471,6 @@ export class EditItemRepairsComponent implements OnInit {
     };
     this.model.secondaryTypeAndCauses.push(item);
   }
-
   removeSecondaryFindings(i: number) {
     this.model.secondaryTypeAndCauses.splice(i, 1);
   }
@@ -418,20 +479,17 @@ export class EditItemRepairsComponent implements OnInit {
     if (ft.length > 0) return this.failureTypesandcauses[ft][0].split('\n');
     else return null;
   }
-
   checkValue(event: any) {
     console.log(event);
     if (event == 'A') this.model.actualcompletion = new Date();
     else if (event == 'B') this.model.actualcompletion = null;
   }
-
   setWarrantyTypeID() {
     if (this.model.warrantytype && this.model.warrantytype != '') {
       this.warrantyTypes.forEach((element: any) => {
-          if (element.warrantytype == this.model.warrantytype)
-            this.model.warrantytypeid = element.warrantytypeid;
-        }
-      );
+        if (element.warrantytype == this.model.warrantytype)
+          this.model.warrantytypeid = element.warrantytypeid;
+      });
     }
   }
 
@@ -439,7 +497,6 @@ export class EditItemRepairsComponent implements OnInit {
     this.helpFlag = false;
     window.print();
   }
-
   help() {
     this.helpFlag = !this.helpFlag;
   }

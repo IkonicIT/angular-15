@@ -41,7 +41,6 @@ export class LocationManagementComponent implements OnInit {
   searchresults: any = {};
   isOwnerAdmin: any;
   loggedInuser: string | null;
-  locationid: any;
   helpFlag: any = false;
   p: any;
   loader = false;
@@ -88,17 +87,16 @@ export class LocationManagementComponent implements OnInit {
 
   getLocations() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationManagementService.getAllLocations(this.companyId).subscribe(
       (response) => {
         console.log(response);
         this.spinner.hide();
-        this.loader = false;
+
         this.locations = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -109,13 +107,12 @@ export class LocationManagementComponent implements OnInit {
         this.broadcasterService.locations = response;
         console.log('locations:' + response);
         this.spinner.hide();
-        this.loader = false;
       });
   }
-  locationNotes(location: { locationid: string; name: any }) {
-    this.locationManagementService.currentLocationId = location.locationid;
+  locationNotes(location: { locationId: string; name: any }) {
+    this.locationManagementService.currentLocationId = location.locationId;
     this.locationManagementService.currentLocationName = location.name;
-    this.router.navigate(['/location/locationNote/' + location.locationid]);
+    this.router.navigate(['/location/locationNote/' + location.locationId]);
   }
 
   InitData() {
@@ -145,7 +142,7 @@ export class LocationManagementComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -155,7 +152,7 @@ export class LocationManagementComponent implements OnInit {
   }
 
   onValueChange(val: any) {
-    this.locationid = val;
+    this.locationId = val;
     console.log(val);
     this.router.navigate([
       '/location/editLocation/' + val + '/' + this.companyId,
@@ -175,7 +172,7 @@ export class LocationManagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.locationManagementService
       .removeLocation(this.locationId, this.companyId, this.userName)
       .subscribe(
@@ -187,7 +184,6 @@ export class LocationManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

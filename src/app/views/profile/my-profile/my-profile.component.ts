@@ -57,19 +57,18 @@ export class MyProfileComponent implements OnInit {
 
   getProfile() {
     this.spinner.show();
-    this.loader = true;
+
     this.loggedInuser = sessionStorage.getItem('userId');
     this.userManagementService.getProfileWithUser(this.loggedInuser).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         console.log('user  profile ' + this.model.profileid);
         this.getLocationNames(this.loggedInuser, this.companyId);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -96,7 +95,7 @@ export class MyProfileComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -126,7 +125,6 @@ export class MyProfileComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     } else {

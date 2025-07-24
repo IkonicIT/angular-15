@@ -33,7 +33,7 @@ export class CompanytypesComponent implements OnInit {
   userName: any;
   p: any;
   loader = false;
-  
+
   constructor(
     private modalService: BsModalService,
     private companyTypesService: CompanyTypesService,
@@ -69,12 +69,12 @@ export class CompanytypesComponent implements OnInit {
 
   getAllTypes(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.types = [];
     this.companyTypesService.getAllCompanyTypes(companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.types = response;
         this.types.forEach((type: { parentid: string }) => {
           if (!type.parentid) {
@@ -84,7 +84,6 @@ export class CompanytypesComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
@@ -120,26 +119,27 @@ export class CompanytypesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.userName = sessionStorage.getItem('userName');
     this.companyTypesService
       .removeCompanyType(this.index, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getAllTypes(this.companyId);
           const currentPage = this.p;
-    const typesCount = this.types.length-1;
-    const maxPageAvailable = Math.ceil(typesCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
-      this.p = maxPageAvailable;
-    }
+          const typesCount = this.types.length - 1;
+          const maxPageAvailable = Math.ceil(
+            typesCount / this.itemsForPagination
+          );
+          if (currentPage > maxPageAvailable) {
+            this.p = maxPageAvailable;
+          }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -168,11 +168,11 @@ export class CompanytypesComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e:any){
+  onChange(e: any) {
     const currentPage = this.p;
     const typesCount = this.types.length;
     const maxPageAvailable = Math.ceil(typesCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
+    if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

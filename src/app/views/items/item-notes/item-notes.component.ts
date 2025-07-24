@@ -70,17 +70,15 @@ export class ItemNotesComponent implements OnInit {
 
   getAllNotes(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemNotesService.getAllItemNotes(companyId, this.itemId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.notes = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
-
       }
     );
   }
@@ -97,11 +95,10 @@ export class ItemNotesComponent implements OnInit {
   openModalView(template: TemplateRef<any>, id: number) {
     this.journalid = id;
     this.spinner.show();
-    this.loader = true;
-    
+
     this.itemNotesService.getItemNotes(this.journalid).subscribe((response) => {
       this.spinner.hide();
-      this.loader = false;
+
       this.model = response;
       if (this.model.effectiveon) {
         this.model.effectiveon = new Date(this.model.effectiveon);
@@ -117,19 +114,18 @@ export class ItemNotesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.itemNotesService
       .removeItemNotes(this.index, this.itemId, '', '')
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getAllNotes(this.companyId);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

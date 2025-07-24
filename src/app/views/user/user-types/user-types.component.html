@@ -55,6 +55,7 @@
               data-bs-toggle="tooltip"
               title="Add new User Type."
               placement="top"
+              style="border-radius: 6px;"
             >
               Add User Type
             </button>
@@ -63,7 +64,10 @@
             <div class="float-left">
               <span
                 >Show
-                <select [(ngModel)]="itemsForPagination">
+                <select
+                  [(ngModel)]="itemsForPagination"
+                  (change)="onChange($event.target)"
+                >
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>

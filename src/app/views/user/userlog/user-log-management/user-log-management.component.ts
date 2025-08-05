@@ -56,8 +56,8 @@ export class UserLogManagementComponent implements OnInit {
   }
 
   setusercount() {
-    this.results.forEach((userlog: { isloggedin: boolean }) => {
-      if (userlog.isloggedin == true) {
+    this.results.forEach((userlog: { isLoggedIn: boolean }) => {
+      if (userlog.isLoggedIn == true) {
         this.loggedinuserscount++;
       }
     });
@@ -73,8 +73,8 @@ export class UserLogManagementComponent implements OnInit {
     this.order = value;
   }
 
-  viewUser(result: { username: string }) {
-    this.router.navigate(['user/viewuserlog/' + result.username]);
+  viewUser(result: { userName: string }) {
+    this.router.navigate(['user/viewuserlog/' + result.userName]);
   }
 
   confirm(): void {}

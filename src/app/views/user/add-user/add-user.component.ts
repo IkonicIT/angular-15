@@ -154,17 +154,17 @@ export class AddUserComponent implements OnInit {
   }
 
   saveUser() {
-    console.log(JSON.stringify(this.model));
+    console.log(this.model);
     console.log('user name is' + this.model.name);
     console.log('vendorId:', this.model.vendorId);
     if (
       this.model.name &&
       this.model.email &&
-      this.model.firstname &&
-      this.model.lastname &&
+      this.model.firstName &&
+      this.model.lastName &&
       this.model.password &&
       this.model.confirmPassword &&
-      this.model.companyid &&
+      this.model.companyId &&
       this.model.password == this.model.confirmPassword &&
       /\S+@\S+\.\S+/.test(this.model.email) &&
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(
@@ -177,46 +177,46 @@ export class AddUserComponent implements OnInit {
         return;
       }
       var req = {
-        applicationid: '2E8DCDA9-84CE-4A7F-B8EB-CBD5E815656B',
-        username: this.model.name,
-        loweredusername: 'y',
-        mobilealias: null,
-        isanonymous: true,
-        lastactivitydate: new Date(),
+        applicationId: '2E8DCDA9-84CE-4A7F-B8EB-CBD5E815656B',
+        userName: this.model.name,
+        loweredUserName: 'y',
+        mobileAlias: null,
+        isAnonymous: true,
+        lastActivityDate: new Date(),
         password: this.model.password,
-        passwordformat: null,
-        passwordsalt: null,
-        mobilepin: null,
+        passwordFormat: null,
+        passwordSalt: null,
+        mobilePin: null,
         email: this.model.email,
-        loweredemail: null,
-        passwordquestion: null,
-        passwordanswer: null,
-        isapproved: true,
-        islockedout: false,
-        createdate: new Date(),
-        lastlogindate: new Date(),
-        lastpasswordchangeddate: new Date(),
-        lastlockoutdate: new Date(),
-        failedpasswordattemptcount: 2,
-        failedpasswordattemptwindowstart: new Date(),
-        failedpasswordanswerattemptcount: 2,
-        failedpasswordanswerattemptwindowstart: new Date(),
+        loweredEmail: null,
+        passwordQuestion: null,
+        passwordAnswer: null,
+        isApproved: true,
+        isLockedOut: false,
+        createDate: new Date(),
+        lastLoginDate: new Date(),
+        lastPasswordChangedDate: new Date(),
+        lastLockoutDate: new Date(),
+        failedPasswordAttemptCount: 2,
+        failedPasswordAttemptWindowStart: new Date(),
+        failedPasswordAnswerAttemptCount: 2,
+        failedPasswordAnswerAttemptWindowStart: new Date(),
         comment: null,
-        profileid: '',
-        firstname: this.model.firstname ? this.model.firstname : '',
-        lastname: this.model.lastname ? this.model.lastname : '',
-        jobtitle: this.model.jobtitle ? this.model.jobtitle : '',
+        profileId: '',
+        firstName: this.model.firstName ? this.model.firstName : '',
+        lastName: this.model.lastName ? this.model.lastName : '',
+        jobTitle: this.model.jobTitle ? this.model.jobTitle : '',
         department: this.model.department ? this.model.department : '',
         phone: this.model.phone ? this.model.phone : '',
-        mobilephone: this.model.mobile ? this.model.mobile : '',
+        mobilePhone: this.model.mobile ? this.model.mobile : '',
         fax: this.model.fax ? this.model.fax : '',
-        acceptedterms: true,
-        isowneradmin: true,
-        sendreceiverfq: true,
-        toplocationid: null,
-        preferredlocationid: null,
-        hidepricing: true,
-        companyid: this.model.companyid ? this.model.companyid : this.companyId,
+        acceptedTerms: true,
+        isownerAdmin: true,
+        sendReceiverFq: true,
+        topLocationId: null,
+        preferredLocationId: null,
+        hidePricing: true,
+        companyId: this.model.companyId ? this.model.companyId : this.companyId,
         addedBy: this.userName,
         isVendor: this.model.isVendor,
         vendorResource: {

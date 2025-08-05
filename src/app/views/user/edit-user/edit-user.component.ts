@@ -285,29 +285,29 @@ export class EditUserComponent implements OnInit {
     if (
       this.model.username &&
       this.model.email &&
-      this.model.companyid &&
-      this.model.firstname &&
-      this.model.lastname
+      this.model.companyId &&
+      this.model.firstName &&
+      this.model.lastName
     ) {
       var req = {
         profileid: this.profileId,
-        userid: this.userId,
+        userId: this.userId,
         username: this.model.username,
         email: this.model.email,
-        firstname: this.model.firstname ? this.model.firstname : '',
-        lastname: this.model.lastname ? this.model.lastname : '',
-        jobtitle: this.model.jobtitle,
+        firstName: this.model.firstname ? this.model.firstname : '',
+        lastName: this.model.lastname ? this.model.lastname : '',
+        jobTitle: this.model.jobtitle,
         department: this.model.department,
         phone: this.model.phone,
-        mobilephone: this.model.mobilephone,
+        mobilePhone: this.model.mobilephone,
         fax: this.model.fax,
-        acceptedterms: this.model.acceptedterms,
-        sendreceiverfq: this.model.sendreceiverfq,
-        isowneradmin: this.model.isowneradmin,
-        toplocationid: this.model.toplocationid,
-        preferredlocationid: this.model.preferredlocationid,
-        companyid: this.model.companyid,
-        hidepricing: this.model.hidepricing,
+        acceptedTerms: this.model.acceptedterms,
+        sendReceiverFq: this.model.sendreceiverfq,
+        isOwnerAdmin: this.model.isowneradmin,
+        topLocationId: this.model.toplocationid,
+        preferredLocationId: this.model.preferredlocationid,
+        companyId: this.model.companyid,
+        hidePricing: this.model.hidepricing,
         actualCompanyId: this.companyId,
         addedBy: this.username,
         isVendor: this.model.isVendor,

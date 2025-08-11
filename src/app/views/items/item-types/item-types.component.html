@@ -121,7 +121,7 @@
                 "
               >
                 <td [innerHTML]="type.name"></td>
-                <td [innerHTML]="type.hostingfee"></td>
+                <td [innerHTML]="type.hostingFee"></td>
 
                 <td [innerHTML]="type.description"></td>
                 <td>
@@ -131,7 +131,7 @@
                     data-bs-toggle="tooltip"
                     title="Click here to Manage Item Attributes"
                     class="btn btn-outline-success btn-sm"
-                    [routerLink]="['../attributes', type.typeid, companyId]"
+                    [routerLink]="['../attributes', type.typeId, companyId]"
                   >
                     Manage Attributes
                   </button>
@@ -144,7 +144,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this Type"
-                    [routerLink]="['../editItemType', type.typeid, companyId]"
+                    [routerLink]="['../editItemType', type.typeId, companyId]"
                   >
                     Edit
                   </button>
@@ -155,7 +155,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this Type"
-                    (click)="openModal(confirmtemplate, type.typeid)"
+                    (click)="openModal(confirmtemplate, type.typeId)"
                     [disabled]="highestRank == 9"
                   >
                     Delete

@@ -31,10 +31,11 @@ export class CompanyStatusesService {
       .pipe(catchError(this.handleError));
   }
 
-  updateCompanyStatus(companyStatus: { statusid: string }) {
+  updateCompanyStatus(companyStatus: { statusId: string }) {
+    console.log(companyStatus);
     return this.http
       .put(
-        this.serviceURL + '/' + companyStatus.statusid,
+        this.serviceURL + '/' + companyStatus.statusId,
         companyStatus,
         this.httpOptions
       )
@@ -56,9 +57,9 @@ export class CompanyStatusesService {
       .pipe(catchError(this.handleError));
   }
 
-  removeCompanyStatus(id: string, username: string) {
+  removeCompanyStatus(id: string, userName: string) {
     return this.http
-      .delete(this.serviceURL + '/' + id + '/' + username, this.httpOptions)
+      .delete(this.serviceURL + '/' + id + '/' + userName, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

@@ -78,16 +78,16 @@ export class EditLocationStatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
+        companyId: this.globalCompany.companyid,
+        lastModifiedBy: this.userName,
         destroyed: false,
-        entitytypeid: 0,
-        inservice: false,
+        entityTypeId: 0,
+        inService: false,
         moduleType: 'locationtype',
         spare: false,
         status: this.model.status,
-        statusid: this.model.statusid,
-        underrepair: false,
+        statusId: this.model.statusId,
+        underRepair: false,
         oldStatus: this.oldStatus,
       };
       this.spinner.show();

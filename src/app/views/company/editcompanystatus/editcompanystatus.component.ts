@@ -39,6 +39,7 @@ export class EditcompanystatusComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
+      
       this.companyId = this.globalCompany.companyid;
       console.log('compaanyid=' + this.companyId);
     });
@@ -48,7 +49,7 @@ export class EditcompanystatusComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
+    
     });
 
     console.log('companyi=' + this.companyId);
@@ -83,15 +84,15 @@ export class EditcompanystatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
+        companyId: this.globalCompany.companyid,
+        lastModifiedBy: this.userName,
         destroyed: false,
-        entitytypeid: 0,
-        inservice: false,
+        entityTypeId: 0,
+        inService: false,
         spare: false,
         status: this.model.status,
-        statusid: this.model.statusid,
-        underrepair: false,
+        statusId: this.model.statusId,
+        underRepair: false,
         moduleType: 'companytype',
         oldStatus: this.oldStatus,
       };

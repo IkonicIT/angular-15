@@ -58,9 +58,9 @@ export class LocationTypesComponent implements OnInit {
         this.spinner.hide();
 
         this.locationsTypes = response;
-        this.locationsTypes.forEach((type: { parentid: any }) => {
-          if (!type.parentid) {
-            type.parentid = this.companyName;
+        this.locationsTypes.forEach((type: { parentId: any }) => {
+          if (!type.parentId) {
+            type.parentId = this.companyName;
           }
         });
       },

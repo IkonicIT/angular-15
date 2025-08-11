@@ -253,7 +253,7 @@ export class AddItemComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -424,8 +424,8 @@ export class AddItemComponent implements OnInit {
             ? this.locationModel.postalCode
             : '',
           state: this.locationModel.state ? this.locationModel.state : '',
-          statusId: this.locationModel.statusid
-            ? this.locationModel.statusid
+          statusId: this.locationModel.statusId
+            ? this.locationModel.statusId
             : 0,
           vendorCompany: {
             companyid: 0,
@@ -481,13 +481,14 @@ export class AddItemComponent implements OnInit {
   }
 
   saveItem() {
+    console.log(this.model);
     if (
       this.model.typeId &&
       this.model.typeId != 0 &&
       this.model.tag &&
       this.model.tag != '' &&
-      this.model.statusid &&
-      this.model.statusid != 0 &&
+      this.model.statusId &&
+      this.model.statusId != 0 &&
       !this.isDuplicateTag &&
       this.model.locationid
     ) {
@@ -524,7 +525,7 @@ export class AddItemComponent implements OnInit {
         }
       );
       var req = {
-        attributeValues: this.model.attributevalues,
+        attributeValues: this.model.attributeValues,
         defaultImageAttachmentId: 0,
         description: this.model.description ? this.model.description : '',
         desiredSpareRatio: this.model.spareRatio ? this.model.spareRatio : 0,
@@ -543,7 +544,7 @@ export class AddItemComponent implements OnInit {
         repairQual: 0,
         serialNumber: '',
         companyId: this.companyId,
-        statusId: this.model.statusid ? this.model.statusid : 0,
+        statusId: this.model.statusId ? this.model.statusId : 0,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
         warrantyExpiration: this.model.warrantyexpiration
@@ -588,15 +589,15 @@ export class AddItemComponent implements OnInit {
     }
   }
 
-  getLocationNameAndStatusNameFromId(locationid: any, statusid: any) {
+  getLocationNameAndStatusNameFromId(locationid: any, statusId: any) {
     this.locations.forEach((element: { locationid: any; name: any }) => {
       if (element.locationid == locationid) {
         this.model.locationName = element.name;
       }
     });
 
-    this.statuses.forEach((element: { statusid: any; status: any }) => {
-      if (element.statusid == statusid) {
+    this.statuses.forEach((element: { statusId: any; status: any }) => {
+      if (element.statusId == statusId) {
         this.model.statusName = element.status;
       }
     });

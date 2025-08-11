@@ -133,25 +133,25 @@ export class EditCompanyTypeComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       var request = {
-        attributesearchdisplay: 0,
+        attributeSearchDisplay: 0,
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         description: this.model.description,
-        entitytypeid: this.model.entitytypeid,
-        hostingfee: this.model.hostingfee,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: this.model.entitytypeid,
+        hostingFee: this.model.hostingfee,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'companytype',
         name: this.model.name,
-        parentid: {
-          typeid: this.value ? this.value : 0,
+        parentId: {
+          typeId: this.value ? this.value : 0,
         },
         typeList: this.model.typeList,
-        typeid: this.typeId,
-        typemtbs: 0,
-        typespareratio: 0,
-        moduletype: 'companytype',
+        typeId: this.typeId,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
+        // moduletype: 'companytype',
       };
       this.spinner.show();
 

@@ -165,6 +165,7 @@ export class ItemManagementComponent implements OnInit {
   }
 
   itemRepairs(item: any) {
+    console.log(item);
     this.itemManagementService.setSearchedItemTypeId(item.typeid);
     this.itemManagementService.setSearchedItemTag(item.tag);
     this.router.navigate(['/items/itemRepairs/' + item.itemId]);
@@ -274,6 +275,8 @@ export class ItemManagementComponent implements OnInit {
             if (count == 1) {
               this.searchResults[key].forEach((obj: any) => {
                 itemId = obj.itemId;
+                console.log(itemId);
+                console.log(obj);
                 rank = obj.itemRank;
                 tag = obj.tag;
                 typeName = obj.typeName;
@@ -382,7 +385,7 @@ export class ItemManagementComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -468,6 +471,7 @@ export class ItemManagementComponent implements OnInit {
   }
 
   goToView(itemId: string, rank: any, tag: any, typeName: any) {
+    console.log(itemId);
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
     this.broadcasterService.itemRank = rank;

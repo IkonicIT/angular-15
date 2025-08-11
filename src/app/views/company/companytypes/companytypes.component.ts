@@ -76,6 +76,7 @@ export class CompanytypesComponent implements OnInit {
         this.spinner.hide();
 
         this.types = response;
+        console.log(response);
         this.types.forEach((type: { parentid: string }) => {
           if (!type.parentid) {
             type.parentid = 'Top Level';
@@ -106,13 +107,13 @@ export class CompanytypesComponent implements OnInit {
 
   editCompanyType(company: any) {
     this.router.navigate(['/company/editCompanyType/'], {
-      queryParams: { q: this.companyId, a: company.typeid },
+      queryParams: { q: this.companyId, a: company.typeId },
     });
   }
 
   gotoAttributesForType(companyType: any) {
     this.router.navigate([
-      '/company/attributes/' + companyType.typeid + '/' + this.companyId,
+      '/company/attributes/' + companyType.typeId + '/' + this.companyId,
     ]);
   }
 

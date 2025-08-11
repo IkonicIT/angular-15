@@ -46,6 +46,7 @@ export class CompanyDocumentsService {
   }
 
   saveCompanyMultipleDocuments(attachList: any) {
+    console.log(attachList);
     return this.http
       .post(
         this.serviceURL + '/createMultipleAttachments',
@@ -55,10 +56,10 @@ export class CompanyDocumentsService {
       .pipe(catchError(this.handleError));
   }
 
-  updateCompanyDocument(company: { attachmentid: string }) {
+  updateCompanyDocument(company: { attachmentId: string }) {
     return this.http
       .put(
-        this.serviceURL + '/' + company.attachmentid,
+        this.serviceURL + '/' + company.attachmentId,
         company,
         this.httpOptions
       )

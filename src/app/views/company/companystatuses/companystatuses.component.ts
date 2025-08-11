@@ -91,14 +91,15 @@ export class CompanystatusesComponent implements OnInit {
     this.router.navigate(['/company/addStatus/']);
   }
 
-  editStatus(status: { statusid: string }) {
-    console.log('statusid=' + status.statusid);
+  editStatus(status: { statusId: string }) {
+    console.log('statusid=' + status.statusId);
     this.router.navigate(['/company/editStatus/'], {
-      queryParams: { q: status.statusid },
+      queryParams: { q: status.statusId },
     });
   }
 
   openModal(template: TemplateRef<any>, id: string) {
+    console.log(id);
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
@@ -106,7 +107,7 @@ export class CompanystatusesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-
+    console.log(this.index);
     this.companyStatusService
       .removeCompanyStatus(this.index, this.userName)
       .subscribe(

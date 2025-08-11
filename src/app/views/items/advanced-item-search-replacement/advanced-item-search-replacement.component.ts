@@ -142,7 +142,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid + '',
+          value: type.typeId + '',
           collapsed: true,
           children: children,
         })

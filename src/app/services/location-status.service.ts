@@ -28,9 +28,9 @@ export class LocationStatusService {
       .pipe(catchError(this.handleError));
   }
 
-  updateLocationStatus(locationStatus: { statusid: string }) {
+  updateLocationStatus(locationStatus: { statusId: string }) {
     return this.http
-      .put(this.serviceURL + '/' + locationStatus.statusid, locationStatus, this.httpOptions)
+      .put(this.serviceURL + '/' + locationStatus.statusId, locationStatus, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

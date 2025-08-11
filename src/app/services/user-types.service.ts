@@ -33,7 +33,7 @@ export class UserTypesService {
 
   updateUserType(type: any) {
     return this.http
-      .put(this.serviceURL + '/' + type.typeid, type, this.httpOptions)
+      .put(this.serviceURL + '/' + type.typeId, type, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

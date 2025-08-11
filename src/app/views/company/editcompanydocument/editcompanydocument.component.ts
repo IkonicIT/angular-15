@@ -59,7 +59,7 @@ export class EditcompanydocumentComponent implements OnInit {
 
   updateCompanyDocument() {
     this.spinner.show();
-
+    console.log(this.companyId);
     this.model.moduleType = 'companytype';
     this.model.companyID = this.companyId;
     this.model.attachmentUserLogDTO = {};

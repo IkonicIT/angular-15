@@ -78,9 +78,9 @@ export class LocationStatusComponent implements OnInit {
     this.router.navigate(['/location/addLocationStatus/']);
   }
 
-  editStatus(status: { statusid: string }) {
-    console.log('statusid=' + status.statusid);
-    this.router.navigate(['/location/editLocationStatus/' + status.statusid]);
+  editStatus(status: { statusId: string }) {
+    console.log('statusid=' + status.statusId);
+    this.router.navigate(['/location/editLocationStatus/' + status.statusId]);
   }
 
   openModal(template: TemplateRef<any>, id: number) {

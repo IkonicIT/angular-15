@@ -30,10 +30,10 @@ export class ItemStatusService {
       .pipe(catchError(this.handleError));
   }
 
-  updateItemStatus(itemStatus: { statusid: string }) {
+  updateItemStatus(itemStatus: { statusId: string }) {
     return this.http
       .put(
-        this.serviceURL + '/' + itemStatus.statusid,
+        this.serviceURL + '/' + itemStatus.statusId,
         itemStatus,
         this.httpOptions
       )

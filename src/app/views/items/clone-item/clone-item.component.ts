@@ -253,7 +253,7 @@ export class CloneItemComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -307,6 +307,7 @@ export class CloneItemComponent implements OnInit {
 
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
+          console.log(response);
           this.typeAttributes = response;
           if (
             this.model.attributeValues &&
@@ -340,16 +341,16 @@ export class CloneItemComponent implements OnInit {
       this.locationModel.locationTypeId != 0
     ) {
       if (this.typeAttributes && this.typeAttributes.length > 0) {
-        this.locationModel.attributevalues = [];
+        this.locationModel.attributeValues = [];
         this.typeAttributes.forEach(
-          (attr: { attributenameid: any; value: any }) => {
-            this.locationModel.attributevalues.push({
-              attributename: {
-                attributenameid: attr.attributenameid,
+          (attr: { attributeNameId: any; value: any }) => {
+            this.locationModel.attributeValues.push({
+              attributeName: {
+                attributeNameId: attr.attributeNameId,
               },
-              entityid: 0,
-              entitytypeid: 0,
-              lastmodifiedby: this.userName,
+              entityId: 0,
+              entityTypeId: 0,
+              lastModifiedBy: this.userName,
               value: attr.value,
             });
           }
@@ -451,6 +452,7 @@ export class CloneItemComponent implements OnInit {
   }
 
   saveItem() {
+    console.log(this.model);
     if (
       this.model.typeId &&
       this.model.typeId != 0 &&
@@ -462,26 +464,26 @@ export class CloneItemComponent implements OnInit {
       this.model.locationId
     ) {
       //this.getLocationNameAndStatusNameFromId(this.model.locationId, this.model.statusId);
-      this.model.attributevalues = [];
+      this.model.attributeValues = [];
       if (this.typeAttributes && this.typeAttributes.length > 0) {
         this.typeAttributes.forEach((attr: any) => {
-          this.model.attributevalues.push({
-            attributename: attr,
-            entityid: this.itemId,
-            entitytypeid: attr.type.entitytypeid,
-            lastmodifiedby: this.userName,
+          this.model.attributeValues.push({
+            attributeName: attr,
+            entityId: this.itemId,
+            entityTypeId: attr.type.entityTypeId,
+            lastModifiedBy: this.userName,
             value: attr.value != null ? attr.value : '',
           });
         });
       }
       this.reqAttrValidate = false;
-      this.model.attributevalues.forEach(
+      this.model.attributeValues.forEach(
         (attr: {
-          attributename: { isrequired: any; name: any };
+          attributeName: { isRequired: any; name: any };
           value: any;
         }) => {
-          this.isReqdAttr = attr.attributename.isrequired;
-          this.reqAttrName = attr.attributename.name;
+          this.isReqdAttr = attr.attributeName.isRequired;
+          this.reqAttrName = attr.attributeName.name;
           this.reqAttrValue = attr.value;
           if (
             this.isReqdAttr == true &&
@@ -495,8 +497,8 @@ export class CloneItemComponent implements OnInit {
         }
       );
       var req = {
-        attributeValues: this.model.attributevalues
-          ? this.model.attributevalues
+        attributeValues: this.model.attributeValues
+          ? this.model.attributeValues
           : null,
         defaultImageAttachmentId: 0,
         description: this.model.description ? this.model.description : '',
@@ -541,7 +543,7 @@ export class CloneItemComponent implements OnInit {
           (response: any) => {
             this.spinner.hide();
 
-            this.router.navigate(['/items/viewItem/' + response.itemid]);
+            this.router.navigate(['/items/viewItem/' + response.itemId]);
             this.index = 1;
             this.itemManagementService.setSearchedItemTag(response.tag);
             this.itemManagementService.setSearchedItemTypeId(response.typeId);
@@ -564,15 +566,15 @@ export class CloneItemComponent implements OnInit {
     }
   }
 
-  getLocationNameAndStatusNameFromId(locationid: any, statusid: any) {
-    this.locations.forEach((element: { locationid: any; name: any }) => {
-      if (element.locationid == locationid) {
+  getLocationNameAndStatusNameFromId(locationId: any, statusId: any) {
+    this.locations.forEach((element: { locationId: any; name: any }) => {
+      if (element.locationId == locationId) {
         this.model.locationName = element.name;
       }
     });
 
-    this.statuses.forEach((element: { statusid: any; status: any }) => {
-      if (element.statusid == statusid) {
+    this.statuses.forEach((element: { statusId: any; status: any }) => {
+      if (element.statusId == statusId) {
         this.model.statusName = element.status;
       }
     });

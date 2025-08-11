@@ -76,9 +76,9 @@ export class ItemStatusComponent implements OnInit {
     this.router.navigate(['/items/addItemStatus/']);
   }
 
-  editStatus(status: { statusid: string }) {
-    console.log('statusid=' + status.statusid);
-    this.router.navigate(['/items/editItemStatus/' + status.statusid]);
+  editStatus(status: { statusId: string }) {
+    console.log('statusid=' + status.statusId);
+    this.router.navigate(['/items/editItemStatus/' + status.statusId]);
   }
 
   openModal(template: TemplateRef<any>, id: number) {

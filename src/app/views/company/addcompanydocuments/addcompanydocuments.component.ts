@@ -76,14 +76,14 @@ export class AddcompanydocumentsComponent implements OnInit {
     } else {
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
-      formdata.append('addedby', this.userName);
-      formdata.append('companyID', JSON.stringify(this.companyId));
+      formdata.append('addedBy', this.userName);
+      formdata.append('companyId', JSON.stringify(this.companyId));
       formdata.append(
         'description',
         this.model.description ? this.model.description : ''
       );
-      formdata.append('entityid', JSON.stringify(this.companyId));
-      formdata.append('moduleType', 'companytype');
+      formdata.append('entityId', JSON.stringify(this.companyId));
+      formdata.append('moduleType', 'companyType');
       var jsonArr = this.addedfiles;
       for (var i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
@@ -152,14 +152,14 @@ export class AddcompanydocumentsComponent implements OnInit {
         const fileInfo = this.addedfiles[fileIndex];
         fileInfo['addedby'] = this.userName;
         fileInfo['attachmentFile'] = this.fileContent;
-        fileInfo['attachmentid'] = 0;
+        fileInfo['attachmentId'] = 0;
         fileInfo['companyID'] = this.companyId;
         fileInfo['contenttype'] = this.fileType;
         fileInfo['dateadded'] = new Date().toISOString();
         fileInfo['entityid'] = this.companyId;
         fileInfo['isNew'] = 1;
         fileInfo['moduleType'] = 'companytype';
-        fileInfo['filename'] = this.fileName;
+        fileInfo['fileName'] = this.fileName;
         console.log(this.addedfiles);
       };
     }

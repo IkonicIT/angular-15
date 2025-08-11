@@ -142,6 +142,7 @@ export class AddLocationDetailsComponent implements OnInit {
   }
 
   saveLocation() {
+    console.log(this.model);
     if (
       this.model.locationName &&
       this.model.locationTypeId &&
@@ -201,7 +202,7 @@ export class AddLocationDetailsComponent implements OnInit {
           },
           postalCode: this.model.postalCode ? this.model.postalCode : '',
           state: this.model.state ? this.model.state : '',
-          statusId: this.model.statusid ? this.model.statusid : 0,
+          statusId: this.model.statusId ? this.model.statusId : 0,
           vendorCompany: {
             companyid: this.model.vendorCompany.companyid
               ? this.model.vendorCompany.companyid
@@ -241,7 +242,7 @@ export class AddLocationDetailsComponent implements OnInit {
               },
               postalCode: this.model.postalCode ? this.model.postalCode : '',
               state: this.model.state ? this.model.state : '',
-              statusId: this.model.statusid ? this.model.statusid : 0,
+              statusId: this.model.statusId ? this.model.statusId : 0,
               vendorCompany: {
                 companyid: 0,
               },
@@ -288,7 +289,7 @@ export class AddLocationDetailsComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -305,7 +306,7 @@ export class AddLocationDetailsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-
+          console.log(response);
           this.locationTypes = response;
           this.locationTypes.forEach((type: any) => {
             if (!type.parentid) {
@@ -317,6 +318,7 @@ export class AddLocationDetailsComponent implements OnInit {
               this.locationTypes
             );
           }
+          console.log(this.itemTypeItems);
           this.getLocationStatus();
         },
         (error) => {
@@ -326,6 +328,7 @@ export class AddLocationDetailsComponent implements OnInit {
   }
 
   getTypeAttributes(typeId: string, event: any) {
+    console.log(typeId);
     if (typeId && typeId != '0') {
       this.spinner.show();
 

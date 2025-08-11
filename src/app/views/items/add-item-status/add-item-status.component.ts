@@ -57,16 +57,16 @@ export class AddItemStatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
+        companyId: this.globalCompany.companyid,
+        lastModifiedBy: this.userName,
         destroyed: this.model.destroyed ? this.model.destroyed : false,
-        entitytypeid: 0,
-        inservice: this.model.inservice ? this.model.inservice : false,
+        entityTypeId: 0,
+        inService: this.model.inService ? this.model.inService : false,
         moduleType: 'itemtype',
         spare: this.model.spare ? this.model.spare : false,
         status: this.model.status,
-        statusid: 0,
-        underrepair: this.model.underrepair ? this.model.underrepair : false,
+        statusId: 0,
+        underRepair: this.model.underRepair ? this.model.underRepair : false,
       };
       this.spinner.show();
 

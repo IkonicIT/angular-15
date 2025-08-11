@@ -60,8 +60,8 @@ export class StatusManagementComponent implements OnInit {
 
 
   editStatus(status) {
-    console.log('statusid=' + status.statusid);
-    this.router.navigate(['/status/editStatus/'], { queryParams: { q: status.statusid } });
+    console.log('statusid=' + status.statusId);
+    this.router.navigate(['/status/editStatus/'], { queryParams: { q: status.statusId } });
   }
 
   openModal(template: TemplateRef<any>, id) {

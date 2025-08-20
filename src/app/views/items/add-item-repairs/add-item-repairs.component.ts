@@ -391,54 +391,54 @@ export class AddItemRepairsComponent implements OnInit {
     this.model = {
       tag: this.model.tag,
       typeName: this.model.typeName,
-      actualcompletion:
+      actualCompletion:
         this.model.actualcompletion != null
           ? this.model.actualcompletion
           : null,
       complete: this.model.complete ? this.model.complete : false,
-      completedby: this.model.completedby,
-      dateacknowledged: new Date(),
-      dateinitiated: new Date(),
-      estimatedcompletion:
+      completedBy: this.model.completedby,
+      dateAcknowledged: new Date(),
+      dateInitiated: new Date(),
+      estimatedCompletion:
         this.model.estimatedcompletion != null
           ? this.model.estimatedcompletion
           : null,
-      failurecause:
+      failureCause:
         this.model.failurecause != 0
           ? this.model.failurecause
           : this.model.newfailurecause,
-      failuredate:
+      failureDate:
         this.model.failuredate != null ? this.model.failuredate : null,
-      failuretype: this.model.failuretype ? this.model.failuretype : null,
-      iswarranty: true,
-      itemid: this.itemId,
-      itemtype: this.model.typeName,
-      jobnumber: this.model.jobnumber ? this.model.jobnumber : 0,
-      ponumber: this.model.ponumber ? this.model.ponumber : 0,
-      repaircompanyid: this.model.repaircompanyid,
-      repaircost: this.model.repaircost ? this.model.repaircost : 0,
-      repairjobstatus: this.model.repairjobstatus,
-      repairlocationid: this.model.repairlocationid
+      failureType: this.model.failuretype ? this.model.failuretype : null,
+      isWarranty: true,
+      itemId: this.itemId,
+      itemType: this.model.typeName,
+      jobNumber: this.model.jobnumber ? this.model.jobnumber : 0,
+      poNumber: this.model.ponumber ? this.model.ponumber : 0,
+      repairCompanyId: this.model.repaircompanyid,
+      repairCost: this.model.repaircost ? this.model.repaircost : 0,
+      repairJobStatus: this.model.repairjobstatus,
+      repairLocationId: this.model.repairlocationid
         ? this.model.repairlocationid
         : 0,
-      repairlogid: 0,
-      repairnotes: this.model.repairnotes ? this.model.repairnotes : '',
-      repairvendornumber: this.model.repairvendornumber
+      repairLogId: 0,
+      repairNotes: this.model.repairnotes ? this.model.repairnotes : '',
+      repairVendorNumber: this.model.repairvendornumber
         ? this.model.repairvendornumber
         : 0,
-      rfqnumber: 0,
+      rfqNumber: 0,
       title: this.model.title ? this.model.title : '',
-      transferlogid: 0,
-      warrantytype: this.model.warrantytype ? this.model.warrantytype : '',
-      warrantytypeid:
+      transferLogId: 0,
+      warrantyType: this.model.warrantytype ? this.model.warrantytype : '',
+      warrantyTypeId:
         this.model.warrantytypeid != undefined ? this.model.warrantytypeid : 0,
-      warrantyexpiration: this.model.warrantyexpiration
+      warrantyExpiration: this.model.warrantyexpiration
         ? this.model.warrantyexpiration
         : null,
       userName: this.userName,
       secondaryTypeAndCauses: this.model.secondaryTypeAndCauses,
       companyId: this.companyId,
-      isactive: 1,
+      isActive: 1,
       isVendorWarranty: this.model.isVendorWarranty
         ? this.model.isVendorWarranty
         : 0,
@@ -447,7 +447,7 @@ export class AddItemRepairsComponent implements OnInit {
         vendorId: this.model.vendorId ? this.model.vendorId : 0,
       },
     };
-    console.log(JSON.stringify(this.model));
+    console.log(this.model);
     this.spinner.show();
     this.itemRepairItemsService.saveItemRepair(this.model).subscribe(
       (response: any) => {
@@ -459,9 +459,9 @@ export class AddItemRepairsComponent implements OnInit {
         }, 7000);
         this.router.navigate([
           '/items/viewItemRepair/' +
-            response.itemid +
+            response.itemId +
             '/' +
-            response.repairlogid,
+            response.repairLogId,
         ]);
       },
       (error) => {
@@ -500,10 +500,10 @@ export class AddItemRepairsComponent implements OnInit {
     else if (event == 'B') this.model.actualcompletion = null;
   }
   setWarrantyTypeID() {
-    if (this.model.warrantytype && this.model.warrantytype != '') {
+    if (this.model.warrantyType && this.model.warrantyType != '') {
       this.warrantyTpes.forEach((element: any) => {
-        if (element.warrantytype == this.model.warrantytype)
-          this.model.warrantytypeid = element.warrantytypeid;
+        if (element.warrantyType == this.model.warrantyType)
+          this.model.warrantyTypeId = element.warrantyTypeId;
       });
     }
   }

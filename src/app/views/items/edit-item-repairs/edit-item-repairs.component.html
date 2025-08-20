@@ -84,8 +84,8 @@
                       <div class="form-group col-sm-6">
                         <label for="warrantyType">Warranty Type</label>
                         <select
-                          class="form-control bg-white custom-dropdown"
-                          [(ngModel)]="model.warrantytype"
+                          class="form-control "
+                          [(ngModel)]="model.warrantyType"
                           (change)="setWarrantyTypeID()"
                           name="type"
                           #type="ngModel"
@@ -93,10 +93,10 @@
                         >
                           <!-- <option value="0" selected="true">Choose Type</option> -->
                           <option
-                            [ngValue]="type.warrantytype"
+                            [ngValue]="type.warrantyType"
                             *ngFor="let type of warrantyTypes"
                           >
-                            {{ type.warrantytype }}
+                            {{ type.warrantyType }}
                           </option>
                         </select>
                       </div>

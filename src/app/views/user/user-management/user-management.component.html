@@ -90,8 +90,8 @@
             <thead class="thead-light">
               <tr>
                 <th
-                  [class.active]="order === 'firstname'"
-                  (click)="setOrder('firstname')"
+                  [class.active]="order === 'firstName'"
+                  (click)="setOrder('firstName')"
                 >
                   User<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -105,18 +105,18 @@
                 *ngFor="
                   let user of users
                     | orderBy : reverse + order
-                    | filterBy : ['firstname'] : userFilter
+                    | filterBy : ['firstName'] : userFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
-                <td>{{ user.firstname + " " + user.lastname }}</td>
+                <td>{{ user.firstName + " " + user.lastName }}</td>
                 <td>
                   <button
                     type="button"
                     [disabled]="
                       highestRank < 6 ||
-                      (highestRank == 7 && user.isowneradmin === true) ||
+                      (highestRank == 7 && user.isOwnerAdmin === true) ||
                       highestRank == 9
                     "
                     (click)="getSecurityRoles(user)"
@@ -144,7 +144,7 @@
                     type="button"
                     [disabled]="
                       highestRank < 7 ||
-                      (highestRank == 7 && user.isowneradmin === true)
+                      (highestRank == 7 && user.isOwnerAdmin === true)
                     "
                     class="btn btn-outline-danger btn-sm mb-1 btn-right"
                     data-bs-placement="bottom"
@@ -158,7 +158,7 @@
                     type="button"
                     [disabled]="
                       highestRank < 7 ||
-                      (highestRank == 7 && user.isowneradmin === true) ||
+                      (highestRank == 7 && user.isOwnerAdmin === true) ||
                       highestRank == 9
                     "
                     class="btn btn-outline-danger btn-sm mb-1"

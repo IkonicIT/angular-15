@@ -363,42 +363,42 @@ export class EditItemComponent implements OnInit {
         }
       );
       var req = {
-        attributevalues: this.item.attributevalues
+        attributeValues: this.item.attributevalues
           ? this.item.attributevalues
           : null,
-        defaultimageattachmentid: this.model.defaultImageAttachmentId,
+        defaultImageAttachmentId: this.model.defaultImageAttachmentId,
         description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.desiredSpareRatio
+        desiredSpareRatio: this.model.desiredSpareRatio
           ? this.model.desiredSpareRatio
           : 0,
-        inserviceon: this.model.inServiceOn,
-        isinrepair: false,
-        isstale: false,
-        itemid: this.itemId,
-        lastmodifiedby: this.userName,
-        locationid: this.model.locationId ? this.model.locationId : 0,
-        manufacturerid: null,
-        meantimebetweenservice: this.model.meanTimeBetweenService
+        inServiceOn: this.model.inServiceOn,
+        isInRepair: false,
+        isStale: false,
+        itemId: this.itemId,
+        lastModifiedBy: this.userName,
+        locationId: this.model.locationId ? this.model.locationId : 0,
+        manufacturerId: null,
+        meanTimeBetweenService: this.model.meanTimeBetweenService
           ? this.model.meanTimeBetweenService
           : 0,
-        modelnumber: 'string',
+        modelNumber: 'string',
         name: this.model.name ? this.model.name : '',
-        purchasedate: this.model.purchaseDate ? this.model.purchaseDate : '',
-        purchaseprice: this.model.purchasePrice ? this.model.purchasePrice : 0,
-        repairqual: 0,
-        serialnumber: '',
-        statusid: this.model.statusId ? this.model.statusId : 0,
-        statusname: this.model.status ? this.model.status : 0,
-        companyid: this.companyId,
+        purchaseDate: this.model.purchaseDate ? this.model.purchaseDate : '',
+        purchasePrice: this.model.purchasePrice ? this.model.purchasePrice : 0,
+        repairQual: 0,
+        serialNumber: '',
+        statusId: this.model.statusId ? this.model.statusId : 0,
+        statusName: this.model.status ? this.model.status : 0,
+        companyId: this.companyId,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyExpiration
+        warrantyExpiration: this.model.warrantyExpiration
           ? this.model.warrantyExpiration
           : '',
-        warrantytypeid: this.model.warrantyTypeId
+        warrantyTypeId: this.model.warrantyTypeId
           ? this.model.warrantyTypeId
           : 0,
-        userid: sessionStorage.getItem('userId'),
+        userId: sessionStorage.getItem('userId'),
         typeName: this.model.typeName,
         locationName: this.model.locationName,
         updatedDate: new Date().toISOString(),
@@ -418,7 +418,7 @@ export class EditItemComponent implements OnInit {
             setTimeout(() => {
               this.index = 0;
             }, 7000);
-            this.router.navigate(['/items/viewItem/' + req.itemid]);
+            this.router.navigate(['/items/viewItem/' + req.itemId]);
             window.scroll(0, 0);
           },
           (error) => {

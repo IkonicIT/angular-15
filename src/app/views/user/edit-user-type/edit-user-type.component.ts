@@ -115,24 +115,24 @@ export class EditUserTypeComponent implements OnInit {
   updateUserType() {
     if (this.model.name && this.model.parentid.typeid != this.userTypeId) {
       var request = {
-        attributesearchdisplay: 0,
+        attributeSearchDisplay: 0,
         description: this.model.description,
-        entitytypeid: this.model.entitytypeid,
-        hostingfee: this.model.hostingfee,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: this.model.entitytypeid,
+        hostingFee: this.model.hostingfee,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'usertype',
         name: this.model.name,
-        parentid: {
-          typeid: this.model.parentid.typeid ? this.model.parentid.typeid : 0,
+        parentId: {
+          typeId: this.model.parentid.typeid ? this.model.parentid.typeid : 0,
         },
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         typeList: this.model.typeList,
-        typeid: this.userTypeId,
-        typemtbs: 0,
-        typespareratio: 0,
+        typeId: this.userTypeId,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
       };
       this.spinner.show();
 

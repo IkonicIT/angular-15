@@ -66,12 +66,12 @@ export class EditItemTypeComponent implements OnInit {
 
       console.log(response);
       this.model = response;
-      if (!this.model.parentid) {
-        this.model.parentid = {
-          typeid: 0,
+      if (!this.model.parentId) {
+        this.model.parentId = {
+          typeId: 0,
         };
       } else {
-        this.value = this.model.parentid.typeid;
+        this.value = this.model.parentId.typeId;
       }
     });
   }
@@ -96,7 +96,7 @@ export class EditItemTypeComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -108,27 +108,27 @@ export class EditItemTypeComponent implements OnInit {
   updateItemType() {
     if (this.model.name && this.value != this.itemTypeId) {
       var request = {
-        attributesearchdisplay: this.model.attributesearchdisplay
-          ? this.model.attributesearchdisplay
+        attributeSearchDisplay: this.model.attributeSearchDisplay
+          ? this.model.attributeSearchDisplay
           : 0,
         description: this.model.description,
-        entitytypeid: this.model.entitytypeid,
-        hostingfee: this.model.hostingfee,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: this.model.entityTypeId,
+        hostingFee: this.model.hostingFee,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'itemtype',
         name: this.model.name,
-        parentid: {
-          typeid: this.value ? this.value : 0,
+        parentId: {
+          typeId: this.value ? this.value : 0,
         },
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         typeList: this.model.typeList,
-        typeid: this.itemTypeId,
-        typemtbs: this.model.typemtbs ? this.model.typemtbs : 0,
-        typespareratio: this.model.typespareratio
-          ? this.model.typespareratio
+        typeId: this.itemTypeId,
+        typeMtbs: this.model.typemtbs ? this.model.typemtbs : 0,
+        typeSpareRatio: this.model.typeSpareRatio
+          ? this.model.typeSpareRatio
           : 0.2,
       };
       this.spinner.show();

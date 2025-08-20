@@ -66,13 +66,12 @@
                       <div class="form-group col-sm-12">
                         <label for="location">Location to be Merged:</label>
 
-                      <div class="dropdown-wrapper">
-  <app-dropdown-treeview-select
-    [items]="locationItems"
-    [(value)]="model.fromlocationid">
-  </app-dropdown-treeview-select>
-  <span class="dropdown-arrow">&#9662;</span> <!-- Optional visual arrow -->
-</div>
+                      <app-dropdown-treeview-select
+                          [items]="locationItems"
+                          [(value)]="model.fromlocationid"
+                        >
+                        </app-dropdown-treeview-select>
+                        <span class="dropdown-arrow">&#9662;</span>
                       </div>
                     </div>
                     <div class="row">

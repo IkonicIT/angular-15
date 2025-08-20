@@ -55,7 +55,7 @@
                       <div class="form-group col-sm-6">
                         <label for="type">Item Type
                           <strong class="text-danger">*</strong></label>
-          <app-dropdown-treeview-select
+                     <app-dropdown-treeview-select
                           [items]="itemTypeItems"
                           [(value)]="model.typeId"
                           id="type"
@@ -107,13 +107,21 @@
                       <div class="form-group col-sm-6">
                         <label for="name">Select Status
                           <strong class="text-danger">*</strong></label>
-                        <select class="form-control add-item-background custom-dropdown" [(ngModel)]="model.statusid"
-                          name="status" #status="ngModel" id="status">
+                       <select
+                          class="form-control add-item-background"
+                          [(ngModel)]="model.statusId"
+                          name="status"
+                          #status="ngModel"
+                          id="status"
+                        >
                           <option value="0" selected="true">
                             Choose Status
                           </option>
-                          <option [ngValue]="status.statusid" *ngFor="let status of statuses"
-                            [innerHTML]="status.status"></option>
+                          <option
+                            [ngValue]="status.statusId"
+                            *ngFor="let status of statuses"
+                            [innerHTML]="status.status"
+                          ></option>
                         </select>
                       </div>
                     </div>
@@ -165,17 +173,12 @@
                       <div class="form-group col-sm-12">
                         <label for="location">Location
                           <strong class="text-danger">*</strong></label>
-<select
-  #dropdown
-  id="location"
-  class="form-control custom-dropdown"
-  [(ngModel)]="model.locationid"
-  (change)="onValueChange(dropdown.value)"
->
-  <option *ngFor="let loc of locationItems" [value]="loc.value">
-    {{ loc.text }}
-  </option>
-</select>
+  <app-dropdown-treeview-select
+                          [items]="locationItems"
+                          [(value)]="model.locationid"
+                          (valueChange)="onValueChange($event)"
+                        >
+                        </app-dropdown-treeview-select>
 
                       </div>
                     </div>
@@ -219,16 +222,11 @@
                         <div class="form-group col-sm-6">
                           <label for="type">Type Of Location
                             <strong class="text-danger">*</strong></label>
-                          <select
-  id="type"
-  class="form-control custom-dropdown"
-  [(ngModel)]="locationModel.locationTypeId"
-  (change)="getItemTypeAttributesClone(locationModel.locationTypeId)"
->
-  <option *ngFor="let item of locationTypeItems" [value]="item.value">
-    {{ item.text }}
-  </option>
-</select>
+                            <app-dropdown-treeview-select [items]="locationTypeItems" id="type"
+                            [(value)]="locationModel.locationTypeId" (valueChange)="
+                              getItemTypeAttributesClone(model.locationTypeId)
+                            ">
+                          </app-dropdown-treeview-select>
 
                         </div>
                       </div>
@@ -236,10 +234,10 @@
                       <div class="row">
                         <div class="form-group col-sm-6">
                           <label for="status">Status</label>
-                          <select class="form-control custom-dropdown" [(ngModel)]="locationModel.statusid"
+                          <select class="form-control custom-dropdown" [(ngModel)]="locationModel.statusId"
                             name="status" #status="ngModel" id="status">
                             <option value="">Choose..</option>
-                            <option [value]="stat.statusid" [ngValue]="stat.statusid"
+                            <option [value]="stat.statusId" [ngValue]="stat.statusId"
                               *ngFor="let stat of locationStatuses" [innerHTML]="stat.status"></option>
                           </select>
                         </div>
@@ -279,17 +277,17 @@
                           eachAttr.name
                           }}</label>
                         <div>
-                          <input *ngIf="eachAttr.attributetype.attributetypeid == 1" type="number" class="form-control"
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId == 1" type="number" class="form-control"
                             [(ngModel)]="eachAttr.value" [tooltip]="eachAttr.tooltip" name="number{{ index }}"
                             #state="ngModel" placeholder="Enter Value" />
-                          <input *ngIf="eachAttr.attributetype.attributetypeid == 2" type="text" class="form-control"
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId == 2" type="text" class="form-control"
                             [(ngModel)]="eachAttr.value" name="text{{ i }}" />
-                          <input *ngIf="eachAttr.attributetype.attributetypeid == 6" type="text" class="form-control"
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId == 6" type="text" class="form-control"
                             [(ngModel)]="eachAttr.value" name="multiValue{{ i }}" />
-                          <input *ngIf="eachAttr.attributetype.attributetypeid == 3" type="date" class="form-control"
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId == 3" type="date" class="form-control"
                             [tooltip]="eachAttr.tooltip" [(ngModel)]="eachAttr.value" name="date{{ index }}"
                             #state="ngModel" placeholder="Select date" />
-                          <select *ngIf="eachAttr.attributetype.attributetypeid == 4"
+                          <select *ngIf="eachAttr.attributeType.attributeTypeId == 4"
                             class="form-control custom-dropdown" [tooltip]="eachAttr.tooltip"
                             [(ngModel)]="eachAttr.value" name="select{{ index }}" #type="ngModel">
                             <option value="">Choose..</option>
@@ -299,7 +297,7 @@
                               {{ list.listitem }}
                             </option>
                           </select>
-                          <div class="form-check d-flex align-items-center gap-3" *ngIf="eachAttr.attributetype.attributetypeid == 5">
+                          <div class="form-check d-flex align-items-center gap-3" *ngIf="eachAttr.attributeType.attributeTypeId == 5">
                             <div class="form-check">
                               <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value"
                                 name="radios{{ i }}" id="radio1" value="True" checked />
@@ -320,7 +318,7 @@
                           </div>
                           
                           <textarea *ngIf="
-                              eachAttr.attributetype.attributetypeid == 7
+                              eachAttr.attributeType.attributeTypeId == 7
                             " name="textarea{{ i }}" rows="2" cols="4" class="form-control"
                             [(ngModel)]="eachAttr.value" placeholder="Enter Value"></textarea>
                         </div>

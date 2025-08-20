@@ -149,7 +149,7 @@
                       <div class="form-group col-sm-6">
                         <label for="location">Location</label>
 
-                       <app-dropdown-treeview-select
+                      <app-dropdown-treeview-select
                           class="form-color"
                           [items]="locationItems"
                           [(value)]="model.repairlocationid"
@@ -179,21 +179,13 @@
                             >*</strong
                           >
                         </label>
-                      <select
-                          class="form-control form-color"
-                          [(ngModel)]="model.repaircompanyid"
-                          name="vendor"
-                          #vendor="ngModel"
-                          id="vendor"
+                      <app-dropdown-treeview-select
+                          class="form-color"
+                          [items]="vendorItems"
+                          [(value)]="model.vendorId"
+                          (valueChange)="onVendorChange($event)"
                         >
-                          <option
-                            [ngValue]="vendor.companyid"
-                            *ngFor="let vendor of vendors"
-                          >
-                            {{ vendor.name }}
-                          </option>
-                        </select>
-
+                        </app-dropdown-treeview-select>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="details">Details</label>

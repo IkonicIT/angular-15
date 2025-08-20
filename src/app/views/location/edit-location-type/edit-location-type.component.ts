@@ -12,8 +12,8 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 })
 export class EditLocationTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
+    parentId: {
+      typeId: 0,
     },
   };
   locationTypeId: any;
@@ -65,12 +65,12 @@ export class EditLocationTypeComponent implements OnInit {
 
         console.log(response);
         this.model = response;
-        if (!this.model.parentid) {
-          this.model.parentid = {
-            typeid: 0,
+        if (!this.model.parentId) {
+          this.model.parentId = {
+            typeId: 0,
           };
         } else {
-          this.value = this.model.parentid.typeid;
+          this.value = this.model.parentId.typeId;
         }
       },
       (error) => {
@@ -109,7 +109,7 @@ export class EditLocationTypeComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -125,24 +125,24 @@ export class EditLocationTypeComponent implements OnInit {
   updateLocationType() {
     if (this.model.name && this.value != this.locationTypeId) {
       var request = {
-        attributesearchdisplay: 0,
+        attributeSearchDisplay: 0,
         description: this.model.description,
-        entitytypeid: this.model.entitytypeid,
-        hostingfee: this.model.hostingfee,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: this.model.entitytypeid,
+        hostingFee: this.model.hostingfee,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'locationtype',
         name: this.model.name,
-        parentid: {
-          typeid: this.value ? this.value : 0,
+        parentId: {
+          typeId: this.value ? this.value : 0,
         },
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         typeList: this.model.typeList,
-        typeid: this.locationTypeId,
-        typemtbs: 0,
-        typespareratio: 0,
+        typeId: this.locationTypeId,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
       };
       this.spinner.show();
 

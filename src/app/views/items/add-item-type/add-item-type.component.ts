@@ -76,7 +76,7 @@ export class AddItemTypeComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -93,26 +93,26 @@ export class AddItemTypeComponent implements OnInit {
   saveItemType() {
     if (this.model.name) {
       var request = {
-        attributesearchdisplay: this.model.attributesearchdisplay
-          ? this.model.attributesearchdisplay
+        attributeSearchDisplay: this.model.attributeSearchDisplay
+          ? this.model.attributeSearchDisplay
           : 0,
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         description: this.model.description,
-        entitytypeid: 0,
-        hostingfee: this.model.hostingFee ? this.model.hostingFee : 0,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: 0,
+        hostingFee: this.model.hostingFee ? this.model.hostingFee : 0,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'itemtype',
         name: this.model.name,
-        parentid: {
-          typeid: this.value ? this.value : 0,
+        parentId: {
+          typeId: this.value ? this.value : 0,
         },
-        typeid: 0,
-        typemtbs: this.model.typemtbs ? this.model.typemtbs : 0,
-        typespareratio: this.model.typespareratio
-          ? this.model.typespareratio
+        typeId: 0,
+        typeMtbs: this.model.typeMtbs ? this.model.typeMtbs : 0,
+        typeSpareRatio: this.model.typeSpareRatio
+          ? this.model.typeSpareRatio
           : 0.2,
       };
       this.spinner.show();

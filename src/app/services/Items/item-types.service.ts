@@ -33,7 +33,7 @@ export class ItemTypesService {
 
   updateItemType(itemType: any) {
     return this.http
-      .put(this.serviceURL + '/' + itemType.typeid, itemType, this.httpOptions)
+      .put(this.serviceURL + '/' + itemType.typeId, itemType, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

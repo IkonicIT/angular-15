@@ -93,32 +93,3 @@ button {
 ::ng-deep .alert-dismissible button {
   visibility: hidden;
 }
-.dropdown-wrapper {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  background-color: #fff;
-  box-sizing: border-box;
-  padding-right: 30px; /* space for arrow */
-}
-
-.dropdown-wrapper app-dropdown-treeview-select {
-  display: block;
-  width: 100%;
-  padding: 6px 12px;
-  font-size: 14px;
-  box-sizing: border-box;
-  background-color: transparent;
-}
-
-.dropdown-arrow {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  font-size: 16px;
-  color: #555;
-}

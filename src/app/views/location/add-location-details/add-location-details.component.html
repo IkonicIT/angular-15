@@ -130,15 +130,15 @@
                         <label for="status">Status</label>
                         <select
                           class="form-control custom-dropdown"
-                          [(ngModel)]="model.statusid"
+                          [(ngModel)]="model.statusId"
                           name="status"
                           #status="ngModel"
                           id="status"
                         >
                           <option value="">Choose..</option>
                           <option
-                            [value]="stat.statusid"
-                            [ngValue]="stat.statusid"
+                            [value]="stat.statusId"
+                            [ngValue]="stat.statusId"
                             *ngFor="let stat of statuses"
                           >
                             {{ stat.status }}

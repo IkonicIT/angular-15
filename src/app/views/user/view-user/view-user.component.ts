@@ -67,25 +67,23 @@ export class ViewUserComponent implements OnInit {
 
   getUserInfo() {
     this.spinner.show();
-    this.loader = true;
+
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
     this.spinner.hide();
-    this.loader = false;
 
     this.spinner.show();
-    this.loader = true;
+
     this.userManagementService
       .getprofileWithType(this.userId, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         this.profileId = response.profileid;
         this.checkCompany();
         this.getTypeAttributes(this.model.userTypeId);
         this.spinner.hide();
-        this.loader = false;
       });
   }
   checkCompany() {
@@ -113,7 +111,7 @@ export class ViewUserComponent implements OnInit {
   getTypeAttributes(typeId: string) {
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
+
       this.userAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -147,20 +145,18 @@ export class ViewUserComponent implements OnInit {
           } else {
             this.model.attributevalues = [];
             this.typeAttributes.forEach((attr: any) => {
-                this.model.attributevalues.push({
-                  attributename: attr,
-                  entityid: this.profileId,
-                  entitytypeid: attr.type.entitytypeid,
-                  lastmodifiedby: attr.type.lastmodifiedby,
-                  value: attr.value,
-                });
-              }
-            );
+              this.model.attributevalues.push({
+                attributename: attr,
+                entityid: this.profileId,
+                entitytypeid: attr.type.entitytypeid,
+                lastmodifiedby: attr.type.lastmodifiedby,
+                value: attr.value,
+              });
+            });
           }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -179,7 +175,7 @@ export class ViewUserComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -201,28 +197,26 @@ export class ViewUserComponent implements OnInit {
 
   getVendorCompanies() {
     this.spinner.show();
-    this.loader = true;
-    this.companyManagementService.getAllVendors(this.companyId).subscribe(
+
+    this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
 
         this.allVendors = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
   getUserCompaniesList() {
     this.spinner.show();
-    this.loader = true;
+
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
     this.spinner.hide();
-    this.loader = false;
   }
 
   cancelUser() {

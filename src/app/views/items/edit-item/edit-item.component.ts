@@ -19,7 +19,6 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Location } from '@angular/common';
 import { isUndefined, isNull } from 'is-what';
 import { DomSanitizer } from '@angular/platform-browser';
-import { faL } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-edit-item',
@@ -82,6 +81,7 @@ export class EditItemComponent implements OnInit {
   helpFlag: any = false;
   dismissible = true;
   loader = false;
+  highestRank : any;
   constructor(
     private locationManagementService: LocationManagementService,
     private companyManagementService: CompanyManagementService,
@@ -120,6 +120,7 @@ export class EditItemComponent implements OnInit {
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
     this.itemRank = this.broadcasterService.itemRank;
+    this.highestRank = sessionStorage.getItem('highestRank');
     if (this.itemId) {
       this.getAllLocationsWithHierarchy();
       this.getJournalLog();
@@ -148,7 +149,7 @@ export class EditItemComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -159,11 +160,11 @@ export class EditItemComponent implements OnInit {
 
   getItemDetails() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemManagementService.getItemById(this.itemId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         this.currentItemTag = this.model.tag;
         this.currentAttachmentId = this.model.defaultImageAttachmentId;
@@ -182,7 +183,6 @@ export class EditItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -197,7 +197,7 @@ export class EditItemComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -234,17 +234,16 @@ export class EditItemComponent implements OnInit {
   getTypeName(typeId: any) {
     let typeName;
     this.itemTypes.forEach((type: any) => {
-        if (type.typeid == typeId) {
-          typeName = type.name;
-        } else if (type.typeList.length >= 1) {
-          type.typeList.forEach((type: any) => {
-            if (type.typeid == typeId) {
-              typeName = type.name;
-            }
-          });
-        }
+      if (type.typeid == typeId) {
+        typeName = type.name;
+      } else if (type.typeList.length >= 1) {
+        type.typeList.forEach((type: any) => {
+          if (type.typeid == typeId) {
+            typeName = type.name;
+          }
+        });
       }
-    );
+    });
     return typeName;
   }
 
@@ -256,25 +255,23 @@ export class EditItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getWarrantyTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -287,7 +284,6 @@ export class EditItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -295,7 +291,7 @@ export class EditItemComponent implements OnInit {
   getItemTypeAttributes(typeId: string) {
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -314,11 +310,9 @@ export class EditItemComponent implements OnInit {
             });
           }
           this.spinner.hide();
-          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -326,19 +320,22 @@ export class EditItemComponent implements OnInit {
 
   updateItem() {
     if (
-      this.model.typeId && this.model.typeId != 0 && this.model.tag && this.model.tag != '' && !this.isDuplicateTag
+      this.model.typeId &&
+      this.model.typeId != 0 &&
+      this.model.tag &&
+      this.model.tag != '' &&
+      !this.isDuplicateTag
     ) {
       this.item.attributevalues = [];
       this.typeAttributes.forEach((attr: any) => {
-          this.item.attributevalues.push({
-            attributename: attr,
-            entityid: this.itemId,
-            entitytypeid: attr.type.entitytypeid,
-            lastmodifiedby: this.userName,
-            value: attr.value != null ? attr.value : '',
-          });
-        }
-      );
+        this.item.attributevalues.push({
+          attributename: attr,
+          entityid: this.itemId,
+          entitytypeid: attr.type.entitytypeid,
+          lastmodifiedby: this.userName,
+          value: attr.value != null ? attr.value : '',
+        });
+      });
 
       this.reqAttrValidate = false;
       this.item.attributevalues.forEach(
@@ -366,43 +363,53 @@ export class EditItemComponent implements OnInit {
         }
       );
       var req = {
-        attributevalues: this.item.attributevalues ? this.item.attributevalues : null,
-        defaultimageattachmentid: this.model.defaultImageAttachmentId,
+        attributeValues: this.item.attributevalues
+          ? this.item.attributevalues
+          : null,
+        defaultImageAttachmentId: this.model.defaultImageAttachmentId,
         description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.desiredSpareRatio ? this.model.desiredSpareRatio : 0,
-        inserviceon: this.model.inServiceOn,
-        isinrepair: false,
-        isstale: false,
-        itemid: this.itemId,
-        lastmodifiedby: this.userName,
-        locationid: this.model.locationId ? this.model.locationId : 0,
-        manufacturerid: null,
-        meantimebetweenservice: this.model.meanTimeBetweenService ? this.model.meanTimeBetweenService : 0,
-        modelnumber: 'string',
+        desiredSpareRatio: this.model.desiredSpareRatio
+          ? this.model.desiredSpareRatio
+          : 0,
+        inServiceOn: this.model.inServiceOn,
+        isInRepair: false,
+        isStale: false,
+        itemId: this.itemId,
+        lastModifiedBy: this.userName,
+        locationId: this.model.locationId ? this.model.locationId : 0,
+        manufacturerId: null,
+        meanTimeBetweenService: this.model.meanTimeBetweenService
+          ? this.model.meanTimeBetweenService
+          : 0,
+        modelNumber: 'string',
         name: this.model.name ? this.model.name : '',
-        purchasedate: this.model.purchaseDate ? this.model.purchaseDate : '',
-        purchaseprice: this.model.purchasePrice ? this.model.purchasePrice : 0,
-        repairqual: 0,
-        serialnumber: '',
-        statusid: this.model.statusId ? this.model.statusId : 0,
-        statusname: this.model.status ? this.model.status : 0,
-        companyid: this.companyId,
+        purchaseDate: this.model.purchaseDate ? this.model.purchaseDate : '',
+        purchasePrice: this.model.purchasePrice ? this.model.purchasePrice : 0,
+        repairQual: 0,
+        serialNumber: '',
+        statusId: this.model.statusId ? this.model.statusId : 0,
+        statusName: this.model.status ? this.model.status : 0,
+        companyId: this.companyId,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyExpiration ? this.model.warrantyExpiration : '',
-        warrantytypeid: this.model.warrantyTypeId ? this.model.warrantyTypeId : 0,
-        userid: sessionStorage.getItem('userId'),
+        warrantyExpiration: this.model.warrantyExpiration
+          ? this.model.warrantyExpiration
+          : '',
+        warrantyTypeId: this.model.warrantyTypeId
+          ? this.model.warrantyTypeId
+          : 0,
+        userId: sessionStorage.getItem('userId'),
         typeName: this.model.typeName,
         locationName: this.model.locationName,
         updatedDate: new Date().toISOString(),
       };
       if (this.reqAttrValidate == false) {
         this.spinner.show();
-        this.loader = true;
+
         this.itemManagementService.updateItem(req).subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.index = 1;
             if (this.model.tag != this.currentItemTag) {
               this.broadcasterService.currentItemTag = this.model.tag;
@@ -411,12 +418,11 @@ export class EditItemComponent implements OnInit {
             setTimeout(() => {
               this.index = 0;
             }, 7000);
-            this.router.navigate(['/items/viewItem/' + req.itemid]);
+            this.router.navigate(['/items/viewItem/' + req.itemId]);
             window.scroll(0, 0);
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {
@@ -454,12 +460,11 @@ export class EditItemComponent implements OnInit {
 
   refreshCall() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemManagementService
       .getItemById(this.itemId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
 
         this.model = response;
 
@@ -493,7 +498,7 @@ export class EditItemComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.itemManagementService
       .removeItem(
         this.itemId,
@@ -505,7 +510,7 @@ export class EditItemComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.itemManagementService.deleteFlag = 1;
           this.itemManagementService.itemSearchResults = [];
@@ -517,7 +522,6 @@ export class EditItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -548,7 +552,7 @@ export class EditItemComponent implements OnInit {
 
   getAttachments() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService.getAllItemPictures(this.itemId).subscribe(
       (response: any) => {
         this.itemAttachments = response;
@@ -572,25 +576,24 @@ export class EditItemComponent implements OnInit {
             }
           );
         this.spinner.hide();
-        this.loader = false;
+
         this.myModal.show();
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getItemDefaultImage() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService
       .getItemDocuments(this.currentAttachmentId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           if (response.isNew)
             this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
               `data:image/png;base64, ${response.attachmentFile}`
@@ -604,7 +607,6 @@ export class EditItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

@@ -10,6 +10,11 @@ import { UserManagementService } from '../../../services/user-management.service
 })
 export class ChangePasswordComponent implements OnInit {
   model: any = {};
+  showPassword = {
+    current: false,
+    new: false,
+    confirm: false
+  };
   user: any = {};
   index: number;
   dismissible = true;
@@ -33,10 +38,10 @@ export class ChangePasswordComponent implements OnInit {
       this.model.newPassword == this.model.confirmPassword
     ) {
       var req = {
-        currentpassword: this.model.currentPassword,
-        newpassword: this.model.newPassword,
-        confirmpassword: this.model.confirmPassword,
-        lastpasswordchangeddate: this.model.date,
+        currentPassword: this.model.currentPassword,
+        newPassword: this.model.newPassword,
+        confirmPassword: this.model.confirmPassword,
+        lastPasswordChangedDate: this.model.date,
         userid: sessionStorage.getItem('userId'),
       };
       if (
@@ -45,11 +50,11 @@ export class ChangePasswordComponent implements OnInit {
         )
       ) {
         this.spinner.show();
-        this.loader = true;
+
         this.userManagementService.changePassword(req).subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.user = response;
 
             this.index = 1;
@@ -63,7 +68,6 @@ export class ChangePasswordComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {
@@ -79,4 +83,9 @@ export class ChangePasswordComponent implements OnInit {
       }
     }
   }
+
+  togglePasswordVisibility(field: 'current' | 'new' | 'confirm') {
+    this.showPassword[field] = !this.showPassword[field];
+  }  
+
 }

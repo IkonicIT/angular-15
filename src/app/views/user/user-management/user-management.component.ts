@@ -60,25 +60,23 @@ export class UserManagementComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     if (this.isOwnerAdmin == 'true') {
       this.spinner.show();
-      this.loader = true;
+
       this.userManagementService
         .getAllUsersAsOwnerAdmin(this.companyId)
         .subscribe((response) => {
           console.log(response);
           this.users = response;
           this.spinner.hide();
-          this.loader = false;
         });
     } else {
       this.spinner.show();
-      this.loader = true;
+
       this.userManagementService
         .getAllUsers(this.companyId)
         .subscribe((response) => {
           console.log(response);
           this.users = response;
           this.spinner.hide();
-          this.loader = false;
         });
     }
   }
@@ -100,38 +98,38 @@ export class UserManagementComponent implements OnInit {
   }
 
   editUser(user: {
-    firstname: string;
-    lastname: string;
-    userid: string;
-    profileid: string;
+    firstName: string;
+    lastName: string;
+    userId: string;
+    profileId: string;
   }) {
-    this.broadcasterService.username = user.firstname + ' ' + user.lastname;
+    this.broadcasterService.username = user.firstName + ' ' + user.lastName;
     this.router.navigate([
-      '/user/editUser/' + user.userid + '/' + user.profileid,
+      '/user/editUser/' + user.userId + '/' + user.profileId,
     ]);
   }
 
   viewUser(user: any) {
-    this.broadcasterService.username = user.firstname + ' ' + user.lastname;
+    this.broadcasterService.username = user.firstName + ' ' + user.lastName;
     this.router.navigate([
-      '/user/viewUser/' + user.userid + '/' + user.profileid,
+      '/user/viewUser/' + user.userId + '/' + user.profileId,
     ]);
   }
 
   openModal(
     template: TemplateRef<any>,
-    user: { userid: any; profileid: any; username: any }
+    user: { userId: any; profileId: any; userName: any }
   ) {
-    this.index = user.userid;
-    this.profileId = user.profileid;
-    this.userName = user.username;
+    this.index = user.userId;
+    this.profileId = user.profileId;
+    this.userName = user.userName;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.userManagementService
       .removeUser(
         this.index,
@@ -169,5 +167,15 @@ export class UserManagementComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+  onChange(e: any) {
+    const totalWarrantyTypesCount = this.users.length;
+    const maxPageAvailable = Math.ceil(
+      totalWarrantyTypesCount / this.itemsForPagination
+    );
+    // Check if the current page exceeds the maximum available page
+    if (this.p > maxPageAvailable) {
+      this.p = maxPageAvailable;
+    }
   }
 }

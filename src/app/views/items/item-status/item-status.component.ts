@@ -61,12 +61,12 @@ export class ItemStatusComponent implements OnInit {
 
   getStatuses() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemStatusService
       .getAllItemStatuses(this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.statuses = response;
       });
@@ -76,9 +76,9 @@ export class ItemStatusComponent implements OnInit {
     this.router.navigate(['/items/addItemStatus/']);
   }
 
-  editStatus(status: { statusid: string }) {
-    console.log('statusid=' + status.statusid);
-    this.router.navigate(['/items/editItemStatus/' + status.statusid]);
+  editStatus(status: { statusId: string }) {
+    console.log('statusid=' + status.statusId);
+    this.router.navigate(['/items/editItemStatus/' + status.statusId]);
   }
 
   openModal(template: TemplateRef<any>, id: number) {
@@ -86,23 +86,23 @@ export class ItemStatusComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  
-
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.itemStatusService
       .removeItemStatus(this.index, this.userName)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.modalRef.hide();
         this.getStatuses();
         const currentPage = this.p;
         const statusCount = this.statuses.length - 1;
-        const maxPageAvailable = Math.ceil(statusCount / this.itemsForPagination);
-        if (currentPage > maxPageAvailable){
+        const maxPageAvailable = Math.ceil(
+          statusCount / this.itemsForPagination
+        );
+        if (currentPage > maxPageAvailable) {
           this.p = maxPageAvailable;
         }
       });
@@ -131,7 +131,7 @@ export class ItemStatusComponent implements OnInit {
     const currentPage = this.p;
     const statusCount = this.statuses.length - 1;
     const maxPageAvailable = Math.ceil(statusCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
+    if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

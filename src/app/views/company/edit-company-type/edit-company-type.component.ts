@@ -32,7 +32,7 @@ export class EditCompanyTypeComponent implements OnInit {
   userName: any;
   helpFlag: any = false;
   dismissible = true;
-  loader = false
+  loader = false;
 
   constructor(
     private companyTypesService: CompanyTypesService,
@@ -56,10 +56,9 @@ export class EditCompanyTypeComponent implements OnInit {
       console.log('Query params ', this.typeId);
     });
     this.spinner.show();
-    this.loader = true;
+
     this.companyTypesService.getCompanyType(this.typeId).subscribe(
       (response) => {
-        this.loader = false;
         this.model = response;
         if (!this.model.parentid) {
           this.model.parentid = {
@@ -72,20 +71,19 @@ export class EditCompanyTypeComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getAllTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.companyTypesService
       .getAllCompanyTypesWithHierarchy(this.companyId)
       .subscribe(
-        (response) => {          
+        (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.cmpTypes = response;
           var self = this;
           if (this.cmpTypes && this.cmpTypes.length > 0) {
@@ -94,7 +92,6 @@ export class EditCompanyTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -136,34 +133,34 @@ export class EditCompanyTypeComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       var request = {
-        attributesearchdisplay: 0,
+        attributeSearchDisplay: 0,
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         description: this.model.description,
-        entitytypeid: this.model.entitytypeid,
-        hostingfee: this.model.hostingfee,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: this.model.entitytypeid,
+        hostingFee: this.model.hostingfee,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'companytype',
         name: this.model.name,
-        parentid: {
-          typeid: this.value ? this.value : 0,
+        parentId: {
+          typeId: this.value ? this.value : 0,
         },
         typeList: this.model.typeList,
-        typeid: this.typeId,
-        typemtbs: 0,
-        typespareratio: 0,
-        moduletype: 'companytype',
+        typeId: this.typeId,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
+        // moduletype: 'companytype',
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyTypesService
         .updateCompanyType(this.typeId, request)
         .subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.index = 1;
             setTimeout(() => {
               this.index = 0;
@@ -173,7 +170,6 @@ export class EditCompanyTypeComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     }

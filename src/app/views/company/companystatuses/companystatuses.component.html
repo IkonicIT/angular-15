@@ -35,7 +35,12 @@
           </div>
         </div>
 
-        <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible">
+        <alert
+          *ngIf="index1 == 1"
+          type="success"
+          [dismissible]="dismissible"
+          class="space"
+        >
           Company Status Deleted successfully.
         </alert>
         <div class="card-body">
@@ -49,6 +54,7 @@
               data-bs-toggle="tooltip"
               title="Add  New Company Status."
               placement="top"
+               style="border-radius: 6px;"
             >
               Add Status
             </button>
@@ -57,7 +63,10 @@
             <div class="float-left">
               <span
                 >Show
-                <select [(ngModel)]="itemsForPagination" (change) = "onChange($event.target)">
+                <select
+                  [(ngModel)]="itemsForPagination"
+                  (change)="onChange($event.target)"
+                >
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
@@ -116,7 +125,7 @@
                     data-bs-toggle="tooltip"
                     title=" Delete this Company Status"
                     class="btn btn-outline-danger btn-sm"
-                    (click)="openModal(confirmtemplate, company.statusid)"
+                    (click)="openModal(confirmtemplate, company.statusId)"
                     [disabled]="highestRank == 9"
                   >
                     Delete
@@ -252,4 +261,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-

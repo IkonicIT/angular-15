@@ -1,14 +1,12 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-lg-12 col-padding">
+    <div class="col-lg-12">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
           <button
             type="button"
             (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
+            tooltip="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
@@ -16,9 +14,7 @@
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
+            tooltip=" Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
@@ -63,8 +59,11 @@
             which contain at least one lowercase letter, one uppercase letter,
             one numeric digit, and one special character
           </alert>
+          <alert type="danger" *ngIf="index == -5" [dismissible]="dismissible">
+            Please Select the Vendor
+          </alert>
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding col-padding">
+            <div class="col-sm-12 mobile-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Adding New User</strong>
@@ -74,7 +73,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="lType">User Name</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -119,7 +118,7 @@
 
                       <div class="form-group col-sm-6">
                         <label for="email">E-mail</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -166,9 +165,10 @@
                     <div class="row">
                       <div class="form-group col-md-6">
                         <label for="password">Password</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
+                        <div class="input-group">
                         <input
-                          type="password"
+                          [type]="showPassword.password ? 'text' : 'password'"
                           class="form-control"
                           [(ngModel)]="model.password"
                           name="password"
@@ -176,34 +176,53 @@
                           id="password"
                           pattern=" /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/"
                           ngModel
-                          passwordToggle
                           required
                         />
+                        <div class="input-group-append">
+                          <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            (click)="togglePasswordVisibility('password')"
+                        >
+                            <i class="fa" [ngClass]="showPassword.password ? 'fa-eye-slash' : 'fa-eye'"></i>
+                          </button>
+                        </div>
                       </div>
+                    </div>
                       <div class="form-group col-md-6">
                         <label for="cPassword">Confirm Password</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
+                        <div class="input-group">
                         <input
-                          type="password"
+                          [type]="showPassword.confirmPassword ? 'text' : 'password'"
                           class="form-control"
                           [(ngModel)]="model.confirmPassword"
                           name="cPassword"
                           #cPassword="ngModel"
                           id="cPassword"
                           ngModel
-                          passwordToggle
                           required
                         />
+                        <div class="input-group-append">
+                          <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            (click)="togglePasswordVisibility('confirmPassword')"
+                        >
+                            <i class="fa" [ngClass]="showPassword.confirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                          </button>
+                        </div>
                       </div>
                     </div>
+                  </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fname">First Name</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.firstname"
+                          [(ngModel)]="model.firstName"
                           name="fname"
                           #fname="ngModel"
                           id="fname"
@@ -211,11 +230,11 @@
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="lName">Last Name</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.lastname"
+                          [(ngModel)]="model.lastName"
                           name="lName"
                           #lName="ngModel"
                           id="lName"
@@ -225,10 +244,10 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="company">Select Company</label
-                        ><strong class="text-danger">*</strong>
+                        ><strong class="text-danger"> *</strong>
                         <select
-                          class="form-control"
-                          [(ngModel)]="model.companyid"
+                          class="form-control custom-dropdown"
+                          [(ngModel)]="model.companyId"
                           name="commpanyid"
                           #companyid="ngModel"
                           id="company"
@@ -260,7 +279,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.jobtitle"
+                          [(ngModel)]="model.jobTitle"
                           name="job"
                           #job="ngModel"
                           id="job"
@@ -304,34 +323,54 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="req" class="btn-right"
+                        <label for="req" class="me-1">Vendor</label>
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="model.isVendor"
+                          name="req"
+                          #req="ngModel"
+                          id="req"
+                        />
+                      </div>
+                      <div *ngIf="model.isVendor" class="form-group col-sm-6">
+                        <label for="vendor">
+                          Select Vendor<strong class="text-danger"> *</strong>
+                        </label>
+                        <app-dropdown-treeview-select
+                          [items]="vendorItems"
+                          [(value)]="model.vendorId"
+                          (valueChange)="onVendorChange($event)"
+                        >
+                        </app-dropdown-treeview-select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="req" class="me-1"
                           >Receive RFQ Notification</label
                         >
                         <input
                           type="checkbox"
-                          [(ngModel)]="model.sendreceiverfq"
+                          [(ngModel)]="model.sendReceiverFq"
                           name="req"
                           #req="ngModel"
                           id="req"
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
                           type="submit"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Save this User"
+                          tooltip="Save this User"
                           class="btn btn-primary btn-right"
                         >
                           Save
                         </button>
                         <button
                           type="button"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Cancel"
+                          tooltip="Cancel"
                           (click)="cancelUser()"
                           class="btn btn-primary"
                         >
@@ -349,105 +388,3 @@
     </div>
   </div>
 </div>
-
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

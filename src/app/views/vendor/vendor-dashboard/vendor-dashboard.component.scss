@@ -1,0 +1,80 @@
+.my-pagination ::ng-deep .ngx-pagination {
+  margin-bottom: 1rem;
+  margin-top: 25px;
+  width: fit-content;
+  border: solid 1px #a4b7c1;
+  padding-left: 0px;
+}
+.my-pagination ::ng-deep .ngx-pagination .current {
+  color: white;
+  background-color: red;
+}
+.my-pagination ::ng-deep .ngx-pagination a,
+.ngx-pagination button {
+  color: red;
+  background-color: white;
+}
+thead th {
+  cursor: pointer;
+  span {
+    visibility: hidden;
+  }
+  &.active {
+    color: #000;
+
+    span {
+      visibility: visible;
+    }
+  }
+}
+.float-right {
+  float: right;
+}
+.div-search {
+  margin-bottom: 1%;
+  margin-top: 1%;
+}
+
+.company-container {
+  margin-bottom: 20px; /* Adjust the value as needed for the desired spacing */
+}
+
+.alignment {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}
+
+.container-width {
+  width: 20%;
+  height: 100%;
+}
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  border: 1px solid #ced4da;   /* Match <select> border */
+  border-radius: 4px;
+  padding-right: 30px;         /* Room for arrow */
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;           /* Match <select> padding */
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;             /* Medium size arrow */
+  color: #555;
+  z-index: 1;
+}

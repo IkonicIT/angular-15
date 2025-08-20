@@ -1,0 +1,235 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <!-- src/app/views/cranes/edit-cranes/edit-cranes.component.html -->
+          <div class="edit-crane-container m-5">
+            <h2 class="text-danger m-n5 pb-3">Edit Crane</h2>
+
+            <form (ngSubmit)="updateCrane()">
+              <p *ngIf="successMessage" class="alert alert-success">
+                {{ successMessage }}
+              </p>
+              <div class="col-12 d-flex flex-row justify-content-center">
+                <div class="form-group col-md-6">
+                  <label for="bmdrnk">BMDRNK</label>
+                  <input
+                    type="text"
+                    id="bmdrnk"
+                    [(ngModel)]="craneData.bmdrnk"
+                    name="bmdrnk"
+                    class="form-control bg-white"
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="bmdes1">BMDES1</label>
+                  <input
+                    type="text"
+                    id="bmdes1"
+                    [(ngModel)]="craneData.bmdes1"
+                    name="bmdes1"
+                    class="form-control bg-white"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 d-flex flex-row justify-content-center">
+                <div class="form-group col-md-6">
+                  <label for="bmdes2">BMDES2</label>
+                  <input
+                    type="text"
+                    id="bmdes2"
+                    [(ngModel)]="craneData.bmdes2"
+                    name="bmdes2"
+                    class="form-control bg-white"
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="bmdes3">BMDES3</label>
+                  <input
+                    type="text"
+                    id="bmdes3"
+                    [(ngModel)]="craneData.bmdes3"
+                    name="bmdes3"
+                    class="form-control bg-white"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 d-flex flex-row justify-content-center">
+                <div class="form-group col-md-6">
+                  <label for="bmdrno">BMDRNO</label>
+                  <input
+                    type="text"
+                    id="bmdrno"
+                    [(ngModel)]="craneData.bmdrno"
+                    name="bmdrno"
+                    class="form-control bg-white"
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="bmsto1">BMSTO1</label>
+                  <input
+                    type="text"
+                    id="bmsto1"
+                    [(ngModel)]="craneData.bmsto1"
+                    name="bmsto1"
+                    class="form-control bg-white"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 d-flex flex-row justify-content-center">
+                <div class="form-group col-md-6">
+                  <label for="bmsto2">BMSTO2</label>
+                  <input
+                    type="text"
+                    id="bmsto2"
+                    [(ngModel)]="craneData.bmsto2"
+                    name="bmsto2"
+                    class="form-control bg-white"
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="bmqtyu">BMQTYU</label>
+                  <input
+                    type="text"
+                    id="bmqtyu"
+                    [(ngModel)]="craneData.bmqtyu"
+                    name="bmqtyu"
+                    class="form-control bg-white"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 d-flex flex-row justify-content-center">
+                <div class="form-group col-md-6">
+                  <label for="bmcomm">BMCOMM</label>
+                  <input
+                    type="text"
+                    id="bmcomm"
+                    [(ngModel)]="craneData.bmcomm"
+                    name="bmcomm"
+                    class="form-control bg-white"
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="bmnot1">BMNOT1</label>
+                  <input
+                    type="text"
+                    id="bmnot1"
+                    [(ngModel)]="craneData.bmnot1"
+                    name="bmnot1"
+                    class="form-control bg-white"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 d-flex flex-row justify-content-center">
+                <div class="form-group col-md-6">
+                  <label for="bmnot2">BMNOT2</label>
+                  <input
+                    type="text"
+                    id="bmnot2"
+                    [(ngModel)]="craneData.bmnot2"
+                    name="bmnot2"
+                    class="form-control bg-white"
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="bmnot3">BMNOT3</label>
+                  <input
+                    type="text"
+                    id="bmnot3"
+                    [(ngModel)]="craneData.bmnot3"
+                    name="bmnot3"
+                    class="form-control bg-white"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 d-flex flex-row justify-content-center">
+                <div class="form-group col-md-6">
+                  <label for="bmbin1">BMBIN1</label>
+                  <input
+                    type="text"
+                    id="bmbin1"
+                    [(ngModel)]="craneData.bmbin1"
+                    name="bmbin1"
+                    class="form-control bg-white"
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="bmbin2">BMBIN2</label>
+                  <input
+                    type="text"
+                    id="bmbin2"
+                    [(ngModel)]="craneData.bmbin2"
+                    name="bmbin2"
+                    class="form-control bg-white"
+                  />
+                </div>
+              </div>
+              <!-- Add other form fields here for the rest of the craneData properties -->
+              <div class="col-12 d-flex flex-row justify-content-center">
+                <div class="form-group col-md-6">
+                  <label for="bmdrnk">BMDRNK</label>
+                  <input
+                    type="text"
+                    id="bmdrnk"
+                    [(ngModel)]="craneData.bmdrnk"
+                    name="bmdrnk"
+                    class="form-control bg-white"
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="bmdes1">Description 1</label>
+                  <input
+                    type="text"
+                    id="bmdes1"
+                    [(ngModel)]="craneData.bmdes1"
+                    name="bmdes1"
+                    class="form-control bg-white"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 d-flex flex-row justify-content-center">
+                <div class="form-group col-md-12">
+                  <label for="bmfram">BMFRAM</label>
+                  <input
+                    type="text"
+                    id="bmfram"
+                    [(ngModel)]="craneData.bmfram"
+                    name="bmfram"
+                    class="form-control bg-white"
+                  />
+                </div>
+              </div>
+              <!-- Add other fields similarly -->
+              <div class="d-flex flex-row justify-content-center">
+                <button
+                  type="submit"
+                  class="btn btn-danger me-1"
+                  (click)="updateCrane()"
+                  style="border-radius: 6px;"
+                >
+                  Update
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger ml-3"
+                  (click)="navigateToCranes()"
+                  style="border-radius: 6px;"
+                >
+                  Back
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

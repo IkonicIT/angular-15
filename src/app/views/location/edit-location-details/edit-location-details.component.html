@@ -79,7 +79,7 @@
                         >
                         <input
                           type="text"
-                          [(ngModel)]="location.locationid"
+                          [(ngModel)]="location.locationId"
                           name="_id"
                           #_id="ngModel"
                           id="_id"
@@ -129,15 +129,15 @@
                       <div class="form-group col-sm-6">
                         <label for="status">Status</label>
                         <select
-                          class="form-control"
-                          [(ngModel)]="location.statusid"
+                          class="form-control custom-dropdown"
+                          [(ngModel)]="location.statusId"
                           name="status"
                           #status="ngModel"
                           id="status"
                         >
                           <option value="">Choose..</option>
                           <option
-                            [ngValue]="stat.statusid"
+                            [ngValue]="stat.statusId"
                             *ngFor="let stat of statuses"
                           >
                             {{ stat.status }}
@@ -164,8 +164,8 @@
                         <input
                           type="checkbox"
                           class="form-check-input checkbox-large"
-                          [checked]="location.isvendor"
-                          (change)="location.isvendor = !location.isvendor"
+                          [checked]="location.isVendor"
+                          (change)="location.isVendor = !location.isVendor"
                           id="isvendor"
                           name="vLocation"
                         />
@@ -175,7 +175,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="location.desiredspareratio"
+                          [(ngModel)]="location.desiredSpareRatio"
                           name="sRatio"
                           #sRatio="ngModel"
                           id="sRatio"
@@ -186,7 +186,7 @@
                       <div class="form-group col-sm-12">
                         <label for="vendor">Vendors</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="location.vendorCompanyId"
                           name="vendor"
                           #vendor="ngModel"
@@ -275,7 +275,7 @@
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="location.postalcode"
+                          [(ngModel)]="location.postalCode"
                           name="postalCode"
                           #postalCode="ngModel"
                           id="pcode"
@@ -354,7 +354,7 @@
                           />
                           <select
                             *ngIf="eachAttr.attributetype.attributetypeid == 4"
-                            class="form-control"
+                            class="form-control custom-dropdown"
                             [tooltip]="eachAttr.tooltip"
                             [(ngModel)]="eachAttr.value"
                             name="select{{ index }}"

@@ -104,12 +104,13 @@
                       </div>
 
                       <div class="col-sm-4 company-type-dropdown">
-                        <app-dropdown-treeview-select
+                       <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
                           (valueChange)="onValueChange($event)"
                         >
                         </app-dropdown-treeview-select>
+
                       </div>
                       <div class="col-sm-8"></div>
                     </div>
@@ -127,10 +128,10 @@
                                 (click)="
                                   setSelectedAttribute(item);
                                   model = item;
-                                  selectedAttrType = item.attributetype;
+                                  selectedAttrType = item.attributeType;
                                   index = 0;
                                   getSearchTypes(
-                                    item.attributetype?.attributetypeid
+                                    item.attributeType?.attributeTypeId
                                   );
                                   addEditFlag = true
                                 "
@@ -148,6 +149,7 @@
                               data-bs-toggle="tooltip"
                               title="Save Order Attribute"
                               (click)="saveAttributeListOrder(typeAttributes)"
+                              style="border-radius: 6px;"
                             >
                               Save Order
                             </button>
@@ -186,15 +188,15 @@
                                 <strong class="text-danger">*</strong></label
                               >
                               <select
-                                class="form-control"
+                                class="form-control custom-dropdown"
                                 [(ngModel)]="
-                                  model.attributetype.attributetypeid
+                                  model.attributetype.attributeTypeId
                                 "
                                 name="Toa"
                                 id="Toa"
                                 (change)="
                                   getSearchTypes(
-                                    model.attributetype.attributetypeid
+                                    model.attributeType.attributeTypeId
                                   )
                                 "
                               >
@@ -202,10 +204,10 @@
                                   Select attribute Type
                                 </option>
                                 <option
-                                  [ngValue]="type.attributetypeid"
+                                  [ngValue]="type.attributeTypeId"
                                   *ngFor="let type of attributeTypes"
                                 >
-                                  {{ type.typename }}
+                                  {{ type.typeName }}
                                 </option>
                               </select>
                             </div>
@@ -220,7 +222,7 @@
                               <input
                                 type="text"
                                 class="form-control"
-                                [(ngModel)]="model.tooltip"
+                                [(ngModel)]="model.toolTip"
                                 name="aTp"
                                 #aTp="ngModel"
                                 id="aToolTip"
@@ -231,7 +233,7 @@
 
                           <div
                             class="row"
-                            *ngIf="model.attributetype.attributetypeid == 4"
+                            *ngIf="model.attributeType.attributeTypeId == 4"
                           >
                             <div
                               class="form-group col-sm-12"
@@ -239,33 +241,38 @@
                             >
                               <label for="listValues">List Values</label>
                               <div class="row">
+                                <div class="col-sm-5">
                                 <input
-                                  style="margin-left: 2%"
+                                  
                                   type="text"
-                                  class="form-control col-sm-5"
+                                  class="form-control"
                                   [(ngModel)]="listItem"
                                   name="lItem"
                                   #lItem="ngModel"
                                   id="listValues"
                                   placeholder="Enter List value"
                                 />
+                              </div>
+                              <div class="col-sm-5">
                                 <select
                                   name="listItems"
                                   style="margin-left: 2%"
-                                  class="form-control col-sm-5"
+                                  class="form-control custom-dropdown"
                                 >
                                   <option
                                     *ngFor="
-                                      let addedItem of model.attributelistitemResource
+                                      let addedItem of model.attributeListItemResource
                                     "
                                   >
-                                    {{ addedItem.listitem }}
+                                    {{ addedItem.listItem }}
                                   </option>
                                 </select>
+                              </div>
                               </div>
                               <button
                                 type="button"
                                 class="btn btn-primary btn-list"
+                                style="margin-top: 8px;"
                                 (click)="addListItem()"
                               >
                                 Add to List
@@ -280,9 +287,9 @@
                             >
                               <label for="sType">Search Type</label>
                               <select
-                                class="form-control"
+                                class="form-control custom-dropdown"
                                 [(ngModel)]="
-                                  model.searchtype.attributesearchtypeid
+                                  model.searchtype.attributeSearchTypeId
                                 "
                                 id="sType"
                                 name="sType"
@@ -291,10 +298,10 @@
                                   Select Search Type
                                 </option>
                                 <option
-                                  [ngValue]="searchType.attributesearchtypeid"
+                                  [ngValue]="searchType.attributeSearchTypeId"
                                   *ngFor="let searchType of searchTypes"
                                 >
-                                  {{ searchType.searchtype }}
+                                  {{ searchType.searchType }}
                                 </option>
                               </select>
                             </div>
@@ -313,7 +320,7 @@
                                 id="rField"
                                 name="rField"
                                 #rField="ngModel"
-                                [(ngModel)]="model.isrequired"
+                                [(ngModel)]="model.isRequired"
                               />
                             </div>
                           </div>
@@ -332,6 +339,7 @@
                                 [disabled]="typeId == 0"
                                 class="btn btn-primary btn-right"
                                 (click)="createAttribute()"
+                                style="border-radius: 6px;"
                               >
                                 Add
                               </button>
@@ -343,6 +351,7 @@
                                 *ngIf="addEditFlag && highestRank > 6"
                                 class="btn btn-primary btn-right"
                                 (click)="editAttribute()"
+                                style="border-radius: 6px;"
                               >
                                 Update
                               </button>
@@ -354,6 +363,7 @@
                                 *ngIf="addEditFlag && highestRank > 6"
                                 class="btn btn-primary btn-right"
                                 (click)="newAttribute()"
+                                style="border-radius: 6px;"
                               >
                                 New
                               </button>
@@ -366,6 +376,7 @@
                                 class="btn btn-primary btn-right"
                                 (click)="openModal(confirmtemplate)"
                                 [disabled]="highestRank == 9"
+                                style="border-radius: 6px;"
                               >
                                 Remove
                               </button>
@@ -376,6 +387,7 @@
                                 title="Back"
                                 (click)="cancelCompanyAttributes()"
                                 class="btn btn-primary"
+                                style="border-radius: 6px;"
                               >
                                 Back
                               </button>

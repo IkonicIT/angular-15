@@ -61,7 +61,10 @@ title="Add New User." placement="top">Add User</button> -->
             <div class="float-left">
               <span
                 >Show
-                <select [(ngModel)]="itemsForPagination">
+                <select
+                  [(ngModel)]="itemsForPagination"
+                  (change)="onChange($event.target)"
+                >
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
@@ -72,7 +75,7 @@ title="Add New User." placement="top">Add User</button> -->
             </div>
           </div>
 
-          <div class="float-right div-search">
+          <div class="float-right div-search mb-2">
             <span>Search : </span>
             <input [(ngModel)]="userFilter" />
           </div>
@@ -82,8 +85,8 @@ title="Add New User." placement="top">Add User</button> -->
             <thead class="thead-light">
               <tr>
                 <th
-                  [class.active]="order === 'firstname'"
-                  (click)="setOrder('firstname')"
+                  [class.active]="order === 'firstName'"
+                  (click)="setOrder('firstName')"
                 >
                   User<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -92,7 +95,7 @@ title="Add New User." placement="top">Add User</button> -->
                 <th>LastLoginTime</th>
                 <th>LastLogoutTime</th>
                 <th
-                  [class.active]="order === 'firstname'"
+                  [class.active]="order === 'firstName'"
                   (click)="setOrder('logincount')"
                 >
                   LoginCount<span [hidden]="reverse == ''">▼</span
@@ -111,16 +114,16 @@ title="Add New User." placement="top">Add User</button> -->
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
-                <td>{{ result.firstname + " " + result.lastname }}</td>
+                <td>{{ result.firstName + " " + result.lastName }}</td>
 
-                <td>{{ result.isloggedin }}</td>
+                <td>{{ result.isLoggedIn }}</td>
                 <td>
-                  {{ result.lastlogindate | date : "MM/dd/yyyy , h:mm a" }}
+                  {{ result.lastLoginDate | date : "MM/dd/yyyy , h:mm a" }}
                 </td>
                 <td>
                   {{ result.lastLogoutDate | date : "MM/dd/yyyy ,h:mm a" }}
                 </td>
-                <td>{{ result.logincount }}</td>
+                <td>{{ result.loginCount }}</td>
                 <td>
                   <button
                     type="button"

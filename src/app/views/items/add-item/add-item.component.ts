@@ -75,7 +75,7 @@ export class AddItemComponent implements OnInit {
   reqAttrValidate: any;
   helpFlag: any = false;
   dismissible = true;
-  loader = false
+  loader = false;
   constructor(
     private locationManagementService: LocationManagementService,
     private locationTypesService: LocationTypesService,
@@ -118,7 +118,7 @@ export class AddItemComponent implements OnInit {
   getItemTypeAttributesClone(typeId: string) {
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -157,11 +157,9 @@ export class AddItemComponent implements OnInit {
           }
           this.model.locationTypeId = typeId;
           this.spinner.hide();
-          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -184,20 +182,19 @@ export class AddItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.locationTypes = response;
           this.locationTypes.forEach((type: { parentid: string }) => {
             if (!type.parentid) {
@@ -213,7 +210,6 @@ export class AddItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -231,7 +227,7 @@ export class AddItemComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -257,7 +253,7 @@ export class AddItemComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -268,13 +264,13 @@ export class AddItemComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.itemTypes = response;
           if (this.itemTypes && this.itemTypes.length > 0) {
             this.itemTypeItems = this.generateHierarchyForItemTypes(
@@ -285,7 +281,6 @@ export class AddItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -298,25 +293,23 @@ export class AddItemComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getWarrantyTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -325,7 +318,7 @@ export class AddItemComponent implements OnInit {
     this.getTypeName(typeId);
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -341,11 +334,9 @@ export class AddItemComponent implements OnInit {
           });
           this.model.locationTypeId = typeId;
           this.spinner.hide();
-          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -353,17 +344,16 @@ export class AddItemComponent implements OnInit {
 
   getTypeName(typeId: any) {
     this.itemTypes.forEach((type: any) => {
-        if (type.typeid == typeId) {
-          this.typeName = type.name;
-        } else if (type.typeList.length >= 1) {
-          type.typeList.forEach((type: any) => {
-            if (type.typeid == typeId) {
-              this.typeName = type.name;
-            }
-          });
-        }
+      if (type.typeid == typeId) {
+        this.typeName = type.name;
+      } else if (type.typeList.length >= 1) {
+        type.typeList.forEach((type: any) => {
+          if (type.typeid == typeId) {
+            this.typeName = type.name;
+          }
+        });
       }
-    );
+    });
   }
 
   checkItemTag(event: any) {
@@ -386,47 +376,68 @@ export class AddItemComponent implements OnInit {
       if (this.typeAttributes && this.typeAttributes.length > 0) {
         this.locationModel.attributevalues = [];
         this.typeAttributes.forEach((attr: any) => {
-            this.locationModel.attributevalues.push({
-              attributename: attr,
-              entityid: 0,
-              entitytypeid: attr.type.entitytypeid,
-              lastmodifiedby: this.userName,
-              value: attr.value,
-            });
-          }
-        );
+          this.locationModel.attributevalues.push({
+            attributename: attr,
+            entityid: 0,
+            entitytypeid: attr.type.entitytypeid,
+            lastmodifiedby: this.userName,
+            value: attr.value,
+          });
+        });
       }
       var request = [
         {
-          address1: this.locationModel.addressLineOne ? this.locationModel.addressLineOne : '',
-          address2: this.locationModel.addressLineTwo ? this.locationModel.addressLineTwo : '',
+          address1: this.locationModel.addressLineOne
+            ? this.locationModel.addressLineOne
+            : '',
+          address2: this.locationModel.addressLineTwo
+            ? this.locationModel.addressLineTwo
+            : '',
           city: this.locationModel.city ? this.locationModel.city : '',
-          typeId: this.locationModel.locationTypeId ? this.locationModel.locationTypeId : '',
+          typeId: this.locationModel.locationTypeId
+            ? this.locationModel.locationTypeId
+            : '',
           company: {
-            companyid: this.companyId,
+            companyId: this.companyId,
           },
-          criticalflag: this.locationModel.critical ? this.locationModel.critical : false,
-          description: this.locationModel.description ? this.locationModel.description : '',
-          desiredspareratio: this.locationModel.sRatio ? this.locationModel.sRatio : 0,
-          isvendor: this.locationModel.vLocation ? this.locationModel.vLocation : false,
-          lastmodifiedby: this.userName,
-          locationid: 0,
-          name: this.locationModel.locationName ? this.locationModel.locationName : '',
+          criticalFlag: this.locationModel.critical
+            ? this.locationModel.critical
+            : false,
+          description: this.locationModel.description
+            ? this.locationModel.description
+            : '',
+          desiredSpareRatio: this.locationModel.sRatio
+            ? this.locationModel.sRatio
+            : 0,
+          isVendor: this.locationModel.vLocation
+            ? this.locationModel.vLocation
+            : false,
+          lastModifiedBy: this.userName,
+          locationId: 0,
+          name: this.locationModel.locationName
+            ? this.locationModel.locationName
+            : '',
           parentLocation: {
-            locationid: this.model.locationid ? this.model.locationid : 0,
+            locationId: this.model.locationid ? this.model.locationid : 0,
           },
-          postalcode: this.locationModel.postalCode ? this.locationModel.postalCode : '',
+          postalCode: this.locationModel.postalCode
+            ? this.locationModel.postalCode
+            : '',
           state: this.locationModel.state ? this.locationModel.state : '',
-          statusid: this.locationModel.statusid ? this.locationModel.statusid : 0,
+          statusId: this.locationModel.statusId
+            ? this.locationModel.statusId
+            : 0,
           vendorCompany: {
             companyid: 0,
           },
-          attributevalues: this.locationModel.attributevalues ? this.locationModel.attributevalues : null,
+          attributeValues: this.locationModel.attributevalues
+            ? this.locationModel.attributevalues
+            : null,
         },
       ];
 
       this.spinner.show();
-      this.loader = true;
+
       this.locationManagementService.saveLocation(request).subscribe(
         (response: any) => {
           this.addedLocationId = response[0].locationid;
@@ -436,7 +447,7 @@ export class AddItemComponent implements OnInit {
               this.locationManagementService.setLocations(response);
 
               this.spinner.hide();
-              this.loader = false;
+
               this.locationIndex = 1;
               setTimeout(() => {
                 this.index = 0;
@@ -449,7 +460,6 @@ export class AddItemComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {
@@ -459,7 +469,7 @@ export class AddItemComponent implements OnInit {
 
   refreshCalls() {
     this.spinner.show();
-    this.loader = true
+
     this.locationManagementService
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe((response) => {
@@ -467,33 +477,32 @@ export class AddItemComponent implements OnInit {
         this.model.locationid = this.addedLocationId;
         this.getLocations();
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
   saveItem() {
+    console.log(this.model);
     if (
       this.model.typeId &&
       this.model.typeId != 0 &&
       this.model.tag &&
       this.model.tag != '' &&
-      this.model.statusid &&
-      this.model.statusid != 0 &&
+      this.model.statusId &&
+      this.model.statusId != 0 &&
       !this.isDuplicateTag &&
       this.model.locationid
     ) {
       if (this.typeAttributes && this.typeAttributes.length > 0) {
         this.model.attributevalues = [];
         this.typeAttributes.forEach((attr: any) => {
-            this.model.attributevalues.push({
-              attributename: attr,
-              entityid: 0,
-              entitytypeid: attr.type.entitytypeid,
-              lastmodifiedby: this.userName,
-              value: attr.value != null ? attr.value : '',
-            });
-          }
-        );
+          this.model.attributevalues.push({
+            attributename: attr,
+            entityid: 0,
+            entitytypeid: attr.type.entitytypeid,
+            lastmodifiedby: this.userName,
+            value: attr.value != null ? attr.value : '',
+          });
+        });
       }
       this.reqAttrValidate = false;
       this.model.attributevalues.forEach(
@@ -516,43 +525,47 @@ export class AddItemComponent implements OnInit {
         }
       );
       var req = {
-        attributevalues: this.model.attributevalues,
-        defaultimageattachmentid: 0,
+        attributeValues: this.model.attributeValues,
+        defaultImageAttachmentId: 0,
         description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.spareRatio ? this.model.spareRatio : 0,
-        inserviceon: this.dateNow,
-        isinrepair: false,
-        isstale: false,
-        itemid: 0,
-        lastmodifiedby: this.userName,
-        locationid: this.model.locationid ? this.model.locationid : 0,
-        manufacturerid: null,
-        meantimebetweenservice: this.model.mtbs ? this.model.mtbs : 0,
-        modelnumber: 'string',
+        desiredSpareRatio: this.model.spareRatio ? this.model.spareRatio : 0,
+        inServiceOn: this.dateNow,
+        isInRepair: false,
+        isStale: false,
+        itemId: 0,
+        lastModifiedBy: this.userName,
+        locationId: this.model.locationid ? this.model.locationid : 0,
+        manufacturerId: null,
+        meanTimeBetweenService: this.model.mtbs ? this.model.mtbs : 0,
+        modelNumber: 'string',
         name: this.model.name ? this.model.name : '',
-        purchasedate: this.model.purchasedate ? this.model.purchasedate : '',
-        purchaseprice: this.model.purchaseprice ? this.model.purchaseprice : 0,
-        repairqual: 0,
-        serialnumber: '',
-        companyid: this.companyId,
-        statusid: this.model.statusid ? this.model.statusid : 0,
+        purchaseDate: this.model.purchasedate ? this.model.purchasedate : '',
+        purchasePrice: this.model.purchaseprice ? this.model.purchaseprice : 0,
+        repairQual: 0,
+        serialNumber: '',
+        companyId: this.companyId,
+        statusId: this.model.statusId ? this.model.statusId : 0,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyexpiration ? this.model.warrantyexpiration : '',
-        warrantytypeid: this.model.warrantytypeid ? this.model.warrantytypeid : 0,
-        userid: sessionStorage.getItem('userId'),
+        warrantyExpiration: this.model.warrantyexpiration
+          ? this.model.warrantyexpiration
+          : '',
+        warrantyTypeId: this.model.warrantytypeid
+          ? this.model.warrantytypeid
+          : 0,
+        userId: sessionStorage.getItem('userId'),
         typeName: this.typeName,
         locationName: this.model.locationName,
-        statusname: this.model.statusName,
+        statusName: this.model.statusName,
         createdDate: new Date().toISOString(),
       };
       if (this.reqAttrValidate == false) {
         this.spinner.show();
-        this.loader = true;
+
         this.itemManagementService.saveItem(req).subscribe(
           (response: any) => {
             this.spinner.hide();
-            this.loader = false;
+
             this.index = 1;
             window.scroll(0, 0);
             this.itemManagementService.setSearchedItemTag(response.tag);
@@ -564,7 +577,6 @@ export class AddItemComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {
@@ -577,15 +589,15 @@ export class AddItemComponent implements OnInit {
     }
   }
 
-  getLocationNameAndStatusNameFromId(locationid: any, statusid: any) {
+  getLocationNameAndStatusNameFromId(locationid: any, statusId: any) {
     this.locations.forEach((element: { locationid: any; name: any }) => {
       if (element.locationid == locationid) {
         this.model.locationName = element.name;
       }
     });
 
-    this.statuses.forEach((element: { statusid: any; status: any }) => {
-      if (element.statusid == statusid) {
+    this.statuses.forEach((element: { statusId: any; status: any }) => {
+      if (element.statusId == statusId) {
         this.model.statusName = element.status;
       }
     });

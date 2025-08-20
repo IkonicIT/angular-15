@@ -107,7 +107,7 @@
                           <input
                             id="inservice"
                             type="checkbox"
-                            [(ngModel)]="model.inservice"
+                            [(ngModel)]="model.inService"
                             name="inservice"
                             #inservice="ngModel"
                             placeholder="Enter Status"
@@ -119,7 +119,7 @@
                           <input
                             id="repair"
                             type="checkbox"
-                            [(ngModel)]="model.underrepair"
+                            [(ngModel)]="model.underRepair"
                             name="underrepair"
                             #underrepair="ngModel"
                             placeholder="Enter Status"
@@ -158,6 +158,7 @@
                           data-bs-toggle="tooltip"
                           title="Save Item Status"
                           class="btn btn-primary btn-right"
+                          style="border-radius: 6px;"
                         >
                           Save
                         </button>
@@ -168,6 +169,7 @@
                           title="Cancel"
                           (click)="cancelAddStatus()"
                           class="btn btn-primary"
+                          style="border-radius: 6px;"
                         >
                           Cancel
                         </button>

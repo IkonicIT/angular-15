@@ -53,13 +53,13 @@ export class AddUserTypeComponent implements OnInit {
 
   getAllUserTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.userTypesService
       .getAllUserTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.userTypes = response;
           var self = this;
           if (this.userTypes && this.userTypes.length > 0) {
@@ -70,7 +70,6 @@ export class AddUserTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -102,30 +101,30 @@ export class AddUserTypeComponent implements OnInit {
   saveUserType() {
     if (this.model.name) {
       var request = {
-        attributesearchdisplay: 0,
+        attributeSearchDisplay: 0,
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         description: this.model.description,
-        entitytypeid: 0,
-        hostingfee: this.model.hostingFee ? this.model.hostingFee : 0,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: 0,
+        hostingFee: this.model.hostingFee ? this.model.hostingFee : 0,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'usertype',
         name: this.model.name,
-        parentid: {
+        parentId: {
           typeid: this.value ? this.value : 0,
         },
-        typeid: 0,
-        typemtbs: 0,
-        typespareratio: 0,
+        typeId: 0,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.userTypesService.saveUserType(request).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -135,7 +134,6 @@ export class AddUserTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {

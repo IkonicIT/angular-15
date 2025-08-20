@@ -108,7 +108,7 @@ export class ItemAttributesComponent implements OnInit {
 
   pageLoadCalls(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttributeService.getAllAttributeTypes().subscribe((response) => {
       this.attributeTypes = response;
     });
@@ -170,12 +170,12 @@ export class ItemAttributesComponent implements OnInit {
     this.index = 0;
     if (typeId != '0') {
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttributeService
         .getTypeAttributes(typeId)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.typeId = typeId;
           this.typeAttributes = response;
           this.typeAttributesLength = this.typeAttributes.length;
@@ -186,12 +186,12 @@ export class ItemAttributesComponent implements OnInit {
   getSearchTypes(attributeTypeId: any) {
     if (attributeTypeId && attributeTypeId != 0 && attributeTypeId != 'null') {
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttributeService
         .getAllSearchTypes(attributeTypeId)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.searchTypes = response;
         });
     }
@@ -208,10 +208,10 @@ export class ItemAttributesComponent implements OnInit {
 
   getItemType(typeId: any) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemTypesService.getItemTypeDetails(typeId).subscribe((response) => {
       this.spinner.hide();
-      this.loader = false;
+
       console.log(response);
       this.itemType1 = response;
       if (!this.itemType1.parentid) {
@@ -239,13 +239,17 @@ export class ItemAttributesComponent implements OnInit {
         displayorder: this.typeAttributesLength + 1,
         ismanufacturer: false,
         isrequired: this.model.isrequired ? this.model.isrequired : false,
-        isrequiredformatch: this.model.isrequiredformatch ? this.model.isrequiredformatch : false,
+        isrequiredformatch: this.model.isrequiredformatch
+          ? this.model.isrequiredformatch
+          : false,
         name: this.model.name,
         searchmodifier: '',
         companyId: this.companyId,
         lastmodifiedby: this.username,
         searchtype: {
-          attributesearchtypeid: this.model.searchtype ? this.model.searchtype.attributesearchtypeid : 0,
+          attributesearchtypeid: this.model.searchtype
+            ? this.model.searchtype.attributesearchtypeid
+            : 0,
         },
         tooltip: this.model.tooltip,
         type: this.itemType1,
@@ -256,12 +260,12 @@ export class ItemAttributesComponent implements OnInit {
           this.model.attributelistitemResource;
       }
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttributeService
         .createNewTypeAttribute(request)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -304,12 +308,12 @@ export class ItemAttributesComponent implements OnInit {
 
   saveAttributeListOrder(typeAttributes: any) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttributeService
       .updateTypeAttributesOrder(typeAttributes)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.index = 4;
         setTimeout(() => {
           this.index = 0;
@@ -325,32 +329,41 @@ export class ItemAttributesComponent implements OnInit {
       this.model.attributetype.attributetypeid != 0
     ) {
       this.spinner.show();
-      this.loader = true;
+
       var request = {
         attributelistitemResource: null,
         attributenameid: this.model.attributenameid,
         attributetype: {
-          attributetypeid: this.model.attributetype ? this.model.attributetype.attributetypeid : 0,
+          attributetypeid: this.model.attributetype
+            ? this.model.attributetype.attributetypeid
+            : 0,
         },
         displayorder: this.model.displayorder,
         displayorderlist: this.typeAttributes,
-        ismanufacturer: this.model.ismanufacturer ? this.model.ismanufacturer : false,
+        ismanufacturer: this.model.ismanufacturer
+          ? this.model.ismanufacturer
+          : false,
         isrequired: this.model.isrequired ? this.model.isrequired : false,
-        isrequiredformatch: this.model.isrequiredformatch ? this.model.isrequiredformatch : false,
+        isrequiredformatch: this.model.isrequiredformatch
+          ? this.model.isrequiredformatch
+          : false,
         name: this.model.name,
         searchmodifier: '',
         companyId: this.companyId,
         lastmodifiedby: this.username,
         searchtype: {
-          attributesearchtypeid: this.model.searchtype && this.model.searchtype.attributesearchtypeid != 'null'
-              ? this.model.searchtype.attributesearchtypeid : 0,
+          attributesearchtypeid:
+            this.model.searchtype &&
+            this.model.searchtype.attributesearchtypeid != 'null'
+              ? this.model.searchtype.attributesearchtypeid
+              : 0,
         },
         tooltip: this.model.tooltip,
         type: this.itemType1,
         moduleType: 'Item',
       };
       this.spinner.show();
-      this.loader = true;
+
       if (this.model.attributelistitemResource) {
         request.attributelistitemResource =
           this.model.attributelistitemResource;
@@ -359,7 +372,7 @@ export class ItemAttributesComponent implements OnInit {
         .updateTypeAttributes(request)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.getTypeAttributes(this.typeId);
 
           this.index = 2;
@@ -406,7 +419,8 @@ export class ItemAttributesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+    this.modalRef?.hide();
+
     var moduleType = 'Item';
     this.itemAttributeService
       .removeItemAttributess(
@@ -420,8 +434,7 @@ export class ItemAttributesComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
-          this.modalRef?.hide();
+
           this.getTypeAttributes(this.typeId);
           this.index = 3;
           setTimeout(() => {
@@ -441,7 +454,6 @@ export class ItemAttributesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

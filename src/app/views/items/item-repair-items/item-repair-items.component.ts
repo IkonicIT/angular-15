@@ -87,7 +87,7 @@ export class ItemRepairItemsComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -99,12 +99,12 @@ export class ItemRepairItemsComponent implements OnInit {
   getRepairItems() {
     if (this.itemType != '' && this.itemType != undefined) {
       this.spinner.show();
-      this.loader = true;
+
       this.itemReairItemsService
         .getAllItemRepairItems(this.companyId, this.itemType)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.repairItems = response;
         });
     }
@@ -124,7 +124,7 @@ export class ItemRepairItemsComponent implements OnInit {
       this.index = -1;
     } else {
       this.spinner.show();
-      this.loader = true;
+
       var request = {
         lastmodifiedby: this.userName,
         companyid: this.companyId,
@@ -137,7 +137,7 @@ export class ItemRepairItemsComponent implements OnInit {
         .subscribe((response) => {
           this.repairItem = undefined;
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getRepairItems();
         });
@@ -158,23 +158,23 @@ export class ItemRepairItemsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.itemReairItemsService.removeRepairItem(this.index).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.modalRef.hide();
         this.getRepairItems();
         const currentPage = this.p;
-    const repairItemsCount = this.repairItems.length;
-    const maxPageAvailable = Math.ceil(repairItemsCount / this.itemsForPagination) - 1;
-    if (currentPage > maxPageAvailable){
-      this.p = maxPageAvailable;
-    }
+        const repairItemsCount = this.repairItems.length;
+        const maxPageAvailable =
+          Math.ceil(repairItemsCount / this.itemsForPagination) - 1;
+        if (currentPage > maxPageAvailable) {
+          this.p = maxPageAvailable;
+        }
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -200,8 +200,10 @@ export class ItemRepairItemsComponent implements OnInit {
   onChange(e: any) {
     const currentPage = this.p;
     const repairItemsCount = this.repairItems.length;
-    const maxPageAvailable = Math.ceil(repairItemsCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
+    const maxPageAvailable = Math.ceil(
+      repairItemsCount / this.itemsForPagination
+    );
+    if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

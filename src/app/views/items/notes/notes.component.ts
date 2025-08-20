@@ -32,7 +32,7 @@ export class NotesComponent implements OnInit {
   companyName: string = '';
   itemRank: any;
   itemNotesFilter: any = '';
-  itemsForPagination: any = 10;
+  itemsForPagination: any = 5;
   order: string = 'date';
   reverse: string = '';
   authToken: any;
@@ -101,18 +101,26 @@ export class NotesComponent implements OnInit {
 
   getAllNotes(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemNotesService.getAllItemNotes(companyId, this.itemId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.notes = response;
         this.showAll = this.notes.length;
+        const totalWarrantyTypesCount = this.notes.length;
+        const maxPageAvailable = Math.ceil(
+          totalWarrantyTypesCount / this.itemsForPagination
+        );
+
+        // Check if the current page exceeds the maximum available page
+        if (this.p > maxPageAvailable) {
+          this.p = maxPageAvailable;
+        }
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -155,7 +163,7 @@ export class NotesComponent implements OnInit {
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
-      this.loader = true;
+
       this.itemNoteService.saveItemNote(this.model).subscribe(
         (response) => {
           this.model = response;
@@ -164,7 +172,7 @@ export class NotesComponent implements OnInit {
             'MM/dd/yyyy'
           );
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.viewFlag = true;
           this.newFlag = false;
@@ -178,7 +186,6 @@ export class NotesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -197,7 +204,7 @@ export class NotesComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.spinner.show();
-      this.loader =true;
+
       this.model.moduleType = 'itemtype';
       this.model.effectiveon = new Date(this.model.effectiveon);
       this.model.itemTypeName = this.itemType;
@@ -209,7 +216,7 @@ export class NotesComponent implements OnInit {
             'MM/dd/yyyy'
           );
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.viewFlag = true;
           this.newFlag = false;
@@ -223,7 +230,6 @@ export class NotesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -242,10 +248,10 @@ export class NotesComponent implements OnInit {
     this.editFlag = false;
     this.helpFlag = false;
     this.spinner.show();
-    this.loader = true;
+
     this.itemNotesService.getItemNotes(journalid).subscribe((response) => {
       this.spinner.hide();
-      this.loader = false;
+
       this.model = response;
       if (this.model.effectiveon) {
         this.model.effectiveon = new Date(this.model.effectiveon);
@@ -282,18 +288,17 @@ export class NotesComponent implements OnInit {
 
   downloadDocumentFromDB(document: { attachmentID: number }) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentID)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -396,7 +401,7 @@ export class NotesComponent implements OnInit {
         this.index
     );
     this.spinner.show();
-    this.loader = true;
+
     this.itemNotesService
       .removeItemNotes(
         this.model.journalid,
@@ -407,7 +412,7 @@ export class NotesComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.index = 4;
           this.refreshCall();
@@ -423,7 +428,6 @@ export class NotesComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -440,5 +444,15 @@ export class NotesComponent implements OnInit {
 
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+  onChange(e: any) {
+    const totalWarrantyTypesCount = this.notes.length;
+    const maxPageAvailable = Math.ceil(
+      totalWarrantyTypesCount / this.itemsForPagination
+    );
+    // Check if the current page exceeds the maximum available page
+    if (this.p > maxPageAvailable) {
+      this.p = maxPageAvailable;
+    }
   }
 }

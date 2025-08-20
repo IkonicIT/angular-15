@@ -28,11 +28,10 @@ export class LoginComponent {
     private userManagementService: UserManagementService
   ) {
     this.router = router;
-    this.loader = true;
 
     setTimeout(() => {
       console.log('hide');
-      this.loader = false;
+      this.spinner.hide();
     }, 2000);
     if (
       sessionStorage.getItem('auth_token') &&
@@ -47,18 +46,18 @@ export class LoginComponent {
       userName: this.userName,
       password: this.password,
     };
-    this.loader = true;
+    this.spinner.show();
     this.loginService.loginAuth(req).subscribe(
       (response) => {
         sessionStorage.setItem('auth_token', response.access_token);
         console.log(response.access_token);
-        this.loader = false;
+
         this.getUserIdByNameForLogged();
       },
       (error) => {
         console.log(error);
         this.loginError = true;
-        this.loader = false;
+        this.spinner.hide();
       }
     );
   }
@@ -75,19 +74,16 @@ export class LoginComponent {
   getUserIdByNameForLogged() {
     this.loginService.getUserIdByName(this.userName).subscribe(
       (response) => {
-        console.log(response.userid);
-        this.userId = response.userid;
-        sessionStorage.setItem('userId', response.userid);
-        sessionStorage.setItem('userName', response.username);
+        console.log(response);
+        this.userId = response.userId;
+        sessionStorage.setItem('userId', response.userId);
+        sessionStorage.setItem('userName', response.userName);
         this.getProfile();
-        this.spinner.hide();
-        this.loader = false;
       },
       (error) => {
         console.log(error);
         this.loginError = true;
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -95,26 +91,26 @@ export class LoginComponent {
   getProfile() {
     this.loginService.getProfileByUserId(this.userId).subscribe(
       (response) => {
-        sessionStorage.setItem('IsOwnerAdmin', response.isowneradmin);
-        sessionStorage.setItem('IsOwnerAdminReadOnly', response.acceptedterms);
+        console.log(response);
+        sessionStorage.setItem('IsOwnerAdmin', response.isOwnerAdmin);
+        sessionStorage.setItem('IsOwnerAdminReadOnly', response.acceptedTerms);
 
         this.date = new Date();
-        this.user.userid = this.userId;
+        this.user.userId = this.userId;
         this.userManagementService.updateLoginDate(this.user).subscribe(
           (response) => {},
           (error) => {
-            console.log(error);
+            console.log('error: ', error);
             this.loginError = true;
+
             this.spinner.hide();
-            this.loader = false;
           }
         );
-
+        this.spinner.hide();
         this.router.navigate(['/dashboard']);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }

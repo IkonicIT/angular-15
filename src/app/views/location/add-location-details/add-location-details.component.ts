@@ -109,7 +109,7 @@ export class AddLocationDetailsComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -126,7 +126,6 @@ export class AddLocationDetailsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -138,12 +137,12 @@ export class AddLocationDetailsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   saveLocation() {
+    console.log(this.model);
     if (
       this.model.locationName &&
       this.model.locationTypeId &&
@@ -189,27 +188,27 @@ export class AddLocationDetailsComponent implements OnInit {
           city: this.model.city ? this.model.city : '',
           typeId: this.model.locationTypeId ? this.model.locationTypeId : '',
           company: {
-            companyid: this.companyId,
+            companyId: this.companyId,
           },
-          criticalflag: this.model.critical ? this.model.critical : false,
+          criticalFlag: this.model.critical ? this.model.critical : false,
           description: this.model.description ? this.model.description : '',
-          desiredspareratio: this.model.sRatio ? this.model.sRatio : 0,
-          isvendor: this.model.vLocation ? this.model.vLocation : false,
-          lastmodifiedby: this.userName,
-          locationid: 0,
+          desiredSpareRatio: this.model.sRatio ? this.model.sRatio : 0,
+          isVendor: this.model.vLocation ? this.model.vLocation : false,
+          lastModifiedBy: this.userName,
+          locationId: 0,
           name: this.model.locationName ? this.model.locationName : '',
           parentLocation: {
-            locationid: this.value ? this.value : 0,
+            locationId: this.value ? this.value : 0,
           },
-          postalcode: this.model.postalCode ? this.model.postalCode : '',
+          postalCode: this.model.postalCode ? this.model.postalCode : '',
           state: this.model.state ? this.model.state : '',
-          statusid: this.model.statusid ? this.model.statusid : 0,
+          statusId: this.model.statusId ? this.model.statusId : 0,
           vendorCompany: {
-            companyid: this.model.vendorCompany.companyid
+            companyId: this.model.vendorCompany.companyid
               ? this.model.vendorCompany.companyid
               : 0,
           },
-          attributevalues: this.model.attributevalues
+          attributeValues: this.model.attributevalues
             ? this.model.attributevalues
             : null,
         },
@@ -218,30 +217,36 @@ export class AddLocationDetailsComponent implements OnInit {
         this.addedlocations.forEach((loc: any) => {
           if (loc.locationName && loc.locationName != '') {
             request.push({
-              address1: this.model.addressLineOne ? this.model.addressLineOne : '',
-              address2: this.model.addressLineTwo ? this.model.addressLineTwo : '',
+              address1: this.model.addressLineOne
+                ? this.model.addressLineOne
+                : '',
+              address2: this.model.addressLineTwo
+                ? this.model.addressLineTwo
+                : '',
               city: this.model.city ? this.model.city : '',
-              typeId: this.model.locationTypeId ? this.model.locationTypeId : '',
+              typeId: this.model.locationTypeId
+                ? this.model.locationTypeId
+                : '',
               company: {
-                companyid: this.companyId,
+                companyId: this.companyId,
               },
-              criticalflag: this.model.critical ? this.model.critical : false,
+              criticalFlag: this.model.critical ? this.model.critical : false,
               description: this.model.description ? this.model.description : '',
-              desiredspareratio: this.model.sRatio ? this.model.sRatio : 0,
-              isvendor: this.model.vLocation ? this.model.vLocation : false,
-              lastmodifiedby: this.userName,
-              locationid: 0,
+              desiredSpareRatio: this.model.sRatio ? this.model.sRatio : 0,
+              isVendor: this.model.vLocation ? this.model.vLocation : false,
+              lastModifiedBy: this.userName,
+              locationId: 0,
               name: loc.locationName ? loc.locationName : '',
               parentLocation: {
-                locationid: this.value ? this.value : 0,
+                locationId: this.value ? this.value : 0,
               },
-              postalcode: this.model.postalCode ? this.model.postalCode : '',
+              postalCode: this.model.postalCode ? this.model.postalCode : '',
               state: this.model.state ? this.model.state : '',
-              statusid: this.model.statusid ? this.model.statusid : 0,
+              statusId: this.model.statusId ? this.model.statusId : 0,
               vendorCompany: {
-                companyid: 0,
+                companyId: 0,
               },
-              attributevalues: this.model.attributevalues
+              attributeValues: this.model.attributevalues
                 ? this.model.attributevalues
                 : null,
             });
@@ -250,14 +255,13 @@ export class AddLocationDetailsComponent implements OnInit {
       }
       if (this.reqAttrValidate == false) {
         this.spinner.show();
-        this.loader = true;
+
         this.locationManagementService.saveLocation(request).subscribe(
           (response) => {
             this.refreshCalls();
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {
@@ -285,7 +289,7 @@ export class AddLocationDetailsComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -296,13 +300,13 @@ export class AddLocationDetailsComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+          console.log(response);
           this.locationTypes = response;
           this.locationTypes.forEach((type: any) => {
             if (!type.parentid) {
@@ -314,19 +318,20 @@ export class AddLocationDetailsComponent implements OnInit {
               this.locationTypes
             );
           }
+          console.log(this.itemTypeItems);
           this.getLocationStatus();
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
 
   getTypeAttributes(typeId: string, event: any) {
+    console.log(typeId);
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
+
       this.locationAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -342,11 +347,9 @@ export class AddLocationDetailsComponent implements OnInit {
           });
           this.model.locationTypeId = typeId;
           this.spinner.hide();
-          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -360,19 +363,18 @@ export class AddLocationDetailsComponent implements OnInit {
         this.router.navigate(['/location/list']);
         console.log('locations:' + response);
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
   cloneaddressfromParentLoc() {
     if (this.model.locationName != undefined) {
       this.spinner.show();
-      this.loader = true;
+
       this.locationManagementService
         .cloneaddressfromParentLoc(this.value, this.companyId)
         .subscribe((response: any) => {
-          this.spinner.hide()
-          this.loader = false;
+          this.spinner.hide();
+
           this.index = 3;
           setTimeout(() => {
             this.index = 0;
@@ -390,7 +392,6 @@ export class AddLocationDetailsComponent implements OnInit {
         this.index = 0;
       }, 7000);
       this.spinner.hide();
-      this.loader = false;
     }
   }
   print() {

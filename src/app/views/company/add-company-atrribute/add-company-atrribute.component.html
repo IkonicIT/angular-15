@@ -69,7 +69,7 @@
                       <div class="form-group col-sm-6">
                         <label for="Toa">Type of Attribute</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.Toa"
                           name="Toa"
                           #date="ngModel"
@@ -104,7 +104,7 @@
                       <div class="form-group col-sm-6">
                         <label for="sType">Search Type</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.sType"
                           id="sType"
                           name="sType"
@@ -137,13 +137,14 @@
 
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary" style="border-radius: 6px;">
                           Save
                         </button>
                         <button
                           type="button"
                           (click)="cancelCompanyDocument()"
                           class="btn btn-outline-danger btn-sm"
+                          style="border-radius: 6px;"
                         >
                           Cancel
                         </button>
@@ -261,5 +262,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

@@ -48,7 +48,7 @@
                       <div class="form-group col-sm-6">
                         <label for="type">Type Of Attribute</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.type"
                           name="type"
                           #type="ngModel"
@@ -90,7 +90,7 @@
                       <div class="form-group col-sm-6">
                         <label for="searchType">Search Type</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.searchType"
                           name="searchType"
                           #searchType="ngModel"
@@ -113,11 +113,12 @@
 
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button class="btn btn-primary">Save</button>
+                        <button class="btn btn-primary" style="border-radius: 6px;">Save</button>
                         <button
                           type="button"
                           [routerLink]="['../attributes']"
                           class="btn btn btn-outline-danger btn-sm"
+                          style="border-radius: 6px;"
                         >
                           Cancel
                         </button>

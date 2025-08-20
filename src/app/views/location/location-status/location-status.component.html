@@ -46,6 +46,7 @@
               data-bs-toggle="tooltip"
               title="Add new Status."
               placement="top"
+               style="border-radius: 6px;"
             >
               Add Status
             </button>
@@ -64,7 +65,7 @@
               </span>
             </div>
           </div>
-          <div class="float-right div-search">
+          <div class="float-right div-search mb-2 mt-1">
             <span>Search : </span>
             <input [(ngModel)]="statusFilter" />
           </div>
@@ -115,7 +116,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this Status"
-                    (click)="openModal(confirmtemplate, company.statusid)"
+                    (click)="openModal(confirmtemplate, company.statusId)"
                     [disabled]="highestRank == 9"
                   >
                     Delete

@@ -1,0 +1,144 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="modal-body p-0">
+            <div class="col-sm-12 p-0">
+              <h2 class="text-danger">Parts Data</h2>
+              <div class="card">
+                <!-- parts.component.html -->
+                <div>
+                  <form (submit)="onSearch()">
+                    <p *ngIf="errorMessage1" class="alert alert-danger">
+                      {{ errorMessage1 }}
+                    </p>
+                    <div class="col-6 d-flex flex-column m-2">
+                      <input
+                        type="text"
+                        class="form-control bg-white"
+                        [(ngModel)]="frame"
+                        placeholder="Enter Frame"
+                        name="frame"
+                        required
+                      />
+                      <button
+                        class="bg-danger button-styles mt-2"
+                        type="submit"
+                      >
+                        Search
+                      </button>
+                    </div>
+                  </form>
+                  <p *ngIf="errorMessage2" class="alert alert-danger">
+                    {{ errorMessage2 }}
+                  </p>
+                  <table
+                    *ngIf="parts.length > 0"
+                    class="table parts-table table-responsive-sm table-hover mb-0"
+                  >
+                    <thead>
+                      <tr>
+                        <th>MPBN</th>
+                        <th>MPVP</th>
+                        <th>MPDE</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let part of parts">
+                        <td>{{ part.mpbn }}</td>
+                        <td>
+                          <button (click)="onMpvpClick(part.mpvp)">
+                            {{ part.mpvp }}
+                          </button>
+                        </td>
+                        <td>{{ part.mpde }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div *ngIf="selectedPartDetails" class="card">
+                    <h3 class="text-danger">Part Details</h3>
+                    <div class="row col-md-12">
+                      <div class="col-6">
+                        <p>
+                          <strong>Part Number:</strong>
+                          {{ selectedPartDetails.prnumb }}
+                        </p>
+                      </div>
+                      <div class="col-6">
+                        <p>
+                          <strong>Description:</strong>
+                          {{ selectedPartDetails.description }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row col-md-12">
+                      <div class="col-6">
+                        <p>
+                          <strong>Quantity:</strong>
+                          {{ selectedPartDetails.prqnty }}
+                        </p>
+                      </div>
+                      <div class="col-6">
+                        <p>
+                          <strong>Block:</strong>
+                          {{ selectedPartDetails.prbloc }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row col-md-12">
+                      <div class="col-6">
+                        <p>
+                          <strong>Location:</strong>
+                          {{ selectedPartDetails.PRBLOC }}
+                        </p>
+                      </div>
+                      <div class="col-6">
+                        <p>
+                          <strong>Status:</strong>
+                          {{ selectedPartDetails.PRSTAT }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row col-md-12">
+                      <div class="col-6">
+                        <p>
+                          <strong>Aisle:</strong>
+                          {{ selectedPartDetails.PRAISL }}
+                        </p>
+                      </div>
+                      <div class="col-6">
+                        <p>
+                          <strong>Section:</strong>
+                          {{ selectedPartDetails.PRSECT }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                      <button
+                        class="btn btn-danger"
+                        [disabled]="highestRank < 5"
+                        (click)="navigateToParts(selectedPartDetails.partid)"
+                      >
+                        Notes
+                      </button>
+                      &nbsp;&nbsp;
+                      <button
+                        class="btn btn-danger"
+                        [disabled]="highestRank < 5"
+                        (click)="navigateToEdit(selectedPartDetails.partid)"
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -56,34 +56,34 @@ export class AddcompanystatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
+        companyId: this.globalCompany.companyid,
+        lastModifiedBy: this.userName,
         destroyed: true,
-        entitytypeid: 0,
-        inservice: true,
+        entityTypeId: 0,
+        inService: true,
         spare: true,
         status: this.model.status,
-        statusid: 0,
-        underrepair: true,
+        statusId: 0,
+        underRepair: true,
         moduleType: 'companytype',
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();
-      this.loader = true;
+
       this.companyStatusesService.saveCompanyStatus(this.model).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
-          }, 7000);
-          this.router.navigate(['/company/statuses']);
+            this.router.navigate(['/company/statuses']);
+          }, 1000);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
+
         }
       );
     }

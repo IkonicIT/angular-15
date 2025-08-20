@@ -125,11 +125,11 @@
                     | orderBy : reverse + order
                     | filterBy
                       : [
-                          'itemtype',
+                          'itemType',
                           'title',
-                          'jobnumber',
-                          'ponumber',
-                          'warrantytype'
+                          'jobNumber',
+                          'poNumber',
+                          'warrantyType'
                         ]
                       : itemRepairsFilter
                     | paginate
@@ -141,9 +141,9 @@
                 "
               >
                 <td [innerHTML]="repair.title"></td>
-                <td [innerHTML]="repair.jobnumber"></td>
-                <td [innerHTML]="repair.ponumber"></td>
-                <td [innerHTML]="repair.warrantytype"></td>
+                <td [innerHTML]="repair.jobNumber"></td>
+                <td [innerHTML]="repair.poNumber"></td>
+                <td [innerHTML]="repair.warrantyType"></td>
                 <td>
                   <ng-container
                     *ngFor="let attachment of repair.attachmentList"
@@ -168,7 +168,7 @@
                       '../../viewItemRepair/' +
                         itemId +
                         '/' +
-                        repair.repairlogid
+                        repair.repairLogId
                     ]"
                   >
                     View
@@ -259,11 +259,11 @@
                     | orderBy : completedReverse + completedOrder
                     | filterBy
                       : [
-                          'itemtype',
+                          'itemType',
                           'Date',
                           'title',
-                          'jobnumber',
-                          'ponumber',
+                          'jobNumber',
+                          'poNumber',
                           'By'
                         ]
                       : completedRepairsFilter
@@ -279,9 +279,9 @@
                   [innerHTML]="repair.actualcompletion | date : 'MM/dd/yyyy'"
                 ></td>
                 <td [innerHTML]="repair.title"></td>
-                <td [innerHTML]="repair.jobnumber"></td>
-                <td [innerHTML]="repair.ponumber"></td>
-                <td [innerHTML]="repair.completedby"></td>
+                <td [innerHTML]="repair.jobNumber"></td>
+                <td [innerHTML]="repair.poNumber"></td>
+                <td [innerHTML]="repair.completedBy"></td>
                 <td>
                   <ng-container
                     *ngFor="let attachment of repair.attachmentList"
@@ -308,7 +308,7 @@
                       '../../viewItemRepair/' +
                         itemId +
                         '/' +
-                        repair.repairlogid
+                        repair.repairLogId
                     ]"
                   >
                     View
@@ -334,7 +334,8 @@
         data-bs-placement="bottom"
         data-bs-toggle="tooltip"
         title="Back to View Item"
-        class="btn btn-primary"
+        class="btn btn-primary mb-3"
+        style="border-radius: 6px;"
       >
         Back To Item
       </button>

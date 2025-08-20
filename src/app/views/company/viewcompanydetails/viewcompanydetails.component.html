@@ -75,6 +75,12 @@
                         id="name"
                       />
                     </div>
+                    <div class="form-group col-sm-6">
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input" [(ngModel)]="model.isPartnerCompany" name="isPartnerCompany" id="isPartnerCompany">
+                          <label class="form-check-label" for="isPartnerCompany">Is Partner Company</label>
+                        </div>
+                      </div>
                     <div class="form-group col-sm-6 form-group-padding">
                       <label for="url">URL</label>
                       <input
@@ -187,7 +193,7 @@
                       <label for="status">Status</label>
                       <select
                         disabled
-                        class="form-control"
+                        class="form-control custom-dropdown"
                         [(ngModel)]="model.statusid"
                         name="status"
                         #status="ngModel"
@@ -266,6 +272,7 @@
                         data-bs-toggle="tooltip"
                         title="Save Message"
                         class="btn btn-primary"
+                        style="border-radius: 6px;"
                       >
                         Save Message
                       </button>
@@ -284,7 +291,7 @@
                         name="companyAnnouncements"
                         #companyAnnouncements="ngModel"
                         class="form-control"
-                        [(ngModel)]="model.announcement.announcementtext"
+                        [(ngModel)]="model.announcement.announcementText"
                       ></textarea>
                     </div>
                   </div>
@@ -308,6 +315,7 @@
                         data-bs-toggle="tooltip"
                         title="Cancel"
                         class="btn btn-primary"
+                        style="border-radius: 6px;"
                       >
                         Back
                       </button>
@@ -322,7 +330,6 @@
     </div>
   </div>
 </div>
-
 
 <div
   *ngIf="loader"

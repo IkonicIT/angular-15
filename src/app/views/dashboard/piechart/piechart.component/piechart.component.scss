@@ -1,0 +1,235 @@
+::ng-deep .dp-picker-input {
+  height: calc(2.0625rem + 2px) !important;
+}
+
+.my-pagination ::ng-deep .ngx-pagination {
+  margin-bottom: 1rem;
+  margin-top: 25px;
+  width: fit-content;
+  border: solid 1px #a4b7c1;
+  padding-left: 0px;
+}
+
+.my-pagination ::ng-deep .ngx-pagination .current {
+  color: white;
+  background-color: red;
+}
+
+.my-pagination ::ng-deep .ngx-pagination a,
+.ngx-pagination button {
+  color: red;
+  background-color: white;
+}
+
+thead th {
+  padding: 13px !important;
+  cursor: pointer;
+  span {
+    visibility: hidden;
+  }
+  &.active {
+    color: #000;
+
+    span {
+      visibility: visible;
+    }
+  }
+}
+
+tbody td {
+  padding: 12px !important;
+}
+
+.float-right {
+  float: right;
+}
+
+.div-search {
+  margin-bottom: 1%;
+  margin-top: 1%;
+}
+
+.remove-card-radius {
+  border-radius: 0;
+}
+
+.remove-padding {
+  padding: 0px;
+}
+
+::ng-deep .remove-radius .dropdown button {
+  --bs-btn-border-radius: -0.625rem !important;
+}
+
+::ng-deep .remove-radius .dropdown .btn {
+  --bs-btn-padding-y: 0.34rem;
+}
+
+.btn-danger,
+.btn-danger.disabled,
+.btn-danger:disabled {
+  color: #fff;
+    background-color: #e02725;
+  border-color: #e02725;
+}
+
+.btn-danger:hover {
+  color: #fff;
+   background-color: #c31e1c;
+  border-color: #b81c1a;
+}
+
+.btn.disabled,
+.btn:disabled {
+  opacity: 0.65;
+}
+
+.form-control {
+  background-color: #fff !important;
+}
+
+::ng-deep .ng-star-inserted .dropdown button {
+  border-radius: 0;
+}
+
+::ng-deep .location-padding {
+  padding: 0px;
+}
+
+.col-padding {
+  padding: 0 15px;
+}
+
+.col-padding .card,
+button {
+  border-radius: 0;
+}
+
+.col-padding .card-body {
+  padding: 20px;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #a4b7c1;
+}
+
+.table td,
+.table th {
+  padding: 0.78rem;
+  border-top: 1px solid #a4b7c1;
+}
+
+.table td a:hover {
+  color: #a21817;
+  text-decoration: underline;
+}
+
+.table td a {
+  color: #e02725;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.col-padding .card-header-padding {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #a4b7c1;
+  border-radius: 0;
+}
+
+.card-body .mat-expansion-panel {
+  border-radius: 0;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+.btn-outline-danger {
+  color: #f86c6b;
+  border-color: #f86c6b;
+}
+
+a {
+  color: #e02725;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.select-pagination-option {
+  height: 0;
+}
+
+::ng-deep mat-expansion-panel table tbody td {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  letter-spacing: 0.0178571429em;
+}
+
+::ng-deep .ngx-pagination li a {
+  text-decoration: none;
+}
+
+::ng-deep .modal-content {
+  border-radius: 0 !important;
+}
+
+.space {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.btn-top {
+  margin-top: 5px;
+}
+/* Match height, border, background, padding, font */
+::ng-deep .itemType .dropdown-treeview > button {
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px); /* Matches Bootstrap form-control height */
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Match hover/focus styles */
+::ng-deep .itemType .dropdown-treeview > button:hover,
+::ng-deep .itemType .dropdown-treeview > button:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Make caret look like select */
+::ng-deep .itemType .dropdown-treeview > button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  width: 0.65rem;
+  height: 0.4rem;
+  transform: translateY(-50%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='none' stroke='%23666' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+}
+
+/* Remove default Bootstrap .btn styles */
+::ng-deep .itemType .dropdown-treeview > button.btn {
+  background-image: none;
+  box-shadow: none;
+}

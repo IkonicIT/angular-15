@@ -4,6 +4,7 @@ import { Company } from '../../../models/company';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-vendor-management',
@@ -14,7 +15,7 @@ export class VendorManagementComponent implements OnInit {
   modalRef: BsModalRef | null;
   modalRef2: BsModalRef;
   message: string;
-  vendors: Company[] = [];
+  vendors: any;
   index: number;
   order: string = 'name';
   reverse: string = '';
@@ -25,38 +26,45 @@ export class VendorManagementComponent implements OnInit {
   companyId: any;
   currentRole: any;
   highestRank: any;
+  router: Router;
+  locationId: any;
+  vendorId: any;
+  vendorRepairs: any;
   helpFlag: any = false;
-  p: any;
-  loader = false;
+  companies: any;
+  p: number = 1;
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
     sanitizer: DomSanitizer,
+    router: Router,
+
     private spinner: NgxSpinnerService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
     this.companyId = this.globalCompany.companyid;
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
       this.companyId = value.companyid;
     });
+    this.router = router;
   }
 
   ngOnInit() {
     this.spinner.show();
-    this.loader = true;
-    this.companyManagementService.getAllVendorDetails(this.companyId).subscribe(
-      (response: any) => {
-        this.spinner.hide();
-        this.loader = false;
+    this.companyManagementService.getAllVendorDetails().subscribe(
+      (response) => {
         console.log(response);
-        this.vendors = response;
+        setTimeout(() => {
+          this.vendors = response;
+          this.spinner.hide();
+        }, 7000);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
     this.currentRole = sessionStorage.getItem('currentRole');
@@ -83,17 +91,14 @@ export class VendorManagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
     this.companyManagementService.removeVendor(this.index).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
         this.modalRef?.hide();
         this.refresh();
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }

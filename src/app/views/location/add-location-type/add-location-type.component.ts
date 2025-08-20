@@ -55,13 +55,13 @@ export class AddLocationTypeComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.locationsTypes = response;
           var self = this;
           if (this.locationsTypes && this.locationsTypes.length > 0) {
@@ -71,7 +71,6 @@ export class AddLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -86,7 +85,7 @@ export class AddLocationTypeComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -102,30 +101,30 @@ export class AddLocationTypeComponent implements OnInit {
   saveLocation() {
     if (this.model.name) {
       var request = {
-        attributesearchdisplay: 0,
+        attributeSearchDisplay: 0,
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         description: this.model.description,
-        entitytypeid: 0,
-        hostingfee: this.model.hostingFee ? this.model.hostingFee : 0,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: 0,
+        hostingFee: this.model.hostingFee ? this.model.hostingFee : 0,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'locationtype',
         name: this.model.name,
-        parentid: {
-          typeid: this.value ? this.value : 0,
+        parentId: {
+          typeId: this.value ? this.value : 0,
         },
-        typeid: 0,
-        typemtbs: 0,
-        typespareratio: 0,
+        typeId: 0,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.locationTypesService.saveLocationType(request).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -135,7 +134,6 @@ export class AddLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {

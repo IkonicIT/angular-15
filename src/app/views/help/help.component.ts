@@ -81,17 +81,16 @@ export class HelpComponent implements OnInit {
 
   getAllDocuments(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService.getAllCompanyDocuments(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.documents = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -101,23 +100,22 @@ export class HelpComponent implements OnInit {
       this.index1 = -1;
     } else {
       let req = {
-        manualid: 1,
+        manualId: 1,
         manualFile: this.fileContent,
-        contenttype: this.fileType,
+        contentType: this.fileType,
         description: 'TracRat Manual',
-        filename: this.fileName,
+        fileName: this.fileName,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyDocumentsService.updateManual(req).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index1 = 1;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -125,16 +123,15 @@ export class HelpComponent implements OnInit {
 
   getManual() {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService.getManual().subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.downloadManual(response);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
@@ -166,18 +163,17 @@ export class HelpComponent implements OnInit {
 
   downloadDocumentFromDB(document: { isNew?: boolean; attachmentid?: any }) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentid)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

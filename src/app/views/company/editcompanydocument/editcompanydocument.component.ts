@@ -44,23 +44,22 @@ export class EditcompanydocumentComponent implements OnInit {
       console.log('Query params ', this.documentId);
     });
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService.getCompanyDocuments(this.documentId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false
+
         this.model = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
 
   updateCompanyDocument() {
     this.spinner.show();
-    this.loader = true;
+    console.log(this.companyId);
     this.model.moduleType = 'companytype';
     this.model.companyID = this.companyId;
     this.model.attachmentUserLogDTO = {};

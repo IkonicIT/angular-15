@@ -16,6 +16,11 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
 import { ExcelService } from '../../../services/excel-service';
 import * as cloneDeep from 'lodash';
 
+export interface Attribute {
+  name: string; // Assuming name is a string
+  value: string; // Assuming value is a string
+}
+
 @Component({
   selector: 'app-item-management',
   templateUrl: './item-management.component.html',
@@ -61,7 +66,7 @@ export class ItemManagementComponent implements OnInit {
   isOwnerAdmin: string | null;
   loggedInuser: string | null;
   searchResults: any[] = [];
-  public attributesSearchDisplay = [];
+  public attributesSearchDisplay: Attribute[] = [];
   public searchResultKeys: any = [];
   public dynLst: Array<any> = [];
   flag: any;
@@ -69,8 +74,8 @@ export class ItemManagementComponent implements OnInit {
   itemType: any;
   helpFlag: any = false;
   dismissible = true;
-  loader = false
-  
+  loader = false;
+
   constructor(
     private modalService: BsModalService,
     private locationManagementService: LocationManagementService,
@@ -109,7 +114,6 @@ export class ItemManagementComponent implements OnInit {
     this.itemType = this.broadcasterService.currentItemType;
     this.getAttributesForSearchDisplay();
     this.spinner.show();
-    this.loader = true
     this.getLocations();
     this.broadcasterService.on('refreshlist').subscribe((data) => {
       this.setInitValues();
@@ -117,7 +121,6 @@ export class ItemManagementComponent implements OnInit {
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
   }
-
   getAttributesForSearchDisplay() {
     this.itemManagementService
       .getAttributesForSearchDisplay(this.companyId)
@@ -127,26 +130,27 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
   }
-
   setInitValues() {
     this.searchResults = this.itemManagementService.getItemSearchResults();
     this.model.typeId = this.itemManagementService.getSearchedItemTypeId();
     this.model.statusid = this.itemManagementService.getSearchedItemStatusId();
-    this.model.locationid = this.itemManagementService.getSearchedItemLocationId();
+    this.model.locationid =
+      this.itemManagementService.getSearchedItemLocationId();
     this.value = this.model.locationid;
     this.model.tag = this.itemManagementService.getSearchedItemTag();
 
     this.searchResultKeys = Object.keys(this.searchResults);
     if (this.searchResultKeys.length == 0) {
       if (this.route.snapshot.params['type'] == 'all') {
-        if ((this.model.tag && this.model.tag != '') || (this.model.typeId != '' && this.model.typeId)) {
+        if (
+          (this.model.tag && this.model.tag != '') ||
+          (this.model.typeId != '' && this.model.typeId)
+        ) {
           this.getSearchedItems();
-        }
-        else {
+        } else {
           this.getSearchedItemsByCompanyId();
         }
       }
@@ -161,14 +165,14 @@ export class ItemManagementComponent implements OnInit {
   }
 
   itemRepairs(item: any) {
+    console.log(item);
     this.itemManagementService.setSearchedItemTypeId(item.typeid);
     this.itemManagementService.setSearchedItemTag(item.tag);
-    this.router.navigate(['/items/itemRepairs/' + item.itemid]);
+    this.router.navigate(['/items/itemRepairs/' + item.itemId]);
   }
 
   getLocations() {
     this.spinner.show();
-    this.loader = true
     this.locations = this.broadcasterService.locations;
     if (this.locations && this.locations.length > 0) {
       this.locationItems = [];
@@ -181,12 +185,16 @@ export class ItemManagementComponent implements OnInit {
     var items: TreeviewItem[] = [];
     locList.forEach((loc) => {
       var children: TreeviewItem[] = [];
-      if (loc.parentLocationResourceList && loc.parentLocationResourceList.length > 0) {
+      if (
+        loc.parentLocationResourceList &&
+        loc.parentLocationResourceList.length > 0
+      ) {
         children = this.generateHierarchy(loc.parentLocationResourceList);
       }
-      items.push(new TreeviewItem({
+      items.push(
+        new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -213,11 +221,9 @@ export class ItemManagementComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
-    this.loader = true;
-
     var req = {
-      locationid: this.model.locationid ? this.model.locationid : null,
-      statusid: this.model.statusid ? this.model.statusid : null,
+      locationId: this.model.locationid ? this.model.locationid : null,
+      statusId: this.model.statusid ? this.model.statusid : null,
       tag: this.model.tag ? this.model.tag : null,
       typeId: this.model.typeId ? this.model.typeId : null,
     };
@@ -225,18 +231,28 @@ export class ItemManagementComponent implements OnInit {
     this.searchResults = [];
     this.itemManagementService
       .getAllItems(req, this.companyId, this.isOwnerAdmin, this.loggedInuser)
-      .subscribe((response: any) => {
-
+      .subscribe(
+        (response: any) => {
           this.spinner.hide();
-          this.loader = false
           this.itemManagementService.setSearchedItemTag(req.tag);
           this.itemManagementService.setSearchedItemTypeId(req.typeId);
-          this.itemManagementService.setSearchedItemLocationId(req.locationid);
-          this.itemManagementService.setSearchedItemStatusId(req.statusid);          
+          this.itemManagementService.setSearchedItemLocationId(req.locationId);
+          this.itemManagementService.setSearchedItemStatusId(req.statusId);
+
           this.itemManagementService.setItemSearchResults(response);
           this.searchResults = response;
-          this.searchResultKeys = Object.keys(this.searchResults);
+          console.log(
+            'searchResults1:',
+            this.searchResults,
+            this.searchResults[this.itemType]
+          );
 
+          this.searchResultKeys = Object.keys(this.searchResults);
+          console.log(
+            'searchResultKeys:',
+            this.searchResultKeys,
+            this.searchResultKeys.length
+          );
           this.dynLst = [];
           for (let item of this.searchResultKeys) {
             const dnobj = { itemsForPagination: 5, p: 1 };
@@ -258,7 +274,9 @@ export class ItemManagementComponent implements OnInit {
             });
             if (count == 1) {
               this.searchResults[key].forEach((obj: any) => {
-                itemId = obj.itemid;
+                itemId = obj.itemId;
+                console.log(itemId);
+                console.log(obj);
                 rank = obj.itemRank;
                 tag = obj.tag;
                 typeName = obj.typeName;
@@ -271,7 +289,6 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
   }
@@ -289,16 +306,14 @@ export class ItemManagementComponent implements OnInit {
 
     this.excelService.exportAsExcelFile(result, 'itemAdvancedSearchResults');
   }
-
   getSearchedItemsByCompanyId() {
     this.flag = 0;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
-    this.loader = true
     var req = {
-      locationid: this.model.locationid ? this.model.locationid : null,
-      statusid: this.model.statusid ? this.model.statusid : null,
+      locationId: this.model.locationid ? this.model.locationid : null,
+      statusId: this.model.statusid ? this.model.statusid : null,
       tag: this.model.tag ? this.model.tag : null,
       typeId: this.model.typeId ? this.model.typeId : null,
     };
@@ -308,14 +323,19 @@ export class ItemManagementComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false
           this.searchResults = response;
+          console.log('searchResults:', this.searchResults);
           this.itemManagementService.setSearchedItemTag(req.tag);
           this.itemManagementService.setSearchedItemTypeId(req.typeId);
-          this.itemManagementService.setSearchedItemLocationId(req.locationid);
-          this.itemManagementService.setSearchedItemStatusId(req.statusid);
+          this.itemManagementService.setSearchedItemLocationId(req.locationId);
+          this.itemManagementService.setSearchedItemStatusId(req.statusId);
           this.itemManagementService.setItemSearchResults(response);
           this.searchResultKeys = Object.keys(this.searchResults);
+          console.log(
+            'searchResultKeys1:',
+            this.searchResultKeys,
+            this.searchResultKeys.length
+          );
           this.dynLst = [];
           for (let item of this.searchResultKeys) {
             const dnobj = { itemsForPagination: 5, p: 1 };
@@ -323,6 +343,7 @@ export class ItemManagementComponent implements OnInit {
           }
           if (this.searchResultKeys.length == 0) {
             this.flag = 1;
+            console.log
           }
           if (this.searchResultKeys.length == 1) {
             let key: any;
@@ -350,7 +371,6 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
   }
@@ -365,7 +385,7 @@ export class ItemManagementComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -376,13 +396,11 @@ export class ItemManagementComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
-    this.loader = true
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false
           this.itemTypes = response;
           if (this.itemTypes && this.itemTypes.length > 0) {
             this.itemTypeItems = this.generateHierarchyForItemTypes(
@@ -392,14 +410,12 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
   }
 
   getItemStatus() {
     this.spinner.show();
-    this.loader = true
     this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
       (response) => {
         this.statuses = response;
@@ -407,25 +423,21 @@ export class ItemManagementComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
 
   getWarrantyTypes() {
     this.spinner.show();
-    this.loader = true
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false 
           this.warrantyTypes = response;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
   }
@@ -445,23 +457,21 @@ export class ItemManagementComponent implements OnInit {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
-
   openModal2(template: TemplateRef<any>) {
     this.modalRef2 = this.modalService.show(template, { class: 'second' });
   }
-
   closeFirstModal() {
     this.modalRef?.hide();
     this.modalRef = null;
   }
 
   editItemRepair() {}
-
   goToAddItem() {
     this.router.navigate(['/items/addItem']);
   }
 
   goToView(itemId: string, rank: any, tag: any, typeName: any) {
+    console.log(itemId);
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
     this.broadcasterService.itemRank = rank;
@@ -551,13 +561,10 @@ export class ItemManagementComponent implements OnInit {
     );
   }
 
-  confirm(): void {}
-
   print() {
     this.helpFlag = false;
     window.print();
   }
-
   help() {
     this.helpFlag = !this.helpFlag;
   }

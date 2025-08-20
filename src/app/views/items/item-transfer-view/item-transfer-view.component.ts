@@ -54,14 +54,13 @@ export class ItemTransferViewComponent implements OnInit {
       this.companyName = this.globalCompany.name;
     });
     this.spinner.show();
-    this.loader = true;
+
     this.itemId = sessionStorage.getItem('transferItemId');
     this.itemManagementService
       .getAllTransfers(this.itemId)
       .subscribe((response) => {
         this.transfers = response;
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
@@ -74,18 +73,17 @@ export class ItemTransferViewComponent implements OnInit {
 
   getItemTransferDetails(transferLogID: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.itemManagementService.getItemTransferDetails(transferLogID).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         this.model.transfeDate = this.model.transfeDate.split(' ')[0];
         this.itemTransfer = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -96,7 +94,7 @@ export class ItemTransferViewComponent implements OnInit {
   }
 
   setOrder(orderType: string) {}
-  
+
   back() {
     this.router.navigate(['/items/transferItem/' + this.itemId]);
   }

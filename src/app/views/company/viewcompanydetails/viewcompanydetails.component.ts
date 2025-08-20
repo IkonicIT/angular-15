@@ -44,7 +44,7 @@ export class ViewcompanydetailsComponent implements OnInit {
   ngOnInit() {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.getCompanyDetails(this.companyId).subscribe(
       (response) => {
         this.model = response;
@@ -61,7 +61,6 @@ export class ViewcompanydetailsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -71,30 +70,27 @@ export class ViewcompanydetailsComponent implements OnInit {
       (response) => {
         this.companyTypes = response;
         this.spinner.hide();
-        this.loader = false;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false; 
       }
     );
   }
   saveMessage() {
     var req = {
-      announcementdate: new Date().toISOString(),
-      announcementid: 3,
-      announcementtext: this.model.tracratAnnouncements
+      announcementDate: new Date().toISOString(),
+      announcementId: 3,
+      announcementText: this.model.tracratAnnouncements
         ? this.model.tracratAnnouncements
         : '',
       companyid: -1,
     };
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService
       .saveTracratAnnouncements(req)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
       });
   }
   cancelCompanyDetails() {

@@ -73,17 +73,16 @@ export class CompanydocumentsComponent implements OnInit {
 
   getAllDocuments(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService.getAllCompanyDocuments(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.documents = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -105,34 +104,35 @@ export class CompanydocumentsComponent implements OnInit {
     });
   }
 
-  editDocument(document: { attachmentid: any }) {
+  editDocument(document: { attachmentId: any }) {
     this.router.navigate(['/company/editDocument/'], {
-      queryParams: { q: this.companyId, a: document.attachmentid },
+      queryParams: { q: this.companyId, a: document.attachmentId },
     });
   }
 
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
       .removeCompanyDocuments(this.index, this.companyId, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.refresh();
           const currentPage = this.p;
-    const DocumentCount = this.documents.length - 1;
-    const maxPageAvailable = Math.ceil(DocumentCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
-      this.p = maxPageAvailable;
-    }
+          const DocumentCount = this.documents.length - 1;
+          const maxPageAvailable = Math.ceil(
+            DocumentCount / this.itemsForPagination
+          );
+          if (currentPage > maxPageAvailable) {
+            this.p = maxPageAvailable;
+          }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -161,20 +161,19 @@ export class CompanydocumentsComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { attachmentid: number }) {
+  downloadDocumentFromDB(document: { attachmentId: number }) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentid)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.downloadDocument(response);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -189,15 +188,15 @@ export class CompanydocumentsComponent implements OnInit {
     window.open(fileURL);
   }
 
-  downloadFile(companyDocument: { filename: any; attachmentid: string }) {
-    var index = companyDocument.filename.lastIndexOf('.');
-    var extension = companyDocument.filename.slice(index + 1);
+  downloadFile(companyDocument: { fileName: any; attachmentId: string }) {
+    var index = companyDocument.fileName.lastIndexOf('.');
+    var extension = companyDocument.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
       var wnd = window.open('about:blank');
       var pdfStr = `<div style="text-align:center">
   <h4>Pdf viewer</h4>
   <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-    companyDocument.attachmentid + '?access_token=' + this.authToken
+    companyDocument.attachmentId + '?access_token=' + this.authToken
   }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
     </div>
     <script>
@@ -234,7 +233,7 @@ export class CompanydocumentsComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
     <h4>Image Viewer</h4>
     <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-      companyDocument.attachmentid + '?access_token=' + this.authToken
+      companyDocument.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" >
       </div>`;
 
@@ -243,7 +242,7 @@ export class CompanydocumentsComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          companyDocument.attachmentid +
+          companyDocument.attachmentId +
           '?access_token=' +
           this.authToken
       );
@@ -257,11 +256,11 @@ export class CompanydocumentsComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e : any){
+  onChange(e: any) {
     const currentPage = this.p;
     const DocumentCount = this.documents.length;
     const maxPageAvailable = Math.ceil(DocumentCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
+    if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

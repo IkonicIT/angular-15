@@ -59,10 +59,10 @@ export class EditUserTypeComponent implements OnInit {
 
   getUserType(typeId: any) {
     this.spinner.show();
-    this.loader = true;
+
     this.userTypesService.getUserTypeDetails(typeId).subscribe((response) => {
       this.spinner.hide();
-      this.loader = false;
+
       console.log(response);
       this.model = response;
       if (!this.model.parentid) {
@@ -89,7 +89,6 @@ export class EditUserTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -114,33 +113,33 @@ export class EditUserTypeComponent implements OnInit {
   }
 
   updateUserType() {
-    if (this.model.name && (this.model.parentid.typeid != this.userTypeId)) {
+    if (this.model.name && this.model.parentid.typeid != this.userTypeId) {
       var request = {
-        attributesearchdisplay: 0,
+        attributeSearchDisplay: 0,
         description: this.model.description,
-        entitytypeid: this.model.entitytypeid,
-        hostingfee: this.model.hostingfee,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: this.model.entitytypeid,
+        hostingFee: this.model.hostingfee,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'usertype',
         name: this.model.name,
-        parentid: {
-          typeid: this.model.parentid.typeid ? this.model.parentid.typeid : 0,
+        parentId: {
+          typeId: this.model.parentid.typeid ? this.model.parentid.typeid : 0,
         },
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         typeList: this.model.typeList,
-        typeid: this.userTypeId,
-        typemtbs: 0,
-        typespareratio: 0,
+        typeId: this.userTypeId,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.userTypesService.updateUserType(request).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -150,7 +149,6 @@ export class EditUserTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {
@@ -163,12 +161,12 @@ export class EditUserTypeComponent implements OnInit {
   }
   getAllUserTypesWithHierarchy() {
     this.spinner.show();
-    this.loader = true;
+
     this.userTypesService
       .getAllUserTypesWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.broadcasterService.userTypeHierarchy = response;
       });
   }

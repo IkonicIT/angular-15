@@ -22,6 +22,7 @@ export class AddcompanydetailsComponent implements OnInit {
   file: File;
   dismissible = true;
   helpFlag: any = false;
+  highestRank: any;
   loader = false;
 
   constructor(
@@ -33,6 +34,7 @@ export class AddcompanydetailsComponent implements OnInit {
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
+    this.highestRank = parseInt(sessionStorage.getItem("highestRank") || "0", 10);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyId = this.globalCompany.companyid;
     //this.getStatuses()
@@ -40,18 +42,17 @@ export class AddcompanydetailsComponent implements OnInit {
 
   getStatuses() {
     this.spinner.show();
-    this.loader = true;
+
     this.statuses = [];
     this.companyStatusesService.getAllCompanyStatuses(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.statuses = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -74,59 +75,60 @@ export class AddcompanydetailsComponent implements OnInit {
           address1: this.model.address1 ? this.model.address1 : '',
           address2: this.model.address2 ? this.model.address2 : '',
           announcement: {
-            announcementdate: new Date().toISOString(),
-            announcementid: 0,
-            announcementtext: this.model.companyAnnouncements
+            announcementDate: new Date().toISOString(),
+            announcementId: 0,
+            announcementText: this.model.companyAnnouncements
               ? this.model.companyAnnouncements
               : '',
             company: {},
           },
           city: this.model.city ? this.model.city : '',
-          companycontenttype: this.model.companycontenttype
+          companyContentType: this.model.companycontenttype
             ? this.model.companycontenttype
             : '',
-          companyfilename: this.model.companyfilename
+          companyFileName: this.model.companyfilename
             ? this.model.companyfilename
             : '',
           logo: this.model.logo ? this.model.logo : '',
-          companyid: 0,
+          companyId: 0,
           userid: sessionStorage.getItem('userId'),
           description: this.model.description ? this.model.description : '',
           fax: this.model.fax ? this.model.fax : '',
-          issandbox: true,
-          lastmodifiedby: this.userName,
+          isSandbox: true,
+          lastModifiedBy: this.userName,
           name: this.model.name,
-          parentcompanyid: 0,
+          parentCompanyId: 0,
           phone: this.model.phone ? this.model.phone : '',
-          postalcode: this.model.postalcode ? this.model.postalcode : '',
+          postalCode: this.model.postalcode ? this.model.postalcode : '',
           state: this.model.state ? this.model.state : '',
-          statusid: 0,
-          supplylevelwarning: true,
+          statusId: 0,
+          supplyLevelWarning: true,
           type: {
-            attributesearchdisplay: 0,
+            attributeSearchDisplay: 0,
             description: '',
-            entitytypeid: 0,
-            hostingfee: 0,
-            ishidden: true,
-            lastmodifiedby: '',
+            entityTypeId: 0,
+            hostingFee: 0,
+            isHidden: true,
+            lastModifiedBy: '',
             name: this.model.primaryContactName
               ? this.model.primaryContactName
               : '',
-            parentid: 0,
-            typeid: 0,
-            typemtbs: 0,
-            typespareratio: 0,
+            parentId: 0,
+            typeId: 0,
+            typemTbs: 0,
+            typeSpareRatio: 0,
           },
           url: this.model.url ? this.model.url : '',
           vendor: false,
+          isPartnerCompany: this.model.isPartnerCompany ? true : false
         };
         this.spinner.show();
-        this.loader = true;
+        console.log(this.model);
         this.companyManagementService.saveCompany(this.model).subscribe(
           (response: any) => {
             this.companyId = response.companyid;
             this.spinner.hide();
-            this.loader = false;
+
             window.scroll(0, 0);
             if (this.file != null) {
               this.AddCompanyLogo(this.companyId);
@@ -136,7 +138,6 @@ export class AddcompanydetailsComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       }
@@ -150,7 +151,6 @@ export class AddcompanydetailsComponent implements OnInit {
       .saveLogo(formdata, companyId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
       });
   }
 

@@ -9,6 +9,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { PagesModule } from './views/pages/pages.module';
+
 import {
   FormsModule,
   NG_VALUE_ACCESSOR,
@@ -20,11 +21,10 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { NgxSortableModule } from 'ngx-sortable'
+import { NgxSortableModule } from 'ngx-sortable';
 import { provideUserIdleConfig } from 'angular-user-idle';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgPipesModule, OrderByPipe } from 'ngx-pipes';
-import { NgxPasswordToggleModule } from 'ngx-password-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -60,7 +60,7 @@ import {
 } from './services';
 import { ItemAttributeService } from './services/Items/item-attribute.service';
 import { ForgotPasswordService } from './services/forgot-password.service';
-import { UserAttributesService } from "./services/user-attributes.service";
+import { UserAttributesService } from './services/user-attributes.service';
 import { ResetPasswordService } from './services/reset-password.service';
 import { BroadcasterService } from './services/broadcaster.service';
 import { DashboardService } from './services/dashboard.service';
@@ -69,6 +69,9 @@ import { DropdownTreeviewModule } from './views/dropdown-treeview-select/dropdow
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgChartsModule } from 'ng2-charts';
 import { TreeviewModule } from 'ngx-treeview';
+import { RouterModule } from '@angular/router';
+import { TabsModule as NgxTabsModule } from 'ngx-bootstrap/tabs';
+
 import {
   AppHeaderComponent,
   AppSidebarComponent,
@@ -121,6 +124,9 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     ...APP_DIRECTIVES,
   ],
   imports: [
+    RouterModule,
+    NgxTabsModule.forRoot(),
+    TabsModule.forRoot(),
     CommonModule,
     BrowserModule,
     AppRoutingModule,
@@ -134,7 +140,6 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     DropdownTreeviewModule,
     NgxSortableModule,
     NgxSpinnerModule,
-    // NgxPasswordToggleModule,
     //NgbDropdownModule,
     BrowserAnimationsModule,
     SelectDropDownModule,

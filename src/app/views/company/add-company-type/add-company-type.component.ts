@@ -53,13 +53,13 @@ export class AddCompanyTypeComponent implements OnInit {
 
   getAllTypes(companyId: string | number) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyTypesService
       .getAllCompanyTypesWithHierarchy(companyId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.cmpTypes = response;
           var self = this;
           if (this.cmpTypes && this.cmpTypes.length > 0) {
@@ -69,7 +69,6 @@ export class AddCompanyTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -101,31 +100,31 @@ export class AddCompanyTypeComponent implements OnInit {
       this.model.by = this.userName;
       this.model.added = this.date;
       var request = {
-        attributesearchdisplay: 0,
+        attributeSearchDisplay: 0,
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         description: this.model.description,
-        entitytypeid: 0,
-        hostingfee: this.model.hostingFee ? this.model.hostingFee : 0,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: 0,
+        hostingFee: this.model.hostingFee ? this.model.hostingFee : 0,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'companytype',
         name: this.model.nameOfType,
-        parentid: {
+        parentId: {
           typeid: this.value ? this.value : 0,
         },
-        typeid: 0,
-        typemtbs: 0,
-        typespareratio: 0,
+        typeId: 0,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
       };
       this.spinner.show();
-      this.loader = true;
+
       console.log(JSON.stringify(request));
       this.companyTypesService.saveCompanyType(request).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -135,7 +134,6 @@ export class AddCompanyTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

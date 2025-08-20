@@ -66,11 +66,12 @@
                       <div class="form-group col-sm-12">
                         <label for="location">Location to be Merged:</label>
 
-                        <app-dropdown-treeview-select
+                      <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.fromlocationid"
                         >
                         </app-dropdown-treeview-select>
+                        <span class="dropdown-arrow">&#9662;</span>
                       </div>
                     </div>
                     <div class="row">
@@ -79,11 +80,14 @@
                           >Location to be Merged into:</label
                         >
 
-                        <app-dropdown-treeview-select
-                          [items]="locationItems"
-                          [(value)]="model.tolocationid"
-                        >
-                        </app-dropdown-treeview-select>
+         <div class="dropdown-wrapper">
+  <app-dropdown-treeview-select
+    [items]="locationItems"
+    [(value)]="model.tolocationid">
+  </app-dropdown-treeview-select>
+  <span class="dropdown-arrow">&#9662;</span> <!-- ▼ medium arrow -->
+</div>
+
                       </div>
                     </div>
                     <div class="row">
@@ -113,6 +117,7 @@
                           data-bs-toggle="tooltip"
                           title="Mergelocations"
                           class="btn btn-primary btn-right"
+                          style="border-radius: 6px;"
                         >
                           Merge
                         </button>
@@ -123,6 +128,7 @@
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Cancel"
+                          style="border-radius: 6px;"
                         >
                           Cancel
                         </button>

@@ -12,8 +12,8 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 })
 export class EditLocationTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
+    parentId: {
+      typeId: 0,
     },
   };
   locationTypeId: any;
@@ -58,31 +58,30 @@ export class EditLocationTypeComponent implements OnInit {
 
   getLocationType(typeId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.locationTypesService.getLocationTypeDetails(typeId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.model = response;
-        if (!this.model.parentid) {
-          this.model.parentid = {
-            typeid: 0,
+        if (!this.model.parentId) {
+          this.model.parentId = {
+            typeId: 0,
           };
         } else {
-          this.value = this.model.parentid.typeid;
+          this.value = this.model.parentId.typeId;
         }
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
@@ -96,7 +95,6 @@ export class EditLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -104,20 +102,19 @@ export class EditLocationTypeComponent implements OnInit {
   generateHierarchy(typeList: any) {
     var items: any = [];
     typeList.forEach((type: any) => {
-        var children = [];
-        if (type.typeList && type.typeList.length > 0) {
-          children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
-        }
-        items.push(
-          new TreeviewItem({
-            text: type.name,
-            value: type.typeid,
-            collapsed: true,
-            children: children,
-          })
-        );
+      var children = [];
+      if (type.typeList && type.typeList.length > 0) {
+        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
       }
-    );
+      items.push(
+        new TreeviewItem({
+          text: type.name,
+          value: type.typeId,
+          collapsed: true,
+          children: children,
+        })
+      );
+    });
     return items;
   }
 
@@ -128,31 +125,31 @@ export class EditLocationTypeComponent implements OnInit {
   updateLocationType() {
     if (this.model.name && this.value != this.locationTypeId) {
       var request = {
-        attributesearchdisplay: 0,
+        attributeSearchDisplay: 0,
         description: this.model.description,
-        entitytypeid: this.model.entitytypeid,
-        hostingfee: this.model.hostingfee,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: this.model.entitytypeid,
+        hostingFee: this.model.hostingfee,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'locationtype',
         name: this.model.name,
-        parentid: {
-          typeid: this.value ? this.value : 0,
+        parentId: {
+          typeId: this.value ? this.value : 0,
         },
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         typeList: this.model.typeList,
-        typeid: this.locationTypeId,
-        typemtbs: 0,
-        typespareratio: 0,
+        typeId: this.locationTypeId,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.locationTypesService.updateLocationType(request).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -162,7 +159,6 @@ export class EditLocationTypeComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {

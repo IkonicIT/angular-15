@@ -10,6 +10,13 @@
   }
 }
 
-.main .container-fluid {
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 0 30px;
+}
+
+main div .container-fluid {
   padding: 0 30px;
 }

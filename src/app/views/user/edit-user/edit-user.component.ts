@@ -4,11 +4,11 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { UserManagementService } from '../../../services/user-management.service';
 import { LocationManagementService } from '../../../services/location-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { LoginService } from '../../../services';
-import { BroadcasterService } from '../../../services/broadcaster.service';
+import { LoginService } from 'src/app/services';
+import { BroadcasterService } from 'src/app/services/broadcaster.service';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { UserAttributesService } from '../../../services/user-attributes.service';
-import { Company } from '../../../models';
+import { Company } from 'src/app/models';
 
 @Component({
   selector: 'app-edit-user',
@@ -45,7 +45,10 @@ export class EditUserComponent implements OnInit {
   email: any;
   helpFlag: any = false;
   dismissible = true;
-  loader = false;
+  vendorId: any;
+  vendors: any;
+  vendorItems: TreeviewItem[]; // Add this property
+
   constructor(
     router: Router,
     private route: ActivatedRoute,
@@ -69,6 +72,7 @@ export class EditUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadVendors();
     this.username = sessionStorage.getItem('userName');
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     //this.locations = this.locationManagementService.getLocations();
@@ -76,30 +80,70 @@ export class EditUserComponent implements OnInit {
       this.companyId = this.globalCompany.companyid;
       this.getUserInfo();
     }
+
+    // this.companyManagementService.getAllVendorDetails().subscribe(
+    //   (response) => {
+    //     this.spinner.hide();
+    //     console.log(response);
+    //     this.vendors = response;
+    //   },
+    //   (error) => {
+    //     this.spinner.hide();
+    //   }
+    // );
+  }
+
+  loadVendors() {
+    this.spinner.show();
+    this.companyManagementService.getAllVendorDetails().subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.vendors = response;
+        this.vendorItems = this.convertVendorsToTreeviewItems(this.vendors);
+      },
+      (error) => {
+        this.spinner.hide();
+        console.error('Error loading vendors:', error);
+      }
+    );
+  }
+
+  convertVendorsToTreeviewItems(vendors: any[]): TreeviewItem[] {
+    return vendors.map(
+      (vendor) =>
+        new TreeviewItem({
+          text: vendor.name,
+          value: vendor.vendorId,
+        })
+    );
+  }
+
+  onVendorChange(value: any) {
+    if (this.model.vendorResource) {
+      this.model.vendorResource.vendorId = value;
+    } else {
+      this.model.vendorResource = { vendorId: value };
+    }
   }
 
   getUserInfo() {
     this.spinner.show();
-    this.loader = true;
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
     this.spinner.hide();
-    this.loader = false;
 
     this.spinner.show();
-    this.loader = true;
     this.userManagementService
       .getprofileWithType(this.userId, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
-        this.loader = false;
         this.model = response;
         this.email = this.model.email;
+        //  this.vendorId = this.model.vendorResource.vendorId;
         this.profileId = response.profileid;
         this.checkCompany();
         this.getTypeAttributes(this.model.userTypeId);
         this.spinner.hide();
-        this.loader = false;
       });
   }
   checkCompany() {
@@ -155,7 +199,6 @@ export class EditUserComponent implements OnInit {
       (error) => {}
     );
   }
-
   getLocations() {
     this.locationsWithHierarchy = this.broadcasterService.locations;
     if (this.locationsWithHierarchy && this.locationsWithHierarchy.length > 0) {
@@ -163,11 +206,9 @@ export class EditUserComponent implements OnInit {
       this.locationItems = this.generateHierarchy(this.locationsWithHierarchy);
     }
   }
-
   getTypeAttributes(typeId: string) {
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
       this.userAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
@@ -201,28 +242,25 @@ export class EditUserComponent implements OnInit {
           } else {
             this.model.attributevalues = [];
             this.typeAttributes.forEach((attr: any) => {
-                this.model.attributevalues.push({
-                  attributename: attr,
-                  entityid: this.profileId,
-                  entitytypeid: attr.type.entitytypeid,
-                  lastmodifiedby: attr.type.lastmodifiedby,
-                  value: attr.value,
-                });
-              }
-            );
+              this.model.attributevalues.push({
+                attributename: attr,
+                entityid: this.profileId,
+                entitytypeid: attr.type.entitytypeid,
+                lastmodifiedby: attr.type.lastmodifiedby,
+                value: attr.value,
+              });
+            });
           }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
   }
-
-  generateHierarchy(locList: any[]) {
+  generateHierarchy(locList: any) {
     var items: TreeviewItem[] = [];
-    locList.forEach((loc) => {
+    locList.forEach((loc: any) => {
       var children: TreeviewItem[] = [];
       if (
         loc.parentLocationResourceList &&
@@ -233,7 +271,7 @@ export class EditUserComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -247,34 +285,37 @@ export class EditUserComponent implements OnInit {
     if (
       this.model.username &&
       this.model.email &&
-      this.model.companyid &&
-      this.model.firstname &&
-      this.model.lastname
+      this.model.companyId &&
+      this.model.firstName &&
+      this.model.lastName
     ) {
       var req = {
         profileid: this.profileId,
-        userid: this.userId,
+        userId: this.userId,
         username: this.model.username,
         email: this.model.email,
-        firstname: this.model.firstname ? this.model.firstname : '',
-        lastname: this.model.lastname ? this.model.lastname : '',
-        jobtitle: this.model.jobtitle,
+        firstName: this.model.firstname ? this.model.firstname : '',
+        lastName: this.model.lastname ? this.model.lastname : '',
+        jobTitle: this.model.jobtitle,
         department: this.model.department,
         phone: this.model.phone,
-        mobilephone: this.model.mobilephone,
+        mobilePhone: this.model.mobilephone,
         fax: this.model.fax,
-        acceptedterms: this.model.acceptedterms,
-        sendreceiverfq: this.model.sendreceiverfq,
-        isowneradmin: this.model.isowneradmin,
-        toplocationid: this.model.toplocationid,
-        preferredlocationid: this.model.preferredlocationid,
-        companyid: this.model.companyid,
-        hidepricing: this.model.hidepricing,
+        acceptedTerms: this.model.acceptedterms,
+        sendReceiverFq: this.model.sendreceiverfq,
+        isOwnerAdmin: this.model.isowneradmin,
+        topLocationId: this.model.toplocationid,
+        preferredLocationId: this.model.preferredlocationid,
+        companyId: this.model.companyid,
+        hidePricing: this.model.hidepricing,
         actualCompanyId: this.companyId,
         addedBy: this.username,
+        isVendor: this.model.isVendor,
+        vendorResource: {
+          vendorId: this.model.vendorResource.vendorId,
+        },
       };
       this.spinner.show();
-      this.loader = true;
       this.userManagementService
         .updateUser(this.userId, req)
         .subscribe((response) => {
@@ -284,7 +325,6 @@ export class EditUserComponent implements OnInit {
             this.index = 0;
           }, 7000);
           this.spinner.hide();
-          this.loader = false;
           this.router.navigate(['/user/list']);
         });
     } else {
@@ -306,29 +346,23 @@ export class EditUserComponent implements OnInit {
 
   getVendorCompanies() {
     this.spinner.show();
-    this.loader = true;
-    this.companyManagementService.getAllVendors(this.companyId).subscribe(
+    this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
         console.log(response);
 
         this.allVendors = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
-
   getUserCompaniesList() {
     this.spinner.show();
-    this.loader = true;
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
     this.spinner.hide();
-    this.loader = false;
   }
 
   cancelUser() {
@@ -339,7 +373,6 @@ export class EditUserComponent implements OnInit {
     this.helpFlag = false;
     window.print();
   }
-
   help() {
     this.helpFlag = !this.helpFlag;
   }

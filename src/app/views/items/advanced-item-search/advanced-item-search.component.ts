@@ -59,7 +59,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  loader = false
+  // loader = false;
   advancedsearchflag: number = 0;
   searchresults: any = {};
   isOwnerAdmin: any;
@@ -93,7 +93,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       },
     },
   ];
-  
+
   public barChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -103,13 +103,13 @@ export class AdvancedItemSearchComponent implements OnInit {
         align: 'start',
         labels: {
           font: {
-            size: 10
+            size: 10,
           },
           boxWidth: 12,
-          boxHeight: 12
-        }
-      }
-    }
+          boxHeight: 12,
+        },
+      },
+    },
   };
 
   public pieChartType: ChartType = 'pie';
@@ -129,7 +129,7 @@ export class AdvancedItemSearchComponent implements OnInit {
   };
   public params: any = {};
   selectedVal: string;
-  public repairFlag: any;
+  public repairFlag: string;
   failureTypesandPercentage: any = {};
   public itemIds: any = [];
   selectedFailureType: any;
@@ -294,7 +294,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: loc.name,
-          value: loc.locationid,
+          value: loc.locationId,
           collapsed: true,
           children: children,
         })
@@ -317,7 +317,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -328,7 +328,7 @@ export class AdvancedItemSearchComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
-    this.loader = true
+    // this.loader = true;
     var self = this;
 
     this.itemTypes = this.broadcasterService.itemTypeHierarchy;
@@ -349,18 +349,18 @@ export class AdvancedItemSearchComponent implements OnInit {
 
   getItemStatus() {
     this.spinner.show();
-    this.loader = true
+    // this.loader = true;
     this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
       (response: any) => {
         this.statuses = response;
         this.spinner.hide();
-        this.loader = false
+        // this.loader = false;
         this.isloaded = true;
       },
       (error) => {
         this.spinner.hide();
         this.isloaded = true;
-        this.loader = false
+        // this.loader = false;
       }
     );
   }
@@ -369,7 +369,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.currentAttributeValues = [];
     if (typeId != '0' && typeId != undefined) {
       this.spinner.show();
-      this.loader = true
+      // this.loader = true;
       this.itemAttributeService
         .getTypeAttributes(typeId)
         .subscribe((response: any) => {
@@ -377,7 +377,7 @@ export class AdvancedItemSearchComponent implements OnInit {
           if (this.currentAttributeValues.length == 0)
             this.itemModel.attributevalues = response;
           this.spinner.hide();
-          this.loader = false
+          // this.loader = false;
         });
     } else {
       this.itemModel.attributevalues = [];
@@ -397,7 +397,10 @@ export class AdvancedItemSearchComponent implements OnInit {
             var attributeValue = attr.value.trim();
             var lastchar = attributeValue.substr(attributeValue.length - 1);
             if (lastchar == '.' || lastchar == ',') {
-              attributeValue = attributeValue.substr(0, attributeValue.length - 1);
+              attributeValue = attributeValue.substr(
+                0,
+                attributeValue.length - 1
+              );
             }
             let listItem = {
               attributeNameID: attr.attributenameid,
@@ -424,7 +427,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     };
 
     this.spinner.show();
-    this.loader = true
+    // this.loader = true;
     this.searchResults = [];
     this.searchResultKeys = [];
     this.itemManagementService
@@ -467,7 +470,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       userId: this.loggedInuser,
     };
     this.spinner.show();
-    this.loader = true
+    // this.loader = true;
     this.itemManagementService
       .getAdvancedSearchItemRepairNotesRfq(request)
       .subscribe((response: any) => {
@@ -487,7 +490,7 @@ export class AdvancedItemSearchComponent implements OnInit {
         this.RFQsList = response.rfqsList;
 
         this.spinner.hide();
-        this.loader = false
+        // this.loader = false;
       });
   }
 
@@ -728,7 +731,9 @@ export class AdvancedItemSearchComponent implements OnInit {
           backgroundColor: this.chartColors[0].backgroundColor,
         };
 
-        this.pieChartLabels = labels.map((label, index) => `${label} ${percentages[index]}`);
+        this.pieChartLabels = labels.map(
+          (label, index) => `${label} ${percentages[index]}`
+        );
         this.pieChartData = [dataset];
       });
     return;
@@ -759,21 +764,24 @@ export class AdvancedItemSearchComponent implements OnInit {
   public chartHovered(e: any): void {}
 
   public chartClicked(e: any): void {
-    const clickedLabel = e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.replace(/\d+([,.]\d+)?\s*/g, '');
+    const clickedLabel =
+    e.event.chart.config._config.data.labels[e.active[0].index];
+    const matches = clickedLabel.replace(/\b\d+(\.\d+)?\b\s*/g, '').trim();
     const type = matches;
 
     this.selectedFailureType = type;
+    console.log('selectedFailureCause33', this.selectedFailureCause);
+
     var request = {
       companyId: this.companyId,
       failureType: this.selectedFailureType,
-      isByRepairCost: this.repairFlag,
+      isByRepairCost: Boolean(this.repairFlag),
       startDate: this.datepipe.transform(this.startDate, 'yyyy-MM-dd'),
       endDate: this.datepipe.transform(this.endDate, 'yyyy-MM-dd'),
       itemIds: this.itemIds,
     };
     this.spinner.show();
-    this.loader = true
+    // this.loader = true;
     this.itemManagementService
       .getFailureCausesPieChart(request)
       .subscribe((data) => {
@@ -783,9 +791,7 @@ export class AdvancedItemSearchComponent implements OnInit {
         this.pieChartCauseLabels = [];
         this.pieChartCauseData = [];
 
-        const labels = Object.keys(
-          this.failureTypesandPercentageCause
-        );
+        const labels = Object.keys(this.failureTypesandPercentageCause);
         const percentages = Object.values(this.failureTypesandPercentageCause);
 
         const dataset: any = {
@@ -793,7 +799,9 @@ export class AdvancedItemSearchComponent implements OnInit {
           backgroundColor: this.chartColors[0].backgroundColor,
         };
 
-        this.pieChartCauseLabels = labels.map((label, index) => `${label} ${percentages[index]}`);
+        this.pieChartCauseLabels = labels.map(
+          (label, index) => `${label} ${percentages[index]}`
+        );
         this.pieChartCauseData = [dataset];
       });
   }
@@ -802,15 +810,13 @@ export class AdvancedItemSearchComponent implements OnInit {
     let causeText;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.userId = sessionStorage.getItem('userId');
-    const clickedLabel = e.event.chart.config._config.data.labels[e.active[0].index];
-    const matches = clickedLabel.match(/^(.*?)\s+\d+(\.\d+)?$/);
-
-    if (matches) {
-      causeText = matches[1];
-    }
-
-    const cause = causeText;
-    this.selectedFailureCause = cause;
+    const clickedLabel =
+      e.event.chart.config._config.data.labels[e.active[0].index];
+      const matches = clickedLabel.replace(/\b\d+(\.\d+)?\b\s*/g, '').trim();
+      const cause = matches;
+  
+      this.selectedFailureCause = cause;
+      console.log('selectedFailureCause33', this.selectedFailureCause);
 
     var request = {
       companyId: this.companyId,
@@ -824,12 +830,12 @@ export class AdvancedItemSearchComponent implements OnInit {
     };
     if (cause != '') {
       this.spinner.show();
-      this.loader = true
+      // this.loader = true;
       this.itemManagementService
         .getRepairJobsByFailureCause(request)
         .subscribe((data) => {
           this.spinner.hide();
-          this.loader = false
+          // this.loader = false;
           this.repairJobs = data;
           this.openModal(template);
         });
@@ -876,7 +882,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       this.isExpandAdvancedSearch = false;
       this.isTimeSpanSelected = 0;
       this.spinner.show;
-      this.loader = true
+      // this.loader = true;
       this.itemManagementService
         .getDataForFailedItems(this.companyId)
         .subscribe((response: any) => {
@@ -957,7 +963,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     }
     (error: any) => {
       this.spinner.hide();
-      this.loader = false
+      // this.loader = false;
     };
   }
 

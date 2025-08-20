@@ -55,6 +55,7 @@
               data-bs-toggle="tooltip"
               title="Add new User Type."
               placement="top"
+              style="border-radius: 6px;"
             >
               Add User Type
             </button>
@@ -63,7 +64,10 @@
             <div class="float-left">
               <span
                 >Show
-                <select [(ngModel)]="itemsForPagination">
+                <select
+                  [(ngModel)]="itemsForPagination"
+                  (change)="onChange($event.target)"
+                >
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
@@ -121,7 +125,7 @@
                   let type of userTypes
                     | orderBy : reverse + order
                     | filterBy
-                      : ['name', 'hostingfee', 'parentid', 'description']
+                      : ['name', 'hostingFee', 'parentId', 'description']
                       : userTypeFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
@@ -129,8 +133,8 @@
               >
                 <!--| orderBy: reverse+order | filterBy : ['name','phone','state']: locationTypeFilter | paginate: { itemsPerPage: itemsForPagination, currentPage: p }-->
                 <td>{{ type.name }}</td>
-                <td>{{ type.hostingfee }}</td>
-                <td>{{ type.parentid }}</td>
+                <td>{{ type.hostingFee }}</td>
+                <td>{{ type.parentId }}</td>
                 <td>{{ type.description }}</td>
                 <td>
                   <button
@@ -140,7 +144,7 @@
                     title="Click here to Manage User Attributes"
                     *ngIf="highestRank > 5"
                     class="btn btn-outline-success btn-sm"
-                    [routerLink]="['../attributes', type.typeid, companyId]"
+                    [routerLink]="['../attributes', type.typeId, companyId]"
                   >
                     Manage Attributes
                   </button>
@@ -153,7 +157,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this UserType"
-                    [routerLink]="['../editUserType', type.typeid, companyId]"
+                    [routerLink]="['../editUserType', type.typeId, companyId]"
                   >
                     Edit
                   </button>
@@ -164,7 +168,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this UserType"
-                    (click)="openModal(confirmtemplate, type.typeid)"
+                    (click)="openModal(confirmtemplate, type.typeId)"
                     [disabled]="highestRank == 9"
                   >
                     Delete

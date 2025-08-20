@@ -25,7 +25,7 @@ export class EditcompanystatusComponent implements OnInit {
   oldStatus: any;
   length: any;
   dismissible = true;
-  loader = false
+  loader = false;
   constructor(
     private companyStatusesService: CompanyStatusesService,
     private companyManagementService: CompanyManagementService,
@@ -39,6 +39,7 @@ export class EditcompanystatusComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
+      
       this.companyId = this.globalCompany.companyid;
       console.log('compaanyid=' + this.companyId);
     });
@@ -48,22 +49,21 @@ export class EditcompanystatusComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
+    
     });
 
     console.log('companyi=' + this.companyId);
     this.spinner.show();
-    this.loader = true;
+
     this.companyStatusesService.getCompanyStatus(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false
+
         this.model = response;
         this.oldStatus = this.model.status;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
@@ -84,24 +84,24 @@ export class EditcompanystatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
+        companyId: this.globalCompany.companyid,
+        lastModifiedBy: this.userName,
         destroyed: false,
-        entitytypeid: 0,
-        inservice: false,
+        entityTypeId: 0,
+        inService: false,
         spare: false,
         status: this.model.status,
-        statusid: this.model.statusid,
-        underrepair: false,
+        statusId: this.model.statusid,
+        underRepair: false,
         moduleType: 'companytype',
         oldStatus: this.oldStatus,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyStatusesService.updateCompanyStatus(this.model).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -111,7 +111,6 @@ export class EditcompanystatusComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
     }

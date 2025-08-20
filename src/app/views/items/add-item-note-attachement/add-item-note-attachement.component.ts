@@ -36,6 +36,7 @@ export class AddItemNoteAttachementComponent implements OnInit {
   itemTag: any;
   itemType: any;
   loader = false;
+  highestRank : any;
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     private companyManagementService: CompanyManagementService,
@@ -67,6 +68,7 @@ export class AddItemNoteAttachementComponent implements OnInit {
       this.broadcasterService.currentNoteAttachmentTitle;
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
+    this.highestRank = sessionStorage.getItem('highestRank');
     this.userName = sessionStorage.getItem('userName');
     this.addedfiles.push({ file: '', description: '' });
   }
@@ -108,11 +110,11 @@ export class AddItemNoteAttachementComponent implements OnInit {
         },
       };
       this.spinner.show();
-      this.loader = true;
+
       this.itemAttachmentsService.saveItemMultipleDocuments(req).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -125,7 +127,6 @@ export class AddItemNoteAttachementComponent implements OnInit {
 
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

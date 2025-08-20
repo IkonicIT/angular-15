@@ -57,24 +57,24 @@ export class AddLocationStatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
+        companyId: this.globalCompany.companyid,
+        lastModifiedBy: this.userName,
         destroyed: true,
-        entitytypeid: 0,
-        inservice: true,
+        entityTypeId: 0,
+        inService: true,
         moduleType: 'locationtype',
         spare: true,
         status: this.model.status,
-        statusid: 0,
-        underrepair: true,
+        statusId: 0,
+        underRepair: true,
       };
       this.spinner.show();
-      this.loader = true;
+
       console.log(JSON.stringify(this.model));
       this.locationStatusService.saveLocationStatus(this.model).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -84,7 +84,6 @@ export class AddLocationStatusComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

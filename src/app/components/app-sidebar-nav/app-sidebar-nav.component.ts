@@ -8,9 +8,14 @@ import {
 } from '@angular/core';
 import { BroadcasterService } from '../../services/broadcaster.service';
 
-// Import navigation elements
 import { navigation } from '../../_nav';
-import { Router } from '@angular/router';
+
+export interface NavItem {
+  name: string;
+  url: string;
+  icon: string;
+  children?: NavItem[];
+}
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -71,8 +76,12 @@ import { Router } from '@angular/router';
 export class AppSidebarNavComponent {
   @HostBinding('class.sidebar-nav') true: any;
   @HostBinding('attr.role') role: any;
+  rank: any;
+  public mansfieldCompanyId = 4715;
+  public navigation: NavItem[] = [];
 
   ngOnInit() {
+    this.rank = sessionStorage.getItem('highestRank');
     this.broadcasterService.on('refreshNavBar').subscribe((data) => {
       if (this.broadcasterService.currentCompany == 'selectcompany') {
         this.navigation = [];
@@ -80,62 +89,92 @@ export class AppSidebarNavComponent {
         parseInt(sessionStorage.getItem('highestRank') as any) == 1 &&
         this.broadcasterService.currentCompany == 'nonselectcompany'
       ) {
-        this.navigation = [
-          {
-            name: 'Dashboard',
-            url: '/dashboard',
-            icon: 'icon-speedometer',
-          },
+        if (
+          this.broadcasterService.selectedCompanyId === this.mansfieldCompanyId
+        ) {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
 
-          {
-            name: 'Company',
-            url: '',
-            icon: 'fa fa-building',
-            children: [
-              {
-                name: 'Company Documents',
-                url: '/company/documents',
-                icon: 'fa fa-file',
-              },
-            ],
-          },
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+              ],
+            },
 
-          {
-            name: 'Items',
-            url: '',
-            icon: 'fa fa-sitemap',
-            children: [
-              {
-                name: 'Manage Items',
-                url: '/items/list',
-                icon: 'fa fa-sitemap',
-              },
-            ],
-          },
-        ];
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Parts',
+              url: '/parts',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Cranes',
+              url: '/cranes',
+              icon: 'fa fa-user-circle-o',
+            },
+          ];
+        } else {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
+
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+              ],
+            },
+
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+          ];
+        }
       } else if (
         parseInt(sessionStorage.getItem('highestRank') as any) == 2 &&
         this.broadcasterService.currentCompany == 'nonselectcompany'
       ) {
         this.navigation = [
-          {
-            name: 'Dashboard',
-            url: '/dashboard',
-            icon: 'icon-speedometer',
-          },
-
-          {
-            name: 'Company',
-            url: '',
-            icon: 'fa fa-building',
-            children: [
-              {
-                name: 'Company Documents',
-                url: '/company/documents',
-                icon: 'fa fa-file',
-              },
-            ],
-          },
           {
             name: 'Items',
             url: '',
@@ -223,525 +262,1390 @@ export class AppSidebarNavComponent {
           },
         ];
       } else if (
-        parseInt(sessionStorage.getItem('highestRank') as any) == 5 &&
+        parseInt(sessionStorage.getItem('highestRank') as any) == 6 &&
         this.broadcasterService.currentCompany == 'nonselectcompany'
       ) {
-        this.navigation = [
-          {
-            name: 'Dashboard',
-            url: '/dashboard',
-            icon: 'icon-speedometer',
-          },
+        if (
+          this.broadcasterService.selectedCompanyId === this.mansfieldCompanyId
+        ) {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
 
-          {
-            name: 'Company',
-            url: '',
-            icon: 'fa fa-building',
-            children: [
-              {
-                name: 'Company Documents',
-                url: '/company/documents',
-                icon: 'fa fa-file',
-              },
-            ],
-          },
-          {
-            name: 'Locations',
-            url: '',
-            icon: 'fa fa-map-marker',
-            children: [
-              {
-                name: 'Manage Locations',
-                url: '/location/list',
-                icon: 'fa fa-map-marker',
-              },
-              {
-                name: 'Location Types',
-                url: '/location/types',
-                icon: 'fa fa-map-marker',
-              },
-            ],
-          },
-          {
-            name: 'Items',
-            url: '',
-            icon: 'fa fa-sitemap',
-            children: [
-              {
-                name: 'Manage Items',
-                url: '/items/list',
-                icon: 'fa fa-sitemap',
-              },
-            ],
-          },
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+              ],
+            },
+            {
+              name: 'Locations',
+              url: '',
+              icon: 'fa fa-map-marker',
+              children: [
+                {
+                  name: 'Manage Locations',
+                  url: '/location/list',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Types',
+                  url: '/location/types',
+                  icon: 'fa fa-map-marker',
+                },
+              ],
+            },
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Parts',
+              url: '/parts',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Cranes',
+              url: '/cranes',
+              icon: 'fa fa-user-circle-o',
+            },
 
-          {
-            name: 'Users',
-            url: '',
-            icon: 'fa fa-users',
-            children: [
-              {
-                name: 'User Management',
-                url: '/user/list',
-                icon: 'fa fa-users',
-              },
-            ],
-          },
-        ];
+            {
+              name: 'Users',
+              url: '',
+              icon: 'fa fa-users',
+              children: [
+                {
+                  name: 'User Management',
+                  url: '/user/list',
+                  icon: 'fa fa-users',
+                },
+              ],
+            },
+          ];
+        } else {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
+
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+              ],
+            },
+            {
+              name: 'Locations',
+              url: '',
+              icon: 'fa fa-map-marker',
+              children: [
+                {
+                  name: 'Manage Locations',
+                  url: '/location/list',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Types',
+                  url: '/location/types',
+                  icon: 'fa fa-map-marker',
+                },
+              ],
+            },
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+
+            {
+              name: 'Users',
+              url: '',
+              icon: 'fa fa-users',
+              children: [
+                {
+                  name: 'User Management',
+                  url: '/user/list',
+                  icon: 'fa fa-users',
+                },
+              ],
+            },
+          ];
+        }
       } else if (
         parseInt(sessionStorage.getItem('highestRank') as any) == 6 &&
         this.broadcasterService.currentCompany == 'nonselectcompany'
       ) {
-        this.navigation = [
-          {
-            name: 'Dashboard',
-            url: '/dashboard',
-            icon: 'icon-speedometer',
-          },
+        if (
+          this.broadcasterService.selectedCompanyId === this.mansfieldCompanyId
+        ) {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
 
-          {
-            name: 'Company',
-            url: '',
-            icon: 'fa fa-building',
-            children: [
-              {
-                name: 'Company Documents',
-                url: '/company/documents',
-                icon: 'fa fa-file',
-              },
-            ],
-          },
-          {
-            name: 'Locations',
-            url: '',
-            icon: 'fa fa-map-marker',
-            children: [
-              {
-                name: 'Manage Locations',
-                url: '/location/list',
-                icon: 'fa fa-map-marker',
-              },
-              {
-                name: 'Location Types',
-                url: '/location/types',
-                icon: 'fa fa-map-marker',
-              },
-              {
-                name: 'Location Status',
-                url: '/location/status',
-                icon: 'fa fa-map-marker',
-              },
-            ],
-          },
-          {
-            name: 'Items',
-            url: '',
-            icon: 'fa fa-sitemap',
-            children: [
-              {
-                name: 'Manage Items',
-                url: '/items/list',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Item Types',
-                url: '/items/types',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Item Status',
-                url: '/items/status',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Item Repair Items',
-                url: '/items/repairItems',
-                icon: 'fa fa-sitemap',
-              },
-            ],
-          },
-          {
-            name: 'Vendor',
-            url: '/vendor/list',
-            icon: 'fa fa-user-circle',
-          },
-          {
-            name: 'Warranty',
-            url: '/warranty/list',
-            icon: 'fa fa-superpowers',
-          },
-          {
-            name: 'Users',
-            url: '',
-            icon: 'fa fa-users',
-            children: [
-              {
-                name: 'User Management',
-                url: '/user/list',
-                icon: 'fa fa-users',
-              },
-              {
-                name: 'User Types',
-                url: '/user/types',
-                icon: 'fa fa-users',
-              },
-            ],
-          },
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+              ],
+            },
+            {
+              name: 'Locations',
+              url: '',
+              icon: 'fa fa-map-marker',
+              children: [
+                {
+                  name: 'Manage Locations',
+                  url: '/location/list',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Types',
+                  url: '/location/types',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Status',
+                  url: '/location/status',
+                  icon: 'fa fa-map-marker',
+                },
+              ],
+            },
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Types',
+                  url: '/items/types',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Status',
+                  url: '/items/status',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Repair Items',
+                  url: '/items/repairItems',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Vendor',
+              url: '/vendor/list',
+              icon: 'fa fa-user-circle',
+            },
+            {
+              name: 'Warranty',
+              url: '/warranty/list',
+              icon: 'fa fa-superpowers',
+            },
+            {
+              name: 'Parts',
+              url: '/parts',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Cranes',
+              url: '/cranes',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Users',
+              url: '',
+              icon: 'fa fa-users',
+              children: [
+                {
+                  name: 'User Management',
+                  url: '/user/list',
+                  icon: 'fa fa-users',
+                },
+                {
+                  name: 'User Types',
+                  url: '/user/types',
+                  icon: 'fa fa-users',
+                },
+              ],
+            },
 
-          {
-            name: 'User Profile',
-            url: '/profile',
-            icon: 'fa fa-user',
-            children: [
-              {
-                name: 'My Profile',
-                url: '/profile',
-                icon: 'fa fa-user',
-              },
-            ],
-          },
-          {
-            name: 'Primary Findings',
-            url: '/failuretype',
-            icon: 'fa fa-user',
-          },
+            {
+              name: 'User Profile',
+              url: '/profile',
+              icon: 'fa fa-user',
+              children: [
+                {
+                  name: 'My Profile',
+                  url: '/profile',
+                  icon: 'fa fa-user',
+                },
+              ],
+            },
+            {
+              name: 'Primary Findings',
+              url: '/failuretype',
+              icon: 'fa fa-user',
+            },
 
-          {
-            name: 'Help',
-            url: '/help',
-            icon: 'fa fa-question',
-          },
-        ];
+            {
+              name: 'Help',
+              url: '/help',
+              icon: 'fa fa-question',
+            },
+          ];
+        } else {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
+
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+              ],
+            },
+            {
+              name: 'Locations',
+              url: '',
+              icon: 'fa fa-map-marker',
+              children: [
+                {
+                  name: 'Manage Locations',
+                  url: '/location/list',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Types',
+                  url: '/location/types',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Status',
+                  url: '/location/status',
+                  icon: 'fa fa-map-marker',
+                },
+              ],
+            },
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Types',
+                  url: '/items/types',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Status',
+                  url: '/items/status',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Repair Items',
+                  url: '/items/repairItems',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Vendor',
+              url: '/vendor/list',
+              icon: 'fa fa-user-circle',
+            },
+            {
+              name: 'Warranty',
+              url: '/warranty/list',
+              icon: 'fa fa-superpowers',
+            },
+            {
+              name: 'Users',
+              url: '',
+              icon: 'fa fa-users',
+              children: [
+                {
+                  name: 'User Management',
+                  url: '/user/list',
+                  icon: 'fa fa-users',
+                },
+                {
+                  name: 'User Types',
+                  url: '/user/types',
+                  icon: 'fa fa-users',
+                },
+              ],
+            },
+
+            {
+              name: 'User Profile',
+              url: '/profile',
+              icon: 'fa fa-user',
+              children: [
+                {
+                  name: 'My Profile',
+                  url: '/profile',
+                  icon: 'fa fa-user',
+                },
+              ],
+            },
+            {
+              name: 'Primary Findings',
+              url: '/failuretype',
+              icon: 'fa fa-user',
+            },
+
+            {
+              name: 'Help',
+              url: '/help',
+              icon: 'fa fa-question',
+            },
+          ];
+        }
       } else if (
         parseInt(sessionStorage.getItem('highestRank') as any) == 7 &&
         this.broadcasterService.currentCompany == 'nonselectcompany'
       ) {
-        this.navigation = [
-          {
-            name: 'Dashboard',
-            url: '/dashboard',
-            icon: 'icon-speedometer',
-          },
+        if (
+          this.broadcasterService.selectedCompanyId === this.mansfieldCompanyId
+        ) {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
 
-          {
-            name: 'Company',
-            url: '',
-            icon: 'fa fa-building',
-            children: [
-              {
-                name: 'Manage Companies',
-                url: '/company/list',
-                icon: 'fa fa-building',
-                pathMatch: 'full',
-              },
-              {
-                name: 'Company Documents',
-                url: '/company/documents',
-                icon: 'fa fa-file',
-              },
-              {
-                name: 'Company Types',
-                url: '/company/types',
-                icon: 'fa fa-building',
-              },
-              {
-                name: 'Company Attributes',
-                url: '/company/attributes/0/0',
-                icon: 'fa fa-building',
-              },
-              {
-                name: 'Company Status',
-                url: '/company/statuses',
-                icon: 'fa fa-building',
-              },
-            ],
-          },
-          {
-            name: 'Locations',
-            url: '',
-            icon: 'fa fa-map-marker',
-            children: [
-              {
-                name: 'Manage Locations',
-                url: '/location/list',
-                icon: 'fa fa-map-marker',
-              },
-              {
-                name: 'Location Types',
-                url: '/location/types',
-                icon: 'fa fa-map-marker',
-              },
-              {
-                name: 'Location Status',
-                url: '/location/status',
-                icon: 'fa fa-map-marker',
-              },
-            ],
-          },
-          {
-            name: 'Items',
-            url: '',
-            icon: 'fa fa-sitemap',
-            children: [
-              {
-                name: 'Manage Items',
-                url: '/items/list',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Item Types',
-                url: '/items/types',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Item Status',
-                url: '/items/status',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Item Repair Items',
-                url: '/items/repairItems',
-                icon: 'fa fa-sitemap',
-              },
-            ],
-          },
-          // {
-          //   name: 'Template',
-          //   url: '/template',
-          //   icon: 'fa fa-user-circle'
-          // },
-          {
-            name: 'Vendor',
-            url: '/vendor/list',
-            icon: 'fa fa-user-circle',
-          },
-          {
-            name: 'Warranty',
-            url: '/warranty/list',
-            icon: 'fa fa-superpowers',
-          },
-          {
-            name: 'Users',
-            url: '',
-            icon: 'fa fa-users',
-            children: [
-              {
-                name: 'User Management',
-                url: '/user/list',
-                icon: 'fa fa-users',
-              },
-              {
-                name: 'User Types',
-                url: '/user/types',
-                icon: 'fa fa-users',
-              },
-            ],
-          },
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Manage Companies',
+                  url: '/company/list',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+                {
+                  name: 'Company Types',
+                  url: '/company/types',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Attributes',
+                  url: '/company/attributes/0/0',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Status',
+                  url: '/company/statuses',
+                  icon: 'fa fa-building',
+                },
+              ],
+            },
+            {
+              name: 'Locations',
+              url: '',
+              icon: 'fa fa-map-marker',
+              children: [
+                {
+                  name: 'Manage Locations',
+                  url: '/location/list',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Types',
+                  url: '/location/types',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Status',
+                  url: '/location/status',
+                  icon: 'fa fa-map-marker',
+                },
+              ],
+            },
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Types',
+                  url: '/items/types',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Status',
+                  url: '/items/status',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Repair Items',
+                  url: '/items/repairItems',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Vendor',
+              url: '/vendor/list',
+              icon: 'fa fa-user-circle',
+            },
+            {
+              name: 'Warranty',
+              url: '/warranty/list',
+              icon: 'fa fa-superpowers',
+            },
+            {
+              name: 'Parts',
+              url: '/parts',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Cranes',
+              url: '/cranes',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Users',
+              url: '',
+              icon: 'fa fa-users',
+              children: [
+                {
+                  name: 'User Management',
+                  url: '/user/list',
+                  icon: 'fa fa-users',
+                },
+                {
+                  name: 'User Types',
+                  url: '/user/types',
+                  icon: 'fa fa-users',
+                },
+              ],
+            },
 
-          {
-            name: 'User Profile',
-            url: '/profile',
-            icon: 'fa fa-user',
-            children: [
-              {
-                name: 'My Profile',
-                url: '/profile',
-                icon: 'fa fa-user',
-              },
-              // {
-              //   name: 'Logout',
-              //   url: '/logout',
-              //   icon: 'icon-logout'
-              // },
-            ],
-          },
-          {
-            name: 'Primary Findings',
-            url: '/failuretype',
-            icon: 'fa fa-user',
-          },
+            {
+              name: 'User Profile',
+              url: '/profile',
+              icon: 'fa fa-user',
+              children: [
+                {
+                  name: 'My Profile',
+                  url: '/profile',
+                  icon: 'fa fa-user',
+                },
+              ],
+            },
+            {
+              name: 'Primary Findings',
+              url: '/failuretype',
+              icon: 'fa fa-user',
+            },
 
-          {
-            name: 'Help',
-            url: '/help',
-            icon: 'fa fa-question',
-          },
-        ];
+            {
+              name: 'Help',
+              url: '/help',
+              icon: 'fa fa-question',
+            },
+          ];
+        } else {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
+
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Manage Companies',
+                  url: '/company/list',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+                {
+                  name: 'Company Types',
+                  url: '/company/types',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Attributes',
+                  url: '/company/attributes/0/0',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Status',
+                  url: '/company/statuses',
+                  icon: 'fa fa-building',
+                },
+              ],
+            },
+            {
+              name: 'Locations',
+              url: '',
+              icon: 'fa fa-map-marker',
+              children: [
+                {
+                  name: 'Manage Locations',
+                  url: '/location/list',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Types',
+                  url: '/location/types',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Status',
+                  url: '/location/status',
+                  icon: 'fa fa-map-marker',
+                },
+              ],
+            },
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Types',
+                  url: '/items/types',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Status',
+                  url: '/items/status',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Repair Items',
+                  url: '/items/repairItems',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Vendor',
+              url: '/vendor/list',
+              icon: 'fa fa-user-circle',
+            },
+            {
+              name: 'Warranty',
+              url: '/warranty/list',
+              icon: 'fa fa-superpowers',
+            },
+            {
+              name: 'Users',
+              url: '',
+              icon: 'fa fa-users',
+              children: [
+                {
+                  name: 'User Management',
+                  url: '/user/list',
+                  icon: 'fa fa-users',
+                },
+                {
+                  name: 'User Types',
+                  url: '/user/types',
+                  icon: 'fa fa-users',
+                },
+              ],
+            },
+
+            {
+              name: 'User Profile',
+              url: '/profile',
+              icon: 'fa fa-user',
+              children: [
+                {
+                  name: 'My Profile',
+                  url: '/profile',
+                  icon: 'fa fa-user',
+                },
+              ],
+            },
+            {
+              name: 'Primary Findings',
+              url: '/failuretype',
+              icon: 'fa fa-user',
+            },
+
+            {
+              name: 'Help',
+              url: '/help',
+              icon: 'fa fa-question',
+            },
+          ];
+        }
+      } else if (
+        parseInt(sessionStorage.getItem('highestRank') as any) == 10 &&
+        this.broadcasterService.currentCompany == 'nonselectcompany'
+      ) {
+        {
+        if (
+          this.broadcasterService.selectedCompanyId === this.mansfieldCompanyId
+        ) {
+          this.navigation = [
+            {
+              name: "Dashboard",
+              url: "/dashboard",
+              icon: "icon-speedometer",
+            },
+
+            {
+              name: "Company",
+              url: "",
+              icon: "fa fa-building",
+              children: [
+                {
+                  name: "Manage Companies",
+                  url: "/company/list",
+                  icon: "fa fa-building",
+                },
+                {
+                  name: "Company Documents",
+                  url: "/company/documents",
+                  icon: "fa fa-file",
+                },
+                {
+                  name: "Company Types",
+                  url: "/company/types",
+                  icon: "fa fa-building",
+                },
+                {
+                  name: "Company Attributes",
+                  url: "/company/attributes/0/0",
+                  icon: "fa fa-building",
+                },
+                {
+                  name: "Company Status",
+                  url: "/company/statuses",
+                  icon: "fa fa-building",
+                },
+              ],
+            },
+            {
+              name: "Locations",
+              url: "",
+              icon: "fa fa-map-marker",
+              children: [
+                {
+                  name: "Manage Locations",
+                  url: "/location/list",
+                  icon: "fa fa-map-marker",
+                },
+                {
+                  name: "Location Types",
+                  url: "/location/types",
+                  icon: "fa fa-map-marker",
+                },
+                {
+                  name: "Location Status",
+                  url: "/location/status",
+                  icon: "fa fa-map-marker",
+                },
+              ],
+            },
+            {
+              name: "Items",
+              url: "",
+              icon: "fa fa-sitemap",
+              children: [
+                {
+                  name: "Manage Items",
+                  url: "/items/list",
+                  icon: "fa fa-sitemap"
+                },
+                {
+                  name: "Item Types",
+                  url: "/items/types",
+                  icon: "fa fa-sitemap",
+                },
+                {
+                  name: "Item Status",
+                  url: "/items/status",
+                  icon: "fa fa-sitemap",
+                },
+                {
+                  name: "Item Repair Items",
+                  url: "/items/repairItems",
+                  icon: "fa fa-sitemap",
+                },
+              ],
+            },
+            {
+              name: 'Template',
+              url: '/template',
+              icon: 'fa fa-user-circle'
+            },
+            {
+              name: "Vendor",
+              url: "/vendor/list",
+              icon: "fa fa-user-circle",
+            },
+            {
+              name: "Warranty",
+              url: "/warranty/list",
+              icon: "fa fa-superpowers",
+            },
+            {
+              name: "Parts",
+              url: "/parts",
+              icon: "fa fa-user-circle-o",
+            },
+            {
+              name: "Cranes",
+              url: "/cranes",
+              icon: "fa fa-user-circle-o",
+            },
+            {
+              name: "Users",
+              url: "",
+              icon: "fa fa-users",
+              children: [
+                {
+                  name: "User Management",
+                  url: "/user/list",
+                  icon: "fa fa-users",
+                },
+                {
+                  name: "User Types",
+                  url: "/user/types",
+                  icon: "fa fa-users",
+                },
+              ],
+            },
+
+            {
+              name: "User Profile",
+              url: "/profile",
+              icon: "fa fa-user",
+              children: [
+                {
+                  name: "My Profile",
+                  url: "/profile",
+                  icon: "fa fa-user",
+                },
+              ],
+            },
+            {
+              name: "Primary Findings",
+              url: "/failuretype",
+              icon: "fa fa-user",
+            },
+
+            {
+              name: "Help",
+              url: "/help",
+              icon: "fa fa-question",
+            },
+          ];
+        } else {
+          this.navigation = [
+            {
+              name: "Dashboard",
+              url: "/dashboard",
+              icon: "icon-speedometer",
+            },
+
+            {
+              name: "Company",
+              url: "",
+              icon: "fa fa-building",
+              children: [
+                {
+                  name: "Manage Companies",
+                  url: "/company/list",
+                  icon: "fa fa-building",
+                },
+                {
+                  name: "Company Documents",
+                  url: "/company/documents",
+                  icon: "fa fa-file",
+                },
+                {
+                  name: "Company Types",
+                  url: "/company/types",
+                  icon: "fa fa-building",
+                },
+                {
+                  name: "Company Attributes",
+                  url: "/company/attributes/0/0",
+                  icon: "fa fa-building",
+                },
+                {
+                  name: "Company Status",
+                  url: "/company/statuses",
+                  icon: "fa fa-building",
+                },
+              ],
+            },
+            {
+              name: "Locations",
+              url: "",
+              icon: "fa fa-map-marker",
+              children: [
+                {
+                  name: "Manage Locations",
+                  url: "/location/list",
+                  icon: "fa fa-map-marker",
+                },
+                {
+                  name: "Location Types",
+                  url: "/location/types",
+                  icon: "fa fa-map-marker",
+                },
+                {
+                  name: "Location Status",
+                  url: "/location/status",
+                  icon: "fa fa-map-marker",
+                },
+              ],
+            },
+            {
+              name: "Items",
+              url: "",
+              icon: "fa fa-sitemap",
+              children: [
+                {
+                  name: "Manage Items",
+                  url: "/items/list",
+                  icon: "fa fa-sitemap"
+                },
+                {
+                  name: "Item Types",
+                  url: "/items/types",
+                  icon: "fa fa-sitemap",
+                },
+                {
+                  name: "Item Status",
+                  url: "/items/status",
+                  icon: "fa fa-sitemap",
+                },
+                {
+                  name: "Item Repair Items",
+                  url: "/items/repairItems",
+                  icon: "fa fa-sitemap",
+                },
+              ],
+            },
+            {
+              name: 'Template',
+              url: '/template',
+              icon: 'fa fa-user-circle'
+            },
+            {
+              name: "Vendor",
+              url: "/vendor/list",
+              icon: "fa fa-user-circle",
+            },
+            {
+              name: "Warranty",
+              url: "/warranty/list",
+              icon: "fa fa-superpowers",
+            },
+            {
+              name: "Users",
+              url: "",
+              icon: "fa fa-users",
+              children: [
+                {
+                  name: "User Management",
+                  url: "/user/list",
+                  icon: "fa fa-users",
+                },
+                {
+                  name: "User Types",
+                  url: "/user/types",
+                  icon: "fa fa-users",
+                },
+              ],
+            },
+
+            {
+              name: "User Profile",
+              url: "/profile",
+              icon: "fa fa-user",
+              children: [
+                {
+                  name: "My Profile",
+                  url: "/profile",
+                  icon: "fa fa-user",
+                },
+              ],
+            },
+            {
+              name: "Primary Findings",
+              url: "/failuretype",
+              icon: "fa fa-user",
+            },
+
+            {
+              name: "Help",
+              url: "/help",
+              icon: "fa fa-question",
+            },
+          ];
+        }
+      }
       } else if (
         parseInt(sessionStorage.getItem('highestRank') as any) == 8 &&
         this.broadcasterService.currentCompany == 'nonselectcompany'
       ) {
-        this.navigation = [
-          {
-            name: 'Dashboard',
-            url: '/dashboard',
-            icon: 'icon-speedometer',
-          },
-          {
-            name: 'Company',
-            url: '',
-            icon: 'fa fa-building',
-            children: [
-              {
-                name: 'Manage Companies',
-                url: '/company/list',
-                icon: 'fa fa-building',
-                pathMatch: 'full',
-              },
-              {
-                name: 'Company Documents',
-                url: '/company/documents',
-                icon: 'fa fa-file',
-              },
-              {
-                name: 'Company Types',
-                url: '/company/types',
-                icon: 'fa fa-building',
-              },
-              {
-                name: 'Company Attributes',
-                url: '/company/attributes/0/0',
-                icon: 'fa fa-building',
-              },
-              {
-                name: 'Company Status',
-                url: '/company/statuses',
-                icon: 'fa fa-building',
-              },
-            ],
-          },
-          {
-            name: 'Locations',
-            url: '',
-            icon: 'fa fa-map-marker',
-            children: [
-              {
-                name: 'Manage Locations',
-                url: '/location/list',
-                icon: 'fa fa-map-marker',
-              },
-              {
-                name: 'Location Types',
-                url: '/location/types',
-                icon: 'fa fa-map-marker',
-              },
-              {
-                name: 'Location Status',
-                url: '/location/status',
-                icon: 'fa fa-map-marker',
-              },
-            ],
-          },
-          {
-            name: 'Items',
-            url: '',
-            icon: 'fa fa-sitemap',
-            children: [
-              {
-                name: 'Manage Items',
-                url: '/items/list',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Item Types',
-                url: '/items/types',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Item Status',
-                url: '/items/status',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Item Repair Items',
-                url: '/items/repairItems',
-                icon: 'fa fa-sitemap',
-              },
-            ],
-          },
-          {
-            name: 'Template',
-            url: '/template',
-            icon: 'fa fa-user-circle-o',
-          },
-          {
-            name: 'Vendor',
-            url: '/vendor/list',
-            icon: 'fa fa-user-circle',
-          },
-          {
-            name: 'Warranty',
-            url: '/warranty/list',
-            icon: 'fa fa-superpowers',
-          },
-          {
-            name: 'Users',
-            url: '',
-            icon: 'fa fa-users',
-            children: [
-              {
-                name: 'User Management',
-                url: '/user/list',
-                icon: 'fa fa-users',
-              },
-              {
-                name: 'User Log',
-                url: '/user/log',
-                icon: 'fa fa-users',
-              },
-              {
-                name: 'User Types',
-                url: '/user/types',
-                icon: 'fa fa-users',
-              },
-            ],
-          },
+        if (
+          this.broadcasterService.selectedCompanyId === this.mansfieldCompanyId
+        ) {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Manage Companies',
+                  url: '/company/list',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+                {
+                  name: 'Company Types',
+                  url: '/company/types',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Attributes',
+                  url: '/company/attributes/0/0',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Status',
+                  url: '/company/statuses',
+                  icon: 'fa fa-building',
+                },
+              ],
+            },
+            {
+              name: 'Locations',
+              url: '',
+              icon: 'fa fa-map-marker',
+              children: [
+                {
+                  name: 'Manage Locations',
+                  url: '/location/list',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Types',
+                  url: '/location/types',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Status',
+                  url: '/location/status',
+                  icon: 'fa fa-map-marker',
+                },
+              ],
+            },
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Types',
+                  url: '/items/types',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Status',
+                  url: '/items/status',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Repair Items',
+                  url: '/items/repairItems',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Parts',
+              url: '/parts',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Cranes',
+              url: '/cranes',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Template',
+              url: '/template',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Vendor',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Vendors',
+                  url: '/vendor/list',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Vendor Dashboard',
+                  url: '/vendor/vendorDashboard',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Warranty',
+              url: '/warranty/list',
+              icon: 'fa fa-superpowers',
+            },
+            {
+              name: 'Users',
+              url: '',
+              icon: 'fa fa-users',
+              children: [
+                {
+                  name: 'User Management',
+                  url: '/user/list',
+                  icon: 'fa fa-users',
+                },
+                {
+                  name: 'User Log',
+                  url: '/user/log',
+                  icon: 'fa fa-users',
+                },
+                {
+                  name: 'User Types',
+                  url: '/user/types',
+                  icon: 'fa fa-users',
+                },
+              ],
+            },
 
-          {
-            name: 'User Profile',
-            url: '/profile',
-            icon: 'fa fa-user',
-            children: [
-              {
-                name: 'My Profile',
-                url: '/profile',
-                icon: 'fa fa-user',
-              },
-              // {
-              //   name: 'Logout',
-              //   url: '/logout',
-              //   icon: 'icon-logout'
-              // },
-            ],
-          },
-          {
-            name: 'Primary Findings',
-            url: '/failuretype',
-            icon: 'fa fa-user',
-          },
-          {
-            name: 'Reports',
-            url: '',
-            icon: 'fa fa-sitemap',
-            children: [
-              {
-                name: 'Inservice Vs Spare',
-                url: '/reports/inservicevsspare',
-                icon: 'fa fa-sitemap',
-              },
-              {
-                name: 'Service Reports',
-                url: '/reports/servicereports',
-                icon: 'fa fa-sitemap',
-              },
-            ],
-          },
-          {
-            name: 'Help',
-            url: '/help',
-            icon: 'fa fa-question',
-          },
-        ];
+            {
+              name: 'User Profile',
+              url: '/profile',
+              icon: 'fa fa-user',
+              children: [
+                {
+                  name: 'My Profile',
+                  url: '/profile',
+                  icon: 'fa fa-user',
+                },
+              ],
+            },
+            {
+              name: 'Primary Findings',
+              url: '/failuretype',
+              icon: 'fa fa-user',
+            },
+            {
+              name: 'Reports',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Inservice Vs Spare',
+                  url: '/reports/inservicevsspare',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Service Reports',
+                  url: '/reports/servicereports',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Help',
+              url: '/help',
+              icon: 'fa fa-question',
+            },
+          ];
+        } else {
+          this.navigation = [
+            {
+              name: 'Dashboard',
+              url: '/dashboard',
+              icon: 'icon-speedometer',
+            },
+            {
+              name: 'Company',
+              url: '',
+              icon: 'fa fa-building',
+              children: [
+                {
+                  name: 'Manage Companies',
+                  url: '/company/list',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Documents',
+                  url: '/company/documents',
+                  icon: 'fa fa-file',
+                },
+                {
+                  name: 'Company Types',
+                  url: '/company/types',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Attributes',
+                  url: '/company/attributes/0/0',
+                  icon: 'fa fa-building',
+                },
+                {
+                  name: 'Company Status',
+                  url: '/company/statuses',
+                  icon: 'fa fa-building',
+                },
+              ],
+            },
+            {
+              name: 'Locations',
+              url: '',
+              icon: 'fa fa-map-marker',
+              children: [
+                {
+                  name: 'Manage Locations',
+                  url: '/location/list',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Types',
+                  url: '/location/types',
+                  icon: 'fa fa-map-marker',
+                },
+                {
+                  name: 'Location Status',
+                  url: '/location/status',
+                  icon: 'fa fa-map-marker',
+                },
+              ],
+            },
+            {
+              name: 'Items',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Items',
+                  url: '/items/list',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Types',
+                  url: '/items/types',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Status',
+                  url: '/items/status',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Item Repair Items',
+                  url: '/items/repairItems',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Template',
+              url: '/template',
+              icon: 'fa fa-user-circle-o',
+            },
+            {
+              name: 'Vendor',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Manage Vendors',
+                  url: '/vendor/list',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Vendor Dashboard',
+                  url: '/vendor/vendorDashboard',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Warranty',
+              url: '/warranty/list',
+              icon: 'fa fa-superpowers',
+            },
+            {
+              name: 'Users',
+              url: '',
+              icon: 'fa fa-users',
+              children: [
+                {
+                  name: 'User Management',
+                  url: '/user/list',
+                  icon: 'fa fa-users',
+                },
+                {
+                  name: 'User Log',
+                  url: '/user/log',
+                  icon: 'fa fa-users',
+                },
+                {
+                  name: 'User Types',
+                  url: '/user/types',
+                  icon: 'fa fa-users',
+                },
+              ],
+            },
+
+            {
+              name: 'User Profile',
+              url: '/profile',
+              icon: 'fa fa-user',
+              children: [
+                {
+                  name: 'My Profile',
+                  url: '/profile',
+                  icon: 'fa fa-user',
+                },
+              ],
+            },
+            {
+              name: 'Primary Findings',
+              url: '/failuretype',
+              icon: 'fa fa-user',
+            },
+            {
+              name: 'Reports',
+              url: '',
+              icon: 'fa fa-sitemap',
+              children: [
+                {
+                  name: 'Inservice Vs Spare',
+                  url: '/reports/inservicevsspare',
+                  icon: 'fa fa-sitemap',
+                },
+                {
+                  name: 'Service Reports',
+                  url: '/reports/servicereports',
+                  icon: 'fa fa-sitemap',
+                },
+              ],
+            },
+            {
+              name: 'Help',
+              url: '/help',
+              icon: 'fa fa-question',
+            },
+          ];
+        }
       } else if (
         parseInt(sessionStorage.getItem('highestRank') as any) == 9 &&
         this.broadcasterService.currentCompany == 'nonselectcompany'
@@ -761,7 +1665,6 @@ export class AppSidebarNavComponent {
                 name: 'Manage Companies',
                 url: '/company/list',
                 icon: 'fa fa-building',
-                pathMatch: 'full',
               },
               {
                 name: 'Company Documents',
@@ -882,11 +1785,6 @@ export class AppSidebarNavComponent {
                 url: '/profile',
                 icon: 'fa fa-user',
               },
-              // {
-              //   name: 'Logout',
-              //   url: '/logout',
-              //   icon: 'icon-logout'
-              // },
             ],
           },
           {
@@ -923,21 +1821,20 @@ export class AppSidebarNavComponent {
     });
   }
 
-  public navigation: any = [];
-
-  public isDivider(item: { divider: any }) {
+  public isDivider(item: any) {
     return item.divider ? true : false;
   }
 
-  public isTitle(item: { title: any }) {
+  public isTitle(item: any) {
     return item.title ? true : false;
   }
-
   isHasChild(navItem: any) {
     return navItem.hasOwnProperty('children') && navItem.children.length > 0;
   }
   constructor(private broadcasterService: BroadcasterService) {}
 }
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar-nav-item',
@@ -1062,7 +1959,7 @@ export class AppSidebarNavLinkComponent {
     </a>
     <ul class="nav-dropdown-items">
       <ng-template ngFor let-child [ngForOf]="link.children">
-        <app-sidebar-nav-item item="child"></app-sidebar-nav-item>
+        <app-sidebar-nav-item [item]="child"></app-sidebar-nav-item>
       </ng-template>
     </ul>
   `,

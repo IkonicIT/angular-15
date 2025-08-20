@@ -79,6 +79,7 @@
                     data-bs-toggle="tooltip"
                     title="Back to Previous Screen"
                     class="btn btn-primary"
+                    style="border-radius: 6px;"
                   >
                     Back
                   </button>
@@ -91,6 +92,7 @@
                     data-bs-toggle="tooltip"
                     title="Delete this ItemRepair"
                     (click)="openModal(confirmtemplate, itemRepairId)"
+                    style="border-radius: 6px;"
                   >
                     Delete
                   </button>
@@ -105,6 +107,7 @@
                     [routerLink]="[
                       '../../../itemRepairAttachments/' + itemRepairId
                     ]"
+                    style="border-radius: 6px;"
                   >
                     Attachments
                   </button>
@@ -117,6 +120,7 @@
                     data-bs-toggle="tooltip"
                     title="Update Item Repair"
                     (click)="updateItemRepair()"
+                    style="border-radius: 6px;"
                   >
                     Edit
                   </button>
@@ -128,6 +132,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Add Repair."
+                    style="border-radius: 6px;"
                     [routerLink]="['../../../addItemRepair/' + itemId]"
                   >
                     Add Repair
@@ -141,116 +146,143 @@
               <div class="card">
                 <form name="form" #f="ngForm" novalidate>
                   <div class="card-body">
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label>Tag:</label>
+                        <label class="pr5">Tag:</label>
                         <span>{{ model.tag }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label>Type:</label>
-                        <span>{{ model.itemtype }}</span>
+                        <label class="pr5">Type:</label>
+                        <span>{{ model.itemType }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="warrantyType">Warranty Type:</label>
-                        <span>{{ model.warrantytype }}</span>
+                        <label class="pr5" for="warrantyType"
+                          >Warranty Type:</label
+                        >
+                        <span>{{ model.warrantyType }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="warrantyExp">warranty Exp:</label>
+                        <label class="pr5" for="warrantyExp"
+                          >warranty Exp:</label
+                        >
                         <span>{{
-                          model.warrantyexpiration | date : "MM/dd/yyyy"
+                          model.warrantyExpiration | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="job">JOB Number :</label>
-                        <span>{{ model.jobnumber }}</span>
+                        <label class="pr5" for="job">JOB Number :</label>
+                        <span>{{ model.jobNumber }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="po">PO Number :</label>
-                        <span>{{ model.ponumber }}</span>
+                        <label class="pr5" for="po">PO Number :</label>
+                        <span>{{ model.poNumber }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="job">Location :</label>
+                        <label class="pr5" for="job">Location :</label>
                         <span>{{ model.repairLocationName }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="title">Title:</label>
+                        <label class="pr5" for="title">Title:</label>
                         <span>{{ model.title }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="vendor">Vendor:</label>
+                        <label class="pr5" for="vendor">Vendor:</label>
                         <span>{{ model.repairVendorName }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="details">Details:</label>
-                        <span>{{ model.repairnotes }}</span>
+                        <label class="pr5" for="details">Details:</label>
+                        <span>{{ model.repairNotes }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="estimatedDate"
+                        <label class="pr5" for="estimatedDate"
                           >Estimated Completion Date:</label
                         >
                         <span>{{
-                          model.estimatedcompletion | date : "MM/dd/yyyy"
+                          model.estimatedCompletion | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="repairCost">Repair Cost:</label>
-                        <span>{{ model.repaircost | currency }}</span>
+                        <label class="pr5" for="repairCost">Repair Cost:</label>
+                        <span>{{ model.repairCost | currency }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="repairstatus">Repair Status:</label>
-                        <span>{{ model.repairjobstatus }}</span>
+                        <label for="VendorWarranty">Vendor Warranty:</label>
+                        <input type="checkbox" [(ngModel)]="model.isVendorWarranty" name="VendorWarranty" #VendorWarranty="ngModel"
+                        id="VendorWarranty">
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="failureDate">Failure Date:</label>
+                        <label for="repairCost">Repair Type:</label>
+                        <span>{{model.repairType}}</span>
+                      </div>
+                    </div>
+                    <div class="row space">
+                      <div class="form-group col-sm-6">
+                        <label class="pr5" for="repairstatus"
+                          >Repair Status:</label
+                        >
+                        <span>{{ model.repairJobStatus }}</span>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label class="pr5" for="failureDate"
+                          >Failure Date:</label
+                        >
                         <span>{{
-                          model.failuredate | date : "MM/dd/yyyy"
+                          model.failureDate | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="failuretype">Failure Type:</label>
-                        <span>{{ model.failuretype }}</span>
+                        <label class="pr5" for="failuretype"
+                          >Failure Type:</label
+                        >
+                        <span>{{ model.failureType }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="failurecause">Failure Cause:</label>
-                        <span>{{ model.failurecause }}</span>
+                        <label class="pr5" for="failurecause"
+                          >Failure Cause:</label
+                        >
+                        <span>{{ model.failureCause }}</span>
                       </div>
                     </div>
-                    <div class="row">
-                      <label>Secondary Findings and Causes:</label>
+                    <div class="row space">
+                      <label class="pr5">Secondary Findings and Causes:</label>
                     </div>
                     <ng-container
                       *ngFor="let sitem of model.secondaryTypeAndCauses"
                     >
-                      <div class="row">
+                      <div class="row space">
                         <div class="form-group col-sm-6">
-                          <label for="failuretype">Failure Type:</label>
-                          <span>{{ sitem.failuretype }}</span>
+                          <label class="pr5" for="failuretype"
+                            >Failure Type:</label
+                          >
+                          <span>{{ sitem.failureType }}</span>
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="failurecause">Failure Cause:</label>
-                          <span>{{ sitem.failurecause }}</span>
+                          <label class="pr5" for="failurecause"
+                            >Failure Cause:</label
+                          >
+                          <span>{{ sitem.failureCause }}</span>
                         </div>
                       </div>
                     </ng-container>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="complete">Complete:</label>
+                        <label class="pr5" for="complete">Complete:</label>
                         <input
                           type="checkbox"
                           [(ngModel)]="model.complete"
@@ -260,20 +292,24 @@
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="actualCompletion">Actual Completion:</label>
+                        <label class="pr5" for="actualCompletion"
+                          >Actual Completion:</label
+                        >
                         <span>{{
-                          model.actualcompletion | date : "MM/dd/yyyy"
+                          model.actualCompletion | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label for="Completed By">Completed By:</label>
-                        <span>{{ model.completedby }}</span>
+                        <label class="pr5" for="Completed By"
+                          >Completed By:</label
+                        >
+                        <span>{{ model.completedBy }}</span>
                       </div>
                     </div>
 
-                    <div class="row"></div>
+                    <div class="row space"></div>
                   </div>
                 </form>
               </div>
@@ -317,22 +353,22 @@
                             ><span [hidden]="reverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="order === 'jobnumber'"
-                            (click)="setOrder('jobnumber')"
+                            [class.active]="order === 'jobNumber'"
+                            (click)="setOrder('jobNumber')"
                           >
                             Job Number<span [hidden]="reverse == ''">▼</span
                             ><span [hidden]="reverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="order === 'ponumber'"
-                            (click)="setOrder('ponumber')"
+                            [class.active]="order === 'poNumber'"
+                            (click)="setOrder('poNumber')"
                           >
                             PO Number<span [hidden]="reverse == ''">▼</span
                             ><span [hidden]="reverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="order === 'warrantytype'"
-                            (click)="setOrder('warrantytype')"
+                            [class.active]="order === 'warrantyType'"
+                            (click)="setOrder('warrantyType')"
                           >
                             Warranty Type<span [hidden]="reverse == ''">▼</span
                             ><span [hidden]="reverse != ''">▲</span>
@@ -356,11 +392,11 @@
                               | orderBy : reverse + order
                               | filterBy
                                 : [
-                                    'itemtype',
+                                    'itemType',
                                     'title',
-                                    'jobnumber',
-                                    'ponumber',
-                                    'warrantytype'
+                                    'jobNumber',
+                                    'poNumber',
+                                    'warrantyType'
                                   ]
                                 : itemRepairsFilter
                               | paginate
@@ -372,9 +408,9 @@
                           "
                         >
                           <td>{{ repair.title }}</td>
-                          <td>{{ repair.jobnumber }}</td>
-                          <td>{{ repair.ponumber }}</td>
-                          <td>{{ repair.warrantytype }}</td>
+                          <td>{{ repair.jobNumber }}</td>
+                          <td>{{ repair.poNumber }}</td>
+                          <td>{{ repair.warrantyType }}</td>
                           <td>
                             <ng-container
                               *ngFor="let attachment of repair.attachmentList"
@@ -398,7 +434,7 @@
                               data-bs-toggle="tooltip"
                               title="Click here to View this ItemRepair"
                               class="btn btn-outline-danger btn-sm"
-                              (click)="ViewItemRepair(repair.repairlogid)"
+                              (click)="ViewItemRepair(repair.repairLogId)"
                             >
                               View
                             </button>
@@ -457,16 +493,16 @@
                             ><span [hidden]="completedReverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="completedOrder === 'jobnumber'"
-                            (click)="setCompletedOrder('jobnumber')"
+                            [class.active]="completedOrder === 'jobNumber'"
+                            (click)="setCompletedOrder('jobNumber')"
                           >
                             Job Number<span [hidden]="completedReverse == ''"
                               >▼</span
                             ><span [hidden]="completedReverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="completedOrder === 'ponumber'"
-                            (click)="setCompletedOrder('ponumber')"
+                            [class.active]="completedOrder === 'poNumber'"
+                            (click)="setCompletedOrder('poNumber')"
                           >
                             PO Number<span [hidden]="completedReverse == ''"
                               >▼</span
@@ -498,11 +534,11 @@
                               | orderBy : completedReverse + completedOrder
                               | filterBy
                                 : [
-                                    'itemtype',
+                                    'itemType',
                                     'Date',
                                     'title',
-                                    'jobnumber',
-                                    'ponumber',
+                                    'jobNumber',
+                                    'poNumber',
                                     'By'
                                   ]
                                 : completedRepairsFilter
@@ -518,9 +554,9 @@
                             {{ repair.actualcompletion | date : "MM/dd/yyyy" }}
                           </td>
                           <td>{{ repair.title }}</td>
-                          <td>{{ repair.jobnumber }}</td>
-                          <td>{{ repair.ponumber }}</td>
-                          <td>{{ repair.completedby }}</td>
+                          <td>{{ repair.jobNumber }}</td>
+                          <td>{{ repair.poNumber }}</td>
+                          <td>{{ repair.completedBy }}</td>
                           <td>
                             <ng-container
                               *ngFor="let attachment of repair.attachmentList"
@@ -573,7 +609,11 @@
         Click(Yes) to permanently delete this ItemRepair or Click(No) to discard
         This action.
       </p>
-      <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
+      <button
+        type="button"
+        class="btn btn-primary btn-right"
+        (click)="confirm()"
+      >
         Yes
       </button>
       <button type="button" class="btn btn-primary" (click)="decline()">
@@ -684,5 +724,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

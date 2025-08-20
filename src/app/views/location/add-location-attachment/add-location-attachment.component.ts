@@ -85,11 +85,11 @@ export class AddLocationAttachmentComponent implements OnInit {
 
       console.log(req);
       this.spinner.show();
-      this.loader = true;
+
       this.locationAttachmentsService.saveLocationDocument(formdata).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -99,7 +99,6 @@ export class AddLocationAttachmentComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

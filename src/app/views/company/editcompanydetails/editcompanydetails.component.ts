@@ -69,7 +69,7 @@ export class EditcompanydetailsComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
 
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.getCompanyDetails(this.companyId).subscribe(
       (response: any) => {
         this.model = response;
@@ -91,7 +91,6 @@ export class EditcompanydetailsComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -106,11 +105,9 @@ export class EditcompanydetailsComponent implements OnInit {
             this.items = this.generateHierarchy(this.companyTypes);
           }
           this.spinner.hide();
-          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -118,31 +115,36 @@ export class EditcompanydetailsComponent implements OnInit {
   generateHierarchy(typeList: any) {
     var items: any = [];
     typeList.forEach((type: any) => {
-        var children = [];
-        if (type.typeList && type.typeList.length > 0) {
-          children = this.generateHierarchy(type.typeList);
-        }
-        items.push(
-          new TreeviewItem({
-            text: type.name,
-            value: type.typeid,
-            collapsed: true,
-            children: children,
-          })
-        );
+      var children = [];
+      if (type.typeList && type.typeList.length > 0) {
+        children = this.generateHierarchy(type.typeList);
       }
-    );
+      items.push(
+        new TreeviewItem({
+          text: type.name,
+          value: type.typeid,
+          collapsed: true,
+          children: children,
+        })
+      );
+    });
     return items;
   }
 
   getAttributes(typeId: any) {
-    if (typeId && typeId != '' && typeId != undefined && typeId != 'undefined' && typeId != 0) {
+    if (
+      typeId &&
+      typeId != '' &&
+      typeId != undefined &&
+      typeId != 'undefined' &&
+      typeId != 0
+    ) {
       this.spinner.show();
-      this.loader = true;
+
       this.companyAttributesServiceService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.typeAttributes = response;
           if (
             this.model.attributevalues &&
@@ -174,24 +176,21 @@ export class EditcompanydetailsComponent implements OnInit {
           } else {
             this.model.attributevalues = [];
             this.typeAttributes.forEach((attr: any) => {
-                this.model.attributevalues.push({
-                  attributename: attr,
-                  entityid: this.companyId,
-                  entitytypeid: attr.type.entitytypeid,
-                  lastmodifiedby: attr.type.lastmodifiedby,
-                  value: attr.value,
-                  tooltip: attr.tooltip,
-                });
-              }
-            );
+              this.model.attributevalues.push({
+                attributename: attr,
+                entityid: this.companyId,
+                entitytypeid: attr.type.entitytypeid,
+                lastmodifiedby: attr.type.lastmodifiedby,
+                value: attr.value,
+                tooltip: attr.tooltip,
+              });
+            });
           }
 
           this.spinner.hide();
-          this.loader = false;
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {
@@ -235,16 +234,15 @@ export class EditcompanydetailsComponent implements OnInit {
   updateCompany() {
     this.company.attributevalues = [];
     this.typeAttributes.forEach((attr: any) => {
-        this.company.attributevalues.push({
-          attributename: attr,
-          entityid: this.companyId,
-          entitytypeid: attr.type.entitytypeid,
-          lastmodifiedby: attr.type.lastmodifiedby,
-          value: attr.value,
-          tooltip: attr.tooltip,
-        });
-      }
-    );
+      this.company.attributevalues.push({
+        attributename: attr,
+        entityid: this.companyId,
+        entitytypeid: attr.type.entitytypeid,
+        lastmodifiedby: attr.type.lastmodifiedby,
+        value: attr.value,
+        tooltip: attr.tooltip,
+      });
+    });
     this.model.attributevalues = this.company.attributevalues;
     this.reqAttrValidate = false;
     this.model.attributevalues.forEach(
@@ -296,13 +294,13 @@ export class EditcompanydetailsComponent implements OnInit {
 
         this.model.attributevalues = this.company.attributevalues;
         this.spinner.show();
-        this.loader = true;
+
         console.log(JSON.stringify(this.model));
-        this.model.announcement.announcementdate = new Date().toISOString();
+        this.model.announcement.announcementDate = new Date().toISOString();
         this.companyManagementService.updateCompany(this.model).subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
+
             window.scroll(0, 0);
             this.index = 1;
             setTimeout(() => {
@@ -317,7 +315,6 @@ export class EditcompanydetailsComponent implements OnInit {
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       }
@@ -330,26 +327,24 @@ export class EditcompanydetailsComponent implements OnInit {
       .saveLogo(formdata, companyId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
   saveMessage() {
     var req = {
-      announcementdate: new Date().toISOString(),
-      announcementid: 3,
-      announcementtext: this.model.tracratAnnouncements
+      announcementDate: new Date().toISOString(),
+      announcementId: 3,
+      announcementText: this.model.tracratAnnouncements
         ? this.model.tracratAnnouncements
         : '',
       companyid: -1,
     };
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService
       .saveTracratAnnouncements(req)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
       });
   }
 

@@ -83,7 +83,7 @@
                         ></label
                       >
                       <select
-                        class="form-control"
+                        class="form-control custom-dropdown"
                         [(ngModel)]="templateID"
                         id="companyid"
                       >
@@ -122,6 +122,7 @@
                         title="Save new company"
                         (click)="saveCompany()"
                         class="btn btn-primary btn-right"
+                        style="border-radius: 6px;"
                       >
                         Create Company
                       </button>
@@ -133,6 +134,7 @@
                         (click)="openModal(confirmtemplate, templateID)"
                         class="btn btn-primary"
                         [disabled]="highestRank == 9"
+                        style="border-radius: 6px;"
                       >
                         Delete Template
                       </button>
@@ -178,7 +180,7 @@
                         ></label
                       >
                       <select
-                        class="form-control"
+                        class="form-control custom-dropdown"
                         [(ngModel)]="model.companyid"
                         id="companyid"
                       >
@@ -217,6 +219,7 @@
                         title="Save Template"
                         (click)="saveTemplate()"
                         class="btn btn-primary"
+                        style="border-radius: 6px;"
                       >
                         Create Template
                       </button>

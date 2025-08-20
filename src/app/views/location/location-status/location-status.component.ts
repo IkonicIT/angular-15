@@ -60,17 +60,16 @@ export class LocationStatusComponent implements OnInit {
 
   getStatuses() {
     this.spinner.show();
-    this.loader = true;
+
     this.locationStatusService.getAllLocationStatuses(this.companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         console.log(response);
         this.statuses = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -79,9 +78,9 @@ export class LocationStatusComponent implements OnInit {
     this.router.navigate(['/location/addLocationStatus/']);
   }
 
-  editStatus(status: { statusid: string }) {
-    console.log('statusid=' + status.statusid);
-    this.router.navigate(['/location/editLocationStatus/' + status.statusid]);
+  editStatus(status: { statusId: string }) {
+    console.log('statusid=' + status.statusId);
+    this.router.navigate(['/location/editLocationStatus/' + status.statusId]);
   }
 
   openModal(template: TemplateRef<any>, id: number) {
@@ -92,25 +91,26 @@ export class LocationStatusComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+
     this.locationStatusService
       .removeLocationStatus(this.index, this.userName)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.modalRef.hide();
           this.getStatuses();
           const currentPage = this.p;
-        const statusesCount = this.statuses.length - 1;
-        const maxPageAvailable = Math.ceil(statusesCount / this.itemsForPagination);
-        if (currentPage > maxPageAvailable){
-          this.p--;
-        }
+          const statusesCount = this.statuses.length - 1;
+          const maxPageAvailable = Math.ceil(
+            statusesCount / this.itemsForPagination
+          );
+          if (currentPage > maxPageAvailable) {
+            this.p--;
+          }
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -140,12 +140,12 @@ export class LocationStatusComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e: any){
+  onChange(e: any) {
     const currentPage = this.p;
-        const statusesCount = this.statuses.length - 1;
-        const maxPageAvailable = Math.ceil(statusesCount / this.itemsForPagination);
-        if (currentPage > maxPageAvailable){
-          this.p--;
-        }
+    const statusesCount = this.statuses.length - 1;
+    const maxPageAvailable = Math.ceil(statusesCount / this.itemsForPagination);
+    if (currentPage > maxPageAvailable) {
+      this.p--;
+    }
   }
 }

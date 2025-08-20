@@ -194,10 +194,10 @@ export class ItemRepairItemsService {
       .pipe(catchError(this.handleError));
   }
 
-  updateItemRepair(itemRepair: { repairlogid: string }) {
+  updateItemRepair(itemRepair: { repairLogId: string }) {
     return this.http
       .put(
-        this.serviceURL + 'itemrepair/' + itemRepair.repairlogid,
+        this.serviceURL + 'itemrepair/' + itemRepair.repairLogId,
         itemRepair,
         this.httpOptions
       )

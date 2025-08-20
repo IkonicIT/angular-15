@@ -153,7 +153,7 @@
                       </div>
                       <div class="form-group col-sm-6">
                         <label class="pr5">Type:</label>
-                        <span>{{ model.itemtype }}</span>
+                        <span>{{ model.itemType }}</span>
                       </div>
                     </div>
                     <div class="row space">
@@ -161,25 +161,25 @@
                         <label class="pr5" for="warrantyType"
                           >Warranty Type:</label
                         >
-                        <span>{{ model.warrantytype }}</span>
+                        <span>{{ model.warrantyType }}</span>
                       </div>
                       <div class="form-group col-sm-6">
                         <label class="pr5" for="warrantyExp"
                           >warranty Exp:</label
                         >
                         <span>{{
-                          model.warrantyexpiration | date : "MM/dd/yyyy"
+                          model.warrantyExpiration | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                     </div>
                     <div class="row space">
                       <div class="form-group col-sm-6">
                         <label class="pr5" for="job">JOB Number :</label>
-                        <span>{{ model.jobnumber }}</span>
+                        <span>{{ model.jobNumber }}</span>
                       </div>
                       <div class="form-group col-sm-6">
                         <label class="pr5" for="po">PO Number :</label>
-                        <span>{{ model.ponumber }}</span>
+                        <span>{{ model.poNumber }}</span>
                       </div>
                     </div>
                     <div class="row space">
@@ -201,7 +201,7 @@
                     <div class="row space">
                       <div class="form-group col-sm-6">
                         <label class="pr5" for="details">Details:</label>
-                        <span>{{ model.repairnotes }}</span>
+                        <span>{{ model.repairNotes }}</span>
                       </div>
                     </div>
                     <div class="row space">
@@ -210,12 +210,12 @@
                           >Estimated Completion Date:</label
                         >
                         <span>{{
-                          model.estimatedcompletion | date : "MM/dd/yyyy"
+                          model.estimatedCompletion | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                       <div class="form-group col-sm-6">
                         <label class="pr5" for="repairCost">Repair Cost:</label>
-                        <span>{{ model.repaircost | currency }}</span>
+                        <span>{{ model.repairCost | currency }}</span>
                       </div>
                     </div>
                     <div class="row space">
@@ -234,14 +234,14 @@
                         <label class="pr5" for="repairstatus"
                           >Repair Status:</label
                         >
-                        <span>{{ model.repairjobstatus }}</span>
+                        <span>{{ model.repairJobStatus }}</span>
                       </div>
                       <div class="form-group col-sm-6">
                         <label class="pr5" for="failureDate"
                           >Failure Date:</label
                         >
                         <span>{{
-                          model.failuredate | date : "MM/dd/yyyy"
+                          model.failureDate | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                     </div>
@@ -250,13 +250,13 @@
                         <label class="pr5" for="failuretype"
                           >Failure Type:</label
                         >
-                        <span>{{ model.failuretype }}</span>
+                        <span>{{ model.failureType }}</span>
                       </div>
                       <div class="form-group col-sm-6">
                         <label class="pr5" for="failurecause"
                           >Failure Cause:</label
                         >
-                        <span>{{ model.failurecause }}</span>
+                        <span>{{ model.failureCause }}</span>
                       </div>
                     </div>
                     <div class="row space">
@@ -270,13 +270,13 @@
                           <label class="pr5" for="failuretype"
                             >Failure Type:</label
                           >
-                          <span>{{ sitem.failuretype }}</span>
+                          <span>{{ sitem.failureType }}</span>
                         </div>
                         <div class="form-group col-sm-6">
                           <label class="pr5" for="failurecause"
                             >Failure Cause:</label
                           >
-                          <span>{{ sitem.failurecause }}</span>
+                          <span>{{ sitem.failureCause }}</span>
                         </div>
                       </div>
                     </ng-container>
@@ -296,7 +296,7 @@
                           >Actual Completion:</label
                         >
                         <span>{{
-                          model.actualcompletion | date : "MM/dd/yyyy"
+                          model.actualCompletion | date : "MM/dd/yyyy"
                         }}</span>
                       </div>
                     </div>
@@ -305,7 +305,7 @@
                         <label class="pr5" for="Completed By"
                           >Completed By:</label
                         >
-                        <span>{{ model.completedby }}</span>
+                        <span>{{ model.completedBy }}</span>
                       </div>
                     </div>
 
@@ -353,22 +353,22 @@
                             ><span [hidden]="reverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="order === 'jobnumber'"
-                            (click)="setOrder('jobnumber')"
+                            [class.active]="order === 'jobNumber'"
+                            (click)="setOrder('jobNumber')"
                           >
                             Job Number<span [hidden]="reverse == ''">▼</span
                             ><span [hidden]="reverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="order === 'ponumber'"
-                            (click)="setOrder('ponumber')"
+                            [class.active]="order === 'poNumber'"
+                            (click)="setOrder('poNumber')"
                           >
                             PO Number<span [hidden]="reverse == ''">▼</span
                             ><span [hidden]="reverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="order === 'warrantytype'"
-                            (click)="setOrder('warrantytype')"
+                            [class.active]="order === 'warrantyType'"
+                            (click)="setOrder('warrantyType')"
                           >
                             Warranty Type<span [hidden]="reverse == ''">▼</span
                             ><span [hidden]="reverse != ''">▲</span>
@@ -392,11 +392,11 @@
                               | orderBy : reverse + order
                               | filterBy
                                 : [
-                                    'itemtype',
+                                    'itemType',
                                     'title',
-                                    'jobnumber',
-                                    'ponumber',
-                                    'warrantytype'
+                                    'jobNumber',
+                                    'poNumber',
+                                    'warrantyType'
                                   ]
                                 : itemRepairsFilter
                               | paginate
@@ -408,9 +408,9 @@
                           "
                         >
                           <td>{{ repair.title }}</td>
-                          <td>{{ repair.jobnumber }}</td>
-                          <td>{{ repair.ponumber }}</td>
-                          <td>{{ repair.warrantytype }}</td>
+                          <td>{{ repair.jobNumber }}</td>
+                          <td>{{ repair.poNumber }}</td>
+                          <td>{{ repair.warrantyType }}</td>
                           <td>
                             <ng-container
                               *ngFor="let attachment of repair.attachmentList"
@@ -434,7 +434,7 @@
                               data-bs-toggle="tooltip"
                               title="Click here to View this ItemRepair"
                               class="btn btn-outline-danger btn-sm"
-                              (click)="ViewItemRepair(repair.repairlogid)"
+                              (click)="ViewItemRepair(repair.repairLogId)"
                             >
                               View
                             </button>
@@ -493,16 +493,16 @@
                             ><span [hidden]="completedReverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="completedOrder === 'jobnumber'"
-                            (click)="setCompletedOrder('jobnumber')"
+                            [class.active]="completedOrder === 'jobNumber'"
+                            (click)="setCompletedOrder('jobNumber')"
                           >
                             Job Number<span [hidden]="completedReverse == ''"
                               >▼</span
                             ><span [hidden]="completedReverse != ''">▲</span>
                           </th>
                           <th
-                            [class.active]="completedOrder === 'ponumber'"
-                            (click)="setCompletedOrder('ponumber')"
+                            [class.active]="completedOrder === 'poNumber'"
+                            (click)="setCompletedOrder('poNumber')"
                           >
                             PO Number<span [hidden]="completedReverse == ''"
                               >▼</span
@@ -534,11 +534,11 @@
                               | orderBy : completedReverse + completedOrder
                               | filterBy
                                 : [
-                                    'itemtype',
+                                    'itemType',
                                     'Date',
                                     'title',
-                                    'jobnumber',
-                                    'ponumber',
+                                    'jobNumber',
+                                    'poNumber',
                                     'By'
                                   ]
                                 : completedRepairsFilter
@@ -554,9 +554,9 @@
                             {{ repair.actualcompletion | date : "MM/dd/yyyy" }}
                           </td>
                           <td>{{ repair.title }}</td>
-                          <td>{{ repair.jobnumber }}</td>
-                          <td>{{ repair.ponumber }}</td>
-                          <td>{{ repair.completedby }}</td>
+                          <td>{{ repair.jobNumber }}</td>
+                          <td>{{ repair.poNumber }}</td>
+                          <td>{{ repair.completedBy }}</td>
                           <td>
                             <ng-container
                               *ngFor="let attachment of repair.attachmentList"

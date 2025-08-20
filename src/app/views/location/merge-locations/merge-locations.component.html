@@ -66,17 +66,12 @@
                       <div class="form-group col-sm-12">
                         <label for="location">Location to be Merged:</label>
 
-                       <select
-  class="form-control custom-dropdown"
-  id="fromlocationid"
-  [(ngModel)]="model.fromlocationid"
-  name="fromlocationid"
->
-  <option [value]="null">Select Location</option>
-  <option *ngFor="let loc of locationItems" [value]="loc.value">
-    {{ loc.text }}
-  </option>
-</select>
+                      <app-dropdown-treeview-select
+                          [items]="locationItems"
+                          [(value)]="model.fromlocationid"
+                        >
+                        </app-dropdown-treeview-select>
+                        <span class="dropdown-arrow">&#9662;</span>
                       </div>
                     </div>
                     <div class="row">
@@ -88,7 +83,7 @@
          <div class="dropdown-wrapper">
   <app-dropdown-treeview-select
     [items]="locationItems"
-    [(value)]="model.fromlocationid">
+    [(value)]="model.tolocationid">
   </app-dropdown-treeview-select>
   <span class="dropdown-arrow">&#9662;</span> <!-- ▼ medium arrow -->
 </div>

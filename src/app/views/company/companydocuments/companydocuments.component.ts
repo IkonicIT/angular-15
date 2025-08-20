@@ -104,9 +104,9 @@ export class CompanydocumentsComponent implements OnInit {
     });
   }
 
-  editDocument(document: { attachmentid: any }) {
+  editDocument(document: { attachmentId: any }) {
     this.router.navigate(['/company/editDocument/'], {
-      queryParams: { q: this.companyId, a: document.attachmentid },
+      queryParams: { q: this.companyId, a: document.attachmentId },
     });
   }
 
@@ -161,11 +161,11 @@ export class CompanydocumentsComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { attachmentid: number }) {
+  downloadDocumentFromDB(document: { attachmentId: number }) {
     this.spinner.show();
 
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentid)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
@@ -188,15 +188,15 @@ export class CompanydocumentsComponent implements OnInit {
     window.open(fileURL);
   }
 
-  downloadFile(companyDocument: { filename: any; attachmentid: string }) {
-    var index = companyDocument.filename.lastIndexOf('.');
-    var extension = companyDocument.filename.slice(index + 1);
+  downloadFile(companyDocument: { fileName: any; attachmentId: string }) {
+    var index = companyDocument.fileName.lastIndexOf('.');
+    var extension = companyDocument.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
       var wnd = window.open('about:blank');
       var pdfStr = `<div style="text-align:center">
   <h4>Pdf viewer</h4>
   <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-    companyDocument.attachmentid + '?access_token=' + this.authToken
+    companyDocument.attachmentId + '?access_token=' + this.authToken
   }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
     </div>
     <script>
@@ -233,7 +233,7 @@ export class CompanydocumentsComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
     <h4>Image Viewer</h4>
     <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-      companyDocument.attachmentid + '?access_token=' + this.authToken
+      companyDocument.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" >
       </div>`;
 
@@ -242,7 +242,7 @@ export class CompanydocumentsComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          companyDocument.attachmentid +
+          companyDocument.attachmentId +
           '?access_token=' +
           this.authToken
       );

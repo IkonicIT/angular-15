@@ -39,6 +39,7 @@ export class EditcompanystatusComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
+      
       this.companyId = this.globalCompany.companyid;
       console.log('compaanyid=' + this.companyId);
     });
@@ -48,7 +49,7 @@ export class EditcompanystatusComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
+    
     });
 
     console.log('companyi=' + this.companyId);

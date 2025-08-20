@@ -84,7 +84,7 @@
                         <label for="warrantyType">Warranty Type</label>
                         <select
                           class="form-control form-color custom-dropdown"
-                          [(ngModel)]="model.warrantytype"
+                          [(ngModel)]="model.warrantyType"
                           (change)="setWarrantyTypeID()"
                           name="type"
                           #type="ngModel"
@@ -92,10 +92,10 @@
                         >
                           <!-- <option value="0" selected="true">Choose Type</option> -->
                           <option
-                            [ngValue]="type.warrantytype"
+                            [ngValue]="type.warrantyType"
                             *ngFor="let type of warrantyTpes"
                           >
-                            {{ type.warrantytype }}
+                            {{ type.warrantyType }}
                           </option>
                         </select>
                       </div>
@@ -103,10 +103,10 @@
                         <label for="warrantyExp">Warranty Exp.</label>
                         <input
                           class="form-control form-color"
-                          [disabled]="model.warrantytype == null"
+                          [disabled]="model.warrantyType == null"
                           [bsConfig]="bsConfig"
                           bsDatepicker
-                          [(ngModel)]="model.warrantyexpiration"
+                          [(ngModel)]="model.warrantyExpiration"
                           id="warrantyExp"
                           name="warrantyExp"
                           #warrantyExp="ngModel"
@@ -149,13 +149,12 @@
                       <div class="form-group col-sm-6">
                         <label for="location">Location</label>
 
-                      <select
-  class="form-control custom-dropdown form-color"
-  [(ngModel)]="model.repairlocationid">
-  <option *ngFor="let loc of locationItems" [value]="loc.value">
-    {{ loc.text }}
-  </option>
-</select>
+                      <app-dropdown-treeview-select
+                          class="form-color"
+                          [items]="locationItems"
+                          [(value)]="model.repairlocationid"
+                        >
+                        </app-dropdown-treeview-select>
 
                       </div>
                       <div class="form-group col-sm-6">
@@ -180,19 +179,13 @@
                             >*</strong
                           >
                         </label>
-                       <div class="dropdown-wrapper"
-     data-bs-toggle="tooltip"
-     data-bs-placement="bottom"
-     title="Select Vendor">
-  <app-dropdown-treeview-select
-    class="form-color"
-    [items]="vendorItems"
-    [(value)]="model.vendorId"
-    (valueChange)="onVendorChange($event)">
-  </app-dropdown-treeview-select>
-  <span class="dropdown-arrow">&#9662;</span> <!-- Medium arrow ▾ -->
-</div>
-
+                      <app-dropdown-treeview-select
+                          class="form-color"
+                          [items]="vendorItems"
+                          [(value)]="model.vendorId"
+                          (valueChange)="onVendorChange($event)"
+                        >
+                        </app-dropdown-treeview-select>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="details">Details</label>

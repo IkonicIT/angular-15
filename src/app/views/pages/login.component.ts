@@ -74,10 +74,10 @@ export class LoginComponent {
   getUserIdByNameForLogged() {
     this.loginService.getUserIdByName(this.userName).subscribe(
       (response) => {
-        console.log(response.userid);
-        this.userId = response.userid;
-        sessionStorage.setItem('userId', response.userid);
-        sessionStorage.setItem('userName', response.username);
+        console.log(response);
+        this.userId = response.userId;
+        sessionStorage.setItem('userId', response.userId);
+        sessionStorage.setItem('userName', response.userName);
         this.getProfile();
       },
       (error) => {
@@ -91,8 +91,9 @@ export class LoginComponent {
   getProfile() {
     this.loginService.getProfileByUserId(this.userId).subscribe(
       (response) => {
-        sessionStorage.setItem('IsOwnerAdmin', response.isowneradmin);
-        sessionStorage.setItem('IsOwnerAdminReadOnly', response.acceptedterms);
+        console.log(response);
+        sessionStorage.setItem('IsOwnerAdmin', response.isOwnerAdmin);
+        sessionStorage.setItem('IsOwnerAdminReadOnly', response.acceptedTerms);
 
         this.date = new Date();
         this.user.userId = this.userId;

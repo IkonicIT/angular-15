@@ -28,8 +28,8 @@ export class CompanyattributesComponent implements OnInit {
   companyId: string = '0';
   model: any = {
     type: {},
-    attributetype: {
-      attributetypeid: null,
+    attributeType: {
+      attributeTypeId: null,
     },
     searchtype: {
       attributesearchtypeid: 0,
@@ -192,11 +192,11 @@ export class CompanyattributesComponent implements OnInit {
     this.addEditFlag = false;
     this.model = {
       type: {},
-      attributetype: {
-        attributetypeid: null,
+      attributeType: {
+        attributeTypeId: null,
       },
-      searchtype: {
-        attributesearchtypeid: 0,
+      searchType: {
+        attributeSearchTypeId: 0,
       },
     };
     this.getTypeAttributes(value);
@@ -276,12 +276,12 @@ export class CompanyattributesComponent implements OnInit {
     }
   }
 
-  setSelectedAttribute(attribute: { attributetype: any }) {
+  setSelectedAttribute(attribute: { attributeType: any }) {
     this.model = JSON.parse(JSON.stringify(attribute));
-    this.selectedAttrType = JSON.parse(JSON.stringify(attribute.attributetype));
+    this.selectedAttrType = JSON.parse(JSON.stringify(attribute.attributeType));
     this.index = 0;
-    if (this.model.attributetype && this.model.attributetype.attributetypeid) {
-      this.getSearchTypes(this.model.attributetype.attributetypeid);
+    if (this.model.attributeType && this.model.attributeType.attributeTypeId) {
+      this.getSearchTypes(this.model.attributeType.attributeTypeId);
     }
   }
 
@@ -514,7 +514,7 @@ export class CompanyattributesComponent implements OnInit {
     var moduleType = 'company';
     this.companyAttributesServiceService
       .removeCompanyAttributess(
-        this.model.attributenameid,
+        this.model.attributeNameId,
         this.companyId,
         this.username,
         this.model.name,

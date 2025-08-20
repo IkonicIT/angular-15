@@ -85,8 +85,8 @@ title="Add New User." placement="top">Add User</button> -->
             <thead class="thead-light">
               <tr>
                 <th
-                  [class.active]="order === 'firstname'"
-                  (click)="setOrder('firstname')"
+                  [class.active]="order === 'firstName'"
+                  (click)="setOrder('firstName')"
                 >
                   User<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -95,7 +95,7 @@ title="Add New User." placement="top">Add User</button> -->
                 <th>LastLoginTime</th>
                 <th>LastLogoutTime</th>
                 <th
-                  [class.active]="order === 'firstname'"
+                  [class.active]="order === 'firstName'"
                   (click)="setOrder('logincount')"
                 >
                   LoginCount<span [hidden]="reverse == ''">▼</span
@@ -114,16 +114,16 @@ title="Add New User." placement="top">Add User</button> -->
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
-                <td>{{ result.firstname + " " + result.lastname }}</td>
+                <td>{{ result.firstName + " " + result.lastName }}</td>
 
-                <td>{{ result.isloggedin }}</td>
+                <td>{{ result.isLoggedIn }}</td>
                 <td>
-                  {{ result.lastlogindate | date : "MM/dd/yyyy , h:mm a" }}
+                  {{ result.lastLoginDate | date : "MM/dd/yyyy , h:mm a" }}
                 </td>
                 <td>
                   {{ result.lastLogoutDate | date : "MM/dd/yyyy ,h:mm a" }}
                 </td>
-                <td>{{ result.logincount }}</td>
+                <td>{{ result.loginCount }}</td>
                 <td>
                   <button
                     type="button"

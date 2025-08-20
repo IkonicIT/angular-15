@@ -147,7 +147,7 @@ export class EditLocationDetailsComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -324,7 +324,7 @@ export class EditLocationDetailsComponent implements OnInit {
       city: this.location.city ? this.location.city : '',
       typeId: this.location.typeId ? this.location.typeId : '',
       company: {
-        companyid: this.companyId,
+        companyId: this.companyId,
       },
       criticalFlag: this.location.critical ? this.location.critical : false,
       description: this.location.description ? this.location.description : '',
@@ -342,7 +342,7 @@ export class EditLocationDetailsComponent implements OnInit {
       statusId: this.location.statusId ? this.location.statusId : 0,
       parentLocationResourceList: this.location.parentLocationResourceList,
       vendorCompany: {
-        companyid: 0,
+        companyId: 0,
       },
       attributeValues: this.location.attributeValues
         ? this.location.attributeValues
@@ -357,7 +357,7 @@ export class EditLocationDetailsComponent implements OnInit {
             city: this.location.city ? this.location.city : '',
             typeId: this.location.typeId ? this.location.typeId : '',
             company: {
-              companyid: this.companyId,
+              companyId: this.companyId,
             },
             criticalFlag: this.location.critical
               ? this.location.critical
@@ -381,7 +381,7 @@ export class EditLocationDetailsComponent implements OnInit {
             state: this.location.state ? this.location.state : '',
             statusId: this.location.statusId ? this.location.statusId : 0,
             vendorCompany: {
-              companyid: 0,
+              companyId: 0,
             },
             attributeValues: this.location.attributeValues
               ? this.location.attributeValues

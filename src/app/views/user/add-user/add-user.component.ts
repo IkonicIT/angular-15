@@ -154,17 +154,17 @@ export class AddUserComponent implements OnInit {
   }
 
   saveUser() {
-    console.log(JSON.stringify(this.model));
+    console.log(this.model);
     console.log('user name is' + this.model.name);
     console.log('vendorId:', this.model.vendorId);
     if (
       this.model.name &&
       this.model.email &&
-      this.model.firstname &&
-      this.model.lastname &&
+      this.model.firstName &&
+      this.model.lastName &&
       this.model.password &&
       this.model.confirmPassword &&
-      this.model.companyid &&
+      this.model.companyId &&
       this.model.password == this.model.confirmPassword &&
       /\S+@\S+\.\S+/.test(this.model.email) &&
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(

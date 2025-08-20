@@ -83,47 +83,47 @@ export class AddcompanydetailsComponent implements OnInit {
             company: {},
           },
           city: this.model.city ? this.model.city : '',
-          companycontenttype: this.model.companycontenttype
+          companyContentType: this.model.companycontenttype
             ? this.model.companycontenttype
             : '',
-          companyfilename: this.model.companyfilename
+          companyFileName: this.model.companyfilename
             ? this.model.companyfilename
             : '',
           logo: this.model.logo ? this.model.logo : '',
-          companyid: 0,
+          companyId: 0,
           userid: sessionStorage.getItem('userId'),
           description: this.model.description ? this.model.description : '',
           fax: this.model.fax ? this.model.fax : '',
-          issandbox: true,
-          lastmodifiedby: this.userName,
+          isSandbox: true,
+          lastModifiedBy: this.userName,
           name: this.model.name,
-          parentcompanyid: 0,
+          parentCompanyId: 0,
           phone: this.model.phone ? this.model.phone : '',
-          postalcode: this.model.postalcode ? this.model.postalcode : '',
+          postalCode: this.model.postalcode ? this.model.postalcode : '',
           state: this.model.state ? this.model.state : '',
-          statusid: 0,
-          supplylevelwarning: true,
+          statusId: 0,
+          supplyLevelWarning: true,
           type: {
-            attributesearchdisplay: 0,
+            attributeSearchDisplay: 0,
             description: '',
-            entitytypeid: 0,
-            hostingfee: 0,
-            ishidden: true,
-            lastmodifiedby: '',
+            entityTypeId: 0,
+            hostingFee: 0,
+            isHidden: true,
+            lastModifiedBy: '',
             name: this.model.primaryContactName
               ? this.model.primaryContactName
               : '',
-            parentid: 0,
-            typeid: 0,
-            typemtbs: 0,
-            typespareratio: 0,
+            parentId: 0,
+            typeId: 0,
+            typemTbs: 0,
+            typeSpareRatio: 0,
           },
           url: this.model.url ? this.model.url : '',
           vendor: false,
           isPartnerCompany: this.model.isPartnerCompany ? true : false
         };
         this.spinner.show();
-
+        console.log(this.model);
         this.companyManagementService.saveCompany(this.model).subscribe(
           (response: any) => {
             this.companyId = response.companyid;

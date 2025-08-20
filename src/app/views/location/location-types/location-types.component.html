@@ -123,7 +123,7 @@
                   let type of locationsTypes
                     | orderBy : reverse + order
                     | filterBy
-                      : ['name', 'hostingfee', 'parentid', 'description']
+                      : ['name', 'hostingFee', 'parentId', 'description']
                       : locationTypeFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
@@ -131,8 +131,8 @@
               >
                 <!--| orderBy: reverse+order | filterBy : ['name','phone','state']: locationTypeFilter | paginate: { itemsPerPage: itemsForPagination, currentPage: p }-->
                 <td>{{ type.name }}</td>
-                <td>{{ type.hostingfee }}</td>
-                <td>{{ type.parentid }}</td>
+                <td>{{ type.hostingFee }}</td>
+                <td>{{ type.parentId }}</td>
                 <td>{{ type.description }}</td>
                 <td>
                   <button
@@ -142,7 +142,7 @@
                     title="Click here to Manage Location Attributes"
                     [disabled]="highestRank < 5"
                     class="btn btn-outline-success btn-sm"
-                    [routerLink]="['../attributes', type.typeid, companyId]"
+                    [routerLink]="['../attributes', type.typeId, companyId]"
                   >
                     Manage Attributes
                   </button>
@@ -157,7 +157,7 @@
                     title="Update this Type"
                     [routerLink]="[
                       '../editLocationType',
-                      type.typeid,
+                      type.typeId,
                       companyId
                     ]"
                   >
@@ -170,7 +170,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this Type"
-                    (click)="openModal(confirmtemplate, type.typeid)"
+                    (click)="openModal(confirmtemplate, type.typeId)"
                   >
                     Delete
                   </button>

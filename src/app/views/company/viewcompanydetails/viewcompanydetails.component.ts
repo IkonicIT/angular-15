@@ -78,9 +78,9 @@ export class ViewcompanydetailsComponent implements OnInit {
   }
   saveMessage() {
     var req = {
-      announcementdate: new Date().toISOString(),
-      announcementid: 3,
-      announcementtext: this.model.tracratAnnouncements
+      announcementDate: new Date().toISOString(),
+      announcementId: 3,
+      announcementText: this.model.tracratAnnouncements
         ? this.model.tracratAnnouncements
         : '',
       companyid: -1,

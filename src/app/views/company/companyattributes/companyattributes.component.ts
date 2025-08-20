@@ -315,16 +315,16 @@ export class CompanyattributesComponent implements OnInit {
         },
         displayOrder: this.typeAttributesLength + 1,
         isManufacturer: false,
-        isRequired: this.model.isrequired ? this.model.isrequired : false,
+        isRequired: this.model.isRequired ? this.model.isRequired : false,
         isRequiredForMatch: false,
         name: this.model.name,
         searchModifier: '',
         searchType: {
-          attributeSearchTypeId: this.model.searchtype
-            ? this.model.searchtype.attributesearchtypeid
+          attributeSearchTypeId: this.model.searchType
+            ? this.model.searchType.attributesearchTypeId
             : 0,
         },
-        toolTip: this.model.tooltip,
+        toolTip: this.model.toolTip,
         companyId: this.companyId,
         lastModifiedBy: this.username,
         type: {
@@ -335,7 +335,7 @@ export class CompanyattributesComponent implements OnInit {
       };
       if (this.model.attributelistitemResource) {
         request.attributeListItemResource =
-          this.model.attributelistitemResource;
+          this.model.attributeListItemResource;
       }
       this.spinner.show();
 
@@ -356,7 +356,7 @@ export class CompanyattributesComponent implements OnInit {
               attributeType: {
                 attributeTypeId: null,
               },
-              searchtype: {
+              searchType: {
                 attributeSearchTypeId: 0,
               },
             };
@@ -374,10 +374,10 @@ export class CompanyattributesComponent implements OnInit {
 
   addListItem() {
     if (this.listItem && this.listItem != '') {
-      if (!this.model.attributelistitemResource) {
+      if (!this.model.attributeListItemResource) {
         this.model.attributeListItemResource = [];
       }
-      this.model.attributelistitemResource.push({ listitem: this.listItem });
+      this.model.attributeListItemResource.push({ listitem: this.listItem });
       this.listItem = '';
     } else {
       this.index = 0;
@@ -418,15 +418,15 @@ export class CompanyattributesComponent implements OnInit {
 
     var request = {
       attributeListItemResource: null,
-      attributeNameId: this.model.attributenameid,
+      attributeNameId: this.model.attributeNameId,
       attributeType: {
         attributeTypeId: this.model.attributeType
           ? this.model.attributeType.attributeTypeId
           : 0,
       },
-      displayOrder: this.model.displayorder,
+      displayOrder: this.model.displayOrder,
       isManufacturer: false,
-      isRequired: this.model.isrequired ? this.model.isrequired : false,
+      isRequired: this.model.isRequired ? this.model.isRequired : false,
       isRequiredForMatch: false,
       name: this.model.name,
       searchModifier: '',
@@ -434,12 +434,12 @@ export class CompanyattributesComponent implements OnInit {
       lastModifiedBy: this.username,
       searchType: {
         attributeSearchTypeId:
-          this.model.searchtype &&
-          this.model.searchtype.attributesearchtypeid != 'null'
-            ? this.model.searchtype.attributesearchtypeid
+          this.model.searchType &&
+          this.model.searchType.attributeSearchTypeId != 'null'
+            ? this.model.searchType.attributeSearchTypeId
             : 0,
       },
-      toolTip: this.model.tooltip,
+      toolTip: this.model.toolTip,
       type: {
         typeId: this.value,
         name: this.typeName,
@@ -449,7 +449,7 @@ export class CompanyattributesComponent implements OnInit {
     this.spinner.show();
 
     if (this.model.attributelistitemResource) {
-      request.attributeListItemResource = this.model.attributelistitemResource;
+      request.attributeListItemResource = this.model.attributeListItemResource;
     }
     if (this.model.name && this.model.attributeType) {
       this.companyAttributesServiceService

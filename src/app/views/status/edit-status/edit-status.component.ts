@@ -53,14 +53,14 @@ export class EditStatusComponent implements OnInit {
   }
   updateStatus() {
     this.model = {
-      companyid: this.globalCompany.companyid,
+      companyId: this.globalCompany.companyid,
       destroyed: true,
-      entitytypeid: 0,
-      inservice: true,
+      entityTypeId: 0,
+      inService: true,
       spare: true,
       status: this.model.status,
-      statusid: this.model.statusid,
-      underrepair: true,
+      statusId: this.model.statusid,
+      underRepair: true,
     };
     this.companyStatusesService
       .updateCompanyStatus(this.model)

@@ -91,7 +91,7 @@ export class EditcompanystatusComponent implements OnInit {
         inService: false,
         spare: false,
         status: this.model.status,
-        statusId: this.model.statusId,
+        statusId: this.model.statusid,
         underRepair: false,
         moduleType: 'companytype',
         oldStatus: this.oldStatus,

@@ -100,11 +100,11 @@ export class HelpComponent implements OnInit {
       this.index1 = -1;
     } else {
       let req = {
-        manualid: 1,
+        manualId: 1,
         manualFile: this.fileContent,
-        contenttype: this.fileType,
+        contentType: this.fileType,
         description: 'TracRat Manual',
-        filename: this.fileName,
+        fileName: this.fileName,
       };
       this.spinner.show();
 

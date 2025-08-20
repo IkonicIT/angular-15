@@ -75,9 +75,9 @@ export class AddcompanydetailsComponent implements OnInit {
           address1: this.model.address1 ? this.model.address1 : '',
           address2: this.model.address2 ? this.model.address2 : '',
           announcement: {
-            announcementdate: new Date().toISOString(),
-            announcementid: 0,
-            announcementtext: this.model.companyAnnouncements
+            announcementDate: new Date().toISOString(),
+            announcementId: 0,
+            announcementText: this.model.companyAnnouncements
               ? this.model.companyAnnouncements
               : '',
             company: {},

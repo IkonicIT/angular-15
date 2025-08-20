@@ -86,7 +86,7 @@ export class EditLocationStatusComponent implements OnInit {
         moduleType: 'locationtype',
         spare: false,
         status: this.model.status,
-        statusId: this.model.statusId,
+        statusId: this.model.statusid,
         underRepair: false,
         oldStatus: this.oldStatus,
       };

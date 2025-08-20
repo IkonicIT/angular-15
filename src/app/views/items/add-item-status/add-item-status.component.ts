@@ -61,12 +61,12 @@ export class AddItemStatusComponent implements OnInit {
         lastModifiedBy: this.userName,
         destroyed: this.model.destroyed ? this.model.destroyed : false,
         entityTypeId: 0,
-        inService: this.model.inService ? this.model.inService : false,
+        inService: this.model.inservice ? this.model.inservice : false,
         moduleType: 'itemtype',
         spare: this.model.spare ? this.model.spare : false,
         status: this.model.status,
         statusId: 0,
-        underRepair: this.model.underRepair ? this.model.underRepair : false,
+        underRepair: this.model.underrepair ? this.model.underrepair : false,
       };
       this.spinner.show();
 

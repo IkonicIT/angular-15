@@ -108,7 +108,7 @@
                         ><strong class="text-danger"> *</strong>
                         <select
                           class="form-control custom-dropdown"
-                          [(ngModel)]="model.companyid"
+                          [(ngModel)]="model.companyId"
                           name="commpanyid"
                           #companyid="ngModel"
                           id="commpanyid"
@@ -130,7 +130,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.firstname"
+                          [(ngModel)]="model.firstName"
                           name="fname"
                           #fname="ngModel"
                           id="fname"
@@ -142,7 +142,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.lastname"
+                          [(ngModel)]="model.lastName"
                           name="lName"
                           #lName="ngModel"
                           id="lName"
@@ -155,7 +155,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.jobtitle"
+                          [(ngModel)]="model.jobTitle"
                           name="job"
                           #job="ngModel"
                           id="job"
@@ -245,7 +245,7 @@
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="model.mobilephone"
+                          [(ngModel)]="model.mobilePhone"
                           name="mobile"
                           #mobile="ngModel"
                           id="mobile"
@@ -259,7 +259,7 @@
 
                         <app-dropdown-treeview-select
                           [items]="locationItems"
-                          [(value)]="model.toplocationid"
+                          [(value)]="model.topLocationId"
                         >
                         </app-dropdown-treeview-select>
                       </div>
@@ -268,7 +268,7 @@
 
                         <app-dropdown-treeview-select
                           [items]="locationItems"
-                          [(value)]="model.preferredlocationid"
+                          [(value)]="model.preferredLocationId"
                         >
                         </app-dropdown-treeview-select>
                       </div>
@@ -303,7 +303,7 @@
                         </label>
                         <input
                           type="checkbox"
-                          [(ngModel)]="model.sendreceiverfq"
+                          [(ngModel)]="model.sendReceiverFq"
                           name="req"
                           #req="ngModel"
                           id="req"
@@ -391,12 +391,12 @@
                             >
                               <option value="">Choose..</option>
                               <option
-                                [ngValue]="list.listitem"
+                                [ngValue]="list.listItem"
                                 *ngFor="
                                   let list of eachAttr.attributelistitemResource
                                 "
                               >
-                                {{ list.listitem }}
+                                {{ list.listItem }}
                               </option>
                             </select>
                             <div

@@ -149,7 +149,7 @@ export class EditItemRepairsComponent implements OnInit {
     this.itemManagementService
       .getItemById(this.itemId)
       .subscribe((response: any) => {
-        this.model.itemtype = response.typeName;
+        this.model.itemType = response.typeName;
         this.details = response;
         if (response.warrantyTypeId != 0) {
           this.model.warrantytypeid = response.warrantyTypeId;
@@ -376,55 +376,55 @@ export class EditItemRepairsComponent implements OnInit {
 
   updateItemRepair() {
     this.model = {
-      actualcompletion: this.model.actualcompletion
+      actualCompletion: this.model.actualcompletion
         ? this.model.actualcompletion
         : null,
       complete: this.model.complete ? this.model.complete : false,
-      completedby: this.model.completedby,
-      dateacknowledged: this.model.dateacknowledged,
-      dateinitiated: this.model.dateinitiated,
-      estimatedcompletion: this.model.estimatedcompletion
+      completedBy: this.model.completedby,
+      dateAcknowledged: this.model.dateacknowledged,
+      dateInitiated: this.model.dateinitiated,
+      estimatedCompletion: this.model.estimatedcompletion
         ? this.model.estimatedcompletion
         : null,
-      failurecause:
+      failureCause:
         this.model.failurecause != 0
           ? this.model.failurecause
           : this.model.newfailurecause,
-      failuredate:
+      failureDate:
         this.model.failuredate != null ? this.model.failuredate : null,
-      failuretype:
+      failureType:
         this.model.failuretype != null ? this.model.failuretype : null,
-      iswarranty: true,
-      itemid: this.itemId,
-      itemtype: this.model.itemtype,
-      jobnumber: this.model.jobnumber ? this.model.jobnumber : 0,
-      ponumber: this.model.ponumber ? this.model.ponumber : 0,
-      repaircompanyid: this.model.repaircompanyid,
-      repaircost: this.model.repaircost ? this.model.repaircost : 0,
-      repairjobstatus: this.model.repairjobstatus,
-      repairlocationid: this.model.repairlocationid
+      isWarranty: true,
+      itemId: this.itemId,
+      itemType: this.model.itemtype,
+      jobNumber: this.model.jobnumber ? this.model.jobnumber : 0,
+      poNumber: this.model.ponumber ? this.model.ponumber : 0,
+      repairCompanyId: this.model.repaircompanyid,
+      repairCost: this.model.repaircost ? this.model.repaircost : 0,
+      repairJobStatus: this.model.repairjobstatus,
+      repairLocationId: this.model.repairlocationid
         ? this.model.repairlocationid
         : 0,
-      repairlogid: this.model.repairlogid,
-      repairnotes: this.model.repairnotes ? this.model.repairnotes : '',
-      repairvendornumber: this.model.repairvendornumber
+      repairLogId: this.model.repairlogid,
+      repairNotes: this.model.repairnotes ? this.model.repairnotes : '',
+      repairVendorNumber: this.model.repairvendornumber
         ? this.model.repairvendornumber
         : 0,
       repairVendorName: this.vendor.name ? this.vendor.name : '',
-      rfqnumber: 0,
+      rfqNumber: 0,
       title: this.model.title ? this.model.title : '',
-      transferlogid: 0,
-      warrantytype: this.model.warrantytype ? this.model.warrantytype : '',
-      warrantytypeid:
+      transferLogId: 0,
+      warrantyType: this.model.warrantytype ? this.model.warrantytype : '',
+      warrantyTypeId:
         this.model.warrantytypeid != undefined ? this.model.warrantytypeid : 0,
-      warrantyexpiration: this.model.warrantyexpiration
+      warrantyExpiration: this.model.warrantyexpiration
         ? this.model.warrantyexpiration
         : null,
       userName: this.userName,
       tag: this.model.tag,
       secondaryTypeAndCauses: this.model.secondaryTypeAndCauses,
       companyId: this.companyId,
-      isactive: 1,
+      isActive: 1,
       isVendorWarranty: this.model.isVendorWarranty
         ? this.model.isVendorWarranty
         : 0,
@@ -445,9 +445,9 @@ export class EditItemRepairsComponent implements OnInit {
         }, 7000);
         this.router.navigate([
           '/items/viewItemRepair/' +
-            response.itemid +
+            response.itemId +
             '/' +
-            response.repairlogid,
+            response.repairLogId,
         ]);
       },
       (error) => {

@@ -84,7 +84,7 @@
                         <label for="warrantyType">Warranty Type</label>
                         <select
                           class="form-control form-color custom-dropdown"
-                          [(ngModel)]="model.warrantytype"
+                          [(ngModel)]="model.warrantyType"
                           (change)="setWarrantyTypeID()"
                           name="type"
                           #type="ngModel"
@@ -92,10 +92,10 @@
                         >
                           <!-- <option value="0" selected="true">Choose Type</option> -->
                           <option
-                            [ngValue]="type.warrantytype"
+                            [ngValue]="type.warrantyType"
                             *ngFor="let type of warrantyTpes"
                           >
-                            {{ type.warrantytype }}
+                            {{ type.warrantyType }}
                           </option>
                         </select>
                       </div>
@@ -103,10 +103,10 @@
                         <label for="warrantyExp">Warranty Exp.</label>
                         <input
                           class="form-control form-color"
-                          [disabled]="model.warrantytype == null"
+                          [disabled]="model.warrantyType == null"
                           [bsConfig]="bsConfig"
                           bsDatepicker
-                          [(ngModel)]="model.warrantyexpiration"
+                          [(ngModel)]="model.warrantyExpiration"
                           id="warrantyExp"
                           name="warrantyExp"
                           #warrantyExp="ngModel"

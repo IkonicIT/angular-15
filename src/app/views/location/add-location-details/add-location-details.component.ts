@@ -188,7 +188,7 @@ export class AddLocationDetailsComponent implements OnInit {
           city: this.model.city ? this.model.city : '',
           typeId: this.model.locationTypeId ? this.model.locationTypeId : '',
           company: {
-            companyid: this.companyId,
+            companyId: this.companyId,
           },
           criticalFlag: this.model.critical ? this.model.critical : false,
           description: this.model.description ? this.model.description : '',
@@ -204,7 +204,7 @@ export class AddLocationDetailsComponent implements OnInit {
           state: this.model.state ? this.model.state : '',
           statusId: this.model.statusId ? this.model.statusId : 0,
           vendorCompany: {
-            companyid: this.model.vendorCompany.companyid
+            companyId: this.model.vendorCompany.companyid
               ? this.model.vendorCompany.companyid
               : 0,
           },
@@ -228,7 +228,7 @@ export class AddLocationDetailsComponent implements OnInit {
                 ? this.model.locationTypeId
                 : '',
               company: {
-                companyid: this.companyId,
+                companyId: this.companyId,
               },
               criticalFlag: this.model.critical ? this.model.critical : false,
               description: this.model.description ? this.model.description : '',
@@ -244,7 +244,7 @@ export class AddLocationDetailsComponent implements OnInit {
               state: this.model.state ? this.model.state : '',
               statusId: this.model.statusId ? this.model.statusId : 0,
               vendorCompany: {
-                companyid: 0,
+                companyId: 0,
               },
               attributeValues: this.model.attributevalues
                 ? this.model.attributevalues

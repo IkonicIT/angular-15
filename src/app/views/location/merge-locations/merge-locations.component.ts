@@ -73,6 +73,7 @@ export class MergeLocationsComponent implements OnInit {
   }
 
   mergeLocations() {
+    console.log(this.model);
     if (
       this.model.tolocationid &&
       this.model.tolocationid != 0 &&

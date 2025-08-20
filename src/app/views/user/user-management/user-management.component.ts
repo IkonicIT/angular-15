@@ -98,31 +98,31 @@ export class UserManagementComponent implements OnInit {
   }
 
   editUser(user: {
-    firstname: string;
-    lastname: string;
-    userid: string;
-    profileid: string;
+    firstName: string;
+    lastName: string;
+    userId: string;
+    profileId: string;
   }) {
-    this.broadcasterService.username = user.firstname + ' ' + user.lastname;
+    this.broadcasterService.username = user.firstName + ' ' + user.lastName;
     this.router.navigate([
-      '/user/editUser/' + user.userid + '/' + user.profileid,
+      '/user/editUser/' + user.userId + '/' + user.profileId,
     ]);
   }
 
   viewUser(user: any) {
-    this.broadcasterService.username = user.firstname + ' ' + user.lastname;
+    this.broadcasterService.username = user.firstName + ' ' + user.lastName;
     this.router.navigate([
-      '/user/viewUser/' + user.userid + '/' + user.profileid,
+      '/user/viewUser/' + user.userId + '/' + user.profileId,
     ]);
   }
 
   openModal(
     template: TemplateRef<any>,
-    user: { userid: any; profileid: any; username: any }
+    user: { userId: any; profileId: any; userName: any }
   ) {
-    this.index = user.userid;
-    this.profileId = user.profileid;
-    this.userName = user.username;
+    this.index = user.userId;
+    this.profileId = user.profileId;
+    this.userName = user.userName;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 

@@ -133,10 +133,10 @@ export class ViewItemRepairComponent implements OnInit {
         this.index,
         this.companyId,
         this.userName,
-        this.model.itemtype,
+        this.model.itemType,
         this.model.tag,
-        this.model.ponumber,
-        this.model.jobnumber
+        this.model.poNumber,
+        this.model.jobNumber
       )
       .subscribe(
         (response) => {

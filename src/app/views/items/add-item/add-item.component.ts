@@ -398,7 +398,7 @@ export class AddItemComponent implements OnInit {
             ? this.locationModel.locationTypeId
             : '',
           company: {
-            companyid: this.companyId,
+            companyId: this.companyId,
           },
           criticalFlag: this.locationModel.critical
             ? this.locationModel.critical

@@ -56,15 +56,15 @@ export class AddcompanystatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
+        companyId: this.globalCompany.companyid,
+        lastModifiedBy: this.userName,
         destroyed: true,
-        entitytypeid: 0,
-        inservice: true,
+        entityTypeId: 0,
+        inService: true,
         spare: true,
         status: this.model.status,
-        statusid: 0,
-        underrepair: true,
+        statusId: 0,
+        underRepair: true,
         moduleType: 'companytype',
       };
       console.log(JSON.stringify(this.model));

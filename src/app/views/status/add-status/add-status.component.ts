@@ -41,14 +41,14 @@ export class AddStatusComponent implements OnInit {
       this.index = -1;
     } else {
       this.model = {
-        companyid: this.globalCompany.companyid,
+        companyId: this.globalCompany.companyid,
         destroyed: true,
-        entitytypeid: 0,
-        inservice: true,
+        entityTypeId: 0,
+        inService: true,
         spare: true,
         status: this.model.status,
-        statusid: 0,
-        underrepair: true,
+        statusId: 0,
+        underRepair: true,
       };
       console.log(JSON.stringify(this.model));
       this.companyStatusesService

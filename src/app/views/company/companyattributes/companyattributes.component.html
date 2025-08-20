@@ -133,10 +133,10 @@
                                 (click)="
                                   setSelectedAttribute(item);
                                   model = item;
-                                  selectedAttrType = item.attributetype;
+                                  selectedAttrType = item.attributeType;
                                   index = 0;
                                   getSearchTypes(
-                                    item.attributetype?.attributetypeid
+                                    item.attributeType?.attributeTypeId
                                   );
                                   addEditFlag = true
                                 "
@@ -195,13 +195,13 @@
                               <select
                                 class="form-control custom-dropdown"
                                 [(ngModel)]="
-                                  model.attributetype.attributetypeid
+                                  model.attributetype.attributeTypeId
                                 "
                                 name="Toa"
                                 id="Toa"
                                 (change)="
                                   getSearchTypes(
-                                    model.attributetype.attributetypeid
+                                    model.attributeType.attributeTypeId
                                   )
                                 "
                               >
@@ -209,10 +209,10 @@
                                   Select attribute Type
                                 </option>
                                 <option
-                                  [ngValue]="type.attributetypeid"
+                                  [ngValue]="type.attributeTypeId"
                                   *ngFor="let type of attributeTypes"
                                 >
-                                  {{ type.typename }}
+                                  {{ type.typeName }}
                                 </option>
                               </select>
                             </div>
@@ -227,7 +227,7 @@
                               <input
                                 type="text"
                                 class="form-control"
-                                [(ngModel)]="model.tooltip"
+                                [(ngModel)]="model.toolTip"
                                 name="aTp"
                                 #aTp="ngModel"
                                 id="aToolTip"
@@ -238,7 +238,7 @@
 
                           <div
                             class="row"
-                            *ngIf="model.attributetype.attributetypeid == 4"
+                            *ngIf="model.attributeType.attributeTypeId == 4"
                           >
                             <div
                               class="form-group col-sm-12"
@@ -266,10 +266,10 @@
                                 >
                                   <option
                                     *ngFor="
-                                      let addedItem of model.attributelistitemResource
+                                      let addedItem of model.attributeListItemResource
                                     "
                                   >
-                                    {{ addedItem.listitem }}
+                                    {{ addedItem.listItem }}
                                   </option>
                                 </select>
                               </div>
@@ -294,7 +294,7 @@
                               <select
                                 class="form-control custom-dropdown"
                                 [(ngModel)]="
-                                  model.searchtype.attributesearchtypeid
+                                  model.searchtype.attributeSearchTypeId
                                 "
                                 id="sType"
                                 name="sType"
@@ -303,10 +303,10 @@
                                   Select Search Type
                                 </option>
                                 <option
-                                  [ngValue]="searchType.attributesearchtypeid"
+                                  [ngValue]="searchType.attributeSearchTypeId"
                                   *ngFor="let searchType of searchTypes"
                                 >
-                                  {{ searchType.searchtype }}
+                                  {{ searchType.searchType }}
                                 </option>
                               </select>
                             </div>
@@ -325,7 +325,7 @@
                                 id="rField"
                                 name="rField"
                                 #rField="ngModel"
-                                [(ngModel)]="model.isrequired"
+                                [(ngModel)]="model.isRequired"
                               />
                             </div>
                           </div>

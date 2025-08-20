@@ -304,38 +304,38 @@ export class CompanyattributesComponent implements OnInit {
   createAttribute() {
     if (
       this.model.name &&
-      this.model.attributetype &&
-      this.model.attributetype.attributetypeid != null
+      this.model.attributeType &&
+      this.model.attributeType.attributeTypeId != null
     ) {
       var request = {
-        attributelistitemResource: null,
-        attributenameid: 0,
-        attributetype: {
-          attributetypeid: this.model.attributetype.attributetypeid,
+        attributeListItemResource: null,
+        attributeNameId: 0,
+        attributeType: {
+          attributeTypeId: this.model.attributeType.attributeTypeId,
         },
-        displayorder: this.typeAttributesLength + 1,
-        ismanufacturer: false,
-        isrequired: this.model.isrequired ? this.model.isrequired : false,
-        isrequiredformatch: false,
+        displayOrder: this.typeAttributesLength + 1,
+        isManufacturer: false,
+        isRequired: this.model.isRequired ? this.model.isRequired : false,
+        isRequiredForMatch: false,
         name: this.model.name,
-        searchmodifier: '',
-        searchtype: {
-          attributesearchtypeid: this.model.searchtype
-            ? this.model.searchtype.attributesearchtypeid
+        searchModifier: '',
+        searchType: {
+          attributeSearchTypeId: this.model.searchType
+            ? this.model.searchType.attributesearchTypeId
             : 0,
         },
-        tooltip: this.model.tooltip,
+        toolTip: this.model.toolTip,
         companyId: this.companyId,
-        lastmodifiedby: this.username,
+        lastModifiedBy: this.username,
         type: {
-          typeid: this.value,
+          typeId: this.value,
           name: this.typeName,
         },
         moduleType: 'Company',
       };
       if (this.model.attributelistitemResource) {
-        request.attributelistitemResource =
-          this.model.attributelistitemResource;
+        request.attributeListItemResource =
+          this.model.attributeListItemResource;
       }
       this.spinner.show();
 
@@ -353,11 +353,11 @@ export class CompanyattributesComponent implements OnInit {
             this.typeAttributes.push(response);
             this.model = {
               type: {},
-              attributetype: {
-                attributetypeid: null,
+              attributeType: {
+                attributeTypeId: null,
               },
-              searchtype: {
-                attributesearchtypeid: 0,
+              searchType: {
+                attributeSearchTypeId: 0,
               },
             };
             this.typeAttributesLength = this.typeAttributesLength + 1;
@@ -374,10 +374,10 @@ export class CompanyattributesComponent implements OnInit {
 
   addListItem() {
     if (this.listItem && this.listItem != '') {
-      if (!this.model.attributelistitemResource) {
-        this.model.attributelistitemResource = [];
+      if (!this.model.attributeListItemResource) {
+        this.model.attributeListItemResource = [];
       }
-      this.model.attributelistitemResource.push({ listitem: this.listItem });
+      this.model.attributeListItemResource.push({ listitem: this.listItem });
       this.listItem = '';
     } else {
       this.index = 0;
@@ -417,31 +417,31 @@ export class CompanyattributesComponent implements OnInit {
     this.spinner.show();
 
     var request = {
-      attributelistitemResource: null,
-      attributenameid: this.model.attributenameid,
-      attributetype: {
-        attributetypeid: this.model.attributetype
-          ? this.model.attributetype.attributetypeid
+      attributeListItemResource: null,
+      attributeNameId: this.model.attributeNameId,
+      attributeType: {
+        attributeTypeId: this.model.attributeType
+          ? this.model.attributeType.attributeTypeId
           : 0,
       },
-      displayorder: this.model.displayorder,
-      ismanufacturer: false,
-      isrequired: this.model.isrequired ? this.model.isrequired : false,
-      isrequiredformatch: false,
+      displayOrder: this.model.displayOrder,
+      isManufacturer: false,
+      isRequired: this.model.isRequired ? this.model.isRequired : false,
+      isRequiredForMatch: false,
       name: this.model.name,
-      searchmodifier: '',
+      searchModifier: '',
       companyId: this.companyId,
-      lastmodifiedby: this.username,
-      searchtype: {
-        attributesearchtypeid:
-          this.model.searchtype &&
-          this.model.searchtype.attributesearchtypeid != 'null'
-            ? this.model.searchtype.attributesearchtypeid
+      lastModifiedBy: this.username,
+      searchType: {
+        attributeSearchTypeId:
+          this.model.searchType &&
+          this.model.searchType.attributeSearchTypeId != 'null'
+            ? this.model.searchType.attributeSearchTypeId
             : 0,
       },
-      tooltip: this.model.tooltip,
+      toolTip: this.model.toolTip,
       type: {
-        typeid: this.value,
+        typeId: this.value,
         name: this.typeName,
       },
       moduleType: 'Company',
@@ -449,9 +449,9 @@ export class CompanyattributesComponent implements OnInit {
     this.spinner.show();
 
     if (this.model.attributelistitemResource) {
-      request.attributelistitemResource = this.model.attributelistitemResource;
+      request.attributeListItemResource = this.model.attributeListItemResource;
     }
-    if (this.model.name && this.model.attributetype) {
+    if (this.model.name && this.model.attributeType) {
       this.companyAttributesServiceService
         .updateTypeAttributes(request)
         .subscribe(
@@ -467,11 +467,11 @@ export class CompanyattributesComponent implements OnInit {
             this.addEditFlag = false;
             this.model = {
               type: {},
-              attributetype: {
-                attributetypeid: null,
+              attributeType: {
+                attributeTypeId: null,
               },
-              searchtype: {
-                attributesearchtypeid: 0,
+              searchType: {
+                attributeSearchTypeId: 0,
               },
             };
           },
@@ -487,11 +487,11 @@ export class CompanyattributesComponent implements OnInit {
     this.addEditFlag = false;
     this.model = {
       type: {},
-      attributetype: {
-        attributetypeid: null,
+      attributeType: {
+        attributeTypeId: null,
       },
-      searchtype: {
-        attributesearchtypeid: 0,
+      searchType: {
+        attributeSearchTypeId: 0,
       },
     };
     this.getTypeAttributes(this.typeId);
@@ -534,11 +534,11 @@ export class CompanyattributesComponent implements OnInit {
           this.addEditFlag = false;
           this.model = {
             type: {},
-            attributetype: {
-              attributetypeid: null,
+            attributeType: {
+              attributeTypeId: null,
             },
-            searchtype: {
-              attributesearchtypeid: 0,
+            searchType: {
+              attributeSearchTypeId: 0,
             },
           };
           window.scroll(0, 0);

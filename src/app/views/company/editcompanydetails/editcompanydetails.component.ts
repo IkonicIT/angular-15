@@ -296,7 +296,7 @@ export class EditcompanydetailsComponent implements OnInit {
         this.spinner.show();
 
         console.log(JSON.stringify(this.model));
-        this.model.announcement.announcementdate = new Date().toISOString();
+        this.model.announcement.announcementDate = new Date().toISOString();
         this.companyManagementService.updateCompany(this.model).subscribe(
           (response) => {
             this.spinner.hide();
@@ -332,9 +332,9 @@ export class EditcompanydetailsComponent implements OnInit {
 
   saveMessage() {
     var req = {
-      announcementdate: new Date().toISOString(),
-      announcementid: 3,
-      announcementtext: this.model.tracratAnnouncements
+      announcementDate: new Date().toISOString(),
+      announcementId: 3,
+      announcementText: this.model.tracratAnnouncements
         ? this.model.tracratAnnouncements
         : '',
       companyid: -1,

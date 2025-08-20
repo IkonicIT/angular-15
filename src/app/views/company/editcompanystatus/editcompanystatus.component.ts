@@ -83,15 +83,15 @@ export class EditcompanystatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
+        companyId: this.globalCompany.companyid,
+        lastModifiedBy: this.userName,
         destroyed: false,
-        entitytypeid: 0,
-        inservice: false,
+        entityTypeId: 0,
+        inService: false,
         spare: false,
         status: this.model.status,
-        statusid: this.model.statusid,
-        underrepair: false,
+        statusId: this.model.statusid,
+        underRepair: false,
         moduleType: 'companytype',
         oldStatus: this.oldStatus,
       };

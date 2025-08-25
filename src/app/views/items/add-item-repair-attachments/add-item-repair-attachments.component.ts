@@ -19,7 +19,7 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
   index: number = 0;
   date = Date.now();
   companyId: number = 0;
-  repairlogid: any;
+  repairLogId: any;
   companyName: string;
   private sub: any;
   id: number;
@@ -45,13 +45,13 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private broadcasterService: BroadcasterService
   ) {
-    this.repairlogid = route.snapshot.params['repairlogId'];
-    console.log('companyid=' + this.repairlogid);
+    this.repairLogId = route.snapshot.params['repairlogId'];
+    console.log('companyId=' + this.repairLogId);
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
   }
 
@@ -75,13 +75,13 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
     } else {
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
-      formdata.append('addedby', this.userName);
-      formdata.append('companyID', JSON.stringify(this.companyId));
+      formdata.append('addedBy', this.userName);
+      formdata.append('companyId', JSON.stringify(this.companyId));
       formdata.append(
         'description',
         this.model.description ? this.model.description : ''
       );
-      formdata.append('entityid', JSON.stringify(this.repairlogid));
+      formdata.append('entityId', JSON.stringify(this.repairLogId));
       formdata.append('moduleType', 'itemrepairtype');
       var jsonArr = this.addedfiles;
       for (var i = 0; i < jsonArr.length; i++) {
@@ -108,7 +108,7 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
             this.index = 0;
           }, 7000);
           this.router.navigate([
-            '/items/itemRepairAttachments/' + this.repairlogid,
+            '/items/itemRepairAttachments/' + this.repairLogId,
           ]);
         },
         (error) => {
@@ -145,16 +145,16 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
           .split(':')[1]
           .split(';')[0];
         const fileInfo = this.addedfiles[fileIndex];
-        fileInfo['addedby'] = this.userName;
+        fileInfo['addedBy'] = this.userName;
         fileInfo['attachmentFile'] = this.fileContent;
-        fileInfo['attachmentid'] = 0;
-        fileInfo['contenttype'] = this.fileType;
-        fileInfo['dateadded'] = new Date().toISOString();
-        fileInfo['companyID'] = this.companyId;
-        fileInfo['entityid'] = this.repairlogid;
+        fileInfo['attachmentId'] = 0;
+        fileInfo['contentType'] = this.fileType;
+        fileInfo['dateAdded'] = new Date().toISOString();
+        fileInfo['companyId'] = this.companyId;
+        fileInfo['entityId'] = this.repairLogId;
         fileInfo['isNew'] = 1;
         fileInfo['moduleType'] = 'itemrepairtype';
-        fileInfo['filename'] = this.fileName;
+        fileInfo['fileName'] = this.fileName;
         console.log(this.addedfiles);
       };
     }

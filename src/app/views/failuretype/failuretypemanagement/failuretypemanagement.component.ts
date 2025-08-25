@@ -71,7 +71,7 @@ export class FailuretypemanagementComponent implements OnInit {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
       if (this.globalCompany) {
         this.companyName = this.globalCompany.name;
-        this.companyId = this.globalCompany.companyid;
+        this.companyId = this.globalCompany.companyId;
       }
     }
     this.pageLoadCalls(this.companyId);
@@ -110,7 +110,7 @@ export class FailuretypemanagementComponent implements OnInit {
         items.push(
           new TreeviewItem({
             text: type.name,
-            value: type.typeid,
+            value: type.typeId,
             collapsed: true,
             children: children,
           })
@@ -173,9 +173,9 @@ export class FailuretypemanagementComponent implements OnInit {
 
     if (this.model.failuretype && this.typeId != undefined) {
       var request = {
-        itemtypeid: this.typeId,
+        itemtypeId: this.typeId,
         description: this.model.failuretype,
-        lastmodifiedby: this.userName,
+        lastModifiedBy: this.userName,
         companyId: this.companyId,
         causes: this.model.causes != null ? this.model.causes : '',
       };
@@ -217,9 +217,9 @@ export class FailuretypemanagementComponent implements OnInit {
 
     if (this.model.failuretype && this.typeId != undefined) {
       var request = {
-        failuretypeid: this.failureTypeId,
-        itemtypeid: this.typeId,
-        lastmodifiedby: this.userName,
+        failuretypeId: this.failureTypeId,
+        itemtypeId: this.typeId,
+        lastModifiedBy: this.userName,
         companyId: this.companyId,
         description: this.model.failuretype,
         causes: this.model.causes != null ? this.model.causes : '',

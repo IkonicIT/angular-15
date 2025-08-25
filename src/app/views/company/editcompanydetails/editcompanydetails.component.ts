@@ -79,7 +79,7 @@ export class EditcompanydetailsComponent implements OnInit {
           this.model.tracratAnnouncements =
             this.broadcasterService.tracratAnnouncement;
         }
-        if (response.attributevalues && response.attributevalues.length > 0) {
+        if (response.attributeValues && response.attributeValues.length > 0) {
         }
         this.getAttributes(this.model.typeId);
         this.companyStatusesService
@@ -122,7 +122,7 @@ export class EditcompanydetailsComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -147,26 +147,26 @@ export class EditcompanydetailsComponent implements OnInit {
 
           this.typeAttributes = response;
           if (
-            this.model.attributevalues &&
-            this.model.attributevalues.length > 0
+            this.model.attributeValues &&
+            this.model.attributeValues.length > 0
           ) {
             this.typeAttributes.forEach(
               (attr: {
                 name: any;
-                attributelistitemResource: any;
+                attributeListItemResource: any;
                 value: any;
               }) => {
-                this.model.attributevalues.forEach(
+                this.model.attributeValues.forEach(
                   (ansAttr: {
-                    attributename: {
+                    attributeName: {
                       name: any;
-                      attributelistitemResource: any;
+                      attributeListItemResource: any;
                     };
                     value: any;
                   }) => {
-                    if (attr.name == ansAttr.attributename.name) {
-                      ansAttr.attributename.attributelistitemResource =
-                        attr.attributelistitemResource;
+                    if (attr.name == ansAttr.attributeName.name) {
+                      ansAttr.attributeName.attributeListItemResource =
+                        attr.attributeListItemResource;
                       attr.value = ansAttr.value;
                     }
                   }
@@ -174,13 +174,13 @@ export class EditcompanydetailsComponent implements OnInit {
               }
             );
           } else {
-            this.model.attributevalues = [];
+            this.model.attributeValues = [];
             this.typeAttributes.forEach((attr: any) => {
-              this.model.attributevalues.push({
-                attributename: attr,
-                entityid: this.companyId,
-                entitytypeid: attr.type.entitytypeid,
-                lastmodifiedby: attr.type.lastmodifiedby,
+              this.model.attributeValues.push({
+                attributeName: attr,
+                entityId: this.companyId,
+                entitytypeId: attr.type.entitytypeId,
+                lastModifiedBy: attr.type.lastModifiedBy,
                 value: attr.value,
                 tooltip: attr.tooltip,
               });
@@ -232,23 +232,23 @@ export class EditcompanydetailsComponent implements OnInit {
     });
   }
   updateCompany() {
-    this.company.attributevalues = [];
+    this.company.attributeValues = [];
     this.typeAttributes.forEach((attr: any) => {
-      this.company.attributevalues.push({
-        attributename: attr,
-        entityid: this.companyId,
-        entitytypeid: attr.type.entitytypeid,
-        lastmodifiedby: attr.type.lastmodifiedby,
+      this.company.attributeValues.push({
+        attributeName: attr,
+        entityId: this.companyId,
+        entitytypeId: attr.type.entitytypeId,
+        lastModifiedBy: attr.type.lastModifiedBy,
         value: attr.value,
         tooltip: attr.tooltip,
       });
     });
-    this.model.attributevalues = this.company.attributevalues;
+    this.model.attributeValues = this.company.attributeValues;
     this.reqAttrValidate = false;
-    this.model.attributevalues.forEach(
-      (attr: { attributename: { isrequired: any; name: any }; value: any }) => {
-        this.isReqdAttr = attr.attributename.isrequired;
-        this.reqAttrName = attr.attributename.name;
+    this.model.attributeValues.forEach(
+      (attr: { attributeName: { isRequired: any; name: any }; value: any }) => {
+        this.isReqdAttr = attr.attributeName.isRequired;
+        this.reqAttrName = attr.attributeName.name;
         this.reqAttrValue = attr.value;
         if (
           this.isReqdAttr == true &&
@@ -260,7 +260,7 @@ export class EditcompanydetailsComponent implements OnInit {
           console.log('attribute check is' + this.index);
           return;
         }
-        console.log('attribute isrequired value is' + this.isReqdAttr);
+        console.log('attribute isRequired value is' + this.isReqdAttr);
         console.log('attribute name is' + this.reqAttrName);
         console.log('attribute name value is' + this.reqAttrValue);
         console.log('validate' + this.reqAttrValidate);
@@ -281,8 +281,8 @@ export class EditcompanydetailsComponent implements OnInit {
         this.index = -2;
         window.scroll(0, 0);
       } else {
-        if (this.model.statusid) {
-          this.model.statusid = this.model.statusid;
+        if (this.model.statusId) {
+          this.model.statusId = this.model.statusId;
           this.model.status = {};
         }
 
@@ -292,7 +292,7 @@ export class EditcompanydetailsComponent implements OnInit {
           this.model.typeId = 0;
         }
 
-        this.model.attributevalues = this.company.attributevalues;
+        this.model.attributeValues = this.company.attributeValues;
         this.spinner.show();
 
         console.log(JSON.stringify(this.model));
@@ -306,7 +306,7 @@ export class EditcompanydetailsComponent implements OnInit {
             setTimeout(() => {
               this.index = 0;
             }, 7000);
-            this.router.navigate(['/company/view/' + this.model.companyid]);
+            this.router.navigate(['/company/view/' + this.model.companyId]);
             if (this.file != null) {
               this.AddCompanyLogo(this.companyId);
             }
@@ -337,7 +337,7 @@ export class EditcompanydetailsComponent implements OnInit {
       announcementText: this.model.tracratAnnouncements
         ? this.model.tracratAnnouncements
         : '',
-      companyid: -1,
+      companyId: -1,
     };
     this.spinner.show();
 
@@ -360,11 +360,11 @@ export class EditcompanydetailsComponent implements OnInit {
     myReader.onloadend = function (e: any) {
       console.log(myReader.result);
       self.model.logo = myReader.result.split(',')[1];
-      self.model.companycontenttype = myReader.result
+      self.model.companycontentType = myReader.result
         .split(',')[0]
         .split(':')[1]
         .split(';')[0];
-      self.model.companyfilename = self.file.name;
+      self.model.companyfileName = self.file.name;
     };
   }
   cancel() {

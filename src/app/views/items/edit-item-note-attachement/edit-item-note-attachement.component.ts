@@ -40,13 +40,13 @@ export class EditItemNoteAttachementComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
 
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.id = route.snapshot.params['id'];
     this.itemId = route.snapshot.params['journalId'];
@@ -78,7 +78,7 @@ export class EditItemNoteAttachementComponent implements OnInit {
     this.spinner.show();
 
     this.model.moduleType = 'itemnotetype';
-    this.model.companyID = this.companyId;
+    this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {
       noteType: 'itemnoteattachment',
       noteName: this.noteAttachmentTitle,

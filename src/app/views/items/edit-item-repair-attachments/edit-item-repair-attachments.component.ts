@@ -18,7 +18,7 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
   globalCompany: any;
   userName: any;
   companyId: number = 0;
-  repairlogid: number;
+  repairLogId: number;
   documentId: number = 0;
   private sub: any;
   id: number;
@@ -38,18 +38,18 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
   ) {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
 
-    this.repairlogid = route.snapshot.params['repairlogId'];
-    console.log('repairlogid=' + this.repairlogid);
-    this.documentId = route.snapshot.params['attachmentid'];
-    console.log('repairlogid=' + this.documentId);
+    this.repairLogId = route.snapshot.params['repairlogId'];
+    console.log('repairLogId=' + this.repairLogId);
+    this.documentId = route.snapshot.params['attachmentId'];
+    console.log('repairLogId=' + this.documentId);
     this.router = router;
     this.spinner.show();
 
@@ -74,7 +74,7 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
     this.spinner.show();
 
     this.model.moduleType = 'itemrepairtype';
-    this.model.companyID = this.companyId;
+    this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {
       itemTag: this.itemRepair.tag,
       itemTypeName: this.itemRepair.itemtype,
@@ -92,7 +92,7 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
           this.index = 0;
         }, 7000);
         this.router.navigate([
-          '/items/itemRepairAttachments/' + this.repairlogid,
+          '/items/itemRepairAttachments/' + this.repairLogId,
         ]);
       },
       (error) => {

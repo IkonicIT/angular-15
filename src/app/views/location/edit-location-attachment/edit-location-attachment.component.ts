@@ -32,10 +32,10 @@ export class EditLocationAttachmentComponent implements OnInit {
   ) {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.locationId = route.snapshot.params['locId'];
     this.attachmentId = route.snapshot.params['id'];
@@ -65,7 +65,7 @@ export class EditLocationAttachmentComponent implements OnInit {
     this.spinner.show();
 
     this.model.moduleType = 'locationtype';
-    this.model.companyID = this.companyId;
+    this.model.companyId = this.companyId;
     this.model.adddedby = this.userName;
     this.locationAttachmentsService
       .updateLocationDocument(this.model)

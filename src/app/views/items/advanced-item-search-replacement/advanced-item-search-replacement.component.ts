@@ -76,7 +76,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getAllLocationsWithHierarchy();
     }
 
@@ -86,7 +86,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
     this.itemTypes = this.itemManagementService.getItemTypes();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
       console.log('inide item search');
     });
@@ -211,20 +211,20 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
         .subscribe((response) => {
           this.spinner.hide();
 
-          this.itemModel.attributevalues = response;
-          this.attributesValuesList = this.itemModel.attributevalues;
+          this.itemModel.attributeValues = response;
+          this.attributesValuesList = this.itemModel.attributeValues;
           this.itemAttributeService
             .getAttributesForFindReplacement(this.itemId)
             .subscribe((res) => {
               this.itemModel.attributesList = res;
-              this.itemModel.attributename = null;
+              this.itemModel.attributeName = null;
               this.attributesValuesList.forEach((attrList: any) => {
-                this.itemModel.attributename = attrList.name;
+                this.itemModel.attributeName = attrList.name;
                 this.itemModel.attributesList.forEach((attribtesList: any) => {
                   this.itemModel.attributeeName = attribtesList.attributeName;
                   if (
                     this.itemModel.attributeeName ===
-                    this.itemModel.attributename
+                    this.itemModel.attributeName
                   ) {
                     attrList.value = attribtesList.attributeValue;
                   }
@@ -239,14 +239,14 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
     this.isExpandAdvancedSearch = false;
     var attributeLis: { attributeNameID: any; name: any; value: any }[] = [];
     if (
-      this.itemModel.attributevalues &&
-      this.itemModel.attributevalues.length > 0
+      this.itemModel.attributeValues &&
+      this.itemModel.attributeValues.length > 0
     ) {
-      this.itemModel.attributevalues.forEach(
-        (attr: { value: string; attributenameid: any; name: any }) => {
+      this.itemModel.attributeValues.forEach(
+        (attr: { value: string; attributeNameId: any; name: any }) => {
           if (attr.value && attr.value != '') {
             let listItem = {
-              attributeNameID: attr.attributenameid,
+              attributeNameID: attr.attributeNameId,
               name: attr.name,
               value: attr.value,
             };
@@ -286,7 +286,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
   searchItemRepairNotesRfqModel() {
     this.advancedsearchflag = 1;
     var request = {
-      companyID: this.companyId,
+      companyId: this.companyId,
       extraTag: this.itemrepairnotesrfqModel.exactTag
         ? this.itemrepairnotesrfqModel.exactTag
         : null,

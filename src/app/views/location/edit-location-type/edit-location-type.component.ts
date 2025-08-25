@@ -46,7 +46,7 @@ export class EditLocationTypeComponent implements OnInit {
     this.companyName = this.globalCompany.name;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
     this.getAllLocTypes();
@@ -127,8 +127,8 @@ export class EditLocationTypeComponent implements OnInit {
       var request = {
         attributeSearchDisplay: 0,
         description: this.model.description,
-        entityTypeId: this.model.entitytypeid,
-        hostingFee: this.model.hostingfee,
+        entityTypeId: this.model.entitytypeId,
+        hostingFee: this.model.hostingFee,
         isHidden: true,
         lastModifiedBy: this.userName,
         moduleType: 'locationtype',

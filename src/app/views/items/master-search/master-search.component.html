@@ -221,7 +221,7 @@
                         <tr
                           *ngFor="let result of value.items">
                           <td><a href="javascript:void(0)"
-                            (click)="goToView(result.itemid,result.itemRank,result.tag,result.typeName,result.companyid)">{{result.tag}}</a></td>
+                            (click)="goToView(result.itemid,result.itemRank,result.tag,result.typeName,result.companyId)">{{result.tag}}</a></td>
                           <td>{{result.locationName}}</td>
                           <td>{{result.statusname}}</td>
                           <ng-container *ngIf="result && result.attributeNameList">
@@ -346,7 +346,7 @@
                               result.itemRank,
                               result.tag,
                               result.typeName,
-                              result.companyid
+                              result.companyId
                             )
                           "
                           >{{ result.tag }}</a

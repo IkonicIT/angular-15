@@ -28,7 +28,7 @@ export class MyProfileComponent implements OnInit {
   globalCompany: any;
   allLocations: any = [];
   index: any;
-  username: any;
+  userName: any;
   dismissible = true;
   helpFlag: any = false;
   constructor(
@@ -49,7 +49,7 @@ export class MyProfileComponent implements OnInit {
     this.loggedInuser = sessionStorage.getItem('userId');
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       console.log('userId=' + this.loggedInuser);
       console.log('companyId=' + this.companyId);
     }
@@ -111,14 +111,14 @@ export class MyProfileComponent implements OnInit {
   }
 
   saveProfile(profileId: any, companyId: any, model: any) {
-    if (this.model.email && this.model.username) {
-      this.model.userid = sessionStorage.getItem('userId');
+    if (this.model.email && this.model.userName) {
+      this.model.userId = sessionStorage.getItem('userId');
       this.userManagementService
-        .updateProfile(this.model.profileid, this.model.companyid, this.model)
+        .updateProfile(this.model.profileid, this.model.companyId, this.model)
         .subscribe(
           (response: any) => {
             this.profile = response;
-            this.username = response.username;
+            this.userName = response.userName;
             this.index = 1;
             window.scroll(0, 0);
             console.log('user status roles ' + this.profile);

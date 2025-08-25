@@ -34,7 +34,7 @@ export class ViewUserComponent implements OnInit {
   isOwnerAdmin: any;
   locationItems: TreeviewItem[];
   locationsWithHierarchy: any;
-  username: any;
+  userName: any;
   loader = false;
   typeAttributes: any;
   dismissible = true;
@@ -52,7 +52,7 @@ export class ViewUserComponent implements OnInit {
     this.router = router;
     this.userId = route.snapshot.params['userId'];
     this.profileId = route.snapshot.params['profileId'];
-    this.username = this.broadcasterService.username;
+    this.userName = this.broadcasterService.userName;
   }
 
   ngOnInit() {
@@ -60,7 +60,7 @@ export class ViewUserComponent implements OnInit {
     // this.locations = this.locationManagementService.getLocations();
 
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getUserInfo();
     }
   }
@@ -88,8 +88,8 @@ export class ViewUserComponent implements OnInit {
   }
   checkCompany() {
     var count = 0;
-    this.allCompanies.forEach((company: { companyid: any }) => {
-      if (company.companyid == this.model.companyid) {
+    this.allCompanies.forEach((company: { companyId: any }) => {
+      if (company.companyId == this.model.companyId) {
         count++;
       }
     });
@@ -116,26 +116,26 @@ export class ViewUserComponent implements OnInit {
         (response) => {
           this.typeAttributes = response;
           if (
-            this.model.attributevalues &&
-            this.model.attributevalues.length > 0
+            this.model.attributeValues &&
+            this.model.attributeValues.length > 0
           ) {
             this.typeAttributes.forEach(
               (attr: {
                 name: any;
-                attributelistitemResource: any;
+                attributeListItemResource: any;
                 value: any;
               }) => {
-                this.model.attributevalues.forEach(
+                this.model.attributeValues.forEach(
                   (ansAttr: {
-                    attributename: {
+                    attributeName: {
                       name: any;
-                      attributelistitemResource: any;
+                      attributeListItemResource: any;
                     };
                     value: any;
                   }) => {
-                    if (attr.name == ansAttr.attributename.name) {
-                      ansAttr.attributename.attributelistitemResource =
-                        attr.attributelistitemResource;
+                    if (attr.name == ansAttr.attributeName.name) {
+                      ansAttr.attributeName.attributeListItemResource =
+                        attr.attributeListItemResource;
                       attr.value = ansAttr.value;
                     }
                   }
@@ -143,13 +143,13 @@ export class ViewUserComponent implements OnInit {
               }
             );
           } else {
-            this.model.attributevalues = [];
+            this.model.attributeValues = [];
             this.typeAttributes.forEach((attr: any) => {
-              this.model.attributevalues.push({
-                attributename: attr,
-                entityid: this.profileId,
-                entitytypeid: attr.type.entitytypeid,
-                lastmodifiedby: attr.type.lastmodifiedby,
+              this.model.attributeValues.push({
+                attributeName: attr,
+                entityId: this.profileId,
+                entitytypeId: attr.type.entitytypeId,
+                lastModifiedBy: attr.type.lastModifiedBy,
                 value: attr.value,
               });
             });

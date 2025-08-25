@@ -68,7 +68,7 @@ export class NotesComponent implements OnInit {
     this.currentLocationName =
       this.locationManagementService.currentLocationName;
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     console.log('locationId=' + this.locationId);
     if (this.companyId) {
@@ -77,7 +77,7 @@ export class NotesComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -125,18 +125,18 @@ export class NotesComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.model = {
-        companyid: this.companyId,
+        companyId: this.companyId,
         effectiveon: this.model.effectiveon,
         enteredby: this.userName,
         enteredon: new Date(),
-        entityid: this.locationId,
+        entityId: this.locationId,
         entityname: this.model.entityname,
-        entitytypeid: 0,
+        entitytypeId: 0,
         entityxml: '',
         entry: this.model.entry ? this.model.entry : ' ',
         jobnumber: this.model.jobnumber,
         journalid: 0,
-        journaltypeid: 0,
+        journaltypeId: 0,
         locationid: this.locationId,
         locationname: this.currentLocationName,
         ponumber: this.model.ponumber,
@@ -285,7 +285,7 @@ export class NotesComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);

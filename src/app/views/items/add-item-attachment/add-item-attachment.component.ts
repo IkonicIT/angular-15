@@ -46,12 +46,12 @@ export class AddItemAttachmentComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.itemId = route.snapshot.params['id'];
     this.currentAttachmentId = route.snapshot.params['attachmentId'];
@@ -80,13 +80,13 @@ export class AddItemAttachmentComponent implements OnInit {
     } else {
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
-      formdata.append('addedby', this.userName);
-      formdata.append('companyID', JSON.stringify(this.companyId));
+      formdata.append('addedBy', this.userName);
+      formdata.append('companyId', JSON.stringify(this.companyId));
       formdata.append(
         'description',
         this.model.description ? this.model.description : ''
       );
-      formdata.append('entityid', JSON.stringify(this.itemId));
+      formdata.append('entityId', JSON.stringify(this.itemId));
       formdata.append('moduleType', 'itemnotetype');
 
       var jsonArr = this.addedfiles;
@@ -132,18 +132,18 @@ export class AddItemAttachmentComponent implements OnInit {
     ]);
   }
 
-  setAsDefault(res: { contenttype: any; attachmentid: string }) {
-    var contentype = res.contenttype;
+  setAsDefault(res: { contentType: any; attachmentId: string }) {
+    var contentype = res.contentType;
     if (contentype.includes('image')) {
       this.spinner.show();
 
       this.itemAttachmentsService
-        .updateItemDefaultImage(this.itemId, res.attachmentid)
+        .updateItemDefaultImage(this.itemId, res.attachmentId)
         .subscribe(
           (response) => {
             this.spinner.hide();
 
-            this.currentAttachmentId = res.attachmentid;
+            this.currentAttachmentId = res.attachmentId;
             this.router.navigate([
               '/items/attachments/' +
                 this.itemId +
@@ -198,16 +198,16 @@ export class AddItemAttachmentComponent implements OnInit {
           .split(':')[1]
           .split(';')[0];
         const fileInfo = this.addedfiles[fileIndex];
-        fileInfo['addedby'] = this.userName;
+        fileInfo['addedBy'] = this.userName;
         fileInfo['attachmentFile'] = this.fileContent;
-        fileInfo['attachmentid'] = 0;
-        fileInfo['contenttype'] = this.fileType;
-        fileInfo['dateadded'] = new Date().toISOString();
-        fileInfo['companyID'] = this.companyId;
-        fileInfo['entityid'] = this.itemId;
+        fileInfo['attachmentId'] = 0;
+        fileInfo['contentType'] = this.fileType;
+        fileInfo['dateAdded'] = new Date().toISOString();
+        fileInfo['companyId'] = this.companyId;
+        fileInfo['entityId'] = this.itemId;
         fileInfo['isNew'] = 1;
         fileInfo['moduleType'] = 'itemtype';
-        fileInfo['filename'] = this.fileName;
+        fileInfo['fileName'] = this.fileName;
         console.log(this.addedfiles);
       };
     }

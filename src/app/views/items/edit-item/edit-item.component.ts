@@ -29,7 +29,7 @@ export class EditItemComponent implements OnInit {
   model: any = {
     locationid: 0,
     typeId: 0,
-    warrantytypeid: 0,
+    warrantytypeId: 0,
   };
   message: string;
   index: number = 0;
@@ -105,12 +105,12 @@ export class EditItemComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.userName = sessionStorage.getItem('userName');
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
       this.userName = sessionStorage.getItem('userName');
     });
@@ -234,11 +234,11 @@ export class EditItemComponent implements OnInit {
   getTypeName(typeId: any) {
     let typeName;
     this.itemTypes.forEach((type: any) => {
-      if (type.typeid == typeId) {
+      if (type.typeId == typeId) {
         typeName = type.name;
       } else if (type.typeList.length >= 1) {
         type.typeList.forEach((type: any) => {
-          if (type.typeid == typeId) {
+          if (type.typeId == typeId) {
             typeName = type.name;
           }
         });
@@ -326,25 +326,25 @@ export class EditItemComponent implements OnInit {
       this.model.tag != '' &&
       !this.isDuplicateTag
     ) {
-      this.item.attributevalues = [];
+      this.item.attributeValues = [];
       this.typeAttributes.forEach((attr: any) => {
-        this.item.attributevalues.push({
-          attributename: attr,
-          entityid: this.itemId,
-          entitytypeid: attr.type.entitytypeid,
-          lastmodifiedby: this.userName,
+        this.item.attributeValues.push({
+          attributeName: attr,
+          entityId: this.itemId,
+          entitytypeId: attr.type.entitytypeId,
+          lastModifiedBy: this.userName,
           value: attr.value != null ? attr.value : '',
         });
       });
 
       this.reqAttrValidate = false;
-      this.item.attributevalues.forEach(
+      this.item.attributeValues.forEach(
         (attr: {
-          attributename: { isrequired: any; name: any };
+          attributeName: { isRequired: any; name: any };
           value: any;
         }) => {
-          this.isReqdAttr = attr.attributename.isrequired;
-          this.reqAttrName = attr.attributename.name;
+          this.isReqdAttr = attr.attributeName.isRequired;
+          this.reqAttrName = attr.attributeName.name;
           this.reqAttrValue = attr.value;
           if (
             this.isReqdAttr == true &&
@@ -356,15 +356,15 @@ export class EditItemComponent implements OnInit {
             console.log('attribute check is' + this.index);
             return;
           }
-          console.log('attribute isrequired value is' + this.isReqdAttr);
+          console.log('attribute isRequired value is' + this.isReqdAttr);
           console.log('attribute name is' + this.reqAttrName);
           console.log('attribute name value is' + this.reqAttrValue);
           console.log('validate' + this.reqAttrValidate);
         }
       );
       var req = {
-        attributeValues: this.item.attributevalues
-          ? this.item.attributevalues
+        attributeValues: this.item.attributeValues
+          ? this.item.attributeValues
           : null,
         defaultImageAttachmentId: this.model.defaultImageAttachmentId,
         description: this.model.description ? this.model.description : '',
@@ -557,11 +557,11 @@ export class EditItemComponent implements OnInit {
       (response: any) => {
         this.itemAttachments = response;
         this.images = response
-          .filter((e: { contenttype: string | string[] }) =>
-            e.contenttype.includes('image')
+          .filter((e: { contentType: string | string[] }) =>
+            e.contentType.includes('image')
           )
           .map(
-            (e: { isNew: any; attachmentFile: any; attachmentid: string }) => {
+            (e: { isNew: any; attachmentFile: any; attachmentId: string }) => {
               if (e.isNew)
                 return this.sanitizer.bypassSecurityTrustResourceUrl(
                   `data:image/png;base64, ${e.attachmentFile}`
@@ -569,7 +569,7 @@ export class EditItemComponent implements OnInit {
               else
                 return (
                   'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-                  e.attachmentid +
+                  e.attachmentId +
                   '?access_token=' +
                   this.authToken
                 );
@@ -601,7 +601,7 @@ export class EditItemComponent implements OnInit {
           else
             this.imageSource =
               'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-              response.attachmentid +
+              response.attachmentId +
               '?access_token=' +
               this.authToken;
         },

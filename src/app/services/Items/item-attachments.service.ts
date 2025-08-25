@@ -32,10 +32,10 @@ export class ItemAttachmentsService {
       .pipe(catchError(this.handleError));
   }
 
-  updateItemDocument(company: { attachmentid: string }) {
+  updateItemDocument(company: { attachmentId: string }) {
     return this.http
       .put(
-        this.serviceURL + '/' + company.attachmentid,
+        this.serviceURL + '/' + company.attachmentId,
         company,
         this.httpOptions
       )
@@ -89,8 +89,8 @@ export class ItemAttachmentsService {
 
   removeItemDocuments(
     attachmentId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     userLog: {
       itemTag: string | number | boolean;
       itemTypeName: string | number | boolean;
@@ -108,7 +108,7 @@ export class ItemAttachmentsService {
 
     return this.http
       .delete(
-        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
+        this.serviceURL + '/' + attachmentId + '/' + companyId + '/' + userName,
         httpOptions
       )
       .pipe(catchError(this.handleError));
@@ -116,8 +116,8 @@ export class ItemAttachmentsService {
 
   removeItemNoteDocuments(
     attachmentId: string,
-    companyid: any,
-    username: string,
+    companyId: any,
+    userName: string,
     userLog: {
       itemTag: string | number | boolean;
       itemTypeName: string | number | boolean;
@@ -139,7 +139,7 @@ export class ItemAttachmentsService {
 
     return this.http
       .delete(
-        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
+        this.serviceURL + '/' + attachmentId + '/' + companyId + '/' + userName,
         httpOptions
       )
       .pipe(catchError(this.handleError));
@@ -147,8 +147,8 @@ export class ItemAttachmentsService {
 
   removeItemRepairDocuments(
     attachmentId: string,
-    companyid: number,
-    username: string,
+    companyId: number,
+    userName: string,
     userLog: {
       itemTag: string | number | boolean;
       itemTypeName: string | number | boolean;
@@ -170,7 +170,7 @@ export class ItemAttachmentsService {
 
     return this.http
       .delete(
-        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
+        this.serviceURL + '/' + attachmentId + '/' + companyId + '/' + userName,
         httpOptions
       )
       .pipe(catchError(this.handleError));

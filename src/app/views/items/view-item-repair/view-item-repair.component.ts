@@ -62,7 +62,7 @@ export class ViewItemRepairComponent implements OnInit {
     this.authToken = sessionStorage.getItem('auth_token');
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     if (this.companyId) {
       this.getAllRepairs();
@@ -70,7 +70,7 @@ export class ViewItemRepairComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -198,7 +198,7 @@ export class ViewItemRepairComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);

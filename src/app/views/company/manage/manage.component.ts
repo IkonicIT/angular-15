@@ -78,7 +78,7 @@ export class ManageComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -124,18 +124,18 @@ export class ManageComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.model = {
-        companyid: this.companyId,
+        companyId: this.companyId,
         effectiveon: this.model.effectiveon,
         enteredby: this.userName,
         enteredon: new Date(),
-        entityid: this.companyId,
+        entityId: this.companyId,
         entityname: this.model.entityname,
-        entitytypeid: 0,
+        entitytypeId: 0,
         entityxml: '',
         entry: this.model.entry ? this.model.entry : ' ',
         jobnumber: this.model.jobnumber,
         journalid: 0,
-        journaltypeid: 0,
+        journaltypeId: 0,
         locationid: 0,
         locationname: '',
         ponumber: this.model.ponumber,
@@ -288,10 +288,10 @@ export class ManageComponent implements OnInit {
       );
   }
 
-  downloadDocument(companyDocument: { attachmentFile: any; contenttype: any }) {
+  downloadDocument(companyDocument: { attachmentFile: any; contentType: any }) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
 

@@ -155,11 +155,11 @@
                       <div class="form-group col-sm-6">
                         <label for="warranty">Warranty Type</label>
                         <select class="form-control add-item-background custom-dropdown"
-                          [(ngModel)]="model.warrantytypeid" name="warranty" #warranty="ngModel" id="warranty">
+                          [(ngModel)]="model.warrantytypeId" name="warranty" #warranty="ngModel" id="warranty">
                           <option value="0" selected="true">
                             Select Warranty Type
                           </option>
-                          <option [ngValue]="type.warrantytypeid" *ngFor="let type of warrantyTypes"
+                          <option [ngValue]="type.warrantytypeId" *ngFor="let type of warrantyTypes"
                             [innerHTML]="type.warrantytype"></option>
                         </select>
                       </div>
@@ -271,9 +271,9 @@
 
                     <div class="row" *ngFor="let eachAttr of typeAttributes; let i = index">
                       <div class="form-group col-sm-12">
-                        <label *ngIf="eachAttr.isrequired == true">{{ eachAttr.name
+                        <label *ngIf="eachAttr.isRequired == true">{{ eachAttr.name
                           }}<span style="color: red"><Strong>*</Strong></span></label>
-                        <label *ngIf="eachAttr.isrequired == false">{{
+                        <label *ngIf="eachAttr.isRequired == false">{{
                           eachAttr.name
                           }}</label>
                         <div>
@@ -292,7 +292,7 @@
                             [(ngModel)]="eachAttr.value" name="select{{ index }}" #type="ngModel">
                             <option value="">Choose..</option>
                             <option [ngValue]="list.listitem" *ngFor="
-                                let list of eachAttr.attributelistitemResource
+                                let list of eachAttr.attributeListItemResource
                               ">
                               {{ list.listitem }}
                             </option>

@@ -34,10 +34,10 @@ export class AddItemNoteComponent implements OnInit {
   ) {
     this.itemId = route.snapshot.params['id'];
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -74,18 +74,18 @@ export class AddItemNoteComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.model = {
-        companyid: this.companyId,
+        companyId: this.companyId,
         effectiveon: this.model.effectiveon,
         enteredby: this.userName,
         enteredon: new Date(),
-        entityid: this.itemId,
+        entityId: this.itemId,
         entityname: this.model.entityname,
-        entitytypeid: 0,
+        entitytypeId: 0,
         entityxml: '',
         entry: this.model.entry ? this.model.entry : ' ',
         jobnumber: this.model.jobnumber,
         journalid: 0,
-        journaltypeid: 0,
+        journaltypeId: 0,
         locationid: 0,
         locationname: '',
         ponumber: this.model.ponumber,

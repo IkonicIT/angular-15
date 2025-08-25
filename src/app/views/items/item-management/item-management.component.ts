@@ -47,8 +47,8 @@ export class ItemManagementComponent implements OnInit {
   highestRank: any;
   excelObj: any;
   model: any = {
-    statusid: 0,
-    typeid: null,
+    statusId: 0,
+    typeId: null,
   };
   queryString: any = '';
   suggessions: any[] = [];
@@ -95,11 +95,11 @@ export class ItemManagementComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
     this.deleteFlag = itemManagementService.deleteFlag;
@@ -136,7 +136,7 @@ export class ItemManagementComponent implements OnInit {
   setInitValues() {
     this.searchResults = this.itemManagementService.getItemSearchResults();
     this.model.typeId = this.itemManagementService.getSearchedItemTypeId();
-    this.model.statusid = this.itemManagementService.getSearchedItemStatusId();
+    this.model.statusId = this.itemManagementService.getSearchedItemStatusId();
     this.model.locationid =
       this.itemManagementService.getSearchedItemLocationId();
     this.value = this.model.locationid;
@@ -166,7 +166,7 @@ export class ItemManagementComponent implements OnInit {
 
   itemRepairs(item: any) {
     console.log(item);
-    this.itemManagementService.setSearchedItemTypeId(item.typeid);
+    this.itemManagementService.setSearchedItemTypeId(item.typeId);
     this.itemManagementService.setSearchedItemTag(item.tag);
     this.router.navigate(['/items/itemRepairs/' + item.itemId]);
   }
@@ -223,7 +223,7 @@ export class ItemManagementComponent implements OnInit {
     this.spinner.show();
     var req = {
       locationId: this.model.locationid ? this.model.locationid : null,
-      statusId: this.model.statusid ? this.model.statusid : null,
+      statusId: this.model.statusId ? this.model.statusId : null,
       tag: this.model.tag ? this.model.tag : null,
       typeId: this.model.typeId ? this.model.typeId : null,
     };
@@ -313,7 +313,7 @@ export class ItemManagementComponent implements OnInit {
     this.spinner.show();
     var req = {
       locationId: this.model.locationid ? this.model.locationid : null,
-      statusId: this.model.statusid ? this.model.statusid : null,
+      statusId: this.model.statusId ? this.model.statusId : null,
       tag: this.model.tag ? this.model.tag : null,
       typeId: this.model.typeId ? this.model.typeId : null,
     };
@@ -518,20 +518,20 @@ export class ItemManagementComponent implements OnInit {
         obj.attributeNameList.forEach((atr: any) => {
           robj[atr.name] = atr.value;
         });
-        delete obj.companyid;
+        delete obj.companyId;
         delete obj.serialNumber;
         delete obj.modelnumber;
-        delete obj.statusid;
+        delete obj.statusId;
         delete obj.typeName;
         delete obj.locationid;
         delete obj.typeId;
         delete obj.itemid;
         delete obj.itemRank;
         delete obj.description;
-        delete obj.warrantytypeid;
+        delete obj.warrantytypeId;
         delete obj.warrantyexpiration;
         delete obj.warrantyExpiration;
-        delete obj.lastmodifiedby;
+        delete obj.lastModifiedBy;
         delete obj.serialnumber;
         delete obj.meantimebetweenservice;
         delete obj.inserviceon;
@@ -542,13 +542,13 @@ export class ItemManagementComponent implements OnInit {
         delete obj.purchaseprice;
         delete obj.daysinservice;
         delete obj.purchasedate;
-        delete obj.defaultimageattachmentid;
+        delete obj.defaultimageattachmentId;
         delete obj.isstale;
         delete obj.entityTypeId;
         delete obj.roleid;
         delete obj.roleName;
         delete obj.updatedDate;
-        delete obj.userid;
+        delete obj.userId;
         delete obj.attributeName;
         delete obj.attributevalue;
 

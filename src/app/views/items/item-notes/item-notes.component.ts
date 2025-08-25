@@ -50,7 +50,7 @@ export class ItemNotesComponent implements OnInit {
     this.authToken = sessionStorage.getItem('auth_token');
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     if (this.companyId) {
       this.getAllNotes(this.companyId);
@@ -58,7 +58,7 @@ export class ItemNotesComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -170,8 +170,8 @@ export class ItemNotesComponent implements OnInit {
   }
 
   downloadFile(attachment: any) {
-    var index = attachment.filename.lastIndexOf('.');
-    var extension = attachment.filename.slice(index + 1);
+    var index = attachment.fileName.lastIndexOf('.');
+    var extension = attachment.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
       var pdfStr = `<div style="text-align:center">
     <h4>Pdf viewer</h4>

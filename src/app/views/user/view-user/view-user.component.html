@@ -7,13 +7,13 @@
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="card-header">
-                  <strong>Viewing User [User:{{ username }}]</strong>
+                  <strong>Viewing User [User:{{ userName }}]</strong>
                 </div>
                 <div class="card-body">
                   <div class="row">
                     <div class="form-group col-sm-6">
                       <label for="lType">User Name :</label>
-                      <span>{{ model.username }}</span>
+                      <span>{{ model.userName }}</span>
                     </div>
                     <div class="form-group col-sm-6">
                       <label for="vendor">Primary Company :</label>
@@ -31,11 +31,11 @@
                         readonly
                         class="form-control custom-dropdown"
                         [(ngModel)]="model.companyId"
-                        name="companyid"
-                        #companyid="ngModel"
+                        name="companyId"
+                        #companyId="ngModel"
                       >
                         <option
-                          [ngValue]="company.companyid"
+                          [ngValue]="company.companyId"
                           *ngFor="let company of allCompanies"
                           [selected]="isUserCompany === true"
                         >

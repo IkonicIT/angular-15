@@ -49,13 +49,13 @@ export class LocationAttachmentComponent implements OnInit {
       this.getAllDocuments(this.companyId, this.locationId);
     } else {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getAllDocuments(this.companyId, this.locationId);
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -93,10 +93,10 @@ export class LocationAttachmentComponent implements OnInit {
     this.router.navigate(['/location/addAttachment/' + this.locationId]);
   }
 
-  editLocationDocument(document: { attachmentid: string }) {
+  editLocationDocument(document: { attachmentId: string }) {
     this.router.navigate([
       '/location/editAttachment/' +
-        document.attachmentid +
+        document.attachmentId +
         '/' +
         this.locationId,
     ]);
@@ -138,40 +138,40 @@ export class LocationAttachmentComponent implements OnInit {
 
   downloadDocument(companyDocument: {
     attachmentFile: string;
-    contenttype: string;
-    filename: string | undefined;
+    contentType: string;
+    fileName: string | undefined;
   }) {
     var blob = this.locationAttachmentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     ); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
-    saveAs(blob, companyDocument.filename);
+    saveAs(blob, companyDocument.fileName);
   }
 
-  downloadFile(companyDocument: { filename: string; attachmentid: string }) {
+  downloadFile(companyDocument: { fileName: string; attachmentId: string }) {
     if (
-      companyDocument.filename.split('.')[1].toLowerCase() == 'pdf' ||
-      companyDocument.filename.split('.')[1].toLowerCase() == 'txt'
+      companyDocument.fileName.split('.')[1].toLowerCase() == 'pdf' ||
+      companyDocument.fileName.split('.')[1].toLowerCase() == 'txt'
     ) {
       var pdfStr = `<div style="text-align:center">
     <h4>Pdf viewer</h4>
     <iframe src="https://docs.google.com/viewer?url=http://18.216.158.31:8088/api/attachment/downloadaudiofile/${
-      companyDocument.attachmentid + '?access_token=' + this.authToken
+      companyDocument.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" frameborder="0" height="500px" width="100%"></iframe>
       </div>`;
 
       var wnd = window.open('about:blank');
       if (wnd) wnd.document.write(pdfStr);
     } else if (
-      companyDocument.filename.split('.')[1].toLowerCase() == 'jpg' ||
-      companyDocument.filename.split('.')[1].toLowerCase() == 'png' ||
-      companyDocument.filename.split('.')[1].toLowerCase() == 'jpeg' ||
-      companyDocument.filename.split('.')[1].toLowerCase() == 'gif'
+      companyDocument.fileName.split('.')[1].toLowerCase() == 'jpg' ||
+      companyDocument.fileName.split('.')[1].toLowerCase() == 'png' ||
+      companyDocument.fileName.split('.')[1].toLowerCase() == 'jpeg' ||
+      companyDocument.fileName.split('.')[1].toLowerCase() == 'gif'
     ) {
       var pdfStr = `<div style="text-align:center">
       <h4>Image Viewer</h4>
       <img src="http://18.216.158.31:8088/api/attachment/downloadaudiofile/${
-        companyDocument.attachmentid + '?access_token=' + this.authToken
+        companyDocument.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" >
         </div>`;
 
@@ -180,7 +180,7 @@ export class LocationAttachmentComponent implements OnInit {
     } else {
       window.open(
         'http://18.216.158.31:8088/api/attachment/downloadaudiofile/' +
-          companyDocument.attachmentid +
+          companyDocument.attachmentId +
           '?access_token=' +
           this.authToken
       );

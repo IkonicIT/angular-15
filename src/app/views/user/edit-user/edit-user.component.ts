@@ -40,7 +40,7 @@ export class EditUserComponent implements OnInit {
   isOwnerAdmin: any;
   locationItems: TreeviewItem[];
   locationsWithHierarchy: any;
-  username: any;
+  userName: any;
   typeAttributes: any;
   email: any;
   helpFlag: any = false;
@@ -67,17 +67,17 @@ export class EditUserComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
 
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
   }
 
   ngOnInit() {
     this.loadVendors();
-    this.username = sessionStorage.getItem('userName');
+    this.userName = sessionStorage.getItem('userName');
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     //this.locations = this.locationManagementService.getLocations();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getUserInfo();
     }
 
@@ -148,8 +148,8 @@ export class EditUserComponent implements OnInit {
   }
   checkCompany() {
     var count = 0;
-    this.allCompanies.forEach((company: { companyid: any }) => {
-      if (company.companyid == this.model.companyid) {
+    this.allCompanies.forEach((company: { companyId: any }) => {
+      if (company.companyId == this.model.companyId) {
         count++;
       }
     });
@@ -213,26 +213,26 @@ export class EditUserComponent implements OnInit {
         (response) => {
           this.typeAttributes = response;
           if (
-            this.model.attributevalues &&
-            this.model.attributevalues.length > 0
+            this.model.attributeValues &&
+            this.model.attributeValues.length > 0
           ) {
             this.typeAttributes.forEach(
               (attr: {
                 name: any;
-                attributelistitemResource: any;
+                attributeListItemResource: any;
                 value: any;
               }) => {
-                this.model.attributevalues.forEach(
+                this.model.attributeValues.forEach(
                   (ansAttr: {
-                    attributename: {
+                    attributeName: {
                       name: any;
-                      attributelistitemResource: any;
+                      attributeListItemResource: any;
                     };
                     value: any;
                   }) => {
-                    if (attr.name == ansAttr.attributename.name) {
-                      ansAttr.attributename.attributelistitemResource =
-                        attr.attributelistitemResource;
+                    if (attr.name == ansAttr.attributeName.name) {
+                      ansAttr.attributeName.attributeListItemResource =
+                        attr.attributeListItemResource;
                       attr.value = ansAttr.value;
                     }
                   }
@@ -240,13 +240,13 @@ export class EditUserComponent implements OnInit {
               }
             );
           } else {
-            this.model.attributevalues = [];
+            this.model.attributeValues = [];
             this.typeAttributes.forEach((attr: any) => {
-              this.model.attributevalues.push({
-                attributename: attr,
-                entityid: this.profileId,
-                entitytypeid: attr.type.entitytypeid,
-                lastmodifiedby: attr.type.lastmodifiedby,
+              this.model.attributeValues.push({
+                attributeName: attr,
+                entityId: this.profileId,
+                entitytypeId: attr.type.entitytypeId,
+                lastModifiedBy: attr.type.lastModifiedBy,
                 value: attr.value,
               });
             });
@@ -283,7 +283,7 @@ export class EditUserComponent implements OnInit {
   editUser() {
     console.log(JSON.stringify(this.model));
     if (
-      this.model.username &&
+      this.model.userName &&
       this.model.email &&
       this.model.companyId &&
       this.model.firstName &&
@@ -292,7 +292,7 @@ export class EditUserComponent implements OnInit {
       var req = {
         profileid: this.profileId,
         userId: this.userId,
-        username: this.model.username,
+        userName: this.model.userName,
         email: this.model.email,
         firstName: this.model.firstname ? this.model.firstname : '',
         lastName: this.model.lastname ? this.model.lastname : '',
@@ -303,13 +303,13 @@ export class EditUserComponent implements OnInit {
         fax: this.model.fax,
         acceptedTerms: this.model.acceptedterms,
         sendReceiverFq: this.model.sendreceiverfq,
-        isOwnerAdmin: this.model.isowneradmin,
+        isOwnerAdmin: this.model.isOwnerAdmin,
         topLocationId: this.model.toplocationid,
         preferredLocationId: this.model.preferredlocationid,
-        companyId: this.model.companyid,
+        companyId: this.model.companyId,
         hidePricing: this.model.hidepricing,
         actualCompanyId: this.companyId,
-        addedBy: this.username,
+        addedBy: this.userName,
         isVendor: this.model.isVendor,
         vendorResource: {
           vendorId: this.model.vendorResource.vendorId,

@@ -58,13 +58,13 @@ export class LocationManagementComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       // this.locations = this.locationManagementService.getLocations();
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       //this.locations = this.locationManagementService.getLocations();
     });
     this.router.events.subscribe((evt) => {

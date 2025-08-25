@@ -54,7 +54,7 @@
         "
       >
         <a
-          *ngIf="userSelectedCompany.companyid != 0 && !noLogo"
+          *ngIf="userSelectedCompany.companyId != 0 && !noLogo"
           style="display: inline-flex; align-items: center;"
         >
           <img
@@ -85,7 +85,7 @@
             </div>
         <input
           [(ngModel)]="itemTag"
-          [disabled]="userSelectedCompany.companyid == 0 || highestRank == 0"
+          [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0"
           [typeahead]="suggessions"
           (ngModelChange)="getSuggessions(itemTag)"
           typeaheadOptionField="tag"
@@ -114,7 +114,7 @@
 
         <button
           (click)="navigateToItems()"
-          [disabled]="userSelectedCompany.companyid == 0 || highestRank == 0"
+          [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0"
           class="btn btn-danger"
           style="padding: 5px 10px;"
         >
@@ -125,7 +125,7 @@
         <button
           *ngIf="masterSearchFlag == 'false'"
           (click)="navigateToAdvanceItemSearch()"
-          [disabled]="userSelectedCompany.companyid == 0 || highestRank == 0"
+          [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0"
           class="btn btn-danger"
           style="padding: 5px 10px; margin-right: 64px; "
         >
@@ -134,7 +134,7 @@
         </div>
         <div style="margin-left: auto; display: flex; gap: 8px; min-width: max-content;">
           <button
-            *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyid == 0"
+            *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyId == 0"
             (click)="navigateToMasterSearch()"
             class="btn btn-danger"
             style="padding: 5px 10px;"
@@ -143,7 +143,7 @@
           </button>
 
           <button
-            *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyid == 0"
+            *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyId == 0"
             (click)="navigateToMasterPieCharts()"
             class="btn btn-danger"
             style="padding: 5px 10px; margin-right: 64px;"

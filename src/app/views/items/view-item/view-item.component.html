@@ -234,7 +234,7 @@
                               {{ journal.enteredby }}...........<a
                                 [routerLink]="[
                                   '../../../items/changeLog/',
-                                  journal.entityid,
+                                  journal.entityId,
                                   journal.journalid
                                 ]"
                                 (click)="modalRef.hide()"
@@ -910,42 +910,42 @@
   </div>
   <div class="modal-body scrollPopUp">
     <ul *ngFor="let journal of journals">
-      <li *ngIf="journal.journaltypeid == 3">
+      <li *ngIf="journal.journaltypeId == 3">
         Item updated on {{ journal.enteredOn.split(" ")[0] }} by
         {{ journal.enteredby }}...........<a
           [routerLink]="[
             '../../viewChangeLogItem',
-            journal.entityid,
+            journal.entityId,
             journal.journalid
           ]"
           (click)="modalRef.hide()"
           >details</a
         >
       </li>
-      <li *ngIf="journal.journaltypeid == 4">
+      <li *ngIf="journal.journaltypeId == 4">
         Notes {{ journal.entry }} added on
         {{ journal.enteredOn.split(" ")[0] }} by
         {{ journal.enteredby }}..........<a
           [routerLink]="[
             '../../editItemNotes',
             journal.journalid,
-            journal.entityid
+            journal.entityId
           ]"
           (click)="modalRef.hide()"
           >details</a
         >
       </li>
-      <li *ngIf="journal.journaltypeid == 7">
+      <li *ngIf="journal.journaltypeId == 7">
         {{ journal.entry }} by {{ journal.enteredby }} .........<a
-          [routerLink]="['../../transferItem', journal.entityid]"
+          [routerLink]="['../../transferItem', journal.entityId]"
           (click)="modalRef.hide()"
           >details</a
         >
       </li>
-      <li *ngIf="journal.journaltypeid == 6">
+      <li *ngIf="journal.journaltypeId == 6">
         Repair Data added on {{ journal.enteredOn.split(" ")[0] }} by
         'justin'..........<a
-          [routerLink]="['../../transferItem', journal.entityid]"
+          [routerLink]="['../../transferItem', journal.entityId]"
           (click)="modalRef.hide()"
           >details</a
         >

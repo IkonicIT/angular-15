@@ -659,7 +659,7 @@ export class DashboardComponent implements OnInit {
       console.log('inside dashboard');
       this.globalCompany = value;
       if (this.globalCompany) {
-        this.companyId = this.globalCompany.companyid;
+        this.companyId = this.globalCompany.companyId;
         this.documents = [];
       }
     });
@@ -734,9 +734,9 @@ export class DashboardComponent implements OnInit {
   downloadFile(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
-    saveAs(blob, companyDocument.filename);
+    saveAs(blob, companyDocument.fileName);
   }
 
   radioModel: string = 'Month';

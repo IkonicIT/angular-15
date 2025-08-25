@@ -36,7 +36,7 @@ export class AddcompanydetailsComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.highestRank = parseInt(sessionStorage.getItem("highestRank") || "0", 10);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     //this.getStatuses()
   }
 
@@ -83,15 +83,15 @@ export class AddcompanydetailsComponent implements OnInit {
             company: {},
           },
           city: this.model.city ? this.model.city : '',
-          companyContentType: this.model.companycontenttype
-            ? this.model.companycontenttype
+          companyContentType: this.model.companycontentType
+            ? this.model.companycontentType
             : '',
-          companyFileName: this.model.companyfilename
-            ? this.model.companyfilename
+          companyFileName: this.model.companyfileName
+            ? this.model.companyfileName
             : '',
           logo: this.model.logo ? this.model.logo : '',
           companyId: 0,
-          userid: sessionStorage.getItem('userId'),
+          userId: sessionStorage.getItem('userId'),
           description: this.model.description ? this.model.description : '',
           fax: this.model.fax ? this.model.fax : '',
           isSandbox: true,
@@ -99,7 +99,7 @@ export class AddcompanydetailsComponent implements OnInit {
           name: this.model.name,
           parentCompanyId: 0,
           phone: this.model.phone ? this.model.phone : '',
-          postalCode: this.model.postalcode ? this.model.postalcode : '',
+          postalCode: this.model.postalCode ? this.model.postalCode : '',
           state: this.model.state ? this.model.state : '',
           statusId: 0,
           supplyLevelWarning: true,
@@ -126,7 +126,7 @@ export class AddcompanydetailsComponent implements OnInit {
         console.log(this.model);
         this.companyManagementService.saveCompany(this.model).subscribe(
           (response: any) => {
-            this.companyId = response.companyid;
+            this.companyId = response.companyId;
             this.spinner.hide();
 
             window.scroll(0, 0);
@@ -176,11 +176,11 @@ export class AddcompanydetailsComponent implements OnInit {
     myReader.onloadend = function (e: any) {
       console.log(myReader.result);
       self.model.logo = myReader.result.split(',')[1];
-      self.model.companycontenttype = myReader.result
+      self.model.companycontentType = myReader.result
         .split(',')[0]
         .split(':')[1]
         .split(';')[0];
-      self.model.companyfilename = self.file.name;
+      self.model.companyfileName = self.file.name;
     };
   }
 

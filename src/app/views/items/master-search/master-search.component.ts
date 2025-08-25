@@ -112,7 +112,7 @@ export class MasterSearchComponent implements OnInit {
                   rank = obj.itemRank;
                   tag = obj.tag;
                   typeName = obj.typeName;
-                  companyId = obj.companyid;
+                  companyId = obj.companyId;
                   this.goToView(itemId, rank, tag, typeName, companyId);
                 });
               }
@@ -197,20 +197,20 @@ export class MasterSearchComponent implements OnInit {
 
         delete obj.itemId;
         delete obj.locationid;
-        delete obj.companyid;
+        delete obj.companyId;
         delete obj.companyName;
         delete obj.typeName;
         delete obj.name;
         delete obj.description;
-        delete obj.statusid;
-        delete obj.warrantytypeid;
+        delete obj.statusId;
+        delete obj.warrantytypeId;
         delete obj.warrantyexpiration;
         delete obj.warrantyExpiration;
         delete obj.serialnumber;
         delete obj.modelnumber;
         delete obj.meantimebetweenservice;
         delete obj.inserviceon;
-        delete obj.lastmodifiedby;
+        delete obj.lastModifiedBy;
         delete obj.isinrepair;
         delete obj.desiredspareratio;
         delete obj.manufacturerid;
@@ -218,18 +218,18 @@ export class MasterSearchComponent implements OnInit {
         delete obj.purchaseprice;
         delete obj.daysinservice;
         delete obj.purchasedate;
-        delete obj.defaultimageattachmentid;
+        delete obj.defaultimageattachmentId;
         delete obj.typeId;
         delete obj.isstale;
         delete obj.locationPath;
         delete obj.entityTypeId;
         delete obj.roleid;
-        delete obj.userid;
+        delete obj.userId;
         delete obj.roleName;
         delete obj.updatedDate;
         delete obj.createdDate;
         delete obj.itemRank;
-        delete obj.attributevalues;
+        delete obj.attributeValues;
 
         obj = Object.assign(obj, robj);
       });

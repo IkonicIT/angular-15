@@ -52,13 +52,13 @@ export class ItemRepairItemsComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.router = router;
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.companyName = this.globalCompany.name;
       this.getAllItemTypes();
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = value.name;
     });
   }
@@ -126,11 +126,11 @@ export class ItemRepairItemsComponent implements OnInit {
       this.spinner.show();
 
       var request = {
-        lastmodifiedby: this.userName,
-        companyid: this.companyId,
+        lastModifiedBy: this.userName,
+        companyId: this.companyId,
         repairdescription: this.repairItem,
         repairid: 0,
-        typeid: this.itemType,
+        typeId: this.itemType,
       };
       this.itemReairItemsService
         .saveRepairItemType(request)

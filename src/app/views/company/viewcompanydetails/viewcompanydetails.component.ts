@@ -83,7 +83,7 @@ export class ViewcompanydetailsComponent implements OnInit {
       announcementText: this.model.tracratAnnouncements
         ? this.model.tracratAnnouncements
         : '',
-      companyid: -1,
+      companyId: -1,
     };
     this.spinner.show();
 

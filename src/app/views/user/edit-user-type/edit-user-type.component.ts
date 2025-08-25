@@ -13,8 +13,8 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 })
 export class EditUserTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
+    parentId: {
+      typeId: 0,
     },
   };
   userTypeId: any;
@@ -47,7 +47,7 @@ export class EditUserTypeComponent implements OnInit {
     this.companyName = this.globalCompany.name;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
     this.getAllUserTypes();
@@ -65,12 +65,12 @@ export class EditUserTypeComponent implements OnInit {
 
       console.log(response);
       this.model = response;
-      if (!this.model.parentid) {
-        this.model.parentid = {
-          typeid: 0,
+      if (!this.model.parentId) {
+        this.model.parentId = {
+          typeId: 0,
         };
       } else {
-        this.value = this.model.parentid.typeid;
+        this.value = this.model.parentId.typeId;
       }
     });
   }
@@ -103,7 +103,7 @@ export class EditUserTypeComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -113,18 +113,18 @@ export class EditUserTypeComponent implements OnInit {
   }
 
   updateUserType() {
-    if (this.model.name && this.model.parentid.typeid != this.userTypeId) {
+    if (this.model.name && this.model.parentId.typeId != this.userTypeId) {
       var request = {
         attributeSearchDisplay: 0,
         description: this.model.description,
-        entityTypeId: this.model.entitytypeid,
-        hostingFee: this.model.hostingfee,
+        entityTypeId: this.model.entitytypeId,
+        hostingFee: this.model.hostingFee,
         isHidden: true,
         lastModifiedBy: this.userName,
         moduleType: 'usertype',
         name: this.model.name,
         parentId: {
-          typeId: this.model.parentid.typeid ? this.model.parentid.typeid : 0,
+          typeId: this.model.parentId.typeId ? this.model.parentId.typeId : 0,
         },
         company: {
           companyId: this.companyId,
@@ -153,7 +153,7 @@ export class EditUserTypeComponent implements OnInit {
       );
     } else {
       this.index = -1;
-      if (this.model.parentid.typeid == this.userTypeId) {
+      if (this.model.parentId.typeId == this.userTypeId) {
         this.index = -2;
       }
       window.scroll(0, 0);

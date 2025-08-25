@@ -249,12 +249,12 @@
                           class="form-control custom-dropdown"
                           [(ngModel)]="model.companyId"
                           name="commpanyid"
-                          #companyid="ngModel"
+                          #companyId="ngModel"
                           id="company"
                         >
                           <!-- <option value="0" selected="true">Select Company</option>-->
                           <option
-                            [ngValue]="company.companyid"
+                            [ngValue]="company.companyId"
                             *ngFor="let company of allCompanies"
                           >
                             {{ company.name }}

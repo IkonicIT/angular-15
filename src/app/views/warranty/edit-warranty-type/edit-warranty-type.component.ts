@@ -17,7 +17,7 @@ export class EditWarrantyTypeComponent implements OnInit {
   index: number;
   router: Router;
   route: ActivatedRoute;
-  warrantytypeid: any;
+  warrantytypeId: any;
   helpFlag: any = false;
   userName: any;
   dismissible = true;
@@ -31,23 +31,23 @@ export class EditWarrantyTypeComponent implements OnInit {
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.router = router;
     this.route = route;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
-    this.warrantytypeid = this.route.snapshot.params['warrantyId'];
+    this.warrantytypeId = this.route.snapshot.params['warrantyId'];
     this.spinner.show();
 
     this.warrantyManagementService
-      .getWarrantyType(this.warrantytypeid)
+      .getWarrantyType(this.warrantytypeId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
@@ -66,15 +66,15 @@ export class EditWarrantyTypeComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       var req = {
-        companyid: this.companyId,
+        companyId: this.companyId,
         warrantytype: this.warrantyType,
-        warrantytypeid: 0,
+        warrantytypeId: 0,
         userName: this.userName,
       };
       this.spinner.show();
 
       this.warrantyManagementService
-        .updateWarrantyType(req, this.warrantytypeid)
+        .updateWarrantyType(req, this.warrantytypeId)
         .subscribe(
           (response) => {
             this.spinner.hide();

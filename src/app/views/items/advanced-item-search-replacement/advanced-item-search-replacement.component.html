@@ -79,7 +79,7 @@
                     >
                       <option value="" selected="true">Choose Status</option>
                       <option
-                        [ngValue]="stat.statusid"
+                        [ngValue]="stat.statusId"
                         *ngFor="let stat of statuses"
                       >
                         {{ stat.status }}
@@ -116,7 +116,7 @@
                   <div
                     class="form-group col-sm-6"
                     *ngFor="
-                      let eachAttr of itemModel.attributevalues;
+                      let eachAttr of itemModel.attributeValues;
                       let i = index
                     "
                   >
@@ -124,28 +124,28 @@
                       <label>{{ eachAttr.name }}</label>
                       <div>
                         <input
-                          *ngIf="eachAttr.attributetype.attributetypeid == 1"
+                          *ngIf="eachAttr.attributeType.attributeTypeId == 1"
                           type="number"
                           class="form-control"
                           [(ngModel)]="eachAttr.value"
                           name="number{{ i }}"
                         />
                         <input
-                          *ngIf="eachAttr.attributetype.attributetypeid == 2"
+                          *ngIf="eachAttr.attributeType.attributeTypeId == 2"
                           type="text"
                           class="form-control"
                           [(ngModel)]="eachAttr.value"
                           name="text{{ i }}"
                         />
                         <input
-                          *ngIf="eachAttr.attributetype.attributetypeid == 6"
+                          *ngIf="eachAttr.attributeType.attributeTypeId == 6"
                           type="text"
                           class="form-control"
                           [(ngModel)]="eachAttr.value"
                           name="multiValue{{ i }}"
                         />
                         <input
-                          *ngIf="eachAttr.attributetype.attributetypeid == 3"
+                          *ngIf="eachAttr.attributeType.attributeTypeId == 3"
                           type="date"
                           class="form-control"
                           [(ngModel)]="eachAttr.value"
@@ -153,7 +153,7 @@
                           #state="ngModel"
                         />
                         <select
-                          *ngIf="eachAttr.attributetype.attributetypeid == 4"
+                          *ngIf="eachAttr.attributeType.attributeTypeId == 4"
                           class="form-control custom-dropdown"
                           [(ngModel)]="eachAttr.value"
                           name="select{{ i }}"
@@ -163,7 +163,7 @@
                           <option
                             [ngValue]="list.listitem"
                             *ngFor="
-                              let list of eachAttr.attributelistitemResource
+                              let list of eachAttr.attributeListItemResource
                             "
                           >
                             {{ list.listitem }}
@@ -171,7 +171,7 @@
                         </select>
                         <div
                           class="form-check"
-                          *ngIf="eachAttr.attributetype.attributetypeid == 5"
+                          *ngIf="eachAttr.attributeType.attributeTypeId == 5"
                         >
                           <label
                             class="form-check-label margin-right"
@@ -215,7 +215,7 @@
                           </label>
                         </div>
                         <textarea
-                          *ngIf="eachAttr.attributetype.attributetypeid == 7"
+                          *ngIf="eachAttr.attributeType.attributeTypeId == 7"
                           name="textarea{{ i }}"
                           rows="2"
                           cols="4"
@@ -341,7 +341,7 @@
                     >
                       <option value="" selected="true">Choose Vendor</option>
                       <option
-                        [value]="vendor.companyid"
+                        [value]="vendor.companyId"
                         *ngFor="let vendor of vendors"
                       >
                         {{ vendor.name }}
@@ -395,8 +395,8 @@
                       <tbody>
                         <tr *ngFor="let rfqssearch of RFQsList">
                           <td></td>
-                          <td>{{ rfqssearch.entityid }}</td>
-                          <td>{{ rfqssearch.entitytypeid }}</td>
+                          <td>{{ rfqssearch.entityId }}</td>
+                          <td>{{ rfqssearch.entitytypeId }}</td>
                         </tr>
                       </tbody>
                     </table>

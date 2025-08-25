@@ -58,7 +58,7 @@ export class InserviceVsSpareComponent implements OnInit {
     private excelService: ExcelService
   ) {
     this.router = router;
-    this.companyId = this.companyManagementService.getGlobalCompany().companyid;
+    this.companyId = this.companyManagementService.getGlobalCompany().companyId;
   }
 
   ngOnInit() {

@@ -58,7 +58,7 @@ export class VendorNotesComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.getAllNotes(this.vendorId);
     });
   }

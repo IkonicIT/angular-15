@@ -47,7 +47,7 @@ export class EditItemRepairItemsComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
 
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.companyName = this.globalCompany.name;
       this.getAllItemTypes();
     }
@@ -55,7 +55,7 @@ export class EditItemRepairItemsComponent implements OnInit {
     this.route = route;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = value.name;
     });
   }
@@ -105,11 +105,11 @@ export class EditItemRepairItemsComponent implements OnInit {
     this.spinner.show();
 
     var request = {
-      lastmodifiedby: this.userName,
-      companyid: this.companyId,
+      lastModifiedBy: this.userName,
+      companyId: this.companyId,
       repairdescription: this.model.repairdescription,
       repairid: this.repairid,
-      typeid: this.model.typeid,
+      typeId: this.model.typeId,
     };
     this.itemReairItemsService
       .updateRepairItemType(request, this.repairid)

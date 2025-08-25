@@ -97,14 +97,14 @@
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'dateadded'"
+                  [class.active]="order === 'dateAdded'"
                   (click)="setOrder('createdDate')"
                 >
                   Added<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'addedby'"
+                  [class.active]="order === 'addedBy'"
                   (click)="setOrder('createdBy')"
                 >
                   By<span [hidden]="reverse == ''">▼</span

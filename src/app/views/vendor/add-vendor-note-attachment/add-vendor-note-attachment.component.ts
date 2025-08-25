@@ -39,7 +39,7 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.vendorName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.userName = sessionStorage.getItem('userName');
     });
     this.vendorNoteId = route.snapshot.params['id'];
@@ -69,13 +69,13 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
     } else {
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
-      formdata.append('addedby', this.userName);
-      formdata.append('companyID', JSON.stringify(this.companyId));
+      formdata.append('addedBy', this.userName);
+      formdata.append('companyId', JSON.stringify(this.companyId));
       formdata.append(
         'description',
         this.model.description ? this.model.description : ''
       );
-      formdata.append('entityid', JSON.stringify(this.companyId));
+      formdata.append('entityId', JSON.stringify(this.companyId));
       formdata.append('moduleType', 'companytype');
       var jsonArr = this.addedfiles;
       for (var i = 0; i < jsonArr.length; i++) {
@@ -152,9 +152,9 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
         fileInfo['vendorId'] = this.vendorId;
         fileInfo['attachmentFile'] = this.fileContent;
         fileInfo['vendorAttachmentId'] = 0;
-        fileInfo['contenttype'] = this.fileType;
+        fileInfo['contentType'] = this.fileType;
         fileInfo['isNew'] = 1;
-        fileInfo['filename'] = this.fileName;
+        fileInfo['fileName'] = this.fileName;
         fileInfo['vendorNote'] = {
           vendorNoteId: this.vendorNoteId,
         };

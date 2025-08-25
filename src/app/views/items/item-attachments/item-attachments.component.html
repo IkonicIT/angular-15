@@ -97,15 +97,15 @@
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'dateadded'"
-                  (click)="setOrder('dateadded')"
+                  [class.active]="order === 'dateAdded'"
+                  (click)="setOrder('dateAdded')"
                 >
                   Added<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'addedby'"
-                  (click)="setOrder('addedby')"
+                  [class.active]="order === 'addedBy'"
+                  (click)="setOrder('addedBy')"
                 >
                   By<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -115,20 +115,20 @@
             </thead>
             <tbody>
               <tr
-                [class.color]="currentAttachmentId == document.attachmentid"
+                [class.color]="currentAttachmentId == document.attachmentId"
                 *ngFor="
                   let document of documents
                     | orderBy : reverse + order
                     | filterBy
-                      : ['description', 'dateadded', 'addedby']
+                      : ['description', 'dateAdded', 'addedBy']
                       : documentFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
                 <td [innerHTML]="document.description"></td>
-                <td [innerHTML]="document.dateadded | date : 'MM/dd/yyyy'"></td>
-                <td [innerHTML]="document.addedby"></td>
+                <td [innerHTML]="document.dateAdded | date : 'MM/dd/yyyy'"></td>
+                <td [innerHTML]="document.addedBy"></td>
                 <td>
                   <button
                     type="button"
@@ -173,7 +173,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete Item Attachment"
-                    (click)="openModal(confirmtemplate, document.attachmentid)"
+                    (click)="openModal(confirmtemplate, document.attachmentId)"
                   >
                     Delete
                   </button>

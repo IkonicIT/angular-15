@@ -24,11 +24,11 @@ export class UserAttributesComponent implements OnInit {
   companyId: string = '0';
   model: any = {
     type: {},
-    attributetype: {
-      attributetypeid: null,
+    attributeType: {
+      attributeTypeId: null,
     },
-    searchtype: {
-      attributesearchtypeid: 0,
+    searchType: {
+      attributeSearchTypeId: 0,
     },
   };
   index: any = 0;
@@ -36,7 +36,7 @@ export class UserAttributesComponent implements OnInit {
   atts: any[] = [];
   router: Router;
   message: string;
-  username: any;
+  userName: any;
   modalRef: BsModalRef | null;
   companyName: string = '';
   typeId: number;
@@ -86,13 +86,13 @@ export class UserAttributesComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.getAllTypes(this.companyId);
   }
 
   ngOnInit() {
-    this.username = sessionStorage.getItem('userName');
+    this.userName = sessionStorage.getItem('userName');
 
     this.pageLoadCalls(this.companyId);
 
@@ -110,7 +110,7 @@ export class UserAttributesComponent implements OnInit {
 
   setTypeName(typeId: any) {
     this.usertypes.forEach((type: any) => {
-      if (type.typeid == typeId) {
+      if (type.typeId == typeId) {
         this.typeName = type.name;
       }
     });
@@ -157,7 +157,7 @@ export class UserAttributesComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -218,12 +218,12 @@ export class UserAttributesComponent implements OnInit {
     }
   }
 
-  setSelectedAttribute(attribute: { attributetype: any }) {
+  setSelectedAttribute(attribute: { attributeType: any }) {
     this.model = JSON.parse(JSON.stringify(attribute));
-    this.selectedAttrType = JSON.parse(JSON.stringify(attribute.attributetype));
+    this.selectedAttrType = JSON.parse(JSON.stringify(attribute.attributeType));
     this.index = 0;
-    if (this.model.attributetype && this.model.attributetype.attributetypeid) {
-      this.getSearchTypes(this.model.attributetype.attributetypeid);
+    if (this.model.attributeType && this.model.attributeType.attributeTypeId) {
+      this.getSearchTypes(this.model.attributeType.attributeTypeId);
     }
   }
 
@@ -246,38 +246,38 @@ export class UserAttributesComponent implements OnInit {
   createAttribute() {
     if (
       this.model.name &&
-      this.model.attributetype &&
-      this.model.attributetype.attributetypeid != null
+      this.model.attributeType &&
+      this.model.attributeType.attributeTypeId != null
     ) {
       var request = {
-        attributelistitemResource: null,
-        attributenameid: 0,
-        attributetype: {
-          attributetypeid: this.model.attributetype.attributetypeid,
+        attributeListItemResource: null,
+        attributeNameId: 0,
+        attributeType: {
+          attributeTypeId: this.model.attributeType.attributeTypeId,
         },
-        displayorder: this.typeAttributesLength + 1,
-        ismanufacturer: false,
-        isrequired: this.model.isrequired ? this.model.isrequired : false,
-        isrequiredformatch: false,
+        displayOrder: this.typeAttributesLength + 1,
+        isManufacturer: false,
+        isRequired: this.model.isRequired ? this.model.isRequired : false,
+        isRequiredForMatch: false,
         name: this.model.name,
-        searchmodifier: '',
+        searchModifier: '',
         companyId: this.companyId,
-        lastmodifiedby: this.username,
-        searchtype: {
-          attributesearchtypeid: this.model.searchtype
-            ? this.model.searchtype.attributesearchtypeid
+        lastModifiedBy: this.userName,
+        searchType: {
+          attributeSearchTypeId: this.model.searchType
+            ? this.model.searchType.attributeSearchTypeId
             : 0,
         },
         tooltip: this.model.tooltip,
         type: {
-          typeid: this.value,
+          typeId: this.value,
           name: this.typeName,
         },
         moduleType: 'User',
       };
-      if (this.model.attributelistitemResource) {
-        request.attributelistitemResource =
-          this.model.attributelistitemResource;
+      if (this.model.attributeListItemResource) {
+        request.attributeListItemResource =
+          this.model.attributeListItemResource;
       }
       this.spinner.show();
 
@@ -294,11 +294,11 @@ export class UserAttributesComponent implements OnInit {
           this.typeAttributesLength = this.typeAttributesLength + 1;
           this.model = {
             type: {},
-            attributetype: {
-              attributetypeid: null,
+            attributeType: {
+              attributeTypeId: null,
             },
-            searchtype: {
-              attributesearchtypeid: 0,
+            searchType: {
+              attributeSearchTypeId: 0,
             },
           };
           this.addEditFlag = false;
@@ -314,10 +314,10 @@ export class UserAttributesComponent implements OnInit {
 
   addListItem() {
     if (this.listItem && this.listItem != '') {
-      if (!this.model.attributelistitemResource) {
-        this.model.attributelistitemResource = [];
+      if (!this.model.attributeListItemResource) {
+        this.model.attributeListItemResource = [];
       }
-      this.model.attributelistitemResource.push({ listitem: this.listItem });
+      this.model.attributeListItemResource.push({ listitem: this.listItem });
       this.listItem = '';
     } else {
       this.index = 0;
@@ -332,48 +332,48 @@ export class UserAttributesComponent implements OnInit {
   editAttribute() {
     if (
       this.model.name &&
-      this.model.attributetype &&
-      this.model.attributetype.attributetypeid != 0
+      this.model.attributeType &&
+      this.model.attributeType.attributeTypeId != 0
     ) {
       this.spinner.show();
 
       var request = {
-        attributelistitemResource: null,
-        attributenameid: this.model.attributenameid,
-        attributetype: {
-          attributetypeid: this.model.attributetype
-            ? this.model.attributetype.attributetypeid
+        attributeListItemResource: null,
+        attributeNameId: this.model.attributeNameId,
+        attributeType: {
+          attributeTypeId: this.model.attributeType
+            ? this.model.attributeType.attributeTypeId
             : 0,
         },
-        displayorder: this.typeAttributesLength + 1,
-        ismanufacturer: this.model.ismanufacturer
-          ? this.model.ismanufacturer
+        displayOrder: this.typeAttributesLength + 1,
+        isManufacturer: this.model.isManufacturer
+          ? this.model.isManufacturer
           : false,
-        isrequired: this.model.isrequired ? this.model.isrequired : false,
-        isrequiredformatch: false,
+        isRequired: this.model.isRequired ? this.model.isRequired : false,
+        isRequiredForMatch: false,
         name: this.model.name,
-        searchmodifier: '',
+        searchModifier: '',
         companyId: this.companyId,
-        lastmodifiedby: this.username,
-        searchtype: {
-          attributesearchtypeid:
-            this.model.searchtype &&
-            this.model.searchtype.attributesearchtypeid != 'null'
-              ? this.model.searchtype.attributesearchtypeid
+        lastModifiedBy: this.userName,
+        searchType: {
+          attributeSearchTypeId:
+            this.model.searchType &&
+            this.model.searchType.attributeSearchTypeId != 'null'
+              ? this.model.searchType.attributeSearchTypeId
               : 0,
         },
         tooltip: this.model.tooltip,
         type: {
-          typeid: this.value,
+          typeId: this.value,
           name: this.typeName,
         },
         moduleType: 'User',
       };
       this.spinner.show();
 
-      if (this.model.attributelistitemResource) {
-        request.attributelistitemResource =
-          this.model.attributelistitemResource;
+      if (this.model.attributeListItemResource) {
+        request.attributeListItemResource =
+          this.model.attributeListItemResource;
       }
       this.userAttributeService.updateTypeAttributes(request).subscribe(
         (response) => {
@@ -387,11 +387,11 @@ export class UserAttributesComponent implements OnInit {
           window.scroll(0, 0);
           this.model = {
             type: {},
-            attributetype: {
-              attributetypeid: null,
+            attributeType: {
+              attributeTypeId: null,
             },
-            searchtype: {
-              attributesearchtypeid: 0,
+            searchType: {
+              attributeSearchTypeId: 0,
             },
           };
           this.addEditFlag = false;
@@ -410,11 +410,11 @@ export class UserAttributesComponent implements OnInit {
     this.addEditFlag = false;
     this.model = {
       type: {},
-      attributetype: {
-        attributetypeid: null,
+      attributeType: {
+        attributeTypeId: null,
       },
-      searchtype: {
-        attributesearchtypeid: 0,
+      searchType: {
+        attributeSearchTypeId: 0,
       },
     };
     this.getTypeAttributes(this.typevalue);
@@ -438,9 +438,9 @@ export class UserAttributesComponent implements OnInit {
     var moduleType = 'User';
     this.userAttributeService
       .removeUserAttributess(
-        this.model.attributenameid,
+        this.model.attributeNameId,
         this.companyId,
-        this.username,
+        this.userName,
         this.model.name,
         this.typeName,
         moduleType
@@ -457,11 +457,11 @@ export class UserAttributesComponent implements OnInit {
           this.addEditFlag = false;
           this.model = {
             type: {},
-            attributetype: {
-              attributetypeid: null,
+            attributeType: {
+              attributeTypeId: null,
             },
-            searchtype: {
-              attributesearchtypeid: 0,
+            searchType: {
+              attributeSearchTypeId: 0,
             },
           };
           window.scroll(0, 0);

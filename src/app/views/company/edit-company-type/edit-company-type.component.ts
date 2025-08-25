@@ -12,8 +12,8 @@ import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 })
 export class EditCompanyTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
+    parentId: {
+      typeId: 0,
     },
   };
   index: number = 0;
@@ -60,12 +60,12 @@ export class EditCompanyTypeComponent implements OnInit {
     this.companyTypesService.getCompanyType(this.typeId).subscribe(
       (response) => {
         this.model = response;
-        if (!this.model.parentid) {
-          this.model.parentid = {
-            typeid: 0,
+        if (!this.model.parentId) {
+          this.model.parentId = {
+            typeId: 0,
           };
         } else {
-          this.value = this.model.parentid.typeid;
+          this.value = this.model.parentId.typeId;
         }
         this.getAllTypes();
       },
@@ -106,7 +106,7 @@ export class EditCompanyTypeComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -138,8 +138,8 @@ export class EditCompanyTypeComponent implements OnInit {
           companyId: this.companyId,
         },
         description: this.model.description,
-        entityTypeId: this.model.entitytypeid,
-        hostingFee: this.model.hostingfee,
+        entityTypeId: this.model.entitytypeId,
+        hostingFee: this.model.hostingFee,
         isHidden: true,
         lastModifiedBy: this.userName,
         moduleType: 'companytype',

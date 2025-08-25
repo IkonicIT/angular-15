@@ -35,7 +35,7 @@ export class AddLocationStatusComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       console.log('compaanyid=' + this.companyId);
     });
   }
@@ -57,7 +57,7 @@ export class AddLocationStatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyId: this.globalCompany.companyid,
+        companyId: this.globalCompany.companyId,
         lastModifiedBy: this.userName,
         destroyed: true,
         entityTypeId: 0,

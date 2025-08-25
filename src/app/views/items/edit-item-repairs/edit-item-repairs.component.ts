@@ -66,7 +66,7 @@ export class EditItemRepairsComponent implements OnInit {
     this.itemId = route.snapshot.params['itemId'];
     this.itemRepairId = route.snapshot.params['repairId'];
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.getAllVendors();
     this.locations = this.getLocations();
     if (this.companyId) {
@@ -74,7 +74,7 @@ export class EditItemRepairsComponent implements OnInit {
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -152,7 +152,7 @@ export class EditItemRepairsComponent implements OnInit {
         this.model.itemType = response.typeName;
         this.details = response;
         if (response.warrantyTypeId != 0) {
-          this.model.warrantytypeid = response.warrantyTypeId;
+          this.model.warrantytypeId = response.warrantyTypeId;
           this.setWarrantyType(response.warrantyTypeId);
         }
         this.model.warrantyexpiration = response.warrantyExpiration;
@@ -200,9 +200,9 @@ export class EditItemRepairsComponent implements OnInit {
       });
   }
 
-  setWarrantyType(warrantytypeid: any) {
+  setWarrantyType(warrantytypeId: any) {
     this.warrantyTypes.forEach((element: any) => {
-      if (element.warrantytypeid == warrantytypeid)
+      if (element.warrantytypeId == warrantytypeId)
         this.model.warrantytype = element.warrantytype;
     });
   }
@@ -304,13 +304,13 @@ export class EditItemRepairsComponent implements OnInit {
     causes = causes + '\n' + this.model.newfailurecause;
     this.spinner.show();
     var request = {
-      failuretypeid: 0,
-      itemtypeid: this.details.typeId,
+      failuretypeId: 0,
+      itemtypeId: this.details.typeId,
       description: failuretype,
       causes: causes,
     };
     this.itemRepairItemsService
-      .updateFailureTypeAndCauses(request, request.failuretypeid)
+      .updateFailureTypeAndCauses(request, request.failuretypeId)
       .subscribe((response) => {
         this.spinner.hide();
       });
@@ -399,13 +399,13 @@ export class EditItemRepairsComponent implements OnInit {
       itemType: this.model.itemtype,
       jobNumber: this.model.jobnumber ? this.model.jobnumber : 0,
       poNumber: this.model.ponumber ? this.model.ponumber : 0,
-      repairCompanyId: this.model.repaircompanyid,
+      repairCompanyId: this.model.repaircompanyId,
       repairCost: this.model.repaircost ? this.model.repaircost : 0,
       repairJobStatus: this.model.repairjobstatus,
       repairLocationId: this.model.repairlocationid
         ? this.model.repairlocationid
         : 0,
-      repairLogId: this.model.repairlogid,
+      repairLogId: this.model.repairLogId,
       repairNotes: this.model.repairnotes ? this.model.repairnotes : '',
       repairVendorNumber: this.model.repairvendornumber
         ? this.model.repairvendornumber
@@ -416,7 +416,7 @@ export class EditItemRepairsComponent implements OnInit {
       transferLogId: 0,
       warrantyType: this.model.warrantytype ? this.model.warrantytype : '',
       warrantyTypeId:
-        this.model.warrantytypeid != undefined ? this.model.warrantytypeid : 0,
+        this.model.warrantytypeId != undefined ? this.model.warrantytypeId : 0,
       warrantyExpiration: this.model.warrantyexpiration
         ? this.model.warrantyexpiration
         : null,
@@ -488,7 +488,7 @@ export class EditItemRepairsComponent implements OnInit {
     if (this.model.warrantytype && this.model.warrantytype != '') {
       this.warrantyTypes.forEach((element: any) => {
         if (element.warrantytype == this.model.warrantytype)
-          this.model.warrantytypeid = element.warrantytypeid;
+          this.model.warrantytypeId = element.warrantytypeId;
       });
     }
   }

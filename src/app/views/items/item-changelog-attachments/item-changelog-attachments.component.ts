@@ -66,11 +66,11 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
   ) {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.loggedInuser = sessionStorage.getItem('userId');
     this.journalId = route.snapshot.params['journalId'];
@@ -122,13 +122,13 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
     } else {
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
-      formdata.append('addedby', this.userName);
-      formdata.append('companyID', JSON.stringify(this.companyId));
+      formdata.append('addedBy', this.userName);
+      formdata.append('companyId', JSON.stringify(this.companyId));
       formdata.append(
         'description',
         this.model.description ? this.model.description : ''
       );
-      formdata.append('entityid', JSON.stringify(this.itemId));
+      formdata.append('entityId', JSON.stringify(this.itemId));
       formdata.append('moduleType', 'itemnotetype');
       var jsonArr = this.addedfiles;
       for (var i = 0; i < jsonArr.length; i++) {
@@ -208,16 +208,16 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
           .split(':')[1]
           .split(';')[0];
         const fileInfo = this.addedfiles[fileIndex];
-        fileInfo['addedby'] = this.userName;
+        fileInfo['addedBy'] = this.userName;
         fileInfo['attachmentFile'] = this.fileContent;
-        fileInfo['attachmentid'] = 0;
-        fileInfo['contenttype'] = this.fileType;
-        fileInfo['dateadded'] = new Date().toISOString();
-        fileInfo['entityid'] = this.journalId;
+        fileInfo['attachmentId'] = 0;
+        fileInfo['contentType'] = this.fileType;
+        fileInfo['dateAdded'] = new Date().toISOString();
+        fileInfo['entityId'] = this.journalId;
         fileInfo['isNew'] = 1;
         fileInfo['moduleType'] = 'itemnotetype';
-        fileInfo['companyID'] = this.companyId;
-        fileInfo['filename'] = this.fileName;
+        fileInfo['companyId'] = this.companyId;
+        fileInfo['fileName'] = this.fileName;
         console.log(this.addedfiles);
       };
     }
@@ -235,11 +235,11 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { isNew?: boolean; attachmentid?: any }) {
+  downloadDocumentFromDB(document: { isNew?: boolean; attachmentId?: any }) {
     this.spinner.show();
 
     this.itemAttachmentsService
-      .getItemDocuments(document.attachmentid)
+      .getItemDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
@@ -255,7 +255,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
@@ -263,17 +263,17 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
 
   downloadFile(attachment: {
     isNew?: boolean;
-    filename?: any;
-    attachmentid?: any;
+    fileName?: any;
+    attachmentId?: any;
   }) {
-    var index = attachment.filename.lastIndexOf('.');
-    var extension = attachment.filename.slice(index + 1);
+    var index = attachment.fileName.lastIndexOf('.');
+    var extension = attachment.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
       var wnd = window.open('about:blank');
       var pdfStr = `<div style="text-align:center">
   <h4>Pdf viewer</h4>
   <iframe  id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-    attachment.attachmentid + '?access_token=' + this.authToken
+    attachment.attachmentId + '?access_token=' + this.authToken
   }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
     </div>
     <script>
@@ -311,7 +311,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
     <h4>Image Viewer</h4>
     <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-      attachment.attachmentid + '?access_token=' + this.authToken
+      attachment.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" >
       </div>`;
       var wnd = window.open('about:blank');
@@ -319,7 +319,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          attachment.attachmentid +
+          attachment.attachmentId +
           '?access_token=' +
           this.authToken
       );
@@ -330,12 +330,12 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  editNoteDocument(document: { attachmentid: number }) {
+  editNoteDocument(document: { attachmentId: number }) {
     this.EditFlag = true;
     this.spinner.show();
 
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentid)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
@@ -397,7 +397,7 @@ export class ItemChangelogAttachmentsComponent implements OnInit {
     this.spinner.show();
 
     this.editModel.moduleType = 'itemnotetype';
-    this.editModel.companyID = this.companyId;
+    this.editModel.companyId = this.companyId;
     this.editModel.updatedBy = this.userName;
     this.editModel.attachmentUserLogDTO = {
       noteType: 'itemchangelogattachment',

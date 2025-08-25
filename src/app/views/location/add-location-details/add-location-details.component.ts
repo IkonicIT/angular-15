@@ -19,7 +19,7 @@ export class AddLocationDetailsComponent implements OnInit {
   model: any = {
     pLocationId: 0,
     vendorCompany: {
-      companyid: 0,
+      companyId: 0,
     },
     locationTypeId: 0,
   };
@@ -65,7 +65,7 @@ export class AddLocationDetailsComponent implements OnInit {
     this.companyName = this.globalCompany.name;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
     this.getAllVendors();
@@ -149,22 +149,22 @@ export class AddLocationDetailsComponent implements OnInit {
       this.model.locationTypeId != 0
     ) {
       if (this.typeAttributes && this.typeAttributes.length > 0) {
-        this.model.attributevalues = [];
+        this.model.attributeValues = [];
         this.typeAttributes.forEach((attr: any) => {
-          this.model.attributevalues.push({
-            attributename: attr,
-            entityid: 0,
-            entitytypeid: attr.type.entitytypeid,
-            lastmodifiedby: this.userName,
+          this.model.attributeValues.push({
+            attributeName: attr,
+            entityId: 0,
+            entitytypeId: attr.type.entitytypeId,
+            lastModifiedBy: this.userName,
             value: attr.value,
           });
         });
       }
 
       this.reqAttrValidate = false;
-      this.model.attributevalues.forEach((attr: any) => {
-        this.isReqdAttr = attr.attributename.isrequired;
-        this.reqAttrName = attr.attributename.name;
+      this.model.attributeValues.forEach((attr: any) => {
+        this.isReqdAttr = attr.attributeName.isRequired;
+        this.reqAttrName = attr.attributeName.name;
         this.reqAttrValue = attr.value;
         if (
           this.isReqdAttr == true &&
@@ -176,7 +176,7 @@ export class AddLocationDetailsComponent implements OnInit {
           console.log('attribute check is' + this.index);
           return;
         }
-        console.log('attribute isrequired value is' + this.isReqdAttr);
+        console.log('attribute isRequired value is' + this.isReqdAttr);
         console.log('attribute name is' + this.reqAttrName);
         console.log('attribute name value is' + this.reqAttrValue);
         console.log('validate' + this.reqAttrValidate);
@@ -204,12 +204,12 @@ export class AddLocationDetailsComponent implements OnInit {
           state: this.model.state ? this.model.state : '',
           statusId: this.model.statusId ? this.model.statusId : 0,
           vendorCompany: {
-            companyId: this.model.vendorCompany.companyid
-              ? this.model.vendorCompany.companyid
+            companyId: this.model.vendorCompany.companyId
+              ? this.model.vendorCompany.companyId
               : 0,
           },
-          attributeValues: this.model.attributevalues
-            ? this.model.attributevalues
+          attributeValues: this.model.attributeValues
+            ? this.model.attributeValues
             : null,
         },
       ];
@@ -246,8 +246,8 @@ export class AddLocationDetailsComponent implements OnInit {
               vendorCompany: {
                 companyId: 0,
               },
-              attributeValues: this.model.attributevalues
-                ? this.model.attributevalues
+              attributeValues: this.model.attributeValues
+                ? this.model.attributeValues
                 : null,
             });
           }
@@ -309,8 +309,8 @@ export class AddLocationDetailsComponent implements OnInit {
           console.log(response);
           this.locationTypes = response;
           this.locationTypes.forEach((type: any) => {
-            if (!type.parentid) {
-              type.parentid = 'Top Level';
+            if (!type.parentId) {
+              type.parentId = 'Top Level';
             }
           });
           if (this.locationTypes && this.locationTypes.length > 0) {
@@ -335,13 +335,13 @@ export class AddLocationDetailsComponent implements OnInit {
       this.locationAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
-          this.model.attributevalues = [];
+          this.model.attributeValues = [];
           this.typeAttributes.forEach((attr: any) => {
-            this.model.attributevalues.push({
-              attributename: attr,
-              entityid: 0,
-              entitytypeid: 0,
-              lastmodifiedby: this.userName,
+            this.model.attributeValues.push({
+              attributeName: attr,
+              entityId: 0,
+              entitytypeId: 0,
+              lastModifiedBy: this.userName,
               value: '',
             });
           });
@@ -383,7 +383,7 @@ export class AddLocationDetailsComponent implements OnInit {
           this.model.addressLineTwo = response.address2;
           this.model.city = response.city;
           this.model.state = response.state;
-          this.model.postalCode = response.postalcode;
+          this.model.postalCode = response.postalCode;
         });
     } else {
       window.scroll(0, 0);

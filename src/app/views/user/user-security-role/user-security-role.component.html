@@ -55,7 +55,7 @@
             <div class="col-sm-12 p-0">
               <div class="card">
                 <div class="card-header">
-                  <strong>Manage User Security [User:{{ username }}]</strong>
+                  <strong>Manage User Security [User:{{ userName }}]</strong>
                 </div>
 
                 <div class="card-body">
@@ -68,8 +68,8 @@
                       <input
                         type="checkbox"
                         *ngIf="isOwnerAdmin === 'true'"
-                        [(ngModel)]="statusroles.isowneradmin"
-                        id="isowneradmin"
+                        [(ngModel)]="statusroles.isOwnerAdmin"
+                        id="isOwnerAdmin"
                       /><br />
                       <label
                         for="statusroles"
@@ -102,7 +102,7 @@
                           (click)="
                             updateStatus(
                               profileId,
-                              statusroles.companyid,
+                              statusroles.companyId,
                               statusroles
                             )
                           "
@@ -122,14 +122,14 @@
                       >
                       <select
                         class="form-control custom-dropdown"
-                        [(ngModel)]="userSecurityRole.companyid"
-                        id="companyid"
+                        [(ngModel)]="userSecurityRole.companyId"
+                        id="companyId"
                         (change)="onValueChange()"
                       >
                         <option value="">Select Company</option>
                         <option
                           *ngFor="let company of companies"
-                          [value]="company.companyid"
+                          [value]="company.companyId"
                         >
                           {{ company.name }}
                         </option>
@@ -269,9 +269,9 @@
                               (click)="
                                 openModal(
                                   confirmtemplate,
-                                  role.compositePrimaryKey.companyid,
+                                  role.compositePrimaryKey.companyId,
                                   role.compositePrimaryKey.locationid,
-                                  role.compositePrimaryKey.userid
+                                  role.compositePrimaryKey.userId
                                 )
                               "
                             >

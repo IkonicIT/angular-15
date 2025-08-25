@@ -26,12 +26,12 @@ export class CloneItemComponent implements OnInit {
   model: any = {
     locationid: 0,
     typeId: 0,
-    warrantytypeid: 0,
+    warrantytypeId: 0,
   };
   locationModel: any = {
     pLocationId: 0,
     vendorCompany: {
-      companyid: 0,
+      companyId: 0,
     },
     locationTypeId: 0,
   };
@@ -99,11 +99,11 @@ export class CloneItemComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
   }
@@ -149,9 +149,9 @@ export class CloneItemComponent implements OnInit {
           this.spinner.hide();
 
           this.locationTypes = response;
-          this.locationTypes.forEach((type: { parentid: string }) => {
-            if (!type.parentid) {
-              type.parentid = 'Top Level';
+          this.locationTypes.forEach((type: { parentId: string }) => {
+            if (!type.parentId) {
+              type.parentId = 'Top Level';
             }
           });
           if (this.locationTypes && this.locationTypes.length > 0) {
@@ -369,7 +369,7 @@ export class CloneItemComponent implements OnInit {
             ? this.locationModel.locationTypeId
             : '',
           company: {
-            companyid: this.companyId,
+            companyId: this.companyId,
           },
           criticalFlag: this.locationModel.critical
             ? this.locationModel.critical
@@ -395,14 +395,14 @@ export class CloneItemComponent implements OnInit {
             ? this.locationModel.postalCode
             : '',
           state: this.locationModel.state ? this.locationModel.state : '',
-          statusId: this.locationModel.statusid
-            ? this.locationModel.statusid
+          statusId: this.locationModel.statusId
+            ? this.locationModel.statusId
             : 0,
           vendorCompany: {
-            companyid: 0,
+            companyId: 0,
           },
-          attributeValues: this.locationModel.attributevalues
-            ? this.locationModel.attributevalues
+          attributeValues: this.locationModel.attributeValues
+            ? this.locationModel.attributeValues
             : null,
         },
       ];

@@ -43,7 +43,7 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.vendorName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.userName = sessionStorage.getItem('userName');
     });
     this.router = router;
@@ -80,12 +80,12 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
       formdata.append('createdBy', this.userName);
-      formdata.append('companyID', JSON.stringify(this.companyId));
+      formdata.append('companyId', JSON.stringify(this.companyId));
       formdata.append(
         'description',
         this.model.description ? this.model.description : ''
       );
-      formdata.append('entityid', JSON.stringify(this.companyId));
+      formdata.append('entityId', JSON.stringify(this.companyId));
       formdata.append('moduleType', 'companytype');
       var jsonArr = this.addedfiles;
       for (var i = 0; i < jsonArr.length; i++) {
@@ -122,9 +122,9 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
   //       "createdBy": "Yogi Patel",
   //       "attachmentFile": this.fileContent,
   //       "vendorAttachmentId": 0,
-  //       "contenttype": this.fileType,
+  //       "contentType": this.fileType,
   //       "description": this.model.description,
-  //       "filename": this.fileName,
+  //       "fileName": this.fileName,
   //       "moduleType": "vendortype",
   //       "isNew": true,
   //       "createdDate":new Date().toISOString(),
@@ -187,10 +187,10 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
           fileInfo['craneNoteId'] = this.craneNoteId;
           fileInfo['attachmentFile'] = this.fileContent;
           fileInfo['vendorAttachmentId'] = 0;
-          fileInfo['contenttype'] = this.fileType;
+          fileInfo['contentType'] = this.fileType;
           fileInfo['isNew'] = 1;
           fileInfo['moduleType'] = 'companytype';
-          fileInfo['filename'] = this.fileName;
+          fileInfo['fileName'] = this.fileName;
           fileInfo['description'] = this.description;
           fileInfo['createdDate'] = new Date().toISOString();
           console.log(this.addedfiles);

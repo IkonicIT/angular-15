@@ -108,9 +108,9 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  updateCompany(company: { companyid: string }) {
+  updateCompany(company: { companyId: string }) {
     return this.http
-      .put(AppConfiguration.companyRestURL + '' + company.companyid, company)
+      .put(AppConfiguration.companyRestURL + '' + company.companyId, company)
       .pipe(catchError(this.handleError));
   }
 
@@ -267,8 +267,8 @@ export class CompanyManagementService {
 
   removeTemplate(
     templateId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     templateName: string
   ) {
     return this.http
@@ -277,9 +277,9 @@ export class CompanyManagementService {
           '' +
           templateId +
           '/' +
-          companyid +
+          companyId +
           '/' +
-          username +
+          userName +
           '/' +
           templateName,
         { responseType: 'text' }

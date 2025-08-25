@@ -338,15 +338,15 @@
                 ><span [hidden]="reverse != ''">▲</span>
               </th>
               <th
-                [class.active]="order === 'dateadded'"
-                (click)="setOrder('dateadded')"
+                [class.active]="order === 'dateAdded'"
+                (click)="setOrder('dateAdded')"
               >
                 Added<span [hidden]="reverse == ''">▼</span
                 ><span [hidden]="reverse != ''">▲</span>
               </th>
               <th
-                [class.active]="order === 'addedby'"
-                (click)="setOrder('addedby')"
+                [class.active]="order === 'addedBy'"
+                (click)="setOrder('addedBy')"
               >
                 By<span [hidden]="reverse == ''">▼</span
                 ><span [hidden]="reverse != ''">▲</span>
@@ -360,15 +360,15 @@
                 let document of documents
                   | orderBy : reverse + order
                   | filterBy
-                    : ['description', 'dateaddedOn', 'addedby']
+                    : ['description', 'dateAddedOn', 'addedBy']
                     : documentFilter
                   | paginate
                     : { itemsPerPage: itemsForPagination, currentPage: p }
               "
             >
               <td>{{ document.description }}</td>
-              <td>{{ document.dateadded | date : "MM/dd/yyyy" }}</td>
-              <td>{{ document.addedby }}</td>
+              <td>{{ document.dateAdded | date : "MM/dd/yyyy" }}</td>
+              <td>{{ document.addedBy }}</td>
               <td>
                 <button
                   type="button"
@@ -398,7 +398,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete this Document"
-                  (click)="openModal(confirmtemplate, document.attachmentid)"
+                  (click)="openModal(confirmtemplate, document.attachmentId)"
                   disabled="highestRank == 9"
                 >
                   Delete

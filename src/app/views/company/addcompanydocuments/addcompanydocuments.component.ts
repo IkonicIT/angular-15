@@ -41,7 +41,7 @@ export class AddcompanydocumentsComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     console.log('compaanyid=' + this.companyId);
     this.router = router;
@@ -150,13 +150,13 @@ export class AddcompanydocumentsComponent implements OnInit {
           .split(':')[1]
           .split(';')[0];
         const fileInfo = this.addedfiles[fileIndex];
-        fileInfo['addedby'] = this.userName;
+        fileInfo['addedBy'] = this.userName;
         fileInfo['attachmentFile'] = this.fileContent;
         fileInfo['attachmentId'] = 0;
-        fileInfo['companyID'] = this.companyId;
-        fileInfo['contenttype'] = this.fileType;
-        fileInfo['dateadded'] = new Date().toISOString();
-        fileInfo['entityid'] = this.companyId;
+        fileInfo['companyId'] = this.companyId;
+        fileInfo['contentType'] = this.fileType;
+        fileInfo['dateAdded'] = new Date().toISOString();
+        fileInfo['entityId'] = this.companyId;
         fileInfo['isNew'] = 1;
         fileInfo['moduleType'] = 'companytype';
         fileInfo['fileName'] = this.fileName;

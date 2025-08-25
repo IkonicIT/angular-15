@@ -25,12 +25,12 @@ export class AddItemComponent implements OnInit {
   model: any = {
     locationid: 0,
     typeId: 0,
-    warrantytypeid: 0,
+    warrantytypeId: 0,
   };
   locationModel: any = {
     pLocationId: 0,
     vendorCompany: {
-      companyid: 0,
+      companyId: 0,
     },
     locationTypeId: 0,
   };
@@ -61,7 +61,7 @@ export class AddItemComponent implements OnInit {
     hasCollapseExpand: false,
   });
   locationTypeItems: TreeviewItem[];
-  attributevalues: any[];
+  attributeValues: any[];
   newLocationFlag: boolean;
   existingLocationFlag: boolean;
   addLocationFlag: any = 0;
@@ -96,11 +96,11 @@ export class AddItemComponent implements OnInit {
     var globalCompanyName = sessionStorage.getItem('globalCompany');
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
   }
@@ -123,34 +123,34 @@ export class AddItemComponent implements OnInit {
         (response) => {
           this.typeAttributes = response;
           if (
-            this.model.attributevalues &&
-            this.model.attributevalues.length > 0
+            this.model.attributeValues &&
+            this.model.attributeValues.length > 0
           ) {
             this.typeAttributes.forEach(
-              (attr: { name: any; attributelistitemResource: any }) => {
-                this.model.attributevalues.forEach(
+              (attr: { name: any; attributeListItemResource: any }) => {
+                this.model.attributeValues.forEach(
                   (ansAttr: {
-                    attributename: {
+                    attributeName: {
                       name: any;
-                      attributelistitemResource: any;
+                      attributeListItemResource: any;
                     };
                   }) => {
-                    if (attr.name == ansAttr.attributename.name) {
-                      ansAttr.attributename.attributelistitemResource =
-                        attr.attributelistitemResource;
+                    if (attr.name == ansAttr.attributeName.name) {
+                      ansAttr.attributeName.attributeListItemResource =
+                        attr.attributeListItemResource;
                     }
                   }
                 );
               }
             );
           } else {
-            this.model.attributevalues = [];
+            this.model.attributeValues = [];
             this.typeAttributes.forEach((attr: any) => {
-              this.model.attributevalues.push({
-                attributename: attr,
-                entityid: 0,
-                entitytypeid: 0,
-                lastmodifiedby: this.userName,
+              this.model.attributeValues.push({
+                attributeName: attr,
+                entityId: 0,
+                entitytypeId: 0,
+                lastModifiedBy: this.userName,
                 value: '',
               });
             });
@@ -196,9 +196,9 @@ export class AddItemComponent implements OnInit {
           this.spinner.hide();
 
           this.locationTypes = response;
-          this.locationTypes.forEach((type: { parentid: string }) => {
-            if (!type.parentid) {
-              type.parentid = 'Top Level';
+          this.locationTypes.forEach((type: { parentId: string }) => {
+            if (!type.parentId) {
+              type.parentId = 'Top Level';
             }
           });
           if (this.locationTypes && this.locationTypes.length > 0) {
@@ -322,13 +322,13 @@ export class AddItemComponent implements OnInit {
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.typeAttributes = response;
-          this.model.attributevalues = [];
+          this.model.attributeValues = [];
           this.typeAttributes.forEach((attr: any) => {
-            this.model.attributevalues.push({
-              attributename: attr,
-              entityid: 0,
-              entitytypeid: 0,
-              lastmodifiedby: 'Yogi Patel',
+            this.model.attributeValues.push({
+              attributeName: attr,
+              entityId: 0,
+              entitytypeId: 0,
+              lastModifiedBy: 'Yogi Patel',
               value: '',
             });
           });
@@ -344,11 +344,11 @@ export class AddItemComponent implements OnInit {
 
   getTypeName(typeId: any) {
     this.itemTypes.forEach((type: any) => {
-      if (type.typeid == typeId) {
+      if (type.typeId == typeId) {
         this.typeName = type.name;
       } else if (type.typeList.length >= 1) {
         type.typeList.forEach((type: any) => {
-          if (type.typeid == typeId) {
+          if (type.typeId == typeId) {
             this.typeName = type.name;
           }
         });
@@ -374,13 +374,13 @@ export class AddItemComponent implements OnInit {
       this.locationModel.locationTypeId != 0
     ) {
       if (this.typeAttributes && this.typeAttributes.length > 0) {
-        this.locationModel.attributevalues = [];
+        this.locationModel.attributeValues = [];
         this.typeAttributes.forEach((attr: any) => {
-          this.locationModel.attributevalues.push({
-            attributename: attr,
-            entityid: 0,
-            entitytypeid: attr.type.entitytypeid,
-            lastmodifiedby: this.userName,
+          this.locationModel.attributeValues.push({
+            attributeName: attr,
+            entityId: 0,
+            entitytypeId: attr.type.entitytypeId,
+            lastModifiedBy: this.userName,
             value: attr.value,
           });
         });
@@ -428,10 +428,10 @@ export class AddItemComponent implements OnInit {
             ? this.locationModel.statusId
             : 0,
           vendorCompany: {
-            companyid: 0,
+            companyId: 0,
           },
-          attributeValues: this.locationModel.attributevalues
-            ? this.locationModel.attributevalues
+          attributeValues: this.locationModel.attributeValues
+            ? this.locationModel.attributeValues
             : null,
         },
       ];
@@ -493,25 +493,25 @@ export class AddItemComponent implements OnInit {
       this.model.locationid
     ) {
       if (this.typeAttributes && this.typeAttributes.length > 0) {
-        this.model.attributevalues = [];
+        this.model.attributeValues = [];
         this.typeAttributes.forEach((attr: any) => {
-          this.model.attributevalues.push({
-            attributename: attr,
-            entityid: 0,
-            entitytypeid: attr.type.entitytypeid,
-            lastmodifiedby: this.userName,
+          this.model.attributeValues.push({
+            attributeName: attr,
+            entityId: 0,
+            entitytypeId: attr.type.entitytypeId,
+            lastModifiedBy: this.userName,
             value: attr.value != null ? attr.value : '',
           });
         });
       }
       this.reqAttrValidate = false;
-      this.model.attributevalues.forEach(
+      this.model.attributeValues.forEach(
         (attr: {
-          attributename: { isrequired: any; name: any };
+          attributeName: { isRequired: any; name: any };
           value: any;
         }) => {
-          this.isReqdAttr = attr.attributename.isrequired;
-          this.reqAttrName = attr.attributename.name;
+          this.isReqdAttr = attr.attributeName.isRequired;
+          this.reqAttrName = attr.attributeName.name;
           this.reqAttrValue = attr.value;
           if (
             this.isReqdAttr == true &&
@@ -550,8 +550,8 @@ export class AddItemComponent implements OnInit {
         warrantyExpiration: this.model.warrantyexpiration
           ? this.model.warrantyexpiration
           : '',
-        warrantyTypeId: this.model.warrantytypeid
-          ? this.model.warrantytypeid
+        warrantyTypeId: this.model.warrantytypeId
+          ? this.model.warrantytypeId
           : 0,
         userId: sessionStorage.getItem('userId'),
         typeName: this.typeName,

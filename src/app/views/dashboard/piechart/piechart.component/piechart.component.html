@@ -153,7 +153,7 @@
                   <h5>PRIMARYFINDINGS</h5>
                   <div
                     class="border-charts"
-                    *ngIf="!chartFlag && companyid > 0"
+                    *ngIf="!chartFlag && companyId > 0"
                   >
                     <h6 style="color: red">
                       There are no Repairs in the selected time span.
@@ -523,7 +523,7 @@
                     *ngFor="
                       let document of documents
                         | filterBy
-                          : ['description', 'dateaddedOn', 'addedby']
+                          : ['description', 'dateAddedOn', 'addedBy']
                           : documentFilter
                         | paginate
                           : {
@@ -539,15 +539,15 @@
                         data-bs-placement="bottom"
                         data-bs-toggle="tooltip"
                         title="click here to view this Company Document"
-                        [innerHTML]="document.filename"
+                        [innerHTML]="document.fileName"
                       ></a>
                     </td>
 
                     <td [innerHTML]="document.description"></td>
                     <td
-                      [innerHTML]="document.dateadded | date : 'MM/dd/yyyy'"
+                      [innerHTML]="document.dateAdded | date : 'MM/dd/yyyy'"
                     ></td>
-                    <td [innerHTML]="document.addedby"></td>
+                    <td [innerHTML]="document.addedBy"></td>
                   </tr>
                 </tbody>
               </table>

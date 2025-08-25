@@ -85,7 +85,7 @@
                       <select
                         class="form-control custom-dropdown"
                         [(ngModel)]="templateID"
-                        id="companyid"
+                        id="companyId"
                       >
                         <option
                           *ngFor="let template of templates"
@@ -181,12 +181,12 @@
                       >
                       <select
                         class="form-control custom-dropdown"
-                        [(ngModel)]="model.companyid"
-                        id="companyid"
+                        [(ngModel)]="model.companyId"
+                        id="companyId"
                       >
                         <option
                           *ngFor="let company of companies"
-                          [value]="company.companyid"
+                          [value]="company.companyId"
                         >
                           {{ company.name }}
                         </option>

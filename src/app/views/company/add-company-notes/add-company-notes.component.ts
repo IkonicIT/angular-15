@@ -49,18 +49,18 @@ export class AddCompanyNotesComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       this.model = {
-        companyid: this.companyId,
+        companyId: this.companyId,
         effectiveon: this.model.effectiveon,
         enteredby: this.userName,
         enteredon: new Date(),
-        entityid: this.companyId,
+        entityId: this.companyId,
         entityname: this.model.entityname,
-        entitytypeid: 0,
+        entitytypeId: 0,
         entityxml: '',
         entry: this.model.entry ? this.model.entry : ' ',
         jobnumber: this.model.jobnumber,
         journalid: 0,
-        journaltypeid: 0,
+        journaltypeId: 0,
         locationid: 0,
         locationname: '',
         ponumber: this.model.ponumber,

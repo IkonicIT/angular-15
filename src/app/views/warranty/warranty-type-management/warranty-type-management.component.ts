@@ -44,12 +44,12 @@ export class WarrantyTypeManagementComponent implements OnInit {
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.router = router;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -106,9 +106,9 @@ export class WarrantyTypeManagementComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       var req = {
-        companyid: this.companyId,
+        companyId: this.companyId,
         warrantytype: this.warrantyType,
-        warrantytypeid: 0,
+        warrantytypeId: 0,
         userName: this.userName,
       };
       this.spinner.show();
@@ -169,7 +169,7 @@ export class WarrantyTypeManagementComponent implements OnInit {
 
   setwarrantyType(warrantyTypeId: any) {
     this.warrantyTypes.forEach((warrantyType: any) => {
-      if (warrantyTypeId == warrantyType.warrantytypeid)
+      if (warrantyTypeId == warrantyType.warrantytypeId)
         this.warrantyType = warrantyType.warrantytype;
     });
   }
@@ -190,8 +190,8 @@ export class WarrantyTypeManagementComponent implements OnInit {
     this.order = value;
   }
 
-  editWarrantyType(warrantytypeid: string) {
-    this.router.navigate(['warranty/editwarrantytype/' + warrantytypeid]);
+  editWarrantyType(warrantytypeId: string) {
+    this.router.navigate(['warranty/editwarrantytype/' + warrantytypeId]);
   }
 
   help() {

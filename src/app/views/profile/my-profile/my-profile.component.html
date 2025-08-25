@@ -50,7 +50,7 @@
                     type="success"
                     [dismissible]="dismissible"
                   >
-                    Profile of "{{ username }}" updated successfully.
+                    Profile of "{{ userName }}" updated successfully.
                   </alert>
                   <alert
                     type="danger"
@@ -58,7 +58,7 @@
                     [dismissible]="dismissible"
                   >
                     Please Enter Required Fields. <br />
-                    ( username and Email are required )
+                    ( userName and Email are required )
                   </alert>
                   <strong class="btn-right">My Profile</strong>
                   <button
@@ -88,7 +88,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.username"
+                          [(ngModel)]="model.userName"
                           name="lType"
                           #name="ngModel"
                           id="lType"

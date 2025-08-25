@@ -42,7 +42,7 @@ export class UserSecurityRoleComponent implements OnInit {
   highestRank: any;
   isOwnerAdmin: any;
   locationsWithHierarchy: any;
-  username: any;
+  // userName: any;
   helpFlag: any = false;
   modalRef: BsModalRef;
   message: string;
@@ -79,7 +79,7 @@ export class UserSecurityRoleComponent implements OnInit {
     console.log('user profile' + this.profileId);
     this.getReportSecurity();
     this.getProfile();
-    this.username = this.broadcasterService.username;
+    this.userName = this.broadcasterService.userName;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.spinner.hide();
   }
@@ -147,7 +147,7 @@ export class UserSecurityRoleComponent implements OnInit {
   }
 
   onValueChange() {
-    this.companyId = this.userSecurityRole.companyid;
+    this.companyId = this.userSecurityRole.companyId;
     this.getLocationNames(this.loggedInuser, this.companyId);
     this.getAllLevels(this.companyId);
   }
@@ -219,7 +219,7 @@ export class UserSecurityRoleComponent implements OnInit {
     this.userManagementService.getUserProfile(this.profileId).subscribe(
       (response: any) => {
         if (response.isOwnerAdminReadOnly === true) {
-          response.isowneradmin = false;
+          response.isOwnerAdmin = false;
           this.statusroles = response;
         } else {
           this.statusroles = response;
@@ -292,22 +292,22 @@ export class UserSecurityRoleComponent implements OnInit {
     this.router.navigate(['/user/list']);
   }
 
-  updateStatus(profileId: string, companyid: string, statusroles: any) {
+  updateStatus(profileId: string, companyId: string, statusroles: any) {
     this.spinner.show();
 
     if (
-      this.statusroles.isowneradmin == true &&
+      this.statusroles.isOwnerAdmin == true &&
       this.statusroles.isOwnerAdminReadOnly == true
     ) {
       this.isSelected = 0;
       this.spinner.hide();
     } else if (this.statusroles.isOwnerAdminReadOnly == true) {
       this.isSelected = 1;
-      this.statusroles.isowneradmin = 'true';
+      this.statusroles.isOwnerAdmin = 'true';
       this.spinner.show();
 
       this.userManagementService
-        .updateStatus(profileId, companyid, statusroles)
+        .updateStatus(profileId, companyId, statusroles)
         .subscribe(
           (response) => {
             this.index = 2;
@@ -328,7 +328,7 @@ export class UserSecurityRoleComponent implements OnInit {
       this.spinner.show();
 
       this.userManagementService
-        .updateStatus(profileId, companyid, statusroles)
+        .updateStatus(profileId, companyId, statusroles)
         .subscribe(
           (response) => {
             this.index = 2;
@@ -371,18 +371,18 @@ export class UserSecurityRoleComponent implements OnInit {
     if (
       this.userSecurityRole.roleid &&
       this.userSecurityRole.roleid != undefined &&
-      this.userSecurityRole.companyid &&
-      this.userSecurityRole.companyid != undefined
+      this.userSecurityRole.companyId &&
+      this.userSecurityRole.companyId != undefined
     ) {
       var req = {
-        userid: this.userId,
+        userId: this.userId,
         roleid: this.userSecurityRole.roleid,
-        lastmodifiedby: this.userName,
+        lastModifiedBy: this.userName,
         locationid:
           this.userSecurityRole.locationid != undefined
             ? this.userSecurityRole.locationid
             : 0,
-        companyid: this.userSecurityRole.companyid,
+        companyId: this.userSecurityRole.companyId,
       };
       this.spinner.show();
 

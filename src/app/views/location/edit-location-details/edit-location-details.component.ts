@@ -70,7 +70,7 @@ export class EditLocationDetailsComponent implements OnInit {
     this.companyName = this.globalCompany.name;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
 
@@ -184,16 +184,16 @@ export class EditLocationDetailsComponent implements OnInit {
           this.spinner.hide();
 
           this.typeAttributes = response;
-          console.log('attrlength ' + this.location.attributevalues.length);
+          console.log('attrlength ' + this.location.attributeValues.length);
           if (
-            this.location.attributevalues &&
-            this.location.attributevalues.length > 0
+            this.location.attributeValues &&
+            this.location.attributeValues.length > 0
           ) {
             this.typeAttributes.forEach((attr: any) => {
-              this.location.attributevalues.forEach((ansAttr: any) => {
-                if (attr.name == ansAttr.attributename.name) {
-                  ansAttr.attributename.attributelistitemResource =
-                    attr.attributelistitemResource;
+              this.location.attributeValues.forEach((ansAttr: any) => {
+                if (attr.name == ansAttr.attributeName.name) {
+                  ansAttr.attributeName.attributeListItemResource =
+                    attr.attributeListItemResource;
                   attr.value = ansAttr.value;
                   console.log('attrvalue  ' + attr.value);
                 }
@@ -201,20 +201,20 @@ export class EditLocationDetailsComponent implements OnInit {
             });
           } else {
             this.typeAttributes.forEach((attr: any) => {
-              if (attr.attributetype.attributetypeid == 4) {
-                this.location.attributevalues.push({
-                  attributename: attr,
-                  entityid: this.locationId,
-                  entitytypeid: attr.type.entitytypeid,
-                  lastmodifiedby: attr.type.lastmodifiedby,
+              if (attr.attributeType.attributeTypeId == 4) {
+                this.location.attributeValues.push({
+                  attributeName: attr,
+                  entityId: this.locationId,
+                  entitytypeId: attr.type.entitytypeId,
+                  lastModifiedBy: attr.type.lastModifiedBy,
                   value: parseInt(attr.value),
                 });
               } else {
-                this.location.attributevalues.push({
-                  attributename: attr,
-                  entityid: this.locationId,
-                  entitytypeid: attr.type.entitytypeid,
-                  lastmodifiedby: attr.type.lastmodifiedby,
+                this.location.attributeValues.push({
+                  attributeName: attr,
+                  entityId: this.locationId,
+                  entitytypeId: attr.type.entitytypeId,
+                  lastModifiedBy: attr.type.lastModifiedBy,
                   value: attr.value,
                 });
               }
@@ -288,24 +288,24 @@ export class EditLocationDetailsComponent implements OnInit {
   }
 
   saveLocation() {
-    this.locationattr.attributevalues = [];
+    this.locationattr.attributeValues = [];
     if (this.typeAttributes != undefined) {
       this.typeAttributes.forEach((attr: any) => {
-        this.locationattr.attributevalues.push({
-          attributename: attr,
-          entityid: this.locationId,
-          entitytypeid: attr.type.entitytypeid,
-          lastModifiedby: attr.type.lastmodifiedby,
+        this.locationattr.attributeValues.push({
+          attributeName: attr,
+          entityId: this.locationId,
+          entitytypeId: attr.type.entitytypeId,
+          lastModifiedby: attr.type.lastModifiedBy,
           value: attr.value,
         });
       });
     }
-    this.location.attributevalues = this.locationattr.attributevalues;
+    this.location.attributeValues = this.locationattr.attributeValues;
 
     this.reqAttrValidate = false;
-    this.location.attributevalues.forEach((attr: any) => {
-      this.isReqdAttr = attr.attributename.isrequired;
-      this.reqAttrName = attr.attributename.name;
+    this.location.attributeValues.forEach((attr: any) => {
+      this.isReqdAttr = attr.attributeName.isRequired;
+      this.reqAttrName = attr.attributeName.name;
       this.reqAttrValue = attr.value;
       if (
         this.isReqdAttr == true &&
@@ -439,7 +439,7 @@ export class EditLocationDetailsComponent implements OnInit {
         this.location.address2 = response.address2;
         this.location.city = response.city;
         this.location.state = response.state;
-        this.location.postalcode = response.postalcode;
+        this.location.postalCode = response.postalCode;
       });
     this.index = 2;
     setTimeout(() => {

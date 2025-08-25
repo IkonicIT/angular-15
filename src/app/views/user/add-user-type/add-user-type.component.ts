@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 })
 export class AddUserTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
+    parentId: {
+      typeId: 0,
     },
   };
   index: number = 0;
@@ -37,11 +37,11 @@ export class AddUserTypeComponent implements OnInit {
     private router: Router
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyName = this.globalCompany.name;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
     this.getAllUserTypes();
@@ -84,7 +84,7 @@ export class AddUserTypeComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -113,7 +113,7 @@ export class AddUserTypeComponent implements OnInit {
         moduleType: 'usertype',
         name: this.model.name,
         parentId: {
-          typeid: this.value ? this.value : 0,
+          typeId: this.value ? this.value : 0,
         },
         typeId: 0,
         typeMtbs: 0,

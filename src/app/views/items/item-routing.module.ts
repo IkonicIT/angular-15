@@ -275,7 +275,7 @@ const routes: Routes = [
         },
       },
       {
-        path: 'editItemRepairAttachments/:repairlogId/:attachmentid',
+        path: 'editItemRepairAttachments/:repairlogId/:attachmentId',
         component: EditItemRepairAttachmentsComponent,
         data: {
           title: ' Edit Item Repairs Attachments',
@@ -359,7 +359,7 @@ const routes: Routes = [
         },
       },
       {
-        path: 'viewAllRepairs/:companyID',
+        path: 'viewAllRepairs/:companyId',
         component: ViewAllRepairsComponent,
         data: {
           title: 'View All Repairs',

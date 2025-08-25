@@ -60,16 +60,16 @@ export class HelpComponent implements OnInit {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
       if (this.globalCompany) {
         this.companyName = this.globalCompany.name;
-        this.companyId = this.globalCompany.companyid;
+        this.companyId = this.globalCompany.companyId;
 
-        this.getAllDocuments(this.globalCompany.companyid);
+        this.getAllDocuments(this.globalCompany.companyId);
       }
     }
 
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -161,11 +161,11 @@ export class HelpComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { isNew?: boolean; attachmentid?: any }) {
+  downloadDocumentFromDB(document: { isNew?: boolean; attachmentId?: any }) {
     this.spinner.show();
 
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentid)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
@@ -181,7 +181,7 @@ export class HelpComponent implements OnInit {
   downloadManual(manual: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       manual.manualFile,
-      manual.contenttype
+      manual.contentType
     );
     var fileURL = URL.createObjectURL(blob);
 
@@ -191,7 +191,7 @@ export class HelpComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
@@ -199,18 +199,18 @@ export class HelpComponent implements OnInit {
 
   downloadCompanyFile(document: {
     isNew?: boolean;
-    filename?: any;
-    attachmentid?: any;
+    fileName?: any;
+    attachmentId?: any;
   }) {
     if (
-      document.filename.split('.')[1].toLowerCase() == 'pdf' ||
-      document.filename.split('.')[1].toLowerCase() == 'txt'
+      document.fileName.split('.')[1].toLowerCase() == 'pdf' ||
+      document.fileName.split('.')[1].toLowerCase() == 'txt'
     ) {
       var wnd = window.open('about:blank');
       var pdfStr = `<div style="text-align:center">
       <h4>Document viewer</h4>
       <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        document.attachmentid + '?access_token=' + this.authToken
+        document.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" frameborder="0" height="500px" width="100%"></iframe>
         </div>
         <script>
@@ -240,15 +240,15 @@ export class HelpComponent implements OnInit {
         `;
       if (wnd) wnd.document.write(pdfStr);
     } else if (
-      document.filename.split('.')[1].toLowerCase() == 'jpg' ||
-      document.filename.split('.')[1].toLowerCase() == 'png' ||
-      document.filename.split('.')[1].toLowerCase() == 'jpeg' ||
-      document.filename.split('.')[1].toLowerCase() == 'gif'
+      document.fileName.split('.')[1].toLowerCase() == 'jpg' ||
+      document.fileName.split('.')[1].toLowerCase() == 'png' ||
+      document.fileName.split('.')[1].toLowerCase() == 'jpeg' ||
+      document.fileName.split('.')[1].toLowerCase() == 'gif'
     ) {
       var pdfStr = `<div style="text-align:center">
       <h4>Image Viewer</h4>
       <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        document.attachmentid + '?access_token=' + this.authToken
+        document.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" >
         </div>`;
 
@@ -257,7 +257,7 @@ export class HelpComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          document.attachmentid +
+          document.attachmentId +
           '?access_token=' +
           this.authToken
       );

@@ -31,8 +31,8 @@ export class CompanyattributesComponent implements OnInit {
     attributeType: {
       attributeTypeId: null,
     },
-    searchtype: {
-      attributesearchtypeid: 0,
+    searchType: {
+      attributeSearchTypeId: 0,
     },
   };
   index: any = 0;
@@ -43,7 +43,7 @@ export class CompanyattributesComponent implements OnInit {
   message: string;
   modalRef: BsModalRef;
   companyName: string = '';
-  username: any;
+  userName: any;
   typeId: number;
   itemTypeOne: number;
   companyType: number;
@@ -89,22 +89,22 @@ export class CompanyattributesComponent implements OnInit {
     this.typeId = parseInt(route.snapshot.params['id']);
     this.companyType = this.typeId;
     this.companyId = route.snapshot.params['cmpId'];
-    //this.username = this.broadcasterService.username;
+    //this.userName = this.broadcasterService.userName;
     this.router = router;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
   ngOnInit() {
-    this.username = sessionStorage.getItem('userName');
+    this.userName = sessionStorage.getItem('userName');
     if (this.companyId == '0') {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
       if (this.globalCompany) {
         this.companyName = this.globalCompany.name;
-        this.companyId = this.globalCompany.companyid;
+        this.companyId = this.globalCompany.companyId;
       }
     }
     this.pageLoadCalls(this.companyId);
@@ -138,7 +138,7 @@ export class CompanyattributesComponent implements OnInit {
                   this.cmptypes.length == 1 &&
                   this.cmptypes[0].typeList.length < 1
                 ) {
-                  this.value = this.cmptypes[0].typeid;
+                  this.value = this.cmptypes[0].typeId;
                   this.setTypeName(this.value);
                 } else if (this.cmptypes.length >= 1) {
                   this.value = 0;
@@ -167,7 +167,7 @@ export class CompanyattributesComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -178,7 +178,7 @@ export class CompanyattributesComponent implements OnInit {
 
   setTypeName(typeId: any) {
     this.cmptypes.forEach((type: any) => {
-      if ((type.typeid = typeId)) {
+      if ((type.typeId = typeId)) {
         this.typeName = type.name;
       }
     });
@@ -210,8 +210,8 @@ export class CompanyattributesComponent implements OnInit {
         this.cmptypes = response;
         this.companyType = this.typeId;
         this.cmptypes.forEach((type: any) => {
-          if (!type.parentid) {
-            type.parentid = 'Top Level';
+          if (!type.parentId) {
+            type.parentId = 'Top Level';
           }
         });
       },
@@ -326,14 +326,14 @@ export class CompanyattributesComponent implements OnInit {
         },
         toolTip: this.model.toolTip,
         companyId: this.companyId,
-        lastModifiedBy: this.username,
+        lastModifiedBy: this.userName,
         type: {
           typeId: this.value,
           name: this.typeName,
         },
         moduleType: 'Company',
       };
-      if (this.model.attributelistitemResource) {
+      if (this.model.attributeListItemResource) {
         request.attributeListItemResource =
           this.model.attributeListItemResource;
       }
@@ -431,7 +431,7 @@ export class CompanyattributesComponent implements OnInit {
       name: this.model.name,
       searchModifier: '',
       companyId: this.companyId,
-      lastModifiedBy: this.username,
+      lastModifiedBy: this.userName,
       searchType: {
         attributeSearchTypeId:
           this.model.searchType &&
@@ -448,7 +448,7 @@ export class CompanyattributesComponent implements OnInit {
     };
     this.spinner.show();
 
-    if (this.model.attributelistitemResource) {
+    if (this.model.attributeListItemResource) {
       request.attributeListItemResource = this.model.attributeListItemResource;
     }
     if (this.model.name && this.model.attributeType) {
@@ -516,7 +516,7 @@ export class CompanyattributesComponent implements OnInit {
       .removeCompanyAttributess(
         this.model.attributeNameId,
         this.companyId,
-        this.username,
+        this.userName,
         this.model.name,
         this.typeName,
         moduleType

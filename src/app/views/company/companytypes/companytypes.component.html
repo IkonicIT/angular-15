@@ -91,8 +91,8 @@
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'hostingfee'"
-                  (click)="setOrder('hostingfee')"
+                  [class.active]="order === 'hostingFee'"
+                  (click)="setOrder('hostingFee')"
                 >
                   Hosting Fee<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -115,14 +115,14 @@
                   let companyType of types
                     | orderBy : reverse + order
                     | filterBy
-                      : ['name', 'hostingfee', 'description']
+                      : ['name', 'hostingFee', 'description']
                       : companyTypeFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
                 <td>{{ companyType.name }}</td>
-                <td>{{ companyType.hostingfee }}</td>
+                <td>{{ companyType.hostingFee }}</td>
                 <td>{{ companyType.description }}</td>
                 <td>
                   <button

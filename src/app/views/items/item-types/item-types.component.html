@@ -90,8 +90,8 @@
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'hostingfee'"
-                  (click)="setOrder('hostingfee')"
+                  [class.active]="order === 'hostingFee'"
+                  (click)="setOrder('hostingFee')"
                 >
                   Hosting Fee<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -114,7 +114,7 @@
                   let type of locationsTypes
                     | orderBy : reverse + order
                     | filterBy
-                      : ['name', 'hostingfee', 'description']
+                      : ['name', 'hostingFee', 'description']
                       : typeFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }

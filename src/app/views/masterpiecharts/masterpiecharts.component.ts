@@ -79,7 +79,7 @@ export class TemplateComponent implements OnInit {
     { label: 'last two years', value: 2 },
   ];
   public params: any = {};
-  public companyid = 0;
+  public companyId = 0;
   public datePickerConfig: IDatePickerConfig = {
     showMultipleYearsNavigation: true,
   };

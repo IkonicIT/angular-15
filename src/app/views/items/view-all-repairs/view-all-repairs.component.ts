@@ -45,7 +45,7 @@ export class ViewAllRepairsComponent implements OnInit {
     private broadcasterService: BroadcasterService,
     private itemManagementService: ItemManagementService
   ) {
-    this.companyId = route.snapshot.params['companyID'];
+    this.companyId = route.snapshot.params['companyId'];
   }
 
   ngOnInit() {
@@ -215,7 +215,7 @@ export class ViewAllRepairsComponent implements OnInit {
   downloadFromDB() {
     var blob = this.companyDocumentsService.b64toBlob(
       this.document.attachmentFile,
-      this.document.contenttype
+      this.document.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);

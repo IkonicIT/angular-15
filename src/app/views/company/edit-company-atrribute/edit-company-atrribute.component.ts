@@ -51,12 +51,12 @@ export class EditCompanyAtrributeComponent implements OnInit {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.typeId = +params['a'] || 0;
-      console.log('Query params typeid= ', this.typeId);
+      console.log('Query params typeId= ', this.typeId);
     });
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.attrId = +params['z'] || 0;
-      console.log('Query params typeid= ', this.typeId);
+      console.log('Query params typeId= ', this.typeId);
     });
 
     this.companyType = this.typeId;

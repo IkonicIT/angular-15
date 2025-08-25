@@ -196,7 +196,7 @@
                             Select Vendor
                           </option>
                           <option
-                            [ngValue]="vendor.companyid"
+                            [ngValue]="vendor.companyId"
                             *ngFor="let vendor of vendors"
                           >
                             {{ vendor.name }}
@@ -310,16 +310,16 @@
                       *ngFor="let eachAttr of typeAttributes; let i = index"
                     >
                       <div class="form-group col-sm-12">
-                        <label *ngIf="eachAttr.isrequired == true"
+                        <label *ngIf="eachAttr.isRequired == true"
                           >{{ eachAttr.name
                           }}<span style="color: red">*</span></label
                         >
-                        <label *ngIf="eachAttr.isrequired == false">{{
+                        <label *ngIf="eachAttr.isRequired == false">{{
                           eachAttr.name
                         }}</label>
                         <div>
                           <input
-                            *ngIf="eachAttr.attributetype.attributetypeid == 1"
+                            *ngIf="eachAttr.attributeType.attributeTypeId == 1"
                             type="number"
                             class="form-control"
                             [(ngModel)]="eachAttr.value"
@@ -329,21 +329,21 @@
                             placeholder="Enter Value"
                           />
                           <input
-                            *ngIf="eachAttr.attributetype.attributetypeid == 2"
+                            *ngIf="eachAttr.attributeType.attributeTypeId == 2"
                             type="text"
                             class="form-control"
                             [(ngModel)]="eachAttr.value"
                             name="text{{ i }}"
                           />
                           <input
-                            *ngIf="eachAttr.attributetype.attributetypeid == 6"
+                            *ngIf="eachAttr.attributeType.attributeTypeId == 6"
                             type="text"
                             class="form-control"
                             [(ngModel)]="eachAttr.value"
                             name="multiValue{{ i }}"
                           />
                           <input
-                            *ngIf="eachAttr.attributetype.attributetypeid == 3"
+                            *ngIf="eachAttr.attributeType.attributeTypeId == 3"
                             type="date"
                             class="form-control"
                             [tooltip]="eachAttr.tooltip"
@@ -353,7 +353,7 @@
                             placeholder="Select date"
                           />
                           <select
-                            *ngIf="eachAttr.attributetype.attributetypeid == 4"
+                            *ngIf="eachAttr.attributeType.attributeTypeId == 4"
                             class="form-control custom-dropdown"
                             [tooltip]="eachAttr.tooltip"
                             [(ngModel)]="eachAttr.value"
@@ -364,7 +364,7 @@
                             <option
                               [ngValue]="list.listitem"
                               *ngFor="
-                                let list of eachAttr.attributelistitemResource
+                                let list of eachAttr.attributeListItemResource
                               "
                             >
                               {{ list.listitem }}
@@ -372,7 +372,7 @@
                           </select>
                           <div
                             class="form-check"
-                            *ngIf="eachAttr.attributetype.attributetypeid == 5"
+                            *ngIf="eachAttr.attributeType.attributeTypeId == 5"
                           >
                             <label
                               class="form-check-label margin-right"
@@ -413,7 +413,7 @@
                             </label>
                           </div>
                           <textarea
-                            *ngIf="eachAttr.attributetype.attributetypeid == 7"
+                            *ngIf="eachAttr.attributeType.attributeTypeId == 7"
                             [tooltip]="eachAttr.tooltip"
                             name="textarea{{ index }}"
                             rows="2"

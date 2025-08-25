@@ -44,7 +44,7 @@ export class serviceReportsComponent implements OnInit {
     public datepipe: DatePipe,
     private itemServiceManagementService: ItemServiceManagementService
   ) {
-    this.companyId = this.companyManagementService.getGlobalCompany().companyid;
+    this.companyId = this.companyManagementService.getGlobalCompany().companyId;
     this.params.type = 'monthly';
   }
 

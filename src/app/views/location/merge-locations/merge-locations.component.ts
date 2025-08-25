@@ -36,7 +36,7 @@ export class MergeLocationsComponent implements OnInit {
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
   }
 
   ngOnInit() {

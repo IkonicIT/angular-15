@@ -80,7 +80,7 @@
             *ngFor="
               let document of documents
                 | filterBy
-                  : ['description', 'dateaddedOn', 'addedby']
+                  : ['description', 'dateAddedOn', 'addedBy']
                   : documentFilter
                 | paginate
                   : { itemsPerPage: itemsForPagination, currentPage: p }
@@ -93,13 +93,13 @@
                 data-bs-placement="bottom"
                 data-bs-toggle="tooltip"
                 title="click here to view this Company Document"
-                >{{ document.filename }}</a
+                >{{ document.fileName }}</a
               >
             </td>
 
             <td>{{ document.description }}</td>
-            <td>{{ document.dateadded | date : "MM/dd/yyyy" }}</td>
-            <td>{{ document.addedby }}</td>
+            <td>{{ document.dateAdded | date : "MM/dd/yyyy" }}</td>
+            <td>{{ document.addedBy }}</td>
           </tr>
         </tbody>
       </table>

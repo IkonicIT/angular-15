@@ -63,13 +63,13 @@ export class ItemNoteAttachementsComponent implements OnInit {
       this.getAllDocuments(this.itemId);
     } else {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getAllDocuments(this.itemId);
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -115,10 +115,10 @@ export class ItemNoteAttachementsComponent implements OnInit {
     ]);
   }
 
-  editItemDocument(document: { attachmentid: string }) {
+  editItemDocument(document: { attachmentId: string }) {
     this.router.navigate([
       '/items/editNoteAttachment/' +
-        document.attachmentid +
+        document.attachmentId +
         '/' +
         this.itemId +
         '/' +
@@ -180,11 +180,11 @@ export class ItemNoteAttachementsComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { attachmentid: number }) {
+  downloadDocumentFromDB(document: { attachmentId: number }) {
     this.spinner.show();
 
     this.itemAttachmentsService
-      .getItemDocuments(document.attachmentid)
+      .getItemDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
@@ -200,21 +200,21 @@ export class ItemNoteAttachementsComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
   }
 
   downloadFile(companyDocument: any) {
-    var index = companyDocument.filename.lastIndexOf('.');
-    var extension = companyDocument.filename.slice(index + 1);
+    var index = companyDocument.fileName.lastIndexOf('.');
+    var extension = companyDocument.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
       var wnd = window.open('about:blank');
       var pdfStr = `<div style="text-align:center">
       <h4>Pdf viewer</h4>
       <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        companyDocument.attachmentid + '?access_token=' + this.authToken
+        companyDocument.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
         </div>
         <script>
@@ -252,7 +252,7 @@ export class ItemNoteAttachementsComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
       <h4>Image Viewer</h4>
       <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        companyDocument.attachmentid + '?access_token=' + this.authToken
+        companyDocument.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" >
         </div>`;
 
@@ -261,7 +261,7 @@ export class ItemNoteAttachementsComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          companyDocument.attachmentid +
+          companyDocument.attachmentId +
           '?access_token=' +
           this.authToken
       );

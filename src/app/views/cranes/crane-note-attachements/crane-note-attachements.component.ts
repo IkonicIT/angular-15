@@ -137,8 +137,8 @@ export class CraneNoteAttachementsComponent implements OnInit {
   }
 
   // downloadDocument(companyDocument) {
-  //   var blob = this.companyDocumentsService.b64toBlob(companyDocument.attachmentFile, companyDocument.contenttype); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
-  //   saveAs(blob, companyDocument.filename);
+  //   var blob = this.companyDocumentsService.b64toBlob(companyDocument.attachmentFile, companyDocument.contentType); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
+  //   saveAs(blob, companyDocument.fileName);
   // }
 
   getCraneNoteAttachment(document: any): void {
@@ -156,19 +156,19 @@ export class CraneNoteAttachementsComponent implements OnInit {
       const imageWindow = window.open();
       if (imageWindow) {
         imageWindow.document.write(
-          `<img src="data:${this.vendorAttachment.contenttype};base64,${this.vendorAttachment.attachmentFile}" />`
+          `<img src="data:${this.vendorAttachment.contentType};base64,${this.vendorAttachment.attachmentFile}" />`
         );
       }
     } else {
       // Download the attachment
       const blob = this.base64ToBlob(
         this.vendorAttachment.attachmentFile,
-        this.vendorAttachment.contenttype
+        this.vendorAttachment.contentType
       );
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = this.vendorAttachment.filename;
+      a.download = this.vendorAttachment.fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -178,7 +178,7 @@ export class CraneNoteAttachementsComponent implements OnInit {
   isImage(): boolean {
     return (
       this.vendorAttachment &&
-      this.vendorAttachment.contenttype.startsWith('image')
+      this.vendorAttachment.contentType.startsWith('image')
     );
   }
 
@@ -204,7 +204,7 @@ export class CraneNoteAttachementsComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
 

@@ -41,12 +41,12 @@ export class ItemTypesComponent implements OnInit {
     private broadcasterService: BroadcasterService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyName = this.globalCompany.name;
     this.getAllLocTypes();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = value.name;
     });
   }
@@ -60,9 +60,9 @@ export class ItemTypesComponent implements OnInit {
         this.spinner.hide();
 
         this.locationsTypes = response;
-        this.locationsTypes.forEach((type: { parentid: any }) => {
-          if (!type.parentid) {
-            type.parentid = this.companyName;
+        this.locationsTypes.forEach((type: { parentId: any }) => {
+          if (!type.parentId) {
+            type.parentId = this.companyName;
           }
         });
       });

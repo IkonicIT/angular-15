@@ -35,7 +35,7 @@ export class UserLogManagementComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
 
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.users();
     }
   }

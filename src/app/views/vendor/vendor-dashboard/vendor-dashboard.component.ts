@@ -52,11 +52,11 @@ export class VendorDashBoardComponent implements OnInit {
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     this.authToken = sessionStorage.getItem('auth_token');
     this.getLocationsWithHierarchy();
@@ -178,9 +178,9 @@ export class VendorDashBoardComponent implements OnInit {
   downloadDocumentFromDB(document: any, flag: boolean) {
     var attachmentId;
     if (flag) {
-      attachmentId = document.attachmentid;
+      attachmentId = document.attachmentId;
     } else {
-      attachmentId = document.attachmentid;
+      attachmentId = document.attachmentId;
     }
     this.spinner.show();
     this.companyDocumentsService.getCompanyDocuments(attachmentId).subscribe(
@@ -197,7 +197,7 @@ export class VendorDashBoardComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
@@ -208,13 +208,13 @@ export class VendorDashBoardComponent implements OnInit {
     let extension;
     let attachmentId;
     if (flag) {
-      index = attachment.filename.lastIndexOf('.');
-      extension = attachment.filename.slice(index + 1);
-      attachmentId = attachment.attachmentid;
+      index = attachment.fileName.lastIndexOf('.');
+      extension = attachment.fileName.slice(index + 1);
+      attachmentId = attachment.attachmentId;
     } else if (flag == false) {
-      index = attachment.filename.lastIndexOf('.');
-      extension = attachment.filename.slice(index + 1);
-      attachmentId = attachment.attachmentid;
+      index = attachment.fileName.lastIndexOf('.');
+      extension = attachment.fileName.slice(index + 1);
+      attachmentId = attachment.attachmentId;
     }
 
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {

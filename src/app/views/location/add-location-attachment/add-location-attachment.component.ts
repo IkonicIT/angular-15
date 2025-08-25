@@ -37,11 +37,11 @@ export class AddLocationAttachmentComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.companyName = this.globalCompany.name;
     }
     this.locationId = route.snapshot.params['id'];
@@ -60,27 +60,27 @@ export class AddLocationAttachmentComponent implements OnInit {
       window.scroll(0, 0);
     } else {
       let req = {
-        addedby: 'Yogi Patel',
+        addedBy: 'Yogi Patel',
         attachmentFile: this.fileContent,
-        attachmentid: 0,
-        contenttype: this.fileType,
-        dateadded: new Date().toISOString(),
+        attachmentId: 0,
+        contentType: this.fileType,
+        dateAdded: new Date().toISOString(),
         description: this.model.description,
-        entityid: this.locationId,
-        entitytypeid: 0,
-        filename: this.fileName,
-        companyid: this.companyId,
+        entityId: this.locationId,
+        entitytypeId: 0,
+        fileName: this.fileName,
+        companyId: this.companyId,
         moduleType: 'locationtype',
       };
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
-      formdata.append('addedby', this.userName);
-      formdata.append('companyID', JSON.stringify(this.companyId));
+      formdata.append('addedBy', this.userName);
+      formdata.append('companyId', JSON.stringify(this.companyId));
       formdata.append(
         'description',
         this.model.description ? this.model.description : ''
       );
-      formdata.append('entityid', this.locationId);
+      formdata.append('entityId', this.locationId);
       formdata.append('moduleType', 'locationtype');
 
       console.log(req);

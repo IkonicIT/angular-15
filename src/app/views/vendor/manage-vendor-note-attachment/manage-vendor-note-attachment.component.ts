@@ -52,13 +52,13 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
       this.getAllDocuments(this.vendorNoteId);
     } else {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getAllDocuments(this.vendorNoteId);
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -150,19 +150,19 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
       const imageWindow = window.open();
       if (imageWindow) {
         imageWindow.document.write(
-          `<img src="data:${this.vendorAttachment.contenttype};base64,${this.vendorAttachment.attachmentFile}" />`
+          `<img src="data:${this.vendorAttachment.contentType};base64,${this.vendorAttachment.attachmentFile}" />`
         );
       }
     } else {
       // Download the attachment
       const blob = this.base64ToBlob(
         this.vendorAttachment.attachmentFile,
-        this.vendorAttachment.contenttype
+        this.vendorAttachment.contentType
       );
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = this.vendorAttachment.filename;
+      a.download = this.vendorAttachment.fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -172,7 +172,7 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
   isImage(): boolean {
     return (
       this.vendorAttachment &&
-      this.vendorAttachment.contenttype.startsWith('image')
+      this.vendorAttachment.contentType.startsWith('image')
     );
   }
 
@@ -198,7 +198,7 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
 

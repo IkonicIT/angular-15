@@ -38,12 +38,12 @@ export class UserTypesComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyName = this.globalCompany.name;
     this.getAllUserTypes();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = value.name;
       this.getAllUserTypes();
     });
@@ -66,9 +66,9 @@ export class UserTypesComponent implements OnInit {
         if (this.p > maxPageAvailable) {
           this.p = maxPageAvailable;
         }
-        this.userTypes.forEach((type: { parentid: any }) => {
-          if (!type.parentid) {
-            type.parentid = this.companyName;
+        this.userTypes.forEach((type: { parentId: any }) => {
+          if (!type.parentId) {
+            type.parentId = this.companyName;
           }
         });
       },

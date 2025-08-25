@@ -5,5 +5,5 @@ export class User {
     email: string;
     password: string;
     repassword: string;
-    username: string;
+    userName: string;
 }

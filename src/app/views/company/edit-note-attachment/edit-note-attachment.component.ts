@@ -38,13 +38,13 @@ export class EditNoteAttachmentComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     var globalCompanyName = sessionStorage.getItem('globalCompany');
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.documentId = route.snapshot.params['attachmentId'];
     this.noteId = route.snapshot.params['noteId'];
@@ -70,7 +70,7 @@ export class EditNoteAttachmentComponent implements OnInit {
     this.spinner.show();
 
     this.model.moduleType = 'itemnotetype';
-    this.model.companyID = this.companyId;
+    this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {
       noteType: 'companynoteattachment',
       noteName: this.noteName,

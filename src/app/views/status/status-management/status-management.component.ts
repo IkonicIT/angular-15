@@ -33,10 +33,10 @@ export class StatusManagementComponent implements OnInit {
   constructor(private modalService: BsModalService, private companyManagementService: CompanyManagementService, private companyStatusService: CompanyStatusesService, router: Router, route: ActivatedRoute) {
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.documents = [];
       this.getStatuses();
     });
@@ -60,7 +60,7 @@ export class StatusManagementComponent implements OnInit {
 
 
   editStatus(status) {
-    console.log('statusid=' + status.statusId);
+    console.log('statusId=' + status.statusId);
     this.router.navigate(['/status/editStatus/'], { queryParams: { q: status.statusId } });
   }
 

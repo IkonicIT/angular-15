@@ -97,8 +97,8 @@ export class FullLayoutComponent implements OnInit {
     this.companyManagementService.switchCompanyChange.subscribe((value) => {
       this.companyList = this.companyManagementService.getGlobalCompanyList();
       this.companyId = this.broadcasterService.switchCompanyId;
-      this.companyList.forEach((company: { companyid: any }) => {
-        if (company.companyid == this.companyId) {
+      this.companyList.forEach((company: { companyId: any }) => {
+        if (company.companyId == this.companyId) {
           this.userSelectedCompany = company;
         }
       });
@@ -146,7 +146,7 @@ export class FullLayoutComponent implements OnInit {
             !this.userSelectedCompany.name ||
             this.userSelectedCompany.name == undefined
           ) {
-            this.userSelectedCompany = { name: 'Select Company', companyid: 0 };
+            this.userSelectedCompany = { name: 'Select Company', companyId: 0 };
           }
           this.companyManagementService.setGlobalCompanyList(
             this.userCompanies
@@ -185,7 +185,7 @@ export class FullLayoutComponent implements OnInit {
               if (!this.userSelectedCompany.name) {
                 this.userSelectedCompany = {
                   name: 'Select Company',
-                  companyid: 0,
+                  companyId: 0,
                 };
               }
               this.selectRootCompany(this.userSelectedCompany);
@@ -193,7 +193,7 @@ export class FullLayoutComponent implements OnInit {
                 this.userSelectedCompany
               );
             }
-            // this.userCompanies.unshift({"companyid":0,"name":"SELECT COMPANY","filePath":null})
+            // this.userCompanies.unshift({"companyId":0,"name":"SELECT COMPANY","filePath":null})
 
             this.companyManagementService.setGlobalCompanyList(
               this.userCompanies
@@ -222,21 +222,21 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.itemModel = {};
     this.itemManagementService.itemrepairnotesrfqModel = {};
     this.broadcasterService.locations = [];
-    if (userSelectedCompany.companyid == 0) {
+    if (userSelectedCompany.companyId == 0) {
       this.masterSearchFlag = 'true';
       sessionStorage.removeItem('currentRole');
       sessionStorage.removeItem('highestRank');
       this.broadcasterService.currentCompany = 'selectcompany';
-      this.userSelectedCompany = { name: 'Select Company', companyid: 0 };
-      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyid;
+      this.userSelectedCompany = { name: 'Select Company', companyId: 0 };
+      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyId;
       this.broadcasterService.broadcast('refreshNavBar', true);
       this.broadcasterService.broadcast(
         'piechart',
-        userSelectedCompany.companyid
+        userSelectedCompany.companyId
       );
       this.router.navigate(['/dashboard']);
     } else if (this.isOwnerAminReadOnly == 'true') {
-      this.getCompanyLogo(userSelectedCompany.companyid);
+      this.getCompanyLogo(userSelectedCompany.companyId);
       this.masterSearchFlag = 'false';
       this.broadcasterService.currentCompany = 'nonselectcompany';
       this.broadcasterService.locations = [];
@@ -247,9 +247,9 @@ export class FullLayoutComponent implements OnInit {
       this.locationManagementService.setLocations([]);
       this.spinner.show();
       this.companyManagementService.setGlobalCompany(userSelectedCompany);
-      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyid;
+      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyId;
       this.itemTypesService
-        .getAllItemTypesWithHierarchy(userSelectedCompany.companyid)
+        .getAllItemTypesWithHierarchy(userSelectedCompany.companyId)
         .subscribe((response) => {
           this.broadcasterService.itemTypeHierarchy = response;
           this.currentRole = 'OwnerAdminReadOnly';
@@ -264,7 +264,7 @@ export class FullLayoutComponent implements OnInit {
           console.log('highestRank is' + this.highestRank);
           this.broadcasterService.broadcast(
             'piechart',
-            userSelectedCompany.companyid
+            userSelectedCompany.companyId
           );
           this.broadcasterService.broadcast('refreshNavBar', true);
 
@@ -277,7 +277,7 @@ export class FullLayoutComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         });
     } else {
-      this.getCompanyLogo(userSelectedCompany.companyid);
+      this.getCompanyLogo(userSelectedCompany.companyId);
       this.masterSearchFlag = 'false';
       this.broadcasterService.currentCompany = 'nonselectcompany';
       this.broadcasterService.locations = [];
@@ -288,9 +288,9 @@ export class FullLayoutComponent implements OnInit {
       this.locationManagementService.setLocations([]);
       this.spinner.show();
       this.companyManagementService.setGlobalCompany(userSelectedCompany);
-      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyid;
+      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyId;
       this.itemTypesService
-        .getAllItemTypesWithHierarchy(userSelectedCompany.companyid)
+        .getAllItemTypesWithHierarchy(userSelectedCompany.companyId)
         .subscribe((response) => {
           this.broadcasterService.itemTypeHierarchy = response;
           this.highestRank = 0;
@@ -305,7 +305,7 @@ export class FullLayoutComponent implements OnInit {
           console.log('highestRank is' + this.highestRank);
           this.broadcasterService.broadcast(
             'piechart',
-            userSelectedCompany.companyid
+            userSelectedCompany.companyId
           );
           this.broadcasterService.broadcast('refreshNavBar', true);
 
@@ -320,10 +320,10 @@ export class FullLayoutComponent implements OnInit {
     }
   }
 
-  getCompanyLogo(companyid: any) {
+  getCompanyLogo(companyId: any) {
     this.noLogo = false;
     this.spinner.show();
-    this.companyManagementService.getLogo(companyid).subscribe(
+    this.companyManagementService.getLogo(companyId).subscribe(
       (response: any) => {
         if (response.logo != null)
           this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -353,28 +353,28 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setInCompletedRepairs([]);
     this.broadcasterService.locations = [];
     if (typeof userSelectedCompany1 == 'undefined') {
-      userSelectedCompany1 = { name: 'Select Company', companyid: 0 };
+      userSelectedCompany1 = { name: 'Select Company', companyId: 0 };
     }
 
     if (this.isOwnerAdmin == 'true' || this.isOwnerAminReadOnly == 'true') {
       this.selectRootCompanyForAdmin(userSelectedCompany1);
     } else {
-      if (userSelectedCompany1.companyid == 0) {
+      if (userSelectedCompany1.companyId == 0) {
         sessionStorage.removeItem('currentRole');
         sessionStorage.removeItem('highestRank');
         this.broadcasterService.currentCompany = 'selectcompany';
-        this.userSelectedCompany = { name: 'Select Company', companyid: 0 };
+        this.userSelectedCompany = { name: 'Select Company', companyId: 0 };
         this.broadcasterService.selectedCompanyId =
-          userSelectedCompany1.companyid;
+          userSelectedCompany1.companyId;
         this.broadcasterService.broadcast('refreshNavBar', true);
         this.broadcasterService.broadcast(
           'piechart',
-          userSelectedCompany1.companyid
+          userSelectedCompany1.companyId
         );
         this.router.navigate(['/dashboard']);
         return true;
       }
-      this.getCompanyLogo(userSelectedCompany1.companyid);
+      this.getCompanyLogo(userSelectedCompany1.companyId);
       this.broadcasterService.currentCompany = 'nonselectcompany';
       this.broadcasterService.locations = [];
       this.itemTag = null;
@@ -385,9 +385,9 @@ export class FullLayoutComponent implements OnInit {
       this.spinner.show();
       this.companyManagementService.setGlobalCompany(userSelectedCompany1);
       this.broadcasterService.selectedCompanyId =
-        userSelectedCompany1.companyid;
+        userSelectedCompany1.companyId;
       this.itemTypesService
-        .getAllItemTypesWithHierarchy(userSelectedCompany1.companyid)
+        .getAllItemTypesWithHierarchy(userSelectedCompany1.companyId)
         .subscribe((response) => {
           this.broadcasterService.itemTypeHierarchy = response;
           this.highestRank = 0;
@@ -396,7 +396,7 @@ export class FullLayoutComponent implements OnInit {
           this.loginService
             .getRolesForALoggedInUser(
               this.userName,
-              userSelectedCompany1.companyid
+              userSelectedCompany1.companyId
             )
             .subscribe((response: any) => {
               this.userSecurityRoles = response;
@@ -420,7 +420,7 @@ export class FullLayoutComponent implements OnInit {
                 });
                 this.broadcasterService.broadcast(
                   'piechart',
-                  userSelectedCompany.companyid
+                  userSelectedCompany.companyId
                 );
                 setTimeout(() => {
                   this.broadcasterService.broadcast('refreshNavBar', true);
@@ -451,7 +451,7 @@ export class FullLayoutComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -465,7 +465,7 @@ export class FullLayoutComponent implements OnInit {
     this.userId = sessionStorage.getItem('userId');
     this.loginService.getProfileByUserId(this.userId).subscribe(
       (response) => {
-        this.broadcasterService.isOwnerAdmin = response.isowneradmin;
+        this.broadcasterService.isOwnerAdmin = response.isOwnerAdmin;
         console.log(this.broadcasterService.isOwnerAdmin);
       },
       (error) => {

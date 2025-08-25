@@ -167,13 +167,13 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.itemId = route.snapshot.params['itemId'];
     this.itemTypes = this.itemManagementService.getItemTypes();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
 
       console.log('inide item search');
@@ -230,7 +230,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       this.itemrepairnotesrfqModel.isitemnote = true;
       this.itemrepairnotesrfqModel.isitemrepair = true;
       this.itemModel = this.itemManagementService.itemModel;
-      this.currentAttributeValues = this.itemModel.attributevalues;
+      this.currentAttributeValues = this.itemModel.attributeValues;
       if (this.itemModel.count == 1) {
         this.value = this.itemModel.value;
         this.isExpandAdvancedSearch = true;
@@ -375,12 +375,12 @@ export class AdvancedItemSearchComponent implements OnInit {
         .subscribe((response: any) => {
           this.value = typeId;
           if (this.currentAttributeValues.length == 0)
-            this.itemModel.attributevalues = response;
+            this.itemModel.attributeValues = response;
           this.spinner.hide();
           // this.loader = false;
         });
     } else {
-      this.itemModel.attributevalues = [];
+      this.itemModel.attributeValues = [];
     }
   }
 
@@ -388,11 +388,11 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.isExpandAdvancedSearch = false;
     var attributeLis: { attributeNameID: any; name: any; value: any }[] = [];
     if (
-      this.itemModel.attributevalues &&
-      this.itemModel.attributevalues.length > 0
+      this.itemModel.attributeValues &&
+      this.itemModel.attributeValues.length > 0
     ) {
-      this.itemModel.attributevalues.forEach(
-        (attr: { value: string; attributenameid: any; name: any }) => {
+      this.itemModel.attributeValues.forEach(
+        (attr: { value: string; attributeNameId: any; name: any }) => {
           if (attr.value && attr.value != '') {
             var attributeValue = attr.value.trim();
             var lastchar = attributeValue.substr(attributeValue.length - 1);
@@ -403,7 +403,7 @@ export class AdvancedItemSearchComponent implements OnInit {
               );
             }
             let listItem = {
-              attributeNameID: attr.attributenameid,
+              attributeNameID: attr.attributeNameId,
               name: attr.name,
               value: attributeValue.replace('&amp;', '&').replace('&', '&amp;'),
             };
@@ -447,7 +447,7 @@ export class AdvancedItemSearchComponent implements OnInit {
   searchItemRepairNotesRfqModel() {
     this.advancedsearchflag = 1;
     var request = {
-      companyID: this.companyId,
+      companyId: this.companyId,
       extraTag: this.itemrepairnotesrfqModel.exactTag
         ? this.itemrepairnotesrfqModel.exactTag
         : null,

@@ -41,10 +41,10 @@ export class LocationStatusComponent implements OnInit {
   ) {
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.documents = [];
     });
     this.getStatuses();
@@ -79,7 +79,7 @@ export class LocationStatusComponent implements OnInit {
   }
 
   editStatus(status: { statusId: string }) {
-    console.log('statusid=' + status.statusId);
+    console.log('statusId=' + status.statusId);
     this.router.navigate(['/location/editLocationStatus/' + status.statusId]);
   }
 

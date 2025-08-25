@@ -47,7 +47,7 @@ export class LocationNotesComponent implements OnInit {
     this.locationId = route.snapshot.params['id'];
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     console.log('locationId=' + this.locationId);
     if (this.locationId) {
@@ -56,7 +56,7 @@ export class LocationNotesComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 

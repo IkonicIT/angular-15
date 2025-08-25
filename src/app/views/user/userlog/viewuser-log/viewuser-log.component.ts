@@ -16,7 +16,7 @@ export class ViewuserLogComponent implements OnInit {
   globalCompany: any;
   results: any = [];
   itemsForPagination: any = 5;
-  username: any;
+  userName: any;
   message: string;
   modalRef: BsModalRef;
   userFilter: any = '';
@@ -31,13 +31,13 @@ export class ViewuserLogComponent implements OnInit {
     private userManagementService: UserManagementService
   ) {
     this.router = router;
-    this.username = route.snapshot.params['username'];
+    this.userName = route.snapshot.params['userName'];
   }
 
   ngOnInit() {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getUserLogInfo();
     }
   }
@@ -46,7 +46,7 @@ export class ViewuserLogComponent implements OnInit {
     this.spinner.show();
 
     this.userManagementService
-      .getUserlogData(this.companyId, this.username)
+      .getUserlogData(this.companyId, this.userName)
       .subscribe((response) => {
         this.results = response;
         this.spinner.hide();

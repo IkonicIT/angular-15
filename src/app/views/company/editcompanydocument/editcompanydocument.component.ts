@@ -61,7 +61,7 @@ export class EditcompanydocumentComponent implements OnInit {
     this.spinner.show();
     console.log(this.companyId);
     this.model.moduleType = 'companytype';
-    this.model.companyID = this.companyId;
+    this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {};
     this.model.updatedBy = this.userName;
     this.companyDocumentsService.updateCompanyDocument(this.model).subscribe(

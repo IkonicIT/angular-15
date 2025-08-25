@@ -48,7 +48,7 @@ export class UserManagementComponent implements OnInit {
   ngOnInit() {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getUsers();
     }
     this.globalUser = sessionStorage.getItem('userName');
@@ -88,12 +88,12 @@ export class UserManagementComponent implements OnInit {
   getSecurityRoles(user: {
     firstname: string;
     lastname: string;
-    userid: string;
+    userId: string;
     profileid: string;
   }) {
-    this.broadcasterService.username = user.firstname + ' ' + user.lastname;
+    this.broadcasterService.userName = user.firstname + ' ' + user.lastname;
     this.router.navigate([
-      '/user/securityRoles/' + user.userid + '/' + user.profileid,
+      '/user/securityRoles/' + user.userId + '/' + user.profileid,
     ]);
   }
 
@@ -103,14 +103,14 @@ export class UserManagementComponent implements OnInit {
     userId: string;
     profileId: string;
   }) {
-    this.broadcasterService.username = user.firstName + ' ' + user.lastName;
+    this.broadcasterService.userName = user.firstName + ' ' + user.lastName;
     this.router.navigate([
       '/user/editUser/' + user.userId + '/' + user.profileId,
     ]);
   }
 
   viewUser(user: any) {
-    this.broadcasterService.username = user.firstName + ' ' + user.lastName;
+    this.broadcasterService.userName = user.firstName + ' ' + user.lastName;
     this.router.navigate([
       '/user/viewUser/' + user.userId + '/' + user.profileId,
     ]);

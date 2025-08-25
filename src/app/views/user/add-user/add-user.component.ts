@@ -52,7 +52,7 @@ export class AddUserComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
 
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
    const isOwnerAdmin = sessionStorage.getItem("IsOwnerAdmin") === "true";
    this.userId = sessionStorage.getItem('userId') ;
@@ -216,7 +216,7 @@ export class AddUserComponent implements OnInit {
         topLocationId: null,
         preferredLocationId: null,
         hidePricing: true,
-        companyId: this.model.companyid ? this.model.companyid : this.companyId,
+        companyId: this.model.companyId ? this.model.companyId : this.companyId,
         addedBy: this.userName,
         isVendor: this.model.isVendor,
         vendorResource: {

@@ -19,7 +19,7 @@ export class BroadcasterService {
   public selectedCompanyId: any;
   public isOwnerAdmin: boolean;
   public currentCompany: any;
-  public username: any;
+  public userName: any;
   public itemRank: any;
   public userRoles: any;
   public currentItemTag: any;

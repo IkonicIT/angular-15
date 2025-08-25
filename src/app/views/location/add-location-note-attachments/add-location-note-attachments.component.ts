@@ -46,14 +46,14 @@ export class AddLocationNoteAttachmentsComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
 
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     //var globalCompanyName = sessionStorage.getItem('globalCompany');
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
 
     this.entityId = route.snapshot.params['noteId'];
@@ -82,13 +82,13 @@ export class AddLocationNoteAttachmentsComponent implements OnInit {
     } else {
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
-      formdata.append('addedby', this.userName);
-      formdata.append('entityid', JSON.stringify(this.companyId));
+      formdata.append('addedBy', this.userName);
+      formdata.append('entityId', JSON.stringify(this.companyId));
       formdata.append(
         'description',
         this.model.description ? this.model.description : ''
       );
-      formdata.append('entityid', JSON.stringify(this.entityId));
+      formdata.append('entityId', JSON.stringify(this.entityId));
       formdata.append('moduleType', 'itemtype');
       var jsonArr = this.addedfiles;
       for (var i = 0; i < jsonArr.length; i++) {
@@ -158,16 +158,16 @@ export class AddLocationNoteAttachmentsComponent implements OnInit {
           .split(':')[1]
           .split(';')[0];
         const fileInfo = this.addedfiles[fileIndex];
-        fileInfo['addedby'] = this.userName;
+        fileInfo['addedBy'] = this.userName;
         fileInfo['attachmentFile'] = this.fileContent;
-        fileInfo['attachmentid'] = 0;
-        fileInfo['contenttype'] = this.fileType;
-        fileInfo['companyID'] = this.companyId;
-        fileInfo['dateadded'] = new Date().toISOString();
-        fileInfo['entityid'] = this.entityId;
+        fileInfo['attachmentId'] = 0;
+        fileInfo['contentType'] = this.fileType;
+        fileInfo['companyId'] = this.companyId;
+        fileInfo['dateAdded'] = new Date().toISOString();
+        fileInfo['entityId'] = this.entityId;
         fileInfo['isNew'] = 1;
         fileInfo['moduleType'] = 'itemnotetype';
-        fileInfo['filename'] = this.fileName;
+        fileInfo['fileName'] = this.fileName;
         console.log(this.addedfiles);
       };
     }

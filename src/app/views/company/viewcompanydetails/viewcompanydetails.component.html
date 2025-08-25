@@ -59,7 +59,7 @@
                       <label for="name">Name</label>
                       <input
                         type="text"
-                        [(ngModel)]="model.companyid"
+                        [(ngModel)]="model.companyId"
                         name="_id"
                         #_id="ngModel"
                         id="name"
@@ -183,7 +183,7 @@
                         type="text"
                         readonly
                         class="form-control"
-                        [(ngModel)]="model.postalcode"
+                        [(ngModel)]="model.postalCode"
                         name="postalCode"
                         #postalCode="ngModel"
                         id="pcode"
@@ -194,14 +194,14 @@
                       <select
                         disabled
                         class="form-control custom-dropdown"
-                        [(ngModel)]="model.statusid"
+                        [(ngModel)]="model.statusId"
                         name="status"
                         #status="ngModel"
                         id="status"
                       >
                         <option value="">Choose..</option>
                         <option
-                          [ngValue]="stat.statusid"
+                          [ngValue]="stat.statusId"
                           *ngFor="let stat of statuses"
                         >
                           {{ stat.status }}
@@ -230,7 +230,7 @@
                   <div class="row">
                     <div class="form-group col-sm-12 form-group-padding">
                       <label for="desc"> Company Logo:</label>
-                      <label for="desc">{{ model.companyfilename }}</label>
+                      <label for="desc">{{ model.companyfileName }}</label>
                     </div>
                   </div>
 
@@ -300,7 +300,7 @@
                     <div class="form-group col-sm-12 text-center">
                       <button
                         type="button"
-                        [routerLink]="['../../edit', model.companyid]"
+                        [routerLink]="['../../edit', model.companyId]"
                         data-bs-placement="bottom"
                         data-bs-toggle="tooltip"
                         title="Edit this Company"

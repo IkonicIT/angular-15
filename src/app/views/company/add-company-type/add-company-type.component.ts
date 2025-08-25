@@ -83,7 +83,7 @@ export class AddCompanyTypeComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -112,7 +112,7 @@ export class AddCompanyTypeComponent implements OnInit {
         moduleType: 'companytype',
         name: this.model.nameOfType,
         parentId: {
-          typeid: this.value ? this.value : 0,
+          typeId: this.value ? this.value : 0,
         },
         typeId: 0,
         typeMtbs: 0,

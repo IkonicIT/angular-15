@@ -42,7 +42,7 @@ export class ChangePasswordComponent implements OnInit {
         newPassword: this.model.newPassword,
         confirmPassword: this.model.confirmPassword,
         lastPasswordChangedDate: this.model.date,
-        userid: sessionStorage.getItem('userId'),
+        userId: sessionStorage.getItem('userId'),
       };
       if (
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(

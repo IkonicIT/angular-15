@@ -25,11 +25,11 @@ export class LocationAttributesComponent implements OnInit {
   companyId: string = '0';
   model: any = {
     type: {},
-    attributetype: {
-      attributetypeid: null,
+    attributeType: {
+      attributeTypeId: null,
     },
-    searchtype: {
-      attributesearchtypeid: 0,
+    searchType: {
+      attributeSearchTypeId: 0,
     },
   };
   index: any = 0;
@@ -50,7 +50,7 @@ export class LocationAttributesComponent implements OnInit {
   typeAttributes: any = [];
   typeAttributesLength: any;
   listItem: any;
-  username: any;
+  userName: any;
   loctypes: any = [];
   dismissible = true;
   selectedAttrType: any = {};
@@ -89,14 +89,14 @@ export class LocationAttributesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.username = sessionStorage.getItem('userName');
+    this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
     if (this.companyId == '0') {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
       if (this.globalCompany) {
         this.companyName = this.globalCompany.name;
-        this.companyId = this.globalCompany.companyid;
+        this.companyId = this.globalCompany.companyId;
       }
     }
     this.pageLoadCalls(this.companyId);
@@ -146,7 +146,7 @@ export class LocationAttributesComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -157,7 +157,7 @@ export class LocationAttributesComponent implements OnInit {
 
   setTypeName(typeId: any) {
     this.loctypes.forEach((type: any) => {
-      if (type.typeid == typeId) {
+      if (type.typeId == typeId) {
         this.typeName = type.name;
       }
     });
@@ -172,11 +172,11 @@ export class LocationAttributesComponent implements OnInit {
     this.addEditFlag = false;
     this.model = {
       type: {},
-      attributetype: {
-        attributetypeid: null,
+      attributeType: {
+        attributeTypeId: null,
       },
-      searchtype: {
-        attributesearchtypeid: 0,
+      searchType: {
+        attributeSearchTypeId: 0,
       },
     };
     this.getTypeAttributes(this.typeValue);
@@ -187,11 +187,11 @@ export class LocationAttributesComponent implements OnInit {
     this.addEditFlag = false;
     this.model = {
       type: {},
-      attributetype: {
-        attributetypeid: null,
+      attributeType: {
+        attributeTypeId: null,
       },
-      searchtype: {
-        attributesearchtypeid: 0,
+      searchType: {
+        attributeSearchTypeId: 0,
       },
     };
 
@@ -207,8 +207,8 @@ export class LocationAttributesComponent implements OnInit {
         this.loctypes = response;
 
         this.loctypes.forEach((type: any) => {
-          if (!type.parentid) {
-            type.parentid = 'Top Level';
+          if (!type.parentId) {
+            type.parentId = 'Top Level';
           }
         });
       });
@@ -269,10 +269,10 @@ export class LocationAttributesComponent implements OnInit {
 
   setSelectedAttribute(attribute: any) {
     this.model = JSON.parse(JSON.stringify(attribute));
-    this.selectedAttrType = JSON.parse(JSON.stringify(attribute.attributetype));
+    this.selectedAttrType = JSON.parse(JSON.stringify(attribute.attributeType));
     this.index = 0;
-    if (this.model.attributetype && this.model.attributetype.attributetypeid) {
-      this.getSearchTypes(this.model.attributetype.attributetypeid);
+    if (this.model.attributeType && this.model.attributeType.attributeTypeId) {
+      this.getSearchTypes(this.model.attributeType.attributeTypeId);
     }
   }
 
@@ -295,38 +295,38 @@ export class LocationAttributesComponent implements OnInit {
   createAttribute() {
     if (
       this.model.name &&
-      this.model.attributetype &&
-      this.model.attributetype.attributetypeid != null
+      this.model.attributeType &&
+      this.model.attributeType.attributeTypeId != null
     ) {
       var request = {
-        attributelistitemResource: null,
-        attributenameid: 0,
-        attributetype: {
-          attributetypeid: this.model.attributetype.attributetypeid,
+        attributeListItemResource: null,
+        attributeNameId: 0,
+        attributeType: {
+          attributeTypeId: this.model.attributeType.attributeTypeId,
         },
-        displayorder: this.typeAttributesLength + 1,
-        ismanufacturer: false,
-        isrequired: this.model.isrequired ? this.model.isrequired : false,
-        isrequiredformatch: false,
+        displayOrder: this.typeAttributesLength + 1,
+        isManufacturer: false,
+        isRequired: this.model.isRequired ? this.model.isRequired : false,
+        isRequiredForMatch: false,
         name: this.model.name,
-        searchmodifier: '',
+        searchModifier: '',
         companyId: this.companyId,
-        lastmodifiedby: this.username,
-        searchtype: {
-          attributesearchtypeid: this.model.searchtype
-            ? this.model.searchtype.attributesearchtypeid
+        lastModifiedBy: this.userName,
+        searchType: {
+          attributeSearchTypeId: this.model.searchType
+            ? this.model.searchType.attributeSearchTypeId
             : 0,
         },
         tooltip: this.model.tooltip,
         type: {
-          typeid: this.typeValue,
+          typeId: this.typeValue,
           name: this.typeName,
         },
         moduleType: 'Location',
       };
-      if (this.model.attributelistitemResource) {
-        request.attributelistitemResource =
-          this.model.attributelistitemResource;
+      if (this.model.attributeListItemResource) {
+        request.attributeListItemResource =
+          this.model.attributeListItemResource;
       }
       this.spinner.show();
 
@@ -343,11 +343,11 @@ export class LocationAttributesComponent implements OnInit {
           this.typeAttributesLength = this.typeAttributesLength + 1;
           this.model = {
             type: {},
-            attributetype: {
-              attributetypeid: null,
+            attributeType: {
+              attributeTypeId: null,
             },
-            searchtype: {
-              attributesearchtypeid: 0,
+            searchType: {
+              attributeSearchTypeId: 0,
             },
           };
           this.addEditFlag = false;
@@ -364,10 +364,10 @@ export class LocationAttributesComponent implements OnInit {
 
   addListItem() {
     if (this.listItem && this.listItem != '') {
-      if (!this.model.attributelistitemResource) {
-        this.model.attributelistitemResource = [];
+      if (!this.model.attributeListItemResource) {
+        this.model.attributeListItemResource = [];
       }
-      this.model.attributelistitemResource.push({ listitem: this.listItem });
+      this.model.attributeListItemResource.push({ listitem: this.listItem });
       this.listItem = '';
     } else {
       this.index = 0;
@@ -388,48 +388,48 @@ export class LocationAttributesComponent implements OnInit {
   editAttribute() {
     if (
       this.model.name &&
-      this.model.attributetype &&
-      this.model.attributetype.attributetypeid != 0
+      this.model.attributeType &&
+      this.model.attributeType.attributeTypeId != 0
     ) {
       this.spinner.show();
 
       var request = {
-        attributelistitemResource: null,
-        attributenameid: this.model.attributenameid,
-        attributetype: {
-          attributetypeid: this.model.attributetype
-            ? this.model.attributetype.attributetypeid
+        attributeListItemResource: null,
+        attributeNameId: this.model.attributeNameId,
+        attributeType: {
+          attributeTypeId: this.model.attributeType
+            ? this.model.attributeType.attributeTypeId
             : 0,
         },
-        displayorder: this.model.displayorder,
-        ismanufacturer: this.model.ismanufacturer
-          ? this.model.ismanufacturer
+        displayOrder: this.model.displayOrder,
+        isManufacturer: this.model.isManufacturer
+          ? this.model.isManufacturer
           : false,
-        isrequired: this.model.isrequired ? this.model.isrequired : false,
-        isrequiredformatch: false,
+        isRequired: this.model.isRequired ? this.model.isRequired : false,
+        isRequiredForMatch: false,
         name: this.model.name,
-        searchmodifier: '',
+        searchModifier: '',
         companyId: this.companyId,
-        lastmodifiedby: this.username,
-        searchtype: {
-          attributesearchtypeid:
-            this.model.searchtype &&
-            this.model.searchtype.attributesearchtypeid != 'null'
-              ? this.model.searchtype.attributesearchtypeid
+        lastModifiedBy: this.userName,
+        searchType: {
+          attributeSearchTypeId:
+            this.model.searchType &&
+            this.model.searchType.attributeSearchTypeId != 'null'
+              ? this.model.searchType.attributeSearchTypeId
               : 0,
         },
         tooltip: this.model.tooltip,
         type: {
-          typeid: this.typeValue,
+          typeId: this.typeValue,
           name: this.typeName,
         },
         moduleType: 'Location',
       };
       this.spinner.show();
 
-      if (this.model.attributelistitemResource) {
-        request.attributelistitemResource =
-          this.model.attributelistitemResource;
+      if (this.model.attributeListItemResource) {
+        request.attributeListItemResource =
+          this.model.attributeListItemResource;
       }
       this.locationAttributeService.updateTypeAttributes(request).subscribe(
         (response) => {
@@ -443,11 +443,11 @@ export class LocationAttributesComponent implements OnInit {
           window.scroll(0, 0);
           this.model = {
             type: {},
-            attributetype: {
-              attributetypeid: null,
+            attributeType: {
+              attributeTypeId: null,
             },
-            searchtype: {
-              attributesearchtypeid: 0,
+            searchType: {
+              attributeSearchTypeId: 0,
             },
           };
           this.addEditFlag = false;
@@ -465,11 +465,11 @@ export class LocationAttributesComponent implements OnInit {
     this.addEditFlag = false;
     this.model = {
       type: {},
-      attributetype: {
-        attributetypeid: null,
+      attributeType: {
+        attributeTypeId: null,
       },
-      searchtype: {
-        attributesearchtypeid: 0,
+      searchType: {
+        attributeSearchTypeId: 0,
       },
     };
     this.getTypeAttributes(this.typeValue);
@@ -488,9 +488,9 @@ export class LocationAttributesComponent implements OnInit {
     var moduleType = 'Location';
     this.locationAttributeService
       .removeLocationAttributess(
-        this.model.attributenameid,
+        this.model.attributeNameId,
         this.companyId,
-        this.username,
+        this.userName,
         this.model.name,
         this.typeName,
         moduleType
@@ -507,11 +507,11 @@ export class LocationAttributesComponent implements OnInit {
           this.addEditFlag = false;
           this.model = {
             type: {},
-            attributetype: {
-              attributetypeid: null,
+            attributeType: {
+              attributeTypeId: null,
             },
-            searchtype: {
-              attributesearchtypeid: 0,
+            searchType: {
+              attributeSearchTypeId: 0,
             },
           };
           window.scroll(0, 0);

@@ -33,13 +33,13 @@ export class EditItemStatusComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.statusId = route.snapshot.params['id'];
-    console.log('companyid=' + this.statusId);
+    console.log('companyId=' + this.statusId);
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       console.log('compaanyid=' + this.companyId);
     });
     this.spinner.show();
@@ -71,7 +71,7 @@ export class EditItemStatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyId: this.globalCompany.companyid,
+        companyId: this.globalCompany.companyId,
         lastModifiedBy: this.userName,
         destroyed: this.model.destroyed ? this.model.destroyed : false,
         entityTypeId: 0,

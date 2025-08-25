@@ -70,9 +70,9 @@ export class CompanymanagementComponent implements OnInit {
   }
 
   companyNotes(company: any) {
-    this.companyManagementService.currentCompanyId = company.companyid;
+    this.companyManagementService.currentCompanyId = company.companyId;
     this.companyManagementService.currentCompanyName = company.name;
-    this.router.navigate(['/company/companyNote/' + company.companyid]);
+    this.router.navigate(['/company/companyNote/' + company.companyId]);
   }
 
   openModal(template: TemplateRef<any>, id: any) {

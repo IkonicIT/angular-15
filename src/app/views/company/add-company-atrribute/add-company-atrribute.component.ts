@@ -20,7 +20,7 @@ export class AddCompanyAtrributeComponent implements OnInit {
   cmptypes: any[] = [];
   currentRole: any;
   highestRank: any;
-  username: any;
+  userName: any;
   companyType: string;
   companyId: number = 0;
   private sub: any;
@@ -39,7 +39,7 @@ export class AddCompanyAtrributeComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.router = router;
-    this.username = this.broadcasterService.username;
+    this.userName = this.broadcasterService.userName;
   }
 
   ngOnInit() {
@@ -64,7 +64,7 @@ export class AddCompanyAtrributeComponent implements OnInit {
     } else if (this.model.name === undefined || this.model.Toa === undefined) {
       this.index = -1;
     } else {
-      this.model.by = this.username;
+      this.model.by = this.userName;
       this.model.added = new Date();
       this.model.companyId = this.companyId;
       this.model.typeId = this.companyType;

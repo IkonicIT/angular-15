@@ -13,8 +13,8 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
 })
 export class EditItemTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
+    parentId: {
+      typeId: 0,
     },
   };
   itemTypeId: any;
@@ -48,7 +48,7 @@ export class EditItemTypeComponent implements OnInit {
     this.companyName = this.globalCompany.name;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
     this.getAllItemTypes();

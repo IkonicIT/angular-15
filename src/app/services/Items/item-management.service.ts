@@ -201,10 +201,10 @@ export class ItemManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  removeItem(itemId: any, companyId: any, username: any, tag: any, type: any) {
+  removeItem(itemId: any, companyId: any, userName: any, tag: any, type: any) {
     return this.http
       .delete(AppConfiguration.locationRestURL + 'item/' + itemId + '/' + companyId + '/' + 
-                username + '/' + tag + '/' + type, { responseType: 'text' }
+                userName + '/' + tag + '/' + type, { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));
   }

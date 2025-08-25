@@ -140,9 +140,9 @@ export class UserManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getUserlogData(companyId: string, username: string) {
+  getUserlogData(companyId: string, userName: string) {
     return this.http
-      .get(this.serviceURL + 'users/userlogdetails/' + companyId + '/' + username, this.httpOptions)
+      .get(this.serviceURL + 'users/userlogdetails/' + companyId + '/' + userName, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -158,28 +158,28 @@ export class UserManagementService {
   }
 
   removeUser(
-    userid: string,
+    userId: string,
     profileId: string,
     companyId: string,
     userName: string,
     addedBy: string
   ) {
     return this.http
-      .delete(AppConfiguration.locationRestURL+'users/' + userid + '/' + profileId + '/' + companyId + '/' + userName + '/' + addedBy, 
+      .delete(AppConfiguration.locationRestURL+'users/' + userId + '/' + profileId + '/' + companyId + '/' + userName + '/' + addedBy, 
         { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));
   }
 
   removeRole(
-    companyid: string,
+    companyId: string,
     locationid: string,
-    userid: string,
-    username: string
+    userId: string,
+    userName: string
   ) {
     return this.http
-      .delete(AppConfiguration.locationRestURL + 'userSecurity/' + userid + '/' + companyid + '/' + locationid + '/' +
-          username, { responseType: 'text' }
+      .delete(AppConfiguration.locationRestURL + 'userSecurity/' + userId + '/' + companyId + '/' + locationid + '/' +
+          userName, { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));
   }

@@ -100,12 +100,12 @@ export class CompanyDocumentsService {
 
   removeCompanyDocuments(
     attachmentId: string,
-    companyid: string,
-    username: string
+    companyId: string,
+    userName: string
   ) {
     return this.http
       .delete(
-        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
+        this.serviceURL + '/' + attachmentId + '/' + companyId + '/' + userName,
         { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));
@@ -169,8 +169,8 @@ export class CompanyDocumentsService {
 
   removeCompanyNoteDocuments(
     attachmentId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     userLog: any
   ) {
     let params = new HttpParams();
@@ -185,7 +185,7 @@ export class CompanyDocumentsService {
 
     return this.http
       .delete(
-        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
+        this.serviceURL + '/' + attachmentId + '/' + companyId + '/' + userName,
         httpOptions
       )
       .pipe(catchError(this.handleError));

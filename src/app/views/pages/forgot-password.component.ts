@@ -12,7 +12,7 @@ import { User } from '../../models/user';
 export class ForgotPasswordComponent {
   user = new User();
   email: string = '';
-  username: string = '';
+  userName: string = '';
   loginError: any = false;
   public forgotPasswordForm_show: boolean = true;
   loader = false;
@@ -26,12 +26,12 @@ export class ForgotPasswordComponent {
 
   ngOnInit() {}
 
-  forgotPassword(formData: { value: { email: string; username: string } }) {
+  forgotPassword(formData: { value: { email: string; userName: string } }) {
     this.email = formData.value.email;
-    this.username = formData.value.username;
+    this.userName = formData.value.userName;
     this.spinner.show();
 
-    this.forgotPasswordService.forgotPasswordAPI(this.user.username).subscribe(
+    this.forgotPasswordService.forgotPasswordAPI(this.user.userName).subscribe(
       (response: any) => {
         this.spinner.hide();
 

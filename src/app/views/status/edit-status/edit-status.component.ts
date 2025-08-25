@@ -27,12 +27,12 @@ export class EditStatusComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.companyId = route.snapshot.params['q'];
-    console.log('companyid=' + this.companyId);
+    console.log('companyId=' + this.companyId);
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       console.log('compaanyid=' + this.companyId);
     });
   }
@@ -53,13 +53,13 @@ export class EditStatusComponent implements OnInit {
   }
   updateStatus() {
     this.model = {
-      companyId: this.globalCompany.companyid,
+      companyId: this.globalCompany.companyId,
       destroyed: true,
       entityTypeId: 0,
       inService: true,
       spare: true,
       status: this.model.status,
-      statusId: this.model.statusid,
+      statusId: this.model.statusId,
       underRepair: true,
     };
     this.companyStatusesService

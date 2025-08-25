@@ -27,13 +27,13 @@ export class ItemTransferComponent implements OnInit {
   transfers: any = [];
   model: any = {
     vendorCompany: {
-      companyid: 0,
+      companyId: 0,
     },
   };
   locationModel: any = {
     pLocationId: 0,
     vendorCompany: {
-      companyid: 0,
+      companyId: 0,
     },
     locationTypeId: 0,
   };
@@ -109,12 +109,12 @@ export class ItemTransferComponent implements OnInit {
     console.log('date' + this.model.effectiveDate);
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.userName = sessionStorage.getItem('userName');
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
       this.userName = sessionStorage.getItem('userName');
     });
@@ -208,9 +208,9 @@ export class ItemTransferComponent implements OnInit {
         (response) => {
           this.spinner.hide();
           this.locationTypes = response;
-          this.locationTypes.forEach((type: { parentid: string }) => {
-            if (!type.parentid) {
-              type.parentid = 'Top Level';
+          this.locationTypes.forEach((type: { parentId: string }) => {
+            if (!type.parentId) {
+              type.parentId = 'Top Level';
             }
           });
           if (this.locationTypes && this.locationTypes.length > 0) {
@@ -280,16 +280,16 @@ export class ItemTransferComponent implements OnInit {
       this.locationModel.locationTypeId != 0
     ) {
       if (this.typeAttributes && this.typeAttributes.length > 0) {
-        this.locationModel.attributevalues = [];
+        this.locationModel.attributeValues = [];
         this.typeAttributes.forEach(
-          (attr: { attributenameid: any; value: any }) => {
-            this.locationModel.attributevalues.push({
-              attributename: {
-                attributenameid: attr.attributenameid,
+          (attr: { attributeNameId: any; value: any }) => {
+            this.locationModel.attributeValues.push({
+              attributeName: {
+                attributeNameId: attr.attributeNameId,
               },
-              entityid: 0,
-              entitytypeid: 0,
-              lastmodifiedby: this.userName,
+              entityId: 0,
+              entitytypeId: 0,
+              lastModifiedBy: this.userName,
               value: attr.value,
             });
           }
@@ -302,25 +302,25 @@ export class ItemTransferComponent implements OnInit {
           city: this.locationModel.city ? this.locationModel.city : '',
           typeId: this.locationModel.locationTypeId ? this.locationModel.locationTypeId : '',
           company: {
-            companyid: this.companyId,
+            companyId: this.companyId,
           },
           criticalflag: this.locationModel.critical ? this.locationModel.critical : false,
           description: this.locationModel.description ? this.locationModel.description : '',
           desiredspareratio: this.locationModel.sRatio ? this.locationModel.sRatio : 0,
           isvendor: this.locationModel.vLocation ? this.locationModel.vLocation : false,
-          lastmodifiedby: this.userName,
+          lastModifiedBy: this.userName,
           locationid: 0,
           name: this.locationModel.locationName ? this.locationModel.locationName : '',
           parentLocation: {
             locationid: this.model.locationid ? this.model.locationid : 0,
           },
-          postalcode: this.locationModel.postalCode ? this.locationModel.postalCode : '',
+          postalCode: this.locationModel.postalCode ? this.locationModel.postalCode : '',
           state: this.locationModel.state ? this.locationModel.state : '',
-          statusid: this.locationModel.statusid ? this.locationModel.statusid : 0,
+          statusId: this.locationModel.statusId ? this.locationModel.statusId : 0,
           vendorCompany: {
-            companyid: 0,
+            companyId: 0,
           },
-          attributevalues: this.locationModel.attributevalues ? this.locationModel.attributevalues : null,
+          attributeValues: this.locationModel.attributeValues ? this.locationModel.attributeValues : null,
         },
       ];
 
@@ -389,7 +389,7 @@ export class ItemTransferComponent implements OnInit {
           ? this.model.shippingNumber
           : null,
         toLocationID: this.model.toLocation ? this.model.toLocation : 0,
-        companyID: this.companyId,
+        companyId: this.companyId,
         statusID: this.model.newStatus,
         trackingNumber: this.model.trackingNumber
           ? this.model.trackingNumber

@@ -104,7 +104,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit Warranty Type"
-                    (click)="editWarrantyType(type.warrantytypeid)"
+                    (click)="editWarrantyType(type.warrantytypeId)"
                   >
                     Edit
                   </button>
@@ -114,7 +114,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete Warranty Type"
-                    (click)="openModal(confirmtemplate, type.warrantytypeid)"
+                    (click)="openModal(confirmtemplate, type.warrantytypeId)"
                     [disabled]="highestRank == 9"
                   >
                     Delete

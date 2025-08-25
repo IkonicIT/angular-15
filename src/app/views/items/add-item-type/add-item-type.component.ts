@@ -13,10 +13,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AddItemTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
+    parentId: {
+      typeId: 0,
     },
-    typespareratio: 0.2,
+    typeSpareRatio: 0.2,
   };
   index: number = 0;
   companyId: number;
@@ -43,11 +43,11 @@ export class AddItemTypeComponent implements OnInit {
     router: Router
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyName = this.globalCompany.name;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
     this.router = router;

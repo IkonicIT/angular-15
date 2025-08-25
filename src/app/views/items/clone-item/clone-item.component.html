@@ -142,7 +142,7 @@
                           <option value="0" selected="true">
                             Select Warranty Type
                           </option>
-                          <option [ngValue]="type.warrantytypeid" *ngFor="let type of warrantyTypes">
+                          <option [ngValue]="type.warrantytypeId" *ngFor="let type of warrantyTypes">
                             {{ type.warrantytype }}
                           </option>
                         </select>
@@ -266,7 +266,7 @@
                             [(ngModel)]="eachAttr.value" name="select{{ i }}" #type="ngModel">
                             <option value="">Choose..</option>
                             <option [ngValue]="list.listItem" *ngFor="
-                                let list of eachAttr.attributelistitemResource
+                                let list of eachAttr.attributeListItemResource
                               ">
                               {{ list.listItem }}
                             </option>

@@ -48,7 +48,7 @@ export class LoginService {
     };
     let params = new HttpParams()
       .set('grant_type', 'password')
-      .set('username', obj.userName)
+      .set('userName', obj.userName)
       .set('password', obj.password)
       .set('client_id', 'clientid123');
     return this.http
@@ -70,10 +70,10 @@ export class LoginService {
       .pipe(catchError(this.handleError));
   }
 
-  getRolesForALoggedInUser(userName: string, companyid: string): Observable<any> {
+  getRolesForALoggedInUser(userName: string, companyId: string): Observable<any> {
     this.authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
     return this.http
-      .get(this.locationRestURL + 'userSecurity/getAllRolesForLoggedInUser/' + userName + '/' + companyid + '?access_token=' +
+      .get(this.locationRestURL + 'userSecurity/getAllRolesForLoggedInUser/' + userName + '/' + companyId + '?access_token=' +
           this.authToken
       )
       .pipe(catchError(this.handleError));

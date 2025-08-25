@@ -54,14 +54,14 @@ export class CompanydocumentsComponent implements OnInit {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
       if (this.globalCompany) {
         this.companyName = this.globalCompany.name;
-        this.companyId = this.globalCompany.companyid;
-        this.getAllDocuments(this.globalCompany.companyid);
+        this.companyId = this.globalCompany.companyId;
+        this.getAllDocuments(this.globalCompany.companyId);
       }
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -181,7 +181,7 @@ export class CompanydocumentsComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
 

@@ -93,15 +93,15 @@
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'dateaddedOn'"
-                  (click)="setOrder('dateaddedOn')"
+                  [class.active]="order === 'dateAddedOn'"
+                  (click)="setOrder('dateAddedOn')"
                 >
                   Added<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'addedby'"
-                  (click)="setOrder('addedby')"
+                  [class.active]="order === 'addedBy'"
+                  (click)="setOrder('addedBy')"
                 >
                   By<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -115,15 +115,15 @@
                   let document of documents
                     | orderBy : reverse + order
                     | filterBy
-                      : ['description', 'dateaddedOn', 'addedby']
+                      : ['description', 'dateAddedOn', 'addedBy']
                       : documentFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
                 <td>{{ document.description }}</td>
-                <td>{{ document.dateadded | date : "MM/dd/yyyy" }}</td>
-                <td>{{ document.addedby }}</td>
+                <td>{{ document.dateAdded | date : "MM/dd/yyyy" }}</td>
+                <td>{{ document.addedBy }}</td>
                 <td>
                   <button
                     *ngIf="highestRank > 0"

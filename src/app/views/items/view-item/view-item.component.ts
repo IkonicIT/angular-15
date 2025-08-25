@@ -33,7 +33,7 @@ export class ViewItemComponent implements OnInit {
   model: any = {
     locationid: 0,
     typeId: 0,
-    warrantytypeid: 0,
+    warrantytypeId: 0,
   };
   journals: any[] = [];
   index: number = 0;
@@ -84,11 +84,11 @@ export class ViewItemComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
   }
@@ -152,7 +152,7 @@ export class ViewItemComponent implements OnInit {
           else
             this.imageSource =
               'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-              response.attachmentid +
+              response.attachmentId +
               '?access_token=' +
               this.authToken;
         },
@@ -169,11 +169,11 @@ export class ViewItemComponent implements OnInit {
       (response: any) => {
         this.itemAttachments = response;
         this.images = response
-          .filter((e: { contenttype: string | string[] }) =>
-            e.contenttype.includes('image')
+          .filter((e: { contentType: string | string[] }) =>
+            e.contentType.includes('image')
           )
           .map(
-            (e: { isNew: any; attachmentFile: any; attachmentid: string }) => {
+            (e: { isNew: any; attachmentFile: any; attachmentId: string }) => {
               if (e.isNew)
                 return this.sanitizer.bypassSecurityTrustResourceUrl(
                   `data:image/png;base64, ${e.attachmentFile}`
@@ -181,7 +181,7 @@ export class ViewItemComponent implements OnInit {
               else
                 return (
                   'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-                  e.attachmentid +
+                  e.attachmentId +
                   '?access_token=' +
                   this.authToken
                 );
@@ -213,7 +213,7 @@ export class ViewItemComponent implements OnInit {
 
   setWarrantyType(response: any) {
     response.forEach((element: any) => {
-      if (element.warrantytypeid == this.model.warrantyTypeId)
+      if (element.warrantytypeId == this.model.warrantyTypeId)
         this.model.warrantytype = element.warrantytype;
     });
   }

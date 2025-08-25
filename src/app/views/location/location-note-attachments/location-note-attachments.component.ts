@@ -61,13 +61,13 @@ export class LocationNoteAttachmentsComponent implements OnInit {
       this.getAllDocuments(this.entityId, this.noteId);
     } else {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getAllDocuments(this.entityId, this.noteId);
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -105,10 +105,10 @@ export class LocationNoteAttachmentsComponent implements OnInit {
     this.router.navigate(['/location/addNoteAttchments/' + this.noteId]);
   }
 
-  editNoteDocument(document: { attachmentid: string }) {
+  editNoteDocument(document: { attachmentId: string }) {
     this.router.navigate([
       '/location/editNoteAttchments/' +
-        document.attachmentid +
+        document.attachmentId +
         '/' +
         this.noteId,
     ]);
@@ -174,11 +174,11 @@ export class LocationNoteAttachmentsComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { isNew?: boolean; attachmentid?: any }) {
+  downloadDocumentFromDB(document: { isNew?: boolean; attachmentId?: any }) {
     this.spinner.show();
 
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentid)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
@@ -194,7 +194,7 @@ export class LocationNoteAttachmentsComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
@@ -202,17 +202,17 @@ export class LocationNoteAttachmentsComponent implements OnInit {
 
   downloadFile(companyDocument: {
     isNew?: boolean;
-    filename?: any;
-    attachmentid?: any;
+    fileName?: any;
+    attachmentId?: any;
   }) {
-    var index = companyDocument.filename.lastIndexOf('.');
-    var extension = companyDocument.filename.slice(index + 1);
+    var index = companyDocument.fileName.lastIndexOf('.');
+    var extension = companyDocument.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
       var wnd = window.open('about:blank');
       var pdfStr = `<div style="text-align:center">
     <h4>Pdf viewer</h4>
     <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-      companyDocument.attachmentid + '?access_token=' + this.authToken
+      companyDocument.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
       </div>
       <script>
@@ -249,7 +249,7 @@ export class LocationNoteAttachmentsComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
     <h4>Image Viewer</h4>
     <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-      companyDocument.attachmentid + '?access_token=' + this.authToken
+      companyDocument.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" >
       </div>`;
 
@@ -258,7 +258,7 @@ export class LocationNoteAttachmentsComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          companyDocument.attachmentid +
+          companyDocument.attachmentId +
           '?access_token=' +
           this.authToken
       );

@@ -34,13 +34,13 @@ export class EditcompanystatusComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.companyId = route.snapshot.params['q'];
-    console.log('companyid=' + this.companyId);
+    console.log('companyId=' + this.companyId);
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       console.log('compaanyid=' + this.companyId);
     });
   }
@@ -84,14 +84,14 @@ export class EditcompanystatusComponent implements OnInit {
       this.index = 2;
     } else {
       this.model = {
-        companyId: this.globalCompany.companyid,
+        companyId: this.globalCompany.companyId,
         lastModifiedBy: this.userName,
         destroyed: false,
         entityTypeId: 0,
         inService: false,
         spare: false,
         status: this.model.status,
-        statusId: this.model.statusid,
+        statusId: this.model.statusId,
         underRepair: false,
         moduleType: 'companytype',
         oldStatus: this.oldStatus,

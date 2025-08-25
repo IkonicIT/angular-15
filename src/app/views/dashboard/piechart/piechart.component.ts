@@ -99,7 +99,7 @@ export class PiechartComponent implements OnInit {
     { label: 'last two years', value: 2 },
   ];
   public params: any = {};
-  public companyid = 0;
+  public companyId = 0;
   public datePickerConfig: IDatePickerConfig = {
     showMultipleYearsNavigation: true,
   };
@@ -188,7 +188,7 @@ export class PiechartComponent implements OnInit {
     this.itemType = this.broadcasterService.currentItemType;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.userId = sessionStorage.getItem('userId');
-    this.companyid = this.broadcasterService.selectedCompanyId;
+    this.companyId = this.broadcasterService.selectedCompanyId;
     this.getData();
     this.repairFlag = 'false';
     this.selectedVal = 'count';
@@ -202,7 +202,7 @@ export class PiechartComponent implements OnInit {
         this.userId = sessionStorage.getItem('userId');
         this.flag = 0;
         this.highestRank = sessionStorage.getItem('highestRank');
-        this.companyid = parseInt(data);
+        this.companyId = parseInt(data);
         this.locationId = 0;
         this.typeId = 0;
         this.getData();
@@ -266,7 +266,7 @@ export class PiechartComponent implements OnInit {
 
     if (this.params.type == 'range') {
       var request = {
-        companyId: this.companyid,
+        companyId: this.companyId,
         locationId: this.locationId != null ? this.locationId : 0,
         failureType: type,
         isOwnerAdmin: this.isOwnerAdmin,
@@ -308,7 +308,7 @@ export class PiechartComponent implements OnInit {
       }
     } else {
       var req = {
-        companyId: this.companyid,
+        companyId: this.companyId,
         timeFrame: this.timeFrame,
         locationId: this.locationId != null ? this.locationId : 0,
         failureType: type,
@@ -355,7 +355,7 @@ export class PiechartComponent implements OnInit {
       this.spinner.show();
 
       this.companyDocumentsService
-        .getAllCompanyDocuments(this.companyid)
+        .getAllCompanyDocuments(this.companyId)
         .subscribe(
           (response) => {
             this.spinner.hide();
@@ -374,7 +374,7 @@ export class PiechartComponent implements OnInit {
       this.spinner.show();
 
       this.locationManagementService
-        .getAllLocationsWithHierarchy(this.companyid)
+        .getAllLocationsWithHierarchy(this.companyId)
         .subscribe((response) => {
           this.spinner.hide();
 
@@ -389,7 +389,7 @@ export class PiechartComponent implements OnInit {
       this.spinner.show();
 
       this.locationManagementService
-        .getAllLocationsWithHierarchyforUser(this.companyid, this.userId)
+        .getAllLocationsWithHierarchyforUser(this.companyId, this.userId)
         .subscribe((response) => {
           this.spinner.hide();
 
@@ -412,13 +412,13 @@ export class PiechartComponent implements OnInit {
   }
 
   getData() {
-    if (this.companyid == 0 || this.companyid == undefined) {
+    if (this.companyId == 0 || this.companyId == undefined) {
       return false;
     } else {
       this.spinner.show();
 
       this.dashboardService
-        .getRecentData(this.companyid, this.isOwnerAdmin, this.userId)
+        .getRecentData(this.companyId, this.isOwnerAdmin, this.userId)
         .subscribe((response: any) => {
           this.spinner.hide();
 
@@ -446,7 +446,7 @@ export class PiechartComponent implements OnInit {
   }
 
   getFailureTypes() {
-    if (this.companyid == 0 || this.companyid == undefined) {
+    if (this.companyId == 0 || this.companyId == undefined) {
       return false;
     }
 
@@ -474,7 +474,7 @@ export class PiechartComponent implements OnInit {
         this.spinner.show();
 
         var request = {
-          companyId: this.companyid,
+          companyId: this.companyId,
           locationId: this.locationId,
           timeFrame: this.timeFrame,
           isOwnerAdmin: this.isOwnerAdmin,
@@ -524,7 +524,7 @@ export class PiechartComponent implements OnInit {
     this.spinner.show();
 
     var req = {
-      companyId: this.companyid,
+      companyId: this.companyId,
       locationId: this.locationId != undefined ? this.locationId : 0,
       timeFrame: this.timeFrame,
       isOwnerAdmin: this.isOwnerAdmin,
@@ -660,7 +660,6 @@ export class PiechartComponent implements OnInit {
     document: {
       isNew?: number | boolean;
       attachmentId?: any;
-      attachmentid?: any;
     },
     flag: boolean
   ) {
@@ -668,7 +667,7 @@ export class PiechartComponent implements OnInit {
     if (flag == true) {
       attachmentId = document.attachmentId;
     } else if (flag == false) {
-      attachmentId = document.attachmentid;
+      attachmentId = document.attachmentId;
     }
     this.spinner.show();
 
@@ -687,7 +686,7 @@ export class PiechartComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
@@ -698,8 +697,8 @@ export class PiechartComponent implements OnInit {
       isNew?: number | boolean;
       fileName?: any;
       attachmentId?: any;
-      filename?: any;
-      attachmentid?: any;
+      
+  
     },
     flag: boolean
   ) {
@@ -711,9 +710,9 @@ export class PiechartComponent implements OnInit {
       extension = attachment.fileName.slice(index + 1);
       attachmentId = attachment.attachmentId;
     } else if (flag == false) {
-      index = attachment.filename.lastIndexOf('.');
-      extension = attachment.filename.slice(index + 1);
-      attachmentId = attachment.attachmentid;
+      index = attachment.fileName.lastIndexOf('.');
+      extension = attachment.fileName.slice(index + 1);
+      attachmentId = attachment.attachmentId;
     }
 
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
@@ -796,7 +795,7 @@ export class PiechartComponent implements OnInit {
 
     if (this.params.type == 'range') {
       var request = {
-        companyId: this.companyid,
+        companyId: this.companyId,
         locationId: this.locationId != null ? this.locationId : 0,
         failureType: this.failureType,
         failureCause: this.selectedFailureType,
@@ -825,7 +824,7 @@ export class PiechartComponent implements OnInit {
       }
     } else {
       var req = {
-        companyId: this.companyid,
+        companyId: this.companyId,
         timeFrame: this.timeFrame,
         locationId: this.locationId != null ? this.locationId : 0,
         failureType: this.failureType,
@@ -866,12 +865,12 @@ export class PiechartComponent implements OnInit {
     this.itemManagementService.setCompletedRepairs([]);
     this.itemManagementService.setInCompletedRepairs([]);
     this.itemManagementService.setViewAllRepairs({});
-    this.router.navigate(['/items/viewAllRepairs/' + this.companyid]);
+    this.router.navigate(['/items/viewAllRepairs/' + this.companyId]);
   }
 
   getAllItemTypes() {
     this.itemTypesService
-      .getAllItemTypesWithHierarchy(this.companyid)
+      .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.itemTypes = response;
         if (this.itemTypes && this.itemTypes.length > 0) {

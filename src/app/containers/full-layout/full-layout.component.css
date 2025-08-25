@@ -180,3 +180,16 @@ bs-tooltip-container {
 :host ::ng-deep .dropdown-toggle::after {
   display: none !important;
 }
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container {
+  top: 100% !important;
+  bottom: auto !important;
+  margin-top: 4px !important;
+}
+
+.side-bar-margin,
+.main,
+.col-12,
+.btn-group {
+  overflow: visible !important;
+}

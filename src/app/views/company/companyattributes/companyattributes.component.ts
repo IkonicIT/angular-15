@@ -87,8 +87,10 @@ export class CompanyattributesComponent implements OnInit {
     private _location: Location
   ) {
     this.typeId = parseInt(route.snapshot.params['id']);
+    console.log(this.typeId);
     this.companyType = this.typeId;
     this.companyId = route.snapshot.params['cmpId'];
+    console.log(this.companyId);
     //this.userName = this.broadcasterService.userName;
     this.router = router;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
@@ -319,11 +321,9 @@ export class CompanyattributesComponent implements OnInit {
         isRequiredForMatch: false,
         name: this.model.name,
         searchModifier: '',
-        searchType: {
-          attributeSearchTypeId: this.model.searchType
-            ? this.model.searchType.attributesearchTypeId
-            : 0,
-        },
+       searchType: this.model.searchType
+    ? { attributeSearchTypeId: this.model.searchType.attributeSearchTypeId }
+    : null,
         toolTip: this.model.toolTip,
         companyId: this.companyId,
         lastModifiedBy: this.userName,

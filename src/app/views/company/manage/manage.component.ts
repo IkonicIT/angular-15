@@ -174,8 +174,8 @@ export class ManageComponent implements OnInit {
     }
   }
 
-  goToAttachments(journalId: string, entityname: any) {
-    this.broadcasterService.currentNoteAttachmentTitle = entityname;
+  goToAttachments(journalId: string, entityName: any) {
+    this.broadcasterService.currentNoteAttachmentTitle = entityName;
     this.router.navigate([
       '/company/noteAttchments/' + journalId + '/' + journalId,
     ]);
@@ -272,11 +272,11 @@ export class ManageComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { attachmentID: any }) {
+  downloadDocumentFromDB(document: { attachmentId: any }) {
     this.spinner.show();
 
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentID)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
@@ -299,7 +299,7 @@ export class ManageComponent implements OnInit {
     window.open(fileURL);
   }
 
-  downloadFile(attachment: { fileName: any; attachmentID: string }) {
+  downloadFile(attachment: { fileName: any; attachmentId: string }) {
     var index = attachment.fileName.lastIndexOf('.');
     var extension = attachment.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
@@ -307,7 +307,7 @@ export class ManageComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
     <h4>Document viewer</h4>
     <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-      attachment.attachmentID + '?access_token=' + this.authToken
+      attachment.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
       </div>
       <script>
@@ -345,7 +345,7 @@ export class ManageComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
       <h4>Image Viewer</h4>
       <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentID + '?access_token=' + this.authToken
+        attachment.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" >
         </div>`;
 
@@ -354,7 +354,7 @@ export class ManageComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          attachment.attachmentID +
+          attachment.attachmentId +
           '?access_token=' +
           this.authToken
       );

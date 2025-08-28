@@ -141,22 +141,22 @@ export class NotesComponent implements OnInit {
     } else {
       this.model = {
         companyId: this.companyId,
-        effectiveon: this.model.effectiveon,
-        enteredby: this.userName,
-        enteredon: new Date(),
+        effectiveOn: this.model.effectiveon,
+        enteredBy: this.userName,
+        enteredOn: new Date(),
         entityId: this.itemId,
-        entityname: this.model.entityname,
+        entityName: this.model.entityname,
         entitytypeId: 0,
-        entityxml: '',
+        entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
-        journaltypeId: 0,
-        locationid: 0,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
+        jobNumber: this.model.jobnumber,
+        journalId: 0,
+        journalTypeId: 0,
+        locationId: 0,
+        locationName: '',
+        poNumber: this.model.ponumber,
+        shippingNumber: '',
+        trackingNumber: '',
         moduleType: 'itemtype',
         itemTypeName: this.itemType,
         itemTag: this.itemTag,
@@ -167,8 +167,8 @@ export class NotesComponent implements OnInit {
       this.itemNoteService.saveItemNote(this.model).subscribe(
         (response) => {
           this.model = response;
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
@@ -199,20 +199,20 @@ export class NotesComponent implements OnInit {
   }
 
   updateItemNotes() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.spinner.show();
 
       this.model.moduleType = 'itemtype';
-      this.model.effectiveon = new Date(this.model.effectiveon);
+      this.model.effectiveon = new Date(this.model.effectiveOn);
       this.model.itemTypeName = this.itemType;
       this.model.itemTag = this.itemTag;
       this.itemNotesService.updateItemNotes(this.model).subscribe(
         (response) => {
           this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
@@ -235,28 +235,28 @@ export class NotesComponent implements OnInit {
     }
   }
 
-  goToAttachments(journalid: string, entityname: any) {
-    this.broadcasterService.currentNoteAttachmentTitle = entityname;
+  goToAttachments(journalId: string, entityName: any) {
+    this.broadcasterService.currentNoteAttachmentTitle = entityName;
     this.router.navigate([
-      '/items/noteAttachments/' + journalid + '/' + this.itemId,
+      '/items/noteAttachments/' + journalId + '/' + this.itemId,
     ]);
   }
 
-  viewItemNotes(journalid: number) {
+  viewItemNotes(journalId: number) {
     this.viewFlag = true;
     this.newFlag = false;
     this.editFlag = false;
     this.helpFlag = false;
     this.spinner.show();
 
-    this.itemNotesService.getItemNotes(journalid).subscribe((response) => {
+    this.itemNotesService.getItemNotes(journalId).subscribe((response) => {
       this.spinner.hide();
 
       this.model = response;
-      if (this.model.effectiveon) {
-        this.model.effectiveon = new Date(this.model.effectiveon);
-        this.model.effectiveon = this.datepipe.transform(
-          this.model.effectiveon,
+      if (this.model.effectiveOn) {
+        this.model.effectiveOn = new Date(this.model.effectiveOn);
+        this.model.effectiveOn = this.datepipe.transform(
+          this.model.effectiveOn,
           'MM/dd/yyyy'
         );
       }
@@ -286,11 +286,11 @@ export class NotesComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { attachmentID: number }) {
+  downloadDocumentFromDB(document: { attachmentId: number }) {
     this.spinner.show();
 
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentID)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
@@ -320,7 +320,7 @@ export class NotesComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
       <h4>Pdf viewer</h4>
       <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentID + '?access_token=' + this.authToken
+        attachment.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
         </div>
         <script>
@@ -357,7 +357,7 @@ export class NotesComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
       <h4>Image Viewer</h4>
       <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentID + '?access_token=' + this.authToken
+        attachment.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" >
         </div>`;
 
@@ -366,7 +366,7 @@ export class NotesComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          attachment.attachmentID +
+          attachment.attachmentId +
           '?access_token=' +
           this.authToken
       );
@@ -404,7 +404,7 @@ export class NotesComponent implements OnInit {
 
     this.itemNotesService
       .removeItemNotes(
-        this.model.journalid,
+        this.model.journalId,
         this.userName,
         this.itemTag,
         this.itemType
@@ -417,7 +417,7 @@ export class NotesComponent implements OnInit {
           this.index = 4;
           this.refreshCall();
           this.model = [];
-          this.model.effectiveon = new Date();
+          this.model.effectiveOn = new Date();
           this.newFlag = true;
           this.editFlag = false;
           this.viewFlag = false;

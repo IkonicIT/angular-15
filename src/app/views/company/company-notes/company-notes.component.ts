@@ -120,21 +120,21 @@ export class CompanyNotesComponent implements OnInit {
     this.ngOnInit();
   }
 
-  viewCompanyNotes(notes: { journalid: any }) {
+  viewCompanyNotes(notes: { journalId: any }) {
     this.router.navigate(['/company/viewNotes/'], {
-      queryParams: { q: this.companyId, a: notes.journalid },
+      queryParams: { q: this.companyId, a: notes.journalId },
     });
   }
 
-  editCompanyNotes(notes: { journalid: any }) {
+  editCompanyNotes(notes: { journalId: any }) {
     this.router.navigate(['/company/editNotes/'], {
-      queryParams: { q: this.companyId, a: notes.journalid },
+      queryParams: { q: this.companyId, a: notes.journalId },
     });
   }
 
-  companyNoteAttachments(notes: { journalid: string }) {
+  companyNoteAttachments(notes: { journalId: string }) {
     this.router.navigate([
-      '/company/noteAttchments/' + notes.journalid + '/' + notes.journalid,
+      '/company/noteAttchments/' + notes.journalId + '/' + notes.journalId,
     ]);
   }
 

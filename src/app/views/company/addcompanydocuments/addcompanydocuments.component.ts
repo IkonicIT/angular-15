@@ -1,40 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { CompanyDocumentsService } from '../../../services/index';
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { CompanyDocumentsService } from '../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CompanyManagementService } from '../../../services/index';
-import { Company } from '../../..//models';
+import { CompanyManagementService } from '../../../services';
+import { Company } from '../../../models';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-addcompanydocuments',
   templateUrl: './addcompanydocuments.component.html',
   styleUrls: ['./addcompanydocuments.component.scss'],
 })
-export class AddcompanydocumentsComponent implements OnInit {
+export class AddcompanydocumentsComponent implements OnInit, OnChanges {
   model: any = {};
-  index: number = 0;
+  index = 0;
   date = Date.now();
   attachmentMulReq: any = {};
-  attachmentsList = [];
-  companyId: number = 0;
-  companyName: string;
-  private sub: any;
-  id: number;
-  router: Router;
-  addedfiles: any = [];
-  private fileContent: string = '';
-  private fileName: any;
-  public fileType: any = '';
-  public file: File;
+  attachmentsList: any[] = [];
+  companyId = 0;
+  companyName = '';
+  private sub?: Subscription;
+  id = 0;
+  addedfiles: any[] = [];
+  private fileContent = '';
+  private fileName = '';
+  public fileType = '';
+  public file?: File;
   globalCompany: any;
-  userName: any;
-  helpFlag: any = false;
+  userName: string | null = null;
+  helpFlag = false;
   loader = false;
 
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
@@ -44,10 +44,9 @@ export class AddcompanydocumentsComponent implements OnInit {
       this.companyId = value.companyId;
     });
     console.log('compaanyid=' + this.companyId);
-    this.router = router;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
 
     this.sub = this.route.queryParams.subscribe((params) => {
@@ -58,119 +57,120 @@ export class AddcompanydocumentsComponent implements OnInit {
     console.log('companyi=' + this.companyId);
     this.addedfiles.push({ file: '', description: '' });
   }
-  ngOnChanges() {
-    console.log(this.addedfiles + 'addedfiles');
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.addedfiles, 'addedfiles');
   }
 
-  saveCompanyDocument() {
-    var noFileChosen = true;
-    var addedFiles = this.addedfiles;
-    addedFiles.forEach(function (element: { attachmentFile: undefined }) {
+  saveCompanyDocument(): void {
+    let noFileChosen = true;
+    this.addedfiles.forEach((element) => {
       if (element.attachmentFile === undefined) {
         noFileChosen = false;
       }
     });
+
     if (!noFileChosen) {
       this.index = -1;
       window.scroll(0, 0);
-    } else {
-      const formdata: FormData = new FormData();
-      formdata.append('file', this.file);
-      formdata.append('addedBy', this.userName);
-      formdata.append('companyId', JSON.stringify(this.companyId));
-      formdata.append(
-        'description',
-        this.model.description ? this.model.description : ''
-      );
-      formdata.append('entityId', JSON.stringify(this.companyId));
-      formdata.append('moduleType', 'companyType');
-      var jsonArr = this.addedfiles;
-      for (var i = 0; i < jsonArr.length; i++) {
-        delete jsonArr[i]['file'];
-      }
-      console.log(jsonArr);
-      var req = {
-        attachmentResourceList: jsonArr,
-        attachmentUserLogDTO: {},
-      };
-      this.spinner.show();
-
-      this.companyDocumentsService.saveCompanyMultipleDocuments(req).subscribe(
-        (response) => {
-          this.spinner.hide();
-
-          window.scroll(0, 0);
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-          this.router.navigate(['/company/documents/']);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+      return;
     }
+
+    const formdata: FormData = new FormData();
+    if (this.file) {
+      formdata.append('file', this.file);
+    }
+    formdata.append('addedBy', this.userName || '');
+    formdata.append('companyId', JSON.stringify(this.companyId));
+    formdata.append(
+      'description',
+      this.model.description ? this.model.description : ''
+    );
+    formdata.append('entityId', JSON.stringify(this.companyId));
+    formdata.append('moduleType', 'companyType');
+
+    const jsonArr = this.addedfiles.map((f) => {
+      const { file, ...rest } = f; // remove 'file' key
+      return rest;
+    });
+
+    const req = {
+      attachmentResourceList: jsonArr,
+      attachmentUserLogDTO: {},
+    };
+
+    this.spinner.show();
+    this.companyDocumentsService.saveCompanyMultipleDocuments(req).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        window.scroll(0, 0);
+        this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+        this.router.navigate(['/company/documents/']);
+      },
+      (error) => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  cancelCompanyDocument() {
+  cancelCompanyDocument(): void {
     this.router.navigate(['/company/documents/' + this.companyId]);
   }
 
-  fileChangeListener(
-    $event: { target: any },
-    fileIndex: string | number
-  ): void {
-    console.log(this.addedfiles);
-
-    this.readThis($event.target, fileIndex);
+  fileChangeListener($event: Event, fileIndex: number): void {
+    const input = $event.target as HTMLInputElement;
+    if (input) {
+      this.readThis(input, fileIndex);
+    }
   }
 
-  remove(i: number) {
+  remove(i: number): void {
     this.addedfiles.splice(i, 1);
   }
 
-  addNewAttachment() {
+  addNewAttachment(): void {
     this.index = 0;
     this.addedfiles.push({ file: '', description: '' });
   }
 
-  readThis(inputValue: any, fileIndex: string | number): void {
+  private readThis(inputValue: HTMLInputElement, fileIndex: number): void {
     if (inputValue.files && inputValue.files[0]) {
       this.file = inputValue.files[0];
       this.fileName = this.file.name;
 
-      var myReader: any = new FileReader();
+      const myReader = new FileReader();
       myReader.readAsDataURL(this.file);
-      myReader.onloadend = (e: any) => {
-        console.log(myReader.result);
-        this.fileContent = myReader.result.split(',')[1];
-        this.fileType = myReader.result
-          .split(',')[0]
-          .split(':')[1]
-          .split(';')[0];
-        const fileInfo = this.addedfiles[fileIndex];
-        fileInfo['addedBy'] = this.userName;
-        fileInfo['attachmentFile'] = this.fileContent;
-        fileInfo['attachmentId'] = 0;
-        fileInfo['companyId'] = this.companyId;
-        fileInfo['contentType'] = this.fileType;
-        fileInfo['dateAdded'] = new Date().toISOString();
-        fileInfo['entityId'] = this.companyId;
-        fileInfo['isNew'] = 1;
-        fileInfo['moduleType'] = 'companytype';
-        fileInfo['fileName'] = this.fileName;
-        console.log(this.addedfiles);
+      myReader.onloadend = () => {
+        if (myReader.result) {
+          this.fileContent = (myReader.result as string).split(',')[1];
+          this.fileType = (myReader.result as string)
+            .split(',')[0]
+            .split(':')[1]
+            .split(';')[0];
+
+          const fileInfo = this.addedfiles[fileIndex];
+          fileInfo['addedBy'] = this.userName;
+          fileInfo['attachmentFile'] = this.fileContent;
+          fileInfo['attachmentId'] = 0;
+          fileInfo['companyId'] = this.companyId;
+          fileInfo['contentType'] = this.fileType;
+          fileInfo['dateAdded'] = new Date().toISOString();
+          fileInfo['entityId'] = this.companyId;
+          fileInfo['isNew'] = 1;
+          fileInfo['moduleType'] = 'companytype';
+          fileInfo['fileName'] = this.fileName;
+        }
       };
     }
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

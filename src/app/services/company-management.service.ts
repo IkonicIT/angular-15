@@ -6,6 +6,8 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AppConfiguration } from '../configuration';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Company } from '../models';
 
 @Injectable()
 export class CompanyManagementService {
@@ -122,11 +124,11 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getAllCompanyDetails() {
-    return this.http
-      .get(AppConfiguration.companyRestURL + 'getAllCompanies')
-      .pipe(catchError(this.handleError));
-  }
+getAllCompanyDetails(): Observable<Company[]> {
+  return this.http
+    .get<Company[]>(AppConfiguration.companyRestURL + 'getAllCompanies')
+    .pipe(catchError(this.handleError));
+}
 
   getCompanyNames(userId: string) {
     return this.http

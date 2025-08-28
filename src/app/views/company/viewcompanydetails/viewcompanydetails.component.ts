@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { CompanyManagementService } from '../../../services/index';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Company } from '../../../models/index';
+import { Location } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
+
+import { CompanyManagementService } from '../../../services/index';
 import { CompanyStatusesService } from '../../../services/company-statuses.service';
 import { CompanyTypesService } from '../../../services/company-types.service';
-import { Location } from '@angular/common';
 import { BroadcasterService } from '../../../services/broadcaster.service';
+
 @Component({
   selector: 'app-viewcompanydetails',
   templateUrl: './viewcompanydetails.component.html',
@@ -21,86 +22,95 @@ export class ViewcompanydetailsComponent implements OnInit {
     type: {},
   };
   index: number = 0;
-  router: Router;
   statuses: any[] = [];
-  companyTypes: any = [];
-  isOwnerAdmin: any;
-  loader = false;
-  helpFlag: any = false;
+  companyTypes: any[] = [];
+  isOwnerAdmin: string | null = null;
+  loader: boolean = false;
+  helpFlag: boolean = false;
+
   constructor(
     private companyManagementService: CompanyManagementService,
-    route: ActivatedRoute,
-    router: Router,
+    private route: ActivatedRoute,
+    private router: Router,
     private companyStatusesService: CompanyStatusesService,
     private companyTypesService: CompanyTypesService,
     private spinner: NgxSpinnerService,
-    private _location: Location,
+    private location: Location,
     private broadcasterService: BroadcasterService
   ) {
-    this.companyId = route.snapshot.params['id'];
-    this.router = router;
+    this.companyId = this.route.snapshot.params['id'];
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.spinner.show();
 
     this.companyManagementService.getCompanyDetails(this.companyId).subscribe(
-      (response) => {
+      (response: any) => {
         this.model = response;
-        if (this.isOwnerAdmin == 'true') {
-          this.model.tracratAnnouncements =
-            this.broadcasterService.tracratAnnouncement;
+
+        if (this.isOwnerAdmin === 'true') {
+          this.model.tracratAnnouncements = this.broadcasterService.tracratAnnouncement;
         }
-        this.companyStatusesService
-          .getAllCompanyStatuses(this.companyId)
-          .subscribe((response: any) => {
-            this.statuses = response;
+
+        this.companyStatusesService.getAllCompanyStatuses(this.companyId).subscribe(
+          (statuses: any) => {
+            this.statuses = statuses;
             this.getAllTypes(this.companyId);
-          });
+          },
+          () => {
+            this.spinner.hide();
+          }
+        );
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  getAllTypes(companyId: string) {
+  getAllTypes(companyId: string): void {
     this.companyTypesService.getAllCompanyTypes(companyId).subscribe(
-      (response) => {
+      (response: any) => {
         this.companyTypes = response;
         this.spinner.hide();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
-  saveMessage() {
-    var req = {
+
+  saveMessage(): void {
+    const req = {
       announcementDate: new Date().toISOString(),
       announcementId: 3,
-      announcementText: this.model.tracratAnnouncements
-        ? this.model.tracratAnnouncements
-        : '',
+      announcementText: this.model.tracratAnnouncements || '',
       companyId: -1,
     };
+
     this.spinner.show();
 
-    this.companyManagementService
-      .saveTracratAnnouncements(req)
-      .subscribe((response) => {
+    this.companyManagementService.saveTracratAnnouncements(req).subscribe(
+      () => {
         this.spinner.hide();
-      });
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
-  cancelCompanyDetails() {
-    this._location.back();
+
+  cancelCompanyDetails(): void {
+    this.location.back();
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

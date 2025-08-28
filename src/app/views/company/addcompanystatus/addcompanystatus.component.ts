@@ -1,55 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompanyStatusesService } from '../../../services/index';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-addcompanystatus',
   templateUrl: './addcompanystatus.component.html',
   styleUrls: ['./addcompanystatus.component.scss'],
 })
-export class AddcompanystatusComponent implements OnInit {
+export class AddcompanystatusComponent implements OnInit, OnDestroy {
   model: any = {};
-  index: number = 0;
+  index = 0;
   date = Date.now();
-  companyId: number;
-  private sub: any;
-  id: number;
-  router: Router;
+  companyId!: number;
+  private sub!: Subscription;
+  id!: number;
   globalCompany: any = {};
-  length: any = 0;
-  userName: any;
-  helpFlag: any = false;
+  length = 0;
+  userName = '';
+  helpFlag = false;
   dismissible = true;
   loader = false;
+
   constructor(
     private companyStatusesService: CompanyStatusesService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
-      this.globalCompany = value;
-      this.companyId = this.globalCompany.companyId;
-      console.log('compaanyid=' + this.companyId);
-    });
+    this.sub = this.companyManagementService.globalCompanyChange.subscribe(
+      (value) => {
+        this.globalCompany = value;
+        this.companyId = this.globalCompany.companyId;
+        console.log('companyId = ' + this.companyId);
+      }
+    );
   }
 
-  ngOnInit() {
-    this.userName = sessionStorage.getItem('userName');
+  ngOnInit(): void {
+    this.userName = sessionStorage.getItem('userName') ?? '';
   }
 
-  saveStatus() {
-    if (this.model.status != undefined) {
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
+  saveStatus(): void {
+    if (this.model.status !== undefined) {
       this.model.status = this.model.status.trim();
       this.length = this.model.status.length;
       console.log(this.length);
     }
-    if (this.model.status == undefined || this.model.status == '') {
+
+    if (this.model.status === undefined || this.model.status === '') {
       this.index = -1;
       window.scroll(0, 0);
     } else if (this.length > 100) {
@@ -70,10 +79,9 @@ export class AddcompanystatusComponent implements OnInit {
       console.log(JSON.stringify(this.model));
       this.spinner.show();
 
-      this.companyStatusesService.saveCompanyStatus(this.model).subscribe(
-        (response) => {
+      this.companyStatusesService.saveCompanyStatus(this.model).subscribe({
+        next: () => {
           this.spinner.hide();
-
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -81,19 +89,18 @@ export class AddcompanystatusComponent implements OnInit {
             this.router.navigate(['/company/statuses']);
           }, 1000);
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-
-        }
-      );
+        },
+      });
     }
   }
 
-  cancelAddStatus() {
+  cancelAddStatus(): void {
     this.router.navigate(['/company/statuses']);
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

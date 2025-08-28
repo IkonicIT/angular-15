@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyManagementService } from '../../../services/index';
 import { CompanyStatusesService } from '../../../services/index';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addcompanydetails',
@@ -12,17 +12,17 @@ import { Router } from '@angular/router';
 export class AddcompanydetailsComponent implements OnInit {
   model: any = {};
   index: number = 0;
-  statuses: any = [];
+  statuses: any[] = [];
   globalCompany: any = {};
 
-  companyId: any;
-  userName: any;
+  companyId: number | null = null;
+  userName: string | null = null;
   companyList: any[] = [];
   isDuplicateTag = false;
-  file: File;
+  file?: File;
   dismissible = true;
-  helpFlag: any = false;
-  highestRank: any;
+  helpFlag = false;
+  highestRank: number = 0;
   loader = false;
 
   constructor(
@@ -32,164 +32,167 @@ export class AddcompanydetailsComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
-    this.highestRank = parseInt(sessionStorage.getItem("highestRank") || "0", 10);
+    this.highestRank = parseInt(sessionStorage.getItem('highestRank') || '0', 10);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyId;
-    //this.getStatuses()
+    this.companyId = this.globalCompany?.companyId ?? null;
+    // this.getStatuses();
   }
 
-  getStatuses() {
+  getStatuses(): void {
     this.spinner.show();
-
     this.statuses = [];
+    if(this.companyId != null){
     this.companyStatusesService.getAllCompanyStatuses(this.companyId).subscribe(
-      (response) => {
+      (response: any) => {
         this.spinner.hide();
-
         console.log(response);
         this.statuses = response;
       },
-      (error) => {
+      () => {
+        this.spinner.hide();
+      }
+    );
+  }
+}
+
+  back(): void {
+    this.router.navigate(['/company/list']);
+  }
+
+  saveCompany(): void {
+    if (!this.model.name) {
+      this.index = -1;
+      window.scroll(0, 0);
+      return;
+    }
+
+    this.checkCompanyName(this.model.name);
+
+    if (this.isDuplicateTag) {
+      this.index = -2;
+      window.scroll(0, 0);
+      return;
+    }
+
+    this.model = {
+      address1: this.model.address1 || '',
+      address2: this.model.address2 || '',
+      announcement: {
+        announcementDate: new Date().toISOString(),
+        announcementId: 0,
+        announcementText: this.model.companyAnnouncements || '',
+        company: {},
+      },
+      city: this.model.city || '',
+      companyContentType: this.model.companycontentType || '',
+      companyFileName: this.model.companyfileName || '',
+      logo: this.model.logo || '',
+      companyId: 0,
+      userId: sessionStorage.getItem('userId'),
+      description: this.model.description || '',
+      fax: this.model.fax || '',
+      isSandbox: true,
+      lastModifiedBy: this.userName,
+      name: this.model.name,
+      parentCompanyId: 0,
+      phone: this.model.phone || '',
+      postalCode: this.model.postalCode || '',
+      state: this.model.state || '',
+      statusId: 0,
+      supplyLevelWarning: true,
+      type: {
+        attributeSearchDisplay: 0,
+        description: '',
+        entityTypeId: 0,
+        hostingFee: 0,
+        isHidden: true,
+        lastModifiedBy: '',
+        name: this.model.primaryContactName || '',
+        parentId: 0,
+        typeId: 0,
+        typemTbs: 0,
+        typeSpareRatio: 0,
+      },
+      url: this.model.url || '',
+      vendor: false,
+      isPartnerCompany: this.model.isPartnerCompany ? true : false,
+    };
+
+    this.spinner.show();
+    console.log(this.model);
+
+    this.companyManagementService.saveCompany(this.model).subscribe(
+      (response: any) => {
+        this.companyId = response.companyId;
+        this.spinner.hide();
+
+        window.scroll(0, 0);
+       if (this.file && this.companyId !== null) {
+          this.AddCompanyLogo(this.companyId.toString());
+        }
+        alert('Company successfully Added, Refreshing List');
+        this.companyManagementService.setCompaniesListModified(true);
+      },
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  back() {
-    this.router.navigate(['/company/list']);
-  }
+  AddCompanyLogo(companyId: string): void {
+    if (!this.file) return;
 
-  saveCompany() {
-    if (this.model.name == undefined || this.model.name == '') {
-      this.index = -1;
-      window.scroll(0, 0);
-    } else {
-      this.checkCompanyName(this.model.name);
-      if (this.isDuplicateTag == true) {
-        this.index = -2;
-        window.scroll(0, 0);
-      } else {
-        this.model = {
-          address1: this.model.address1 ? this.model.address1 : '',
-          address2: this.model.address2 ? this.model.address2 : '',
-          announcement: {
-            announcementDate: new Date().toISOString(),
-            announcementId: 0,
-            announcementText: this.model.companyAnnouncements
-              ? this.model.companyAnnouncements
-              : '',
-            company: {},
-          },
-          city: this.model.city ? this.model.city : '',
-          companyContentType: this.model.companycontentType
-            ? this.model.companycontentType
-            : '',
-          companyFileName: this.model.companyfileName
-            ? this.model.companyfileName
-            : '',
-          logo: this.model.logo ? this.model.logo : '',
-          companyId: 0,
-          userId: sessionStorage.getItem('userId'),
-          description: this.model.description ? this.model.description : '',
-          fax: this.model.fax ? this.model.fax : '',
-          isSandbox: true,
-          lastModifiedBy: this.userName,
-          name: this.model.name,
-          parentCompanyId: 0,
-          phone: this.model.phone ? this.model.phone : '',
-          postalCode: this.model.postalCode ? this.model.postalCode : '',
-          state: this.model.state ? this.model.state : '',
-          statusId: 0,
-          supplyLevelWarning: true,
-          type: {
-            attributeSearchDisplay: 0,
-            description: '',
-            entityTypeId: 0,
-            hostingFee: 0,
-            isHidden: true,
-            lastModifiedBy: '',
-            name: this.model.primaryContactName
-              ? this.model.primaryContactName
-              : '',
-            parentId: 0,
-            typeId: 0,
-            typemTbs: 0,
-            typeSpareRatio: 0,
-          },
-          url: this.model.url ? this.model.url : '',
-          vendor: false,
-          isPartnerCompany: this.model.isPartnerCompany ? true : false
-        };
-        this.spinner.show();
-        console.log(this.model);
-        this.companyManagementService.saveCompany(this.model).subscribe(
-          (response: any) => {
-            this.companyId = response.companyId;
-            this.spinner.hide();
-
-            window.scroll(0, 0);
-            if (this.file != null) {
-              this.AddCompanyLogo(this.companyId);
-            }
-            alert('Company successfully Added,Refreshing List');
-            this.companyManagementService.setCompaniesListModified(true);
-          },
-          (error) => {
-            this.spinner.hide();
-          }
-        );
-      }
-    }
-  }
-
-  AddCompanyLogo(companyId: string) {
     const formdata: FormData = new FormData();
     formdata.append('file', this.file);
-    this.companyManagementService
-      .saveLogo(formdata, companyId)
-      .subscribe((response) => {
-        this.spinner.hide();
-      });
+
+    this.companyManagementService.saveLogo(formdata, companyId).subscribe(() => {
+      this.spinner.hide();
+    });
   }
 
-  checkCompanyName(name: string) {
+  checkCompanyName(name: string): void {
     this.isDuplicateTag = false;
     this.companyList = this.companyManagementService.getGlobalCompanyList();
     this.companyList.forEach((company) => {
-      if (company.name.toLowerCase() == name.toLowerCase()) {
+      if (company.name.toLowerCase() === name.toLowerCase()) {
         this.isDuplicateTag = true;
       }
     });
   }
 
-  fileChangeListener($event: { target: any }): void {
-    this.readThis($event.target);
+  fileChangeListener($event: Event): void {
+    const input = $event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      this.readThis(input);
+    }
   }
 
-  readThis(inputValue: any): void {
+  readThis(inputValue: HTMLInputElement): void {
+    if (!inputValue.files || inputValue.files.length === 0) return;
+
     this.file = inputValue.files[0];
-    var myReader: any = new FileReader();
+    const myReader = new FileReader();
+
     myReader.readAsDataURL(this.file);
-    var self = this;
-    myReader.onloadend = function (e: any) {
-      console.log(myReader.result);
-      self.model.logo = myReader.result.split(',')[1];
-      self.model.companycontentType = myReader.result
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0];
-      self.model.companyfileName = self.file.name;
+
+    myReader.onloadend = () => {
+      if (typeof myReader.result === 'string') {
+        console.log(myReader.result);
+        this.model.logo = myReader.result.split(',')[1];
+        this.model.companycontentType = myReader.result.split(',')[0].split(':')[1].split(';')[0];
+        this.model.companyfileName = this.file?.name;
+      }
     };
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

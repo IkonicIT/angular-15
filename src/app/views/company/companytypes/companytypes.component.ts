@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyTypesService } from '../../../services/index';
-import { TemplateRef, SecurityContext } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CompanyManagementService } from '../../../services/index';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 
 @Component({
   selector: 'app-companytypes',
@@ -14,37 +11,34 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
   styleUrls: ['./companytypes.component.scss'],
 })
 export class CompanytypesComponent implements OnInit {
-  companyId: string;
+  companyId!: string;
   model: any;
   index: string = 'companytype';
-  types: any = [];
-  router: Router;
-  message: string;
-  modalRef: BsModalRef;
+  types: any[] = [];
+  message: string = '';
+  modalRef!: BsModalRef;
   companyName: string = '';
   order: string = 'nameOfType';
   reverse: string = '';
   companyTypeFilter: any = '';
-  itemsForPagination: any = 5;
+  itemsForPagination: number = 5;
   globalCompany: any;
   currentRole: any;
   highestRank: any;
-  helpFlag: any = false;
+  helpFlag: boolean = false;
   userName: any;
-  p: any;
+  p: number = 1;
   loader = false;
 
   constructor(
     private modalService: BsModalService,
     private companyTypesService: CompanyTypesService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.companyId = route.snapshot.params['id'];
-    this.router = router;
-    console.log('companuyid=' + this.companyId);
+    this.companyId = this.route.snapshot.params['id'];
     if (this.companyId) {
       this.getAllTypes(this.companyId);
     } else {
@@ -60,58 +54,57 @@ export class CompanytypesComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    console.log('currentRole is ' + this.currentRole);
+    console.log('highestRank is ' + this.highestRank);
   }
 
-  getAllTypes(companyId: string) {
+  getAllTypes(companyId: string): void {
     this.spinner.show();
-
     this.types = [];
     this.companyTypesService.getAllCompanyTypes(companyId).subscribe(
-      (response) => {
+      (response: any[]) => {
         this.spinner.hide();
-
         this.types = response;
         console.log(response);
-        this.types.forEach((type: { parentId: string }) => {
+        this.types.forEach((type: { parentId?: string }) => {
           if (!type.parentId) {
             type.parentId = 'Top Level';
           }
         });
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  openModal(template: TemplateRef<any>, id: string) {
+  openModal(template: TemplateRef<any>, id: string): void {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  closeFirstModal() {
-    this.modalRef.hide();
-    // this.modalRef = null;
+  closeFirstModal(): void {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
   }
 
-  addCompanyType() {
+  addCompanyType(): void {
     this.router.navigate(['/company/addCompanyType/'], {
       queryParams: { q: this.companyId },
     });
   }
 
-  editCompanyType(company: any) {
+  editCompanyType(company: any): void {
     this.router.navigate(['/company/editCompanyType/'], {
       queryParams: { q: this.companyId, a: company.typeId },
     });
   }
 
-  gotoAttributesForType(companyType: any) {
+  gotoAttributesForType(companyType: any): void {
     this.router.navigate([
       '/company/attributes/' + companyType.typeId + '/' + this.companyId,
     ]);
@@ -120,16 +113,15 @@ export class CompanytypesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-
     this.userName = sessionStorage.getItem('userName');
     this.companyTypesService
       .removeCompanyType(this.index, this.userName)
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-
           this.modalRef.hide();
           this.getAllTypes(this.companyId);
+
           const currentPage = this.p;
           const typesCount = this.types.length - 1;
           const maxPageAvailable = Math.ceil(
@@ -139,7 +131,7 @@ export class CompanytypesComponent implements OnInit {
             this.p = maxPageAvailable;
           }
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -150,26 +142,23 @@ export class CompanytypesComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  setOrder(value: string) {
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e: any) {
+  onChange(e: any): void {
     const currentPage = this.p;
     const typesCount = this.types.length;
     const maxPageAvailable = Math.ceil(typesCount / this.itemsForPagination);

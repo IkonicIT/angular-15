@@ -1,188 +1,171 @@
-import { Component, OnInit } from '@angular/core';
-import { CompanyTypesService } from '../../../services/index';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Company } from '../../../models';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
+
+import { CompanyTypesService } from '../../../services/index';
+import { Company } from '../../../models';
 
 @Component({
   selector: 'app-edit-company-type',
   templateUrl: './edit-company-type.component.html',
   styleUrls: ['./edit-company-type.component.scss'],
 })
-export class EditCompanyTypeComponent implements OnInit {
+export class EditCompanyTypeComponent implements OnInit, OnDestroy {
   model: any = {
     parentId: {
       typeId: 0,
     },
   };
-  index: number = 0;
-  companyId: number = 0;
-  typeId: number = 0;
-  private sub: any;
-  id: number;
-  router: Router;
-  cmpTypes: any = [];
-  value: any;
-  items: TreeviewItem[];
+  index = 0;
+  companyId = 0;
+  typeId = 0;
+  private sub: Subscription = new Subscription();
+  id!: number;
+  cmpTypes: any[] = [];
+  value: number | null = null;
+  items: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  userName: any;
-  helpFlag: any = false;
+  userName: string | null = null;
+  helpFlag = false;
   dismissible = true;
   loader = false;
 
   constructor(
     private companyTypesService: CompanyTypesService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.companyId = route.snapshot.params['id'];
-    console.log('compaanyid=' + this.companyId);
-    this.router = router;
+    this.companyId = Number(this.route.snapshot.params['id']);
+    console.log('companyId=', this.companyId);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
-    this.sub = this.route.queryParams.subscribe((params) => {
-      this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
-    });
-    this.sub = this.route.queryParams.subscribe((params) => {
-      this.typeId = +params['a'] || 0;
-      console.log('Query params ', this.typeId);
-    });
+
+    // Subscribe to query params
+    this.sub.add(
+      this.route.queryParams.subscribe((params) => {
+        this.companyId = +params['q'] || 0;
+        this.typeId = +params['a'] || 0;
+        console.log('Query params companyId:', this.companyId, 'typeId:', this.typeId);
+      })
+    );
+
     this.spinner.show();
 
-    this.companyTypesService.getCompanyType(this.typeId).subscribe(
-      (response) => {
+    this.companyTypesService.getCompanyType(this.typeId).subscribe({
+      next: (response) => {
         this.model = response;
         if (!this.model.parentId) {
-          this.model.parentId = {
-            typeId: 0,
-          };
+          this.model.parentId = { typeId: 0 };
         } else {
           this.value = this.model.parentId.typeId;
         }
         this.getAllTypes();
       },
-      (error) => {
+      error: () => {
         this.spinner.hide();
-      }
-    );
+      },
+    });
   }
 
-  getAllTypes() {
-    this.spinner.show();
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 
+  getAllTypes(): void {
+    this.spinner.show();
     this.companyTypesService
       .getAllCompanyTypesWithHierarchy(this.companyId)
-      .subscribe(
-        (response) => {
+      .subscribe({
+        next: (response: any[]) => {
           this.spinner.hide();
-
           this.cmpTypes = response;
-          var self = this;
-          if (this.cmpTypes && this.cmpTypes.length > 0) {
-            self.items = this.generateHierarchy(this.cmpTypes);
+          if (this.cmpTypes?.length > 0) {
+            this.items = this.generateHierarchy(this.cmpTypes);
           }
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-        }
-      );
+        },
+      });
   }
 
-  generateHierarchy(typeList: any[]) {
-    var items: any = [];
-    typeList.forEach((type) => {
-      var children = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeId,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchy(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children =
+        type.typeList && type.typeList.length > 0
+          ? this.generateHierarchy(type.typeList)
+          : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children: children,
+      });
     });
-    return items;
   }
 
-  onValueChange(value: any) {
+  onValueChange(value: number): void {
     console.log(value);
   }
 
-  updateCompanyType() {
-    if (
-      this.model.name === undefined ||
-      this.model.name === '' ||
-      this.value == this.typeId
-    ) {
-      this.index = -1;
-      if (this.value == this.typeId) {
-        this.index = -2;
-      }
-
+  updateCompanyType(): void {
+    if (!this.model.name || this.value === this.typeId) {
+      this.index = this.value === this.typeId ? -2 : -1;
       window.scroll(0, 0);
-    } else {
-      var request = {
-        attributeSearchDisplay: 0,
-        company: {
-          companyId: this.companyId,
-        },
-        description: this.model.description,
-        entityTypeId: this.model.entitytypeId,
-        hostingFee: this.model.hostingFee,
-        isHidden: true,
-        lastModifiedBy: this.userName,
-        moduleType: 'companytype',
-        name: this.model.name,
-        parentId: {
-          typeId: this.value ? this.value : 0,
-        },
-        typeList: this.model.typeList,
-        typeId: this.typeId,
-        typeMtbs: 0,
-        typeSpareRatio: 0,
-        // moduletype: 'companytype',
-      };
-      this.spinner.show();
-
-      this.companyTypesService
-        .updateCompanyType(this.typeId, request)
-        .subscribe(
-          (response) => {
-            this.spinner.hide();
-
-            this.index = 1;
-            setTimeout(() => {
-              this.index = 0;
-            }, 7000);
-            window.scroll(0, 0);
-            this.router.navigate(['/company/types/' + this.companyId]);
-          },
-          (error) => {
-            this.spinner.hide();
-          }
-        );
+      return;
     }
-  }
-  cancelCompanyDocument() {
-    this.router.navigate(['/company/types/' + this.companyId]);
+
+    const request = {
+      attributeSearchDisplay: 0,
+      company: { companyId: this.companyId },
+      description: this.model.description,
+      entityTypeId: this.model.entitytypeId,
+      hostingFee: this.model.hostingFee,
+      isHidden: true,
+      lastModifiedBy: this.userName,
+      moduleType: 'companytype',
+      name: this.model.name,
+      parentId: { typeId: this.value ?? 0 },
+      typeList: this.model.typeList,
+      typeId: this.typeId,
+      typeMtbs: 0,
+      typeSpareRatio: 0,
+    };
+
+    this.spinner.show();
+
+    this.companyTypesService.updateCompanyType(this.typeId, request).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+        window.scroll(0, 0);
+        this.router.navigate(['/company/types', this.companyId]);
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
   }
 
-  print() {
+  cancelCompanyDocument(): void {
+    this.router.navigate(['/company/types', this.companyId]);
+  }
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

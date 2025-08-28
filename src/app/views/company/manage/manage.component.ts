@@ -33,7 +33,7 @@ export class ManageComponent implements OnInit {
   currentRole: any;
   highestRank: any;
   dismissible = true;
-  journalid: number = 0;
+  journalId: number = 0;
   private sub: any;
   id: number;
   router: Router;
@@ -90,13 +90,14 @@ export class ManageComponent implements OnInit {
     console.log('highestRank is' + this.highestRank);
     this.model.date = new Date();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   getAllNotes(companyId: string) {
     this.spinner.show();
 
     this.companynotesService.getAllCompanyNotess(companyId).subscribe(
+
       (response: any) => {
         this.spinner.hide();
 
@@ -115,32 +116,32 @@ export class ManageComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   saveCompanyNote() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index1 = -1;
       window.scroll(0, 0);
     } else {
       this.model = {
         companyId: this.companyId,
-        effectiveon: this.model.effectiveon,
-        enteredby: this.userName,
-        enteredon: new Date(),
+        effectiveOn: this.model.effectiveOn,
+        enteredBy: this.userName,
+        enteredOn: new Date(),
         entityId: this.companyId,
-        entityname: this.model.entityname,
-        entitytypeId: 0,
-        entityxml: '',
+        entityName: this.model.entityName,
+        entityTypeId: 0,
+        entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
-        journaltypeId: 0,
-        locationid: 0,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
+        jobNumber: this.model.jobNumber,
+        journalId: 0,
+        journalTypeId: 0,
+        locationId: 0,
+        locationName: '',
+        poNumber: this.model.poNumber,
+        shippingNumber: '',
+        trackingNumber: '',
         moduleType: 'companytype',
       };
       console.log(JSON.stringify(this.model));
@@ -149,8 +150,8 @@ export class ManageComponent implements OnInit {
       this.companynotesService.saveCompanynotes(this.model).subscribe(
         (response: any) => {
           this.model = response;
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
@@ -173,10 +174,10 @@ export class ManageComponent implements OnInit {
     }
   }
 
-  goToAttachments(journalid: string, entityname: any) {
+  goToAttachments(journalId: string, entityname: any) {
     this.broadcasterService.currentNoteAttachmentTitle = entityname;
     this.router.navigate([
-      '/company/noteAttchments/' + journalid + '/' + journalid,
+      '/company/noteAttchments/' + journalId + '/' + journalId,
     ]);
   }
 
@@ -188,18 +189,18 @@ export class ManageComponent implements OnInit {
   }
 
   updateCompanyNotes() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index1 = -1;
       window.scroll(0, 0);
     } else {
       this.spinner.show();
 
       this.model.moduleType = 'companytype';
-      this.model.effectiveon = new Date(this.model.effectiveon);
+      this.model.effectiveOn = new Date(this.model.effectiveOn);
       this.companynotesService.updateCompanynotes(this.model).subscribe(
         (response: any) => {
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
@@ -223,7 +224,7 @@ export class ManageComponent implements OnInit {
     }
   }
 
-  viewCompanyNotes(journalid: any) {
+  viewCompanyNotes(journalId: any) {
     this.viewFlag = true;
     this.newFlag = false;
     this.editFlag = false;
@@ -232,16 +233,16 @@ export class ManageComponent implements OnInit {
     this.spinner.show();
 
     this.companynotesService
-      .getCompanynotess(journalid, this.companyId)
+      .getCompanynotess(journalId, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
 
         this.model = response;
 
-        if (this.model.effectiveon) {
-          this.model.effectiveon = new Date(this.model.effectiveon);
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+        if (this.model.effectiveOn) {
+          this.model.effectiveOn = new Date(this.model.effectiveOn);
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
         }
@@ -255,7 +256,7 @@ export class ManageComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   backToItem() {
@@ -381,12 +382,12 @@ export class ManageComponent implements OnInit {
 
   confirm(): void {
     this.message = 'Confirmed!';
-    console.log('Deleting note with journalid:', this.model.journalid);
+    console.log('Deleting note with journalid:', this.model.journalId);
     this.modalRef.hide();
     this.spinner.show();
 
     this.companynotesService
-      .removeCompanynotess(this.model.journalid, this.userName)
+      .removeCompanynotess(this.model.journalId, this.userName)
       .subscribe(
         (response: any) => {
           console.log('Delete response:', response);
@@ -394,7 +395,7 @@ export class ManageComponent implements OnInit {
 
           this.getAllNotes(this.companyId);
           this.model = {};
-          this.model.effectiveon = new Date();
+          this.model.effectiveOn = new Date();
           this.newFlag = true;
           this.editFlag = false;
           this.viewFlag = false;

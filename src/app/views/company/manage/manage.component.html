@@ -172,7 +172,7 @@
                   class="form-control"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.entityname"
+                  [(ngModel)]="model.entityName"
                   name="title"
                   #title="ngModel"
                   id="title"
@@ -187,7 +187,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.effectiveon"
+                  [(ngModel)]="model.effectiveOn"
                   name="date"
                   #date="ngModel"
                   id="date"
@@ -203,7 +203,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -215,7 +215,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -304,7 +304,7 @@
                   data-bs-toggle="tooltip"
                   title=" Add CompanyNote Attachment"
                   class="btn btn-primary btn-right"
-                  (click)="goToAttachments(model.journalid, model.entityname)"
+                  (click)="goToAttachments(model.journalId, model.entityName)"
                   style="border-radius: 6px;"
                 >
                   Attachments
@@ -375,7 +375,7 @@
                   class="form-control"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.entityname"
+                  [(ngModel)]="model.entityName"
                   name="title"
                   #title="ngModel"
                   id="title"
@@ -391,7 +391,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.effectiveon"
+                  [(ngModel)]="model.effectiveOn"
                   name="date"
                   #date="ngModel"
                   id="date"
@@ -406,7 +406,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -419,7 +419,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -504,7 +504,7 @@
                   data-bs-toggle="tooltip"
                   title=" Add CompanyNote Attachment"
                   class="btn btn-primary btn-right"
-                  (click)="goToAttachments(model.journalid, model.entityname)"
+                  (click)="goToAttachments(model.journalId, model.entityName)"
                 >
                   Attachments
                 </button>
@@ -572,7 +572,7 @@
                   class="form-control"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.entityname"
+                  [(ngModel)]="model.entityName"
                   name="title"
                   #title="ngModel"
                   id="title"
@@ -588,7 +588,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.effectiveon"
+                  [(ngModel)]="model.effectiveOn"
                   name="date"
                   #date="ngModel"
                   id="date"
@@ -602,7 +602,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -614,7 +614,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -673,36 +673,36 @@
                     <thead class="thead-light">
                       <tr>
                         <th
-                          [class.active]="order === 'enteredon'"
-                          (click)="setOrder('enteredon')"
+                          [class.active]="order === 'enteredOn'"
+                          (click)="setOrder('enteredOn')"
                         >
                           Date<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'entityname'"
-                          (click)="setOrder('entityname')"
+                          [class.active]="order === 'entityName'"
+                          (click)="setOrder('entityName')"
                         >
                           Title<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'jobnumber'"
-                          (click)="setOrder('jobnumber')"
+                          [class.active]="order === 'jobNumber'"
+                          (click)="setOrder('jobNumber')"
                         >
                           Job<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'ponumber'"
-                          (click)="setOrder('ponumber')"
+                          [class.active]="order === 'poNumber'"
+                          (click)="setOrder('poNumber')"
                         >
                           PO<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'enteredby'"
-                          (click)="setOrder('enteredby')"
+                          [class.active]="order === 'enteredBy'"
+                          (click)="setOrder('enteredBy')"
                         >
                           By <span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
@@ -719,11 +719,11 @@
                             | orderBy : reverse + order
                             | filterBy
                               : [
-                                  'enteredon',
-                                  'entityname',
-                                  'jobnumber',
-                                  'ponumber',
-                                  'enteredby'
+                                  'enteredOn',
+                                  'entityName',
+                                  'jobNumber',
+                                  'poNumber',
+                                  'enteredBy'
                                 ]
                               : companyNotesFilter
                             | paginate
@@ -733,12 +733,12 @@
                                 }
                         "
                       >
-                        <td>{{ note.effectiveon | date : "MM/dd/yyyy" }}</td>
+                        <td>{{ note.effectiveOn | date : "MM/dd/yyyy" }}</td>
 
-                        <td>{{ note.entityname }}</td>
-                        <td>{{ note.jobnumber }}</td>
-                        <td>{{ note.ponumber }}</td>
-                        <td>{{ note.enteredby }}</td>
+                        <td>{{ note.entityName }}</td>
+                        <td>{{ note.jobNumber }}</td>
+                        <td>{{ note.poNumber }}</td>
+                        <td>{{ note.enteredBy }}</td>
                         <td>
                           <ng-container
                             *ngFor="let attachment of note.attachmentList"
@@ -761,7 +761,7 @@
                             data-bs-placement="bottom"
                             data-bs-toggle="tooltip"
                             title="Click here to View this Note"
-                            (click)="viewCompanyNotes(note.journalid)"
+                            (click)="viewCompanyNotes(note.journalId)"
                           >
                             View
                           </button>

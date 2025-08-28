@@ -1,4 +1,4 @@
-<div class="animated fadeIn" *ngIf="highestRank > 6">
+<div class="animated fadeIn" *ngIf="+(highestRank ?? 0) > 6">
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
@@ -178,7 +178,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this Company"
-                    [disabled]="highestRank == 9"
+                    [disabled]="+(highestRank ?? 0) === 9"
                     (click)="openModal(confirmtemplate, company.companyId)"
                   >
                     Delete
@@ -206,7 +206,7 @@
       type="button"
       class="close pull-right"
       aria-label="Close"
-      (click)="modalRef2.hide()"
+     (click)="modalRef2?.hide()"
     >
       <span aria-hidden="true">&times;</span>
     </button>

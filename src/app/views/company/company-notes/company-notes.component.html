@@ -41,36 +41,36 @@
             <thead class="thead-light">
               <tr>
                 <th
-                  [class.active]="order === 'enteredon'"
-                  (click)="setOrder('enteredon')"
+                  [class.active]="order === 'enteredOn'"
+                  (click)="setOrder('enteredOn')"
                 >
                   Date<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'entityname'"
-                  (click)="setOrder('entityname')"
+                  [class.active]="order === 'entityName'"
+                  (click)="setOrder('entityName')"
                 >
                   Title<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'jobnumber'"
-                  (click)="setOrder('jobnumber')"
+                  [class.active]="order === 'jobNumber'"
+                  (click)="setOrder('jobNumber')"
                 >
                   Job<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'ponumber'"
-                  (click)="setOrder('ponumber')"
+                  [class.active]="order === 'poNumber'"
+                  (click)="setOrder('poNumber')"
                 >
                   PO<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'enteredby'"
-                  (click)="setOrder('enteredby')"
+                  [class.active]="order === 'enteredBy'"
+                  (click)="setOrder('enteredBy')"
                 >
                   By <span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -86,22 +86,22 @@
                     | orderBy : reverse + order
                     | filterBy
                       : [
-                          'enteredon',
-                          'entityname',
-                          'jobnumber',
-                          'ponumber',
-                          'enteredby'
+                          'enteredOn',
+                          'entityName',
+                          'jobNumber',
+                          'poNumber',
+                          'enteredBy'
                         ]
                       : companyNotesFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
-                <td>{{ note.effectiveon | date : "MM/dd/yyyy" }}</td>
-                <td>{{ note.entityname }}</td>
-                <td>{{ note.jobnumber }}</td>
-                <td>{{ note.ponumber }}</td>
-                <td>{{ note.enteredby }}</td>
+                <td>{{ note.effectiveOn | date : "MM/dd/yyyy" }}</td>
+                <td>{{ note.entityName }}</td>
+                <td>{{ note.jobNumber }}</td>
+                <td>{{ note.poNumber }}</td>
+                <td>{{ note.enteredBy }}</td>
                 <td>
                   <button
                     type="button"
@@ -141,7 +141,7 @@
                     data-bs-toggle="tooltip"
                     title="Delete Company Note"
                     class="btn btn-outline-danger btn-sm"
-                    (click)="openModal(confirmtemplate, note.journalid)"
+                    (click)="openModal(confirmtemplate, note.journalId)"
                     disabled="highestRank == 9"
                   >
                     Delete

@@ -1,93 +1,106 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompanyDocumentsService } from '../../../services/index';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-editcompanydocument',
   templateUrl: './editcompanydocument.component.html',
   styleUrls: ['./editcompanydocument.component.scss'],
 })
-export class EditcompanydocumentComponent implements OnInit {
+export class EditcompanydocumentComponent implements OnInit, OnDestroy {
   model: any = {};
   index: number = 0;
-  date = Date.now();
-  companyId: any;
-  documentId: any;
-  private sub: any;
-  id: number;
-  router: Router;
-  helpFlag: any = false;
-  userName: any;
-  dismissible = true;
-  loader = false;
+  date: number = Date.now();
+  companyId: number | null = null;
+  documentId: number | null = null;
+  private sub: Subscription[] = [];
+  id!: number;
+  helpFlag: boolean = false;
+  userName: string | null = null;
+  dismissible: boolean = true;
+  loader: boolean = false;
+
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.companyId = route.snapshot.params['id'];
-    console.log('compaanyid=' + this.companyId);
-    this.router = router;
+    this.companyId = Number(this.route.snapshot.params['id']);
+    console.log('companyId =', this.companyId);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
-    this.sub = this.route.queryParams.subscribe((params) => {
-      this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
+
+    const sub1 = this.route.queryParams.subscribe((params) => {
+      this.companyId = params['q'] ? Number(params['q']) : 0;
+      console.log('Query params companyId =', this.companyId);
     });
 
-    this.sub = this.route.queryParams.subscribe((params) => {
-      this.documentId = +params['a'] || 0;
-      console.log('Query params ', this.documentId);
+    const sub2 = this.route.queryParams.subscribe((params) => {
+      this.documentId = params['a'] ? Number(params['a']) : 0;
+      console.log('Query params documentId =', this.documentId);
     });
+
+    this.sub.push(sub1, sub2);
+
     this.spinner.show();
 
-    this.companyDocumentsService.getCompanyDocuments(this.documentId).subscribe(
-      (response) => {
-        this.spinner.hide();
-
-        this.model = response;
-      },
-      (error) => {
-        this.spinner.hide();
-      }
-    );
+    if (this.documentId !== null) {
+      this.companyDocumentsService.getCompanyDocuments(this.documentId).subscribe(
+        (response: any) => {
+          this.spinner.hide();
+          this.model = response;
+        },
+        () => this.spinner.hide()
+      );
+    }
   }
 
-  updateCompanyDocument() {
+  updateCompanyDocument(): void {
+    if (!this.companyId) return;
+
     this.spinner.show();
     console.log(this.companyId);
+
     this.model.moduleType = 'companytype';
     this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {};
     this.model.updatedBy = this.userName;
+
     this.companyDocumentsService.updateCompanyDocument(this.model).subscribe(
-      (response) => {
+      () => {
         this.spinner.hide();
         window.scroll(0, 0);
         this.index = 1;
         setTimeout(() => {
           this.index = 0;
         }, 7000);
-        this.router.navigate(['/company/documents/' + this.companyId]);
+        this.router.navigate(['/company/documents', this.companyId]);
       },
-      (error) => {
-        this.spinner.hide();
-      }
+      () => this.spinner.hide()
     );
   }
 
-  cancelCompanyDocument() {
-    this.router.navigate(['/company/documents/' + this.companyId]);
+  cancelCompanyDocument(): void {
+    if (this.companyId !== null) {
+      this.router.navigate(['/company/documents', this.companyId]);
+    }
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
+  }
+
+  ngOnDestroy(): void {
+    this.sub.forEach((s) => s.unsubscribe());
   }
 }

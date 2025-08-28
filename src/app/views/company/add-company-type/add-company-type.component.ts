@@ -1,57 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompanyTypesService } from '../../../services/index';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Company } from '../../../models';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-company-type',
   templateUrl: './add-company-type.component.html',
   styleUrls: ['./add-company-type.component.scss'],
 })
-export class AddCompanyTypeComponent implements OnInit {
+export class AddCompanyTypeComponent implements OnInit, OnDestroy {
   model: any = {
     parentType: 0,
   };
-  index: any = 0;
-  date = Date.now();
-  companyId: any = 0;
-  private sub: any;
-  id: any;
-  router: Router;
+  index: number = 0;
+  date: number = Date.now();
+  companyId: number = 0;
+  private sub!: Subscription;
   cmpTypes: any[] = [];
   value: any;
-  items: TreeviewItem[];
-  config = TreeviewConfig.create({
+  items: TreeviewItem[] = [];
+  config: TreeviewConfig = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  userName: any;
-  helpFlag: any = false;
-  loader = false;
+  userName: string | null = null;
+  helpFlag: boolean = false;
+  loader: boolean = false;
+
   constructor(
     private companyTypesService: CompanyTypesService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.companyId = route.snapshot.params['id'];
-    console.log('compaanyid=' + this.companyId);
-    this.router = router;
+    const idParam = this.route.snapshot.params['id'];
+    this.companyId = idParam ? +idParam : 0;
+    console.log('companyId = ' + this.companyId);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
+
     this.sub = this.route.queryParams.subscribe((params) => {
-      this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
+      this.companyId = +params['q'] || this.companyId;
+      console.log('Query params companyId = ', this.companyId);
+      this.getAllTypes(this.companyId);
     });
-    this.getAllTypes(this.companyId);
-    console.log('companyi=' + this.companyId);
+
+    console.log('companyId (onInit) = ' + this.companyId);
   }
 
-  getAllTypes(companyId: string | number) {
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
+  getAllTypes(companyId: number): void {
     this.spinner.show();
 
     this.companyTypesService
@@ -59,27 +66,27 @@ export class AddCompanyTypeComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.spinner.hide();
+          this.cmpTypes = response || [];
 
-          this.cmpTypes = response;
-          var self = this;
-          if (this.cmpTypes && this.cmpTypes.length > 0) {
-            self.items = [];
-            self.items = self.generateHierarchy(this.cmpTypes);
+          if (this.cmpTypes.length > 0) {
+            this.items = this.generateHierarchy(this.cmpTypes);
           }
         },
         (error) => {
           this.spinner.hide();
+          console.error('Error fetching company types', error);
         }
       );
   }
 
-  generateHierarchy(typeList: any[]) {
-    var items: TreeviewItem[] = [];
+  generateHierarchy(typeList: any[]): TreeviewItem[] {
+    const items: TreeviewItem[] = [];
     typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList);
-      }
+      const children =
+        type.typeList && type.typeList.length > 0
+          ? this.generateHierarchy(type.typeList)
+          : [];
+
       items.push(
         new TreeviewItem({
           text: type.name,
@@ -92,67 +99,72 @@ export class AddCompanyTypeComponent implements OnInit {
     return items;
   }
 
-  saveCompanyType() {
-    if (this.model.nameOfType === undefined) {
+  saveCompanyType(): void {
+    if (!this.model.nameOfType) {
       this.index = -1;
       window.scroll(0, 0);
-    } else {
-      this.model.by = this.userName;
-      this.model.added = this.date;
-      var request = {
-        attributeSearchDisplay: 0,
-        company: {
-          companyId: this.companyId,
-        },
-        description: this.model.description,
-        entityTypeId: 0,
-        hostingFee: this.model.hostingFee ? this.model.hostingFee : 0,
-        isHidden: true,
-        lastModifiedBy: this.userName,
-        moduleType: 'companytype',
-        name: this.model.nameOfType,
-        parentId: {
-          typeId: this.value ? this.value : 0,
-        },
-        typeId: 0,
-        typeMtbs: 0,
-        typeSpareRatio: 0,
-      };
-      this.spinner.show();
-
-      console.log(JSON.stringify(request));
-      this.companyTypesService.saveCompanyType(request).subscribe(
-        (response) => {
-          this.spinner.hide();
-
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-          window.scroll(0, 0);
-          this.router.navigate(['/company/types/' + this.companyId]);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+      return;
     }
+
+    this.model.by = this.userName;
+    this.model.added = this.date;
+
+    const request = {
+      attributeSearchDisplay: 0,
+      company: {
+        companyId: this.companyId,
+      },
+      description: this.model.description,
+      entityTypeId: 0,
+      hostingFee: this.model.hostingFee ? this.model.hostingFee : 0,
+      isHidden: true,
+      lastModifiedBy: this.userName,
+      moduleType: 'companytype',
+      name: this.model.nameOfType,
+      parentId: {
+        typeId: this.value ? this.value : 0,
+      },
+      typeId: 0,
+      typeMtbs: 0,
+      typeSpareRatio: 0,
+    };
+
+    this.spinner.show();
+    console.log(JSON.stringify(request));
+
+    this.companyTypesService.saveCompanyType(request).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.index = 1;
+
+        setTimeout(() => {
+          this.index = 0;
+        }, 7000);
+
+        window.scroll(0, 0);
+        this.router.navigate(['/company/types/' + this.companyId]);
+      },
+      (error) => {
+        this.spinner.hide();
+        console.error('Error saving company type', error);
+      }
+    );
   }
 
-  onValueChange(value: any) {
+  onValueChange(value: any): void {
     console.log(value);
   }
 
-  cancelCompanyDocument() {
+  cancelCompanyDocument(): void {
     this.router.navigate(['/company/types/' + this.companyId]);
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

@@ -1,38 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompanynotesService } from '../../../services/index';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Company } from '../../../models';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-company-notes',
   templateUrl: './add-company-notes.component.html',
   styleUrls: ['./add-company-notes.component.scss'],
 })
-export class AddCompanyNotesComponent implements OnInit {
+export class AddCompanyNotesComponent implements OnInit, OnDestroy {
   model: any = {};
   index: number = 0;
   companyId: number = 0;
-  private sub: any;
-  id: number;
-  router: Router;
-  bsConfig: Partial<BsDatepickerConfig>;
-  userName: any;
+  private sub!: Subscription;
+  id!: number;
+  bsConfig!: Partial<BsDatepickerConfig>;
+  userName: string | null = null;
   loader = false;
+
   constructor(
     private companynotesService: CompanynotesService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
-  ) {
-    this.router = router;
-  }
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
     this.model.date = new Date();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
+    this.bsConfig = { containerClass: 'theme-red' };
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
@@ -40,32 +38,32 @@ export class AddCompanyNotesComponent implements OnInit {
     });
 
     console.log('companyId=' + this.companyId);
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
-  saveNotes() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+  saveNotes(): void {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.model = {
         companyId: this.companyId,
-        effectiveon: this.model.effectiveon,
-        enteredby: this.userName,
-        enteredon: new Date(),
+        effectiveOn: this.model.effectiveOn,
+        enteredBy: this.userName,
+        enteredOn: new Date(),
         entityId: this.companyId,
-        entityname: this.model.entityname,
-        entitytypeId: 0,
-        entityxml: '',
+        entityName: this.model.entityName,
+        entityTypeId: 0,
+        entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
-        journaltypeId: 0,
-        locationid: 0,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
+        jobNumber: this.model.jobNumber,
+        journalId: 0,
+        journalTypeId: 0,
+        locationId: 0,
+        locationName: '',
+        poNumber: this.model.poNumber,
+        shippingNumber: '',
+        trackingNumber: '',
         moduleType: 'companytype',
       };
       console.log(JSON.stringify(this.model));
@@ -80,14 +78,20 @@ export class AddCompanyNotesComponent implements OnInit {
             this.index = 0;
           }, 7000);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
     }
   }
 
-  cancelCompanyNotes() {
+  cancelCompanyNotes(): void {
     this.router.navigate(['/company/notes/' + this.companyId]);
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }

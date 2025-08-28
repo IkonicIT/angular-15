@@ -74,7 +74,7 @@ export class CompanyDocumentsService {
 
   getAllCompanyDocuments(companyId: string | number) {
     return this.http
-      .get(
+      .get<any[]>(
         this.serviceURL + '/getAllAttachments/companytype/' + companyId,
         this.httpOptions
       )

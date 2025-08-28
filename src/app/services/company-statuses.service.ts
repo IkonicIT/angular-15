@@ -48,14 +48,12 @@ export class CompanyStatusesService {
       .pipe(catchError(this.handleError));
   }
 
-  getAllCompanyStatuses(companyId: string | number) {
-    return this.http
-      .get(
-        this.serviceURL + '/getAllStatusByCompanyId/companytype/' + companyId,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
+getAllCompanyStatuses(companyId: string | number) {
+  return this.http
+    .get<any[]>(this.serviceURL + '/getAllStatusByCompanyId/companytype/' + companyId, this.httpOptions)
+    .pipe(catchError(this.handleError));
+}
+
 
   removeCompanyStatus(id: string, userName: string) {
     return this.http

@@ -70,7 +70,7 @@
                           Effective Date
                           <strong class="text-danger">*</strong></label
                         >
-                        <!-- <input type="text"  class="form-control" [(ngModel)]="model.warrantyexpiration" id="date" name="critical" bsDatepicker> -->
+                        <!-- <input type="text"  class="form-control" [(ngModel)]="model.warrantyExpiration" id="date" name="critical" bsDatepicker> -->
                         <input
                           type="text"
                           class="form-control"
@@ -88,7 +88,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.ponumber"
+                          [(ngModel)]="model.poNumber"
                           name="PONumber"
                           #PONumber="ngModel"
                           id="PONumber"
@@ -402,8 +402,8 @@
                               ToLocation
                             </th>
                             <th
-                              [class.active]="order === 'ponumber'"
-                              (click)="setOrder('ponumber')"
+                              [class.active]="order === 'poNumber'"
+                              (click)="setOrder('poNumber')"
                             >
                               PONumber
                             </th>
@@ -456,7 +456,7 @@
                                       'transferDate',
                                       'fromLocation',
                                       'toLocation',
-                                      'ponumber',
+                                      'poNumber',
                                       'jobNumber',
                                       'shippingNumber',
                                       'trackingNumber',
@@ -479,7 +479,7 @@
                             ></td>
                             <td [innerHTML]="transfer.fromLocation"></td>
                             <td [innerHTML]="transfer.toLocation"></td>
-                            <td [innerHTML]="transfer.ponumber"></td>
+                            <td [innerHTML]="transfer.poNumber"></td>
                             <td [innerHTML]="transfer.jobNumber"></td>
                             <td [innerHTML]="transfer.shippingNumber"></td>
                             <td [innerHTML]="transfer.trackingNumber"></td>

@@ -173,12 +173,12 @@ export class UserManagementService {
 
   removeRole(
     companyId: string,
-    locationid: string,
+    locationId: string,
     userId: string,
     userName: string
   ) {
     return this.http
-      .delete(AppConfiguration.locationRestURL + 'userSecurity/' + userId + '/' + companyId + '/' + locationid + '/' +
+      .delete(AppConfiguration.locationRestURL + 'userSecurity/' + userId + '/' + companyId + '/' + locationId + '/' +
           userName, { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));

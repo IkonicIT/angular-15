@@ -41,36 +41,36 @@
             <thead class="thead-light">
               <tr>
                 <th
-                  [class.active]="order === 'effectiveon'"
-                  (click)="setOrder('effectiveon')"
+                  [class.active]="order === 'effectiveOn'"
+                  (click)="setOrder('effectiveOn')"
                 >
                   Date<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'entityname'"
-                  (click)="setOrder('entityname')"
+                  [class.active]="order === 'entityName'"
+                  (click)="setOrder('entityName')"
                 >
                   Title<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'jobnumber'"
-                  (click)="setOrder('jobnumber')"
+                  [class.active]="order === 'jobNumber'"
+                  (click)="setOrder('jobNumber')"
                 >
                   Job<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'ponumber'"
-                  (click)="setOrder('ponumber')"
+                  [class.active]="order === 'poNumber'"
+                  (click)="setOrder('poNumber')"
                 >
                   PO<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'enteredby'"
-                  (click)="setOrder('enteredby')"
+                  [class.active]="order === 'enteredBy'"
+                  (click)="setOrder('enteredBy')"
                 >
                   By <span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -86,34 +86,34 @@
                     | orderBy : reverse + order
                     | filterBy
                       : [
-                          'effectiveon',
-                          'entityname',
-                          'jobnumber',
-                          'ponumber',
-                          'enteredby'
+                          'effectiveOn',
+                          'entityName',
+                          'jobNumber',
+                          'poNumber',
+                          'enteredBy'
                         ]
                       : locationNotesFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
-                <td>{{ note.effectiveon | date : "MM/dd/yyyy" }}</td>
+                <td>{{ note.effectiveOn | date : "MM/dd/yyyy" }}</td>
                 <td>
                   <a
                     href="javascript:void(0)"
-                    (click)="openModalView(templateView, note.journalid)"
+                    (click)="openModalView(templateView, note.journalId)"
                     placement="top"
                     style="color: red"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="click here to View Notes Screen"
-                    >{{ note.entityname }}</a
+                    >{{ note.entityName }}</a
                   >
                 </td>
 
-                <td>{{ note.jobnumber }}</td>
-                <td>{{ note.ponumber }}</td>
-                <td>{{ note.enteredby }}</td>
+                <td>{{ note.jobNumber }}</td>
+                <td>{{ note.poNumber }}</td>
+                <td>{{ note.enteredBy }}</td>
                 <td>
                   <button
                     type="button"
@@ -143,7 +143,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete Note"
-                    (click)="openModal(confirmtemplate, note.journalid)"
+                    (click)="openModal(confirmtemplate, note.journalId)"
                     [disabled]="highestRank == 9"
                   >
                     Delete
@@ -182,7 +182,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.entityname"
+          [(ngModel)]="model.entityName"
           name="title"
           #title="ngModel"
           id="title"
@@ -196,7 +196,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.effectiveon"
+          [(ngModel)]="model.effectiveOn"
           name="date"
           #date="ngModel"
           id="date"
@@ -211,7 +211,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.jobnumber"
+          [(ngModel)]="model.jobNumber"
           name="job"
           #job="ngModel"
           id="job"
@@ -224,7 +224,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.ponumber"
+          [(ngModel)]="model.poNumber"
           id="po"
           name="po"
           #po="ngModel"

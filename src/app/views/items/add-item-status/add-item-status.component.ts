@@ -62,7 +62,7 @@ export class AddItemStatusComponent implements OnInit {
         destroyed: this.model.destroyed ? this.model.destroyed : false,
         entityTypeId: 0,
         inService: this.model.inservice ? this.model.inservice : false,
-        moduleType: 'itemtype',
+        moduleType: 'itemType',
         spare: this.model.spare ? this.model.spare : false,
         status: this.model.status,
         statusId: 0,

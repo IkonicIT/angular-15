@@ -14,7 +14,7 @@ export class EditCompanyNotesComponent implements OnInit {
   index: number = 0;
   date = Date.now();
   companyId: number = 0;
-  journalid: number = 0;
+  journalId: number = 0;
   private sub: any;
   id: number;
   dismissible = true;
@@ -38,22 +38,22 @@ export class EditCompanyNotesComponent implements OnInit {
     });
 
     this.sub = this.route.queryParams.subscribe((params) => {
-      this.journalid = +params['a'] || 0;
-      console.log('Query params ', this.journalid);
+      this.journalId = +params['a'] || 0;
+      console.log('Query params ', this.journalId);
     });
     this.spinner.show();
 
     this.companynotesService
-      .getCompanynotess(this.journalid, this.companyId)
+      .getCompanynotess(this.journalId, this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
 
           this.model = response;
-          if (this.model.effectiveon) {
-            this.model.effectiveon = new Date(this.model.effectiveon);
-            this.model.effectiveon = this.datepipe.transform(
-              this.model.effectiveon,
+          if (this.model.effectiveOn) {
+            this.model.effectiveOn = new Date(this.model.effectiveOn);
+            this.model.effectiveOn = this.datepipe.transform(
+              this.model.effectiveOn,
               'MM/dd/yyyy'
             );
           }
@@ -65,22 +65,22 @@ export class EditCompanyNotesComponent implements OnInit {
   }
 
   consoleDate() {
-    console.log(this.model.effectiveon);
+    console.log(this.model.effectiveOn);
   }
 
   updateNotes() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.spinner.show();
 
       this.model.moduleType = 'companyType';
-      this.model.effectiveon = new Date(this.model.effectiveon);
+      this.model.effectiveOn = new Date(this.model.effectiveOn);
       this.companynotesService.updateCompanynotes(this.model).subscribe(
         (response) => {
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();

@@ -45,7 +45,7 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private broadcasterService: BroadcasterService
   ) {
-    this.repairLogId = route.snapshot.params['repairlogId'];
+    this.repairLogId = route.snapshot.params['repairLogId'];
     console.log('companyId=' + this.repairLogId);
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
@@ -93,9 +93,9 @@ export class AddItemRepairAttachmentsComponent implements OnInit {
         attachmentResourceList: jsonArr,
         attachmentUserLogDTO: {
           itemTag: this.itemRepair.tag,
-          itemTypeName: this.itemRepair.itemtype,
-          poNumber: this.itemRepair.ponumber,
-          jobNumber: this.itemRepair.jobnumber,
+          itemTypeName: this.itemRepair.itemType,
+          poNumber: this.itemRepair.poNumber,
+          jobNumber: this.itemRepair.jobNumber,
         },
       };
       this.itemAttachmentsService.saveItemMultipleDocuments(req).subscribe(

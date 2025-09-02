@@ -47,7 +47,7 @@ export class AdvancedItemSearchComponent implements OnInit {
   public itemTypeName: any;
   public itemId: any;
   public isloaded = false;
-  public itemrepairnotesrfqModel: any = {};
+  public itemrepairNotesrfqModel: any = {};
   public itemNotesList: any = {};
   public repairlogList: any = [];
   public RFQsList: any = [];
@@ -227,8 +227,8 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.searchKeys = Object.keys(this.advanceSearchResults);
     if (this.searchKeys.length > 0) {
       this.activeTab = 0;
-      this.itemrepairnotesrfqModel.isitemnote = true;
-      this.itemrepairnotesrfqModel.isitemrepair = true;
+      this.itemrepairNotesrfqModel.isitemnote = true;
+      this.itemrepairNotesrfqModel.isitemrepair = true;
       this.itemModel = this.itemManagementService.itemModel;
       this.currentAttributeValues = this.itemModel.attributeValues;
       if (this.itemModel.count == 1) {
@@ -249,19 +249,19 @@ export class AdvancedItemSearchComponent implements OnInit {
       this.keys = Object.keys(this.advancedItemSearchRepaiNotesSearchresults);
       if (this.keys.length > 0) {
         this.activeTab = 1;
-        this.itemrepairnotesrfqModel =
-          this.itemManagementService.itemrepairnotesrfqModel;
-        this.itemrepairnotesrfqModel.isitemnote =
-          this.itemrepairnotesrfqModel.isitemnote;
-        this.itemrepairnotesrfqModel.isitemrepair =
-          this.itemrepairnotesrfqModel.isitemrepair;
+        this.itemrepairNotesrfqModel =
+          this.itemManagementService.itemrepairNotesrfqModel;
+        this.itemrepairNotesrfqModel.isitemnote =
+          this.itemrepairNotesrfqModel.isitemnote;
+        this.itemrepairNotesrfqModel.isitemrepair =
+          this.itemrepairNotesrfqModel.isitemrepair;
         this.searchresults =
           this.itemManagementService.getAdvancedItemSearchRepaiNotesSearchresults();
         this.itemNotesList = this.searchresults.itemNotes;
         this.repairlogList = this.searchresults.repairlogList;
       } else {
-        this.itemrepairnotesrfqModel.isitemnote = true;
-        this.itemrepairnotesrfqModel.isitemrepair = true;
+        this.itemrepairNotesrfqModel.isitemnote = true;
+        this.itemrepairNotesrfqModel.isitemrepair = true;
       }
     }
   }
@@ -448,21 +448,21 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.advancedsearchflag = 1;
     var request = {
       companyId: this.companyId,
-      extraTag: this.itemrepairnotesrfqModel.exactTag
-        ? this.itemrepairnotesrfqModel.exactTag
+      extraTag: this.itemrepairNotesrfqModel.exactTag
+        ? this.itemrepairNotesrfqModel.exactTag
         : null,
-      RFQ: this.itemrepairnotesrfqModel.rfq
-        ? this.itemrepairnotesrfqModel.rfq
+      RFQ: this.itemrepairNotesrfqModel.rfq
+        ? this.itemrepairNotesrfqModel.rfq
         : null,
-      po: this.itemrepairnotesrfqModel.po
-        ? this.itemrepairnotesrfqModel.po
+      po: this.itemrepairNotesrfqModel.po
+        ? this.itemrepairNotesrfqModel.po
         : null,
-      job: this.itemrepairnotesrfqModel.job
-        ? this.itemrepairnotesrfqModel.job
+      job: this.itemrepairNotesrfqModel.job
+        ? this.itemrepairNotesrfqModel.job
         : null,
-      noteFlag: this.itemrepairnotesrfqModel.isitemnote,
-      repairFlag: this.itemrepairnotesrfqModel.isitemrepair,
-      rfqFlag: this.itemrepairnotesrfqModel.isitemrfq,
+      noteFlag: this.itemrepairNotesrfqModel.isitemnote,
+      repairFlag: this.itemrepairNotesrfqModel.isitemrepair,
+      rfqFlag: this.itemrepairNotesrfqModel.isitemrfq,
       itemNotes: null,
       repairlogList: null,
       RFQsList: null,
@@ -480,8 +480,8 @@ export class AdvancedItemSearchComponent implements OnInit {
         this.searchResultKeys = [];
         this.showSearchResults = false;
         this.showFailedItemsSearchResults = false;
-        this.itemManagementService.itemrepairnotesrfqModel =
-          this.itemrepairnotesrfqModel;
+        this.itemManagementService.itemrepairNotesrfqModel =
+          this.itemrepairNotesrfqModel;
         this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults(
           this.searchresults
         );
@@ -500,12 +500,12 @@ export class AdvancedItemSearchComponent implements OnInit {
   }
 
   clearRepairNoteQuote() {
-    this.itemrepairnotesrfqModel = {};
+    this.itemrepairNotesrfqModel = {};
   }
 
   goToNote(
     itemId: string,
-    journalid: string,
+    journalId: string,
     rank: any,
     tag: any,
     typeName: any
@@ -513,7 +513,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     this.broadcasterService.itemRank = rank;
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
-    this.router.navigate(['/items/itemNotes/' + itemId + '/' + journalid]);
+    this.router.navigate(['/items/itemNotes/' + itemId + '/' + journalId]);
   }
 
   goToItemRepair(
@@ -845,7 +845,7 @@ export class AdvancedItemSearchComponent implements OnInit {
   public onValChange(val: string) {
     console.log(val);
     this.selectedVal = val;
-    if (this.selectedVal == 'repaircost') {
+    if (this.selectedVal == 'repairCost') {
       this.repairFlag = 'true';
       this.params.type = 'yearly';
       this.getFailureTypesPieChart();

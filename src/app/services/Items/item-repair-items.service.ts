@@ -124,13 +124,13 @@ export class ItemRepairItemsService {
       .pipe(catchError(this.handleError));
   }
 
-  updateFailureTypeAndCauses(failureTypeAndCause: any, failuretypeId: any) {
+  updateFailureTypeAndCauses(failureTypeAndCause: any, failureTypeId: any) {
     console.log(
-      'failuretypeId in updateFailureTypeAndCauses service is' + failuretypeId
+      'failureTypeId in updateFailureTypeAndCauses service is' + failureTypeId
     );
     return this.http
       .put(
-        this.serviceURL + 'failureType/' + parseInt(failuretypeId),
+        this.serviceURL + 'failureType/' + parseInt(failureTypeId),
         failureTypeAndCause,
         this.httpOptions
       )
@@ -223,10 +223,10 @@ export class ItemRepairItemsService {
       .pipe(catchError(this.handleError));
   }
 
-  getRepairDetailsForView(repairid: string) {
+  getRepairDetailsForView(repairId: string) {
     return this.http
       .get(
-        this.serviceURL + 'itemrepair/getForView/' + repairid,
+        this.serviceURL + 'itemrepair/getForView/' + repairId,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
@@ -250,10 +250,10 @@ export class ItemRepairItemsService {
     id: string,
     companyId: string,
     userName: string,
-    itemtype: string,
+    itemType: string,
     tag: string,
-    ponumber: string,
-    jobnumber: string
+    poNumber: string,
+    jobNumber: string
   ) {
     return this.http
       .delete(
@@ -265,13 +265,13 @@ export class ItemRepairItemsService {
           '/' +
           userName +
           '/' +
-          itemtype +
+          itemType +
           '/' +
           tag +
           '/' +
-          ponumber +
+          poNumber +
           '/' +
-          jobnumber,
+          jobNumber,
         { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));

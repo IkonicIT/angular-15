@@ -15,9 +15,9 @@ export class MergeLocationsComponent implements OnInit {
   locationItems: TreeviewItem[];
   locations: any;
   model: any = {
-    tolocationid: 0,
-    fromlocationid: 0,
-    locationname: '',
+    tolocationId: 0,
+    fromlocationId: 0,
+    locationName: '',
   };
   index: number;
   dismissible = true;
@@ -75,25 +75,25 @@ export class MergeLocationsComponent implements OnInit {
   mergeLocations() {
     console.log(this.model);
     if (
-      this.model.tolocationid &&
-      this.model.tolocationid != 0 &&
-      this.model.fromlocationid &&
-      this.model.fromlocationid != 0 &&
-      this.model.tolocationid == this.model.fromlocationid
+      this.model.tolocationId &&
+      this.model.tolocationId != 0 &&
+      this.model.fromlocationId &&
+      this.model.fromlocationId != 0 &&
+      this.model.tolocationId == this.model.fromlocationId
     ) {
       this.index = 2;
     } else if (
-      this.model.tolocationid &&
-      this.model.tolocationid != 0 &&
-      this.model.fromlocationid &&
-      this.model.fromlocationid != 0 &&
-      this.model.locationname &&
-      this.model.locationname != ''
+      this.model.tolocationId &&
+      this.model.tolocationId != 0 &&
+      this.model.fromlocationId &&
+      this.model.fromlocationId != 0 &&
+      this.model.locationName &&
+      this.model.locationName != ''
     ) {
       var req = {
-        newLocationId: this.model.tolocationid,
-        oldLocationId: this.model.fromlocationid,
-        newLocationName: this.model.locationname,
+        newLocationId: this.model.tolocationId,
+        oldLocationId: this.model.fromlocationId,
+        newLocationName: this.model.locationName,
       };
       this.spinner.show();
 

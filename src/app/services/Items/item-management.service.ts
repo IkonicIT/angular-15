@@ -39,7 +39,7 @@ export class ItemManagementService {
   public itemTypes = [];
   public itemTypeId: any = 0;
   public deleteFlag: any = 0;
-  public itemrepairnotesrfqModel: any = {};
+  public itemrepairNotesrfqModel: any = {};
   public itemModel: any = {};
   public masterSearchModel: any = {};
   public viewAllRepairs: any = {};

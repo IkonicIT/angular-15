@@ -350,7 +350,7 @@ export class TemplateComponent implements OnInit {
   public onValChange(val: string) {
     console.log(val);
     this.selectedVal = val;
-    if (this.selectedVal == 'repaircost') {
+    if (this.selectedVal == 'repairCost') {
       this.isRepairFlag = true;
       this.repairFlag = 'true';
       this.params.type = 'yearly';

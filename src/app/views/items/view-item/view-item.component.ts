@@ -31,9 +31,9 @@ export class ViewItemComponent implements OnInit {
   isOwnerAdmin: any;
   authToken: any;
   model: any = {
-    locationid: 0,
+    locationId: 0,
     typeId: 0,
-    warrantytypeId: 0,
+    warrantyTypeId: 0,
   };
   journals: any[] = [];
   index: number = 0;
@@ -49,7 +49,7 @@ export class ViewItemComponent implements OnInit {
   itemRank: any;
   imageIndexOne = 0;
   imageIndexTwo = 0;
-  journalid: any;
+  journalId: any;
   currentAttachmentId: any;
   itemTag: any;
   itemType: any;
@@ -213,8 +213,8 @@ export class ViewItemComponent implements OnInit {
 
   setWarrantyType(response: any) {
     response.forEach((element: any) => {
-      if (element.warrantytypeId == this.model.warrantyTypeId)
-        this.model.warrantytype = element.warrantytype;
+      if (element.warrantyTypeId == this.model.warrantyTypeId)
+        this.model.warrantyType = element.warrantyType;
     });
   }
 

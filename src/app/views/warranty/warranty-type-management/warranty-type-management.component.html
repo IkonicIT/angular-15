@@ -77,8 +77,8 @@
             <thead class="thead-light">
               <tr>
                 <th
-                  [class.active]="order === 'warrantytype'"
-                  (click)="setOrder('warrantytype')"
+                  [class.active]="order === 'warrantyType'"
+                  (click)="setOrder('warrantyType')"
                 >
                   Warranty Type name<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -91,12 +91,12 @@
                 *ngFor="
                   let type of warrantyTypes
                     | orderBy : reverse + order
-                    | filterBy : ['warrantytype'] : warrantyFilter
+                    | filterBy : ['warrantyType'] : warrantyFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
-                <td>{{ type.warrantytype }}</td>
+                <td>{{ type.warrantyType }}</td>
                 <td>
                   <button
                     type="button"
@@ -104,7 +104,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit Warranty Type"
-                    (click)="editWarrantyType(type.warrantytypeId)"
+                    (click)="editWarrantyType(type.warrantyTypeId)"
                   >
                     Edit
                   </button>
@@ -114,7 +114,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete Warranty Type"
-                    (click)="openModal(confirmtemplate, type.warrantytypeId)"
+                    (click)="openModal(confirmtemplate, type.warrantyTypeId)"
                     [disabled]="highestRank == 9"
                   >
                     Delete

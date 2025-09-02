@@ -31,7 +31,7 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
   userName: any;
   globalCompany: any;
   authToken: any;
-  entityname: any;
+  entityName: any;
   helpFlag: any = false;
   vendorAttachment: any;
   vendorId: any;

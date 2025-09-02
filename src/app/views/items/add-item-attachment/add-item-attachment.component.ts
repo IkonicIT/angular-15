@@ -206,7 +206,7 @@ export class AddItemAttachmentComponent implements OnInit {
         fileInfo['companyId'] = this.companyId;
         fileInfo['entityId'] = this.itemId;
         fileInfo['isNew'] = 1;
-        fileInfo['moduleType'] = 'itemtype';
+        fileInfo['moduleType'] = 'itemType';
         fileInfo['fileName'] = this.fileName;
         console.log(this.addedfiles);
       };

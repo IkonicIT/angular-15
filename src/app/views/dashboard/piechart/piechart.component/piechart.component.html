@@ -141,7 +141,7 @@
                 <mat-radio-button value="count"
                   >PRIMARYFINDINGS</mat-radio-button
                 >
-                <mat-radio-button value="repaircost"
+                <mat-radio-button value="repairCost"
                   >REPAIRCOST</mat-radio-button
                 >
               </mat-radio-group>
@@ -290,7 +290,7 @@
                   </td>
                   <td [innerHTML]="recentRepair.location"></td>
                   <td [innerHTML]="recentRepair.vendor"></td>
-                  <td [innerHTML]="recentRepair.repaircost | currency"></td>
+                  <td [innerHTML]="recentRepair.repairCost | currency"></td>
                   <td
                     [innerHTML]="
                       recentRepair.actualCompletionDate | date : 'MM/dd/yyyy'

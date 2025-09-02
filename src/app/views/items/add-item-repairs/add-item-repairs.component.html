@@ -122,7 +122,7 @@
                         <input
                           type="text"
                           class="form-control form-color"
-                          [(ngModel)]="model.jobnumber"
+                          [(ngModel)]="model.jobNumber"
                           name="job"
                           #job="ngModel"
                           id="job"
@@ -137,7 +137,7 @@
                         <input
                           type="text"
                           class="form-control form-color"
-                          [(ngModel)]="model.ponumber"
+                          [(ngModel)]="model.poNumber"
                           id="po"
                           name="po"
                           #po="ngModel"
@@ -152,7 +152,7 @@
                       <app-dropdown-treeview-select
                           class="form-color"
                           [items]="locationItems"
-                          [(value)]="model.repairlocationid"
+                          [(value)]="model.repairlocationId"
                         >
                         </app-dropdown-treeview-select>
 
@@ -192,10 +192,10 @@
                         <textarea
                           type="text"
                           class="form-control form-color"
-                          [(ngModel)]="model.repairnotes"
+                          [(ngModel)]="model.repairNotes"
                           id="details"
                           name="details"
-                          #repairnotes="ngModel"
+                          #repairNotes="ngModel"
                           placeholder="Enter Details"
                         ></textarea>
                       </div>
@@ -237,7 +237,7 @@
                           [bsConfig]="bsConfig"
                           bsDatepicker
                           class="form-control form-color"
-                          [(ngModel)]="model.estimatedcompletion"
+                          [(ngModel)]="model.estimatedCompletion"
                           name="estimatedDate"
                           #estimatedDate="ngModel"
                           id="estimatedDate"
@@ -248,7 +248,7 @@
                         <input
                           type="number"
                           class="form-control form-color"
-                          [(ngModel)]="model.repaircost"
+                          [(ngModel)]="model.repairCost"
                           id="repairCost"
                           name="repairCost"
                           #repairCost="ngModel"
@@ -261,7 +261,7 @@
                         <input
                           type="text"
                           class="form-control form-color"
-                          [(ngModel)]="model.repairjobstatus"
+                          [(ngModel)]="model.repairJobStatus"
                           name="repairstatus"
                           #repairstatus="ngModel"
                           id="repairstatus"
@@ -277,7 +277,7 @@
                           [bsConfig]="bsConfig"
                           bsDatepicker
                           class="form-control form-color"
-                          [(ngModel)]="model.failuredate"
+                          [(ngModel)]="model.failureDate"
                           id="failureDate"
                           name="failureDate"
                           #failureDate="ngModel"
@@ -303,13 +303,13 @@
                     </div> -->
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="failuretype">Primary Findings </label>
+                        <label for="failureType">Primary Findings </label>
                         <select
                           class="form-control form-color custom-dropdown mb-3"
-                          [(ngModel)]="model.failuretype"
-                          name="failuretype"
-                          #failuretype="ngModel"
-                          id="failuretype"
+                          [(ngModel)]="model.failureType"
+                          name="failureType"
+                          #failureType="ngModel"
+                          id="failureType"
                           (ngModelChange)="onValueChange($event)"
                         >
                           <option
@@ -350,7 +350,7 @@
                                 <td>
                                   <select
                                     class="form-control custom-dropdown"
-                                    [(ngModel)]="sitem.failuretype"
+                                    [(ngModel)]="sitem.failureType"
                                     [ngModelOptions]="{ standalone: true }"
                                   >
                                     <option
@@ -364,15 +364,15 @@
                                 <td>
                                   <select
                                     class="form-control custom-dropdown"
-                                    [disabled]="sitem.failuretype == null"
-                                    [(ngModel)]="sitem.failurecause"
+                                    [disabled]="sitem.failureType == null"
+                                    [(ngModel)]="sitem.failureCause"
                                     [ngModelOptions]="{ standalone: true }"
                                   >
                                     <option
                                       [value]="cause"
                                       *ngFor="
                                         let cause of getFailureCause(
-                                          sitem.failuretype
+                                          sitem.failureType
                                         )
                                       "
                                     >
@@ -396,33 +396,33 @@
                         </div>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="failurecause">Failure Cause</label>
+                        <label for="failureCause">Failure Cause</label>
                         <select
                           class="form-control form-color custom-dropdown"
-                          [disabled]="model.failuretype == null"
-                          [(ngModel)]="model.failurecause"
-                          name="failurecause"
-                          #failurecause="ngModel"
-                          id="failurecause"
+                          [disabled]="model.failureType == null"
+                          [(ngModel)]="model.failureCause"
+                          name="failureCause"
+                          #failureCause="ngModel"
+                          id="failureCause"
                         >
                           <option value="0" selected="false">Other</option>
                           <option
                             [ngValue]="cause"
-                            *ngFor="let cause of failurecausesp"
+                            *ngFor="let cause of failureCauseSp"
                           >
                             {{ cause }}
                           </option>
                         </select>
                         <div>
-                          <label for="failurecause">Or</label>
+                          <label for="failureCause">Or</label>
                           <input
                             type="text"
                             class="form-control form-color"
-                            *ngIf="model.failuretype != null"
-                            [(ngModel)]="model.newfailurecause"
-                            name="failurecause"
-                            #failurecause="ngModel"
-                            id="failurecause"
+                            *ngIf="model.failureType != null"
+                            [(ngModel)]="model.newFailureCauseSp"
+                            name="failureCause"
+                            #failureCause="ngModel"
+                            id="failureCause"
                           />
                         </div>
                       </div>
@@ -449,7 +449,7 @@
                           [bsConfig]="bsConfig"
                           bsDatepicker
                           class="form-control form-color"
-                          [(ngModel)]="model.actualcompletion"
+                          [(ngModel)]="model.actualCompletion"
                           id="actualCompletion"
                           name="actualCompletion"
                           #actualCompletion="ngModel"

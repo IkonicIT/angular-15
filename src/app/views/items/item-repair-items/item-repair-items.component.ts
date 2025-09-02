@@ -128,8 +128,8 @@ export class ItemRepairItemsComponent implements OnInit {
       var request = {
         lastModifiedBy: this.userName,
         companyId: this.companyId,
-        repairdescription: this.repairItem,
-        repairid: 0,
+        repairDescription: this.repairItem,
+        repairId: 0,
         typeId: this.itemType,
       };
       this.itemReairItemsService
@@ -184,8 +184,8 @@ export class ItemRepairItemsComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  editItemrepairItem(repairid: string) {
-    this.router.navigate(['items/editItemRepairItem/' + repairid]);
+  editItemrepairItem(repairId: string) {
+    this.router.navigate(['items/editItemRepairItem/' + repairId]);
   }
 
   print() {

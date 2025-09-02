@@ -178,12 +178,12 @@
                         >
                           <option value="">Choose..</option>
                           <option
-                            [ngValue]="list.listitem"
+                            [ngValue]="list.listItem"
                             *ngFor="
                               let list of eachAttr.attributeListItemResource
                             "
                           >
-                            {{ list.listitem }}
+                            {{ list.listItem }}
                           </option>
                         </select>
                         <div
@@ -325,17 +325,17 @@
               <div class="card-body">
                 <div class="row">
                   <div class="form-group col-sm-6">
-                    <label for="itemrepairnotesrfqModel">Notes:</label> &nbsp;
+                    <label for="itemrepairNotesrfqModel">Notes:</label> &nbsp;
                     <input
                       type="checkbox"
-                      [(ngModel)]="itemrepairnotesrfqModel.isitemnote"
+                      [(ngModel)]="itemrepairNotesrfqModel.isitemnote"
                       id="isitemnote"
                     />&nbsp;&nbsp;&nbsp;&nbsp;
-                    <label for="itemrepairnotesrfqModel">Repair Logs:</label
+                    <label for="itemrepairNotesrfqModel">Repair Logs:</label
                     >&nbsp;
                     <input
                       type="checkbox"
-                      [(ngModel)]="itemrepairnotesrfqModel.isitemrepair"
+                      [(ngModel)]="itemrepairNotesrfqModel.isitemrepair"
                       id="isitemrepair"
                     />&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>
@@ -347,7 +347,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      [(ngModel)]="itemrepairnotesrfqModel.exactTag"
+                      [(ngModel)]="itemrepairNotesrfqModel.exactTag"
                       name="exactTag"
                       id="exactTag"
                       placeholder="Enter Tag"
@@ -358,7 +358,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      [(ngModel)]="itemrepairnotesrfqModel.rfq"
+                      [(ngModel)]="itemrepairNotesrfqModel.rfq"
                       name="rfq"
                       id="rfq"
                       placeholder="Enter RFQ"
@@ -371,7 +371,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      [(ngModel)]="itemrepairnotesrfqModel.po"
+                      [(ngModel)]="itemrepairNotesrfqModel.po"
                       name="po"
                       id="po"
                       placeholder="Enter PO"
@@ -382,7 +382,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      [(ngModel)]="itemrepairnotesrfqModel.job"
+                      [(ngModel)]="itemrepairNotesrfqModel.job"
                       name="po"
                       id="job"
                       placeholder="Enter job"
@@ -477,8 +477,8 @@
                           <th>Job Number</th>
                           <th>PO Number</th>
                           <th
-                            [class.active]="order === 'enteredby'"
-                            (click)="setOrder('enteredby')"
+                            [class.active]="order === 'enteredBy'"
+                            (click)="setOrder('enteredBy')"
                           >
                             Repair Vendor
                           </th>
@@ -979,7 +979,7 @@
           aria-label="Font Style"
         >
           <mat-radio-button value="count">PRIMARYFINDINGS</mat-radio-button>
-          <mat-radio-button value="repaircost">REPAIRCOST</mat-radio-button>
+          <mat-radio-button value="repairCost">REPAIRCOST</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="d-flex justify-content-start flex-row">

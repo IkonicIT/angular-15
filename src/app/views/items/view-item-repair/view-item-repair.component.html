@@ -247,13 +247,13 @@
                     </div>
                     <div class="row space">
                       <div class="form-group col-sm-6">
-                        <label class="pr5" for="failuretype"
+                        <label class="pr5" for="failureType"
                           >Failure Type:</label
                         >
                         <span>{{ model.failureType }}</span>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label class="pr5" for="failurecause"
+                        <label class="pr5" for="failureCause"
                           >Failure Cause:</label
                         >
                         <span>{{ model.failureCause }}</span>
@@ -267,13 +267,13 @@
                     >
                       <div class="row space">
                         <div class="form-group col-sm-6">
-                          <label class="pr5" for="failuretype"
+                          <label class="pr5" for="failureType"
                             >Failure Type:</label
                           >
                           <span>{{ sitem.failureType }}</span>
                         </div>
                         <div class="form-group col-sm-6">
-                          <label class="pr5" for="failurecause"
+                          <label class="pr5" for="failureCause"
                             >Failure Cause:</label
                           >
                           <span>{{ sitem.failureCause }}</span>
@@ -551,7 +551,7 @@
                           "
                         >
                           <td>
-                            {{ repair.actualcompletion | date : "MM/dd/yyyy" }}
+                            {{ repair.actualCompletion | date : "MM/dd/yyyy" }}
                           </td>
                           <td>{{ repair.title }}</td>
                           <td>{{ repair.jobNumber }}</td>

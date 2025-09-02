@@ -92,8 +92,8 @@ export class VendorNotesComponent implements OnInit {
         createdBy: this.userName,
         createdDate: this.model.createdDate,
         name: this.model.name,
-        jobnumber: this.model.jobnumber,
-        ponumber: this.model.ponumber,
+        jobNumber: this.model.jobNumber,
+        poNumber: this.model.poNumber,
         details: this.model.details,
         isNew: true,
         vendorId: this.vendorId,
@@ -190,8 +190,8 @@ export class VendorNotesComponent implements OnInit {
       this.model.createdDate = this.datePipe.transform(parsedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
       this.companynotesService.updateVenodrNotes(this.model).subscribe(
         (response: any) => {
-          this.model.effectiveon = this.datePipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datePipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
@@ -223,7 +223,7 @@ export class VendorNotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   addNotes() {
@@ -232,7 +232,7 @@ export class VendorNotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   editNote() {

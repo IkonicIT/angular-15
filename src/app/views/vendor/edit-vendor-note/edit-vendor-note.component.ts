@@ -14,7 +14,7 @@ export class EditVendorNoteComponent implements OnInit {
   date = Date.now();
   bsConfig: any;
   companyId: number = 0;
-  journalid: number = 0;
+  journalId: number = 0;
   private sub: any;
   id: number;
   p: any;
@@ -40,19 +40,19 @@ export class EditVendorNoteComponent implements OnInit {
     });
 
     this.sub = this.route.queryParams.subscribe((params) => {
-      this.journalid = +params['a'] || 0;
-      console.log('Query params ', this.journalid);
+      this.journalId = +params['a'] || 0;
+      console.log('Query params ', this.journalId);
     });
 
     this.companynotesService
-      .getCompanynotess(this.journalid, this.companyId)
+      .getCompanynotess(this.journalId, this.companyId)
       .subscribe((response) => {
         this.model = response;
       });
   }
 
   updateNotes() {
-    if (!this.model.entityname || !this.model.enteredon) {
+    if (!this.model.entityName || !this.model.enteredOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {

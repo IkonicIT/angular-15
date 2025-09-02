@@ -97,8 +97,8 @@ export class PartNotesComponent implements OnInit {
         createdBy: this.userName,
         createdDate: this.model.createdDate,
         name: this.model.name,
-        jobnumber: this.model.jobnumber,
-        ponumber: this.model.ponumber,
+        jobNumber: this.model.jobNumber,
+        poNumber: this.model.poNumber,
         details: this.model.details,
         isNew: true,
         partId: this.partId,
@@ -241,7 +241,7 @@ export class PartNotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   addNotes() {
@@ -250,7 +250,7 @@ export class PartNotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   editNote() {

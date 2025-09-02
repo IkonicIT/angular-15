@@ -47,7 +47,7 @@ export class ManageComponent implements OnInit {
   index1: number = 0;
   authToken: any;
   currentCompanyName: any;
-  entityname: any;
+  entityName: any;
   p: any;
   loader = false;
 
@@ -382,7 +382,7 @@ export class ManageComponent implements OnInit {
 
   confirm(): void {
     this.message = 'Confirmed!';
-    console.log('Deleting note with journalid:', this.model.journalId);
+    console.log('Deleting note with journalId:', this.model.journalId);
     this.modalRef.hide();
     this.spinner.show();
 

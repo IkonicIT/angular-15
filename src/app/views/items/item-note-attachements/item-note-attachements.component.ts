@@ -36,7 +36,7 @@ export class ItemNoteAttachementsComponent implements OnInit {
   currentRole: any;
   highestRank: any;
   currentItemId: any;
-  entityname: any;
+  entityName: any;
   helpFlag: any = false;
   p: any;
   itemTag: any;
@@ -74,7 +74,7 @@ export class ItemNoteAttachementsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entityname = this.broadcasterService.currentNoteAttachmentTitle;
+    this.entityName = this.broadcasterService.currentNoteAttachmentTitle;
     this.itemRank = this.broadcasterService.itemRank;
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
@@ -132,7 +132,7 @@ export class ItemNoteAttachementsComponent implements OnInit {
 
     let userLog = {
       noteType: 'itemnoteattachment',
-      noteName: this.entityname,
+      noteName: this.entityName,
       itemTag: this.itemTag,
       itemTypeName: this.itemType,
     };

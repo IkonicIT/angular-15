@@ -98,7 +98,7 @@ export class EditUserTypeComponent implements OnInit {
     typeList.forEach((type) => {
       var children: TreeviewItem[] = [];
       if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
+        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationId})
       }
       items.push(
         new TreeviewItem({

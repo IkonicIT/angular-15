@@ -104,12 +104,12 @@ export class ItemRepairsComponent implements OnInit {
       });
   }
 
-  itemRepairAttachments(itemRepairAttachments: { journalid: string }) {
+  itemRepairAttachments(itemRepairAttachments: { journalId: string }) {
     this.router.navigate([
       '../../items/itemRepairAttachments/' +
         this.itemId +
         '/' +
-        itemRepairAttachments.journalid,
+        itemRepairAttachments.journalId,
     ]);
   }
 

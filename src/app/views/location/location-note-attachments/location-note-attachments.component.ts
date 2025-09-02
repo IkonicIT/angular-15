@@ -36,7 +36,7 @@ export class LocationNoteAttachmentsComponent implements OnInit {
   globalCompany: any;
   authToken: any;
   locationName: any;
-  entityname: any;
+  entityName: any;
   loader = false;
   highestRank: any;
 
@@ -74,7 +74,7 @@ export class LocationNoteAttachmentsComponent implements OnInit {
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
     this.locationName = this.locationManagementService.currentLocationName;
-    this.entityname = this.broadcasterService.currentNoteAttachmentTitle;
+    this.entityName = this.broadcasterService.currentNoteAttachmentTitle;
   }
 
   getAllDocuments(entityId: string, noteId: string) {
@@ -127,7 +127,7 @@ export class LocationNoteAttachmentsComponent implements OnInit {
 
     let userLog = {
       noteType: 'locationnoteattachment',
-      noteName: this.entityname,
+      noteName: this.entityName,
       locationName: this.locationName,
     };
     this.locationAttachmentsService

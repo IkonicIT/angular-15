@@ -40,32 +40,32 @@ export class AddVendorNoteComponent implements OnInit {
     });
 
     console.log('companyId=' + this.companyId);
-    this.model.enteredon = new Date();
+    this.model.enteredOn = new Date();
   }
 
   saveNotes() {
-    if (!this.model.entityname || !this.model.enteredon) {
+    if (!this.model.entityName || !this.model.enteredOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.model = {
         companyId: this.companyId,
-        effectiveon: new Date(),
-        enteredby: 'Yogi Patel',
-        enteredon: new Date(),
+        effectiveOn: new Date(),
+        enteredBy: 'Yogi Patel',
+        enteredOn: new Date(),
         entityId: this.companyId,
-        entityname: this.model.entityname,
+        entityName: this.model.entityName,
         entitytypeId: 0,
-        entityxml: '',
+        entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
+        jobNumber: this.model.jobNumber,
+        journalId: 0,
         journaltypeId: 0,
-        locationid: 0,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
+        locationId: 0,
+        locationName: '',
+        poNumber: this.model.poNumber,
+        shippingNumber: '',
+        trackingNumber: '',
         moduleType: 'vendorType',
       };
       this.spinner.show();

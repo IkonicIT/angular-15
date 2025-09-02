@@ -27,9 +27,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class EditItemComponent implements OnInit {
   model: any = {
-    locationid: 0,
+    locationId: 0,
     typeId: 0,
-    warrantytypeId: 0,
+    warrantyTypeId: 0,
   };
   message: string;
   index: number = 0;

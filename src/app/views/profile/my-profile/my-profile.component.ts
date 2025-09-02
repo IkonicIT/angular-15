@@ -105,7 +105,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   onValueChange(value: any) {
-    this.model.preferredlocationid = value;
+    this.model.preferredlocationId = value;
 
     console.log(value);
   }

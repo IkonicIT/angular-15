@@ -14,7 +14,7 @@ export class EditItemNoteComponent implements OnInit {
   index: number = 0;
   date = Date.now();
   itemId: number = 0;
-  journalid: number = 0;
+  journalId: number = 0;
   private sub: any;
   currentRole: any;
   highestRank: any;
@@ -28,19 +28,19 @@ export class EditItemNoteComponent implements OnInit {
     private spinner: NgxSpinnerService,
     public datepipe: DatePipe
   ) {
-    this.journalid = route.snapshot.params['id'];
+    this.journalId = route.snapshot.params['id'];
     this.itemId = route.snapshot.params['itemId'];
     this.router = router;
     this.spinner.show();
 
-    this.itemNotesService.getItemNotes(this.journalid).subscribe((response) => {
+    this.itemNotesService.getItemNotes(this.journalId).subscribe((response) => {
       this.spinner.hide();
 
       this.model = response;
-      if (this.model.effectiveon) {
-        this.model.effectiveon = new Date(this.model.effectiveon);
-        this.model.effectiveon = this.datepipe.transform(
-          this.model.effectiveon,
+      if (this.model.effectiveOn) {
+        this.model.effectiveOn = new Date(this.model.effectiveOn);
+        this.model.effectiveOn = this.datepipe.transform(
+          this.model.effectiveOn,
           'MM/dd/yyyy'
         );
       }
@@ -55,18 +55,18 @@ export class EditItemNoteComponent implements OnInit {
   }
 
   updateItemNotes() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.spinner.show();
 
-      this.model.moduleType = 'itemtype';
-      this.model.effectiveon = new Date(this.model.effectiveon);
+      this.model.moduleType = 'itemType';
+      this.model.effectiveOn = new Date(this.model.effectiveOn);
       this.itemNotesService.updateItemNotes(this.model).subscribe(
         (response) => {
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();

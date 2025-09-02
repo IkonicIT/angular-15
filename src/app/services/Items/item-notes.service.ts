@@ -31,19 +31,19 @@ export class ItemNotesService {
       .pipe(catchError(this.handleError));
   }
 
-  updateItemNotes(itemNote: { journalid: string }) {
+  updateItemNotes(itemNote: { journalId: string }) {
     return this.http
       .put(
-        this.serviceURL + '/' + itemNote.journalid,
+        this.serviceURL + '/' + itemNote.journalId,
         itemNote,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
   }
 
-  getItemNotes(journalid: number) {
+  getItemNotes(journalId: number) {
     return this.http
-      .get(this.serviceURL + '/' + journalid, this.httpOptions)
+      .get(this.serviceURL + '/' + journalId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

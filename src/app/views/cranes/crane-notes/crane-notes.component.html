@@ -163,12 +163,12 @@
             <!-- <div class=row mt-2>
               <div class="form-group col-sm-6">
                 <label for="job">JOB Number</label>
-                <input type="text" class="form-control bg-white" [(ngModel)]="model.jobnumber" name="job" #job="ngModel" id="job"
+                <input type="text" class="form-control bg-white" [(ngModel)]="model.jobNumber" name="job" #job="ngModel" id="job"
                   placeholder="Enter JOB Number">
               </div>
               <div class="form-group col-sm-6">
                 <label for="po">PO Number</label>
-                <input type="text" class="form-control bg-white" [(ngModel)]="model.ponumber" id="po" name="po" #po="ngModel"
+                <input type="text" class="form-control bg-white" [(ngModel)]="model.poNumber" id="po" name="po" #po="ngModel"
                   placeholder="Enter PO Number">
               </div>
             </div> -->
@@ -312,7 +312,7 @@
                 <label for="date"
                   >Date <strong class="text-danger">*</strong></label
                 >
-                <!-- <input  class="form-control bg-white"  type="text"  [(ngModel)]="model.effectiveon" name="date" #date="ngModel" id="date"> -->
+                <!-- <input  class="form-control bg-white"  type="text"  [(ngModel)]="model.effectiveOn" name="date" #date="ngModel" id="date"> -->
                 <input
                   disabled
                   type="text"
@@ -328,12 +328,12 @@
             <!-- <div class=row mt-2>
               <div class="form-group col-sm-6">
                 <label for="job">JOB Number</label>
-                <input readonly type="text" class="form-control bg-white" [(ngModel)]="model.jobnumber" name="job" #job="ngModel"
+                <input readonly type="text" class="form-control bg-white" [(ngModel)]="model.jobNumber" name="job" #job="ngModel"
                   id="job" placeholder="Enter JOB Number">
               </div>
               <div class="form-group col-sm-6">
                 <label for="po">PO Number</label>
-                <input readonly type="text" class="form-control bg-white" [(ngModel)]="model.ponumber" id="po" name="po"
+                <input readonly type="text" class="form-control bg-white" [(ngModel)]="model.poNumber" id="po" name="po"
                   #po="ngModel" placeholder="Enter PO Number">
               </div>
             </div> -->
@@ -487,12 +487,12 @@
             <!-- <div class=row mt-2>
               <div class="form-group col-sm-6">
                 <label for="job">JOB Number</label>
-                <input type="text" class="form-control bg-white" [(ngModel)]="model.jobnumber" name="job" #job="ngModel" id="job"
+                <input type="text" class="form-control bg-white" [(ngModel)]="model.jobNumber" name="job" #job="ngModel" id="job"
                   placeholder="Enter JOB Number">
               </div>
               <div class="form-group col-sm-6">
                 <label for="po">PO Number</label>
-                <input type="text" class="form-control bg-white" [(ngModel)]="model.ponumber" id="po" name="po" #po="ngModel"
+                <input type="text" class="form-control bg-white" [(ngModel)]="model.poNumber" id="po" name="po" #po="ngModel"
                   placeholder="Enter PO Number">
               </div>
             </div> -->
@@ -564,9 +564,9 @@
                           Title<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
-                        <!-- <th [class.active]="order === 'jobnumber'" (click)="setOrder('jobnumber')">Job<span
+                        <!-- <th [class.active]="order === 'jobNumber'" (click)="setOrder('jobNumber')">Job<span
                             [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                        <th [class.active]="order === 'ponumber'" (click)="setOrder('ponumber')">PO<span
+                        <th [class.active]="order === 'poNumber'" (click)="setOrder('poNumber')">PO<span
                             [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th> -->
                         <th
                           [class.active]="order === 'createdBy'"
@@ -589,8 +589,8 @@
                               : [
                                   'createdDate',
                                   'name',
-                                  'jobnumber',
-                                  'ponumber',
+                                  'jobNumber',
+                                  'poNumber',
                                   'createdBy'
                                 ]
                               : vendorNotesFilter

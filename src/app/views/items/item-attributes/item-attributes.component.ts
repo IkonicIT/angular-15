@@ -294,7 +294,7 @@ export class ItemAttributesComponent implements OnInit {
       if (!this.model.attributeListItemResource) {
         this.model.attributeListItemResource = [];
       }
-      this.model.attributeListItemResource.push({ listitem: this.listItem });
+      this.model.attributeListItemResource.push({ listItem: this.listItem });
       this.listItem = '';
     } else {
       this.index = 0;

@@ -230,12 +230,12 @@
                           >
                             <li>
                               {{ journal.entry }} on
-                              {{ journal.enteredon | date : "MM/dd/yyyy" }} by
-                              {{ journal.enteredby }}...........<a
+                              {{ journal.enteredOn | date : "MM/dd/yyyy" }} by
+                              {{ journal.enteredBy }}...........<a
                                 [routerLink]="[
                                   '../../../items/changeLog/',
                                   journal.entityId,
-                                  journal.journalid
+                                  journal.journalId
                                 ]"
                                 (click)="modalRef.hide()"
                                 >details</a
@@ -912,11 +912,11 @@
     <ul *ngFor="let journal of journals">
       <li *ngIf="journal.journaltypeId == 3">
         Item updated on {{ journal.enteredOn.split(" ")[0] }} by
-        {{ journal.enteredby }}...........<a
+        {{ journal.enteredBy }}...........<a
           [routerLink]="[
             '../../viewChangeLogItem',
             journal.entityId,
-            journal.journalid
+            journal.journalId
           ]"
           (click)="modalRef.hide()"
           >details</a
@@ -925,10 +925,10 @@
       <li *ngIf="journal.journaltypeId == 4">
         Notes {{ journal.entry }} added on
         {{ journal.enteredOn.split(" ")[0] }} by
-        {{ journal.enteredby }}..........<a
+        {{ journal.enteredBy }}..........<a
           [routerLink]="[
             '../../editItemNotes',
-            journal.journalid,
+            journal.journalId,
             journal.entityId
           ]"
           (click)="modalRef.hide()"
@@ -936,7 +936,7 @@
         >
       </li>
       <li *ngIf="journal.journaltypeId == 7">
-        {{ journal.entry }} by {{ journal.enteredby }} .........<a
+        {{ journal.entry }} by {{ journal.enteredBy }} .........<a
           [routerLink]="['../../transferItem', journal.entityId]"
           (click)="modalRef.hide()"
           >details</a

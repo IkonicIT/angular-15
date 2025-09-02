@@ -45,7 +45,7 @@ export class NotesComponent implements OnInit {
   itemTag: any;
   itemType: any;
   helpFlag: any = false;
-  entityname: any;
+  entityName: any;
   dismissible = true;
   p: any;
   loader = false;
@@ -96,7 +96,7 @@ export class NotesComponent implements OnInit {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
 
     console.log('itemId=' + this.itemId);
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   getAllNotes(companyId: string) {
@@ -131,33 +131,33 @@ export class NotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   saveItemNote() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.model = {
         companyId: this.companyId,
-        effectiveOn: this.model.effectiveon,
+        effectiveOn: this.model.effectiveOn,
         enteredBy: this.userName,
         enteredOn: new Date(),
         entityId: this.itemId,
-        entityName: this.model.entityname,
+        entityName: this.model.entityName,
         entitytypeId: 0,
         entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobNumber: this.model.jobnumber,
+        jobNumber: this.model.jobNumber,
         journalId: 0,
         journalTypeId: 0,
         locationId: 0,
         locationName: '',
-        poNumber: this.model.ponumber,
+        poNumber: this.model.poNumber,
         shippingNumber: '',
         trackingNumber: '',
-        moduleType: 'itemtype',
+        moduleType: 'itemType',
         itemTypeName: this.itemType,
         itemTag: this.itemTag,
       };
@@ -205,13 +205,13 @@ export class NotesComponent implements OnInit {
     } else {
       this.spinner.show();
 
-      this.model.moduleType = 'itemtype';
-      this.model.effectiveon = new Date(this.model.effectiveOn);
+      this.model.moduleType = 'itemType';
+      this.model.effectiveOn = new Date(this.model.effectiveOn);
       this.model.itemTypeName = this.itemType;
       this.model.itemTag = this.itemTag;
       this.itemNotesService.updateItemNotes(this.model).subscribe(
         (response) => {
-          this.model.effectiveon = this.datepipe.transform(
+          this.model.effectiveOn = this.datepipe.transform(
             this.model.effectiveOn,
             'MM/dd/yyyy'
           );
@@ -270,7 +270,7 @@ export class NotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   backToItem() {

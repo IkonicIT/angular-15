@@ -89,7 +89,7 @@ export class AddLocationNoteAttachmentsComponent implements OnInit {
         this.model.description ? this.model.description : ''
       );
       formdata.append('entityId', JSON.stringify(this.entityId));
-      formdata.append('moduleType', 'itemtype');
+      formdata.append('moduleType', 'itemType');
       var jsonArr = this.addedfiles;
       for (var i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];

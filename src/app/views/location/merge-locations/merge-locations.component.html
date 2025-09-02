@@ -68,7 +68,7 @@
 
                       <app-dropdown-treeview-select
                           [items]="locationItems"
-                          [(value)]="model.fromlocationid"
+                          [(value)]="model.fromlocationId"
                         >
                         </app-dropdown-treeview-select>
                         <span class="dropdown-arrow">&#9662;</span>
@@ -83,7 +83,7 @@
          <div class="dropdown-wrapper">
   <app-dropdown-treeview-select
     [items]="locationItems"
-    [(value)]="model.tolocationid">
+    [(value)]="model.tolocationId">
   </app-dropdown-treeview-select>
   <span class="dropdown-arrow">&#9662;</span> <!-- ▼ medium arrow -->
 </div>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="locationname"
+                        <label for="locationName"
                           >New Location Name:<strong class="text-danger"
                             >*</strong
                           ></label
@@ -100,10 +100,10 @@
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.locationname"
-                          name="locationname"
-                          #locationname="ngModel"
-                          id="locationname"
+                          [(ngModel)]="model.locationName"
+                          name="locationName"
+                          #locationName="ngModel"
+                          id="locationName"
                         />
                       </div>
                     </div>

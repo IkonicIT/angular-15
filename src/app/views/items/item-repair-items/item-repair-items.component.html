@@ -128,8 +128,8 @@
                         <thead class="thead-light">
                           <tr>
                             <th
-                              [class.active]="order === 'repairdescription'"
-                              (click)="setOrder('repairdescription')"
+                              [class.active]="order === 'repairDescription'"
+                              (click)="setOrder('repairDescription')"
                             >
                               Repair Item name<span [hidden]="reverse == ''"
                                 >▼</span
@@ -144,7 +144,7 @@
                               let item of repairItems
                                 | orderBy : reverse + order
                                 | filterBy
-                                  : ['repairdescription']
+                                  : ['repairDescription']
                                   : repairItemFilter
                                 | paginate
                                   : {
@@ -153,7 +153,7 @@
                                     }
                             "
                           >
-                            <td>{{ item.repairdescription }}</td>
+                            <td>{{ item.repairDescription }}</td>
                             <td>
                               <button
                                 data-bs-placement="bottom"
@@ -161,7 +161,7 @@
                                 title="Edit Repair Item"
                                 type="button"
                                 class="btn btn-outline-danger btn-sm btn-right"
-                                (click)="editItemrepairItem(item.repairid)"
+                                (click)="editItemrepairItem(item.repairId)"
                               >
                                 Edit
                               </button>
@@ -172,7 +172,7 @@
                                 type="button"
                                 class="btn btn-outline-danger btn-sm"
                                 (click)="
-                                  openModal(confirmtemplate, item.repairid)
+                                  openModal(confirmtemplate, item.repairId)
                                 "
                                 [disabled]="highestRank == 9"
                               >

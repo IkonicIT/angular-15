@@ -378,9 +378,9 @@ export class UserSecurityRoleComponent implements OnInit {
         userId: this.userId,
         roleid: this.userSecurityRole.roleid,
         lastModifiedBy: this.userName,
-        locationid:
-          this.userSecurityRole.locationid != undefined
-            ? this.userSecurityRole.locationid
+        locationId:
+          this.userSecurityRole.locationId != undefined
+            ? this.userSecurityRole.locationId
             : 0,
         companyId: this.userSecurityRole.companyId,
       };

@@ -63,22 +63,22 @@ export class DashboardService {
       .pipe(catchError(this.handleError));
   }
 
-  getRecentJobsByCause(failuretype: any) {
+  getRecentJobsByCause(failureType: any) {
     return this.http
-      .post(this.serviceURL + 'repairJobsByFailureCause', failuretype)
+      .post(this.serviceURL + 'repairJobsByFailureCause', failureType)
       .pipe(catchError(this.handleError));
   }
 
-  getRecentJobsByCauseMasterPieCharts(failuretype: any) {
-    return this.http.post(AppConfiguration.locationRestURL + "masterpiecharts/repairJobsByFailureCause", failuretype)
+  getRecentJobsByCauseMasterPieCharts(failureType: any) {
+    return this.http.post(AppConfiguration.locationRestURL + "masterpiecharts/repairJobsByFailureCause", failureType)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  getRecentJobsByCauseinRange(failuretype: any) {
+  getRecentJobsByCauseinRange(failureType: any) {
     return this.http
-      .post(this.serviceURL + 'repairJobsByFailureCauseInRange', failuretype)
+      .post(this.serviceURL + 'repairJobsByFailureCauseInRange', failureType)
       .pipe(catchError(this.handleError));
   }
 

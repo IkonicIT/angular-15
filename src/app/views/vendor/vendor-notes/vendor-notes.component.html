@@ -175,7 +175,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -187,7 +187,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -354,7 +354,7 @@
                   readonly
                   type="text"
                   class="form-control backgroundColor"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -367,7 +367,7 @@
                   readonly
                   type="text"
                   class="form-control backgroundColor"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -540,7 +540,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -552,7 +552,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -626,15 +626,15 @@
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'jobnumber'"
-                          (click)="setOrder('jobnumber')"
+                          [class.active]="order === 'jobNumber'"
+                          (click)="setOrder('jobNumber')"
                         >
                           Job<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'ponumber'"
-                          (click)="setOrder('ponumber')"
+                          [class.active]="order === 'poNumber'"
+                          (click)="setOrder('poNumber')"
                         >
                           PO<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
@@ -660,8 +660,8 @@
                               : [
                                   'createdDate',
                                   'name',
-                                  'jobnumber',
-                                  'ponumber',
+                                  'jobNumber',
+                                  'poNumber',
                                   'createdBy'
                                 ]
                               : vendorNotesFilter
@@ -674,8 +674,8 @@
                       >
                         <td>{{ note.createdDate | date : "MM/dd/yyyy" }}</td>
                         <td>{{ note.name }}</td>
-                        <td>{{ note.jobnumber }}</td>
-                        <td>{{ note.ponumber }}</td>
+                        <td>{{ note.jobNumber }}</td>
+                        <td>{{ note.poNumber }}</td>
                         <td>{{ note.createdBy }}</td>
                         <!-- <td>
                           <ng-container *ngFor="let attachment of note.attachmentList">

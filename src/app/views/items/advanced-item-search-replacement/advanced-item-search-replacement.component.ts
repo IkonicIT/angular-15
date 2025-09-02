@@ -41,7 +41,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
   public itrTypeId: any;
   value: any;
   itemValue: any;
-  public itemrepairnotesrfqModel: any = {};
+  public itemrepairNotesrfqModel: any = {};
   public itemNotesList: any = {};
   public repairlogList: any = [];
   public RFQsList: any = [];
@@ -287,21 +287,21 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
     this.advancedsearchflag = 1;
     var request = {
       companyId: this.companyId,
-      extraTag: this.itemrepairnotesrfqModel.exactTag
-        ? this.itemrepairnotesrfqModel.exactTag
+      extraTag: this.itemrepairNotesrfqModel.exactTag
+        ? this.itemrepairNotesrfqModel.exactTag
         : null,
-      RFQ: this.itemrepairnotesrfqModel.rfq
-        ? this.itemrepairnotesrfqModel.rfq
+      RFQ: this.itemrepairNotesrfqModel.rfq
+        ? this.itemrepairNotesrfqModel.rfq
         : null,
-      po: this.itemrepairnotesrfqModel.po
-        ? this.itemrepairnotesrfqModel.po
+      po: this.itemrepairNotesrfqModel.po
+        ? this.itemrepairNotesrfqModel.po
         : null,
-      job: this.itemrepairnotesrfqModel.job
-        ? this.itemrepairnotesrfqModel.job
+      job: this.itemrepairNotesrfqModel.job
+        ? this.itemrepairNotesrfqModel.job
         : null,
-      noteFlag: this.itemrepairnotesrfqModel.isitemnote,
-      repairFlag: this.itemrepairnotesrfqModel.isitemrepair,
-      rfqFlag: this.itemrepairnotesrfqModel.isitemrfq,
+      noteFlag: this.itemrepairNotesrfqModel.isitemnote,
+      repairFlag: this.itemrepairNotesrfqModel.isitemrepair,
+      rfqFlag: this.itemrepairNotesrfqModel.isitemrfq,
       itemNotes: null,
       repairlogList: null,
       RFQsList: null,
@@ -344,12 +344,12 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
   }
 
   clearRepairNoteQuote() {
-    this.itemrepairnotesrfqModel = {};
+    this.itemrepairNotesrfqModel = {};
   }
 
   goToNote(
     itemId: string,
-    journalid: string,
+    journalId: string,
     rank: any,
     tag: any,
     typeName: any
@@ -357,7 +357,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
     this.broadcasterService.itemRank = rank;
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
-    this.router.navigate(['/items/itemNotes/' + itemId + '/' + journalid]);
+    this.router.navigate(['/items/itemNotes/' + itemId + '/' + journalId]);
   }
 
   goToItemRepair(

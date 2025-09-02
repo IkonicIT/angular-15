@@ -617,7 +617,7 @@ export class PiechartComponent implements OnInit {
   }
 
   goToNote(
-    journalid: string,
+    journalId: string,
     itemId: string,
     rank: any,
     tag: any,
@@ -626,7 +626,7 @@ export class PiechartComponent implements OnInit {
     this.broadcasterService.itemRank = rank;
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
-    this.router.navigate(['/items/itemNotes/' + itemId + '/' + journalid]);
+    this.router.navigate(['/items/itemNotes/' + itemId + '/' + journalId]);
   }
 
   goToItemRepair(
@@ -888,7 +888,7 @@ export class PiechartComponent implements OnInit {
 
   public onValChange(val: string) {
     this.selectedVal = val;
-    if (this.selectedVal === 'repaircost') {
+    if (this.selectedVal === 'repairCost') {
       this.isRepairFlag = true;
       this.repairFlag = 'true';
       this.params.type = 'yearly';

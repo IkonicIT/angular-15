@@ -220,7 +220,7 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setCompletedRepairs([]);
     this.itemManagementService.setInCompletedRepairs([]);
     this.itemManagementService.itemModel = {};
-    this.itemManagementService.itemrepairnotesrfqModel = {};
+    this.itemManagementService.itemrepairNotesrfqModel = {};
     this.broadcasterService.locations = [];
     if (userSelectedCompany.companyId == 0) {
       this.masterSearchFlag = 'true';
@@ -348,7 +348,7 @@ export class FullLayoutComponent implements OnInit {
     this.reportsService.setserviceReport([]);
     this.itemManagementService.setAdvancedItemSearchResults([]);
     this.itemManagementService.itemModel = {};
-    this.itemManagementService.itemrepairnotesrfqModel = {};
+    this.itemManagementService.itemrepairNotesrfqModel = {};
     this.itemManagementService.setCompletedRepairs([]);
     this.itemManagementService.setInCompletedRepairs([]);
     this.broadcasterService.locations = [];
@@ -497,7 +497,7 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
     this.itemManagementService.setAdvancedItemSearchResults([]);
     this.itemManagementService.itemModel = {};
-    this.itemManagementService.itemrepairnotesrfqModel = {};
+    this.itemManagementService.itemrepairNotesrfqModel = {};
     this.router.navigate(['/items/advancedSearch']);
   }
 

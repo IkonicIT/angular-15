@@ -129,12 +129,12 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="price">Purchase price</label>
-                        <input type="number" class="form-control add-item-background" [(ngModel)]="model.purchaseprice"
+                        <input type="number" class="form-control add-item-background" [(ngModel)]="model.purchasePrice"
                           id="price" name="critical" />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="date">Purchase Date</label>
-                        <input type="text" class="form-control add-item-background" [(ngModel)]="model.purchasedate"
+                        <input type="text" class="form-control add-item-background" [(ngModel)]="model.purchaseDate"
                           id="date" name="critical" bsDatepicker />
                       </div>
                     </div>
@@ -155,18 +155,18 @@
                       <div class="form-group col-sm-6">
                         <label for="warranty">Warranty Type</label>
                         <select class="form-control add-item-background custom-dropdown"
-                          [(ngModel)]="model.warrantytypeId" name="warranty" #warranty="ngModel" id="warranty">
+                          [(ngModel)]="model.warrantyTypeId" name="warranty" #warranty="ngModel" id="warranty">
                           <option value="0" selected="true">
                             Select Warranty Type
                           </option>
-                          <option [ngValue]="type.warrantytypeId" *ngFor="let type of warrantyTypes"
-                            [innerHTML]="type.warrantytype"></option>
+                          <option [ngValue]="type.warrantyTypeId" *ngFor="let type of warrantyTypes"
+                            [innerHTML]="type.warrantyType"></option>
                         </select>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="exp">Warranty Exp.</label>
                         <input type="text" class="form-control add-item-background"
-                          [(ngModel)]="model.warrantyexpiration" id="exp" name="exp" bsDatepicker />
+                          [(ngModel)]="model.warrantyExpiration" id="exp" name="exp" bsDatepicker />
                       </div>
                     </div>
                     <div class="row">
@@ -175,7 +175,7 @@
                           <strong class="text-danger">*</strong></label>
   <app-dropdown-treeview-select
                           [items]="locationItems"
-                          [(value)]="model.locationid"
+                          [(value)]="model.locationId"
                           (valueChange)="onValueChange($event)"
                         >
                         </app-dropdown-treeview-select>
@@ -291,10 +291,10 @@
                             class="form-control custom-dropdown" [tooltip]="eachAttr.tooltip"
                             [(ngModel)]="eachAttr.value" name="select{{ index }}" #type="ngModel">
                             <option value="">Choose..</option>
-                            <option [ngValue]="list.listitem" *ngFor="
+                            <option [ngValue]="list.listItem" *ngFor="
                                 let list of eachAttr.attributeListItemResource
                               ">
-                              {{ list.listitem }}
+                              {{ list.listItem }}
                             </option>
                           </select>
                           <div class="form-check d-flex align-items-center gap-3" *ngIf="eachAttr.attributeType.attributeTypeId == 5">

@@ -42,29 +42,29 @@
             <thead class="thead-light">
               <tr>
                 <th
-                  [class.active]="order === 'enteredon'"
-                  (click)="setOrder('enteredon')"
+                  [class.active]="order === 'enteredOn'"
+                  (click)="setOrder('enteredOn')"
                 >
                   Date<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'entityname'"
-                  (click)="setOrder('entityname')"
+                  [class.active]="order === 'entityName'"
+                  (click)="setOrder('entityName')"
                 >
                   Title<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'jobnumber'"
-                  (click)="setOrder('jobnumber')"
+                  [class.active]="order === 'jobNumber'"
+                  (click)="setOrder('jobNumber')"
                 >
                   Job<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'ponumber'"
-                  (click)="setOrder('ponumber')"
+                  [class.active]="order === 'poNumber'"
+                  (click)="setOrder('poNumber')"
                 >
                   PO<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -81,33 +81,33 @@
                     | orderBy : reverse + order
                     | filterBy
                       : [
-                          'enteredon',
-                          'entityname',
-                          'jobnumber',
-                          'ponumber',
-                          'enteredby'
+                          'enteredOn',
+                          'entityName',
+                          'jobNumber',
+                          'poNumber',
+                          'enteredBy'
                         ]
                       : itemNotesFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
-                <td [innerHTML]="note.effectiveon | date : 'MM/dd/yyyy'"></td>
+                <td [innerHTML]="note.effectiveOn | date : 'MM/dd/yyyy'"></td>
                 <td>
                   <a
                     href="javascript:void(0)"
-                    (click)="openModalView(templateView, note.journalid)"
+                    (click)="openModalView(templateView, note.journalId)"
                     placement="top"
                     style="color: red"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="click here to View Notes Screen"
-                    [innerHTML]="note.entityname"
+                    [innerHTML]="note.entityName"
                   ></a>
                 </td>
 
-                <td [innerHTML]="note.jobnumber"></td>
-                <td [innerHTML]="note.ponumber"></td>
+                <td [innerHTML]="note.jobNumber"></td>
+                <td [innerHTML]="note.poNumber"></td>
                 <td>
                   <ng-container *ngFor="let attachment of note.attachmentList">
                     <br /><a
@@ -136,7 +136,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete Item Note"
-                    (click)="openModal(confirmtemplate, note.journalid)"
+                    (click)="openModal(confirmtemplate, note.journalId)"
                     [disabled]="highestRank == 9"
                   >
                     Delete
@@ -201,7 +201,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.entityname"
+          [(ngModel)]="model.entityName"
           name="title"
           #title="ngModel"
           id="title"
@@ -215,7 +215,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.effectiveon"
+          [(ngModel)]="model.effectiveOn"
           name="date"
           #date="ngModel"
           id="date"
@@ -230,7 +230,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.jobnumber"
+          [(ngModel)]="model.jobNumber"
           name="job"
           #job="ngModel"
           id="job"
@@ -243,7 +243,7 @@
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.ponumber"
+          [(ngModel)]="model.poNumber"
           id="po"
           name="po"
           #po="ngModel"

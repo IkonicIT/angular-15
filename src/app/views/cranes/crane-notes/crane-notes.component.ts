@@ -97,8 +97,8 @@ export class CraneNotesComponent implements OnInit {
         createdBy: this.userName,
         createdDate: this.model.createdDate,
         name: this.model.name,
-        // "jobnumber": this.model.jobnumber,
-        // "ponumber": this.model.ponumber,
+        // "jobNumber": this.model.jobNumber,
+        // "poNumber": this.model.poNumber,
         details: this.model.details,
         isNew: true,
         BMKEY1: this.craneId,
@@ -233,7 +233,7 @@ export class CraneNotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   editNote() {

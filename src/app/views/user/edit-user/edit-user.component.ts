@@ -23,34 +23,33 @@ export class EditUserComponent implements OnInit {
   isDuplicate = true;
   myDate = new Date();
   model: any = {};
-  index: number = 0;
-  router: Router;
-  str: string = '\u003d';
-  companyId: any = 0;
+  index = 0;
+  str = '\u003d';
+  companyId: number = 0;
   globalCompany: any;
   userId: any;
   profileId: any;
-  locations: any = [];
-  allVendors: any = [];
-  allCompanies: any = [];
-  rolesCompanies: any = [];
+  locations: any[] = [];
+  allVendors: any[] = [];
+  allCompanies: any[] = [];
+  rolesCompanies: any[] = [];
   loggedInuser: any;
-  isVendor: boolean;
-  isUserCompany: boolean;
+  isVendor = false;
+  isUserCompany = false;
   isOwnerAdmin: any;
-  locationItems: TreeviewItem[];
+  locationItems: TreeviewItem[] = [];
   locationsWithHierarchy: any;
-  userName: any;
+  userName: string | null = null;
   typeAttributes: any;
-  email: any;
-  helpFlag: any = false;
+  email: string | null = null;
+  helpFlag = false;
   dismissible = true;
   vendorId: any;
-  vendors: any;
-  vendorItems: TreeviewItem[]; // Add this property
+  vendors: any[] = [];
+  vendorItems: TreeviewItem[] = [];
 
   constructor(
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
@@ -60,52 +59,39 @@ export class EditUserComponent implements OnInit {
     private userManagementService: UserManagementService,
     private locationManagementService: LocationManagementService
   ) {
-    this.router = router;
-    this.userId = route.snapshot.params['userId'];
-    this.profileId = route.snapshot.params['profileId'];
+    this.userId = this.route.snapshot.params['userId'];
+    this.profileId = this.route.snapshot.params['profileId'];
 
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadVendors();
     this.userName = sessionStorage.getItem('userName');
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    //this.locations = this.locationManagementService.getLocations();
+
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
       this.getUserInfo();
     }
-
-    // this.companyManagementService.getAllVendorDetails().subscribe(
-    //   (response) => {
-    //     this.spinner.hide();
-    //     console.log(response);
-    //     this.vendors = response;
-    //   },
-    //   (error) => {
-    //     this.spinner.hide();
-    //   }
-    // );
   }
 
-  loadVendors() {
+  loadVendors(): void {
     this.spinner.show();
-    this.companyManagementService.getAllVendorDetails().subscribe(
-      (response) => {
+    this.companyManagementService.getAllVendorDetails().subscribe({
+      next: (response: any[]) => {
         this.spinner.hide();
         this.vendors = response;
         this.vendorItems = this.convertVendorsToTreeviewItems(this.vendors);
       },
-      (error) => {
+      error: (err) => {
         this.spinner.hide();
-        console.error('Error loading vendors:', error);
-      }
-    );
+        console.error('Error loading vendors:', err);
+      },
+    });
   }
 
   convertVendorsToTreeviewItems(vendors: any[]): TreeviewItem[] {
@@ -118,7 +104,7 @@ export class EditUserComponent implements OnInit {
     );
   }
 
-  onVendorChange(value: any) {
+  onVendorChange(value: any): void {
     if (this.model.vendorResource) {
       this.model.vendorResource.vendorId = value;
     } else {
@@ -126,30 +112,32 @@ export class EditUserComponent implements OnInit {
     }
   }
 
-  getUserInfo() {
+  getUserInfo(): void {
     this.spinner.show();
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
-    this.spinner.hide();
 
-    this.spinner.show();
     this.userManagementService
       .getprofileWithType(this.userId, this.companyId)
-      .subscribe((response: any) => {
-        this.spinner.hide();
-        this.model = response;
-        this.email = this.model.email;
-        //  this.vendorId = this.model.vendorResource.vendorId;
-        this.profileId = response.profileid;
-        this.checkCompany();
-        this.getTypeAttributes(this.model.userTypeId);
-        this.spinner.hide();
+      .subscribe({
+        next: (response: any) => {
+          this.spinner.hide();
+          this.model = response;
+          this.email = this.model.email;
+          this.profileId = response.profileId;
+          this.checkCompany();
+          this.getTypeAttributes(this.model.userTypeId);
+        },
+        error: () => {
+          this.spinner.hide();
+        },
       });
   }
-  checkCompany() {
-    var count = 0;
+
+  checkCompany(): void {
+    let count = 0;
     this.allCompanies.forEach((company: { companyId: any }) => {
-      if (company.companyId == this.model.companyId) {
+      if (company.companyId === this.model.companyId) {
         count++;
       }
     });
@@ -160,85 +148,64 @@ export class EditUserComponent implements OnInit {
     }
   }
 
-  checkUserName(event: any) {
+  checkUserName(event: any): void {
     this.isNameCheckVisible = true;
     this.isDuplicateTag = false;
-    console.log('event' + event.target.value);
-    if (
-      event.target.value.length < 4 ||
-      event.target.value == null ||
-      event.target.value == ''
-    ) {
+
+    if (!event.target.value || event.target.value.length < 4) {
       this.isMinLength = false;
-    } else {
-      this.isMinLength = true;
-      this.userManagementService.getUserId(event.target.value).subscribe(
-        (response: any) => {
-          if (response > 0) {
-            this.isDuplicateTag = true;
-          }
-        },
-        (error) => {}
-      );
+      return;
     }
+
+    this.isMinLength = true;
+    this.userManagementService.getUserId(event.target.value).subscribe({
+      next: (response: any) => {
+        if (response > 0) {
+          this.isDuplicateTag = true;
+        }
+      },
+      error: () => {},
+    });
   }
 
-  checkEmail(event: any) {
+  checkEmail(event: any): void {
     this.isEmailCheckVisible = true;
     this.isDuplicate = false;
-    var email = '^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$';
-    console.log('event' + event.target.value);
-    if (event.target.value.match(email)) {
-    }
-    this.userManagementService.getEmail(event.target.value).subscribe(
-      (response: any) => {
+
+    this.userManagementService.getEmail(event.target.value).subscribe({
+      next: (response: any) => {
         if (response > 0) {
           this.isDuplicate = true;
         }
       },
-      (error) => {}
-    );
+      error: () => {},
+    });
   }
-  getLocations() {
+
+  getLocations(): void {
     this.locationsWithHierarchy = this.broadcasterService.locations;
-    if (this.locationsWithHierarchy && this.locationsWithHierarchy.length > 0) {
-      this.locationItems = [];
+    if (this.locationsWithHierarchy?.length > 0) {
       this.locationItems = this.generateHierarchy(this.locationsWithHierarchy);
     }
   }
-  getTypeAttributes(typeId: string) {
-    if (typeId && typeId != '0') {
+
+  getTypeAttributes(typeId: string): void {
+    if (typeId && typeId !== '0') {
       this.spinner.show();
-      this.userAttributeService.getTypeAttributes(typeId).subscribe(
-        (response) => {
+      this.userAttributeService.getTypeAttributes(typeId).subscribe({
+        next: (response) => {
           this.typeAttributes = response;
-          if (
-            this.model.attributeValues &&
-            this.model.attributeValues.length > 0
-          ) {
-            this.typeAttributes.forEach(
-              (attr: {
-                name: any;
-                attributeListItemResource: any;
-                value: any;
-              }) => {
-                this.model.attributeValues.forEach(
-                  (ansAttr: {
-                    attributeName: {
-                      name: any;
-                      attributeListItemResource: any;
-                    };
-                    value: any;
-                  }) => {
-                    if (attr.name == ansAttr.attributeName.name) {
-                      ansAttr.attributeName.attributeListItemResource =
-                        attr.attributeListItemResource;
-                      attr.value = ansAttr.value;
-                    }
-                  }
-                );
-              }
-            );
+
+          if (this.model.attributeValues?.length > 0) {
+            this.typeAttributes.forEach((attr: any) => {
+              this.model.attributeValues.forEach((ansAttr: any) => {
+                if (attr.name === ansAttr.attributeName.name) {
+                  ansAttr.attributeName.attributeListItemResource =
+                    attr.attributeListItemResource;
+                  attr.value = ansAttr.value;
+                }
+              });
+            });
           } else {
             this.model.attributeValues = [];
             this.typeAttributes.forEach((attr: any) => {
@@ -251,37 +218,32 @@ export class EditUserComponent implements OnInit {
               });
             });
           }
-        },
-        (error) => {
           this.spinner.hide();
-        }
-      );
+        },
+        error: () => {
+          this.spinner.hide();
+        },
+      });
     }
   }
-  generateHierarchy(locList: any) {
-    var items: TreeviewItem[] = [];
-    locList.forEach((loc: any) => {
-      var children: TreeviewItem[] = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: loc.name,
-          value: loc.locationId,
-          collapsed: true,
-          children: children,
-        })
-      );
+
+  generateHierarchy(locList: any[]): TreeviewItem[] {
+    return locList.map((loc: any) => {
+      const children =
+        loc.parentLocationResourceList?.length > 0
+          ? this.generateHierarchy(loc.parentLocationResourceList)
+          : [];
+
+      return new TreeviewItem({
+        text: loc.name,
+        value: loc.locationId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
-  editUser() {
-    console.log(JSON.stringify(this.model));
+  editUser(): void {
     if (
       this.model.userName &&
       this.model.email &&
@@ -289,91 +251,92 @@ export class EditUserComponent implements OnInit {
       this.model.firstName &&
       this.model.lastName
     ) {
-      var req = {
-        profileid: this.profileId,
+      const req = {
+        profileId: this.profileId,
         userId: this.userId,
         userName: this.model.userName,
         email: this.model.email,
-        firstName: this.model.firstname ? this.model.firstname : '',
-        lastName: this.model.lastname ? this.model.lastname : '',
-        jobTitle: this.model.jobtitle,
+        firstName: this.model.firstName || '',
+        lastName: this.model.lastName || '',
+        jobTitle: this.model.jobTitle,
         department: this.model.department,
         phone: this.model.phone,
-        mobilePhone: this.model.mobilephone,
+        mobilePhone: this.model.mobilePhone,
         fax: this.model.fax,
-        acceptedTerms: this.model.acceptedterms,
-        sendReceiverFq: this.model.sendreceiverfq,
+        acceptedTerms: this.model.acceptedTerms,
+        sendReceiveRFQ: this.model.sendReceiveRFQ,
         isOwnerAdmin: this.model.isOwnerAdmin,
-        topLocationId: this.model.toplocationid,
-        preferredLocationId: this.model.preferredlocationid,
+        topLocationId: this.model.topLocationId,
+        preferredLocationId: this.model.preferredLocationId,
         companyId: this.model.companyId,
-        hidePricing: this.model.hidepricing,
+        hidePricing: this.model.hidePricing,
         actualCompanyId: this.companyId,
         addedBy: this.userName,
         isVendor: this.model.isVendor,
         vendorResource: {
-          vendorId: this.model.vendorResource.vendorId,
+          vendorId: this.model.vendorResource?.vendorId,
         },
       };
+
       this.spinner.show();
-      this.userManagementService
-        .updateUser(this.userId, req)
-        .subscribe((response) => {
+      this.userManagementService.updateUser(this.userId, req).subscribe({
+        next: () => {
           window.scroll(0, 0);
           this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
+          setTimeout(() => (this.index = 0), 7000);
           this.spinner.hide();
           this.router.navigate(['/user/list']);
-        });
+        },
+        error: () => {
+          this.spinner.hide();
+        },
+      });
     } else {
       window.scroll(0, 0);
       this.index = -1;
     }
   }
 
-  checkValue(event: any) {
-    console.log(event);
-    if (event == 'A') {
+  checkValue(event: any): void {
+    if (event === 'A') {
       this.getVendorCompanies();
       this.allCompanies = [];
-    } else if (event == 'B') {
+    } else if (event === 'B') {
       this.allVendors = [];
       this.getUserCompaniesList();
     }
   }
 
-  getVendorCompanies() {
+  getVendorCompanies(): void {
     this.spinner.show();
-    this.companyManagementService.getAllVendorDetails().subscribe(
-      (response) => {
+    this.companyManagementService.getAllVendorDetails().subscribe({
+      next: (response: any[]) => {
         this.spinner.hide();
-        console.log(response);
-
         this.allVendors = response;
       },
-      (error) => {
+      error: () => {
         this.spinner.hide();
-      }
-    );
+      },
+    });
   }
-  getUserCompaniesList() {
+
+  getUserCompaniesList(): void {
     this.spinner.show();
     this.allCompanies = this.companyManagementService.getGlobalCompanyList();
     this.getLocations();
     this.spinner.hide();
   }
 
-  cancelUser() {
+  cancelUser(): void {
     this.router.navigate(['/user/list']);
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

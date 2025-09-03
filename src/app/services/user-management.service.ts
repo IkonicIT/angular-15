@@ -25,7 +25,7 @@ export class UserManagementService {
     private http: HttpClient
   ) {}
 
-  saveUser(user: any, companyId: string) {
+  saveUser(user: any, companyId: number) {
     return this.http
       .post(this.serviceURL + 'users/' + companyId, user, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -43,15 +43,15 @@ export class UserManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getAllUsers(companyId: string) {
+  getAllUsers(companyId: number) {
     return this.http
-      .get(this.serviceURL + 'users/getUserProfiles/' + companyId, this.httpOptions)
+      .get<any[]>(this.serviceURL + 'users/getUserProfiles/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  getAllUsersAsOwnerAdmin(companyId: string) {
+  getAllUsersAsOwnerAdmin(companyId: number) {
     return this.http
-      .get(this.serviceURL + 'users/getUserProfilesAsAdmin/' + companyId,this.httpOptions)
+      .get<any[]>(this.serviceURL + 'users/getUserProfilesAsAdmin/' + companyId,this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -128,21 +128,21 @@ export class UserManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getUserview(companyId: string) {
+  getUserview(companyId: number) {
     return this.http
-      .get(this.serviceURL + 'users/userlog/' + companyId, this.httpOptions)
+      .get<any[]>(this.serviceURL + 'users/userlog/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  getprofileWithType(userId: string, companyId: string) {
+  getprofileWithType(userId: string, companyId: number) {
     return this.http
       .get(this.serviceURL + 'profile/user/' + userId + '/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  getUserlogData(companyId: string, userName: string) {
+  getUserlogData(companyId: number, userName: string) {
     return this.http
-      .get(this.serviceURL + 'users/userlogdetails/' + companyId + '/' + userName, this.httpOptions)
+      .get<any[]>(this.serviceURL + 'users/userlogdetails/' + companyId + '/' + userName, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -160,7 +160,7 @@ export class UserManagementService {
   removeUser(
     userId: string,
     profileId: string,
-    companyId: string,
+    companyId: number,
     userName: string,
     addedBy: string
   ) {

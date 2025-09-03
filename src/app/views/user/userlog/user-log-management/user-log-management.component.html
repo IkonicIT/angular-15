@@ -96,7 +96,7 @@ title="Add New User." placement="top">Add User</button> -->
                 <th>LastLogoutTime</th>
                 <th
                   [class.active]="order === 'firstName'"
-                  (click)="setOrder('logincount')"
+                  (click)="setOrder('loginCount')"
                 >
                   LoginCount<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -109,7 +109,7 @@ title="Add New User." placement="top">Add User</button> -->
                 *ngFor="
                   let result of results
                     | orderBy : reverse + order
-                    | filterBy : ['firstname'] : userFilter
+                    | filterBy : ['firstName'] : userFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
@@ -121,7 +121,7 @@ title="Add New User." placement="top">Add User</button> -->
                   {{ result.lastLoginDate | date : "MM/dd/yyyy , h:mm a" }}
                 </td>
                 <td>
-                  {{ result.lastLogoutDate | date : "MM/dd/yyyy ,h:mm a" }}
+                  {{ result.lastLogOutDate | date : "MM/dd/yyyy ,h:mm a" }}
                 </td>
                 <td>{{ result.loginCount }}</td>
                 <td>

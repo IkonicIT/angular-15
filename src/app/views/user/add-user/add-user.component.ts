@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { UserManagementService } from '../../../services/user-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NgModel } from '@angular/forms';
 import { TreeviewItem } from 'ngx-treeview';
 
 @Component({
@@ -15,37 +14,34 @@ export class AddUserComponent implements OnInit {
   model: any = {};
   showPassword = {
     password: false,
-    confirmPassword: false
+    confirmPassword: false,
   };
-  index: number = 0;
-  router: Router;
+  index = 0;
   isNameCheckVisible = false;
   isEmailCheckVisible = false;
   isDuplicateTag = false;
   isMinLength = false;
   isDuplicate = false;
-  companyId: any = 0;
+  companyId: number = 0;
   globalCompany: any;
-  allCompanies: any = [];
+  allCompanies: any[] = [];
   isOwnerAdmin: any;
-  helpFlag: any = false;
-  userName: any;
+  helpFlag = false;
+  userName: string | null = null;
   dismissible = true;
-  vendors: any = [];
-  vendorItems: TreeviewItem[];
-  userId:any;
+  vendors: any[] = [];
+  vendorItems: TreeviewItem[] = [];
+  userId: string | null = null;
 
   constructor(
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
     private userManagementService: UserManagementService
-  ) {
-    this.router = router;
-  }
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
     this.loadVendors();
@@ -54,49 +50,43 @@ export class AddUserComponent implements OnInit {
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
     }
-   const isOwnerAdmin = sessionStorage.getItem("IsOwnerAdmin") === "true";
-   this.userId = sessionStorage.getItem('userId') ;
-   const highestRank = parseInt(sessionStorage.getItem("highestRank") || "0", 10);
-    if (highestRank === 10) {
-        this.companyManagementService.getCompanyNames(this.userId).subscribe(
-        (response) => {
+
+    const isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin') === 'true';
+    this.userId = sessionStorage.getItem('userId');
+    const highestRank = parseInt(sessionStorage.getItem('highestRank') || '0', 10);
+
+    if (highestRank === 10 && this.userId) {
+      this.companyManagementService.getCompanyNames(this.userId).subscribe({
+        next: (response) => {
           this.spinner.hide();
-          console.log(response);
           this.allCompanies = response;
         },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
-      console.log('all  companies for owner Admin' + this.allCompanies);
+        error: () => this.spinner.hide(),
+      });
     } else {
-       this.companyManagementService.getAllCompaniesForOwnerAdmin().subscribe(
-        (response) => {
+      this.companyManagementService.getAllCompaniesForOwnerAdmin().subscribe({
+        next: (response) => {
           this.spinner.hide();
-          console.log(response);
           this.allCompanies = response;
         },
-        (error) => {
-          this.spinner.hide();
-        }
-      )
-      console.log('all vendor companies' + this.allCompanies);
+        error: () => this.spinner.hide(),
+      });
     }
   }
 
-  loadVendors() {
+  loadVendors(): void {
     this.spinner.show();
-    this.companyManagementService.getAllVendorDetails().subscribe(
-      (response) => {
+    this.companyManagementService.getAllVendorDetails().subscribe({
+      next: (response) => {
         this.spinner.hide();
         this.vendors = response;
         this.vendorItems = this.convertVendorsToTreeviewItems(this.vendors);
       },
-      (error) => {
+      error: (error) => {
         this.spinner.hide();
         console.error('Error loading vendors:', error);
-      }
-    );
+      },
+    });
   }
 
   convertVendorsToTreeviewItems(vendors: any[]): TreeviewItem[] {
@@ -109,54 +99,49 @@ export class AddUserComponent implements OnInit {
     );
   }
 
-  onVendorChange(value: any) {
+  onVendorChange(value: any): void {
     this.model.vendorId = value;
   }
 
-  checkUserName(event: any) {
+  checkUserName(event: Event): void {
+    const input = event.target as HTMLInputElement;
     this.isNameCheckVisible = true;
     this.isDuplicateTag = false;
-    console.log('event' + event.target.value);
-    if (
-      event.target.value.length < 4 ||
-      event.target.value == null ||
-      event.target.value == ''
-    ) {
+
+    if (!input.value || input.value.length < 4) {
       this.isMinLength = false;
     } else {
       this.isMinLength = true;
-      this.userManagementService.getUserId(event.target.value).subscribe(
-        (response: any) => {
+      this.userManagementService.getUserId(input.value).subscribe({
+        next: (response: any) => {
           if (response > 0) {
             this.isDuplicateTag = true;
           }
         },
-        (error) => {}
-      );
+      });
     }
   }
 
-  checkEmail(event: any) {
+  checkEmail(event: Event): void {
+    const input = event.target as HTMLInputElement;
     this.isEmailCheckVisible = true;
     this.isDuplicate = false;
-    var email = '^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$';
-    console.log('event' + event.target.value);
-    if (event.target.value.match(email)) {
+
+    // Simple regex, Angular 15 accepts stricter typing
+    const emailRegex = /\S+@\S+\.\S+/;
+
+    if (emailRegex.test(input.value)) {
+      this.userManagementService.getEmail(input.value).subscribe({
+        next: (response: any) => {
+          if (response > 0) {
+            this.isDuplicate = true;
+          }
+        },
+      });
     }
-    this.userManagementService.getEmail(event.target.value).subscribe(
-      (response: any) => {
-        if (response > 0) {
-          this.isDuplicate = true;
-        }
-      },
-      (error) => {}
-    );
   }
 
-  saveUser() {
-    console.log(this.model);
-    console.log('user name is' + this.model.name);
-    console.log('vendorId:', this.model.vendorId);
+  saveUser(): void {
     if (
       this.model.name &&
       this.model.email &&
@@ -165,18 +150,19 @@ export class AddUserComponent implements OnInit {
       this.model.password &&
       this.model.confirmPassword &&
       this.model.companyId &&
-      this.model.password == this.model.confirmPassword &&
+      this.model.password === this.model.confirmPassword &&
       /\S+@\S+\.\S+/.test(this.model.email) &&
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(
         this.model.password
       )
     ) {
-      if (this.model.isVendor == true && !this.model.vendorId) {
+      if (this.model.isVendor && !this.model.vendorId) {
         this.index = -5;
         window.scroll(0, 0);
         return;
       }
-      var req = {
+
+      const req = {
         applicationId: '2E8DCDA9-84CE-4A7F-B8EB-CBD5E815656B',
         userName: this.model.name,
         loweredUserName: 'y',
@@ -196,37 +182,37 @@ export class AddUserComponent implements OnInit {
         createDate: new Date(),
         lastLoginDate: new Date(),
         lastPasswordChangedDate: new Date(),
-        lastLockOutDate: new Date(),
+        lastLockoutDate: new Date(),
         failedPasswordAttemptCount: 2,
         failedPasswordAttemptWindowStart: new Date(),
         failedPasswordAnswerAttemptCount: 2,
         failedPasswordAnswerAttemptWindowStart: new Date(),
         comment: null,
         profileId: '',
-        firstName: this.model.firstname ? this.model.firstname : '',
-        lastName: this.model.lastname ? this.model.lastname : '',
-        jobTitle: this.model.jobtitle ? this.model.jobtitle : '',
-        department: this.model.department ? this.model.department : '',
-        phone: this.model.phone ? this.model.phone : '',
-        mobilePhone: this.model.mobile ? this.model.mobile : '',
-        fax: this.model.fax ? this.model.fax : '',
+        firstName: this.model.firstName || '',
+        lastName: this.model.lastName || '',
+        jobTitle: this.model.jobTitle || '',
+        department: this.model.department || '',
+        phone: this.model.phone || '',
+        mobilePhone: this.model.mobile || '',
+        fax: this.model.fax || '',
         acceptedTerms: true,
         isOwnerAdmin: true,
-        sendReceiverFq: true,
+        sendReceiveRFQ: true,
         topLocationId: null,
         preferredLocationId: null,
         hidePricing: true,
-        companyId: this.model.companyId ? this.model.companyId : this.companyId,
+        companyId: this.model.companyId || this.companyId,
         addedBy: this.userName,
         isVendor: this.model.isVendor,
         vendorResource: {
           vendorId: this.model.vendorId,
         },
       };
+
       this.spinner.show();
-      this.userManagementService
-        .saveUser(req, this.companyId)
-        .subscribe((response) => {
+      this.userManagementService.saveUser(req, this.companyId).subscribe({
+        next: () => {
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
@@ -234,7 +220,8 @@ export class AddUserComponent implements OnInit {
           }, 7000);
           this.spinner.hide();
           this.router.navigate(['/user/list']);
-        });
+        },
+      });
     } else {
       window.scroll(0, 0);
       this.index = -1;
@@ -244,36 +231,38 @@ export class AddUserComponent implements OnInit {
             this.model.password
           )
         ) {
-          if (this.model.password != this.model.confirmPassword) {
+          if (this.model.password !== this.model.confirmPassword) {
             this.index = -2;
           }
         } else {
           this.index = -4;
-          if (this.model.password == null || this.model.name == null) {
+          if (!this.model.password || !this.model.name) {
             this.index = -1;
           }
         }
       } else {
         this.index = -3;
-        if (this.model.email == null || this.model.name == null) {
+        if (!this.model.email || !this.model.name) {
           this.index = -1;
         }
       }
     }
   }
 
-  cancelUser() {
+  cancelUser(): void {
     this.router.navigate(['/user/list']);
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
-  togglePasswordVisibility(field: 'password' | 'confirmPassword') {
+
+  togglePasswordVisibility(field: 'password' | 'confirmPassword'): void {
     this.showPassword[field] = !this.showPassword[field];
-  }  
+  }
 }

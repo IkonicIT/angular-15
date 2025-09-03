@@ -146,7 +146,7 @@
 
                       <app-dropdown-treeview-select
                         [items]="locationItems"
-                        [(value)]="userSecurityRole.locationid"
+                        [(value)]="userSecurityRole.locationId"
                       >
                       </app-dropdown-treeview-select>
                     </div>
@@ -161,7 +161,7 @@
                       <select
                         class="form-control custom-dropdown"
                         id="level"
-                        [(ngModel)]="userSecurityRole.roleid"
+                        [(ngModel)]="userSecurityRole.roleId"
                       >
                         <option value="0" selected="true">Select Role</option>
                         <option
@@ -270,7 +270,7 @@
                                 openModal(
                                   confirmtemplate,
                                   role.compositePrimaryKey.companyId,
-                                  role.compositePrimaryKey.locationid,
+                                  role.compositePrimaryKey.locationId,
                                   role.compositePrimaryKey.userId
                                 )
                               "

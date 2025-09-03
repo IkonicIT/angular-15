@@ -17,10 +17,11 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 })
 export class UserAttributesComponent implements OnInit {
   listStyle = {
-    width: '100%', //width of the list defaults to 300,
-    height: '250px', //height of the list defaults to 250,
-    dropZoneHeight: '50px', // height of the dropzone indicator defaults to 50
+    width: '100%',
+    height: '250px',
+    dropZoneHeight: '50px',
   };
+
   companyId: string = '0';
   model: any = {
     type: {},
@@ -31,43 +32,43 @@ export class UserAttributesComponent implements OnInit {
       attributeSearchTypeId: 0,
     },
   };
-  index: any = 0;
+
+  index: number = 0;
   types: any[] = [];
   atts: any[] = [];
-  router: Router;
-  message: string;
-  userName: any;
-  modalRef: BsModalRef | null;
+  message: string = '';
+  userName: string | null = null;
+  modalRef: BsModalRef | null = null;
   companyName: string = '';
   typeId: number;
   userType: string = '';
   order: string = 'name';
   reverse: string = '';
-  itemsForPagination: any = 5;
-  attributeTypes: any = [];
-  searchTypes: any = [];
-  typeAttributes: any = [];
-  typeAttributesLength: any;
-  listItem: any;
-  usertypes: any = [];
-  currentRole: any;
+  itemsForPagination: number = 5;
+  attributeTypes: any[] = [];
+  searchTypes: any[] = [];
+  typeAttributes: any[] = [];
+  typeAttributesLength: number = 0;
+  listItem: string = '';
+  usertypes: any[] = [];
+  currentRole: string | null = null;
   highestRank: any;
-  //dismissible = true;
   selectedAttrType: any = {};
   globalCompany: any;
-  addEditFlag: any = false;
-  typevalue: string | number;
+  addEditFlag: boolean = false;
+  typevalue: string | number = '';
   userTypes: any;
-  items: TreeviewItem[];
+  items: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  value: number;
-  helpFlag: any = false;
-  typeName: any;
-  dismissible = true;
+  value: number = 0;
+  helpFlag: boolean = false;
+  typeName: string = '';
+  dismissible: boolean = true;
   loader = false;
+
   constructor(
     private modalService: BsModalService,
     private companyTypesService: CompanyTypesService,
@@ -75,82 +76,77 @@ export class UserAttributesComponent implements OnInit {
     private companyManagementService: CompanyManagementService,
     private broadcasterService: BroadcasterService,
     private userAttributeService: UserAttributesService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private _location: Location
   ) {
-    this.typeId = parseInt(route.snapshot.params['id']);
-    this.companyId = route.snapshot.params['cmpId'];
-    this.router = router;
+    this.typeId = parseInt(this.route.snapshot.params['id'], 10);
+    this.companyId = this.route.snapshot.params['cmpId'];
     this.globalCompany = this.companyManagementService.getGlobalCompany();
+
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
       this.companyId = this.globalCompany.companyId;
     }
+
     this.getAllTypes(this.companyId);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
-
     this.pageLoadCalls(this.companyId);
-
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
   }
 
-  pageLoadCalls(companyId: string) {
+  pageLoadCalls(companyId: string): void {
     this.spinner.show();
-
     this.userAttributeService.getAllAttributeTypes().subscribe((response) => {
       this.attributeTypes = response;
+      this.spinner.hide();
     });
   }
 
-  setTypeName(typeId: any) {
+  setTypeName(typeId: any): void {
     this.usertypes.forEach((type: any) => {
-      if (type.typeId == typeId) {
+      if (type.typeId === typeId) {
         this.typeName = type.name;
       }
     });
   }
 
-  onValueChange(value: any) {
+  onValueChange(value: any): void {
     this.value = value;
     this.setTypeName(this.value);
     this.getTypeAttributes(this.value);
   }
 
-  getAllTypes(companyId: any) {
+  getAllTypes(companyId: any): void {
     this.spinner.show();
-
     this.userTypesService.getAllUserTypesWithHierarchy(companyId).subscribe(
       (response) => {
         this.spinner.hide();
-
         this.usertypes = response;
 
-        var self = this;
         if (this.usertypes && this.usertypes.length > 0) {
-          self.items = [];
-
-          self.items = this.generateHierarchy(this.usertypes);
+          this.items = this.generateHierarchy(this.usertypes);
           this.value = this.typeId;
         }
+
         this.setTypeName(this.value);
         this.getTypeAttributes(this.value);
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  generateHierarchy(typeList: any[]) {
-    var items: TreeviewItem[] = [];
+  generateHierarchy(typeList: any[]): TreeviewItem[] {
+    const items: TreeviewItem[] = [];
     typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
+      let children: TreeviewItem[] = [];
       if (type.typeList && type.typeList.length > 0) {
         children = this.generateHierarchy(type.typeList);
       }
@@ -159,105 +155,88 @@ export class UserAttributesComponent implements OnInit {
           text: type.name,
           value: type.typeId,
           collapsed: true,
-          children: children,
+          children,
         })
       );
     });
     return items;
   }
 
-  getTypeAttributes(typeId: any) {
+  getTypeAttributes(typeId: any): void {
     this.typevalue = typeId;
     this.index = 0;
-    if (typeId != '0') {
-      this.spinner.show();
 
+    if (typeId !== '0') {
+      this.spinner.show();
       this.userAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
-
           this.typeAttributes = response;
           this.typeAttributesLength = this.typeAttributes.length;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
     }
   }
 
-  getAttributeTypes() {
+  getAttributeTypes(): void {
     this.spinner.show();
-
     this.userAttributeService.getAllAttributeTypes().subscribe(
       (response) => {
         this.spinner.hide();
-
         this.attributeTypes = response;
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  getSearchTypes(attributeTypeId: any) {
-    if (attributeTypeId && attributeTypeId != 0 && attributeTypeId != 'null') {
+  getSearchTypes(attributeTypeId: any): void {
+    if (attributeTypeId && attributeTypeId !== 0 && attributeTypeId !== 'null') {
       this.spinner.show();
-
       this.userAttributeService.getAllSearchTypes(attributeTypeId).subscribe(
         (response) => {
           this.spinner.hide();
-
           this.searchTypes = response;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
     }
   }
 
-  setSelectedAttribute(attribute: { attributeType: any }) {
+  setSelectedAttribute(attribute: { attributeType: any }): void {
     this.model = JSON.parse(JSON.stringify(attribute));
     this.selectedAttrType = JSON.parse(JSON.stringify(attribute.attributeType));
     this.index = 0;
-    if (this.model.attributeType && this.model.attributeType.attributeTypeId) {
+    if (this.model.attributeType?.attributeTypeId) {
       this.getSearchTypes(this.model.attributeType.attributeTypeId);
     }
   }
 
-  saveAttributeListOrder(typeAttributes: any) {
+  saveAttributeListOrder(typeAttributes: any): void {
     this.spinner.show();
-
-    this.userAttributeService
-      .updateTypeAttributesOrder(typeAttributes)
-      .subscribe((response) => {
-        this.spinner.hide();
-
-        this.index = 4;
-        setTimeout(() => {
-          this.index = 0;
-        }, 7000);
-        window.scroll(0, 0);
-      });
+    this.userAttributeService.updateTypeAttributesOrder(typeAttributes).subscribe(() => {
+      this.spinner.hide();
+      this.index = 4;
+      setTimeout(() => (this.index = 0), 7000);
+      window.scroll(0, 0);
+    });
   }
 
-  createAttribute() {
-    if (
-      this.model.name &&
-      this.model.attributeType &&
-      this.model.attributeType.attributeTypeId != null
-    ) {
-      var request = {
-        attributeListItemResource: null,
+  createAttribute(): void {
+    if (this.model.name && this.model.attributeType?.attributeTypeId != null) {
+      const request: any = {
+        attributeListItemResource: this.model.attributeListItemResource || null,
         attributeNameId: 0,
-        attributeType: {
-          attributeTypeId: this.model.attributeType.attributeTypeId,
-        },
+        attributeType: { attributeTypeId: this.model.attributeType.attributeTypeId },
         displayOrder: this.typeAttributesLength + 1,
         isManufacturer: false,
-        isRequired: this.model.isRequired ? this.model.isRequired : false,
+        isRequired: this.model.isRequired || false,
         isRequiredForMatch: false,
         name: this.model.name,
         searchModifier: '',
@@ -269,41 +248,23 @@ export class UserAttributesComponent implements OnInit {
             : 0,
         },
         tooltip: this.model.tooltip,
-        type: {
-          typeId: this.value,
-          name: this.typeName,
-        },
+        type: { typeId: this.value, name: this.typeName },
         moduleType: 'User',
       };
-      if (this.model.attributeListItemResource) {
-        request.attributeListItemResource =
-          this.model.attributeListItemResource;
-      }
-      this.spinner.show();
 
+      this.spinner.show();
       this.userAttributeService.createNewTypeAttribute(request).subscribe(
         (response) => {
           this.spinner.hide();
-
           this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
+          setTimeout(() => (this.index = 0), 7000);
           window.scroll(0, 0);
           this.typeAttributes.push(response);
-          this.typeAttributesLength = this.typeAttributesLength + 1;
-          this.model = {
-            type: {},
-            attributeType: {
-              attributeTypeId: null,
-            },
-            searchType: {
-              attributeSearchTypeId: 0,
-            },
-          };
+          this.typeAttributesLength++;
+          this.resetModel();
           this.addEditFlag = false;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -312,8 +273,8 @@ export class UserAttributesComponent implements OnInit {
     }
   }
 
-  addListItem() {
-    if (this.listItem && this.listItem != '') {
+  addListItem(): void {
+    if (this.listItem && this.listItem !== '') {
       if (!this.model.attributeListItemResource) {
         this.model.attributeListItemResource = [];
       }
@@ -324,32 +285,22 @@ export class UserAttributesComponent implements OnInit {
     }
   }
 
-  refresh() {
+  refresh(): void {
     this.atts = [];
     this.ngOnInit();
   }
 
-  editAttribute() {
-    if (
-      this.model.name &&
-      this.model.attributeType &&
-      this.model.attributeType.attributeTypeId != 0
-    ) {
-      this.spinner.show();
-
-      var request = {
-        attributeListItemResource: null,
+  editAttribute(): void {
+    if (this.model.name && this.model.attributeType?.attributeTypeId !== 0) {
+      const request: any = {
+        attributeListItemResource: this.model.attributeListItemResource || null,
         attributeNameId: this.model.attributeNameId,
         attributeType: {
-          attributeTypeId: this.model.attributeType
-            ? this.model.attributeType.attributeTypeId
-            : 0,
+          attributeTypeId: this.model.attributeType?.attributeTypeId || 0,
         },
         displayOrder: this.typeAttributesLength + 1,
-        isManufacturer: this.model.isManufacturer
-          ? this.model.isManufacturer
-          : false,
-        isRequired: this.model.isRequired ? this.model.isRequired : false,
+        isManufacturer: this.model.isManufacturer || false,
+        isRequired: this.model.isRequired || false,
         isRequiredForMatch: false,
         name: this.model.name,
         searchModifier: '',
@@ -357,46 +308,27 @@ export class UserAttributesComponent implements OnInit {
         lastModifiedBy: this.userName,
         searchType: {
           attributeSearchTypeId:
-            this.model.searchType &&
-            this.model.searchType.attributeSearchTypeId != 'null'
-              ? this.model.searchType.attributeSearchTypeId
+            this.model.searchType?.attributeSearchTypeId !== 'null'
+              ? this.model.searchType?.attributeSearchTypeId
               : 0,
         },
         tooltip: this.model.tooltip,
-        type: {
-          typeId: this.value,
-          name: this.typeName,
-        },
+        type: { typeId: this.value, name: this.typeName },
         moduleType: 'User',
       };
+
       this.spinner.show();
-
-      if (this.model.attributeListItemResource) {
-        request.attributeListItemResource =
-          this.model.attributeListItemResource;
-      }
       this.userAttributeService.updateTypeAttributes(request).subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-
           this.getTypeAttributes(this.value);
           this.index = 2;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
+          setTimeout(() => (this.index = 0), 7000);
           window.scroll(0, 0);
-          this.model = {
-            type: {},
-            attributeType: {
-              attributeTypeId: null,
-            },
-            searchType: {
-              attributeSearchTypeId: 0,
-            },
-          };
+          this.resetModel();
           this.addEditFlag = false;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -406,27 +338,19 @@ export class UserAttributesComponent implements OnInit {
     }
   }
 
-  newAttribute() {
+  newAttribute(): void {
     this.addEditFlag = false;
-    this.model = {
-      type: {},
-      attributeType: {
-        attributeTypeId: null,
-      },
-      searchType: {
-        attributeSearchTypeId: 0,
-      },
-    };
+    this.resetModel();
     this.getTypeAttributes(this.typevalue);
     this.searchTypes = [];
   }
 
-  closeFirstModal() {
+  closeFirstModal(): void {
     this.modalRef?.hide();
     this.modalRef = null;
   }
 
-  openModal(template: TemplateRef<any>) {
+  openModal(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
@@ -435,38 +359,27 @@ export class UserAttributesComponent implements OnInit {
     this.modalRef?.hide();
     this.spinner.show();
 
-    var moduleType = 'User';
+    const moduleType = 'User';
     this.userAttributeService
       .removeUserAttributess(
         this.model.attributeNameId,
         this.companyId,
-        this.userName,
+        this.userName ?? '',
         this.model.name,
         this.typeName,
         moduleType
       )
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-
           this.getTypeAttributes(this.value);
           this.index = 3;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
+          setTimeout(() => (this.index = 0), 7000);
           this.addEditFlag = false;
-          this.model = {
-            type: {},
-            attributeType: {
-              attributeTypeId: null,
-            },
-            searchType: {
-              attributeSearchTypeId: 0,
-            },
-          };
+          this.resetModel();
           window.scroll(0, 0);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -477,27 +390,31 @@ export class UserAttributesComponent implements OnInit {
     this.modalRef?.hide();
   }
 
-  setOrder(value: string) {
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
 
-  cancelUserAttributes() {
+  cancelUserAttributes(): void {
     this._location.back();
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
+  }
+
+  private resetModel(): void {
+    this.model = {
+      type: {},
+      attributeType: { attributeTypeId: null },
+      searchType: { attributeSearchTypeId: 0 },
+    };
   }
 }

@@ -11,30 +11,29 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./viewuser-log.component.scss'],
 })
 export class ViewuserLogComponent implements OnInit {
-  router: Router;
-  companyId: any;
+  companyId: number | null = null;
   globalCompany: any;
-  results: any = [];
-  itemsForPagination: any = 5;
-  userName: any;
-  message: string;
-  modalRef: BsModalRef;
-  userFilter: any = '';
-  helpFlag: any = false;
-  p: any;
+  results: any[] = [];
+  itemsForPagination = 5;
+  userName = '';
+  message = '';
+  modalRef: BsModalRef | null = null;
+  userFilter = '';
+  helpFlag = false;
+  p = 1;
   loader = false;
+
   constructor(
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
     private userManagementService: UserManagementService
   ) {
-    this.router = router;
-    this.userName = route.snapshot.params['userName'];
+    this.userName = this.route.snapshot.params['userName'];
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
@@ -42,25 +41,30 @@ export class ViewuserLogComponent implements OnInit {
     }
   }
 
-  getUserLogInfo() {
-    this.spinner.show();
+  getUserLogInfo(): void {
+    if (!this.companyId || !this.userName) return;
 
-    this.userManagementService
-      .getUserlogData(this.companyId, this.userName)
-      .subscribe((response) => {
+    this.spinner.show();
+    this.userManagementService.getUserlogData(this.companyId, this.userName).subscribe({
+      next: (response: any[]) => {
         this.results = response;
         this.spinner.hide();
-      });
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
   }
 
+  // TODO: Add confirm logic if needed
   confirm(): void {}
 
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }

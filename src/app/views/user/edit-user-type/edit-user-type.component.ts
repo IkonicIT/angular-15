@@ -17,22 +17,23 @@ export class EditUserTypeComponent implements OnInit {
       typeId: 0,
     },
   };
-  userTypeId: any;
-  index: number;
-  companyId: any;
+  userTypeId!: number;
+  index = 0;
+  companyId!: number;
   globalCompany: any;
-  companyName: any;
-  userTypes: any;
-  value: any;
-  items: TreeviewItem[];
-  config = TreeviewConfig.create({
+  companyName = '';
+  userTypes: any[] = [];
+  value: number | null = null;
+  items: TreeviewItem[] = [];
+  config: TreeviewConfig = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  userName: any;
-  helpFlag: any = false;
+  userName: string | null = null;
+  helpFlag = false;
   dismissible = true;
   loader = false;
+
   constructor(
     private userTypesService: UserTypesService,
     private companyManagementService: CompanyManagementService,
@@ -41,80 +42,72 @@ export class EditUserTypeComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private broadcasterService: BroadcasterService
   ) {
-    this.userTypeId = route.snapshot.params['id'];
-    this.companyId = route.snapshot.params['cmpId'];
+    this.userTypeId = Number(this.route.snapshot.paramMap.get('id'));
+    this.companyId = Number(this.route.snapshot.paramMap.get('cmpId'));
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyName = this.globalCompany.name;
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
+    this.companyName = this.globalCompany?.name ?? '';
+
+    this.companyManagementService.globalCompanyChange.subscribe((value: any) => {
       this.globalCompany = value;
       this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
+
     this.getAllUserTypes();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  getUserType(typeId: any) {
+  getUserType(typeId: number): void {
     this.spinner.show();
-
-    this.userTypesService.getUserTypeDetails(typeId).subscribe((response) => {
-      this.spinner.hide();
-
-      console.log(response);
-      this.model = response;
-      if (!this.model.parentId) {
-        this.model.parentId = {
-          typeId: 0,
-        };
-      } else {
-        this.value = this.model.parentId.typeId;
-      }
-    });
-  }
-
-  getAllUserTypes() {
-    this.userTypesService
-      .getAllUserTypesWithHierarchy(this.companyId)
-      .subscribe(
-        (response) => {
-          this.userTypes = response;
-          var self = this;
-          if (this.userTypes && this.userTypes.length > 0) {
-            self.items = this.generateHierarchy(this.userTypes);
-          }
-          this.getUserType(this.userTypeId);
-        },
-        (error) => {
-          this.spinner.hide();
+    this.userTypesService.getUserTypeDetails(typeId).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        this.model = response;
+        if (!this.model.parentId) {
+          this.model.parentId = { typeId: 0 };
+        } else {
+          this.value = this.model.parentId.typeId;
         }
-      );
-  }
-
-  generateHierarchy(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeId,
-          collapsed: true,
-          children: children,
-        })
-      );
+      },
+      error: () => this.spinner.hide(),
     });
-    return items;
   }
 
-  updateUserType() {
-    if (this.model.name && this.model.parentId.typeId != this.userTypeId) {
-      var request = {
+  getAllUserTypes(): void {
+    this.userTypesService.getAllUserTypesWithHierarchy(this.companyId).subscribe({
+      next: (response: any[]) => {
+        this.userTypes = response;
+        if (this.userTypes?.length > 0) {
+          this.items = this.generateHierarchy(this.userTypes);
+        }
+        this.getUserType(this.userTypeId);
+      },
+      error: () => this.spinner.hide(),
+    });
+  }
+
+  generateHierarchy(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children =
+        type.typeList && type.typeList.length > 0
+          ? this.generateHierarchy(type.typeList)
+          : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children,
+      });
+    });
+  }
+
+  updateUserType(): void {
+    if (this.model.name && this.model.parentId.typeId !== this.userTypeId) {
+      const request = {
         attributeSearchDisplay: 0,
         description: this.model.description,
         entityTypeId: this.model.entitytypeId,
@@ -134,51 +127,49 @@ export class EditUserTypeComponent implements OnInit {
         typeMtbs: 0,
         typeSpareRatio: 0,
       };
+
       this.spinner.show();
-
-      this.userTypesService.updateUserType(request).subscribe(
-        (response) => {
+      this.userTypesService.updateUserType(request).subscribe({
+        next: () => {
           this.spinner.hide();
-
           this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
+          setTimeout(() => (this.index = 0), 7000);
           window.scroll(0, 0);
           this.router.navigate(['/user/types']);
         },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+        error: () => this.spinner.hide(),
+      });
     } else {
       this.index = -1;
-      if (this.model.parentId.typeId == this.userTypeId) {
+      if (this.model.parentId.typeId === this.userTypeId) {
         this.index = -2;
       }
       window.scroll(0, 0);
     }
   }
-  getAllUserTypesWithHierarchy() {
+
+  getAllUserTypesWithHierarchy(): void {
     this.spinner.show();
-
-    this.userTypesService
-      .getAllUserTypesWithHierarchy(this.companyId)
-      .subscribe((response) => {
+    this.userTypesService.getAllUserTypesWithHierarchy(this.companyId).subscribe({
+      next: (response: any[]) => {
         this.spinner.hide();
-
         this.broadcasterService.userTypeHierarchy = response;
-      });
+      },
+      error: () => this.spinner.hide(),
+    });
   }
-  onValueChange(value: any) {
+
+  onValueChange(value: number): void {
     this.value = value;
     console.log(value);
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

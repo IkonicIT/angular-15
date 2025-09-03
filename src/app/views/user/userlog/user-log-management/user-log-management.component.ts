@@ -11,20 +11,21 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./user-log-management.component.scss'],
 })
 export class UserLogManagementComponent implements OnInit {
-  companyId: any;
+  companyId: number | null = null;
   globalCompany: any;
-  results: any;
-  userlogs: any;
-  itemsForPagination: any = 5;
-  loggedinuserscount: number = 0;
-  order: string = 'firstname';
-  reverse: string = '';
-  userFilter: any = '';
-  message: string;
-  modalRef: BsModalRef;
-  helpFlag: any = false;
-  p: any;
+  results: any[] = [];
+  userlogs: any[] = [];
+  itemsForPagination = 5;
+  loggedinuserscount = 0;
+  order = 'firstname';
+  reverse = '';
+  userFilter = '';
+  message = '';
+  modalRef: BsModalRef | null = null;
+  helpFlag = false;
+  p = 1;
   loader = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -40,64 +41,64 @@ export class UserLogManagementComponent implements OnInit {
     }
   }
 
-  ngOnInit() {}
-  users() {
+  ngOnInit(): void {}
+
+  users(): void {
+    if (!this.companyId) return;
+
     this.spinner.show();
-
-    this.userManagementService
-      .getUserview(this.companyId)
-      .subscribe((response) => {
+    this.userManagementService.getUserview(this.companyId).subscribe({
+      next: (response: any[]) => {
         this.userlogs = response;
-        this.spinner.hide();
-
         this.results = response;
         this.setusercount();
-      });
-  }
-
-  setusercount() {
-    this.results.forEach((userlog: { isLoggedIn: boolean }) => {
-      if (userlog.isLoggedIn == true) {
-        this.loggedinuserscount++;
-      }
+        this.spinner.hide();
+      },
+      error: () => {
+        this.spinner.hide();
+      },
     });
   }
-  setOrder(value: string) {
+
+  setusercount(): void {
+    this.loggedinuserscount = this.results.filter(
+      (userlog: { isLoggedIn: boolean }) => userlog.isLoggedIn === true
+    ).length;
+  }
+
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
 
-  viewUser(result: { userName: string }) {
-    this.router.navigate(['user/viewuserlog/' + result.userName]);
+  viewUser(result: { userName: string }): void {
+    this.router.navigate(['user/viewuserlog', result.userName]);
   }
 
   confirm(): void {}
 
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
-  onChange(e: any) {
+
+  onChange(e: any): void {
     const totalUserLogCount = this.userlogs.length;
     const maxPageAvailable = Math.ceil(
       totalUserLogCount / this.itemsForPagination
     );
-    // Check if the current page exceeds the maximum available page
+
     if (this.p > maxPageAvailable) {
       this.p = maxPageAvailable;
     }

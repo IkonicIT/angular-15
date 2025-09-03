@@ -54,7 +54,7 @@ export class UserAttributesService {
 
   getTypeAttributes(typeId: string) {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId,
         this.httpOptions
       )
@@ -63,7 +63,7 @@ export class UserAttributesService {
 
   getAllAttributeTypes() {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.attributeRestURL + '/getAllAttributetypes',
         this.httpOptions
       )
@@ -72,7 +72,7 @@ export class UserAttributesService {
 
   getAllSearchTypes(attributeType: string) {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.attributeRestURL +
           '/getAllAttributeSearchType/' +
           attributeType,

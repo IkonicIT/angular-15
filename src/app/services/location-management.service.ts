@@ -99,13 +99,13 @@ export class LocationManagementService {
 
   getAllLocationsWithHierarchy(companyId: string | number) {
     return this.http
-      .get(AppConfiguration.locationRestURL + 'location/getAllLocationsWithHierarchy/' + companyId, this.httpOptions)
+      .get<any[]>(AppConfiguration.locationRestURL + 'location/getAllLocationsWithHierarchy/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllLocationsWithHierarchyforUser(companyId: string | number, userId: string) {
     return this.http
-      .get(AppConfiguration.locationRestURL + 'location/getAllLocationsByUser/' + companyId + '/' + userId, this.httpOptions)
+      .get<any[]>(AppConfiguration.locationRestURL + 'location/getAllLocationsByUser/' + companyId + '/' + userId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

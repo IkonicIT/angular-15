@@ -132,7 +132,7 @@ getAllCompanyDetails(): Observable<Company[]> {
 
   getCompanyNames(userId: string) {
     return this.http
-      .get(AppConfiguration.companyRestURL + 'getCompaniesByUser/' + userId)
+      .get<any[]>(AppConfiguration.companyRestURL + 'getCompaniesByUser/' + userId)
       .pipe(catchError(this.handleError));
   }
 
@@ -144,7 +144,7 @@ getAllCompanyDetails(): Observable<Company[]> {
 
   getRolesForUser(userId: string) {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.locationRestURL +
           'userSecurity/getAllRolesForUser/' +
           userId
@@ -154,7 +154,7 @@ getAllCompanyDetails(): Observable<Company[]> {
 
   getLevelsByUserName(userName: string, companyId: string) {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.locationRestURL +
           'userSecurity/' +
           userName +
@@ -209,7 +209,7 @@ getAllCompanyDetails(): Observable<Company[]> {
 
   getAllVendorDetails() {
     return this.http
-      .get(AppConfiguration.vendorRestURL + 'getAllVendorsList')
+      .get<any[]>(AppConfiguration.vendorRestURL + 'getAllVendorsList')
       .pipe(catchError(this.handleError));
   }
 
@@ -225,7 +225,7 @@ getAllCompanyDetails(): Observable<Company[]> {
 
   getAllCompaniesForOwnerAdmin() {
     return this.http
-      .get(AppConfiguration.companyRestURL + 'getCompanies')
+      .get<any[]>(AppConfiguration.companyRestURL + 'getCompanies')
       .pipe(catchError(this.handleError));
   }
 

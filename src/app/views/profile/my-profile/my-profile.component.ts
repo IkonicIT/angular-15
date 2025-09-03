@@ -64,7 +64,7 @@ export class MyProfileComponent implements OnInit {
         this.spinner.hide();
 
         this.model = response;
-        console.log('user  profile ' + this.model.profileid);
+        console.log('user  profile ' + this.model.profileId);
         this.getLocationNames(this.loggedInuser, this.companyId);
       },
       (error) => {
@@ -105,7 +105,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   onValueChange(value: any) {
-    this.model.preferredlocationid = value;
+    this.model.preferredlocationId = value;
 
     console.log(value);
   }
@@ -114,7 +114,7 @@ export class MyProfileComponent implements OnInit {
     if (this.model.email && this.model.userName) {
       this.model.userId = sessionStorage.getItem('userId');
       this.userManagementService
-        .updateProfile(this.model.profileid, this.model.companyId, this.model)
+        .updateProfile(this.model.profileId, this.model.companyId, this.model)
         .subscribe(
           (response: any) => {
             this.profile = response;

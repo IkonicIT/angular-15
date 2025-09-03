@@ -93,22 +93,22 @@
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'jobnumber'"
-                  (click)="setOrder('jobnumber')"
+                  [class.active]="order === 'jobNumber'"
+                  (click)="setOrder('jobNumber')"
                 >
                   Job Number<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'ponumber'"
-                  (click)="setOrder('ponumber')"
+                  [class.active]="order === 'poNumber'"
+                  (click)="setOrder('poNumber')"
                 >
                   PO Number<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="order === 'warrantytype'"
-                  (click)="setOrder('warrantytype')"
+                  [class.active]="order === 'warrantyType'"
+                  (click)="setOrder('warrantyType')"
                 >
                   Warranty Type<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
@@ -227,15 +227,15 @@
                   ><span [hidden]="completedReverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="completedOrder === 'jobnumber'"
-                  (click)="setCompletedOrder('jobnumber')"
+                  [class.active]="completedOrder === 'jobNumber'"
+                  (click)="setCompletedOrder('jobNumber')"
                 >
                   Job Number<span [hidden]="completedReverse == ''">▼</span
                   ><span [hidden]="completedReverse != ''">▲</span>
                 </th>
                 <th
-                  [class.active]="completedOrder === 'ponumber'"
-                  (click)="setCompletedOrder('ponumber')"
+                  [class.active]="completedOrder === 'poNumber'"
+                  (click)="setCompletedOrder('poNumber')"
                 >
                   PO Number<span [hidden]="completedReverse == ''">▼</span
                   ><span [hidden]="completedReverse != ''">▲</span>
@@ -276,7 +276,7 @@
                 "
               >
                 <td
-                  [innerHTML]="repair.actualcompletion | date : 'MM/dd/yyyy'"
+                  [innerHTML]="repair.actualCompletion | date : 'MM/dd/yyyy'"
                 ></td>
                 <td [innerHTML]="repair.title"></td>
                 <td [innerHTML]="repair.jobNumber"></td>

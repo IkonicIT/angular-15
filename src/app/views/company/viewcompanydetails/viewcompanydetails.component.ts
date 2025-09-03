@@ -17,7 +17,7 @@ export class ViewcompanydetailsComponent implements OnInit {
   companyId: string;
   model: any = {
     announcement: {
-      announcementtext: '',
+      announcementText: '',
     },
     type: {},
   };

@@ -46,7 +46,7 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
       this.companyId = this.globalCompany.companyId;
     }
 
-    this.repairLogId = route.snapshot.params['repairlogId'];
+    this.repairLogId = route.snapshot.params['repairLogId'];
     console.log('repairLogId=' + this.repairLogId);
     this.documentId = route.snapshot.params['attachmentId'];
     console.log('repairLogId=' + this.documentId);
@@ -77,9 +77,9 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
     this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {
       itemTag: this.itemRepair.tag,
-      itemTypeName: this.itemRepair.itemtype,
-      poNumber: this.itemRepair.ponumber,
-      jobNumber: this.itemRepair.jobnumber,
+      itemTypeName: this.itemRepair.itemType,
+      poNumber: this.itemRepair.poNumber,
+      jobNumber: this.itemRepair.jobNumber,
     };
     this.model.updatedBy = this.userName;
     this.companyDocumentsService.updateCompanyDocument(this.model).subscribe(

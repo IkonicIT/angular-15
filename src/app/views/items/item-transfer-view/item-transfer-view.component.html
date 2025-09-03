@@ -56,7 +56,7 @@
                           readonly
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.ponumber"
+                          [(ngModel)]="model.poNumber"
                           name="PONumber"
                           #PONumber="ngModel"
                           id="PONumber"
@@ -212,8 +212,8 @@
                               ToLocation
                             </th>
                             <th
-                              [class.active]="order === 'ponumber'"
-                              (click)="setOrder('ponumber')"
+                              [class.active]="order === 'poNumber'"
+                              (click)="setOrder('poNumber')"
                             >
                               PONumber
                             </th>
@@ -275,7 +275,7 @@
                                       'transferDate',
                                       'fromLocation',
                                       'toLocation',
-                                      'ponumber',
+                                      'poNumber',
                                       'jobNumber',
                                       'shippingNumber',
                                       'trackingNumber',
@@ -297,7 +297,7 @@
                             </td>
                             <td>{{ transfer.fromLocation }}</td>
                             <td>{{ transfer.toLocation }}</td>
-                            <td>{{ transfer.ponumber }}</td>
+                            <td>{{ transfer.poNumber }}</td>
                             <td>{{ transfer.jobNumber }}</td>
                             <td>{{ transfer.shippingNumber }}</td>
                             <td>{{ transfer.trackingNumber }}</td>

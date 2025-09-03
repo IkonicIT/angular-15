@@ -16,9 +16,9 @@ import { Location } from '@angular/common';
   styleUrls: ['./location-management.component.scss'],
 })
 export class LocationManagementComponent implements OnInit {
-  modalRef: BsModalRef | null;
-  index: number;
-  message: string;
+  modalRef: BsModalRef | null = null;
+  index: number = 0;
+  message: string = '';
   locations: any = [];
   locationsWithHierarchy: any = [];
   order: string = 'name';
@@ -27,12 +27,12 @@ export class LocationManagementComponent implements OnInit {
   locationFilter: any = '';
   itemsForPagination: any = 5;
   companyId: number = 3;
-  locationId: number;
+  locationId!: number;
   globalCompany: any;
   companyName: any;
   currentRole: any;
   highestRank: any;
-  items: TreeviewItem[];
+  items: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
@@ -40,10 +40,11 @@ export class LocationManagementComponent implements OnInit {
   advancedsearchflag: number = 0;
   searchresults: any = {};
   isOwnerAdmin: any;
-  loggedInuser: string | null;
+  loggedInuser: string | null = null;
   helpFlag: any = false;
   p: any;
   loader = false;
+
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
@@ -59,14 +60,14 @@ export class LocationManagementComponent implements OnInit {
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
       this.companyId = this.globalCompany.companyId;
-      // this.locations = this.locationManagementService.getLocations();
     }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
       this.companyId = value.companyId;
-      //this.locations = this.locationManagementService.getLocations();
     });
+
     this.router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
         this.InitData();
@@ -76,67 +77,68 @@ export class LocationManagementComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    console.log('currentRole is ' + this.currentRole);
+    console.log('highestRank is ' + this.highestRank);
     this.getLocations();
   }
 
-  getLocations() {
+  getLocations(): void {
     this.spinner.show();
+    this.locations = [];
 
-    this.locationManagementService.getAllLocations(this.companyId).subscribe(
-      (response) => {
+    this.locationManagementService.getAllLocations(this.companyId).subscribe({
+      next: (response) => {
         console.log(response);
         this.spinner.hide();
-
         this.locations = response;
       },
-      (error) => {
+      error: () => {
         this.spinner.hide();
-      }
-    );
+      },
+    });
   }
-  refreshCalls() {
+
+  refreshCalls(): void {
     this.locationManagementService
       .getAllLocationsWithHierarchy(this.companyId)
-      .subscribe((response) => {
-        this.broadcasterService.locations = response;
-        console.log('locations:' + response);
-        this.spinner.hide();
+      .subscribe({
+        next: (response) => {
+          this.broadcasterService.locations = response;
+          console.log('locations:', response);
+          this.spinner.hide();
+        },
       });
   }
-  locationNotes(location: { locationId: string; name: any }) {
+
+  locationNotes(location: { locationId: string; name: any }): void {
     this.locationManagementService.currentLocationId = location.locationId;
     this.locationManagementService.currentLocationName = location.name;
     this.router.navigate(['/location/locationNote/' + location.locationId]);
   }
 
-  InitData() {
+  InitData(): void {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.locationsWithHierarchy = this.broadcasterService.locations;
 
     if (this.locationsWithHierarchy && this.locationsWithHierarchy.length > 0) {
-      this.items = [];
       this.items = this.generateHierarchy(this.locationsWithHierarchy);
     }
   }
-  back() {
+
+  back(): void {
     this._location.back();
   }
 
-  generateHierarchy(locList: any[]) {
-    var items: TreeviewItem[] = [];
+  generateHierarchy(locList: any[]): TreeviewItem[] {
+    const items: TreeviewItem[] = [];
     locList.forEach((loc) => {
-      var children: TreeviewItem[] = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
+      let children: TreeviewItem[] = [];
+      if (loc.parentLocationResourceList && loc.parentLocationResourceList.length > 0) {
         children = this.generateHierarchy(loc.parentLocationResourceList);
       }
       items.push(
@@ -151,20 +153,18 @@ export class LocationManagementComponent implements OnInit {
     return items;
   }
 
-  onValueChange(val: any) {
+  onValueChange(val: any): void {
     this.locationId = val;
     console.log(val);
-    this.router.navigate([
-      '/location/editLocation/' + val + '/' + this.companyId,
-    ]);
+    this.router.navigate(['/location/editLocation/' + val + '/' + this.companyId]);
   }
 
-  openModal(template: TemplateRef<any>, id: number) {
+  openModal(template: TemplateRef<any>, id: number): void {
     this.locationId = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  closeFirstModal() {
+  closeFirstModal(): void {
     this.modalRef?.hide();
     this.modalRef = null;
   }
@@ -175,17 +175,17 @@ export class LocationManagementComponent implements OnInit {
 
     this.locationManagementService
       .removeLocation(this.locationId, this.companyId, this.userName)
-      .subscribe(
-        (response) => {
+      .subscribe({
+        next: (response) => {
           console.log(response);
           this.modalRef?.hide();
           this.getLocations();
           this.refreshCalls();
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-        }
-      );
+        },
+      });
   }
 
   decline(): void {
@@ -193,21 +193,19 @@ export class LocationManagementComponent implements OnInit {
     this.modalRef?.hide();
   }
 
-  setOrder(value: string) {
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

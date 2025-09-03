@@ -105,7 +105,7 @@ export class EditLocationDetailsComponent implements OnInit {
         loc.parentLocationResourceList &&
         loc.parentLocationResourceList.length > 0
       ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList); //children.push({text : childLoc.name, value: childLoc.locationid})
+        children = this.generateHierarchy(loc.parentLocationResourceList); //children.push({text : childLoc.name, value: childLoc.locationId})
       }
       items.push(
         new TreeviewItem({

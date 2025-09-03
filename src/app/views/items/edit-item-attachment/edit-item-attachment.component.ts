@@ -78,7 +78,7 @@ export class EditItemAttachmentComponent implements OnInit {
   updateItemDocument() {
     this.spinner.show();
 
-    this.model.moduleType = 'itemtype';
+    this.model.moduleType = 'itemType';
     this.model.companyId = this.companyId;
     this.model.updatedDate = new Date();
     this.model.itemTag = this.itemTag;

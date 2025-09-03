@@ -43,32 +43,32 @@ export class AddLocationNoteComponent implements OnInit {
     this.model.date = new Date();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
     console.log('locationId=' + this.locationId);
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   saveLocationNote() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.model = {
         companyId: this.companyId,
-        effectiveon: this.model.effectiveon,
-        enteredby: this.userName,
-        enteredon: new Date(),
+        effectiveOn: this.model.effectiveOn,
+        enteredBy: this.userName,
+        enteredOn: new Date(),
         entityId: this.locationId,
-        entityname: this.model.entityname,
+        entityName: this.model.entityName,
         entitytypeId: 0,
-        entityxml: '',
+        entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
+        jobNumber: this.model.jobNumber,
+        journalId: 0,
         journaltypeId: 0,
-        locationid: this.locationId,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
+        locationId: this.locationId,
+        locationName: '',
+        poNumber: this.model.poNumber,
+        shippingNumber: '',
+        trackingNumber: '',
         moduleType: 'locationtype',
       };
       console.log(JSON.stringify(this.model));

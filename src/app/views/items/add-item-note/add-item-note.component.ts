@@ -48,7 +48,7 @@ export class AddItemNoteComponent implements OnInit {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
 
     console.log('itemId=' + this.itemId);
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
     this.getItemDetails();
   }
 
@@ -69,29 +69,29 @@ export class AddItemNoteComponent implements OnInit {
   }
 
   saveItemNote() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.model = {
         companyId: this.companyId,
-        effectiveon: this.model.effectiveon,
-        enteredby: this.userName,
-        enteredon: new Date(),
+        effectiveOn: this.model.effectiveOn,
+        enteredBy: this.userName,
+        enteredOn: new Date(),
         entityId: this.itemId,
-        entityname: this.model.entityname,
+        entityName: this.model.entityName,
         entitytypeId: 0,
-        entityxml: '',
+        entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
+        jobNumber: this.model.jobNumber,
+        journalId: 0,
         journaltypeId: 0,
-        locationid: 0,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
-        moduleType: 'itemtype',
+        locationId: 0,
+        locationName: '',
+        poNumber: this.model.poNumber,
+        shippingNumber: '',
+        trackingNumber: '',
+        moduleType: 'itemType',
       };
       console.log(JSON.stringify(this.model));
       this.spinner.show();

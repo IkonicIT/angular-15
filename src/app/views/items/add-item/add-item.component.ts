@@ -23,9 +23,9 @@ import { isUndefined, isNull } from 'is-what';
 })
 export class AddItemComponent implements OnInit {
   model: any = {
-    locationid: 0,
+    locationId: 0,
     typeId: 0,
-    warrantytypeId: 0,
+    warrantyTypeId: 0,
   };
   locationModel: any = {
     pLocationId: 0,
@@ -238,7 +238,7 @@ export class AddItemComponent implements OnInit {
 
   onValueChange(value: any) {
     if (value != undefined) {
-      this.model.locationid = value;
+      this.model.locationId = value;
       this.addLocationFlag = 1;
     }
   }
@@ -418,7 +418,7 @@ export class AddItemComponent implements OnInit {
             ? this.locationModel.locationName
             : '',
           parentLocation: {
-            locationId: this.model.locationid ? this.model.locationid : 0,
+            locationId: this.model.locationId ? this.model.locationId : 0,
           },
           postalCode: this.locationModel.postalCode
             ? this.locationModel.postalCode
@@ -440,7 +440,7 @@ export class AddItemComponent implements OnInit {
 
       this.locationManagementService.saveLocation(request).subscribe(
         (response: any) => {
-          this.addedLocationId = response[0].locationid;
+          this.addedLocationId = response[0].locationId;
           this.locationManagementService
             .getAllLocations(this.companyId)
             .subscribe((response) => {
@@ -474,7 +474,7 @@ export class AddItemComponent implements OnInit {
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.broadcasterService.locations = response;
-        this.model.locationid = this.addedLocationId;
+        this.model.locationId = this.addedLocationId;
         this.getLocations();
         this.spinner.hide();
       });
@@ -490,7 +490,7 @@ export class AddItemComponent implements OnInit {
       this.model.statusId &&
       this.model.statusId != 0 &&
       !this.isDuplicateTag &&
-      this.model.locationid
+      this.model.locationId
     ) {
       if (this.typeAttributes && this.typeAttributes.length > 0) {
         this.model.attributeValues = [];
@@ -534,24 +534,24 @@ export class AddItemComponent implements OnInit {
         isStale: false,
         itemId: 0,
         lastModifiedBy: this.userName,
-        locationId: this.model.locationid ? this.model.locationid : 0,
+        locationId: this.model.locationId ? this.model.locationId : 0,
         manufacturerId: null,
         meanTimeBetweenService: this.model.mtbs ? this.model.mtbs : 0,
         modelNumber: 'string',
         name: this.model.name ? this.model.name : '',
-        purchaseDate: this.model.purchasedate ? this.model.purchasedate : '',
-        purchasePrice: this.model.purchaseprice ? this.model.purchaseprice : 0,
+        purchaseDate: this.model.purchaseDate ? this.model.purchaseDate : '',
+        purchasePrice: this.model.purchasePrice ? this.model.purchasePrice : 0,
         repairQual: 0,
         serialNumber: '',
         companyId: this.companyId,
         statusId: this.model.statusId ? this.model.statusId : 0,
         tag: this.model.tag ? this.model.tag : '',
         typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyExpiration: this.model.warrantyexpiration
-          ? this.model.warrantyexpiration
+        warrantyExpiration: this.model.warrantyExpiration
+          ? this.model.warrantyExpiration
           : '',
-        warrantyTypeId: this.model.warrantytypeId
-          ? this.model.warrantytypeId
+        warrantyTypeId: this.model.warrantyTypeId
+          ? this.model.warrantyTypeId
           : 0,
         userId: sessionStorage.getItem('userId'),
         typeName: this.typeName,
@@ -589,9 +589,9 @@ export class AddItemComponent implements OnInit {
     }
   }
 
-  getLocationNameAndStatusNameFromId(locationid: any, statusId: any) {
-    this.locations.forEach((element: { locationid: any; name: any }) => {
-      if (element.locationid == locationid) {
+  getLocationNameAndStatusNameFromId(locationId: any, statusId: any) {
+    this.locations.forEach((element: { locationId: any; name: any }) => {
+      if (element.locationId == locationId) {
         this.model.locationName = element.name;
       }
     });

@@ -40,7 +40,7 @@ export class AddCraneNoteComponent implements OnInit {
     });
 
     console.log('companyId=' + this.companyId);
-    this.model.enteredon = new Date();
+    this.model.enteredOn = new Date();
   }
 
   saveNotes() {
@@ -53,8 +53,8 @@ export class AddCraneNoteComponent implements OnInit {
         createdBy: 'Yogi Patel',
         createdDate: this.model.createdDate,
         name: this.model.name,
-        jobnumber: this.model.jobnumber,
-        ponumber: this.model.ponumber,
+        jobNumber: this.model.jobNumber,
+        poNumber: this.model.poNumber,
         details: this.model.details,
         isNew: true,
         vendorId: this.vendorId,

@@ -32,7 +32,7 @@ export class NoteAttachmentsComponent implements OnInit {
   userName: any;
   globalCompany: any;
   authToken: any;
-  entityname: any;
+  entityName: any;
   helpFlag: any = false;
   loader = false;
   constructor(
@@ -65,7 +65,7 @@ export class NoteAttachmentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entityname = this.broadcasterService.currentNoteAttachmentTitle;
+    this.entityName = this.broadcasterService.currentNoteAttachmentTitle;
     this.userName = sessionStorage.getItem('userName');
   }
 
@@ -116,7 +116,7 @@ export class NoteAttachmentsComponent implements OnInit {
 
     let userLog = {
       noteType: 'companynoteattachment',
-      noteName: this.entityname,
+      noteName: this.entityName,
     };
     this.companyDocumentsService
       .removeCompanyNoteDocuments(

@@ -196,15 +196,15 @@ export class MasterSearchComponent implements OnInit {
         });
 
         delete obj.itemId;
-        delete obj.locationid;
+        delete obj.locationId;
         delete obj.companyId;
         delete obj.companyName;
         delete obj.typeName;
         delete obj.name;
         delete obj.description;
         delete obj.statusId;
-        delete obj.warrantytypeId;
-        delete obj.warrantyexpiration;
+        delete obj.warrantyTypeId;
+        delete obj.warrantyExpiration;
         delete obj.warrantyExpiration;
         delete obj.serialnumber;
         delete obj.modelnumber;
@@ -215,9 +215,9 @@ export class MasterSearchComponent implements OnInit {
         delete obj.desiredspareratio;
         delete obj.manufacturerid;
         delete obj.repairqual;
-        delete obj.purchaseprice;
+        delete obj.purchasePrice;
         delete obj.daysinservice;
-        delete obj.purchasedate;
+        delete obj.purchaseDate;
         delete obj.defaultimageattachmentId;
         delete obj.typeId;
         delete obj.isstale;

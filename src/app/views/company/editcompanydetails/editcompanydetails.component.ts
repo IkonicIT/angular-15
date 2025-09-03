@@ -19,7 +19,7 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
 export class EditcompanydetailsComponent implements OnInit {
   companyId: string;
   model: any = {
-    announcement: { announcementtext: '' },
+    announcement: { announcementText: '' },
     type: {},
   };
 

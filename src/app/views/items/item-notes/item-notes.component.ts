@@ -29,7 +29,7 @@ export class ItemNotesComponent implements OnInit {
   globalCompany: any;
   currentRole: any;
   highestRank: any;
-  journalid: number = 0;
+  journalId: number = 0;
   private sub: any;
   id: number;
   authToken: any;
@@ -93,17 +93,17 @@ export class ItemNotesComponent implements OnInit {
   }
 
   openModalView(template: TemplateRef<any>, id: number) {
-    this.journalid = id;
+    this.journalId = id;
     this.spinner.show();
 
-    this.itemNotesService.getItemNotes(this.journalid).subscribe((response) => {
+    this.itemNotesService.getItemNotes(this.journalId).subscribe((response) => {
       this.spinner.hide();
 
       this.model = response;
-      if (this.model.effectiveon) {
-        this.model.effectiveon = new Date(this.model.effectiveon);
-        this.model.effectiveon = this.datepipe.transform(
-          this.model.effectiveon,
+      if (this.model.effectiveOn) {
+        this.model.effectiveOn = new Date(this.model.effectiveOn);
+        this.model.effectiveOn = this.datepipe.transform(
+          this.model.effectiveOn,
           'MM/dd/yyyy'
         );
       }
@@ -135,9 +135,9 @@ export class ItemNotesComponent implements OnInit {
     this.ngOnInit();
   }
 
-  editItemNotes(notes: { journalid: string }) {
+  editItemNotes(notes: { journalId: string }) {
     this.router.navigate([
-      '/items/editItemNotes/' + notes.journalid + '/' + this.itemId,
+      '/items/editItemNotes/' + notes.journalId + '/' + this.itemId,
     ]);
   }
 

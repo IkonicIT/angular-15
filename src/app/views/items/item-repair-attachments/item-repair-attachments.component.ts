@@ -20,7 +20,7 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
   styleUrls: ['./item-repair-attachments.component.scss'],
 })
 export class ItemRepairAttachmentsComponent implements OnInit {
-  repairlogId: string;
+  repairLogId: string;
   model: any;
   itemRank: any;
   p: any;
@@ -68,13 +68,13 @@ export class ItemRepairAttachmentsComponent implements OnInit {
       this.companyId = this.globalCompany.companyId;
     }
 
-    this.repairlogId = route.snapshot.params['repairlogId'];
+    this.repairLogId = route.snapshot.params['repairLogId'];
     this.itemId = this._itemRepairItemsService.itemId;
     this.authToken = sessionStorage.getItem('auth_token');
     this.router = router;
     this.route = route;
-    console.log('repairLogId=' + this.repairlogId);
-    if (this.repairlogId) {
+    console.log('repairLogId=' + this.repairLogId);
+    if (this.repairLogId) {
       this.getAllDocuments();
     }
   }
@@ -91,7 +91,7 @@ export class ItemRepairAttachmentsComponent implements OnInit {
     this.spinner.show();
 
     this.companyDocumentsService
-      .getAllRepairDocuments(this.repairlogId)
+      .getAllRepairDocuments(this.repairLogId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
@@ -121,9 +121,9 @@ export class ItemRepairAttachmentsComponent implements OnInit {
 
     let userLog = {
       itemTag: this.itemRepair.tag,
-      itemTypeName: this.itemRepair.itemtype,
-      poNumber: this.itemRepair.ponumber,
-      jobNumber: this.itemRepair.jobnumber,
+      itemTypeName: this.itemRepair.itemType,
+      poNumber: this.itemRepair.poNumber,
+      jobNumber: this.itemRepair.jobNumber,
     };
     this.itemAttachmentsService
       .removeItemRepairDocuments(
@@ -262,7 +262,7 @@ export class ItemRepairAttachmentsComponent implements OnInit {
 
   back() {
     this.router.navigate([
-      '/items/viewItemRepair/' + this.itemId + '/' + this.repairlogId,
+      '/items/viewItemRepair/' + this.itemId + '/' + this.repairLogId,
     ]);
   }
 

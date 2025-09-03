@@ -287,7 +287,14 @@ export class UserSecurityRoleComponent implements OnInit {
         userId: this.userId,
         roleId: this.userSecurityRole.roleId,
         lastModifiedBy: this.userName,
+<<<<<<< HEAD
         locationId: this.userSecurityRole.locationId ?? 0,
+=======
+        locationId:
+          this.userSecurityRole.locationId != undefined
+            ? this.userSecurityRole.locationId
+            : 0,
+>>>>>>> 73e99df05c6bfebbd0fbd624d8715b0e0601450c
         companyId: this.userSecurityRole.companyId,
       };
       this.spinner.show();

@@ -76,7 +76,7 @@ export class EditItemStatusComponent implements OnInit {
         destroyed: this.model.destroyed ? this.model.destroyed : false,
         entityTypeId: 0,
         inService: this.model.inService ? this.model.inService : false,
-        moduleType: 'itemtype',
+        moduleType: 'itemType',
         spare: this.model.spare ? this.model.spare : false,
         status: this.model.status,
         statusId: this.model.statusId,

@@ -137,9 +137,9 @@ export class ItemManagementComponent implements OnInit {
     this.searchResults = this.itemManagementService.getItemSearchResults();
     this.model.typeId = this.itemManagementService.getSearchedItemTypeId();
     this.model.statusId = this.itemManagementService.getSearchedItemStatusId();
-    this.model.locationid =
+    this.model.locationId =
       this.itemManagementService.getSearchedItemLocationId();
-    this.value = this.model.locationid;
+    this.value = this.model.locationId;
     this.model.tag = this.itemManagementService.getSearchedItemTag();
 
     this.searchResultKeys = Object.keys(this.searchResults);
@@ -205,7 +205,7 @@ export class ItemManagementComponent implements OnInit {
 
   onValueChange(value: any) {
     this.value = value;
-    this.model.locationid = value;
+    this.model.locationId = value;
   }
 
   getSuggessions(tag: string) {
@@ -222,7 +222,7 @@ export class ItemManagementComponent implements OnInit {
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
     var req = {
-      locationId: this.model.locationid ? this.model.locationid : null,
+      locationId: this.model.locationId ? this.model.locationId : null,
       statusId: this.model.statusId ? this.model.statusId : null,
       tag: this.model.tag ? this.model.tag : null,
       typeId: this.model.typeId ? this.model.typeId : null,
@@ -312,7 +312,7 @@ export class ItemManagementComponent implements OnInit {
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
     var req = {
-      locationId: this.model.locationid ? this.model.locationid : null,
+      locationId: this.model.locationId ? this.model.locationId : null,
       statusId: this.model.statusId ? this.model.statusId : null,
       tag: this.model.tag ? this.model.tag : null,
       typeId: this.model.typeId ? this.model.typeId : null,
@@ -523,13 +523,13 @@ export class ItemManagementComponent implements OnInit {
         delete obj.modelnumber;
         delete obj.statusId;
         delete obj.typeName;
-        delete obj.locationid;
+        delete obj.locationId;
         delete obj.typeId;
         delete obj.itemid;
         delete obj.itemRank;
         delete obj.description;
-        delete obj.warrantytypeId;
-        delete obj.warrantyexpiration;
+        delete obj.warrantyTypeId;
+        delete obj.warrantyExpiration;
         delete obj.warrantyExpiration;
         delete obj.lastModifiedBy;
         delete obj.serialnumber;
@@ -539,9 +539,9 @@ export class ItemManagementComponent implements OnInit {
         delete obj.desiredspareratio;
         delete obj.manufacturerid;
         delete obj.repairqual;
-        delete obj.purchaseprice;
+        delete obj.purchasePrice;
         delete obj.daysinservice;
-        delete obj.purchasedate;
+        delete obj.purchaseDate;
         delete obj.defaultimageattachmentId;
         delete obj.isstale;
         delete obj.entityTypeId;

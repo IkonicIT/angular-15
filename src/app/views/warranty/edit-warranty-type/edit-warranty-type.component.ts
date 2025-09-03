@@ -17,7 +17,7 @@ export class EditWarrantyTypeComponent implements OnInit {
   index: number;
   router: Router;
   route: ActivatedRoute;
-  warrantytypeId: any;
+  warrantyTypeId: any;
   helpFlag: any = false;
   userName: any;
   dismissible = true;
@@ -43,16 +43,16 @@ export class EditWarrantyTypeComponent implements OnInit {
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
-    this.warrantytypeId = this.route.snapshot.params['warrantyId'];
+    this.warrantyTypeId = this.route.snapshot.params['warrantyId'];
     this.spinner.show();
 
     this.warrantyManagementService
-      .getWarrantyType(this.warrantytypeId)
+      .getWarrantyType(this.warrantyTypeId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
 
-          this.warrantyType = response.warrantytype;
+          this.warrantyType = response.warrantyType;
         },
         (error) => {
           this.spinner.hide();
@@ -67,14 +67,14 @@ export class EditWarrantyTypeComponent implements OnInit {
     } else {
       var req = {
         companyId: this.companyId,
-        warrantytype: this.warrantyType,
-        warrantytypeId: 0,
+        warrantyType: this.warrantyType,
+        warrantyTypeId: 0,
         userName: this.userName,
       };
       this.spinner.show();
 
       this.warrantyManagementService
-        .updateWarrantyType(req, this.warrantytypeId)
+        .updateWarrantyType(req, this.warrantyTypeId)
         .subscribe(
           (response) => {
             this.spinner.hide();

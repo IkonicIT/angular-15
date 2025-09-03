@@ -268,21 +268,21 @@ const routes: Routes = [
         },
       },
       {
-        path: 'itemRepairAttachments/:repairlogId',
+        path: 'itemRepairAttachments/:repairLogId',
         component: ItemRepairAttachmentsComponent,
         data: {
           title: '  Item Repairs Attachments',
         },
       },
       {
-        path: 'editItemRepairAttachments/:repairlogId/:attachmentId',
+        path: 'editItemRepairAttachments/:repairLogId/:attachmentId',
         component: EditItemRepairAttachmentsComponent,
         data: {
           title: ' Edit Item Repairs Attachments',
         },
       },
       {
-        path: 'addItemRepairAttachments/:repairlogId',
+        path: 'addItemRepairAttachments/:repairLogId',
         component: AddItemRepairAttachmentsComponent,
         data: {
           title: ' Add Item Repairs Attachments',

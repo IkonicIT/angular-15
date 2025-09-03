@@ -178,11 +178,11 @@
                             ">
                             <li>
                               {{ journal.entry }} on
-                              {{ journal.enteredon | date : "MM/dd/yyyy" }} by
-                              {{ journal.enteredby }}...........<a [routerLink]="[
+                              {{ journal.enteredOn | date : "MM/dd/yyyy" }} by
+                              {{ journal.enteredBy }}...........<a [routerLink]="[
                                   '../../../items/changeLog/',
                                   journal.entityId,
-                                  journal.journalid
+                                  journal.journalId
                                 ]" (click)="modalRef.hide()">details</a>
                             </li>
                           </ul>
@@ -336,10 +336,10 @@
                               " class="form-control custom-dropdown" [(ngModel)]="eachAttr.value" name="select{{ i }}"
                               #type="ngModel">
                               <option value="">Choose..</option>
-                              <option [ngValue]="list.listitem" *ngFor="
+                              <option [ngValue]="list.listItem" *ngFor="
                                   let list of eachAttr.attributeListItemResource
                                 ">
-                                {{ list.listitem }}
+                                {{ list.listItem }}
                               </option>
                             </select>
                             <div class="form-check d-flex align-items-center gap-3" *ngIf="eachAttr.attributeType.attributeTypeId == 5">

@@ -13,7 +13,7 @@ import { ItemRepairItemsService } from '../../../services/Items/item-repair-item
   styleUrls: ['./failuretypemanagement.component.scss'],
 })
 export class FailuretypemanagementComponent implements OnInit {
-  failuretype: any;
+  failureType: any;
   failureTypeId: any;
   causes: any;
   editEnable: number;
@@ -35,7 +35,7 @@ export class FailuretypemanagementComponent implements OnInit {
   itemTypes: any = [];
   model: any = {};
   failureTypes: any = [];
-  failurecauses: any = [];
+  failureCauses: any = [];
   selectedAttrType: any = {};
   globalCompany: any;
   //addFlag:any = false;
@@ -125,11 +125,11 @@ export class FailuretypemanagementComponent implements OnInit {
 
     if (this.value != undefined) {
       this.newFlag = true;
-      this.failuretype = '';
+      this.failureType = '';
       this.failureTypeId = 0;
       this.editDeleteFlag = false;
       this.faliurecausetemp = [];
-      this.failurecauses = [];
+      this.failureCauses = [];
       this.getFailureTypes(value);
     }
   }
@@ -147,11 +147,11 @@ export class FailuretypemanagementComponent implements OnInit {
   }
 
   getCausesForFailureType(failureType: string) {
-    this.failuretype = failureType.split('_')[0];
+    this.failureType = failureType.split('_')[0];
     this.failureTypeId = failureType.split('_')[1];
     let faliurecausetemp = this.failureTypesandcauses[failureType];
     this.faliurecausetemp = this.failureTypesandcauses[failureType];
-    this.failurecauses = faliurecausetemp[0].split('\n');
+    this.failureCauses = faliurecausetemp[0].split('\n');
   }
 
   addFailureTypeAndCauses() {
@@ -162,8 +162,8 @@ export class FailuretypemanagementComponent implements OnInit {
     this.editDeleteFlag = false;
     this.failureTypesandcauses = {};
     this.failureTypes = [];
-    this.failurecauses = [];
-    this.model.failuretype = '';
+    this.failureCauses = [];
+    this.model.failureType = '';
     this.model.causes = '';
   }
 
@@ -171,10 +171,10 @@ export class FailuretypemanagementComponent implements OnInit {
     this.typeId = this.value;
     this.spinner.show();
 
-    if (this.model.failuretype && this.typeId != undefined) {
+    if (this.model.failureType && this.typeId != undefined) {
       var request = {
-        itemtypeId: this.typeId,
-        description: this.model.failuretype,
+        itemTypeId: this.typeId,
+        description: this.model.failureType,
         lastModifiedBy: this.userName,
         companyId: this.companyId,
         causes: this.model.causes != null ? this.model.causes : '',
@@ -191,10 +191,10 @@ export class FailuretypemanagementComponent implements OnInit {
           window.scroll(0, 0);
           this.failureTypeAndCausesPayload = response;
           this.newFlag = false;
-          this.model.failuretype = null;
+          this.model.failureType = null;
           this.model.causes = null;
           this.value = null;
-          this.failuretype = null;
+          this.failureType = null;
           this.addEditFlag = false;
 
           this.editDeleteFlag = false;
@@ -215,13 +215,13 @@ export class FailuretypemanagementComponent implements OnInit {
     this.failureTypeId = parseInt(this.failureTypeId);
     this.spinner.show();
 
-    if (this.model.failuretype && this.typeId != undefined) {
+    if (this.model.failureType && this.typeId != undefined) {
       var request = {
-        failuretypeId: this.failureTypeId,
-        itemtypeId: this.typeId,
+        failureTypeId: this.failureTypeId,
+        itemTypeId: this.typeId,
         lastModifiedBy: this.userName,
         companyId: this.companyId,
-        description: this.model.failuretype,
+        description: this.model.failureType,
         causes: this.model.causes != null ? this.model.causes : '',
       };
       this.itemRepairItemsService
@@ -240,13 +240,13 @@ export class FailuretypemanagementComponent implements OnInit {
 
       this.newFlag = false;
       this.addFailure = 0;
-      this.model.failuretype = null;
+      this.model.failureType = null;
       this.model.causes = null;
       this.value = null;
-      this.failuretype = null;
+      this.failureType = null;
       this.failureTypesandcauses = {};
       this.failureTypes = [];
-      this.failurecauses = [];
+      this.failureCauses = [];
       this.editEnable = 0;
     } else {
       this.spinner.hide();
@@ -288,13 +288,13 @@ export class FailuretypemanagementComponent implements OnInit {
 
     this.modalRef?.hide();
     this.addFailure = 0;
-    this.model.failuretype = null;
+    this.model.failureType = null;
     this.model.causes = null;
     this.value = null;
-    this.failuretype = null;
+    this.failureType = null;
     this.failureTypesandcauses = {};
     this.failureTypes = [];
-    this.failurecauses = [];
+    this.failureCauses = [];
     this.newFlag = 'false';
   }
 
@@ -308,20 +308,20 @@ export class FailuretypemanagementComponent implements OnInit {
     this.addEditFlag = false;
     this.editEnable = 0;
     this.newFlag = false;
-    this.model.failuretype = null;
+    this.model.failureType = null;
     this.model.causes = null;
     this.value = null;
-    this.failuretype = null;
+    this.failureType = null;
     this.failureTypesandcauses = {};
     this.failureTypes = [];
-    this.failurecauses = [];
+    this.failureCauses = [];
   }
 
   editFailureType(failureType: string) {
     this.addEditFlag = false;
     this.editDeleteFlag = false;
     this.editEnable = 1;
-    this.model.failuretype = this.failuretype || failureType.split('_')[0];
+    this.model.failureType = this.failureType || failureType.split('_')[0];
     this.model.causes = this.faliurecausetemp[0];
     this.value = this.value;
     this.addFailure = 1;

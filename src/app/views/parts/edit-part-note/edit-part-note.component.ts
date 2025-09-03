@@ -14,7 +14,7 @@ export class EditPartNoteComponent implements OnInit {
   date = Date.now();
   bsConfig: any;
   companyId: number = 0;
-  journalid: number = 0;
+  journalId: number = 0;
   private sub: any;
   id: number;
   p: any;
@@ -43,7 +43,7 @@ export class EditPartNoteComponent implements OnInit {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.noteId = +params['a'] || 0;
-      console.log('Query params ', this.journalid);
+      console.log('Query params ', this.journalId);
     });
 
     this.companynotesService
@@ -54,7 +54,7 @@ export class EditPartNoteComponent implements OnInit {
   }
 
   updateNotes() {
-    if (!this.model.entityname || !this.model.enteredon) {
+    if (!this.model.entityName || !this.model.enteredOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {

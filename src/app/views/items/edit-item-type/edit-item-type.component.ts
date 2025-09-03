@@ -91,7 +91,7 @@ export class EditItemTypeComponent implements OnInit {
     typeList.forEach((type) => {
       var children: TreeviewItem[] = [];
       if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
+        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationId})
       }
       items.push(
         new TreeviewItem({
@@ -116,7 +116,7 @@ export class EditItemTypeComponent implements OnInit {
         hostingFee: this.model.hostingFee,
         isHidden: true,
         lastModifiedBy: this.userName,
-        moduleType: 'itemtype',
+        moduleType: 'itemType',
         name: this.model.name,
         parentId: {
           typeId: this.value ? this.value : 0,

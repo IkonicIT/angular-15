@@ -24,9 +24,9 @@ import { isUndefined, isNull } from 'is-what';
 })
 export class CloneItemComponent implements OnInit {
   model: any = {
-    locationid: 0,
+    locationId: 0,
     typeId: 0,
-    warrantytypeId: 0,
+    warrantyTypeId: 0,
   };
   locationModel: any = {
     pLocationId: 0,
@@ -411,7 +411,7 @@ export class CloneItemComponent implements OnInit {
 
       this.locationManagementService.saveLocation(request).subscribe(
         (response: any) => {
-          this.addedLocationId = response[0].locationid;
+          this.addedLocationId = response[0].locationId;
           this.locationManagementService
             .getAllLocations(this.companyId)
             .subscribe((response) => {

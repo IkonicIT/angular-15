@@ -249,7 +249,7 @@ export class ItemTransferComponent implements OnInit {
   }
 
   onValueChange(value: any) {
-    this.model.locationid = value;
+    this.model.locationId = value;
     this.addLocationFlag = 1;
   }
 
@@ -309,10 +309,10 @@ export class ItemTransferComponent implements OnInit {
           desiredspareratio: this.locationModel.sRatio ? this.locationModel.sRatio : 0,
           isvendor: this.locationModel.vLocation ? this.locationModel.vLocation : false,
           lastModifiedBy: this.userName,
-          locationid: 0,
+          locationId: 0,
           name: this.locationModel.locationName ? this.locationModel.locationName : '',
           parentLocation: {
-            locationid: this.model.locationid ? this.model.locationid : 0,
+            locationId: this.model.locationId ? this.model.locationId : 0,
           },
           postalCode: this.locationModel.postalCode ? this.locationModel.postalCode : '',
           state: this.locationModel.state ? this.locationModel.state : '',
@@ -328,7 +328,7 @@ export class ItemTransferComponent implements OnInit {
       this.locationManagementService.saveLocation(request).subscribe(
         (location: any) => {
           this.name = location[0].name;
-          this.addedLocationId = location[0].locationid;
+          this.addedLocationId = location[0].locationId;
           this.locationManagementService
             .getAllLocations(this.companyId)
             .subscribe((response) => {
@@ -396,7 +396,7 @@ export class ItemTransferComponent implements OnInit {
           : null,
         transferDate: this.model.effectiveDate,
         transferredBy: this.userName,
-        ponumber: this.model.ponumber ? this.model.ponumber : null,
+        poNumber: this.model.poNumber ? this.model.poNumber : null,
       };
       this.spinner.show();
       this.itemManagementService.saveTransfer(req).subscribe(

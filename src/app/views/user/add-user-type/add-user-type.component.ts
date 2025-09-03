@@ -74,16 +74,9 @@ export class AddUserTypeComponent implements OnInit {
   generateHierarchy(typeList:any[]): TreeviewItem[] {
     const items: TreeviewItem[] = [];
     typeList.forEach((type) => {
-<<<<<<< HEAD
       const children = type.typeList && type.typeList.length > 0
         ? this.generateHierarchy(type.typeList)
         : [];
-=======
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationId})
-      }
->>>>>>> 73e99df05c6bfebbd0fbd624d8715b0e0601450c
       items.push(
         new TreeviewItem({
           text: type.name,

@@ -72,29 +72,9 @@ export class EditUserTypeComponent implements OnInit {
         } else {
           this.value = this.model.parentId.typeId;
         }
-<<<<<<< HEAD
       },
       error: () => this.spinner.hide(),
-=======
-      );
-  }
 
-  generateHierarchy(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationId})
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeId,
-          collapsed: true,
-          children: children,
-        })
-      );
->>>>>>> 73e99df05c6bfebbd0fbd624d8715b0e0601450c
     });
   }
 

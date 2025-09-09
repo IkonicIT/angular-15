@@ -428,6 +428,7 @@ export class CompanyattributesComponent implements OnInit {
 
   closeFirstModal(): void {
     this.modalRef?.hide();
+
   }
 
   confirm(): void {

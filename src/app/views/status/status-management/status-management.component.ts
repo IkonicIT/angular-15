@@ -54,6 +54,7 @@ export class StatusManagementComponent implements OnInit {
       .subscribe((response) => {
         this.statuses = response;
       });
+
   }
 
   addStatus() {
@@ -64,6 +65,7 @@ export class StatusManagementComponent implements OnInit {
     this.router.navigate(['/status/editStatus/'], {
       queryParams: { q: status.statusId },
     });
+
   }
 
   openModal(template: TemplateRef<any>, id: string) {

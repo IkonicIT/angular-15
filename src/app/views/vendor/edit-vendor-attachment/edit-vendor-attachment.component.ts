@@ -13,7 +13,7 @@ export class EditVendorAttachmentComponent implements OnInit {
   index: number = 0;
   date = Date.now();
   companyId: number = 0;
-  dismissible: boolean = true; // Add this line
+  dismissible: boolean = true;
   documentId: number = 0;
   private sub: any;
   id: number;
@@ -27,19 +27,16 @@ export class EditVendorAttachmentComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.vendorId = route.snapshot.params['id'];
-    console.log('compaanyid=' + this.companyId);
     this.router = router;
   }
 
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
     });
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.documentId = +params['a'] || 0;
-      console.log('Query params ', this.documentId);
     });
 
     this.companyDocumentsService

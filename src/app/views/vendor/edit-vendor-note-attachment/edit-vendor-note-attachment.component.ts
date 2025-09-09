@@ -14,7 +14,7 @@ export class EditVendorNoteAttachmentComponent implements OnInit {
   index: number = 0;
   date = Date.now();
   companyId: number = 0;
-  dismissible: boolean = true; // Add this line
+  dismissible: boolean = true; 
 
   documentId: number = 0;
   private sub: any;
@@ -36,12 +36,10 @@ export class EditVendorNoteAttachmentComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorNoteId = +params['q'] || 0;
-      console.log('Query params of VendorNoteId ', this.vendorNoteId);
     });
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.documentId = +params['a'] || 0;
-      console.log('Query params ', this.documentId);
     });
 
     this.companyDocumentsService

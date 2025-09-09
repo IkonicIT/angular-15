@@ -1,6 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-// import it to your component
 import { UserIdleService } from 'angular-user-idle';
 import { Subscription } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -35,12 +34,10 @@ export class AppComponent implements OnInit {
       }
       window.scrollTo(0, 0);
     });
-    //Start watching for user inactivity.
     this.userIdle.startWatching();
 
-    // Start watching when user idle is starting and reset if user action is there.
     this.userIdle.onTimerStart().subscribe((count) => {
-      console.log(count);
+    
       if (count == 1) {
         this.modalService.show(ModalsComponent, { backdrop: 'static' });
       }
@@ -59,7 +56,6 @@ export class AppComponent implements OnInit {
         document.body.addEventListener(event, () => this.userIdle.resetTimer());
       }
     });
-    // Start watch when time is up.
     this.userIdle.onTimeout().subscribe(() => {
       this.userId = sessionStorage.getItem('userId');
 
@@ -67,10 +63,7 @@ export class AppComponent implements OnInit {
         .updateLogoutDate(this.userId)
         .subscribe((response) => {});
 
-      //localStorage.clear();
-      //sessionStorage.clear();
-      //this.router.navigate(['/login']);
-      console.log('logged out...!');
+  
       this.modalService.hide(1);
     });
   }

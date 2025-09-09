@@ -137,7 +137,7 @@
                     data-bs-toggle="tooltip"
                     title="Delete Item Note"
                     (click)="openModal(confirmtemplate, note.journalId)"
-                    [disabled]="highestRank == 9"
+                    [disabled]="highestRankNum == 9"
                   >
                     Delete
                   </button>
@@ -188,7 +188,7 @@
       type="button"
       class="close pull-right"
       aria-label="Close"
-      (click)="modalRef.hide()"
+      (click)="modalRef?.hide()"
     >
       <span aria-hidden="true">&times;</span>
     </button>
@@ -359,7 +359,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

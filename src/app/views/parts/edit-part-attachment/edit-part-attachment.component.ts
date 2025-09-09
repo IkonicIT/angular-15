@@ -66,7 +66,6 @@ export class EditPartAttachmentComponent implements OnInit, OnDestroy {
   updateVendorDocument(): void {
     this.spinner.show();
     this.model.updatedBy = this.userName;
-
     this.partService.updatePartAttachment(this.documentId, this.model).subscribe({
       next: () => {
         window.scroll(0, 0);

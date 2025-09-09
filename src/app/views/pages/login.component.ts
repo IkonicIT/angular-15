@@ -29,7 +29,6 @@ export class LoginComponent {
     private userManagementService: UserManagementService
   ) {
     setTimeout(() => {
-      console.log('hide');
       this.spinner.hide();
     }, 2000);
 
@@ -72,7 +71,6 @@ export class LoginComponent {
   getUserIdByNameForLogged() {
     this.loginService.getUserIdByName(this.userName).subscribe(
       (response) => {
-        console.log(response);
         this.userId = response.userId;
         sessionStorage.setItem('userId', response.userId);
         sessionStorage.setItem('userName', response.userName);
@@ -88,7 +86,6 @@ export class LoginComponent {
   getProfile() {
     this.loginService.getProfileByUserId(this.userId).subscribe(
       (response) => {
-        console.log(response);
         sessionStorage.setItem('IsOwnerAdmin', response.isOwnerAdmin);
         sessionStorage.setItem(
           'IsOwnerAdminReadOnly',
@@ -97,7 +94,6 @@ export class LoginComponent {
 
         this.date = new Date();
         this.user.userId = this.userId;
-
         this.userManagementService.updateLoginDate(this.user).subscribe(
           () => {},
           (error) => {

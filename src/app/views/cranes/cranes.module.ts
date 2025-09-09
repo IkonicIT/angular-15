@@ -17,7 +17,7 @@ import { AddCraneNoteAttachmentComponent } from './add-crane-note-attachment/add
 import { EditCraneNoteAttachmentComponent } from './edit-crane-note-attachment/edit-crane-note-attachment.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgPipesModule } from 'ngx-pipes';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; // Import BsDatepickerModule
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; 
 
 @NgModule({
   imports: [
@@ -26,11 +26,11 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; // Import BsDatep
     TooltipModule.forRoot(),
     AlertModule.forRoot(),
     TreeviewModule.forRoot(),
-    BsDatepickerModule.forRoot(), // Add BsDatepickerModule here
+    BsDatepickerModule.forRoot(), 
     DropdownTreeviewModule,
     CranesRoutingModule,
     NgPipesModule,
-    NgxPaginationModule, // Add NgxPaginationModule here
+    NgxPaginationModule, 
   ],
   providers: [CranesService],
   declarations: [

@@ -51,11 +51,13 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
     });
 
     this.route.paramMap.subscribe((params) => {
-      this.craneNoteId = params.get('id');
+      this.craneNoteId = params.get('id'); // 'id' is the placeholder used in the route
+      console.log('Part ID:', this.craneNoteId); // Now you have access to the partId
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    console.log('companyi=' + this.companyId);
     this.addedfiles.push({ file: '', description: '' });
   }
 
@@ -89,8 +91,8 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
       for (let i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-
-      const req = {
+      console.log(jsonArr);
+      var req = {
         craneAttachmentsList: jsonArr,
       };
 
@@ -107,12 +109,40 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
         },
         error: () => {
           this.spinner.hide();
-        },
-      });
+        }
+      );
     }
   }
 
-  cancelVendorDocument(): void {
+  // saveVendorDocument() {
+  //   if (!this.fileName) {
+  //     this.index = -1;
+  //     window.scroll(0, 0);
+  //   } else {
+  //     let req = {
+  //       "createdBy": "Yogi Patel",
+  //       "attachmentFile": this.fileContent,
+  //       "vendorAttachmentId": 0,
+  //       "contentType": this.fileType,
+  //       "description": this.model.description,
+  //       "fileName": this.fileName,
+  //       "moduleType": "vendortype",
+  //       "isNew": true,
+  //       "createdDate":new Date().toISOString(),
+  //     };
+  //     this.spinner.show();
+  //     this.companyDocumentsService.saveVendorDocument(req).subscribe(response => {
+  //       this.spinner.hide();
+  //       window.scroll(0, 0);
+  //       this.index = 1;
+  //     },
+  //       error => {
+  //         this.spinner.hide();
+  //       });
+  //   }
+  // }
+
+  cancelVendorDocument() {
     this.location.back();
   }
 
@@ -125,7 +155,9 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 
-  fileChangeListener($event: any, fileIndex: number): void {
+  fileChangeListener($event: any, fileIndex: any): void {
+    console.log(this.addedfiles);
+
     this.readThis($event.target, fileIndex);
   }
 

@@ -113,7 +113,6 @@ export class ItemManagementService {
 
   public setItemSearchResults(results: any) {
     this.itemSearchResults = results;
-    console.log(this.itemSearchResults);
   }
 
   public getItemSearchResults() {
@@ -234,7 +233,6 @@ export class ItemManagementService {
   }
 
   getAllItems(item: any, companyId: any, isOwnerAdmin: any, userId: any) {
-    console.log(AppConfiguration.locationRestURL + "item/search/"+companyId+"/"+isOwnerAdmin+"/"+userId ,item ,this.httpOptions);
     return this.http
       .post(AppConfiguration.locationRestURL + 'item/search/' + companyId + '/' + isOwnerAdmin + '/' + userId,
               item, this.httpOptions

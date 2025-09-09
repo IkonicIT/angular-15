@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'; // Ensure this import is present
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TreeviewItem } from 'ngx-treeview';
-import { BroadcasterService } from 'src/app/services/broadcaster.service'; // Updated path
-import { VendorExcelService } from 'src/app/services/vendor-excel.service'; // Verify this path
+import { BroadcasterService } from 'src/app/services/broadcaster.service'; 
+import { VendorExcelService } from 'src/app/services/vendor-excel.service'; 
 import { Company } from '../../../models/company';
 import {
   CompanyDocumentsService,
@@ -37,10 +37,10 @@ export class VendorDashBoardComponent implements OnInit {
   companies: any;
   companyList: any;
   authToken: any;
-  locations: TreeviewItem[]; // Define type for locations
+  locations: TreeviewItem[];
   allLocations: any;
   locationId: any;
-  vendorItems: TreeviewItem[]; // Define type for vendorItems
+  vendorItems: TreeviewItem[]; 
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
@@ -65,22 +65,21 @@ export class VendorDashBoardComponent implements OnInit {
   ngOnInit() {
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    
+    
     this.loadVendors();
   }
 
   loadVendors() {
     this.spinner.show();
     this.companyManagementService.getAllVendorDetails().subscribe(
-      // Pass companyId as an argument
       (response) => {
         this.spinner.hide();
         this.vendors = response;
         this.vendorItems = this.convertVendorsToTreeviewItems(this.vendors);
       },
       (error) => {
-        this.spinner.hide(); // Hide spinner on error
+        this.spinner.hide();
         console.error('Error loading vendors:', error);
       }
     );
@@ -98,7 +97,6 @@ export class VendorDashBoardComponent implements OnInit {
 
   onVendorChange(value: any) {
     this.vendorId = value;
-    // Add any additional logic you want to perform when the vendor selection changes
   }
 
   getLocationsWithHierarchy() {
@@ -110,16 +108,13 @@ export class VendorDashBoardComponent implements OnInit {
   }
 
   setLocation(locid: any) {
-    // Specify the type of locid
     this.locationId = locid;
-    console.log(locid);
   }
 
   generateHierarchy(locList: any[]) {
-    // Explicitly define the type of items
     var items: any[] = [];
     locList.forEach((loc) => {
-      var children: any[] = []; // Also define children type if needed
+      var children: any[] = []; 
       if (
         loc.parentLocationResourceList &&
         loc.parentLocationResourceList.length > 0
@@ -146,20 +141,11 @@ export class VendorDashBoardComponent implements OnInit {
     };
     this.spinner.show();
     this.companyManagementService.getAllVendorRepairs(request).subscribe(
-      // Changed method name
       (response) => {
         this.spinner.hide();
-        console.log(response);
         this.vendorRepairs = response;
         this.companies = Object.keys(this.vendorRepairs);
         this.index = 1;
-        // this.companies = this.companyList.map(companyStr => {
-        //   // Extracting the name from each string using regular expressions
-        //   const match = companyStr.match(/name=(.*?)(?=\))/);
-        //   // Check if a match is found and return the name without quotes
-        //   return match ? match[1].replace(/['"]+/g, '') : '';
-        // });
-        console.log(this.companies);
       },
       (error) => {
         this.spinner.hide();
@@ -220,7 +206,6 @@ export class VendorDashBoardComponent implements OnInit {
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
       var wnd = window.open('about:blank');
       if (wnd) {
-        // Check if wnd is not null
         var pdfStr = `<div style="text-align:center">
         <h4>Document Viewer</h4>
         <iframe src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
@@ -262,34 +247,4 @@ export class VendorDashBoardComponent implements OnInit {
   exportAsExcelFileWithMultipleSheets(): void {
     this.excelService.exportToExcel(this.vendorRepairs, 'exported_data');
   }
-
-  //   exportAsExcelFileWithMultipleSheets()
-  //   {
-  // this.companies.forEach(companyName =>
-  //   {
-  // let results=this.vendorRepairs[companyName];
-  // this.exportAsExcelFileForAcompany(results,companyName);
-  //   });
-  //  }
-
-  //   exportAsExcelFileForAcompany(results,companyName) {
-  //     const clonedsearchResults = cloneDeep(results);
-  //     Object.keys(clonedsearchResults).forEach(itemType => {
-  //       const result = clonedsearchResults[itemType];
-  //       result.forEach((obj: any) => {
-  //         const robj = {};
-  //         if(obj.attributeValues.length > 0){
-  //         obj.attributeValues.forEach((atr: any) => {
-  //           robj[atr.name] = atr.value;
-  //         });
-  //       }
-
-  //         delete obj.attachmentList;
-
-  //         obj = Object.assign(obj, robj);
-  //       });
-
-  //     });
-  //     this.excelService.exportAsExcelFileWithMultipleSheets(clonedsearchResults, companyName +' '+'MasterSearchResults');
-  //   }
 }

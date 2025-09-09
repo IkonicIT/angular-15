@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { CompanyManagementService } from '../../services/company-management.service';
 import { CompanyDocumentsService } from '../../services/company-documents.service';
-import * as Rx from 'rxjs';
 import { saveAs } from 'file-saver';
 import { Chart } from 'chart.js';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -21,10 +19,14 @@ export class DashboardComponent implements OnInit {
   order: string = 'description';
   reverse: string = '';
   globalCompanyDocumentFilter: any = '';
-  itemsForPagination: any = 5;
+  itemsForPagination: number = 5;
   chart: any;
-  public currentRole: any;
-  public highestRank: any;
+  public currentRole: string = '';
+  public highestRank: string = '';
+  globalCompany: any;
+  documents: any[] = [];
+  companyId: any;
+  radioModel: string = 'Month';
 
   public res = {
     message: '',
@@ -88,306 +90,140 @@ export class DashboardComponent implements OnInit {
     ],
   };
 
-  public lineChart1Data: Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Series A',
-    },
+  public lineChart1Data = [
+    { data: [65, 59, 84, 84, 51, 55, 40], label: 'Series A' },
   ];
-  public lineChart1Labels: Array<any> = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
+  public lineChart1Labels = [
+    'January', 'February', 'March', 'April', 'May', 'June', 'July'
   ];
   public lineChart1Options: any = {
     maintainAspectRatio: false,
     scales: {
       xAxes: [
         {
-          gridLines: {
-            color: 'transparent',
-            zeroLineColor: 'transparent',
-          },
-          ticks: {
-            fontSize: 2,
-            fontColor: 'transparent',
-          },
+          gridLines: { color: 'transparent', zeroLineColor: 'transparent' },
+          ticks: { fontSize: 2, fontColor: 'transparent' },
         },
       ],
       yAxes: [
         {
           display: false,
-          ticks: {
-            display: false,
-            min: 40 - 5,
-            max: 84 + 5,
-          },
+          ticks: { display: false, min: 35, max: 89 },
         },
       ],
     },
     elements: {
-      line: {
-        borderWidth: 1,
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
+      line: { borderWidth: 1 },
+      point: { radius: 4, hitRadius: 10, hoverRadius: 4 },
     },
-    legend: {
-      display: false,
-    },
+    legend: { display: false },
   };
-  public lineChart1Colours: Array<any> = [
-    {
-      // grey
-      backgroundColor: this.brandPrimary,
-      borderColor: 'rgba(255,255,255,.55)',
-    },
+  public lineChart1Colours = [
+    { backgroundColor: this.brandPrimary, borderColor: 'rgba(255,255,255,.55)' },
   ];
   public lineChart1Legend = false;
   public lineChart1Type = 'line';
 
-  // lineChart2
-  public lineChart2Data: Array<any> = [
-    {
-      data: [1, 18, 9, 17, 34, 22, 11],
-      label: 'Series A',
-    },
+  public lineChart2Data = [
+    { data: [1, 18, 9, 17, 34, 22, 11], label: 'Series A' },
   ];
-  public lineChart2Labels: Array<any> = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
+  public lineChart2Labels = [
+    'January', 'February', 'March', 'April', 'May', 'June', 'July'
   ];
   public lineChart2Options: any = {
     maintainAspectRatio: false,
     scales: {
       xAxes: [
         {
-          gridLines: {
-            color: 'transparent',
-            zeroLineColor: 'transparent',
-          },
-          ticks: {
-            fontSize: 2,
-            fontColor: 'transparent',
-          },
+          gridLines: { color: 'transparent', zeroLineColor: 'transparent' },
+          ticks: { fontSize: 2, fontColor: 'transparent' },
         },
       ],
       yAxes: [
         {
           display: false,
-          ticks: {
-            display: false,
-            min: 1 - 5,
-            max: 34 + 5,
-          },
+          ticks: { display: false, min: -4, max: 39 },
         },
       ],
     },
     elements: {
-      line: {
-        tension: 0.00001,
-        borderWidth: 1,
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
+      line: { tension: 0.00001, borderWidth: 1 },
+      point: { radius: 4, hitRadius: 10, hoverRadius: 4 },
     },
-    legend: {
-      display: false,
-    },
+    legend: { display: false },
   };
-  public lineChart2Colours: Array<any> = [
-    {
-      // grey
-      backgroundColor: this.brandInfo,
-      borderColor: 'rgba(255,255,255,.55)',
-    },
+  public lineChart2Colours = [
+    { backgroundColor: this.brandInfo, borderColor: 'rgba(255,255,255,.55)' },
   ];
   public lineChart2Legend = false;
   public lineChart2Type = 'line';
 
-  // lineChart3
-  public lineChart3Data: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40],
-      label: 'Series A',
-    },
+  public lineChart3Data = [
+    { data: [78, 81, 80, 45, 34, 12, 40], label: 'Series A' },
   ];
-  public lineChart3Labels: Array<any> = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
+  public lineChart3Labels = [
+    'January', 'February', 'March', 'April', 'May', 'June', 'July'
   ];
   public lineChart3Options: any = {
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
-        {
-          display: false,
-        },
-      ],
-      yAxes: [
-        {
-          display: false,
-        },
-      ],
+      xAxes: [{ display: false }],
+      yAxes: [{ display: false }],
     },
     elements: {
-      line: {
-        borderWidth: 2,
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
+      line: { borderWidth: 2 },
+      point: { radius: 0, hitRadius: 10, hoverRadius: 4 },
     },
-    legend: {
-      display: false,
-    },
+    legend: { display: false },
   };
-  public lineChart3Colours: Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.2)',
-      borderColor: 'rgba(255,255,255,.55)',
-    },
+  public lineChart3Colours = [
+    { backgroundColor: 'rgba(255,255,255,.2)', borderColor: 'rgba(255,255,255,.55)' },
   ];
   public lineChart3Legend = false;
   public lineChart3Type = 'line';
 
-  // barChart1
-  public barChart1Data: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40, 78, 81, 80, 45, 34, 12, 40, 12, 40],
-      label: 'Series A',
-    },
+  public barChart1Data = [
+    { data: [78, 81, 80, 45, 34, 12, 40, 78, 81, 80, 45, 34, 12, 40, 12, 40], label: 'Series A' },
   ];
-  public barChart1Labels: Array<any> = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
+  public barChart1Labels = [
+    '1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'
   ];
   public barChart1Options: any = {
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
-        {
-          display: false,
-          barPercentage: 0.6,
-        },
-      ],
-      yAxes: [
-        {
-          display: false,
-        },
-      ],
+      xAxes: [{ display: false, barPercentage: 0.6 }],
+      yAxes: [{ display: false }],
     },
-    legend: {
-      display: false,
-    },
+    legend: { display: false },
   };
-  public barChart1Colours: Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.3)',
-      borderWidth: 0,
-    },
+  public barChart1Colours = [
+    { backgroundColor: 'rgba(255,255,255,.3)', borderWidth: 0 },
   ];
   public barChart1Legend = false;
   public barChart1Type = 'bar';
 
-  // mainChart
-
   public mainChartElements = 27;
-  public mainChartData1: Array<number> = [];
-  public mainChartData2: Array<number> = [];
-  public mainChartData3: Array<number> = [];
-
-  public mainChartData: Array<any> = [
-    {
-      data: this.mainChartData1,
-      label: 'Current',
-    },
-    {
-      data: this.mainChartData2,
-      label: 'Previous',
-    },
-    {
-      data: this.mainChartData3,
-      label: 'BEP',
-    },
+  public mainChartData1: number[] = [];
+  public mainChartData2: number[] = [];
+  public mainChartData3: number[] = [];
+  public mainChartData = [
+    { data: this.mainChartData1, label: 'Current' },
+    { data: this.mainChartData2, label: 'Previous' },
+    { data: this.mainChartData3, label: 'BEP' },
   ];
-  /* tslint:disable:max-line-length */
-  public mainChartLabels: Array<any> = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-    'Monday',
-    'Thursday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+  public mainChartLabels = [
+    'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday',
+    'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday',
+    'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday',
+    'Monday','Thursday','Wednesday','Thursday','Friday','Saturday','Sunday',
   ];
-  /* tslint:enable:max-line-length */
   public mainChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
       xAxes: [
         {
-          gridLines: {
-            drawOnChartArea: false,
-          },
+          gridLines: { drawOnChartArea: false },
           ticks: {
             callback: function (value: any) {
               return value.charAt(0);
@@ -407,35 +243,23 @@ export class DashboardComponent implements OnInit {
       ],
     },
     elements: {
-      line: {
-        borderWidth: 2,
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      },
+      line: { borderWidth: 2 },
+      point: { radius: 0, hitRadius: 10, hoverRadius: 4, hoverBorderWidth: 3 },
     },
-    legend: {
-      display: false,
-    },
+    legend: { display: false },
   };
-  public mainChartColours: Array<any> = [
+  public mainChartColours = [
     {
-      // brandInfo
       backgroundColor: this.convertHex(this.brandInfo, 10),
       borderColor: this.brandInfo,
       pointHoverBackgroundColor: '#fff',
     },
     {
-      // brandSuccess
       backgroundColor: 'transparent',
       borderColor: this.brandSuccess,
       pointHoverBackgroundColor: '#fff',
     },
     {
-      // brandDanger
       backgroundColor: 'transparent',
       borderColor: this.brandDanger,
       pointHoverBackgroundColor: '#fff',
@@ -446,73 +270,35 @@ export class DashboardComponent implements OnInit {
   public mainChartLegend = false;
   public mainChartType = 'line';
 
-  // social box charts
-
-  public socialChartData1: Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Facebook',
-    },
+  public socialChartData1 = [
+    { data: [65, 59, 84, 84, 51, 55, 40], label: 'Facebook' },
   ];
-  public socialChartData2: Array<any> = [
-    {
-      data: [1, 13, 9, 17, 34, 41, 38],
-      label: 'Twitter',
-    },
+  public socialChartData2 = [
+    { data: [1, 13, 9, 17, 34, 41, 38], label: 'Twitter' },
   ];
-  public socialChartData3: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40],
-      label: 'LinkedIn',
-    },
+  public socialChartData3 = [
+    { data: [78, 81, 80, 45, 34, 12, 40], label: 'LinkedIn' },
   ];
-  public socialChartData4: Array<any> = [
-    {
-      data: [35, 23, 56, 22, 97, 23, 64],
-      label: 'Google+',
-    },
+  public socialChartData4 = [
+    { data: [35, 23, 56, 22, 97, 23, 64], label: 'Google+' },
   ];
-
-  public socialChartLabels: Array<any> = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
+  public socialChartLabels = [
+    'January','February','March','April','May','June','July'
   ];
   public socialChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
-        {
-          display: false,
-        },
-      ],
-      yAxes: [
-        {
-          display: false,
-        },
-      ],
+      xAxes: [{ display: false }],
+      yAxes: [{ display: false }],
     },
     elements: {
-      line: {
-        borderWidth: 2,
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      },
+      line: { borderWidth: 2 },
+      point: { radius: 0, hitRadius: 10, hoverRadius: 4, hoverBorderWidth: 3 },
     },
-    legend: {
-      display: false,
-    },
+    legend: { display: false },
   };
-  public socialChartColours: Array<any> = [
+  public socialChartColours = [
     {
       backgroundColor: 'rgba(255,255,255,.1)',
       borderColor: 'rgba(255,255,255,.55)',
@@ -522,141 +308,61 @@ export class DashboardComponent implements OnInit {
   public socialChartLegend = false;
   public socialChartType = 'line';
 
-  // sparkline charts
-
-  public sparklineChartData1: Array<any> = [
-    {
-      data: [35, 23, 56, 22, 97, 23, 64],
-      label: 'Clients',
-    },
+  public sparklineChartData1 = [
+    { data: [35, 23, 56, 22, 97, 23, 64], label: 'Clients' },
   ];
-  public sparklineChartData2: Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Clients',
-    },
+  public sparklineChartData2 = [
+    { data: [65, 59, 84, 84, 51, 55, 40], label: 'Clients' },
   ];
-
-  public sparklineChartLabels: Array<any> = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
+  public sparklineChartLabels = [
+    'January','February','March','April','May','June','July'
   ];
   public sparklineChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
-        {
-          display: false,
-        },
-      ],
-      yAxes: [
-        {
-          display: false,
-        },
-      ],
+      xAxes: [{ display: false }],
+      yAxes: [{ display: false }],
     },
     elements: {
-      line: {
-        borderWidth: 2,
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      },
+      line: { borderWidth: 2 },
+      point: { radius: 0, hitRadius: 10, hoverRadius: 4, hoverBorderWidth: 3 },
     },
-    legend: {
-      display: false,
-    },
+    legend: { display: false },
   };
-  public sparklineChartDefault: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: '#d1d4d7',
-    },
+  public sparklineChartDefault = [
+    { backgroundColor: 'transparent', borderColor: '#d1d4d7' },
   ];
-  public sparklineChartPrimary: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandPrimary,
-    },
+  public sparklineChartPrimary = [
+    { backgroundColor: 'transparent', borderColor: this.brandPrimary },
   ];
-  public sparklineChartInfo: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandInfo,
-    },
+  public sparklineChartInfo = [
+    { backgroundColor: 'transparent', borderColor: this.brandInfo },
   ];
-  public sparklineChartDanger: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandDanger,
-    },
+  public sparklineChartDanger = [
+    { backgroundColor: 'transparent', borderColor: this.brandDanger },
   ];
-  public sparklineChartWarning: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandWarning,
-    },
+  public sparklineChartWarning = [
+    { backgroundColor: 'transparent', borderColor: this.brandWarning },
   ];
-  public sparklineChartSuccess: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandSuccess,
-    },
+  public sparklineChartSuccess = [
+    { backgroundColor: 'transparent', borderColor: this.brandSuccess },
   ];
-
   public sparklineChartLegend = false;
   public sparklineChartType = 'line';
 
-  // events
-  public chartClicked(e: any): void {
-    console.log(e);
-  }
-
-  public chartHovered(e: any): void {
-    console.log(e);
-  }
-
-  // convert Hex to RGBA
-  public convertHex(hex: string, opacity: number) {
-    hex = hex.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-
-    const rgba = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity / 100 + ')';
-    return rgba;
-  }
-
-  public random(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  globalCompany: any;
-  documents: any = [];
-  companyId: any;
-
-  public constructor(
+  constructor(
     private companyManagementService: CompanyManagementService,
     private companyDocumentsService: CompanyDocumentsService,
     private spinner: NgxSpinnerService
   ) {
-    this.currentRole = sessionStorage.getItem('currentRole');
-    this.highestRank = sessionStorage.getItem('highestRank');
+    this.currentRole = sessionStorage.getItem('currentRole') ?? '';
+    this.highestRank = sessionStorage.getItem('highestRank') ?? '';
     if (isUndefined(this.currentRole)) {
       this.currentRole = 'Disabled';
     }
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
-      console.log('inside dashboard');
       this.globalCompany = value;
       if (this.globalCompany) {
         this.companyId = this.globalCompany.companyId;
@@ -666,7 +372,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // generate random values for mainChart
     for (let i = 0; i <= this.mainChartElements; i++) {
       this.mainChartData1.push(this.random(50, 200));
       this.mainChartData2.push(this.random(80, 100));
@@ -676,7 +381,7 @@ export class DashboardComponent implements OnInit {
     let temp_min = this.res['list'].map((res) => res.main.temp_min);
     let alldates = this.res['list'].map((res) => res.dt);
 
-    let weatherDates: any = [];
+    let weatherDates: any[] = [];
     alldates.forEach((res) => {
       let jsdate = new Date(res * 1000);
       weatherDates.push(
@@ -706,17 +411,11 @@ export class DashboardComponent implements OnInit {
       },
       options: {
         plugins: {
-          legend: {
-            display: false,
-          },
+          legend: { display: false },
         },
         scales: {
-          xAxes: {
-            display: true,
-          },
-          yAxes: {
-            display: true,
-          },
+          xAxes: { display: true },
+          yAxes: { display: true },
         },
       },
     });
@@ -726,29 +425,40 @@ export class DashboardComponent implements OnInit {
     this.companyDocumentsService
       .getAllCompanyDocuments(companyId)
       .subscribe((response) => {
-        console.log(response);
-        this.documents = response;
+        this.documents = Array.isArray(response) ? response : [];
       });
   }
 
   downloadFile(companyDocument: any) {
-    var blob = this.companyDocumentsService.b64toBlob(
+    const blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
       companyDocument.contentType
     );
     saveAs(blob, companyDocument.fileName);
   }
 
-  radioModel: string = 'Month';
-
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
+  }
+
+  public chartClicked(e: any): void {
+  }
+
+  public chartHovered(e: any): void {
+  }
+
+  public convertHex(hex: string, opacity: number) {
+    hex = hex.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
+  }
+
+  public random(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 }

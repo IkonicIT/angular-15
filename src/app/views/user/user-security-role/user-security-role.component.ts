@@ -73,7 +73,6 @@ export class UserSecurityRoleComponent implements OnInit {
     this.isOwnerAdminReadOnly = sessionStorage.getItem('IsOwnerAdminReadOnly');
     this.getAllRoles();
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    console.log('user profile', this.profileId);
     this.getReportSecurity();
     this.getProfile();
     this.userName = this.broadcasterService.userName;
@@ -85,8 +84,8 @@ export class UserSecurityRoleComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is', this.currentRole);
-    console.log('highestRank is', this.highestRank);
+    
+    
   }
 
   getAllCompanies(): void {

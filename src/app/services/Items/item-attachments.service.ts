@@ -270,7 +270,6 @@ export class ItemAttachmentsService {
         canvas = document.createElement('canvas'),
         ctx: any = canvas.getContext('2d');
 
-      // set proper canvas dimensions before transform & export
       if (4 < srcOrientation && srcOrientation < 9) {
         canvas.width = height;
         canvas.height = width;
@@ -279,7 +278,6 @@ export class ItemAttachmentsService {
         canvas.height = height;
       }
 
-      // transform context before drawing image
       switch (srcOrientation) {
         case 2:
           ctx.transform(-1, 0, 0, 1, width, 0);
@@ -306,10 +304,8 @@ export class ItemAttachmentsService {
           break;
       }
 
-      // draw image
       ctx.drawImage(img, 0, 0);
 
-      // export base64
       callback(canvas.toDataURL());
     };
   }

@@ -4,7 +4,6 @@ import { PartsRoutingModule } from './parts-routing.module';
 import { FormsModule } from '@angular/forms';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-// import { AlertModule, BsDatepickerModule } from 'ngx-bootstrap';
 import { TreeviewModule } from 'ngx-treeview';
 import { DropdownTreeviewModule } from '../dropdown-treeview-select/dropdown-treeview.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';

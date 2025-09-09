@@ -12,25 +12,26 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class AddLocationAttachmentComponent implements OnInit {
   model: any = {};
   index: number = 0;
-  date = Date.now();
+  date: number = Date.now();
   companyId: number = 0;
-  companyName: string;
-  userName: any;
-  private sub: any;
-  id: number;
-  router: Router;
-  private fileContent: string = '';
-  private fileName: any;
-  public fileType: any = '';
+  companyName: string = '';
+  userName: string | null = null;
+
+  fileContent: string = '';
+  fileName: string = '';
+  fileType: string = '';
+  file: File | null = null;
+
   globalCompany: any;
-  locationId: any;
-  file: File;
-  dismissible = true;
-  loader = false;
+  locationId: string = '';
+
+  dismissible: boolean = true;
+  loader: boolean = false;
+
   constructor(
     private locationAttachmentsService: LocationAttachmentsService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
@@ -39,93 +40,76 @@ export class AddLocationAttachmentComponent implements OnInit {
       this.companyName = value.name;
       this.companyId = value.companyId;
     });
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
       this.companyName = this.globalCompany.name;
     }
-    this.locationId = route.snapshot.params['id'];
-    console.log('compaanyid=' + this.companyId);
-    this.router = router;
+
+    this.locationId = this.route.snapshot.params['id'] ?? '';
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
-    console.log('companyi=' + this.companyId);
   }
 
-  saveLocationDocument() {
+  saveLocationDocument(): void {
     if (!this.fileName) {
       this.index = -1;
       window.scroll(0, 0);
-    } else {
-      let req = {
-        addedBy: 'Yogi Patel',
-        attachmentFile: this.fileContent,
-        attachmentId: 0,
-        contentType: this.fileType,
-        dateAdded: new Date().toISOString(),
-        description: this.model.description,
-        entityId: this.locationId,
-        entitytypeId: 0,
-        fileName: this.fileName,
-        companyId: this.companyId,
-        moduleType: 'locationtype',
-      };
-      const formdata: FormData = new FormData();
+      return;
+    }
+
+    const formdata: FormData = new FormData();
+    if (this.file) {
       formdata.append('file', this.file);
-      formdata.append('addedBy', this.userName);
-      formdata.append('companyId', JSON.stringify(this.companyId));
-      formdata.append(
-        'description',
-        this.model.description ? this.model.description : ''
-      );
-      formdata.append('entityId', this.locationId);
-      formdata.append('moduleType', 'locationtype');
+    }
+    formdata.append('addedBy', this.userName ?? '');
+    formdata.append('companyId', JSON.stringify(this.companyId));
+    formdata.append('description', this.model.description ?? '');
+    formdata.append('entityId', this.locationId);
+    formdata.append('moduleType', 'locationtype');
 
-      console.log(req);
-      this.spinner.show();
+    this.spinner.show();
+    this.locationAttachmentsService.saveLocationDocument(formdata).subscribe(
+      () => {
+        this.spinner.hide();
+        window.scroll(0, 0);
+        this.index = 1;
+        setTimeout(() => {
+          this.index = 0;
+        }, 7000);
+        this.router.navigate([`/location/attachments/${this.locationId}`]);
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
+  }
 
-      this.locationAttachmentsService.saveLocationDocument(formdata).subscribe(
-        (response) => {
-          this.spinner.hide();
+  cancelLocationDocument(): void {
+    this.router.navigate([`/location/attachments/${this.locationId}`]);
+  }
 
-          window.scroll(0, 0);
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-          this.router.navigate(['/location/attachments/' + this.locationId]);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+  fileChangeListener(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input?.files && input.files.length > 0) {
+      this.readThis(input.files[0]);
     }
   }
 
-  cancelLocationDocument() {
-    this.router.navigate(['/location/attachments/' + this.locationId]);
-  }
+  private readThis(file: File): void {
+    this.file = file;
+    this.fileName = file.name;
 
-  fileChangeListener($event: { target: any }): void {
-    this.readThis($event.target);
-  }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
 
-  readThis(inputValue: any): void {
-    this.file = inputValue.files[0];
-    this.fileName = this.file.name;
-
-    var myReader: any = new FileReader();
-    myReader.readAsDataURL(this.file);
-    let self = this;
-    myReader.onloadend = function (e: any) {
-      console.log(myReader.result);
-      self.fileContent = myReader.result?.split(',')[1];
-      self.fileType = myReader.result
-        ?.split(',')[0]
-        .split(':')[1]
-        .split(';')[0];
+    reader.onloadend = () => {
+      const result = reader.result as string;
+      this.fileContent = result?.split(',')[1] ?? '';
+      this.fileType = result?.split(',')[0]?.split(':')[1]?.split(';')[0] ?? '';
     };
   }
 }

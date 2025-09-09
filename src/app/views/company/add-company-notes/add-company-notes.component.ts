@@ -34,7 +34,9 @@ export class AddCompanyNotesComponent implements OnInit, OnDestroy {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
+
     });
+
 
     this.model.effectiveOn = new Date();
   }
@@ -64,6 +66,7 @@ export class AddCompanyNotesComponent implements OnInit, OnDestroy {
         trackingNumber: '',
         moduleType: 'companytype',
       };
+
       this.spinner.show();
 
       this.companynotesService.saveCompanynotes(payload).subscribe(

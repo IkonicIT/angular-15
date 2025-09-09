@@ -13,7 +13,7 @@ export class AddVendorComponent implements OnInit {
   model: any = {};
   index: number = 0;
   statuses: any[] = [];
-  dismissible: boolean = true; // Add this line
+  dismissible: boolean = true; 
   globalCompany: any;
   companyName: any;
   router: Router;
@@ -89,7 +89,6 @@ export class AddVendorComponent implements OnInit {
     var self = this;
     myReader.onloadend = function (e) {
       if (myReader.result) {
-        console.log(myReader.result);
         self.model.companyimage =
           typeof myReader.result === 'string'
             ? myReader.result.split(',')[1]

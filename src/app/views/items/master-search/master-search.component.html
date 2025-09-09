@@ -176,68 +176,6 @@
             </div>
           </ng-container>
 
-          <!-- <div class="card">
-              <div class="type-header">
-                <strong>{{item.name}}</strong>
-
-              </div>
-            </div> -->
-
-          <!-- <div class="card">
-                <div class="type-header">
-                  <strong>{{value.itemType}}</strong>
-                </div>
-              </div> -->
-          <!--             
-                  <div class="table-responsive">
-                    <table class="table">
-                      <ng-container *ngFor="let item of results | paginate: { itemsPerPage: itemsForPagination, currentPage: p }">
-                        <tr>
-                          <th>
-                           Customer: {{item.name}}
-                          </th>
-                        </tr>
-                      <ng-container *ngFor="let value of item.values">
-                        <tr>
-                          <th>
-                            {{value.itemType}}
-                          </th>
-                        </tr>
-                      <thead class="thead-light">
-                        <tr>
-                          <th [class.active]="order === 'name'" (click)="setOrder('name')">Tag #<span
-                              [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                          <th [class.active]="order === 'phone'" (click)="setOrder('phone')">Location<span
-                              [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                          <th [class.active]="order === 'state'" (click)="setOrder('state')">Status<span
-                              [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                          <ng-container *ngIf="value.items[0] &&value.items[0].attributeNameList"> 
-                            <th *ngFor="let attr of value.items[0].attributeNameList">{{attr.name}}
-                            </th>
-                          </ng-container>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr
-                          *ngFor="let result of value.items">
-                          <td><a href="javascript:void(0)"
-                            (click)="goToView(result.itemid,result.itemRank,result.tag,result.typeName,result.companyId)">{{result.tag}}</a></td>
-                          <td>{{result.locationName}}</td>
-                          <td>{{result.statusname}}</td>
-                          <ng-container *ngIf="result && result.attributeNameList">
-                            <td *ngFor="let attr of result.attributeNameList ">{{attr.value}}</td>
-                          </ng-container>
-                        </tr>
-                      </tbody>
-                    </ng-container>
-                    </ng-container>
-                    </table>
-                    <pagination-controls class="my-pagination" (pageChange)="p = $event" autoHide="true">
-                    </pagination-controls>
-                   
-                  </div>
-            -->
-
           <div *ngIf="flag == 0">
             <strong>Search Results:</strong>
           </div>
@@ -259,11 +197,6 @@
             Export to Excel
           </button>
           <div *ngFor="let companyName of searchResultKeys; let s = index">
-            <!-- <tr>
-                <th>
-                 Customer: {{companyName}}
-                </th>
-              </tr> -->
             <div class="card">
               <div class="type-header">
                 <strong>{{ companyName }}</strong>
@@ -369,64 +302,12 @@
                 >
                 </pagination-controls>
 
-                <!-- <pagination-controls class="my-pagination" id="page{{t}}" (pageChange)="dynLst[t].p = $event"></pagination-controls> -->
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- <div *ngFor="let itemType of searchResultKeys ;let t=index" style="margin-bottom: 0.3rem">
-            <button type="button" *ngIf="flag==0"  (click)="exportAsExcelFileWithMultipleSheets()" class="btn btn-primary">Export to Excel</button>
-            <div class="card">
-              <div class="type-header">
-                <strong>{{itemType}}</strong>
-              </div>
-            </div>
-              <div class="float-left">
-                  <span>Show
-                  <select [(ngModel)]="dynLst[t].itemsForPagination">
-                      <option>5</option>
-                      <option>10</option>
-                      <option>25</option>
-                      <option>50</option>
-                  </select>  entries
-                  </span>
-              </div>
-           
-            <div class="table-responsive">
-              <table *ngIf="searchResults[itemType] && searchResults[itemType].length>0" class="table">
-                <thead class="thead-light">
-                  <tr>
-                    <th [class.active]="order === 'name'" (click)="setOrder('name')">Tag #<span
-                        [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                    <th [class.active]="order === 'phone'" (click)="setOrder('phone')">Location<span
-                        [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                    <th [class.active]="order === 'state'" (click)="setOrder('state')">Status<span
-                        [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                    <ng-container *ngIf="searchResults[itemType][0] && searchResults[itemType][0].attributeNameList">
-                      <th *ngFor="let attr of searchResults[itemType][0].attributeNameList | slice:0:attributesSearchDisplay[itemType]">{{attr.name}}
-                      </th>
-                    </ng-container>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    *ngFor="let result of searchResults[itemType] | paginate: { itemsPerPage: dynLst[t].itemsForPagination, currentPage: dynLst[t].p,id:'page'+t }">
-                    <td><a href="javascript:void(0)"
-                      (click)="goToView(result.itemid,result.itemRank,result.tag,result.typeName)">{{result.tag}}</a></td>
-                    <td>{{result.locationName}}</td>
-                    <td>{{result.statusname}}</td>
-                    <ng-container *ngIf="result && result.attributeNameList">
-                      <td *ngFor="let attr of result.attributeNameList | slice:0:attributesSearchDisplay[itemType] ">{{attr.value}}</td>
-                    </ng-container>
-                  </tr>
-                </tbody>
-              </table>
-              <pagination-controls class="my-pagination" id="page{{t}}" (pageChange)="dynLst[t].p = $event"></pagination-controls>
-            </div>
-            
-          </div> -->
     </div>
   </div>
 </div>
@@ -488,7 +369,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

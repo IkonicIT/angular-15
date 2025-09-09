@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CompanymanagementComponent implements OnInit {
   modalRef: any;
-  modalRef2: BsModalRef | null = null;   // nullable, prevents strict errors
+  modalRef2: BsModalRef | null = null;   
   message: string = '';
   companies: Company[] = [];
   index: any;
@@ -21,8 +21,8 @@ export class CompanymanagementComponent implements OnInit {
   reverse: string = '';
   companyFilter: string = '';
   itemsForPagination: number = 5;
-  currentRole: string | null = null;     // sessionStorage returns string | null
-  highestRank: string | null = null;     // keep same functionality
+  currentRole: string | null = null;   
+  highestRank: string | null = null;     
   router: Router;
   helpFlag: boolean = false;
   p: number = 1;

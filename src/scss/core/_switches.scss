@@ -75,7 +75,6 @@
     }
   }
   .switch-input:checked ~ .switch-label {
-    //background: $gray-lightest;
   }
   .switch-input:checked ~ .switch-label::before {
     opacity: 0;
@@ -108,7 +107,6 @@
     @extend .switch-pill;
   }
 
-  //size variations
   @if $type == default {
     &.switch-lg {
       @include switch-size(
@@ -338,7 +336,6 @@ $switch-icon-xs-font-size: 7px;
   @include switch("ddd", $switch-width, $switch-height, $switch-font-size, 0);
 }
 
-//pills style
 .switch-pill {
   .switch-label,
   .switch-handle {
@@ -354,15 +351,13 @@ $switch-icon-xs-font-size: 7px;
 }
 
 @each $color, $value in $theme-colors {
-  //normal style
+
   .switch-#{"" + $color} {
     @include switch-variant($value);
   }
-  //outline style
   .switch-#{"" + $color}-outline {
     @include switch-outline-variant($value);
   }
-  //outline alternative style
   .switch-#{"" + $color}-outline-alt {
     @include switch-outline-alt-variant($value);
   }

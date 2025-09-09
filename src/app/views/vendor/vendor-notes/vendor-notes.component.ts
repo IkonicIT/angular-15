@@ -170,8 +170,7 @@ export class VendorNotesComponent implements OnInit {
   }
 
   goToAttachments(vendorNoteId: string) {
-    // Update this line
-    console.log('attachement:', vendorNoteId);
+    
     this.router.navigate(['vendor/note/documents/' + vendorNoteId], {
       queryParams: { q: this.vendorId },
     });
@@ -186,7 +185,6 @@ export class VendorNotesComponent implements OnInit {
       this.model.updatedBy = this.userName;
       const parsedDate = new Date(this.model.createdDate);
     
-    // Format it into the desired format
       this.model.createdDate = this.datePipe.transform(parsedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
       this.companynotesService.updateVenodrNotes(this.model).subscribe(
         (response: any) => {

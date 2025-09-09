@@ -54,7 +54,6 @@ export class EditCranesComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
           window.scrollTo({ top: 0, behavior: 'smooth' });
           this.spinner.hide();
-
           setTimeout(() => {
             this.successMessage = '';
             this.cdr.detectChanges();

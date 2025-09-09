@@ -93,8 +93,8 @@ export class AddNoteAttachmentComponent implements OnInit {
       for (let i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-
       const req = {
+
         attachmentResourceList: jsonArr,
         attachmentUserLogDTO: {
           noteType: 'companynoteattachment',
@@ -153,7 +153,6 @@ export class AddNoteAttachmentComponent implements OnInit {
 
       const myReader = new FileReader();
       myReader.readAsDataURL(this.file);
-
       myReader.onloadend = () => {
         if (typeof myReader.result === 'string') {
           this.fileContent = myReader.result.split(',')[1];
@@ -175,6 +174,7 @@ export class AddNoteAttachmentComponent implements OnInit {
           fileInfo['fileName'] = this.fileName;
 
         }
+
       };
     }
   }

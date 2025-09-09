@@ -133,7 +133,7 @@
                         title="Delete this Template"
                         (click)="openModal(confirmtemplate, templateId)"
                         class="btn btn-primary"
-                        [disabled]="highestRank == 9"
+                        [disabled]="highestRank === '9'"
                         style="border-radius: 6px;"
                       >
                         Delete Template
@@ -307,7 +307,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

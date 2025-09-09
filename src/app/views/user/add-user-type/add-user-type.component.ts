@@ -91,7 +91,6 @@ export class AddUserTypeComponent implements OnInit {
 
   onValueChange(value: number): void {
     this.value = value;
-    console.log(value);
   }
 
   saveUserType(): void {

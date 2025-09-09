@@ -1,4 +1,4 @@
-// scss-lint:disable NestingDepth, SelectorDepth
+
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -25,8 +25,6 @@
     }
   }
 
-  // Will be added soon
-  // .sidebar-brand { }
 
   .sidebar-header {
     flex: 0 0 $sidebar-header-height;
@@ -179,7 +177,6 @@
     }
   }
 
-  //  ex. <a class="nav-link nav-dropdown-toggle" href="#">Components</a>
   .nav-dropdown-toggle {
     position: relative;
 
@@ -200,7 +197,6 @@
     }
   }
 
-  // ex.  <li class="nav-item nav-dropdown">
   .nav-dropdown.open {
     background: $sidebar-nav-dropdown-bg;
     @include borders($sidebar-nav-dropdown-borders);
@@ -338,7 +334,6 @@
     }
   }
 
-  // Minimized Sidebar
   .sidebar-minimized {
     .hidden-cn {
       display: none;
@@ -399,8 +394,6 @@
           display: block;
           float: left;
           width: $sidebar-minimized-height;
-          // padding: 0;
-          // margin: 0 !important;
           font-size: 18px;
         }
 

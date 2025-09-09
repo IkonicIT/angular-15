@@ -1,14 +1,3 @@
-/* .ng-select.disabled .ng-arrow-wrapper .ng-arrow {
-    display: none;
- }
- 
- .ng-select.disabled ng-dropdown-panel {
-   display: none;
- }
- 
- .ng-select.disabled .ng-clear-wrapper {
-  display: none;
- } */
 
 .margin-tag {
   margin-left: -10px;
@@ -20,8 +9,6 @@
 }
 
 .img-side-logo {
-  /* margin-right: 10px;  */
-  /* margin-top: -16px; */
   max-width: 160px;
 }
 
@@ -55,9 +42,6 @@ bs-tooltip-container {
     text-align: center;
   }
 
-  /* .margin-mobile{
-    margin-left: 30px;
-  } */
 
   .mobile-padding {
     padding: 0px;
@@ -79,16 +63,11 @@ bs-tooltip-container {
     margin-left: -17px;
   }
 
-  /* .margin-mobile{
-    margin-left: 90px;
-  } */
   .margin-new-top {
     margin-top: 5px;
   }
 
   .img-side-logo {
-    /* margin-right: 10px;  */
-    /* margin-top: -16px; */
     max-width: 180px;
   }
 
@@ -113,8 +92,6 @@ bs-tooltip-container {
   }
 
   .img-side-logo {
-    /* margin-right: 10px;  */
-    /* margin-top: -16px; */
     max-width: 180px;
   }
 
@@ -145,7 +122,6 @@ bs-tooltip-container {
 }
 
 .main {
-  /* margin-top: 55px; */
   flex: 1;
 }
 
@@ -154,7 +130,6 @@ bs-tooltip-container {
 }
 
 
-/* Add these styles for the dropdown */
 :host ::ng-deep .ngx-dropdown-container {
   width: auto !important;
   min-width: 200px;
@@ -171,8 +146,6 @@ bs-tooltip-container {
   width: auto !important;
   min-width: 100%;
 }
-
-/* Remove dropdown arrow */
 :host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button::after {
   display: none !important;
 }

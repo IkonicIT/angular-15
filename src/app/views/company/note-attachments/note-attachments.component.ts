@@ -179,7 +179,32 @@ export class NoteAttachmentsComponent implements OnInit {
       <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
         companyDocument.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
-      </div>`;
+        </div>
+        <script>
+          function reloadIFrame() {
+            var iframe = document.getElementById("iFrame");
+              console.log(iframe); //work control
+              console.log(iframe.contentDocument); //work control
+              if(iframe.contentDocument.URL == "about:blank"){
+                console.log("loaded");
+                iframe.src =  iframe.src;
+              }
+            }
+            var timerId = setInterval("reloadIFrame();", 1300);
+            setTimeout(() => {
+              clearInterval(timerId);
+              console.log("Finally Loaded");
+              }, 25000);
+  
+            $( document ).ready(function() {
+                $('#menuiFrame').on('load', function() {
+                    clearInterval(timerId);
+                    console.log("Finally Loaded"); //work control
+                });
+            });
+          </script>
+        `;
+
       if (wnd) wnd.document.write(pdfStr);
     } else if (['jpg', 'png', 'jpeg', 'gif'].includes(extension)) {
       const wnd = window.open('about:blank');

@@ -47,8 +47,8 @@ export class EditPartNoteComponent implements OnInit, OnDestroy {
       this.noteId = +params['a'] || this.noteId;
     });
     this.subscriptions.add(querySub);
-
     const noteSub = this.companynotesService
+
       .getVendorNotes(this.noteId)
       .subscribe({
         next: (response) => {

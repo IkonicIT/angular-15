@@ -13,7 +13,7 @@ export class EditVendorComponent implements OnInit {
   companyId: number;
   vendorId: number;
   model: any = {};
-  dismissible: boolean = true; // Add this line
+  dismissible: boolean = true; 
   index: number = 0;
   statuses: any[] = [];
   helpFlag: any = false;
@@ -52,7 +52,6 @@ export class EditVendorComponent implements OnInit {
       this.index = -1;
       window.scroll(0, 0);
     } else {
-      console.log(JSON.stringify(this.model));
       this.spinner.show();
       this.companyManagementService.updateVendor(this.model).subscribe(
         (response) => {

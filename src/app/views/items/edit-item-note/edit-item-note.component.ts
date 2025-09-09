@@ -50,8 +50,8 @@ export class EditItemNoteComponent implements OnInit {
   ngOnInit() {
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    
+    
   }
 
   updateItemNotes() {

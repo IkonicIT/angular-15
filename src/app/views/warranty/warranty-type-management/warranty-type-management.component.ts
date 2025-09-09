@@ -89,7 +89,6 @@ export class WarrantyTypeManagementComponent implements OnInit {
         next: (response: any) => {
           this.spinner.hide();
           this.warrantyTypes = response;
-
           const totalWarrantyTypesCount = this.warrantyTypes.length;
           const maxPageAvailable = Math.ceil(totalWarrantyTypesCount / this.itemsForPagination);
 

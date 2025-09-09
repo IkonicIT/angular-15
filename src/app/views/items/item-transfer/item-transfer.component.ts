@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { LocationManagementService } from '../../../services/location-management.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -16,7 +16,6 @@ import { Location } from '@angular/common';
 import { LocationStatusService } from '../../../services/location-status.service';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { TemplateRef, SecurityContext } from '@angular/core';
 
 @Component({
   selector: 'app-item-transfer',
@@ -24,63 +23,60 @@ import { TemplateRef, SecurityContext } from '@angular/core';
   styleUrls: ['./item-transfer.component.scss'],
 })
 export class ItemTransferComponent implements OnInit {
-  transfers: any = [];
+  transfers: any[] = [];
   model: any = {
-    vendorCompany: {
-      companyId: 0,
-    },
+    vendorCompany: { companyId: 0 },
+    effectiveDate: new Date(),
   };
   locationModel: any = {
     pLocationId: 0,
-    vendorCompany: {
-      companyId: 0,
-    },
+    vendorCompany: { companyId: 0 },
     locationTypeId: 0,
   };
   index: number = 0;
   locationIndex: number = 0;
-  itemTypes: any;
-  locationTypes: any;
+  itemTypes: any[] = [];
+  locationTypes: any[] = [];
   isDuplicateTag = false;
   p: any;
   order: any;
   transferFilter: any;
   itemsForPagination = 10;
   reverse: any;
-  statuses: any;
+  statuses: any[] = [];
   location: any;
   companyId: any;
   userName: any;
-  typeAttributes: any;
-  locations: any;
+  typeAttributes: any[] = [];
+  locations: any[] = [];
   dateNow: Date = new Date();
   locationId: any;
   globalCompany: any;
   companyName: any;
-  warrantyTypes: any;
+  warrantyTypes: any[] = [];
   itemId: any;
   item: any;
   tag: any;
   typeName: any;
   currentStatus: any;
   itemRank: any;
-  locationStatuses: any;
+  locationStatuses: any[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   addedLocationId: any = 0;
   locationValue: any;
-  locationItems: TreeviewItem[];
-  itemTypeItems: TreeviewItem[];
+  locationItems: TreeviewItem[] = [];
+  itemTypeItems: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  newLocationFlag: boolean;
-  existingLocationFlag: boolean;
+  newLocationFlag: boolean = false;
+  existingLocationFlag: boolean = false;
   addLocationFlag: any = 0;
   name: any;
-  helpFlag: any = false;
-  modalRef: BsModalRef;
-  message: string;
+  helpFlag: boolean = false;
+  modalRef!: BsModalRef;
+  message: string = '';
   transferLogId: any;
   highestRank: any;
   dismissible = true;
@@ -106,7 +102,6 @@ export class ItemTransferComponent implements OnInit {
     this.itemId = route.snapshot.params['itemId'];
     sessionStorage.setItem('transferItemId', this.itemId);
     this.model.effectiveDate = this.dateNow;
-    console.log('date' + this.model.effectiveDate);
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
       this.companyId = this.globalCompany.companyId;
@@ -121,14 +116,12 @@ export class ItemTransferComponent implements OnInit {
 
     this.spinner.show();
     this.getAllTransfers();
-
     this.getItem();
   }
 
   ngOnInit() {
     this.itemRank = this.broadcasterService.itemRank;
     this.highestRank = sessionStorage.getItem('highestRank');
-
     if (this.companyId) {
       this.getLocations();
       this.getprevLocations();
@@ -136,12 +129,10 @@ export class ItemTransferComponent implements OnInit {
   }
 
   getAllTransfers() {
-    this.itemManagementService
-      .getAllTransfers(this.itemId)
-      .subscribe((response) => {
-        this.transfers = response;
-        this.spinner.hide();
-      });
+    this.itemManagementService.getAllTransfers(this.itemId).subscribe((response) => {
+      this.transfers = Array.isArray(response) ? response : [];
+      this.spinner.hide();
+    });
   }
 
   getItem() {
@@ -151,50 +142,45 @@ export class ItemTransferComponent implements OnInit {
         this.spinner.hide();
         this.item = response;
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
   getLocations() {
-    this.locations = this.broadcasterService.locations;
+    this.locations = Array.isArray(this.broadcasterService.locations) ? this.broadcasterService.locations : [];
     if (this.locations && this.locations.length > 0) {
-      this.locationItems = [];
       this.locationItems = this.generateHierarchy(this.locations);
-
-      console.log(this.locationItems);
     }
     this.getAllItemTypes();
   }
 
-  getprevLocations() {}
+  getprevLocations() {
+    
+  }
 
-  generateHierarchyForItemTypes(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchyForItemTypes(type.typeList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeId,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchyForItemTypes(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children =
+        type.typeList && type.typeList.length > 0
+          ? this.generateHierarchyForItemTypes(type.typeList)
+          : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
   getLocationStatus() {
     this.locationStatusService.getAllLocationStatuses(this.companyId).subscribe(
       (response) => {
-        this.locationStatuses = response;
+        this.locationStatuses = Array.isArray(response) ? response : [];
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
@@ -202,50 +188,39 @@ export class ItemTransferComponent implements OnInit {
 
   getAllLocTypes() {
     this.spinner.show();
-    this.locationTypesService
-      .getAllLocationTypesWithHierarchy(this.companyId)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.locationTypes = response;
-          this.locationTypes.forEach((type: { parentId: string }) => {
-            if (!type.parentId) {
-              type.parentId = 'Top Level';
-            }
-          });
-          if (this.locationTypes && this.locationTypes.length > 0) {
-            this.itemTypeItems = this.generateHierarchyForItemTypes(
-              this.locationTypes
-            );
+    this.locationTypesService.getAllLocationTypesWithHierarchy(this.companyId).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.locationTypes = Array.isArray(response) ? response : [];
+        this.locationTypes.forEach((type: { parentId: string }) => {
+          if (!type.parentId) {
+            type.parentId = 'Top Level';
           }
-          this.getLocationStatus();
-        },
-        (error) => {
-          this.spinner.hide();
+        });
+        if (this.locationTypes && this.locationTypes.length > 0) {
+          this.itemTypeItems = this.generateHierarchyForItemTypes(this.locationTypes);
         }
-      );
+        this.getLocationStatus();
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  generateHierarchy(locList: any[]) {
-    var items: TreeviewItem[] = [];
-    locList.forEach((loc) => {
-      var children: TreeviewItem[] = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: loc.name,
-          value: loc.locationId,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchy(locList: any[]): TreeviewItem[] {
+    return locList.map((loc) => {
+      const children =
+        loc.parentLocationResourceList && loc.parentLocationResourceList.length > 0
+          ? this.generateHierarchy(loc.parentLocationResourceList)
+          : [];
+      return new TreeviewItem({
+        text: loc.name,
+        value: loc.locationId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
   onValueChange(value: any) {
@@ -254,7 +229,9 @@ export class ItemTransferComponent implements OnInit {
   }
 
   getAllItemTypes() {
-    this.itemTypes = this.broadcasterService.itemTypeHierarchy;
+    this.itemTypes = Array.isArray(this.broadcasterService.itemTypeHierarchy)
+      ? this.broadcasterService.itemTypeHierarchy
+      : [];
     this.getItemStatus();
   }
 
@@ -262,16 +239,18 @@ export class ItemTransferComponent implements OnInit {
     this.spinner.show();
     this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
       (response) => {
-        this.statuses = response;
+        this.statuses = Array.isArray(response) ? response : [];
         this.spinner.hide();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  viewItemTransfer(transfer: any) {}
+  viewItemTransfer(transfer: any) {
+    
+  }
 
   saveLocation() {
     if (
@@ -281,46 +260,36 @@ export class ItemTransferComponent implements OnInit {
     ) {
       if (this.typeAttributes && this.typeAttributes.length > 0) {
         this.locationModel.attributeValues = [];
-        this.typeAttributes.forEach(
-          (attr: { attributeNameId: any; value: any }) => {
-            this.locationModel.attributeValues.push({
-              attributeName: {
-                attributeNameId: attr.attributeNameId,
-              },
-              entityId: 0,
-              entitytypeId: 0,
-              lastModifiedBy: this.userName,
-              value: attr.value,
-            });
-          }
-        );
+        this.typeAttributes.forEach((attr: { attributeNameId: any; value: any }) => {
+          this.locationModel.attributeValues.push({
+            attributeName: { attributeNameId: attr.attributeNameId },
+            entityId: 0,
+            entitytypeId: 0,
+            lastModifiedBy: this.userName ?? '',
+            value: attr.value,
+          });
+        });
       }
-      var request = [
+      const request = [
         {
-          address1: this.locationModel.addressLineOne ? this.locationModel.addressLineOne : '',
-          address2: this.locationModel.addressLineTwo ? this.locationModel.addressLineTwo : '',
-          city: this.locationModel.city ? this.locationModel.city : '',
-          typeId: this.locationModel.locationTypeId ? this.locationModel.locationTypeId : '',
-          company: {
-            companyId: this.companyId,
-          },
-          criticalflag: this.locationModel.critical ? this.locationModel.critical : false,
-          description: this.locationModel.description ? this.locationModel.description : '',
-          desiredspareratio: this.locationModel.sRatio ? this.locationModel.sRatio : 0,
-          isvendor: this.locationModel.vLocation ? this.locationModel.vLocation : false,
-          lastModifiedBy: this.userName,
+          address1: this.locationModel.addressLineOne ?? '',
+          address2: this.locationModel.addressLineTwo ?? '',
+          city: this.locationModel.city ?? '',
+          typeId: this.locationModel.locationTypeId ?? '',
+          company: { companyId: this.companyId },
+          criticalflag: this.locationModel.critical ?? false,
+          description: this.locationModel.description ?? '',
+          desiredSpareRatio: this.locationModel.sRatio ?? 0,
+          isvendor: this.locationModel.vLocation ?? false,
+          lastModifiedBy: this.userName ?? '',
           locationId: 0,
-          name: this.locationModel.locationName ? this.locationModel.locationName : '',
-          parentLocation: {
-            locationId: this.model.locationId ? this.model.locationId : 0,
-          },
-          postalCode: this.locationModel.postalCode ? this.locationModel.postalCode : '',
-          state: this.locationModel.state ? this.locationModel.state : '',
-          statusId: this.locationModel.statusId ? this.locationModel.statusId : 0,
-          vendorCompany: {
-            companyId: 0,
-          },
-          attributeValues: this.locationModel.attributeValues ? this.locationModel.attributeValues : null,
+          name: this.locationModel.locationName ?? '',
+          parentLocation: { locationId: this.model.locationId ?? 0 },
+          postalCode: this.locationModel.postalCode ?? '',
+          state: this.locationModel.state ?? '',
+          statusId: this.locationModel.statusId ?? 0,
+          vendorCompany: { companyId: 0 },
+          attributeValues: this.locationModel.attributeValues ?? null,
         },
       ];
 
@@ -329,22 +298,19 @@ export class ItemTransferComponent implements OnInit {
         (location: any) => {
           this.name = location[0].name;
           this.addedLocationId = location[0].locationId;
-          this.locationManagementService
-            .getAllLocations(this.companyId)
-            .subscribe((response) => {
-              this.locationManagementService.setLocations(response);
-
-              this.spinner.hide();
-              this.locationIndex = 1;
-              setTimeout(() => {
-                this.index = 0;
-              }, 7000);
-              this.refreshCalls();
-              this.newLocationFlag = false;
-              this.locationModel = [];
-            });
+          this.locationManagementService.getAllLocations(this.companyId).subscribe((response) => {
+            this.locationManagementService.setLocations(response);
+            this.spinner.hide();
+            this.locationIndex = 1;
+            setTimeout(() => {
+              this.index = 0;
+            }, 7000);
+            this.refreshCalls();
+            this.newLocationFlag = false;
+            this.locationModel = [];
+          });
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -355,16 +321,14 @@ export class ItemTransferComponent implements OnInit {
 
   refreshCalls() {
     this.spinner.show();
-    this.locationManagementService
-      .getAllLocationsWithHierarchy(this.companyId)
-      .subscribe((response) => {
-        this.broadcasterService.locations = response;
-        this.model.toLocation = this.addedLocationId;
-        this.getLocations();
-        console.log('locations:' + response);
-        this.spinner.hide();
-      });
+    this.locationManagementService.getAllLocationsWithHierarchy(this.companyId).subscribe((response) => {
+      this.broadcasterService.locations = response;
+      this.model.toLocation = this.addedLocationId;
+      this.getLocations();
+      this.spinner.hide();
+    });
   }
+
   saveTransfer() {
     if (
       this.model.newStatus == undefined ||
@@ -374,42 +338,32 @@ export class ItemTransferComponent implements OnInit {
       this.index = -1;
       window.scroll(0, 0);
     } else {
-      var req = {
-        daysinOldStatus: this.model.daysinOldStatus
-          ? this.model.daysinOldStatus
-          : 0,
-        details: this.model.details ? this.model.details : null,
+      const req = {
+        daysinOldStatus: this.model.daysinOldStatus ?? 0,
+        details: this.model.details ?? null,
         fromLocation: this.item.locationName,
         fromLocationID: this.item.locationId,
         itemID: this.itemId,
-        jobNumber: this.model.jobNumber ? this.model.jobNumber : null,
+        jobNumber: this.model.jobNumber ?? null,
         newStatus: this.model.newStatus,
-        oldStatus: this.item.status ? this.item.status : null,
-        shippingNumber: this.model.shippingNumber
-          ? this.model.shippingNumber
-          : null,
-        toLocationID: this.model.toLocation ? this.model.toLocation : 0,
+        oldStatus: this.item.status ?? null,
+        shippingNumber: this.model.shippingNumber ?? null,
+        toLocationID: this.model.toLocation ?? 0,
         companyId: this.companyId,
         statusID: this.model.newStatus,
-        trackingNumber: this.model.trackingNumber
-          ? this.model.trackingNumber
-          : null,
+        trackingNumber: this.model.trackingNumber ?? null,
         transferDate: this.model.effectiveDate,
-        transferredBy: this.userName,
-        poNumber: this.model.poNumber ? this.model.poNumber : null,
+        transferredBy: this.userName ?? '',
+        poNumber: this.model.poNumber ?? null,
       };
       this.spinner.show();
       this.itemManagementService.saveTransfer(req).subscribe(
         (response) => {
           this.spinner.hide();
-          console.log(response);
-          this.itemManagementService
-            .getAllTransfers(this.itemId)
-            .subscribe((response) => {
-              this.transfers = response;
-            });
+          this.itemManagementService.getAllTransfers(this.itemId).subscribe((response) => {
+            this.transfers = Array.isArray(response) ? response : [];
+          });
           this.getItem();
-
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -417,24 +371,31 @@ export class ItemTransferComponent implements OnInit {
           this.model = {};
           window.scroll(0, 0);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
     }
   }
+
   newLocation() {
     this.getAllLocTypes();
     this.newLocationFlag = true;
   }
+
   existingLocation() {
     this.newLocationFlag = false;
     this.existingLocationFlag = true;
   }
+
   back() {
     this._location.back();
   }
-  setOrder(orderType: string) {}
+
+  setOrder(orderType: string) {
+  
+  }
+
   backToViewItem() {
     this.router.navigate(['/items/viewItem/' + this.itemId]);
   }
@@ -451,18 +412,16 @@ export class ItemTransferComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.itemManagementService
-      .deleteItemTransferLog(this.transferLogId)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.modalRef.hide();
-          this.getAllTransfers();
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+    this.itemManagementService.deleteItemTransferLog(this.transferLogId).subscribe(
+      () => {
+        this.spinner.hide();
+        this.modalRef.hide();
+        this.getAllTransfers();
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
   decline(): void {

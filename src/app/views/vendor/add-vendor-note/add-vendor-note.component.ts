@@ -36,10 +36,8 @@ export class AddVendorNoteComponent implements OnInit {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
     });
 
-    console.log('companyId=' + this.companyId);
     this.model.enteredOn = new Date();
   }
 

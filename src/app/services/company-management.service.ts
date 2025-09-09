@@ -45,7 +45,6 @@ export class CompanyManagementService {
     this.companyListChange.subscribe((value) => {
       this.isCompaniesListModified = value;
     });
-    console.log('auth token' + this.authToken);
   }
 
   setGlobalCompanyList(list: any) {
@@ -190,6 +189,7 @@ getAllCompanyDetails(): Observable<Company[]> {
 
   private handleError(error: any) {
     if (error.status === 401) {
+      //navigate /delete cookies or whatever
       console.log('handled error ' + error.status);
       this.router.navigate([`/login`]);
     }

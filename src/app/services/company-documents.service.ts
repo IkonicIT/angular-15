@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
-// import 'rxjs/add/operator/toPromise';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -29,7 +28,7 @@ export class CompanyDocumentsService {
   ) {}
 
   saveCompanyDocument(document: any) {
-    // console.log(this.serviceURL, document, this.httpOptions);
+    
     return this.http
       .post(this.serviceURL, document, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -46,7 +45,7 @@ export class CompanyDocumentsService {
   }
 
   saveCompanyMultipleDocuments(attachList: any) {
-    console.log(attachList);
+  
     return this.http
       .post(
         this.serviceURL + '/createMultipleAttachments',

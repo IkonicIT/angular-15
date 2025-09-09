@@ -13,7 +13,7 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
   model: any = {};
   index: number = 0;
   date = Date.now();
-  dismissible: boolean = true; // Add this line
+  dismissible: boolean = true; 
   companyId: number = 0;
   vendorName: string;
   private sub: any;
@@ -43,16 +43,13 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
       this.userName = sessionStorage.getItem('userName');
     });
     this.vendorNoteId = route.snapshot.params['id'];
-    console.log('VendorNoteId:', this.vendorNoteId);
     this.router = router;
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
-      console.log('Query params ', this.vendorId);
     });
   }
 
   ngOnInit() {
-    console.log('companyi=' + this.companyId);
     this.addedfiles.push({ file: '', description: '' });
   }
 
@@ -81,7 +78,6 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
       for (var i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-      console.log(jsonArr);
       var req = {
         vendorAttachmentResourceList: jsonArr,
         attachmentUserLogDTO: {},
@@ -117,7 +113,6 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
   }
 
   fileChangeListener($event: Event, fileIndex: number): void {
-    console.log(this.addedfiles);
 
     this.readThis($event.target, fileIndex);
   }
@@ -139,7 +134,6 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
       myReader.readAsDataURL(this.file);
       myReader.onloadend = (e) => {
         if (myReader.result) {
-          console.log(myReader.result);
           const resultString = myReader.result as string;
           this.fileContent = resultString.split(',')[1];
           this.fileType = resultString
@@ -159,7 +153,6 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
           vendorNoteId: this.vendorNoteId,
         };
         fileInfo['createdDate'] = new Date().toISOString();
-        console.log(this.addedfiles);
       };
     }
   }

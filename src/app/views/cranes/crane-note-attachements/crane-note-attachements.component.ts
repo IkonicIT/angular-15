@@ -3,12 +3,11 @@ import { CompanyDocumentsService } from '../../../services/company-documents.ser
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router, ActivatedRoute } from '@angular/router';
-// import { saveAs } from "file-saver/FileSaver";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { CranesService } from 'src/app/services/cranes.service';
-import { NgPipesModule } from 'ngx-pipes'; // Import NgPipesModule if needed
-import { NgxPaginationModule } from 'ngx-pagination'; // Import NgxPaginationModule
+import { NgPipesModule } from 'ngx-pipes'; 
+import { NgxPaginationModule } from 'ngx-pagination'; 
 
 @Component({
   selector: 'app-crane-note-attachements',

@@ -122,7 +122,7 @@ export class PartAttachementsComponent implements OnInit {
     }
     this.order = value;
   }
-
+  
 
   getPartAttachment(document: any): void {
     this.partsService

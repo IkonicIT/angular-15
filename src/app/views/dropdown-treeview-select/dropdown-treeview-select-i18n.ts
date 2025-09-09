@@ -11,9 +11,6 @@ export class DropdownTreeviewSelectI18n extends DefaultTreeviewI18n {
 
   set selectedItem(value: TreeviewItem) {
     this.internalSelectedItem = value;
-    console.log(
-      `[treeview] selectedItem value ${value} and this.internalSelectedItem  ${this.internalSelectedItem}`
-    );
   }
 
   get selectedItem(): TreeviewItem {

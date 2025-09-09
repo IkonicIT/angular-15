@@ -35,9 +35,8 @@ export class FullLayoutComponent implements OnInit {
   value: any;
   items: TreeviewItem[];
  config = TreeviewConfig.create({
-  hasFilter: true,               // Enable search filter
-  hasCollapseExpand: true,       // Allow collapse/expand
-                    // Auto width based on content
+  hasFilter: true,              
+  hasCollapseExpand: true,    
 });
   authToken: any;
   userSecurityRoles: any = [];
@@ -168,8 +167,6 @@ export class FullLayoutComponent implements OnInit {
         this.router.navigate(['/login']);
         return;
       }
-      console.log('logged in user is' + this.loggedInuser);
-      // this.loggedInuser= '99B27614-A682-4BA3-B9CE-7E52CFA659D7';  if user id null uncomment
       this.companyManagementService
         .getCompanyNames(this.loggedInuser)
         .subscribe(
@@ -193,7 +190,6 @@ export class FullLayoutComponent implements OnInit {
                 this.userSelectedCompany
               );
             }
-            // this.userCompanies.unshift({"companyId":0,"name":"SELECT COMPANY","filePath":null})
 
             this.companyManagementService.setGlobalCompanyList(
               this.userCompanies
@@ -260,8 +256,8 @@ export class FullLayoutComponent implements OnInit {
           sessionStorage.setItem('currentRole', this.currentRole);
           sessionStorage.setItem('highestRank', this.highestRank);
 
-          console.log('currentRole is' + this.currentRole);
-          console.log('highestRank is' + this.highestRank);
+          
+          
           this.broadcasterService.broadcast(
             'piechart',
             userSelectedCompany.companyId
@@ -301,8 +297,8 @@ export class FullLayoutComponent implements OnInit {
           sessionStorage.setItem('currentRole', this.currentRole);
           sessionStorage.setItem('highestRank', this.highestRank);
 
-          console.log('currentRole is' + this.currentRole);
-          console.log('highestRank is' + this.highestRank);
+          
+          
           this.broadcasterService.broadcast(
             'piechart',
             userSelectedCompany.companyId
@@ -414,8 +410,6 @@ export class FullLayoutComponent implements OnInit {
                     sessionStorage.setItem('currentRole', this.currentRole);
                     sessionStorage.setItem('highestRank', this.highestRank);
 
-                    console.log('currentRole is' + this.currentRole);
-                    console.log('highestRank is' + this.highestRank);
                   }
                 });
                 this.broadcasterService.broadcast(
@@ -466,7 +460,7 @@ export class FullLayoutComponent implements OnInit {
     this.loginService.getProfileByUserId(this.userId).subscribe(
       (response) => {
         this.broadcasterService.isOwnerAdmin = response.isOwnerAdmin;
-        console.log(this.broadcasterService.isOwnerAdmin);
+      
       },
       (error) => {
         this.spinner.hide();
@@ -482,7 +476,6 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setSearchedItemTag(this.itemTag);
     this.itemManagementService.setItemSearchResults([]);
     this.itemManagementService.setSearchedItemTypeId(this.selectedType);
-    // tslint:disable-next-line: triple-equals
     this.value = null;
     this.itemTag = '';
     if (this.router.url != '/items/lists/all') {

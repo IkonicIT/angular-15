@@ -19,12 +19,10 @@ export class serviceReportsComponent implements OnInit {
   companyId!: number | string;
   report: any = {};
   public isloaded = false;
-
   itemsForPagination: number = 5;
   completedServicesForPagination: number = 5;
   page1: number = 1;
   page2: number = 1;
-
   order: string = 'serviceDate';
   reverse: string = '';
   completedOrder: string = 'serviceDate';

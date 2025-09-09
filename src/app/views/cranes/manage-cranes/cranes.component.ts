@@ -49,7 +49,6 @@ export class CranesComponent implements OnInit, OnDestroy {
       const bmdrnk = params['bmdrnk'];
       const bmkey1 = params['bmkey1'];
       const bmkey = params['bmkey2'];
-
       if (!bmdrnk && !bmkey1 && !bmkey) {
         this.data = historyStackData ? JSON.parse(historyStackData) : [];
         this.isFromQueryParams = false;

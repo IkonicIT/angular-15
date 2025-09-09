@@ -18,24 +18,19 @@ import { Location } from '@angular/common';
 })
 export class LocationAttributesComponent implements OnInit {
   listStyle = {
-    width: '100%', //width of the list defaults to 300,
-    height: '250px', //height of the list defaults to 250,
-    dropZoneHeight: '50px', // height of the dropzone indicator defaults to 50
+    width: '100%',
+    height: '250px',
+    dropZoneHeight: '50px',
   };
   companyId: string = '0';
   model: any = {
     type: {},
-    attributeType: {
-      attributeTypeId: null,
-    },
-    searchType: {
-      attributeSearchTypeId: 0,
-    },
+    attributeType: { attributeTypeId: null },
+    searchType: { attributeSearchTypeId: 0 },
   };
   index: any = 0;
   types: any[] = [];
   atts: any[] = [];
-  router: Router;
   message: string;
   modalRef: BsModalRef;
   companyName: string = '';
@@ -45,21 +40,21 @@ export class LocationAttributesComponent implements OnInit {
   reverse: string = '';
   itemTypeOne: any;
   itemsForPagination: any = 5;
-  attributeTypes: any = [];
-  searchTypes: any = [];
-  typeAttributes: any = [];
-  typeAttributesLength: any;
+  attributeTypes: any[] = [];
+  searchTypes: any[] = [];
+  typeAttributes: any[] = [];
+  typeAttributesLength: number = 0;
   listItem: any;
   userName: any;
-  loctypes: any = [];
+  loctypes: any[] = [];
   dismissible = true;
   selectedAttrType: any = {};
   globalCompany: any;
-  addEditFlag: any = false;
+  addEditFlag: boolean = false;
   currentRole: any;
   highestRank: any;
   value: any;
-  items: TreeviewItem[];
+  items: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
@@ -67,9 +62,10 @@ export class LocationAttributesComponent implements OnInit {
   typeList: boolean;
   typeValue: number;
   itemTypes: any;
-  helpFlag: any = false;
+  helpFlag: boolean = false;
   typeName: any;
   loader = false;
+
   constructor(
     private modalService: BsModalService,
     private companyTypesService: CompanyTypesService,
@@ -78,14 +74,13 @@ export class LocationAttributesComponent implements OnInit {
     private companyManagementService: CompanyManagementService,
     private itemAttributeService: ItemAttributeService,
     private locationAttributeService: LocationAttributeService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private _location: Location
   ) {
-    this.typeId = parseInt(route.snapshot.params['id']);
-    this.companyId = route.snapshot.params['companyId'];
-    this.router = router;
+    this.typeId = parseInt(this.route.snapshot.params['id']);
+    this.companyId = this.route.snapshot.params['companyId'];
   }
 
   ngOnInit() {
@@ -109,50 +104,40 @@ export class LocationAttributesComponent implements OnInit {
 
   pageLoadCalls(companyId: any) {
     this.spinner.show();
-
-    this.locationAttributeService
-      .getAllAttributeTypes()
-      .subscribe((response) => {
-        this.attributeTypes = response;
-      });
+    this.locationAttributeService.getAllAttributeTypes().subscribe((response) => {
+      this.attributeTypes = Array.isArray(response) ? response : [];
+    });
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(companyId)
       .subscribe(
         (response) => {
-          this.loctypes = response;
-
-          var self = this;
+          this.loctypes = Array.isArray(response) ? response : [];
           if (this.loctypes && this.loctypes.length > 0) {
-            self.items = this.generateHierarchy(this.loctypes);
+            this.items = this.generateHierarchy(this.loctypes);
           }
-
           this.typeValue = this.typeId;
           this.setTypeName(this.typeValue);
           this.getTypeAttributes(this.typeId);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
   }
 
-  generateHierarchy(typeList: any) {
-    var items: any = [];
-    typeList.forEach((type: any) => {
-      var children = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeId,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchy(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type: any) => {
+      const children =
+        type.typeList && type.typeList.length > 0
+          ? this.generateHierarchy(type.typeList)
+          : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children: children,
+      });
     });
-    return items;
   }
 
   setTypeName(typeId: any) {
@@ -168,44 +153,31 @@ export class LocationAttributesComponent implements OnInit {
   onTypesValueChange(value: any) {
     this.typeValue = value;
     this.setTypeName(this.typeValue);
-    console.log(value);
     this.addEditFlag = false;
     this.model = {
       type: {},
-      attributeType: {
-        attributeTypeId: null,
-      },
-      searchType: {
-        attributeSearchTypeId: 0,
-      },
+      attributeType: { attributeTypeId: null },
+      searchType: { attributeSearchTypeId: 0 },
     };
     this.getTypeAttributes(this.typeValue);
   }
 
   onValueChange(value: any) {
-    console.log(value);
     this.addEditFlag = false;
     this.model = {
       type: {},
-      attributeType: {
-        attributeTypeId: null,
-      },
-      searchType: {
-        attributeSearchTypeId: 0,
-      },
+      attributeType: { attributeTypeId: null },
+      searchType: { attributeSearchTypeId: 0 },
     };
-
     this.getTypeAttributes(value);
   }
 
   getAllTypes(companyId: any) {
     this.spinner.show();
-
     this.locationTypesService
       .getAllLocationTypes(companyId)
       .subscribe((response) => {
-        this.loctypes = response;
-
+        this.loctypes = Array.isArray(response) ? response : [];
         this.loctypes.forEach((type: any) => {
           if (!type.parentId) {
             type.parentId = 'Top Level';
@@ -218,15 +190,13 @@ export class LocationAttributesComponent implements OnInit {
     this.index = 0;
     if (typeId != '0') {
       this.spinner.show();
-
       this.locationAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
-
-          this.typeAttributes = response;
+          this.typeAttributes = Array.isArray(response) ? response : [];
           this.typeAttributesLength = this.typeAttributes.length;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -235,14 +205,12 @@ export class LocationAttributesComponent implements OnInit {
 
   getAttributeTypes() {
     this.spinner.show();
-
     this.locationAttributeService.getAllAttributeTypes().subscribe(
       (response) => {
         this.spinner.hide();
-
-        this.attributeTypes = response;
+        this.attributeTypes = Array.isArray(response) ? response : [];
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
@@ -251,16 +219,14 @@ export class LocationAttributesComponent implements OnInit {
   getSearchTypes(attributeTypeId: any) {
     if (attributeTypeId && attributeTypeId != 0 && attributeTypeId != 'null') {
       this.spinner.show();
-
       this.locationAttributeService
         .getAllSearchTypes(attributeTypeId)
         .subscribe(
           (response) => {
             this.spinner.hide();
-
-            this.searchTypes = response;
+            this.searchTypes = Array.isArray(response) ? response : [];
           },
-          (error) => {
+          () => {
             this.spinner.hide();
           }
         );
@@ -278,12 +244,10 @@ export class LocationAttributesComponent implements OnInit {
 
   saveAttributeListOrder(typeAttributes: any) {
     this.spinner.show();
-
     this.itemAttributeService
       .updateTypeAttributesOrder(typeAttributes)
-      .subscribe((response) => {
+      .subscribe(() => {
         this.spinner.hide();
-
         this.index = 4;
         setTimeout(() => {
           this.index = 0;
@@ -298,15 +262,15 @@ export class LocationAttributesComponent implements OnInit {
       this.model.attributeType &&
       this.model.attributeType.attributeTypeId != null
     ) {
-      var request = {
-        attributeListItemResource: null,
+      const request = {
+        attributeListItemResource: this.model.attributeListItemResource ?? null,
         attributeNameId: 0,
         attributeType: {
           attributeTypeId: this.model.attributeType.attributeTypeId,
         },
         displayOrder: this.typeAttributesLength + 1,
         isManufacturer: false,
-        isRequired: this.model.isRequired ? this.model.isRequired : false,
+        isRequired: this.model.isRequired ?? false,
         isRequiredForMatch: false,
         name: this.model.name,
         searchModifier: '',
@@ -324,16 +288,10 @@ export class LocationAttributesComponent implements OnInit {
         },
         moduleType: 'Location',
       };
-      if (this.model.attributeListItemResource) {
-        request.attributeListItemResource =
-          this.model.attributeListItemResource;
-      }
       this.spinner.show();
-
       this.locationAttributeService.createNewTypeAttribute(request).subscribe(
         (response) => {
           this.spinner.hide();
-
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
@@ -343,16 +301,12 @@ export class LocationAttributesComponent implements OnInit {
           this.typeAttributesLength = this.typeAttributesLength + 1;
           this.model = {
             type: {},
-            attributeType: {
-              attributeTypeId: null,
-            },
-            searchType: {
-              attributeSearchTypeId: 0,
-            },
+            attributeType: { attributeTypeId: null },
+            searchType: { attributeSearchTypeId: 0 },
           };
           this.addEditFlag = false;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -391,10 +345,8 @@ export class LocationAttributesComponent implements OnInit {
       this.model.attributeType &&
       this.model.attributeType.attributeTypeId != 0
     ) {
-      this.spinner.show();
-
-      var request = {
-        attributeListItemResource: null,
+      const request = {
+        attributeListItemResource: this.model.attributeListItemResource ?? null,
         attributeNameId: this.model.attributeNameId,
         attributeType: {
           attributeTypeId: this.model.attributeType
@@ -402,10 +354,8 @@ export class LocationAttributesComponent implements OnInit {
             : 0,
         },
         displayOrder: this.model.displayOrder,
-        isManufacturer: this.model.isManufacturer
-          ? this.model.isManufacturer
-          : false,
-        isRequired: this.model.isRequired ? this.model.isRequired : false,
+        isManufacturer: this.model.isManufacturer ?? false,
+        isRequired: this.model.isRequired ?? false,
         isRequiredForMatch: false,
         name: this.model.name,
         searchModifier: '',
@@ -426,15 +376,9 @@ export class LocationAttributesComponent implements OnInit {
         moduleType: 'Location',
       };
       this.spinner.show();
-
-      if (this.model.attributeListItemResource) {
-        request.attributeListItemResource =
-          this.model.attributeListItemResource;
-      }
       this.locationAttributeService.updateTypeAttributes(request).subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-
           this.getTypeAttributes(this.typeValue);
           this.index = 2;
           setTimeout(() => {
@@ -443,16 +387,12 @@ export class LocationAttributesComponent implements OnInit {
           window.scroll(0, 0);
           this.model = {
             type: {},
-            attributeType: {
-              attributeTypeId: null,
-            },
-            searchType: {
-              attributeSearchTypeId: 0,
-            },
+            attributeType: { attributeTypeId: null },
+            searchType: { attributeSearchTypeId: 0 },
           };
           this.addEditFlag = false;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -465,12 +405,8 @@ export class LocationAttributesComponent implements OnInit {
     this.addEditFlag = false;
     this.model = {
       type: {},
-      attributeType: {
-        attributeTypeId: null,
-      },
-      searchType: {
-        attributeSearchTypeId: 0,
-      },
+      attributeType: { attributeTypeId: null },
+      searchType: { attributeSearchTypeId: 0 },
     };
     this.getTypeAttributes(this.typeValue);
     this.searchTypes = [];
@@ -484,8 +420,7 @@ export class LocationAttributesComponent implements OnInit {
     this.message = 'Confirmed!';
     this.modalRef.hide();
     this.spinner.show();
-
-    var moduleType = 'Location';
+    const moduleType = 'Location';
     this.locationAttributeService
       .removeLocationAttributess(
         this.model.attributeNameId,
@@ -496,9 +431,8 @@ export class LocationAttributesComponent implements OnInit {
         moduleType
       )
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-
           this.getTypeAttributes(this.typeValue);
           this.index = 3;
           setTimeout(() => {
@@ -507,16 +441,12 @@ export class LocationAttributesComponent implements OnInit {
           this.addEditFlag = false;
           this.model = {
             type: {},
-            attributeType: {
-              attributeTypeId: null,
-            },
-            searchType: {
-              attributeSearchTypeId: 0,
-            },
+            attributeType: { attributeTypeId: null },
+            searchType: { attributeSearchTypeId: 0 },
           };
           window.scroll(0, 0);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -529,11 +459,7 @@ export class LocationAttributesComponent implements OnInit {
 
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse == '' ? '-' : '';
     }
     this.order = value;
   }

@@ -86,8 +86,8 @@ export class AddcompanydocumentsComponent implements OnInit, OnChanges {
     formdata.append('moduleType', 'companyType');
 
     const jsonArr = this.addedfiles.map((f) => {
-      const { file, ...rest } = f; // remove 'file' key
-      return rest;
+      const { file, ...rest } = f; 
+      return rest
     });
 
     const req = {

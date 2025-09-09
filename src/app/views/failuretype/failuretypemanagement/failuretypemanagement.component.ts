@@ -38,9 +38,10 @@ export class FailuretypemanagementComponent implements OnInit {
   failureCauses: any[] = [];
   selectedAttrType: any = {};
   globalCompany: any;
-  editDeleteFlag: boolean = false;
-  addEditFlag: boolean = false;
-  newFlag: boolean = false;
+  //addFlag:any = false;
+  editDeleteFlag: any = false;
+  addEditFlag: any = false;
+  newFlag: any = false;
   failureTypesandcauses: any = {};
   failureTypeAndCausesPayload: any = {};
   modalRef: BsModalRef | null = null;

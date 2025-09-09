@@ -6,34 +6,50 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 
+interface ItemTypeModel {
+  typeId: number;
+  name: string;
+  description?: string;
+  attributeSearchDisplay?: number;
+  typeList?: any[];
+  parentId?: { typeId: number };
+  entityTypeId?: number;
+  hostingFee?: number;
+  typeMtbs?: number;
+  typeSpareRatio?: number;
+}
+
 @Component({
   selector: 'app-edit-item-type',
   templateUrl: './edit-item-type.component.html',
   styleUrls: ['./edit-item-type.component.scss'],
 })
 export class EditItemTypeComponent implements OnInit {
-  model: any = {
-    parentId: {
-      typeId: 0,
-    },
+  model: ItemTypeModel = {
+    typeId: 0,
+    name: '',
+    parentId: { typeId: 0 },
   };
-  itemTypeId: any;
-  index: number;
-  companyId: any;
+
+  itemTypeId: number;
+  index: number = 0;
+  companyId: number;
   globalCompany: any;
-  companyName: any;
+  companyName: string;
   itemTypes: any;
 
-  value: any;
-  items: TreeviewItem[];
+  value: number | null = null;
+  items: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  userName: any;
-  helpFlag: any = false;
+
+  userName: string | null;
+  helpFlag: boolean = false;
   dismissible = true;
   loader = false;
+
   constructor(
     private itemTypesService: ItemTypesService,
     private companyManagementService: CompanyManagementService,
@@ -42,15 +58,17 @@ export class EditItemTypeComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private broadcasterService: BroadcasterService
   ) {
-    this.itemTypeId = route.snapshot.params['id'];
-    this.companyId = route.snapshot.params['cmpId'];
+    this.itemTypeId = Number(this.route.snapshot.params['id']);
+    this.companyId = Number(this.route.snapshot.params['cmpId']);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
+
     this.getAllItemTypes();
   }
 
@@ -58,59 +76,45 @@ export class EditItemTypeComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  getItemType(typeId: string) {
+  getItemType(typeId: number) {
     this.spinner.show();
-
-    this.itemTypesService.getItemTypeDetails(typeId).subscribe((response) => {
-      this.spinner.hide();
-
-      console.log(response);
-      this.model = response;
-      if (!this.model.parentId) {
-        this.model.parentId = {
-          typeId: 0,
-        };
-      } else {
-        this.value = this.model.parentId.typeId;
-      }
-    });
+    this.itemTypesService.getItemTypeDetails(String(typeId)).subscribe((response: any) => {
+  this.spinner.hide();
+  this.model = response as ItemTypeModel;
+  if (!this.model.parentId) {
+    this.model.parentId = { typeId: 0 };
+  } else {
+    this.value = this.model.parentId.typeId;
+  }
+});
   }
 
   getAllItemTypes() {
     this.itemTypes = this.broadcasterService.itemTypeHierarchy;
-    var self = this;
-    if (this.itemTypes && this.itemTypes.length > 0) {
-      self.items = this.generateHierarchy(this.itemTypes);
+    if (this.itemTypes?.length > 0) {
+      this.items = this.generateHierarchy(this.itemTypes);
     }
-
     this.getItemType(this.itemTypeId);
   }
 
-  generateHierarchy(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationId})
-      }
-      items.push(
+  generateHierarchy(typeList: any[]): TreeviewItem[] {
+    return typeList.map(
+      (type) =>
         new TreeviewItem({
           text: type.name,
           value: type.typeId,
           collapsed: true,
-          children: children,
+          children: type.typeList?.length
+            ? this.generateHierarchy(type.typeList)
+            : [],
         })
-      );
-    });
-    return items;
+    );
   }
 
   updateItemType() {
-    if (this.model.name && this.value != this.itemTypeId) {
-      var request = {
-        attributeSearchDisplay: this.model.attributeSearchDisplay
-          ? this.model.attributeSearchDisplay
-          : 0,
+    if (this.model.name && this.value !== this.itemTypeId) {
+      const request = {
+        attributeSearchDisplay: this.model.attributeSearchDisplay ?? 0,
         description: this.model.description,
         entityTypeId: this.model.entityTypeId,
         hostingFee: this.model.hostingFee,
@@ -118,56 +122,41 @@ export class EditItemTypeComponent implements OnInit {
         lastModifiedBy: this.userName,
         moduleType: 'itemType',
         name: this.model.name,
-        parentId: {
-          typeId: this.value ? this.value : 0,
-        },
-        company: {
-          companyId: this.companyId,
-        },
+        parentId: { typeId: this.value ?? 0 },
+        company: { companyId: this.companyId },
         typeList: this.model.typeList,
         typeId: this.itemTypeId,
-        typeMtbs: this.model.typemtbs ? this.model.typemtbs : 0,
-        typeSpareRatio: this.model.typeSpareRatio
-          ? this.model.typeSpareRatio
-          : 0.2,
+        typeMtbs: this.model.typeMtbs ?? 0,
+        typeSpareRatio: this.model.typeSpareRatio ?? 0.2,
       };
+
       this.spinner.show();
-
-      this.itemTypesService.updateItemType(request).subscribe((response) => {
+      this.itemTypesService.updateItemType(request).subscribe(() => {
         this.spinner.hide();
-
         this.index = 1;
-        setTimeout(() => {
-          this.index = 0;
-        }, 7000);
+        setTimeout(() => (this.index = 0), 7000);
         window.scroll(0, 0);
         this.getAllItemTypesWithHierarchy();
         this.router.navigate(['/items/types']);
       });
     } else {
-      this.index = -1;
-      if (this.value == this.itemTypeId) {
-        this.index = -2;
-      }
+      this.index = this.value === this.itemTypeId ? -2 : -1;
       window.scroll(0, 0);
     }
   }
 
   getAllItemTypesWithHierarchy() {
     this.spinner.show();
-
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
-
         this.broadcasterService.itemTypeHierarchy = response;
       });
   }
 
-  onValueChange(value: any) {
+  onValueChange(value: number) {
     this.value = value;
-    console.log(value);
   }
 
   print() {

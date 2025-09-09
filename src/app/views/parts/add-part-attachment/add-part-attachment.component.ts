@@ -93,7 +93,6 @@ export class AddPartAttachmentComponent implements OnInit, OnDestroy {
       for (let i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-
       const req = { partAttachmentsList: jsonArr };
 
       this.spinner.show();
@@ -114,8 +113,6 @@ export class AddPartAttachmentComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
   cancelVendorDocument(): void {
     this.location.back();
   }
@@ -128,12 +125,12 @@ export class AddPartAttachmentComponent implements OnInit, OnDestroy {
   help(): void {
     this.helpFlag = !this.helpFlag;
   }
-
   fileChangeListener($event: Event, fileIndex: number): void {
     const target = $event.target as HTMLInputElement;
     if (target?.files) {
       this.readThis(target, fileIndex);
     }
+
   }
 
   remove(i: number): void {

@@ -37,7 +37,7 @@ export class AddcompanydetailsComponent implements OnInit {
     this.highestRank = parseInt(sessionStorage.getItem('highestRank') || '0', 10);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyId = this.globalCompany?.companyId ?? null;
-    // this.getStatuses();
+  
   }
 
   getStatuses(): void {

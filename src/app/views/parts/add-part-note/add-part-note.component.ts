@@ -40,7 +40,6 @@ export class AddPartNoteComponent implements OnInit, OnDestroy {
       this.partId = +params['q'] || 0;
     });
     this.subscriptions.add(querySub);
-
     this.model.enteredOn = new Date();
   }
 

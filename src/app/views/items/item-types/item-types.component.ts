@@ -12,24 +12,26 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
   styleUrls: ['./item-types.component.scss'],
 })
 export class ItemTypesComponent implements OnInit {
-  modalRef: BsModalRef | null;
-  modalRef2: BsModalRef;
-  index: number;
-  message: string;
-  locationsTypes: any;
-  order: string = 'name';
-  reverse: string = '';
-  locationTypeFilter: any = '';
-  itemsForPagination: any = 5;
-  companyId: number;
+  modalRef: BsModalRef | null = null;
+  index = 0;
+  message = '';
+  locationsTypes: any[] = [];
+  order = 'name';
+  reverse = '';
+  locationTypeFilter = '';
+  itemsForPagination = 5;
+  companyId = 0;
   globalCompany: any = {};
-  companyName: any;
-  currentRole: any;
-  highestRank: any;
-  helpFlag: any = false;
-  userName: any;
-  p: any;
-  typeFilter: any = '';
+  companyName = '';
+  currentRole = '';
+  highestRank?: string | null;
+  get highestRankNum(): number {
+    return Number(this.highestRank ?? 0);
+  }
+  helpFlag = false;
+  userName = '';
+  p = 1;
+  typeFilter = '';
   loader = false;
 
   constructor(
@@ -41,9 +43,13 @@ export class ItemTypesComponent implements OnInit {
     private broadcasterService: BroadcasterService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyId;
-    this.companyName = this.globalCompany.name;
+    if (this.globalCompany) {
+      this.companyId = this.globalCompany.companyId;
+      this.companyName = this.globalCompany.name;
+    }
+
     this.getAllLocTypes();
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyId = value.companyId;
@@ -51,28 +57,24 @@ export class ItemTypesComponent implements OnInit {
     });
   }
 
+  ngOnInit() {
+    this.currentRole = sessionStorage.getItem('currentRole') || '';
+    this.highestRank = sessionStorage.getItem('highestRank') || '';
+  }
+
   getAllLocTypes() {
     this.spinner.show();
 
-    this.itemTypesService
-      .getAllItemTypes(this.companyId)
-      .subscribe((response) => {
-        this.spinner.hide();
+    this.itemTypesService.getAllItemTypes(this.companyId).subscribe((response) => {
+      this.spinner.hide();
+      this.locationsTypes = Array.isArray(response) ? response : [];;
 
-        this.locationsTypes = response;
-        this.locationsTypes.forEach((type: { parentId: any }) => {
-          if (!type.parentId) {
-            type.parentId = this.companyName;
-          }
-        });
+      this.locationsTypes.forEach((type: { parentId: any }) => {
+        if (!type.parentId) {
+          type.parentId = this.companyName;
+        }
       });
-  }
-
-  ngOnInit() {
-    this.currentRole = sessionStorage.getItem('currentRole');
-    this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    });
   }
 
   openModal(template: TemplateRef<any>, id: number) {
@@ -89,23 +91,19 @@ export class ItemTypesComponent implements OnInit {
     this.message = 'Confirmed!';
     this.spinner.show();
 
-    this.userName = sessionStorage.getItem('userName');
-    this.itemTypesService
-      .removeItemType(this.index, this.userName)
-      .subscribe((response) => {
-        this.spinner.hide();
+    this.userName = sessionStorage.getItem('userName') || '';
+    this.itemTypesService.removeItemType(this.index, this.userName).subscribe(() => {
+      this.spinner.hide();
+      this.modalRef?.hide();
+      this.refreshCalls();
 
-        this.modalRef?.hide();
-        this.refreshCalls();
-        const currentPage = this.p;
-        const locationTypeCount = this.locationsTypes.length - 1;
-        const maxPageAvailable = Math.ceil(
-          locationTypeCount / this.itemsForPagination
-        );
-        if (currentPage > maxPageAvailable) {
-          this.p--;
-        }
-      });
+      const locationTypeCount = this.locationsTypes.length - 1;
+      const maxPageAvailable = Math.ceil(locationTypeCount / this.itemsForPagination);
+
+      if (this.p > maxPageAvailable) {
+        this.p = maxPageAvailable;
+      }
+    });
   }
 
   refreshCalls() {
@@ -116,13 +114,10 @@ export class ItemTypesComponent implements OnInit {
   getAllItemTypesWithHierarchy() {
     this.spinner.show();
 
-    this.itemTypesService
-      .getAllItemTypesWithHierarchy(this.companyId)
-      .subscribe((response) => {
-        this.spinner.hide();
-
-        this.broadcasterService.itemTypeHierarchy = response;
-      });
+    this.itemTypesService.getAllItemTypesWithHierarchy(this.companyId).subscribe((response) => {
+      this.spinner.hide();
+      this.broadcasterService.itemTypeHierarchy = response;
+    });
   }
 
   decline(): void {
@@ -132,11 +127,7 @@ export class ItemTypesComponent implements OnInit {
 
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
@@ -151,10 +142,9 @@ export class ItemTypesComponent implements OnInit {
   }
 
   onChange(e: any) {
-    const currentPage = this.p;
     const itemTypeCount = this.locationsTypes.length;
     const maxPageAvailable = Math.ceil(itemTypeCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable) {
+    if (this.p > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

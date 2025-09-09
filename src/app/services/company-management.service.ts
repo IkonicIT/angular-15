@@ -189,9 +189,7 @@ getAllCompanyDetails(): Observable<Company[]> {
   }
 
   private handleError(error: any) {
-    //handle your auth error
     if (error.status === 401) {
-      //navigate /delete cookies or whatever
       console.log('handled error ' + error.status);
       this.router.navigate([`/login`]);
     }
@@ -261,17 +259,17 @@ getAllCompanyDetails(): Observable<Company[]> {
       .pipe(catchError(this.handleError));
   }
 
-  getAllTemplates(companyId: string) {
+  getAllTemplates(companyId: string | number) {
     return this.http
-      .get(AppConfiguration.templateRestURL + 'getAllTemplates/' + companyId)
+      .get<any[]>(AppConfiguration.templateRestURL + 'getAllTemplates/' + companyId)
       .pipe(catchError(this.handleError));
   }
 
   removeTemplate(
-    templateId: string,
-    companyId: string,
+    templateId: number,
+    companyId: string | number,
     userName: string,
-    templateName: string
+    templateName: string | null
   ) {
     return this.http
       .delete(

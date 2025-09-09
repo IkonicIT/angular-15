@@ -157,7 +157,7 @@
                     title="Delete Note Attachment"
                     class="btn btn-outline-danger btn-sm"
                     (click)="openModal(confirmtemplate, document.attachmentId)"
-                    disabled="highestRank == 9"
+                    [disabled]="highestRank == 9"
                   >
                     Delete
                   </button>

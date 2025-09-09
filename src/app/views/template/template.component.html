@@ -84,12 +84,12 @@
                       >
                       <select
                         class="form-control custom-dropdown"
-                        [(ngModel)]="templateID"
+                        [(ngModel)]="templateId"
                         id="companyId"
                       >
                         <option
                           *ngFor="let template of templates"
-                          [value]="template.templateID"
+                          [value]="template.templateId"
                         >
                           {{ template.name }}
                         </option>
@@ -131,7 +131,7 @@
                         data-bs-placement="bottom"
                         data-bs-toggle="tooltip"
                         title="Delete this Template"
-                        (click)="openModal(confirmtemplate, templateID)"
+                        (click)="openModal(confirmtemplate, templateId)"
                         class="btn btn-primary"
                         [disabled]="highestRank == 9"
                         style="border-radius: 6px;"

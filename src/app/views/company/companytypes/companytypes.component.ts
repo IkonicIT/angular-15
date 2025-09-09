@@ -57,8 +57,6 @@ export class CompanytypesComponent implements OnInit {
   ngOnInit(): void {
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is ' + this.currentRole);
-    console.log('highestRank is ' + this.highestRank);
   }
 
   getAllTypes(companyId: string): void {
@@ -68,7 +66,6 @@ export class CompanytypesComponent implements OnInit {
       (response: any[]) => {
         this.spinner.hide();
         this.types = response;
-        console.log(response);
         this.types.forEach((type: { parentId?: string }) => {
           if (!type.parentId) {
             type.parentId = 'Top Level';

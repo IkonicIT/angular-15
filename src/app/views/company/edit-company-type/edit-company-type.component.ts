@@ -42,7 +42,6 @@ export class EditCompanyTypeComponent implements OnInit, OnDestroy {
     private spinner: NgxSpinnerService
   ) {
     this.companyId = Number(this.route.snapshot.params['id']);
-    console.log('companyId=', this.companyId);
   }
 
   ngOnInit(): void {
@@ -53,7 +52,6 @@ export class EditCompanyTypeComponent implements OnInit, OnDestroy {
       this.route.queryParams.subscribe((params) => {
         this.companyId = +params['q'] || 0;
         this.typeId = +params['a'] || 0;
-        console.log('Query params companyId:', this.companyId, 'typeId:', this.typeId);
       })
     );
 
@@ -113,7 +111,6 @@ export class EditCompanyTypeComponent implements OnInit, OnDestroy {
   }
 
   onValueChange(value: number): void {
-    console.log(value);
   }
 
   updateCompanyType(): void {

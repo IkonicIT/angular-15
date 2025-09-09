@@ -3,7 +3,6 @@ import { CompanyDocumentsService } from '../../../services/company-documents.ser
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router, ActivatedRoute } from '@angular/router';
-// import { saveAs } from 'file-saver/FileSaver';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PartsService } from 'src/app/services/parts.service';
 import { Location } from '@angular/common';
@@ -14,85 +13,86 @@ import { Location } from '@angular/common';
   styleUrls: ['./part-attachements.component.scss'],
 })
 export class PartAttachementsComponent implements OnInit {
-  companyId: string;
+  companyId: string = '';
   model: any;
   p: any;
-  userName: any;
+  userName: string | null = null;
   index: any;
   documents: any[] = [];
-  route: ActivatedRoute;
-  router: Router;
-  message: string;
-  highestRank: number;
-  modalRef: BsModalRef;
+  message: string = '';
+  highestRank: number = 0;
+  modalRef: BsModalRef | null = null;
   vendorName: string = '';
   order: string = 'description';
   reverse: string = '';
   vendorDocumentFilter: any = '';
-  itemsForPagination: any = 5;
+  itemsForPagination: number = 5;
   globalCompany: any;
-  helpFlag: any = false;
-  partNoteId: any;
-  authToken: any;
+  helpFlag: boolean = false;
+  partNoteId: string | null = null;
+  authToken: string | null = null;
   vendorAttachment: any;
-  frame: any;
+  frame: string = '';
+
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
     private partsService: PartsService,
     private location: Location,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.partNoteId = route.snapshot.params['id'];
+    this.partNoteId = this.route.snapshot.paramMap.get('id');
     this.authToken = sessionStorage.getItem('auth_token');
-    this.router = router;
-    this.route = route;
-    this.route.params.subscribe((params) => {
-      this.frame = params['frame'] || '';
+
+    this.route.paramMap.subscribe((params) => {
+      this.frame = params.get('frame') || '';
     });
-    console.log('VendorId = ' + this.partNoteId);
+
     if (this.partNoteId) {
       this.getAllDocuments(this.partNoteId);
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  getAllDocuments(vendorId: any) {
+  getAllDocuments(vendorId: string): void {
     this.spinner.show();
-    this.partsService.geAllPartAttachments(this.partNoteId).subscribe(
+    this.partsService.geAllPartAttachments(vendorId).subscribe(
       (response) => {
         this.spinner.hide();
-        console.log(response);
         this.documents = response;
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  refresh() {
+  refresh(): void {
     this.documents = [];
-    this.getAllDocuments(this.partNoteId);
+    if (this.partNoteId) {
+      this.getAllDocuments(this.partNoteId);
+    }
   }
-  openModal(template: TemplateRef<any>, id: any) {
+
+  openModal(template: TemplateRef<any>, id: any): void {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
-  addDocument() {
-    console.log('Part', this.companyId);
+
+  addDocument(): void {
     this.router.navigate(['/parts/addDocument/', this.partNoteId]);
   }
-  editDocument(document: any) {
-    this.router.navigate(['/parts/editDocument/', document.partAttachmentID]);
+
+  editDocument(document: any): void {
+    this.router.navigate(['/parts/editDocument/', document.partAttachmentId]);
   }
 
-  backToParts() {
+  backToParts(): void {
     this.location.back();
   }
 
@@ -100,12 +100,12 @@ export class PartAttachementsComponent implements OnInit {
     this.message = 'Confirmed!';
     this.spinner.show();
     this.partsService.deletePartAttachment(this.index).subscribe(
-      (response) => {
+      () => {
         this.spinner.hide();
-        this.modalRef.hide();
+        this.modalRef?.hide();
         this.refresh();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
@@ -113,27 +113,20 @@ export class PartAttachementsComponent implements OnInit {
 
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
-  setOrder(value: string) {
+
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
 
-  // downloadDocument(companyDocument) {
-  //   var blob = this.companyDocumentsService.b64toBlob(companyDocument.attachmentFile, companyDocument.contentType); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
-  //   saveAs(blob, companyDocument.fileName);
-  // }
 
   getPartAttachment(document: any): void {
     this.partsService
-      .getPartAttachment(document.partAttachmentID)
+      .getPartAttachment(document.partAttachmentId)
       .subscribe((data: any) => {
         this.vendorAttachment = data;
         this.openAttachment();
@@ -142,7 +135,6 @@ export class PartAttachementsComponent implements OnInit {
 
   openAttachment(): void {
     if (this.isImage()) {
-      // Open image in a new tab
       const imageWindow = window.open();
       if (imageWindow) {
         imageWindow.document.write(
@@ -150,7 +142,6 @@ export class PartAttachementsComponent implements OnInit {
         );
       }
     } else {
-      // Download the attachment
       const blob = this.base64ToBlob(
         this.vendorAttachment.attachmentFile,
         this.vendorAttachment.contentType
@@ -173,39 +164,39 @@ export class PartAttachementsComponent implements OnInit {
   }
 
   private base64ToBlob(base64: string, contentType: string): Blob {
-    const byteCharacters = atob(base64);
-    const byteArrays = [];
+  const byteCharacters = atob(base64);
+  const byteArrays: BlobPart[] = [];
 
-    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-      const slice = byteCharacters.slice(offset, offset + 512);
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
 
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
     }
 
-    return new Blob(byteArrays, { type: contentType });
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
   }
 
-  downloadDocument(companyDocument: any) {
-    var blob = this.companyDocumentsService.b64toBlob(
+  return new Blob(byteArrays, { type: contentType });
+}
+
+  downloadDocument(companyDocument: any): void {
+    const blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
       companyDocument.contentType
     );
-    var fileURL = URL.createObjectURL(blob);
-
+    const fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

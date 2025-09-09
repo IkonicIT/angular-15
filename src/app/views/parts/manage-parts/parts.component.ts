@@ -1,9 +1,7 @@
-// src/app/views/parts/parts.component.ts
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PartsService } from 'src/app/services/parts.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-parts',
@@ -11,14 +9,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./parts.component.scss'],
 })
 export class PartsComponent implements OnInit {
-  userName: string;
+  userName: string = '';
   highestRank: any;
   frame: string = '';
   parts: any[] = [];
   frameParts: any;
   selectedPartDetails: any = null;
-  errorMessage1: string;
-  errorMessage2: string;
+  errorMessage1: string = '';
+  errorMessage2: string = '';
 
   constructor(
     private partsService: PartsService,
@@ -27,67 +25,54 @@ export class PartsComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    // const partId = this.route.snapshot.paramMap.get('id');
-    // if (partId) {
-    //   this.partsService.getPartData(+partId).subscribe(data => {
-    //     this.onMpvpClick(partId)
-    //   });
-    // }
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName') || '';
     this.highestRank = sessionStorage.getItem('highestRank');
     this.frame = sessionStorage.getItem('frameParts') || '';
     this.onSearch();
   }
 
-  onSearch() {
+  onSearch(): void {
     if (this.frame) {
-      console.log('frameParts:', this.frame);
       sessionStorage.setItem('frameParts', this.frame);
       this.spinner.show();
-      this.partsService.getParts(this.frame).subscribe((response) => {
-        if (response.length === 0) {
+      this.partsService.getParts(this.frame).subscribe({
+        next: (response) => {
+          if (!response || response.length === 0) {
+            this.errorMessage1 = 'No Data Found';
+            this.selectedPartDetails = null;
+            this.parts = [];
+          } else {
+            this.highestRank = sessionStorage.getItem('highestRank');
+            this.errorMessage1 = '';
+            this.parts = response.map((part: any) => ({
+              mpbn: part.mpbn,
+              mpvp: part.mpvp,
+              mpde: part.mpde,
+            }));
+          }
+          this.spinner.hide();
+        },
+        error: () => {
+          this.spinner.hide();
           this.errorMessage1 = 'No Data Found';
-          this.selectedPartDetails = null;
-          this.spinner.hide();
           this.parts = [];
-        } else {
-          this.spinner.hide();
-          this.highestRank = sessionStorage.getItem('highestRank');
-          console.log(this.highestRank);
-          this.errorMessage1 = '';
-          this.parts = response.map((part) => ({
-            mpbn: part.mpbn,
-            mpvp: part.mpvp,
-            mpde: part.mpde,
-          }));
-        }
+        },
       });
     }
   }
 
-  onMpvpClick(mpvp: string) {
+  onMpvpClick(mpvp: string): void {
     this.spinner.show();
-    this.partsService.getPartDetails(mpvp).subscribe(
-      (response) => {
-        if (response.length === 0) {
-          this.spinner.hide();
+    this.partsService.getPartDetails(mpvp).subscribe({
+      next: (response) => {
+        if (!response || response.length === 0) {
           this.selectedPartDetails = null;
-          setTimeout(() => {
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth',
-            });
-          }, 0);
           this.errorMessage2 = 'No Data Found';
-        } else {
-          this.spinner.hide();
           setTimeout(() => {
-            window.scrollTo({
-              top: document.body.scrollHeight,
-              behavior: 'smooth',
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }, 0);
+        } else {
           const partDetail = response[0];
           this.selectedPartDetails = {
             partid: partDetail.partid,
@@ -99,7 +84,7 @@ export class PartsComponent implements OnInit {
               partDetail.prdes4,
               partDetail.prdes5,
             ]
-              .filter((desc) => desc) // Filter out null or undefined values
+              .filter((desc: string | null | undefined) => !!desc)
               .join(', '),
             prqnty: partDetail.prqnty,
             prbloc: partDetail.prbloc,
@@ -108,21 +93,26 @@ export class PartsComponent implements OnInit {
             PRAISL: partDetail.praisl,
             PRSECT: partDetail.prsect,
           };
+          this.errorMessage2 = '';
+          setTimeout(() => {
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: 'smooth',
+            });
+          }, 0);
         }
-      },
-      (error) => {
         this.spinner.hide();
+      },
+      error: (error) => {
         this.selectedPartDetails = null;
-        setTimeout(() => {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
-        }, 0);
         this.errorMessage2 =
           error === '404 Not Found' ? 'Part not found' : 'No Data Found';
-      }
-    );
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 0);
+        this.spinner.hide();
+      },
+    });
   }
 
   navigateToEdit(bmkey1: number): void {

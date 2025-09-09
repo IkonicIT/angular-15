@@ -14,27 +14,26 @@ import { CranesService } from 'src/app/services/cranes.service';
 export class AddCraneNoteAttachmentComponent implements OnInit {
   model: any = {};
   index: number = 0;
-  date = Date.now();
+  date: number = Date.now();
   companyId: number = 0;
-  vendorName: string;
-  private sub: any;
-  id: number;
-  router: Router;
-  private fileContent: string = '';
-  private fileName: any;
-  private description: any;
-  public fileType: any = '';
+  vendorName: string = '';
+  id!: number;
+  fileContent: string = '';
+  fileName: string = '';
+  description: string = '';
+  fileType: string = '';
   globalCompany: any;
-  helpFlag: any = false;
-  addedfiles: any = [];
-  public file: File;
+  helpFlag: boolean = false;
+  addedfiles: any[] = [];
+  file!: File;
   userName: any;
-  dismissible = true;
+  dismissible: boolean = true;
   craneNoteId: any;
+
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private location: Location,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
@@ -46,30 +45,28 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
       this.companyId = value.companyId;
       this.userName = sessionStorage.getItem('userName');
     });
-    this.router = router;
-    this.sub = this.route.queryParams.subscribe((params) => {
+
+    this.route.queryParams.subscribe((params) => {
       this.craneNoteId = +params['q'] || 0;
-      console.log('Query params ', this.craneNoteId);
     });
+
     this.route.paramMap.subscribe((params) => {
-      this.craneNoteId = params.get('id'); // 'id' is the placeholder used in the route
-      console.log('Part ID:', this.craneNoteId); // Now you have access to the partId
+      this.craneNoteId = params.get('id');
     });
   }
 
-  ngOnInit() {
-    console.log('companyi=' + this.companyId);
+  ngOnInit(): void {
     this.addedfiles.push({ file: '', description: '' });
   }
 
-  saveCompanyDocument() {
-    var noFileChosen = true;
-    var addedFiles = this.addedfiles;
-    addedFiles.forEach(function (element: any) {
+  saveCompanyDocument(): void {
+    let noFileChosen = true;
+    this.addedfiles.forEach((element: any) => {
       if (element.attachmentFile === undefined) {
         noFileChosen = false;
       }
     });
+
     if (!noFileChosen) {
       this.index = -1;
       window.scroll(0, 0);
@@ -87,17 +84,19 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
       );
       formdata.append('entityId', JSON.stringify(this.companyId));
       formdata.append('moduleType', 'companytype');
-      var jsonArr = this.addedfiles;
-      for (var i = 0; i < jsonArr.length; i++) {
+
+      const jsonArr = [...this.addedfiles];
+      for (let i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-      console.log(jsonArr);
-      var req = {
+
+      const req = {
         craneAttachmentsList: jsonArr,
       };
+
       this.spinner.show();
-      this.cranesService.addCraneNoteAttachment(req).subscribe(
-        (response) => {
+      this.cranesService.addCraneNoteAttachment(req).subscribe({
+        next: () => {
           this.spinner.hide();
           window.scroll(0, 0);
           this.index = 1;
@@ -106,82 +105,55 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
             this.cancelVendorDocument();
           }, 3000);
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-        }
-      );
+        },
+      });
     }
   }
 
-  // saveVendorDocument() {
-  //   if (!this.fileName) {
-  //     this.index = -1;
-  //     window.scroll(0, 0);
-  //   } else {
-  //     let req = {
-  //       "createdBy": "Yogi Patel",
-  //       "attachmentFile": this.fileContent,
-  //       "vendorAttachmentId": 0,
-  //       "contentType": this.fileType,
-  //       "description": this.model.description,
-  //       "fileName": this.fileName,
-  //       "moduleType": "vendortype",
-  //       "isNew": true,
-  //       "createdDate":new Date().toISOString(),
-  //     };
-  //     this.spinner.show();
-  //     this.companyDocumentsService.saveVendorDocument(req).subscribe(response => {
-  //       this.spinner.hide();
-  //       window.scroll(0, 0);
-  //       this.index = 1;
-  //     },
-  //       error => {
-  //         this.spinner.hide();
-  //       });
-  //   }
-  // }
-
-  cancelVendorDocument() {
+  cancelVendorDocument(): void {
     this.location.back();
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 
-  fileChangeListener($event: any, fileIndex: any): void {
-    console.log(this.addedfiles);
-
+  fileChangeListener($event: any, fileIndex: number): void {
     this.readThis($event.target, fileIndex);
   }
 
-  remove(i: number) {
+  remove(i: number): void {
     this.addedfiles.splice(i, 1);
   }
 
-  addNewAttachment() {
+  addNewAttachment(): void {
     this.index = 0;
     this.addedfiles.push({ file: '', description: '' });
   }
-  readThis(inputValue: any, fileIndex: any): void {
+
+  private readThis(inputValue: any, fileIndex: number): void {
     if (inputValue.files && inputValue.files[0]) {
       this.file = inputValue.files[0];
       this.fileName = this.file.name;
 
-      var myReader: FileReader = new FileReader();
+      const myReader: FileReader = new FileReader();
       myReader.readAsDataURL(this.file);
-      myReader.onloadend = (e) => {
+
+      myReader.onloadend = () => {
         if (typeof myReader.result === 'string') {
-          console.log(myReader.result);
           this.fileContent = myReader.result.split(',')[1];
           this.fileType = myReader.result
             .split(',')[0]
             .split(':')[1]
             .split(';')[0];
+
           const fileInfo = this.addedfiles[fileIndex];
           fileInfo['createdBy'] = this.userName;
           fileInfo['craneNoteId'] = this.craneNoteId;
@@ -193,7 +165,6 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
           fileInfo['fileName'] = this.fileName;
           fileInfo['description'] = this.description;
           fileInfo['createdDate'] = new Date().toISOString();
-          console.log(this.addedfiles);
         }
       };
     }

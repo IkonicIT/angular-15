@@ -1,100 +1,104 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompanyDocumentsService } from '../../../services/company-documents.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PartsService } from 'src/app/services/parts.service';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-part-attachment',
   templateUrl: './add-part-attachment.component.html',
   styleUrls: ['./add-part-attachment.component.scss'],
 })
-export class AddPartAttachmentComponent implements OnInit {
+export class AddPartAttachmentComponent implements OnInit, OnDestroy {
   model: any = {};
   index: number = 0;
   date = Date.now();
   companyId: number = 0;
-  vendorName: string;
-  private sub: any;
-  id: number;
-  router: Router;
+  vendorName: string = '';
+  id!: number | null;
   dismissible: boolean = true;
   private fileContent: string = '';
-  private fileName: any;
-  private description: any;
-  public fileType: any = '';
+  private fileName: string = '';
+  private description: string = '';
+  public fileType: string = '';
   globalCompany: any;
-  helpFlag: any = false;
-  addedfiles: any = [];
-  public file: File;
-  userName: any;
+  helpFlag: boolean = false;
+  addedfiles: any[] = [];
+  public file!: File;
+  userName: string | null = '';
   partNoteId: any;
+
+  private subscriptions: Subscription = new Subscription();
+
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private location: Location,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
-    private partSevice: PartsService
+    private partService: PartsService
   ) {
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
+    const companySub = this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.vendorName = value.name;
-      this.companyId = value.companyId;
+      this.vendorName = value?.name || '';
+      this.companyId = value?.companyId || 0;
       this.userName = sessionStorage.getItem('userName');
     });
-    this.router = router;
-    this.sub = this.route.queryParams.subscribe((params) => {
+    this.subscriptions.add(companySub);
+
+    const querySub = this.route.queryParams.subscribe((params) => {
       this.partNoteId = +params['q'] || 0;
-      console.log('Query params ', this.partNoteId);
     });
-    this.route.paramMap.subscribe((params) => {
-      this.partNoteId = params.get('id'); // 'id' is the placeholder used in the route
-      console.log('Part ID:', this.partNoteId); // Now you have access to the partId
+    this.subscriptions.add(querySub);
+
+    const routeSub = this.route.paramMap.subscribe((params) => {
+      this.partNoteId = params.get('id');
     });
+    this.subscriptions.add(routeSub);
   }
 
-  ngOnInit() {
-    console.log('companyi=' + this.companyId);
+  ngOnInit(): void {
     this.addedfiles.push({ file: '', description: '' });
   }
 
-  saveCompanyDocument() {
-    var noFileChosen = true;
-    var addedFiles = this.addedfiles;
-    addedFiles.forEach(function (element: any) {
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  saveCompanyDocument(): void {
+    let noFileChosen = true;
+    this.addedfiles.forEach((element: any) => {
       if (element.attachmentFile === undefined) {
         noFileChosen = false;
       }
     });
+
     if (!noFileChosen) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
-      formdata.append('addedBy', this.userName);
+      formdata.append('addedBy', this.userName || '');
       formdata.append('companyId', JSON.stringify(this.companyId));
-      formdata.append(
-        'description',
-        this.model.description ? this.model.description : ''
-      );
+      formdata.append('description', this.model.description ? this.model.description : '');
       formdata.append('entityId', JSON.stringify(this.companyId));
       formdata.append('moduleType', 'companytype');
-      var jsonArr = this.addedfiles;
-      for (var i = 0; i < jsonArr.length; i++) {
+
+      const jsonArr = [...this.addedfiles];
+      for (let i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-      console.log(jsonArr);
-      var req = {
-        partAttachmentsList: jsonArr,
-      };
+
+      const req = { partAttachmentsList: jsonArr };
+
       this.spinner.show();
-      this.partSevice.addPartAttachment(req).subscribe(
-        (response) => {
+      this.partService.addPartAttachment(req).subscribe({
+        next: () => {
           this.spinner.hide();
           window.scroll(0, 0);
           this.index = 1;
@@ -102,83 +106,57 @@ export class AddPartAttachmentComponent implements OnInit {
             this.index = 0;
             this.cancelVendorDocument();
           }, 5000);
-          // this.router.navigateByUrl(
-          //   `parts/manageAttachements/${this.partNoteId}`
-          // );
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-        }
-      );
+        },
+      });
     }
   }
 
-  // saveVendorDocument() {
-  //   if (!this.fileName) {
-  //     this.index = -1;
-  //     window.scroll(0, 0);
-  //   } else {
-  //     let req = {
-  //       "createdBy": "Yogi Patel",
-  //       "attachmentFile": this.fileContent,
-  //       "vendorAttachmentId": 0,
-  //       "contentType": this.fileType,
-  //       "description": this.model.description,
-  //       "fileName": this.fileName,
-  //       "moduleType": "vendortype",
-  //       "isNew": true,
-  //       "createdDate":new Date().toISOString(),
-  //     };
-  //     this.spinner.show();
-  //     this.companyDocumentsService.saveVendorDocument(req).subscribe(response => {
-  //       this.spinner.hide();
-  //       window.scroll(0, 0);
-  //       this.index = 1;
-  //     },
-  //       error => {
-  //         this.spinner.hide();
-  //       });
-  //   }
-  // }
 
-  cancelVendorDocument() {
+
+  cancelVendorDocument(): void {
     this.location.back();
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 
-  fileChangeListener($event: any, fileIndex: any): void {
-    console.log(this.addedfiles);
-
-    this.readThis($event.target, fileIndex);
+  fileChangeListener($event: Event, fileIndex: number): void {
+    const target = $event.target as HTMLInputElement;
+    if (target?.files) {
+      this.readThis(target, fileIndex);
+    }
   }
 
-  remove(i: number) {
+  remove(i: number): void {
     this.addedfiles.splice(i, 1);
   }
 
-  addNewAttachment() {
+  addNewAttachment(): void {
     this.index = 0;
     this.addedfiles.push({ file: '', description: '' });
   }
-  readThis(inputValue: any, fileIndex: any): void {
+
+  private readThis(inputValue: HTMLInputElement, fileIndex: number): void {
     if (inputValue.files && inputValue.files[0]) {
       this.file = inputValue.files[0];
       this.fileName = this.file.name;
 
-      var myReader: FileReader = new FileReader();
+      const myReader = new FileReader();
       myReader.readAsDataURL(this.file);
-      myReader.onloadend = (e) => {
+      myReader.onloadend = () => {
         const result = myReader.result as string;
-        console.log(result);
         this.fileContent = result.split(',')[1];
         this.fileType = result.split(',')[0].split(':')[1].split(';')[0];
+
         const fileInfo = this.addedfiles[fileIndex];
         fileInfo['createdBy'] = this.userName;
         fileInfo['partNoteId'] = this.partNoteId;
@@ -190,7 +168,6 @@ export class AddPartAttachmentComponent implements OnInit {
         fileInfo['fileName'] = this.fileName;
         fileInfo['description'] = this.description;
         fileInfo['createdDate'] = new Date().toISOString();
-        console.log(this.addedfiles);
       };
     }
   }

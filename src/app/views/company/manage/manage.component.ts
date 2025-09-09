@@ -70,7 +70,6 @@ export class ManageComponent implements OnInit {
     this.companyName = this.globalCompany.name;
     this.currentCompanyName = this.companyManagementService.currentCompanyName;
 
-    console.log('companuyid=' + this.companyId);
     if (this.companyId) {
       this.getAllNotes(this.companyId);
     }
@@ -86,8 +85,6 @@ export class ManageComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
     this.model.date = new Date();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
     this.model.effectiveOn = new Date();
@@ -101,7 +98,6 @@ export class ManageComponent implements OnInit {
       (response: any) => {
         this.spinner.hide();
 
-        console.log(response);
         this.notes = response;
       },
       (error: any) => {
@@ -144,7 +140,6 @@ export class ManageComponent implements OnInit {
         trackingNumber: '',
         moduleType: 'companytype',
       };
-      console.log(JSON.stringify(this.model));
       this.spinner.show();
 
       this.companynotesService.saveCompanynotes(this.model).subscribe(
@@ -313,23 +308,18 @@ export class ManageComponent implements OnInit {
       <script>
         function reloadIFrame() {
           var iframe = document.getElementById("iFrame");
-            console.log(iframe); //work control
-            console.log(iframe.contentDocument); //work control
             if(iframe.contentDocument.URL == "about:blank"){
-              console.log("loaded");
               iframe.src =  iframe.src;
             }
           }
           var timerId = setInterval("reloadIFrame();", 1300);
           setTimeout(() => {
             clearInterval(timerId);
-            console.log("Finally Loaded");
             }, 25000);
 
           $( document ).ready(function() {
               $('#menuiFrame').on('load', function() {
                   clearInterval(timerId);
-                  console.log("Finally Loaded"); //work control
               });
           });
         </script>
@@ -382,7 +372,6 @@ export class ManageComponent implements OnInit {
 
   confirm(): void {
     this.message = 'Confirmed!';
-    console.log('Deleting note with journalId:', this.model.journalId);
     this.modalRef.hide();
     this.spinner.show();
 
@@ -390,7 +379,6 @@ export class ManageComponent implements OnInit {
       .removeCompanynotess(this.model.journalId, this.userName)
       .subscribe(
         (response: any) => {
-          console.log('Delete response:', response);
           this.spinner.hide();
 
           this.getAllNotes(this.companyId);

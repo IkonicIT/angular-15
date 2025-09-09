@@ -37,7 +37,6 @@ export class AddCompanyTypeComponent implements OnInit, OnDestroy {
   ) {
     const idParam = this.route.snapshot.params['id'];
     this.companyId = idParam ? +idParam : 0;
-    console.log('companyId = ' + this.companyId);
   }
 
   ngOnInit(): void {
@@ -45,11 +44,9 @@ export class AddCompanyTypeComponent implements OnInit, OnDestroy {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || this.companyId;
-      console.log('Query params companyId = ', this.companyId);
       this.getAllTypes(this.companyId);
     });
 
-    console.log('companyId (onInit) = ' + this.companyId);
   }
 
   ngOnDestroy(): void {
@@ -130,7 +127,6 @@ export class AddCompanyTypeComponent implements OnInit, OnDestroy {
     };
 
     this.spinner.show();
-    console.log(JSON.stringify(request));
 
     this.companyTypesService.saveCompanyType(request).subscribe(
       (response) => {
@@ -152,7 +148,6 @@ export class AddCompanyTypeComponent implements OnInit, OnDestroy {
   }
 
   onValueChange(value: any): void {
-    console.log(value);
   }
 
   cancelCompanyDocument(): void {

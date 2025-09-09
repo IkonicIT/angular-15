@@ -1,97 +1,104 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { WarrantyManagementService } from '../../../services/warranty-management.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CompanyManagementService } from '../../../services/company-management.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-warranty-type',
   templateUrl: './edit-warranty-type.component.html',
   styleUrls: ['./edit-warranty-type.component.scss'],
 })
-export class EditWarrantyTypeComponent implements OnInit {
+export class EditWarrantyTypeComponent implements OnInit, OnDestroy {
   globalCompany: any;
-  companyName: any;
-  companyId: any;
+  companyName = '';
+  companyId: number | null = null;
   warrantyType: any;
-  index: number;
-  router: Router;
-  route: ActivatedRoute;
-  warrantyTypeId: any;
-  helpFlag: any = false;
-  userName: any;
+  index = 0;
+  warrantyTypeId!: number;
+  helpFlag = false;
+  userName: string | null = null;
   dismissible = true;
   loader = false;
+
+  private subscription!: Subscription;
+
   constructor(
     private companyManagementService: CompanyManagementService,
     private warrantyManagementService: WarrantyManagementService,
     private spinner: NgxSpinnerService,
-    router: Router,
-    route: ActivatedRoute
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyName = this.globalCompany.name;
-    this.companyId = this.globalCompany.companyId;
-    this.router = router;
-    this.route = route;
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
-      this.globalCompany = value;
-      this.companyName = value.name;
-      this.companyId = value.companyId;
+    if (this.globalCompany) {
+      this.companyName = this.globalCompany.name;
+      this.companyId = this.globalCompany.companyId;
+    }
+
+    this.subscription = this.companyManagementService.globalCompanyChange.subscribe(
+      (value) => {
+        this.globalCompany = value;
+        this.companyName = value?.name ?? '';
+        this.companyId = value?.companyId ?? null;
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.userName = sessionStorage.getItem('userName');
+
+    const warrantyIdParam = this.route.snapshot.paramMap.get('warrantyId');
+    this.warrantyTypeId = warrantyIdParam ? Number(warrantyIdParam) : 0;
+
+    this.spinner.show();
+    this.warrantyManagementService.getWarrantyType(this.warrantyTypeId).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        this.warrantyType = response.warrantyType;
+      },
+      error: () => {
+        this.spinner.hide();
+      },
     });
   }
 
-  ngOnInit() {
-    this.userName = sessionStorage.getItem('userName');
-    this.warrantyTypeId = this.route.snapshot.params['warrantyId'];
-    this.spinner.show();
-
-    this.warrantyManagementService
-      .getWarrantyType(this.warrantyTypeId)
-      .subscribe(
-        (response: any) => {
-          this.spinner.hide();
-
-          this.warrantyType = response.warrantyType;
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
-  }
-
-  UpdateWarrantyType() {
+  updateWarrantyType(): void {
     if (!this.warrantyType) {
       this.index = -1;
       window.scroll(0, 0);
-    } else {
-      var req = {
-        companyId: this.companyId,
-        warrantyType: this.warrantyType,
-        warrantyTypeId: 0,
-        userName: this.userName,
-      };
-      this.spinner.show();
-
-      this.warrantyManagementService
-        .updateWarrantyType(req, this.warrantyTypeId)
-        .subscribe(
-          (response) => {
-            this.spinner.hide();
-
-            this.index = 1;
-          },
-          (error) => {
-            this.spinner.hide();
-          }
-        );
+      return;
     }
+
+    const req = {
+      companyId: this.companyId,
+      warrantyType: this.warrantyType,
+      warrantyTypeId: 0,
+      userName: this.userName,
+    };
+
+    this.spinner.show();
+    this.warrantyManagementService.updateWarrantyType(req, this.warrantyTypeId).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.index = 1;
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
   }
-  cancel() {
+
+  cancel(): void {
     this.router.navigate(['/warranty/list']);
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

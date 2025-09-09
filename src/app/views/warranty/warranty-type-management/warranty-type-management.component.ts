@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { WarrantyManagementService } from '../../../services/warranty-management.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-warranty-type-management',
@@ -12,132 +13,137 @@ import { Router } from '@angular/router';
   styleUrls: ['./warranty-type-management.component.scss'],
 })
 export class WarrantyTypeManagementComponent implements OnInit {
-  modalRef: BsModalRef | null;
-  modalRef2: BsModalRef;
-  message: string;
+  modalRef: BsModalRef | null = null;
+  modalRef2: BsModalRef | null = null;
+  message: string = '';
   warrantyTypes: any[] = [];
-  index: number;
+  index: number = 0;
   order: string = 'name';
   reverse: string = '';
-  warrantyFilter: any = '';
-  itemsForPagination: any = 5;
+  warrantyFilter: string = '';
+  itemsForPagination: number = 5;
   globalCompany: any;
-  companyName: any;
-  companyId: any;
+  companyName: string = '';
+  companyId: number | null = null;
   warrantyType: any;
-  currentRole: any;
+  currentRole: string | null = null;
   highestRank: any;
-  router: Router;
-  helpFlag: any = false;
-  userName: any;
+  helpFlag: boolean = false;
+  userName: string | null = null;
   dismissible = true;
   loader = false;
-  p: any;
+  p: number = 1;
   type: any;
+
+  private subscription!: Subscription;
+
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
     private warrantyManagementService: WarrantyManagementService,
-    sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer,
     private spinner: NgxSpinnerService,
-    router: Router
+    private router: Router
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyName = this.globalCompany.name;
-    this.companyId = this.globalCompany.companyId;
-    this.router = router;
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
-      this.globalCompany = value;
-      this.companyName = value.name;
-      this.companyId = value.companyId;
-    });
+    if (this.globalCompany) {
+      this.companyName = this.globalCompany.name;
+      this.companyId = this.globalCompany.companyId;
+    }
+
+    this.subscription = this.companyManagementService.globalCompanyChange.subscribe(
+      (value) => {
+        this.globalCompany = value;
+        this.companyName = value?.name ?? '';
+        this.companyId = value?.companyId ?? null;
+      }
+    );
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
 
-    this.warrantyManagementService
-      .getAllWarrantyTypes(this.companyId)
-      .subscribe(
-        (response: any) => {
+    if (this.companyId != null) {
+      this.warrantyManagementService.getAllWarrantyTypes(this.companyId).subscribe({
+        next: (response: any) => {
           this.spinner.hide();
-
           this.warrantyTypes = response;
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-        }
-      );
+        },
+      });
+    }
+
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
   }
 
-  refresh() {
+  refresh(): void {
     this.warrantyTypes = [];
     this.spinner.show();
 
-    this.warrantyManagementService
-      .getAllWarrantyTypes(this.companyId)
-      .subscribe(
-        (response: any) => {
+    if (this.companyId != null) {
+      this.warrantyManagementService.getAllWarrantyTypes(this.companyId).subscribe({
+        next: (response: any) => {
           this.spinner.hide();
-
           this.warrantyTypes = response;
-          const totalWarrantyTypesCount = this.warrantyTypes.length;
-          const maxPageAvailable = Math.ceil(
-            totalWarrantyTypesCount / this.itemsForPagination
-          );
 
-          // Check if the current page exceeds the maximum available page
+          const totalWarrantyTypesCount = this.warrantyTypes.length;
+          const maxPageAvailable = Math.ceil(totalWarrantyTypesCount / this.itemsForPagination);
+
           if (this.p > maxPageAvailable) {
             this.p = maxPageAvailable;
           }
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-        }
-      );
-  }
-
-  saveWarraty() {
-    if (!this.warrantyType) {
-      this.index = -1;
-      window.scroll(0, 0);
-    } else {
-      var req = {
-        companyId: this.companyId,
-        warrantyType: this.warrantyType,
-        warrantyTypeId: 0,
-        userName: this.userName,
-      };
-      this.spinner.show();
-
-      this.warrantyManagementService.saveWarrantyType(req).subscribe(
-        (response) => {
-          this.warrantyType = undefined;
-          this.spinner.hide();
-
-          this.modalRef?.hide();
-          this.refresh();
         },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+      });
     }
   }
 
-  openModal(template: TemplateRef<any>, id?: any) {
-    this.index = id;
+  saveWarranty(): void {
+    if (!this.warrantyType) {
+      this.index = -1;
+      window.scroll(0, 0);
+      return;
+    }
+
+    const req = {
+      companyId: this.companyId,
+      warrantyType: this.warrantyType,
+      warrantyTypeId: 0,
+      userName: this.userName,
+    };
+
+    this.spinner.show();
+    this.warrantyManagementService.saveWarrantyType(req).subscribe({
+      next: () => {
+        this.warrantyType = undefined;
+        this.spinner.hide();
+        this.modalRef?.hide();
+        this.refresh();
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
+  }
+
+  openModal(template: TemplateRef<any>, id?: number): void {
+    if (id != null) {
+      this.index = id;
+    }
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  openModal2(template: TemplateRef<any>) {
+  openModal2(template: TemplateRef<any>): void {
     this.modalRef2 = this.modalService.show(template, { class: 'second' });
   }
 
-  closeFirstModal() {
+  closeFirstModal(): void {
     this.modalRef?.hide();
     this.modalRef = null;
   }
@@ -146,31 +152,29 @@ export class WarrantyTypeManagementComponent implements OnInit {
     this.message = 'Confirmed!';
     this.spinner.show();
 
-    this.setwarrantyType(this.index);
-    this.warrantyManagementService
-      .removeWarrantyType(
-        this.index,
-        this.companyId,
-        this.userName,
-        this.warrantyType
-      )
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-
-          this.modalRef?.hide();
-          this.refresh();
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+    this.setWarrantyType(this.index);
+    this.warrantyManagementService.removeWarrantyType(
+      this.index,
+      this.companyId!,
+      this.userName ?? '',
+      this.warrantyType
+    ).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.modalRef?.hide();
+        this.refresh();
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
   }
 
-  setwarrantyType(warrantyTypeId: any) {
+  setWarrantyType(warrantyTypeId: number): void {
     this.warrantyTypes.forEach((warrantyType: any) => {
-      if (warrantyTypeId == warrantyType.warrantyTypeId)
+      if (warrantyTypeId === warrantyType.warrantyTypeId) {
         this.warrantyType = warrantyType.warrantyType;
+      }
     });
   }
 
@@ -179,32 +183,34 @@ export class WarrantyTypeManagementComponent implements OnInit {
     this.modalRef?.hide();
   }
 
-  setOrder(value: string) {
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
 
-  editWarrantyType(warrantyTypeId: string) {
-    this.router.navigate(['warranty/editwarrantyType/' + warrantyTypeId]);
+  editWarrantyType(warrantyTypeId: number): void {
+    this.router.navigate([`warranty/editwarrantyType/${warrantyTypeId}`]);
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
-  onChange(e: any) {
+
+  onChange(e: any): void {
     const currentPage = this.p;
-    const warrentytypesCount = this.warrantyTypes.length - 1;
-    const maxPageAvailable = Math.ceil(
-      warrentytypesCount / this.itemsForPagination
-    );
+    const warrantyTypesCount = this.warrantyTypes.length - 1;
+    const maxPageAvailable = Math.ceil(warrantyTypesCount / this.itemsForPagination);
+
     if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

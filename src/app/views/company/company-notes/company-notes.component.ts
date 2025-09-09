@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyDocumentsService } from '../../../services/index';
-import { TemplateRef, SecurityContext } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CompanyManagementService } from '../../../services/index';
 import { CompanynotesService } from '../../../services/index';
-import { DomSanitizer } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -15,124 +12,110 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./company-notes.component.scss'],
 })
 export class CompanyNotesComponent implements OnInit {
-  companyId: string;
-  model: any;
-  p: any;
+  companyId: string = '';
+  model: any = {};
+  p: number = 1;
   index: string = 'companydocument';
   notes: any[] = [];
-  router: Router;
-  message: string;
-  modalRef: BsModalRef;
+  message: string = '';
+  modalRef: BsModalRef | null = null;
   companyName: string = '';
   order: string = 'date';
   reverse: string = '';
   companyNotesFilter: any = '';
-  itemsForPagination: any = 5;
+  itemsForPagination: number = 5;
   loader = false;
   globalCompany: any;
+
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
     private companynotesService: CompanynotesService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.companyId = route.snapshot.params['id'];
-    this.router = router;
-    console.log('companuyid=' + this.companyId);
+    this.companyId = this.route.snapshot.params['id'] ?? '';
+
     if (this.companyId) {
       this.getAllNotes(this.companyId);
     }
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
+
+    this.companyManagementService.globalCompanyChange.subscribe((value: any) => {
       this.globalCompany = value;
-      this.companyName = value.name;
-      this.companyId = value.companyId;
+      this.companyName = value?.name ?? '';
+      this.companyId = value?.companyId ?? '';
     });
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
-  getAllNotes(companyId: string) {
+  getAllNotes(companyId: string): void {
     this.spinner.show();
-
     this.companynotesService.getAllCompanyNotess(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-
-        console.log(response);
-        this.notes = response;
+        this.notes = response || [];
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  addNotes() {
-    console.log(this.companyId);
+  addNotes(): void {
     this.router.navigate(['/company/addNotes/'], {
       queryParams: { q: this.companyId },
     });
   }
 
-  openModal(template: TemplateRef<any>, id: string) {
+  openModal(template: TemplateRef<any>, id: string): void {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
   confirm(): void {
     this.message = 'Confirmed!';
-    console.log(
-      'removeCompanynotess companyId=' +
-        this.companyId +
-        ',index==' +
-        this.index
-    );
     this.spinner.show();
 
-    this.companynotesService
-      .removeCompanynotess(this.index, this.companyId)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
+    this.companynotesService.removeCompanynotess(this.index, this.companyId).subscribe(
+      () => {
+        this.spinner.hide();
+        this.modalRef?.hide();
+        this.getAllNotes(this.companyId);
 
-          this.modalRef.hide();
-          this.getAllNotes(this.companyId);
-          const currentPage = this.p;
-          const notesCount = this.notes.length - 1;
-          const maxPageAvailable = Math.ceil(
-            notesCount / this.itemsForPagination
-          );
-          if (currentPage > maxPageAvailable) {
-            this.p = maxPageAvailable;
-          }
-        },
-        (error) => {
-          this.spinner.hide();
+        const currentPage = this.p;
+        const notesCount = this.notes.length - 1;
+        const maxPageAvailable = Math.ceil(notesCount / this.itemsForPagination);
+        if (currentPage > maxPageAvailable) {
+          this.p = maxPageAvailable;
         }
-      );
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  refresh() {
+  refresh(): void {
     this.notes = [];
-    this.ngOnInit();
+    this.getAllNotes(this.companyId);
   }
 
-  viewCompanyNotes(notes: { journalId: any }) {
+  viewCompanyNotes(notes: { journalId: any }): void {
     this.router.navigate(['/company/viewNotes/'], {
       queryParams: { q: this.companyId, a: notes.journalId },
     });
   }
 
-  editCompanyNotes(notes: { journalId: any }) {
+  editCompanyNotes(notes: { journalId: any }): void {
     this.router.navigate(['/company/editNotes/'], {
       queryParams: { q: this.companyId, a: notes.journalId },
     });
   }
 
-  companyNoteAttachments(notes: { journalId: string }) {
+  companyNoteAttachments(notes: { journalId: string }): void {
     this.router.navigate([
       '/company/noteAttchments/' + notes.journalId + '/' + notes.journalId,
     ]);
@@ -140,20 +123,17 @@ export class CompanyNotesComponent implements OnInit {
 
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
-  setOrder(value: string) {
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
-  onChange(e: any) {
+
+  onChange(e: any): void {
     const currentPage = this.p;
     const notesCount = this.notes.length;
     const maxPageAvailable = Math.ceil(notesCount / this.itemsForPagination);

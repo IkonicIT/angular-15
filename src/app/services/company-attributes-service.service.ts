@@ -43,19 +43,19 @@ export class CompanyAttributesServiceService {
 
   getTypeAttributes(typeId: string) {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId, this.httpOptions)
+      .get<any[]>(AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllAttributeTypes() {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributetypes', this.httpOptions)
+      .get<any[]>(AppConfiguration.attributeRestURL + '/getAllAttributetypes', this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllSearchTypes(attributeType: string) {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributeSearchType/' + attributeType, this.httpOptions)
+      .get<any[]>(AppConfiguration.attributeRestURL + '/getAllAttributeSearchType/' + attributeType, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

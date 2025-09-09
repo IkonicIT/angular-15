@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { BroadcasterService } from '../../services/broadcaster.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CompanyDocumentsService } from '../../services/company-documents.service';
 import { CompanyManagementService } from '../../services';
 
@@ -14,45 +11,41 @@ import { CompanyManagementService } from '../../services';
   styleUrls: ['./help.component.scss'],
 })
 export class HelpComponent implements OnInit {
-  companyId: string;
+  companyId: string = '';
   loader = false;
   model: any;
   index: string = 'companydocument';
   documents: any[] = [];
-  route: ActivatedRoute;
-  router: Router;
-  message: string;
-  modalRef: BsModalRef;
+  message: string = '';
+  modalRef: BsModalRef | null = null;
   companyName: string = '';
   order: string = 'description';
   reverse: string = '';
-  documentFilter: any = '';
-  itemsForPagination: any = 5;
+  documentFilter: string = '';
+  itemsForPagination: number = 5;
   globalCompany: any;
-  authToken: any;
-  currentRole: any;
-  highestRank: any;
-  p: any;
+  authToken: string | null;
+  currentRole: string | null = null;
+  highestRank: string | null = null;
+  p: number = 1;
   private fileContent: string = '';
-  private fileName: any;
-  public fileType: any = '';
-  file: File;
-  index1: any;
-  isOwnerAdmin: any;
+  private fileName: string = '';
+  public fileType: string = '';
+  file!: File;
+  index1: number = 0;
+  isOwnerAdmin: string | null = null;
   dismissible = true;
 
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.companyId = route.snapshot.params['id'];
+    this.companyId = this.route.snapshot.params['id'] || '';
     this.authToken = sessionStorage.getItem('auth_token');
-    this.router = router;
-    this.route = route;
 
     if (this.companyId) {
       this.getAllDocuments(this.companyId);
@@ -61,8 +54,7 @@ export class HelpComponent implements OnInit {
       if (this.globalCompany) {
         this.companyName = this.globalCompany.name;
         this.companyId = this.globalCompany.companyId;
-
-        this.getAllDocuments(this.globalCompany.companyId);
+        this.getAllDocuments(this.companyId);
       }
     }
 
@@ -81,25 +73,22 @@ export class HelpComponent implements OnInit {
 
   getAllDocuments(companyId: string) {
     this.spinner.show();
-
     this.companyDocumentsService.getAllCompanyDocuments(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-
-        console.log(response);
         this.documents = response;
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
   saveManual() {
-    if (this.file === undefined) {
+    if (!this.file) {
       this.index1 = -1;
     } else {
-      let req = {
+      const req = {
         manualId: 1,
         manualFile: this.fileContent,
         contentType: this.fileType,
@@ -107,14 +96,12 @@ export class HelpComponent implements OnInit {
         fileName: this.fileName,
       };
       this.spinner.show();
-
       this.companyDocumentsService.updateManual(req).subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-
           this.index1 = 1;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -123,137 +110,98 @@ export class HelpComponent implements OnInit {
 
   getManual() {
     this.spinner.show();
-
     this.companyDocumentsService.getManual().subscribe(
       (response) => {
         this.spinner.hide();
-
         this.downloadManual(response);
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  fileChangeListener($event: { target: any }): void {
-    this.readThis($event.target);
+  fileChangeListener($event: Event): void {
+    const input = $event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      this.readThis(input);
+    }
   }
 
-  readThis(inputValue: any): void {
+  readThis(inputValue: HTMLInputElement): void {
+    if (!inputValue.files?.length) return;
     this.file = inputValue.files[0];
     this.fileName = this.file.name;
-    var myReader: any = new FileReader();
+    const myReader = new FileReader();
     myReader.readAsDataURL(this.file);
-    let self = this;
-    myReader.onloadend = function (e: any) {
-      console.log(myReader.result);
-      self.fileContent = myReader.result.split(',')[1];
-      self.fileType = myReader.result.split(',')[0].split(':')[1].split(';')[0];
+    myReader.onloadend = () => {
+      const result = myReader.result as string;
+      this.fileContent = result.split(',')[1];
+      this.fileType = result.split(',')[0].split(':')[1].split(';')[0];
     };
   }
 
-  download(companyDocument: { isNew: boolean }) {
-    if (companyDocument.isNew == false) {
+  download(companyDocument: any) {
+    if (!companyDocument.isNew) {
       this.downloadCompanyFile(companyDocument);
     } else {
       this.downloadDocumentFromDB(companyDocument);
     }
   }
 
-  downloadDocumentFromDB(document: { isNew?: boolean; attachmentId?: any }) {
+  downloadDocumentFromDB(document: { attachmentId?: any }) {
     this.spinner.show();
-
-    this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentId)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-
-          this.downloadDocument(response);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+    this.companyDocumentsService.getCompanyDocuments(document.attachmentId).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.downloadDocument(response);
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
   downloadManual(manual: any) {
-    var blob = this.companyDocumentsService.b64toBlob(
+    const blob = this.companyDocumentsService.b64toBlob(
       manual.manualFile,
       manual.contentType
     );
-    var fileURL = URL.createObjectURL(blob);
-
+    const fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
   }
 
   downloadDocument(companyDocument: any) {
-    var blob = this.companyDocumentsService.b64toBlob(
+    const blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
       companyDocument.contentType
     );
-    var fileURL = URL.createObjectURL(blob);
+    const fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
   }
 
-  downloadCompanyFile(document: {
-    isNew?: boolean;
-    fileName?: any;
-    attachmentId?: any;
-  }) {
-    if (
-      document.fileName.split('.')[1].toLowerCase() == 'pdf' ||
-      document.fileName.split('.')[1].toLowerCase() == 'txt'
-    ) {
-      var wnd = window.open('about:blank');
-      var pdfStr = `<div style="text-align:center">
-      <h4>Document viewer</h4>
-      <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        document.attachmentId + '?access_token=' + this.authToken
-      }&embedded=true" frameborder="0" height="500px" width="100%"></iframe>
-        </div>
-        <script>
-        function reloadIFrame() {
-          var iframe = document.getElementById("iFrame");
-            console.log(iframe); //work control
-            console.log(iframe.contentDocument); //work control
-            if(iframe.contentDocument.URL == "about:blank"){
-              console.log("loaded");
-              iframe.src =  iframe.src;
-            }
-          }
-          var timerId = setInterval("reloadIFrame();", 1300);
-          setTimeout(() => {
-            clearInterval(timerId);
-            console.log("Finally Loaded");
-            }, 25000);
+  downloadCompanyFile(document: { fileName?: string; attachmentId?: any }) {
+    if (!document.fileName) return;
 
-          $( document ).ready(function() {
-              $('#menuiFrame').on('load', function() {
-                  clearInterval(timerId);
-                  console.log("Finally Loaded"); //work control
-              });
-          });
-        </script>
-        
-        `;
-      if (wnd) wnd.document.write(pdfStr);
-    } else if (
-      document.fileName.split('.')[1].toLowerCase() == 'jpg' ||
-      document.fileName.split('.')[1].toLowerCase() == 'png' ||
-      document.fileName.split('.')[1].toLowerCase() == 'jpeg' ||
-      document.fileName.split('.')[1].toLowerCase() == 'gif'
-    ) {
-      var pdfStr = `<div style="text-align:center">
-      <h4>Image Viewer</h4>
-      <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        document.attachmentId + '?access_token=' + this.authToken
-      }&embedded=true" >
+    const extension = document.fileName.split('.').pop()?.toLowerCase();
+    if (extension === 'pdf' || extension === 'txt') {
+      const wnd = window.open('about:blank');
+      const pdfStr = `<div style="text-align:center">
+        <h4>Document viewer</h4>
+        <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
+          document.attachmentId + '?access_token=' + this.authToken
+        }&embedded=true" frameborder="0" height="500px" width="100%"></iframe>
         </div>`;
-
-      var wnd = window.open('about:blank');
       if (wnd) wnd.document.write(pdfStr);
+    } else if (['jpg', 'png', 'jpeg', 'gif'].includes(extension || '')) {
+      const wnd = window.open('about:blank');
+      const imgStr = `<div style="text-align:center">
+        <h4>Image Viewer</h4>
+        <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
+          document.attachmentId + '?access_token=' + this.authToken
+        }&embedded=true" >
+        </div>`;
+      if (wnd) wnd.document.write(imgStr);
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
@@ -266,11 +214,7 @@ export class HelpComponent implements OnInit {
 
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }

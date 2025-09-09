@@ -36,7 +36,6 @@ export class AddcompanystatusComponent implements OnInit, OnDestroy {
       (value) => {
         this.globalCompany = value;
         this.companyId = this.globalCompany.companyId;
-        console.log('companyId = ' + this.companyId);
       }
     );
   }
@@ -55,7 +54,6 @@ export class AddcompanystatusComponent implements OnInit, OnDestroy {
     if (this.model.status !== undefined) {
       this.model.status = this.model.status.trim();
       this.length = this.model.status.length;
-      console.log(this.length);
     }
 
     if (this.model.status === undefined || this.model.status === '') {
@@ -76,7 +74,6 @@ export class AddcompanystatusComponent implements OnInit, OnDestroy {
         underRepair: true,
         moduleType: 'companytype',
       };
-      console.log(JSON.stringify(this.model));
       this.spinner.show();
 
       this.companyStatusesService.saveCompanyStatus(this.model).subscribe({

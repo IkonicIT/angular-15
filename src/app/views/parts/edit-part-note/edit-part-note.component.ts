@@ -1,82 +1,97 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompanynotesService } from '../../../services/companynotes.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-edit-part-note',
   templateUrl: './edit-part-note.component.html',
   styleUrls: ['./edit-part-note.component.scss'],
 })
-export class EditPartNoteComponent implements OnInit {
+export class EditPartNoteComponent implements OnInit, OnDestroy {
   model: any = {};
   index: number = 0;
   date = Date.now();
-  bsConfig: any;
   companyId: number = 0;
   journalId: number = 0;
-  private sub: any;
-  id: number;
+  id!: number;
   p: any;
-  router: Router;
-  helpFlag: any = false;
-  noteId: any;
-  vendorId: any;
+  helpFlag: boolean = false;
+  noteId!: number;
+  vendorId!: number;
   dismissible: boolean = true;
+
+  bsConfig: Partial<BsDatepickerConfig>;
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private companynotesService: CompanynotesService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.noteId = route.snapshot.params['id'];
-    console.log('NoteId=' + this.noteId);
-    this.router = router;
+    this.noteId = Number(this.route.snapshot.params['id']);
+
+    this.bsConfig = {
+      containerClass: 'theme-default',
+      dateInputFormat: 'YYYY-MM-DD',
+    };
   }
 
-  ngOnInit() {
-    this.sub = this.route.queryParams.subscribe((params) => {
+  ngOnInit(): void {
+    const querySub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
-      console.log('Query params ', this.noteId);
+      this.noteId = +params['a'] || this.noteId;
     });
+    this.subscriptions.add(querySub);
 
-    this.sub = this.route.queryParams.subscribe((params) => {
-      this.noteId = +params['a'] || 0;
-      console.log('Query params ', this.journalId);
-    });
-
-    this.companynotesService
+    const noteSub = this.companynotesService
       .getVendorNotes(this.noteId)
-      .subscribe((response) => {
-        this.model = response;
+      .subscribe({
+        next: (response) => {
+          this.model = response;
+        },
       });
+    this.subscriptions.add(noteSub);
   }
 
-  updateNotes() {
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  updateNotes(): void {
     if (!this.model.entityName || !this.model.enteredOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
-      this.companynotesService.updateCompanynotes(this.model).subscribe(
-        (response) => {
-          window.scroll(0, 0);
-          this.index = 1;
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+      const updateSub = this.companynotesService
+        .updateCompanynotes(this.model)
+        .subscribe({
+          next: () => {
+            window.scroll(0, 0);
+            this.index = 1;
+          },
+          error: () => {
+            this.spinner.hide();
+          },
+        });
+      this.subscriptions.add(updateSub);
     }
   }
-  cancelVendorNotes() {
-    this.router.navigate(['/vendor/notes/' + this.vendorId]);
+
+  cancelVendorNotes(): void {
+    this.router.navigate(['/vendor/notes', this.vendorId]);
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

@@ -43,7 +43,6 @@ export class AddcompanydocumentsComponent implements OnInit, OnChanges {
       this.companyName = value.name;
       this.companyId = value.companyId;
     });
-    console.log('compaanyid=' + this.companyId);
   }
 
   ngOnInit(): void {
@@ -51,15 +50,12 @@ export class AddcompanydocumentsComponent implements OnInit, OnChanges {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
     });
 
-    console.log('companyi=' + this.companyId);
     this.addedfiles.push({ file: '', description: '' });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.addedfiles, 'addedfiles');
   }
 
   saveCompanyDocument(): void {

@@ -46,8 +46,6 @@ export class CompanymanagementComponent implements OnInit {
   ngOnInit() {
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is ' + this.currentRole);
-    console.log('highestRank is ' + this.highestRank);
   }
 
   refresh() {
@@ -61,7 +59,6 @@ export class CompanymanagementComponent implements OnInit {
     this.companyManagementService.getAllCompanyDetails().subscribe(
       (response: Company[]) => {
         this.spinner.hide();
-        console.log(response);
         this.companies = response;
       },
       () => {
@@ -71,7 +68,6 @@ export class CompanymanagementComponent implements OnInit {
   }
 
   companyNotes(company: Company) {
-    console.log(company);
     this.companyManagementService.currentCompanyId = company.companyId;
     this.companyManagementService.currentCompanyName = company.name;
     this.router.navigate(['/company/companyNote/' + company.companyId]);

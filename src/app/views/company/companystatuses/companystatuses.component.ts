@@ -56,8 +56,6 @@ export class CompanystatusesComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is ' + this.currentRole);
-    console.log('highestRank is ' + this.highestRank);
   }
 
   getStatuses(): void {
@@ -66,7 +64,6 @@ export class CompanystatusesComponent implements OnInit {
     this.companyStatusService.getAllCompanyStatuses(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        console.log(response);
         this.statuses = response;
         const totalWarrantyTypesCount = this.statuses.length;
         const maxPageAvailable = Math.ceil(
@@ -87,14 +84,12 @@ export class CompanystatusesComponent implements OnInit {
   }
 
   editStatus(status: { statusId: string }): void {
-    console.log('statusId=' + status.statusId);
     this.router.navigate(['/company/editStatus/'], {
       queryParams: { q: status.statusId },
     });
   }
 
   openModal(template: TemplateRef<any>, id: string): void {
-    console.log(id);
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
@@ -102,7 +97,6 @@ export class CompanystatusesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    console.log(this.index);
     this.companyStatusService
       .removeCompanyStatus(this.index, this.userName)
       .subscribe(

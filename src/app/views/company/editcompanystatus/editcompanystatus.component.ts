@@ -37,13 +37,10 @@ export class EditcompanystatusComponent implements OnInit, OnDestroy {
     private spinner: NgxSpinnerService
   ) {
     this.companyId = Number(this.route.snapshot.params['q']);
-    console.log('companyId=', this.companyId);
-
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.globalCompanySub = this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyId = this.globalCompany.companyId;
-      console.log('companyId=', this.companyId);
     });
   }
 
@@ -54,7 +51,6 @@ export class EditcompanystatusComponent implements OnInit, OnDestroy {
       this.companyId = +params['q'] || 0;
     });
 
-    console.log('companyId=', this.companyId);
     this.spinner.show();
 
     this.companyStatusesService.getCompanyStatus(this.companyId).subscribe({
@@ -73,7 +69,6 @@ export class EditcompanystatusComponent implements OnInit, OnDestroy {
     if (this.model.status !== undefined) {
       this.model.status = this.model.status.trim();
       this.length = this.model.status.length;
-      console.log(this.length);
     }
 
     if (

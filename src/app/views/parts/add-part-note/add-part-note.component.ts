@@ -1,52 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { CompanynotesService } from '../../../services/companynotes.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PartsService } from 'src/app/services/parts.service';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-part-note',
   templateUrl: './add-part-note.component.html',
   styleUrls: ['./add-part-note.component.scss'],
 })
-export class AddPartNoteComponent implements OnInit {
+export class AddPartNoteComponent implements OnInit, OnDestroy {
   model: any = {};
   index: number = 0;
 
   companyId: number = 0;
   partId: number = 0;
-  private sub: any;
-  id: number;
-  router: Router;
-  bsConfig: Partial<BsDatepickerConfig>;
+  id!: number;
+  bsConfig!: Partial<BsDatepickerConfig>;
   dismissible = true;
-  helpFlag: any = false;
+  helpFlag: boolean = false;
+
+  private subscriptions: Subscription = new Subscription();
+
   constructor(
     private partsService: PartsService,
-    router: Router,
+    private router: Router,
     private location: Location,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
-  ) {
-    this.router = router;
-  }
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.model.date = new Date();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
+    this.bsConfig = { containerClass: 'theme-red' };
 
-    this.sub = this.route.queryParams.subscribe((params) => {
+    const querySub = this.route.queryParams.subscribe((params) => {
       this.partId = +params['q'] || 0;
-      console.log('Query params ', this.partId);
     });
+    this.subscriptions.add(querySub);
 
-    console.log('companyId=' + this.companyId);
     this.model.enteredOn = new Date();
   }
 
-  saveNotes() {
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  saveNotes(): void {
     if (!this.model.name || !this.model.createdDate) {
       this.index = -1;
       window.scroll(0, 0);
@@ -63,27 +65,29 @@ export class AddPartNoteComponent implements OnInit {
         partId: this.partId,
       };
       this.spinner.show();
-      this.partsService.addPartNote(this.model).subscribe(
-        (response) => {
+      this.partsService.addPartNote(this.model).subscribe({
+        next: () => {
           this.spinner.hide();
           window.scroll(0, 0);
           this.index = 1;
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-        }
-      );
+        },
+      });
     }
   }
 
-  cancelPartNotes() {
+  cancelPartNotes(): void {
     this.location.back();
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

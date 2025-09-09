@@ -14,9 +14,9 @@ export class AddCompanyNotesComponent implements OnInit, OnDestroy {
   model: any = {};
   index: number = 0;
   companyId: number = 0;
-  private sub!: Subscription;
+  private sub: Subscription | null = null; 
   id!: number;
-  bsConfig!: Partial<BsDatepickerConfig>;
+  bsConfig: Partial<BsDatepickerConfig> = {}; 
   userName: string | null = null;
   loader = false;
 
@@ -34,10 +34,8 @@ export class AddCompanyNotesComponent implements OnInit, OnDestroy {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
     });
 
-    console.log('companyId=' + this.companyId);
     this.model.effectiveOn = new Date();
   }
 
@@ -46,7 +44,7 @@ export class AddCompanyNotesComponent implements OnInit, OnDestroy {
       this.index = -1;
       window.scroll(0, 0);
     } else {
-      this.model = {
+      const payload = {
         companyId: this.companyId,
         effectiveOn: this.model.effectiveOn,
         enteredBy: this.userName,
@@ -66,11 +64,10 @@ export class AddCompanyNotesComponent implements OnInit, OnDestroy {
         trackingNumber: '',
         moduleType: 'companytype',
       };
-      console.log(JSON.stringify(this.model));
       this.spinner.show();
 
-      this.companynotesService.saveCompanynotes(this.model).subscribe(
-        (response) => {
+      this.companynotesService.saveCompanynotes(payload).subscribe(
+        () => {
           this.spinner.hide();
           window.scroll(0, 0);
           this.index = 1;

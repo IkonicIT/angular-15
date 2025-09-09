@@ -47,7 +47,6 @@ export class AddcompanydetailsComponent implements OnInit {
     this.companyStatusesService.getAllCompanyStatuses(this.companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        console.log(response);
         this.statuses = response;
       },
       () => {
@@ -121,7 +120,6 @@ export class AddcompanydetailsComponent implements OnInit {
     };
 
     this.spinner.show();
-    console.log(this.model);
 
     this.companyManagementService.saveCompany(this.model).subscribe(
       (response: any) => {
@@ -179,7 +177,6 @@ export class AddcompanydetailsComponent implements OnInit {
 
     myReader.onloadend = () => {
       if (typeof myReader.result === 'string') {
-        console.log(myReader.result);
         this.model.logo = myReader.result.split(',')[1];
         this.model.companycontentType = myReader.result.split(',')[0].split(':')[1].split(';')[0];
         this.model.companyfileName = this.file?.name;

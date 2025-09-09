@@ -23,10 +23,10 @@ const routes: Routes = [
         },
       },
       {
-        path: 'editwarrantytype/:warrantyId',
+        path: 'editwarrantyType/:warrantyId',
         component: EditWarrantyTypeComponent,
         data: {
-          title: 'editwarrantytype',
+          title: 'editwarrantyType',
         },
       },
     ],

@@ -12,7 +12,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./template.component.scss'],
 })
 export class TemplateComponent implements OnInit {
-  templateID: any = 0;
+  templateId: any = 0;
   company: any = {};
   model: any = {};
   companies: any = [];
@@ -65,13 +65,13 @@ export class TemplateComponent implements OnInit {
 
   saveCompany() {
     let req: any;
-    if (this.templateID == 0) {
+    if (this.templateId == 0) {
       this.index = -1;
     } else if (this.company.name == undefined) {
       this.index = -2;
     } else {
        req = {
-        templateId: this.templateID,
+        templateId: this.templateId,
       
         companyName: this.company.name,
         userName: this.userName,
@@ -97,8 +97,8 @@ export class TemplateComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>, id: any) {
-    this.templateID = id;
-    if (this.templateID == 0) {
+    this.templateId = id;
+    if (this.templateId == 0) {
       this.index = -1;
     } else {
       this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
@@ -109,7 +109,7 @@ export class TemplateComponent implements OnInit {
     this.message = 'Confirmed!';
     this.spinner.show();
 
-    if (this.templateID == 0) {
+    if (this.templateId == 0) {
       this.index = -1;
       this.spinner.hide();
 
@@ -117,10 +117,10 @@ export class TemplateComponent implements OnInit {
     } else {
       this.spinner.show();
 
-      this.setTemplateName(this.templateID);
+      this.setTemplateName(this.templateId);
       this.companyManagementService
         .removeTemplate(
-          this.templateID,
+          this.templateId,
           this.companyId,
           this.userName,
           this.currentTemplateName
@@ -132,16 +132,16 @@ export class TemplateComponent implements OnInit {
           setTimeout(() => {
             this.index = 0;
           }, 5000);
-          this.templateID = 0;
+          this.templateId = 0;
           this.getAllTemplates(this.companyId);
           this.spinner.hide();
         });
     }
   }
 
-  setTemplateName(templateID: any) {
-    this.templates.forEach((template: { templateID: any; name: any }) => {
-      if (templateID == template.templateID)
+  setTemplateName(templateId: any) {
+    this.templates.forEach((template: { templateId: any; name: any }) => {
+      if (templateId == template.templateId)
         this.currentTemplateName = template.name;
     });
   }

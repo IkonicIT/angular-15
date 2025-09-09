@@ -1,11 +1,12 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { CompanyDocumentsService } from '../../../services/company-documents.service';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { CompanyManagementService } from '../../../services/company-management.service';
-import { CompanynotesService } from '../../../services/companynotes.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DatePipe, Location } from '@angular/common';
+
+import { CompanyDocumentsService } from '../../../services/company-documents.service';
+import { CompanyManagementService } from '../../../services/company-management.service';
+import { CompanynotesService } from '../../../services/companynotes.service';
 import { PartsService } from 'src/app/services/parts.service';
 
 @Component({
@@ -14,59 +15,49 @@ import { PartsService } from 'src/app/services/parts.service';
   styleUrls: ['./part-notes.component.scss'],
 })
 export class PartNotesComponent implements OnInit {
-  companyId: string;
+  companyId: string = '';
   model: any = {};
   p: any;
   index: any;
   notes: any[] = [];
-  router: Router;
-  message: string;
-  modalRef: BsModalRef;
+  message: string = '';
+  modalRef?: BsModalRef;
   companyName: string = '';
   vendorName: string = '';
   order: string = 'date';
   reverse: string = '';
   dismissible: boolean = true;
   vendorNotesFilter: any = '';
-  itemsForPagination: any = 5;
+  itemsForPagination: number = 5;
   globalCompany: any;
-  helpFlag: any = false;
+  helpFlag: boolean = false;
   index1: any;
-  viewFlag: any = false;
-  editFlag: any = false;
-  newFlag: any = true;
+  viewFlag: boolean = false;
+  editFlag: boolean = false;
+  newFlag: boolean = true;
   highestRank: any;
   partId: any;
   partNoteId: any;
   userName: any;
   frame: any;
-  route: ActivatedRoute;
+
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
     private location: Location,
     private companynotesService: CompanynotesService,
-    public datePipe: DatePipe,
+    private datePipe: DatePipe,
     private partService: PartsService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.partId = route.snapshot.params['id'];
-    this.router = router;
-
+    this.partId = this.route.snapshot.params['id'];
     this.getAllNotes(this.partId);
-
-    // this.companyManagementService.globalCompanyChange.subscribe((value) => {
-    //   this.globalCompany = value;
-    //   this.companyName = value.name;
-    //   this.companyId = value.companyId;
-    //   this.getAllNotes(this.vendorId);
-    // });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.highestRank = sessionStorage.getItem('highestRank');
     this.userName = sessionStorage.getItem('userName');
   }
@@ -75,10 +66,10 @@ export class PartNotesComponent implements OnInit {
     this.spinner.show();
     this.partService.getAllPartNotes(partId).subscribe(
       (response) => {
-        this.spinner.hide();
         this.notes = response;
+        this.spinner.hide();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
@@ -105,7 +96,7 @@ export class PartNotesComponent implements OnInit {
       };
       this.spinner.show();
       this.partService.addPartNote(this.model).subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
           window.scroll(0, 0);
           this.index1 = 1;
@@ -115,7 +106,7 @@ export class PartNotesComponent implements OnInit {
             this.getAllNotes(this.partId);
           }, 3000);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -131,9 +122,9 @@ export class PartNotesComponent implements OnInit {
     this.message = 'Confirmed!';
     this.spinner.show();
     this.partService.deletePartNote(this.partNoteId).subscribe(
-      (response) => {
+      () => {
         this.model = [];
-        this.modalRef.hide();
+        this.modalRef?.hide();
         this.index1 = 4;
         this.viewFlag = false;
         this.newFlag = true;
@@ -145,7 +136,7 @@ export class PartNotesComponent implements OnInit {
           this.getAllNotes(this.partId);
         }, 3000);
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
@@ -158,18 +149,16 @@ export class PartNotesComponent implements OnInit {
     this.helpFlag = false;
     this.spinner.show();
     this.partService.getPartNote(noteId).subscribe((response) => {
-      this.spinner.hide();
       this.model = response;
       this.partNoteId = this.model.partNoteId;
-      console.log(this.model.createdDate);
       if (this.model.createdDate) {
         const date = this.datePipe.transform(
           this.model.createdDate,
           'MM/dd/yyyy'
         );
         this.model.createdDate = date;
-        console.log('Date', this.model.createdDate, date);
       }
+      this.spinner.hide();
     });
     window.scroll(0, 0);
   }
@@ -210,7 +199,6 @@ export class PartNotesComponent implements OnInit {
               'MM/dd/yyyy'
             );
             this.model.createdDate = date;
-            console.log('Date', this.model.createdDate, date);
           }
           this.spinner.hide();
           window.scroll(0, 0);
@@ -224,7 +212,7 @@ export class PartNotesComponent implements OnInit {
             this.index1 = 0;
           }, 7000);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -259,24 +247,24 @@ export class PartNotesComponent implements OnInit {
     this.newFlag = false;
     this.helpFlag = false;
   }
+
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
+
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
+
   print() {
     this.helpFlag = false;
     window.print();
   }
+
   help() {
     this.helpFlag = !this.helpFlag;
   }

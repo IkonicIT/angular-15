@@ -29,7 +29,6 @@ export class EditcompanydocumentComponent implements OnInit, OnDestroy {
     private spinner: NgxSpinnerService
   ) {
     this.companyId = Number(this.route.snapshot.params['id']);
-    console.log('companyId =', this.companyId);
   }
 
   ngOnInit(): void {
@@ -37,12 +36,10 @@ export class EditcompanydocumentComponent implements OnInit, OnDestroy {
 
     const sub1 = this.route.queryParams.subscribe((params) => {
       this.companyId = params['q'] ? Number(params['q']) : 0;
-      console.log('Query params companyId =', this.companyId);
     });
 
     const sub2 = this.route.queryParams.subscribe((params) => {
       this.documentId = params['a'] ? Number(params['a']) : 0;
-      console.log('Query params documentId =', this.documentId);
     });
 
     this.sub.push(sub1, sub2);
@@ -64,8 +61,6 @@ export class EditcompanydocumentComponent implements OnInit, OnDestroy {
     if (!this.companyId) return;
 
     this.spinner.show();
-    console.log(this.companyId);
-
     this.model.moduleType = 'companytype';
     this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {};

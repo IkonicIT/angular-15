@@ -38,7 +38,7 @@ export class TemplateComponent implements OnInit {
     private modalService: BsModalService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companies = this.companyManagementService.getGlobalCompanyList();
   }
 
@@ -152,13 +152,13 @@ export class TemplateComponent implements OnInit {
   }
 
   saveTemplate() {
-    if (this.model.companyid == undefined) {
+    if (this.model.companyId == undefined) {
       this.index1 = -1;
     } else if (this.model.templateName == undefined) {
       this.index1 = -2;
     } else {
       var req = {
-        companyId: this.model.companyid,
+        companyId: this.model.companyId,
         userName: this.userName,
         templateName: this.model.templateName,
         includeAllElements: false,

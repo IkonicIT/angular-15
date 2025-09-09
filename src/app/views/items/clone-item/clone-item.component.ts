@@ -261,7 +261,7 @@ export class CloneItemComponent implements OnInit {
 
   getWarrantyTypes(): void {
     this.spinner.show();
-    this.warrantyManagementService.getAllWarrantyTypes(String(this.companyId)).subscribe(
+    this.warrantyManagementService.getAllWarrantyTypes(this.companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
         this.warrantyTypes = Array.isArray(response) ? response : [];

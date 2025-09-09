@@ -222,7 +222,7 @@ export class AddItemRepairsComponent implements OnInit {
   getWarrantyTypes(): void {
     this.spinner.show();
     this.warrantyManagementService
-      .getAllWarrantyTypes(String(this.companyId))
+      .getAllWarrantyTypes(this.companyId)
       .subscribe(
         response => {
           this.spinner.hide();

@@ -193,7 +193,7 @@ export class ViewItemComponent implements OnInit {
   }
 
   getWarrantyTypes(): void {
-    this.warrantyManagementService.getAllWarrantyTypes(String(this.companyId)).subscribe(
+    this.warrantyManagementService.getAllWarrantyTypes(this.companyId).subscribe(
       (response: any) => {
         this.warrantyTypes = Array.isArray(response) ? response : [];
         this.setWarrantyType(this.warrantyTypes);

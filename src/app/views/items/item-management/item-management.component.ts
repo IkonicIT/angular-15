@@ -388,7 +388,7 @@ export class ItemManagementComponent implements OnInit {
   getWarrantyTypes() {
     this.spinner.show();
     this.warrantyManagementService
-      .getAllWarrantyTypes(String(this.companyId))
+      .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();

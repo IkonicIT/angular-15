@@ -44,8 +44,6 @@ export class ForgotPasswordComponent {
         }
       },
       (error) => {
-        console.log(error);
-
         this.spinner.hide();
       }
     );

@@ -1,9 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ItemNotesService } from '../../../services/Items/item-notes.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { ItemNotesService } from '../../../services/Items/item-notes.service';
+
+interface ItemNote {
+  entityName?: string;
+  jobNumber?: string;
+  poNumber?: string;
+  entry?: string;
+  enteredOn?: string | Date;
+}
 
 @Component({
   selector: 'app-view-item-change-log',
@@ -11,17 +20,18 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./view-item-change-log.component.scss'],
 })
 export class ViewItemChangeLogComponent implements OnInit, OnDestroy {
-  model: any = {};
+  model: ItemNote = {};
   index = 0;
   date = Date.now();
   bsConfig: any;
-  itemId = 0;
-  journalId = 0;
-  id = 0;
+
+  itemId: number = 0;
+  journalId: number = 0;
+  id: number = 0;
+
   dismissible = true;
   loader = false;
 
-  // ✅ used to clean up subscriptions
   private readonly destroy$ = new Subject<void>();
 
   constructor(
@@ -30,21 +40,27 @@ export class ViewItemChangeLogComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly spinner: NgxSpinnerService
   ) {
-    // ✅ ActivatedRoute params are strings → convert safely
-    this.journalId = Number(this.route.snapshot.params['journalId'] || 0);
-    this.itemId = Number(this.route.snapshot.params['itemId'] || 0);
+    this.journalId = Number(this.route.snapshot.params['journalId'] ?? 0);
+    this.itemId = Number(this.route.snapshot.params['itemId'] ?? 0);
+  }
+
+  ngOnInit(): void {
+    if (!this.journalId) return;
 
     this.spinner.show();
-
     this.itemNotesService
       .getItemNotes(this.journalId)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        (response) => {
+        (response: ItemNote) => {
           this.spinner.hide();
           this.model = response;
+
           if (this.model.enteredOn) {
-            this.model.enteredOn = new Date(this.model.enteredOn);
+            const parsed = new Date(this.model.enteredOn);
+            if (!isNaN(parsed.getTime())) {
+              this.model.enteredOn = parsed;
+            }
           }
         },
         () => {
@@ -53,18 +69,16 @@ export class ViewItemChangeLogComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   cancelItemNotes(): void {
-    this.router.navigate(['/items/changeLog/' + this.itemId]);
+    this.router.navigate(['/items/changeLog', this.itemId]);
   }
 
   backToItem(): void {
-    this.router.navigate(['/items/viewItem/' + this.itemId]);
+    this.router.navigate(['/items/viewItem', this.itemId]);
   }
 }

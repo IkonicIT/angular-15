@@ -49,7 +49,6 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
   }
 
   ngOnInit() {
-    console.log(`tree view ngonit()`, this.items);
     if (this.items && this.items.length > 0) {
     }
   }

@@ -36,10 +36,8 @@ export class AddCraneNoteComponent implements OnInit {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
-      console.log('Query params ', this.vendorId);
+      
     });
-
-    console.log('companyId=' + this.companyId);
     this.model.enteredOn = new Date();
   }
 

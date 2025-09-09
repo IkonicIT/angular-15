@@ -3,7 +3,7 @@ import { LocationTypesService } from '../../../services/location-types.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-location-type',
@@ -16,22 +16,25 @@ export class AddLocationTypeComponent implements OnInit {
       typeId: 0,
     },
   };
-  index: number = 0;
-  companyId: number;
-  globalCompany: any = {};
-  locationsTypes: any;
-  companyName: any;
 
-  value: any;
-  items: TreeviewItem[];
+  index: number = 0;
+  companyId: number = 0;
+  companyName: string = '';
+  globalCompany: any = {};
+  locationsTypes: any[] = [];
+
+  value: number | null = null;
+  items: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  userName: any;
-  dismissible = true;
-  helpFlag: any = false;
-  loader = false;
+
+  userName: string | null = null;
+  dismissible: boolean = true;
+  helpFlag: boolean = false;
+  loader: boolean = false;
+
   constructor(
     private locationTypesService: LocationTypesService,
     private router: Router,
@@ -39,114 +42,108 @@ export class AddLocationTypeComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyId;
-    this.companyName = this.globalCompany.name;
+    if (this.globalCompany) {
+      this.companyId = this.globalCompany.companyId ?? 0;
+      this.companyName = this.globalCompany.name ?? '';
+    }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyId;
-      this.companyName = this.globalCompany.name;
+      this.companyId = value?.companyId ?? 0;
+      this.companyName = value?.name ?? '';
     });
+  }
+
+  ngOnInit(): void {
+    this.userName = sessionStorage.getItem('userName');
     this.getAllLocTypes();
   }
 
-  ngOnInit() {
-    this.userName = sessionStorage.getItem('userName');
-  }
-
-  getAllLocTypes() {
+  getAllLocTypes(): void {
     this.spinner.show();
-
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-
-          this.locationsTypes = response;
-          var self = this;
-          if (this.locationsTypes && this.locationsTypes.length > 0) {
-            self.items = [];
-            self.items = this.generateHierarchy(this.locationsTypes);
+          this.locationsTypes = (response as any[]) ?? [];
+          if (this.locationsTypes.length > 0) {
+            this.items = this.generateHierarchy(this.locationsTypes);
           }
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
   }
 
-  generateHierarchy(typeList: any) {
-    var items: any = [];
-    typeList.forEach((type: any) => {
-      var children = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeId,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchy(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children =
+        type.typeList && type.typeList.length > 0
+          ? this.generateHierarchy(type.typeList)
+          : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
-  onValueChange(value: any) {
-    console.log(value);
+  onValueChange(value: number): void {
+    this.value = value;
   }
 
-  saveLocation() {
-    if (this.model.name) {
-      var request = {
-        attributeSearchDisplay: 0,
-        company: {
-          companyId: this.companyId,
-        },
-        description: this.model.description,
-        entityTypeId: 0,
-        hostingFee: this.model.hostingFee ? this.model.hostingFee : 0,
-        isHidden: true,
-        lastModifiedBy: this.userName,
-        moduleType: 'locationtype',
-        name: this.model.name,
-        parentId: {
-          typeId: this.value ? this.value : 0,
-        },
-        typeId: 0,
-        typeMtbs: 0,
-        typeSpareRatio: 0,
-      };
-      this.spinner.show();
-
-      this.locationTypesService.saveLocationType(request).subscribe(
-        (response) => {
-          this.spinner.hide();
-
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-          window.scroll(0, 0);
-          this.router.navigate(['/location/types']);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
-    } else {
+  saveLocation(): void {
+    if (!this.model.name) {
       this.index = -1;
       window.scroll(0, 0);
+      return;
     }
+
+    const request = {
+      attributeSearchDisplay: 0,
+      company: {
+        companyId: this.companyId,
+      },
+      description: this.model.description,
+      entityTypeId: 0,
+      hostingFee: this.model.hostingFee ? this.model.hostingFee : 0,
+      isHidden: true,
+      lastModifiedBy: this.userName,
+      moduleType: 'locationtype',
+      name: this.model.name,
+      parentId: {
+        typeId: this.value ?? 0,
+      },
+      typeId: 0,
+      typeMtbs: 0,
+      typeSpareRatio: 0,
+    };
+
+    this.spinner.show();
+    this.locationTypesService.saveLocationType(request).subscribe(
+      () => {
+        this.spinner.hide();
+        this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+        window.scroll(0, 0);
+        this.router.navigate(['/location/types']);
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

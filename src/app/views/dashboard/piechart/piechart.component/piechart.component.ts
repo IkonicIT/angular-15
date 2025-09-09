@@ -6,13 +6,6 @@ import { TreeviewItem } from 'ngx-treeview';
 import { LocationManagementService } from 'src/app/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertModule } from 'ngx-bootstrap/alert';
-// import {
-//   CompanyDocumentsService,
-//   CompanyManagementService,
-//   ItemManagementService,
-//   ItemTypesService,
-// } from 'src/app/services;
-
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { CompanyDocumentsService } from 'src/app/services';
 import { CompanyManagementService } from 'src/app/services';
@@ -259,7 +252,6 @@ export class PiechartComponent implements OnInit {
     const type = matches;
 
     this.selectedFailureType = type;
-    console.log('selectedFailureCause22', this.selectedFailureCause);
 
     if (this.params.type == 'range') {
       var request = {
@@ -560,7 +552,7 @@ export class PiechartComponent implements OnInit {
 
         this.chartFlag = this.isDataGreaterThanZero(this.pieChartData[0].data);
       });
-    //
+  
     return;
   }
 
@@ -725,23 +717,18 @@ export class PiechartComponent implements OnInit {
         <script>
         function reloadIFrame() {
           var iframe = document.getElementById("iFrame");
-            console.log(iframe); //work control
-            console.log(iframe.contentDocument); //work control
             if(iframe.contentDocument.URL == "about:blank"){
-              console.log("loaded");
               iframe.src =  iframe.src;
             }
           }
           var timerId = setInterval("reloadIFrame();", 1300);
           setTimeout(() => {
             clearInterval(timerId);
-            console.log("Finally Loaded");
             }, 25000);
 
           $( document ).ready(function() {
               $('#menuiFrame').on('load', function() {
                   clearInterval(timerId);
-                  console.log("Finally Loaded"); //work control
               });
           });
         </script>
@@ -776,7 +763,6 @@ export class PiechartComponent implements OnInit {
     let causeText;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.userId = sessionStorage.getItem('userId');
-    //const cause = e.active[0]._chart.data.labels[e.active[0]._index];
     const clickedLabel =
       e.event.chart.config._config.data.labels[e.active[0].index];
     const matches = clickedLabel.match(/\d+\.\d+\s*/g, '');
@@ -787,7 +773,6 @@ export class PiechartComponent implements OnInit {
 
     const cause = causeText;
     this.selectedFailureCause = cause;
-    console.log('selectedFailureCause2', this.selectedFailureCause);
 
     if (this.params.type == 'range') {
       var request = {

@@ -27,23 +27,18 @@ export class EditStatusComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.companyId = route.snapshot.params['q'];
-    console.log('companyId=' + this.companyId);
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyId = this.globalCompany.companyId;
-      console.log('compaanyid=' + this.companyId);
     });
   }
 
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
     });
-
-    console.log('companyi=' + this.companyId);
 
     this.companyStatusesService
       .getCompanyStatus(this.companyId)

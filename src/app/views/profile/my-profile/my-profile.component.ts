@@ -50,8 +50,6 @@ export class MyProfileComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
-      console.log('userId=' + this.loggedInuser);
-      console.log('companyId=' + this.companyId);
     }
   }
 
@@ -64,7 +62,6 @@ export class MyProfileComponent implements OnInit {
         this.spinner.hide();
 
         this.model = response;
-        console.log('user  profile ' + this.model.profileId);
         this.getLocationNames(this.loggedInuser, this.companyId);
       },
       (error) => {
@@ -75,7 +72,6 @@ export class MyProfileComponent implements OnInit {
 
   getLocationNames(userId: any, companyId: any) {
     this.locations = this.broadcasterService.locations;
-    console.log('user  profile ' + this.locations);
     if (this.locations && this.locations.length > 0) {
       this.locationItems = [];
       this.locationItems = this.generateHierarchy(this.locations);
@@ -107,7 +103,6 @@ export class MyProfileComponent implements OnInit {
   onValueChange(value: any) {
     this.model.preferredlocationId = value;
 
-    console.log(value);
   }
 
   saveProfile(profileId: any, companyId: any, model: any) {
@@ -121,7 +116,6 @@ export class MyProfileComponent implements OnInit {
             this.userName = response.userName;
             this.index = 1;
             window.scroll(0, 0);
-            console.log('user status roles ' + this.profile);
           },
           (error) => {
             this.spinner.hide();

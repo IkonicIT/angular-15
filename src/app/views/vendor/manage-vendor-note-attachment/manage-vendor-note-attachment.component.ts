@@ -45,7 +45,6 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.vendorNoteId = route.snapshot.params['id'];
-    console.log('VendorNoteId in manage vendor note att:' + this.vendorNoteId);
     this.router = router;
     this.route = route;
     if (this.companyId) {
@@ -65,7 +64,6 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
-      console.log('Query params of VendorNoteId ', this.vendorNoteId);
     });
     this.userName = sessionStorage.getItem('userName');
   }
@@ -77,7 +75,6 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          console.log(response);
           this.documents = response as any[];
         },
         (error) => {
@@ -91,7 +88,6 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
   addVendorNoteAttachments() {
-    console.log(this.companyId);
     this.router.navigate([
       '/vendor/addVendorNoteDocument/' + this.vendorNoteId,
     ]);
@@ -146,7 +142,6 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
 
   openAttachment(): void {
     if (this.isImage()) {
-      // Open image in a new tab
       const imageWindow = window.open();
       if (imageWindow) {
         imageWindow.document.write(
@@ -154,7 +149,6 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
         );
       }
     } else {
-      // Download the attachment
       const blob = this.base64ToBlob(
         this.vendorAttachment.attachmentFile,
         this.vendorAttachment.contentType

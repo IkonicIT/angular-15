@@ -56,7 +56,6 @@ export class ViewuserLogComponent implements OnInit {
     });
   }
 
-  // TODO: Add confirm logic if needed
   confirm(): void {}
 
   decline(): void {

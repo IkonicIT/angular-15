@@ -1,4 +1,4 @@
-<div class="animated fadeIn" style="margin-top: -2%" *ngIf="highestRank > 0">
+<div class="animated fadeIn" style="margin-top: -2%" *ngIf="highestRankNum > 0">
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
@@ -163,7 +163,7 @@
                         </button>
                         <button
                           type="button"
-                          [disabled]="itemRank < 5 || highestRank == 9"
+                          [disabled]="itemRank < 5 || highestRankNum == 9"
                           class="btn btn-primary margin-bottom-mobile"
                           style="margin-right: 5px"
                           data-bs-placement="bottom"
@@ -1025,7 +1025,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

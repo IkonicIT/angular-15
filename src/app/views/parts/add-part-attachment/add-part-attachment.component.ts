@@ -49,16 +49,13 @@ export class AddPartAttachmentComponent implements OnInit {
     this.router = router;
     this.sub = this.route.queryParams.subscribe((params) => {
       this.partNoteId = +params['q'] || 0;
-      console.log('Query params ', this.partNoteId);
     });
     this.route.paramMap.subscribe((params) => {
-      this.partNoteId = params.get('id'); // 'id' is the placeholder used in the route
-      console.log('Part ID:', this.partNoteId); // Now you have access to the partId
+      this.partNoteId = params.get('id'); 
     });
   }
 
   ngOnInit() {
-    console.log('companyi=' + this.companyId);
     this.addedfiles.push({ file: '', description: '' });
   }
 
@@ -88,7 +85,6 @@ export class AddPartAttachmentComponent implements OnInit {
       for (var i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-      console.log(jsonArr);
       var req = {
         partAttachmentsList: jsonArr,
       };
@@ -102,9 +98,6 @@ export class AddPartAttachmentComponent implements OnInit {
             this.index = 0;
             this.cancelVendorDocument();
           }, 5000);
-          // this.router.navigateByUrl(
-          //   `parts/manageAttachements/${this.partNoteId}`
-          // );
         },
         (error) => {
           this.spinner.hide();
@@ -112,34 +105,6 @@ export class AddPartAttachmentComponent implements OnInit {
       );
     }
   }
-
-  // saveVendorDocument() {
-  //   if (!this.fileName) {
-  //     this.index = -1;
-  //     window.scroll(0, 0);
-  //   } else {
-  //     let req = {
-  //       "createdBy": "Yogi Patel",
-  //       "attachmentFile": this.fileContent,
-  //       "vendorAttachmentId": 0,
-  //       "contentType": this.fileType,
-  //       "description": this.model.description,
-  //       "fileName": this.fileName,
-  //       "moduleType": "vendortype",
-  //       "isNew": true,
-  //       "createdDate":new Date().toISOString(),
-  //     };
-  //     this.spinner.show();
-  //     this.companyDocumentsService.saveVendorDocument(req).subscribe(response => {
-  //       this.spinner.hide();
-  //       window.scroll(0, 0);
-  //       this.index = 1;
-  //     },
-  //       error => {
-  //         this.spinner.hide();
-  //       });
-  //   }
-  // }
 
   cancelVendorDocument() {
     this.location.back();
@@ -154,8 +119,6 @@ export class AddPartAttachmentComponent implements OnInit {
   }
 
   fileChangeListener($event: any, fileIndex: any): void {
-    console.log(this.addedfiles);
-
     this.readThis($event.target, fileIndex);
   }
 
@@ -176,7 +139,6 @@ export class AddPartAttachmentComponent implements OnInit {
       myReader.readAsDataURL(this.file);
       myReader.onloadend = (e) => {
         const result = myReader.result as string;
-        console.log(result);
         this.fileContent = result.split(',')[1];
         this.fileType = result.split(',')[0].split(':')[1].split(';')[0];
         const fileInfo = this.addedfiles[fileIndex];
@@ -190,7 +152,7 @@ export class AddPartAttachmentComponent implements OnInit {
         fileInfo['fileName'] = this.fileName;
         fileInfo['description'] = this.description;
         fileInfo['createdDate'] = new Date().toISOString();
-        console.log(this.addedfiles);
+    
       };
     }
   }

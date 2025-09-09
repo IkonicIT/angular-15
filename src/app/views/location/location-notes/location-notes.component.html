@@ -169,7 +169,7 @@
       type="button"
       class="close pull-right"
       aria-label="Close"
-      (click)="modalRef.hide()"
+      (click)="modalRef?.hide()"
     >
       <span aria-hidden="true">&times;</span>
     </button>
@@ -342,7 +342,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

@@ -49,16 +49,13 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
     this.router = router;
     this.sub = this.route.queryParams.subscribe((params) => {
       this.craneNoteId = +params['q'] || 0;
-      console.log('Query params ', this.craneNoteId);
     });
     this.route.paramMap.subscribe((params) => {
-      this.craneNoteId = params.get('id'); // 'id' is the placeholder used in the route
-      console.log('Part ID:', this.craneNoteId); // Now you have access to the partId
+      this.craneNoteId = params.get('id'); 
     });
   }
 
   ngOnInit() {
-    console.log('companyi=' + this.companyId);
     this.addedfiles.push({ file: '', description: '' });
   }
 
@@ -91,7 +88,6 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
       for (var i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-      console.log(jsonArr);
       var req = {
         craneAttachmentsList: jsonArr,
       };
@@ -113,34 +109,6 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
     }
   }
 
-  // saveVendorDocument() {
-  //   if (!this.fileName) {
-  //     this.index = -1;
-  //     window.scroll(0, 0);
-  //   } else {
-  //     let req = {
-  //       "createdBy": "Yogi Patel",
-  //       "attachmentFile": this.fileContent,
-  //       "vendorAttachmentId": 0,
-  //       "contentType": this.fileType,
-  //       "description": this.model.description,
-  //       "fileName": this.fileName,
-  //       "moduleType": "vendortype",
-  //       "isNew": true,
-  //       "createdDate":new Date().toISOString(),
-  //     };
-  //     this.spinner.show();
-  //     this.companyDocumentsService.saveVendorDocument(req).subscribe(response => {
-  //       this.spinner.hide();
-  //       window.scroll(0, 0);
-  //       this.index = 1;
-  //     },
-  //       error => {
-  //         this.spinner.hide();
-  //       });
-  //   }
-  // }
-
   cancelVendorDocument() {
     this.location.back();
   }
@@ -154,8 +122,6 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
   }
 
   fileChangeListener($event: any, fileIndex: any): void {
-    console.log(this.addedfiles);
-
     this.readThis($event.target, fileIndex);
   }
 
@@ -176,7 +142,6 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
       myReader.readAsDataURL(this.file);
       myReader.onloadend = (e) => {
         if (typeof myReader.result === 'string') {
-          console.log(myReader.result);
           this.fileContent = myReader.result.split(',')[1];
           this.fileType = myReader.result
             .split(',')[0]
@@ -193,7 +158,6 @@ export class AddCraneNoteAttachmentComponent implements OnInit {
           fileInfo['fileName'] = this.fileName;
           fileInfo['description'] = this.description;
           fileInfo['createdDate'] = new Date().toISOString();
-          console.log(this.addedfiles);
         }
       };
     }

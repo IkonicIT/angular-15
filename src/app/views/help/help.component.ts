@@ -85,8 +85,6 @@ export class HelpComponent implements OnInit {
     this.companyDocumentsService.getAllCompanyDocuments(companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-
-        console.log(response);
         this.documents = response;
       },
       (error) => {
@@ -147,7 +145,6 @@ export class HelpComponent implements OnInit {
     myReader.readAsDataURL(this.file);
     let self = this;
     myReader.onloadend = function (e: any) {
-      console.log(myReader.result);
       self.fileContent = myReader.result.split(',')[1];
       self.fileType = myReader.result.split(',')[0].split(':')[1].split(';')[0];
     };
@@ -216,23 +213,18 @@ export class HelpComponent implements OnInit {
         <script>
         function reloadIFrame() {
           var iframe = document.getElementById("iFrame");
-            console.log(iframe); //work control
-            console.log(iframe.contentDocument); //work control
             if(iframe.contentDocument.URL == "about:blank"){
-              console.log("loaded");
               iframe.src =  iframe.src;
             }
           }
           var timerId = setInterval("reloadIFrame();", 1300);
           setTimeout(() => {
             clearInterval(timerId);
-            console.log("Finally Loaded");
             }, 25000);
 
           $( document ).ready(function() {
               $('#menuiFrame').on('load', function() {
                   clearInterval(timerId);
-                  console.log("Finally Loaded"); //work control
               });
           });
         </script>

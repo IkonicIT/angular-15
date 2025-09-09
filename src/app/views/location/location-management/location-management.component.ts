@@ -1,9 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { DomSanitizer } from '@angular/platform-browser';
 import { LocationManagementService } from '../../../services/location-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { LocationTypesService } from '../../../services/location-types.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
@@ -19,19 +17,23 @@ export class LocationManagementComponent implements OnInit {
   modalRef: BsModalRef | null = null;
   index: number = 0;
   message: string = '';
-  locations: any = [];
-  locationsWithHierarchy: any = [];
+  locations: any[] = [];
+  locationsWithHierarchy: any[] = [];
   order: string = 'name';
   reverse: string = '';
-  userName: any;
-  locationFilter: any = '';
-  itemsForPagination: any = 5;
-  companyId: number = 3;
-  locationId!: number;
+  userName: string = '';
+  locationFilter: string = '';
+  itemsForPagination: number = 5;
+  companyId: number = 0;
+  locationId: number = 0;
   globalCompany: any;
-  companyName: any;
-  currentRole: any;
-  highestRank: any;
+  companyName: string = '';
+  currentRole: string = '';
+highestRank?: string | null;
+  
+  get highestRankNum(): number {
+    return Number(this.highestRank ?? 0);
+  }
   items: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
@@ -39,11 +41,11 @@ export class LocationManagementComponent implements OnInit {
   });
   advancedsearchflag: number = 0;
   searchresults: any = {};
-  isOwnerAdmin: any;
-  loggedInuser: string | null = null;
-  helpFlag: any = false;
-  p: any;
-  loader = false;
+  isOwnerAdmin: string = '';
+  loggedInuser: string = '';
+  helpFlag: boolean = false;
+  p: number = 0;
+  loader: boolean = false;
 
   constructor(
     private modalService: BsModalService,
@@ -52,20 +54,19 @@ export class LocationManagementComponent implements OnInit {
     private _location: Location,
     private router: Router,
     private route: ActivatedRoute,
-    sanitizer: DomSanitizer,
     private broadcasterService: BroadcasterService,
     private spinner: NgxSpinnerService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyId;
+      this.companyName = this.globalCompany.name ?? '';
+      this.companyId = this.globalCompany.companyId ?? 0;
     }
 
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyName = value.name;
-      this.companyId = value.companyId;
+      this.companyName = value?.name ?? '';
+      this.companyId = value?.companyId ?? 0;
     });
 
     this.router.events.subscribe((evt) => {
@@ -78,11 +79,11 @@ export class LocationManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userName = sessionStorage.getItem('userName');
-    this.currentRole = sessionStorage.getItem('currentRole');
-    this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is ' + this.currentRole);
-    console.log('highestRank is ' + this.highestRank);
+    this.userName = sessionStorage.getItem('userName') ?? '';
+    this.currentRole = sessionStorage.getItem('currentRole') ?? '';
+    this.highestRank = sessionStorage.getItem('highestRank') ?? '';
+    this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin') ?? '';
+    this.loggedInuser = sessionStorage.getItem('userId') ?? '';
     this.getLocations();
   }
 
@@ -91,15 +92,15 @@ export class LocationManagementComponent implements OnInit {
     this.locations = [];
 
     this.locationManagementService.getAllLocations(this.companyId).subscribe({
-      next: (response) => {
-        console.log(response);
-        this.spinner.hide();
-        this.locations = response;
-      },
-      error: () => {
-        this.spinner.hide();
-      },
-    });
+  next: (response: any) => {
+    this.spinner.hide();
+    this.locations = (response as any[]) ?? [];
+  },
+  error: () => {
+    this.spinner.hide();
+  },
+});
+
   }
 
   refreshCalls(): void {
@@ -107,25 +108,25 @@ export class LocationManagementComponent implements OnInit {
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe({
         next: (response) => {
-          this.broadcasterService.locations = response;
-          console.log('locations:', response);
+          this.broadcasterService.locations = response ?? [];
+          this.spinner.hide();
+        },
+        error: () => {
           this.spinner.hide();
         },
       });
   }
 
-  locationNotes(location: { locationId: string; name: any }): void {
+  locationNotes(location: { locationId: number; name: string }): void {
     this.locationManagementService.currentLocationId = location.locationId;
     this.locationManagementService.currentLocationName = location.name;
     this.router.navigate(['/location/locationNote/' + location.locationId]);
   }
 
   InitData(): void {
-    this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
-    this.loggedInuser = sessionStorage.getItem('userId');
-    this.locationsWithHierarchy = this.broadcasterService.locations;
+    this.locationsWithHierarchy = this.broadcasterService.locations ?? [];
 
-    if (this.locationsWithHierarchy && this.locationsWithHierarchy.length > 0) {
+    if (this.locationsWithHierarchy.length > 0) {
       this.items = this.generateHierarchy(this.locationsWithHierarchy);
     }
   }
@@ -135,27 +136,22 @@ export class LocationManagementComponent implements OnInit {
   }
 
   generateHierarchy(locList: any[]): TreeviewItem[] {
-    const items: TreeviewItem[] = [];
-    locList.forEach((loc) => {
-      let children: TreeviewItem[] = [];
-      if (loc.parentLocationResourceList && loc.parentLocationResourceList.length > 0) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: loc.name,
-          value: loc.locationId,
-          collapsed: true,
-          children: children,
-        })
-      );
+    return locList.map((loc) => {
+      const children =
+        loc.parentLocationResourceList && loc.parentLocationResourceList.length > 0
+          ? this.generateHierarchy(loc.parentLocationResourceList)
+          : [];
+      return new TreeviewItem({
+        text: loc.name,
+        value: loc.locationId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
-  onValueChange(val: any): void {
+  onValueChange(val: number): void {
     this.locationId = val;
-    console.log(val);
     this.router.navigate(['/location/editLocation/' + val + '/' + this.companyId]);
   }
 
@@ -176,8 +172,7 @@ export class LocationManagementComponent implements OnInit {
     this.locationManagementService
       .removeLocation(this.locationId, this.companyId, this.userName)
       .subscribe({
-        next: (response) => {
-          console.log(response);
+        next: () => {
           this.modalRef?.hide();
           this.getLocations();
           this.refreshCalls();

@@ -27,7 +27,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'vendorDashboard', // This should match the URL you are trying to navigate to
+        path: 'vendorDashboard', 
         component: VendorDashBoardComponent,
         data: {
           title: 'Vendor Dashboard',

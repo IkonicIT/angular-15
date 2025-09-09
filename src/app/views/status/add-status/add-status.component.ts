@@ -30,7 +30,6 @@ export class AddStatusComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyId = this.globalCompany.companyId;
-      console.log('compaanyid=' + this.companyId);
     });
   }
 
@@ -50,7 +49,6 @@ export class AddStatusComponent implements OnInit {
         statusId: 0,
         underRepair: true,
       };
-      console.log(JSON.stringify(this.model));
       this.companyStatusesService
         .saveCompanyStatus(this.model)
         .subscribe((response) => {

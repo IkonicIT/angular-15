@@ -1,15 +1,30 @@
-import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
-import { ItemRepairItemsService } from '../../../services/Items/item-repair-items.service';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { BroadcasterService } from '../../../services/broadcaster.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ItemManagementService } from '../../../services/Items/item-management.service';
 import { Location } from '@angular/common';
-import { CompanyManagementService } from '../../../services/company-management.service';
-import { CompanyDocumentsService } from '../../../services/index';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NgxSpinnerService } from 'ngx-spinner';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
+import { ItemRepairItemsService } from '../../../services/Items/item-repair-items.service';
+import { ItemManagementService } from '../../../services/Items/item-management.service';
+import { BroadcasterService } from '../../../services/broadcaster.service';
+import { CompanyManagementService } from '../../../services/company-management.service';
+import { CompanyDocumentsService } from '../../../services/index';
+
+type Nullable<T> = T | null | undefined;
+
+interface Attachment {
+  new?: boolean;
+  fileName?: string;
+  attachmentId?: string | number;
+}
+
+interface CompanyDocumentFromDB {
+  attachmentFile: string;  
+  contentType: string;
+}
 
 @Component({
   selector: 'app-view-item-repair',
@@ -18,33 +33,41 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ViewItemRepairComponent implements OnInit, OnDestroy {
   model: any = {};
-  companyId: string = ''; // ✅ ensure always a string
-  itemRepairId: any;
-  itemId: any;
-  userName: string ='';
+  companyId: string = ''; 
+  itemRepairId!: string;
+  itemId!: string;
+
+  userName: string = '';
   itemRank: any;
   modalRef!: BsModalRef;
   message: string | undefined;
   index: any;
   flag: any;
+
   itemRepairsFilter: any = '';
   repairsForPagination = 5;
   repairs: any[] = [];
+
   completedRepairsForPagination = 5;
   completedRepairsFilter: any = '';
   completedRepairs: any[] = [];
+
   authToken: string | null = null;
   globalCompany: any;
   companyName: any;
   dismissible = true;
   helpFlag = false;
+
   highestRank: any;
   page1 = 1;
   page2 = 1;
-  completedReverse = '';
+
+  completedReverse: '' | '-' = '';
   completedOrder: string | undefined;
-  reverse = '';
+
+  reverse: '' | '-' = '';
   order: string | undefined;
+
   loader = false;
 
   private readonly destroy$ = new Subject<void>();
@@ -61,14 +84,18 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
     private readonly modalService: BsModalService,
     private readonly companyManagementService: CompanyManagementService
   ) {
-    this.itemId = route.snapshot.params['itemId'];
+    const itemIdParam = this.route.snapshot.params['itemId'];
+    const repairIdParam = this.route.snapshot.params['repairId'];
+
+    this.itemId = String(itemIdParam ?? '');
+    this.itemRepairId = String(repairIdParam ?? '');
+
     this.itemRepairItemsService.itemId = this.itemId;
-    this.itemRepairId = route.snapshot.params['repairId'];
     this.authToken = sessionStorage.getItem('auth_token');
 
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany?.companyId) {
-      this.companyId = this.globalCompany.companyId;
+      this.companyId = String(this.globalCompany.companyId);
     }
 
     if (this.companyId) {
@@ -81,18 +108,20 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
         .subscribe((value: any) => {
           this.globalCompany = value;
           this.companyName = value?.name;
-          this.companyId = value?.companyId ?? '';
+          this.companyId = value?.companyId ? String(value.companyId) : '';
+          if (this.companyId) {
+            this.getAllRepairs();
+          }
         });
     }
   }
 
   ngOnInit(): void {
-  this.userName = sessionStorage.getItem('userName') || ''; // ✅ fallback to empty string
-  this.highestRank = sessionStorage.getItem('highestRank');
-  this.itemRank = this.broadcasterService.itemRank;
-  this.getItemRepairDetails();
-}
-
+    this.userName = sessionStorage.getItem('userName') || '';
+    this.highestRank = sessionStorage.getItem('highestRank');
+    this.itemRank = this.broadcasterService.itemRank;
+    this.getItemRepairDetails();
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -101,7 +130,6 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
 
   getItemRepairDetails(): void {
     this.spinner.show();
-
     this.itemRepairItemsService
       .getRepairDetailsForView(this.itemRepairId)
       .pipe(takeUntil(this.destroy$))
@@ -119,16 +147,18 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
 
   updateItemRepair(): void {
     this.router.navigate([
-      '/items/editItemRepair/' + this.itemId + '/' + this.itemRepairId,
+      '/items/editItemRepair',
+      this.itemId,
+      this.itemRepairId,
     ]);
   }
 
   cancelViewRepair(): void {
-    this.router.navigate(['/items/itemRepairs/' + this.itemId]);
+    this.router.navigate(['/items/itemRepairs', this.itemId]);
   }
 
   getAllRepairs(): void {
-    if (!this.companyId) return; // ✅ safety check
+    if (!this.companyId) return;
 
     this.spinner.show();
 
@@ -169,15 +199,14 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
 
     this.itemRepairItemsService
       .removeItemRepair(
-  this.index,
-  this.companyId,
-  this.userName, 
-  this.model.itemType,
-  this.model.tag,
-  this.model.poNumber,
-  this.model.jobNumber
-)
-
+        this.index,
+        this.companyId,
+        this.userName,
+        this.model?.itemType,
+        this.model?.tag,
+        this.model?.poNumber,
+        this.model?.jobNumber
+      )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
@@ -203,7 +232,7 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
   }
 
   ViewItemRepair(repairId: any): void {
-    this.itemRepairId = repairId;
+    this.itemRepairId = String(repairId ?? '');
     this.getItemRepairDetails();
     window.scroll(0, 0);
   }
@@ -213,35 +242,39 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
   }
 
   backToViewItem(): void {
-    this.router.navigate(['/items/viewItem/' + this.itemId]);
+    this.router.navigate(['/items/viewItem', this.itemId]);
   }
 
-  download(companyDocument: { new: boolean }): void {
+  download(companyDocument: { new: boolean } & Partial<Attachment>): void {
     if (companyDocument.new === false) {
-      this.downloadFile(companyDocument as any);
+      this.downloadFile(companyDocument);
     } else {
-      this.downloadDocumentFromDB(companyDocument as any);
+      this.downloadDocumentFromDB(companyDocument);
     }
   }
 
-  downloadDocumentFromDB(document: { new?: boolean; attachmentId?: any }): void {
-    this.spinner.show();
+ downloadDocumentFromDB(document: Partial<Attachment>): void {
+  if (!document.attachmentId) return;
 
-    this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.downloadDocument(response);
-        },
-        () => {
-          this.spinner.hide();
-        }
-      );
-  }
+  const id = Number(document.attachmentId); 
 
-  downloadDocument(companyDocument: any): void {
+  this.spinner.show();
+  this.companyDocumentsService
+    .getCompanyDocuments(id) 
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(
+      (response: any) => { 
+        this.spinner.hide();
+        const doc = response as CompanyDocumentFromDB;
+        this.downloadDocument(doc);
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
+}
+
+  downloadDocument(companyDocument: CompanyDocumentFromDB): void {
     const blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
       companyDocument.contentType
@@ -250,63 +283,59 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
     window.open(fileURL);
   }
 
-  downloadFile(attachment: {
-    new?: boolean;
-    fileName?: any;
-    attachmentId?: any;
-  }): void {
-    const index = (attachment.fileName || '').lastIndexOf('.');
-    const extension = index >= 0 ? (attachment.fileName || '').slice(index + 1) : '';
+  downloadFile(attachment: Attachment): void {
+    const fileName = attachment.fileName || '';
+    const index = fileName.lastIndexOf('.');
+    const extension =
+      index >= 0 ? fileName.slice(index + 1).toLowerCase() : '';
 
-    if (extension.toLowerCase() === 'pdf' || extension.toLowerCase() === 'txt') {
+    const token = this.authToken || '';
+    const id = attachment.attachmentId;
+
+    if (!id) return;
+
+    if (extension === 'pdf' || extension === 'txt') {
       const pdfStr = `<div style="text-align:center">
-      <h4>Pdf viewer</h4>
-      <iframe id="iFrame" src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentId + '?access_token=' + this.authToken
-      }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
-        </div>
-        <script>
-          function reloadIFrame() {
-            var iframe = document.getElementById("iFrame");
-              if(iframe.contentDocument.URL == "about:blank"){
-                iframe.src =  iframe.src;
-              }
-            }
-            var timerId = setInterval("reloadIFrame();", 1300);
-            setTimeout(() => {
-              clearInterval(timerId);
-              }, 25000);
-        </script>`;
+        <h4>Pdf viewer</h4>
+        <iframe id="iFrame" src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${id}?access_token=${token}&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
+      </div>
+      <script>
+        function reloadIFrame() {
+          var iframe = document.getElementById("iFrame");
+          if (iframe && iframe.contentDocument && iframe.contentDocument.URL === "about:blank") {
+            iframe.src = iframe.src;
+          }
+        }
+        var timerId = setInterval(reloadIFrame, 1300);
+        setTimeout(function () { clearInterval(timerId); }, 25000);
+      </script>`;
 
       const wnd = window.open('about:blank');
-      if (wnd) wnd.document.write(pdfStr);
-    } else if (
-      ['jpg', 'png', 'jpeg', 'gif'].includes(extension.toLowerCase())
-    ) {
+      if (wnd && wnd.document) {
+        wnd.document.write(pdfStr);
+      }
+    } else if (['jpg', 'png', 'jpeg', 'gif'].includes(extension)) {
       const imgStr = `<div style="text-align:center">
-      <h4>Image Viewer</h4>
-      <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentId + '?access_token=' + this.authToken
-      }&embedded=true" >
-        </div>`;
+        <h4>Image Viewer</h4>
+        <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${id}?access_token=${token}&embedded=true" />
+      </div>`;
 
       const wnd = window.open('about:blank');
-      if (wnd) wnd.document.write(imgStr);
+      if (wnd && wnd.document) {
+        wnd.document.write(imgStr);
+      }
     } else {
       window.open(
-        'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          attachment.attachmentId +
-          '?access_token=' +
-          this.authToken
+        `https://gotracrat.com:8088/api/attachment/downloadaudiofile/${id}?access_token=${token}`
       );
     }
   }
 
   setCompletedOrder(value: string): void {
-    if (this.order === value) {
-      this.reverse = this.reverse === '' ? '-' : '';
+    if (this.completedOrder === value) {
+      this.completedReverse = this.completedReverse === '' ? '-' : '';
     }
-    this.order = value;
+    this.completedOrder = value;
   }
 
   setOrder(value: string): void {

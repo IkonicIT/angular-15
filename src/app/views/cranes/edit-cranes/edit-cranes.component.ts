@@ -50,7 +50,7 @@ export class EditCranesComponent implements OnInit {
         .subscribe((response) => {
           this.successMessage = 'Crane updated successfully';
           this.cdr.detectChanges();
-          window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
+          window.scrollTo({ top: 0, behavior: 'smooth' }); 
           this.spinner.hide();
           setTimeout(() => {
             this.successMessage = '';
@@ -62,7 +62,7 @@ export class EditCranesComponent implements OnInit {
                 bmkey2: this.craneData.bmkey2.bmkey1,
               },
             });
-          }, 3000); // 3 seconds
+          }, 3000); 
         });
     }
   }

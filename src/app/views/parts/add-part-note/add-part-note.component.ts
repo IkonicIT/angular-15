@@ -39,10 +39,7 @@ export class AddPartNoteComponent implements OnInit {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.partId = +params['q'] || 0;
-      console.log('Query params ', this.partId);
     });
-
-    console.log('companyId=' + this.companyId);
     this.model.enteredOn = new Date();
   }
 

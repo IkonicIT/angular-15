@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
-// import 'rxjs/add/operator/toPromise';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -32,7 +31,6 @@ export class CompanyStatusesService {
   }
 
   updateCompanyStatus(companyStatus: { statusId: string }) {
-    console.log(companyStatus);
     return this.http
       .put(
         this.serviceURL + '/' + companyStatus.statusId,

@@ -56,7 +56,7 @@ export class AddNoteAttachmentComponent implements OnInit {
     });
 
     this.entityId = route.snapshot.params['noteId'];
-    console.log('entityId=' + this.entityId);
+    
     this.router = router;
   }
 
@@ -92,7 +92,7 @@ export class AddNoteAttachmentComponent implements OnInit {
       for (var i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-      console.log(jsonArr);
+    
       var req = {
         attachmentResourceList: jsonArr,
         attachmentUserLogDTO: {
@@ -132,7 +132,7 @@ export class AddNoteAttachmentComponent implements OnInit {
     $event: { target: any },
     fileIndex: string | number
   ): void {
-    console.log(this.addedfiles);
+  
     this.readThis($event.target, fileIndex);
   }
 
@@ -153,7 +153,7 @@ export class AddNoteAttachmentComponent implements OnInit {
       var myReader: any = new FileReader();
       myReader.readAsDataURL(this.file);
       myReader.onloadend = (e: any) => {
-        console.log(myReader.result);
+        
         this.fileContent = myReader.result.split(',')[1];
         this.fileType = myReader.result
           .split(',')[0]
@@ -171,7 +171,7 @@ export class AddNoteAttachmentComponent implements OnInit {
         fileInfo['moduleType'] = 'itemnotetype';
 
         fileInfo['fileName'] = this.fileName;
-        console.log(this.addedfiles);
+        
       };
     }
   }

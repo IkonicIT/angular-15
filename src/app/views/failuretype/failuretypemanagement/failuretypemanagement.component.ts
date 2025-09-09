@@ -38,7 +38,6 @@ export class FailuretypemanagementComponent implements OnInit {
   failureCauses: any = [];
   selectedAttrType: any = {};
   globalCompany: any;
-  //addFlag:any = false;
   editDeleteFlag: any = false;
   addEditFlag: any = false;
   newFlag: any = false;

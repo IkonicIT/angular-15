@@ -33,7 +33,6 @@
 }
 
 
-/* Remove dropdown arrow */
 :host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button::after {
   display: none !important;
 }

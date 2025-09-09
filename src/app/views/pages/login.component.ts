@@ -30,7 +30,6 @@ export class LoginComponent {
     this.router = router;
 
     setTimeout(() => {
-      console.log('hide');
       this.spinner.hide();
     }, 2000);
     if (
@@ -50,12 +49,9 @@ export class LoginComponent {
     this.loginService.loginAuth(req).subscribe(
       (response) => {
         sessionStorage.setItem('auth_token', response.access_token);
-        console.log(response.access_token);
-
         this.getUserIdByNameForLogged();
       },
       (error) => {
-        console.log(error);
         this.loginError = true;
         this.spinner.hide();
       }
@@ -68,20 +64,17 @@ export class LoginComponent {
 
   onSubmit(event: Event) {
     event.preventDefault();
-    // Add any additional form submission logic if needed
   }
 
   getUserIdByNameForLogged() {
     this.loginService.getUserIdByName(this.userName).subscribe(
       (response) => {
-        console.log(response);
         this.userId = response.userId;
         sessionStorage.setItem('userId', response.userId);
         sessionStorage.setItem('userName', response.userName);
         this.getProfile();
       },
       (error) => {
-        console.log(error);
         this.loginError = true;
         this.spinner.hide();
       }
@@ -91,7 +84,6 @@ export class LoginComponent {
   getProfile() {
     this.loginService.getProfileByUserId(this.userId).subscribe(
       (response) => {
-        console.log(response);
         sessionStorage.setItem('IsOwnerAdmin', response.isOwnerAdmin);
         sessionStorage.setItem('IsOwnerAdminReadOnly', response.acceptedTerms);
 
@@ -100,7 +92,6 @@ export class LoginComponent {
         this.userManagementService.updateLoginDate(this.user).subscribe(
           (response) => {},
           (error) => {
-            console.log('error: ', error);
             this.loginError = true;
 
             this.spinner.hide();

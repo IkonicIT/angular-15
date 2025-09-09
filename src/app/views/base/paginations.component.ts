@@ -18,8 +18,6 @@ export class PaginationsComponent {
   }
 
   pageChanged(event: any): void {
-    console.log('Page changed to: ' + event.page);
-    console.log('Number items per page: ' + event.itemsPerPage);
   }
 
   maxSize: number = 5;

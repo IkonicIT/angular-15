@@ -70,7 +70,6 @@
                           Effective Date
                           <strong class="text-danger">*</strong></label
                         >
-                        <!-- <input type="text"  class="form-control" [(ngModel)]="model.warrantyExpiration" id="date" name="critical" bsDatepicker> -->
                         <input
                           type="text"
                           class="form-control"
@@ -495,7 +494,7 @@
                                 title="View Item Transfer"
                                 [routerLink]="[
                                   '../../viewtItemTransfer/' +
-                                    transfer.transferLogID
+                                    transfer.transferLogId
                                 ]"
                               >
                                 View
@@ -509,7 +508,7 @@
                                 (click)="
                                   openModal(
                                     confirmtemplate,
-                                    transfer.transferLogID
+                                    transfer.transferLogId
                                   )
                                 "
                                 [disabled]="highestRank == 9"

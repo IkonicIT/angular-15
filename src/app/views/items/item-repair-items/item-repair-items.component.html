@@ -72,7 +72,7 @@
                               data-bs-toggle="tooltip"
                               title=" Add new Repair Item "
                               [disabled]="
-                                itemType === undefined || itemType === ''
+                                itemType === undefined || itemType === 0
                               "
                               (click)="openModal(templateAdd, companyId)"
                               placement="top"
@@ -93,7 +93,7 @@
                             >Show
                             <select
                               [(ngModel)]="itemsForPagination"
-                              (change)="onChange($event.target)"
+                              (change)="onChange()"
                               name="pagination"
                             >
                               <option>5</option>
@@ -161,7 +161,7 @@
                                 title="Edit Repair Item"
                                 type="button"
                                 class="btn btn-outline-danger btn-sm btn-right"
-                                (click)="editItemrepairItem(item.repairId)"
+                                (click)="editItemRepairItem(item.repairId)"
                               >
                                 Edit
                               </button>
@@ -208,7 +208,7 @@
         type="button"
         class="close pull-right"
         aria-label="Close"
-        (click)="modalRef.hide()"
+        (click)="modalRef?.hide()"
       >
         <span aria-hidden="true">&times;</span>
       </button>
@@ -324,7 +324,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

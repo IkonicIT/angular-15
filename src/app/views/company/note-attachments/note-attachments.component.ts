@@ -200,8 +200,6 @@ export class NoteAttachmentsComponent implements OnInit {
         <script>
           function reloadIFrame() {
             var iframe = document.getElementById("iFrame");
-              console.log(iframe); //work control
-              console.log(iframe.contentDocument); //work control
               if(iframe.contentDocument.URL == "about:blank"){
                 console.log("loaded");
                 iframe.src =  iframe.src;
@@ -216,7 +214,6 @@ export class NoteAttachmentsComponent implements OnInit {
             $( document ).ready(function() {
                 $('#menuiFrame').on('load', function() {
                     clearInterval(timerId);
-                    console.log("Finally Loaded"); //work control
                 });
             });
           </script>

@@ -12,30 +12,33 @@ import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
   styleUrls: ['./item-transfer-view.component.scss'],
 })
 export class ItemTransferViewComponent implements OnInit {
-  transfers: any = [];
+  transfers: any[] = [];
   model: any = {};
-  index: number = 0;
-  p: any;
-  order: any;
-  reverse: any;
-  transferFilter: any;
+  index = 0;
+  p = 1;
+  order = '';
+  reverse = '';
+  transferFilter = '';
   itemsForPagination = 10;
-  companyId: any;
-  transferLogID: any;
-  globalCompany: any;
+
+  companyId = 0;
+  transferLogId = '';
+  globalCompany: any = {};
   itemTransfer: any;
-  companyName: any;
-  itemId: any;
+  companyName = '';
+  itemId = '';
   item: any;
-  helpFlag: any = false;
-  bsConfig: Partial<BsDatepickerConfig>;
+
+  helpFlag = false;
+  bsConfig: Partial<BsDatepickerConfig> = {};
   locationValue: any;
-  itemTypeItems: TreeviewItem[];
+  itemTypeItems: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
   loader = false;
+
   constructor(
     private companyManagementService: CompanyManagementService,
     private itemManagementService: ItemManagementService,
@@ -48,55 +51,66 @@ export class ItemTransferViewComponent implements OnInit {
       this.companyName = this.globalCompany.name;
       this.companyId = this.globalCompany.companyId;
     }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyId = value.companyId;
-      this.companyName = this.globalCompany.name;
+      this.companyName = value.name;
     });
-    this.spinner.show();
 
-    this.itemId = sessionStorage.getItem('transferItemId');
-    this.itemManagementService
-      .getAllTransfers(this.itemId)
-      .subscribe((response) => {
-        this.transfers = response;
+    this.spinner.show();
+    this.itemId = sessionStorage.getItem('transferItemId') || '';
+
+    if (this.itemId) {
+      this.itemManagementService.getAllTransfers(this.itemId).subscribe((response) => {
+        this.transfers = Array.isArray(response) ? response : [];
         this.spinner.hide();
       });
-  }
-
-  ngOnInit() {
-    if (this.route.snapshot.params['transferLogID']) {
-      this.transferLogID = this.route.snapshot.params['transferLogID'];
-      this.getItemTransferDetails(this.transferLogID);
+    } else {
+      this.spinner.hide();
     }
   }
 
-  getItemTransferDetails(transferLogID: string) {
+  ngOnInit() {
+    const transferLogId = this.route.snapshot.params['transferLogId'];
+    if (transferLogId) {
+      this.transferLogId = transferLogId;
+      this.getItemTransferDetails(this.transferLogId);
+    }
+  }
+
+  getItemTransferDetails(transferLogId: string) {
     this.spinner.show();
 
-    this.itemManagementService.getItemTransferDetails(transferLogID).subscribe(
+    this.itemManagementService.getItemTransferDetails(transferLogId).subscribe(
       (response) => {
         this.spinner.hide();
-
-        this.model = response;
-        this.model.transfeDate = this.model.transfeDate.split(' ')[0];
+        this.model = response || {};
+        if (this.model.transfeDate) {
+          this.model.transfeDate = this.model.transfeDate.split(' ')[0];
+        }
         this.itemTransfer = response;
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  view(transferLogID: string) {
-    this.getItemTransferDetails(transferLogID);
-    this.router.navigate(['/items/viewtItemTransfer/' + transferLogID]);
+  view(transferLogId: string) {
+    this.getItemTransferDetails(transferLogId);
+    this.router.navigate([`/items/viewtItemTransfer/${transferLogId}`]);
   }
 
-  setOrder(orderType: string) {}
+  setOrder(orderType: string) {
+    if (this.order === orderType) {
+      this.reverse = this.reverse === '' ? '-' : '';
+    }
+    this.order = orderType;
+  }
 
   back() {
-    this.router.navigate(['/items/transferItem/' + this.itemId]);
+    this.router.navigate([`/items/transferItem/${this.itemId}`]);
   }
 
   help() {

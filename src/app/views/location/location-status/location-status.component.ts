@@ -12,78 +12,77 @@ import { LocationStatusService } from '../../../services/location-status.service
 })
 export class LocationStatusComponent implements OnInit {
   statuses: any[] = [];
-  companyId: string;
-  model: any;
+  companyId: string = '';
+  model: any = {};
   documents: any[] = [];
-  router: Router;
-  message: string;
-  modalRef: BsModalRef;
+  message: string = '';
+  modalRef: BsModalRef | null = null;
   companyName: string = '';
   order: string = 'status';
   reverse: string = '';
-  statusFilter: any = '';
-  itemsForPagination: any = 5;
-  index: number;
+  statusFilter: string = '';
+  itemsForPagination: number = 5;
+  index: number = 0;
   globalCompany: any = {};
-  currentRole: any;
-  userName: any;
-  highestRank: any;
-  helpFlag: any = false;
-  p: any;
-  loader = false;
+  currentRole: string | null = null;
+  userName: string = '';
+  highestRank: number = 0;
+  helpFlag: boolean = false;
+  p: number = 1;
+  loader: boolean = false;
+
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
     private locationStatusService: LocationStatusService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyId;
+    this.companyId = String(this.globalCompany?.companyId ?? '');
+    this.companyName = this.globalCompany?.name ?? '';
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyId;
+      this.companyId = String(value.companyId ?? '');
+      this.companyName = value?.name ?? '';
       this.documents = [];
     });
+
     this.getStatuses();
   }
 
-  ngOnInit() {
-    this.userName = sessionStorage.getItem('userName');
+  ngOnInit(): void {
+    this.userName = sessionStorage.getItem('userName') ?? '';
     this.currentRole = sessionStorage.getItem('currentRole');
-    this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    const rank = sessionStorage.getItem('highestRank');
+    this.highestRank = rank ? Number(rank) : 0;
   }
 
-  getStatuses() {
+  getStatuses(): void {
     this.spinner.show();
-
+    this.statuses = [];
     this.locationStatusService.getAllLocationStatuses(this.companyId).subscribe(
       (response: any) => {
         this.spinner.hide();
-
-        console.log(response);
-        this.statuses = response;
+        this.statuses = Array.isArray(response) ? response : [];
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  addStatus() {
+  addStatus(): void {
     this.router.navigate(['/location/addLocationStatus/']);
   }
 
-  editStatus(status: { statusId: string }) {
-    console.log('statusId=' + status.statusId);
-    this.router.navigate(['/location/editLocationStatus/' + status.statusId]);
+  editStatus(status: { statusId: string }): void {
+    this.router.navigate(['/location/editLocationStatus/', status.statusId]);
   }
 
-  openModal(template: TemplateRef<any>, id: number) {
+  openModal(template: TemplateRef<any>, id: number): void {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
@@ -91,61 +90,54 @@ export class LocationStatusComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.locationStatusService.removeLocationStatus(this.index, this.userName).subscribe(
+      () => {
+        this.spinner.hide();
+        this.modalRef?.hide();
+        this.getStatuses();
 
-    this.locationStatusService
-      .removeLocationStatus(this.index, this.userName)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
+        const currentPage = this.p;
+        const statusesCount = this.statuses.length - 1;
+        const maxPageAvailable = Math.ceil(statusesCount / this.itemsForPagination);
 
-          this.modalRef.hide();
-          this.getStatuses();
-          const currentPage = this.p;
-          const statusesCount = this.statuses.length - 1;
-          const maxPageAvailable = Math.ceil(
-            statusesCount / this.itemsForPagination
-          );
-          if (currentPage > maxPageAvailable) {
-            this.p--;
-          }
-        },
-        (error) => {
-          this.spinner.hide();
+        if (currentPage > maxPageAvailable) {
+          this.p = Math.max(maxPageAvailable, 1);
         }
-      );
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
-  setOrder(value: string) {
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e: any) {
+  onChange(e: any): void {
     const currentPage = this.p;
     const statusesCount = this.statuses.length - 1;
     const maxPageAvailable = Math.ceil(statusesCount / this.itemsForPagination);
+
     if (currentPage > maxPageAvailable) {
-      this.p--;
+      this.p = Math.max(maxPageAvailable, 1);
     }
   }
 }

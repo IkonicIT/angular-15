@@ -1,10 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { CompanyManagementService } from '../../services';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CompanyManagementService } from '../../services';
 
 @Component({
   selector: 'app-template',
@@ -12,26 +9,27 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./template.component.scss'],
 })
 export class TemplateComponent implements OnInit {
-  templateID: any = 0;
-  company: any = {};
-  model: any = {};
-  companies: any = [];
-  templates: any = [];
-  companyId: any;
+  templateId: number = 0;
+  company: { name?: string } = {};
+  model: { companyId?: string; templateName?: string } = {};
+  companies: any[] = [];
+  templates: any[] = [];
+  companyId!: string;
   globalCompany: any;
-  userName: string;
-  index: number = 0;
-  savedCompanyName: any;
-  index1: number = 0;
-  savedTemplateName: any;
-  deletedTemplateName: any;
-  helpFlag: any = false;
-  modalRef: BsModalRef;
-  message: string;
-  currentTemplateName: any;
-  highestRank: any;
+  userName!: string;
+  index = 0;
+  savedCompanyName?: string;
+  index1 = 0;
+  savedTemplateName?: string;
+  deletedTemplateName?: string;
+  helpFlag = false;
+  modalRef?: BsModalRef;
+  message = '';
+  currentTemplateName?: string;
+  highestRank: string | null = null;
   dismissible = true;
   loader = false;
+
   constructor(
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
@@ -42,63 +40,60 @@ export class TemplateComponent implements OnInit {
     this.companies = this.companyManagementService.getGlobalCompanyList();
   }
 
-  ngOnInit() {
-    this.userName = sessionStorage.getItem('userName') as string;
+  ngOnInit(): void {
+    this.userName = sessionStorage.getItem('userName') ?? '';
     this.highestRank = sessionStorage.getItem('highestRank');
     this.getAllTemplates(this.companyId);
   }
 
-  getAllTemplates(companyId: string) {
+  getAllTemplates(companyId: string): void {
     this.spinner.show();
-
-    this.companyManagementService.getAllTemplates(companyId).subscribe(
-      (response) => {
+    this.companyManagementService.getAllTemplates(companyId).subscribe({
+      next: (response) => {
+        this.templates = Array.isArray(response) ? response : [];;
         this.spinner.hide();
-
-        this.templates = response;
       },
-      (error) => {
-        this.spinner.hide();
-      }
-    );
+      error: () => this.spinner.hide(),
+    });
   }
 
-  saveCompany() {
-    let req: any;
-    if (this.templateID == 0) {
+  saveCompany(): void {
+    if (this.templateId === 0) {
       this.index = -1;
-    } else if (this.company.name == undefined) {
-      this.index = -2;
-    } else {
-       req = {
-        templateId: this.templateID,
-      
-        companyName: this.company.name,
-        userName: this.userName,
-        isPartnerCompany: this.highestRank === '10' ? true : false
-      };    
-      if (this.highestRank === '10' || '0') {
-        req.userId = sessionStorage.getItem('userId');
-      };
-      this.spinner.show();
-
-      this.companyManagementService.saveCompanyFromTemplate(req).subscribe(
-        (response) => {
-          this.spinner.hide();
-    this.savedCompanyName = this.company.name;
-    this.company.name = '';
-    this.companyManagementService.setCompaniesListModified(true);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+      return;
     }
+
+    if (!this.company.name) {
+      this.index = -2;
+      return;
+    }
+
+    const req: any = {
+      templateId: this.templateId,
+      companyName: this.company.name,
+      userName: this.userName,
+      isPartnerCompany: this.highestRank === '10',
+    };
+
+    if (this.highestRank === '10' || this.highestRank === '0') {
+      req.userId = sessionStorage.getItem('userId');
+    }
+
+    this.spinner.show();
+    this.companyManagementService.saveCompanyFromTemplate(req).subscribe({
+      next: () => {
+        this.savedCompanyName = this.company.name;
+        this.company.name = '';
+        this.companyManagementService.setCompaniesListModified(true);
+        this.spinner.hide();
+      },
+      error: () => this.spinner.hide(),
+    });
   }
 
-  openModal(template: TemplateRef<any>, id: any) {
-    this.templateID = id;
-    if (this.templateID == 0) {
+  openModal(template: TemplateRef<any>, id: number): void {
+    this.templateId = id;
+    if (this.templateId === 0) {
       this.index = -1;
     } else {
       this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
@@ -107,84 +102,76 @@ export class TemplateComponent implements OnInit {
 
   confirm(): void {
     this.message = 'Confirmed!';
-    this.spinner.show();
 
-    if (this.templateID == 0) {
+    if (this.templateId === 0) {
       this.index = -1;
       this.spinner.hide();
+      this.modalRef?.hide();
+      return;
+    }
 
-      this.modalRef.hide();
-    } else {
-      this.spinner.show();
+    this.spinner.show();
+    this.setTemplateName(this.templateId);
 
-      this.setTemplateName(this.templateID);
-      this.companyManagementService
-        .removeTemplate(
-          this.templateID,
-          this.companyId,
-          this.userName,
-          this.currentTemplateName
-        )
-        .subscribe((response) => {
-          this.modalRef.hide();
+    this.companyManagementService
+      .removeTemplate(String(this.templateId), this.companyId, this.userName, String(this.currentTemplateName))
+      .subscribe({
+        next: () => {
+          this.modalRef?.hide();
           this.index = 2;
           this.deletedTemplateName = this.currentTemplateName;
-          setTimeout(() => {
-            this.index = 0;
-          }, 5000);
-          this.templateID = 0;
+          setTimeout(() => (this.index = 0), 5000);
+          this.templateId = 0;
           this.getAllTemplates(this.companyId);
           this.spinner.hide();
-        });
-    }
+        },
+        error: () => this.spinner.hide(),
+      });
   }
 
-  setTemplateName(templateID: any) {
-    this.templates.forEach((template: { templateID: any; name: any }) => {
-      if (templateID == template.templateID)
-        this.currentTemplateName = template.name;
-    });
+  setTemplateName(templateId: number): void {
+    const template = this.templates.find((t: any) => t.templateId === templateId);
+    this.currentTemplateName = template?.name;
   }
 
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
-  saveTemplate() {
-    if (this.model.companyId == undefined) {
+  saveTemplate(): void {
+    if (!this.model.companyId) {
       this.index1 = -1;
-    } else if (this.model.templateName == undefined) {
-      this.index1 = -2;
-    } else {
-      var req = {
-        companyId: this.model.companyId,
-        userName: this.userName,
-        templateName: this.model.templateName,
-        includeAllElements: false,
-      };
-      this.spinner.show();
-
-      this.companyManagementService.saveTemplate(req).subscribe(
-        (response: any) => {
-          this.savedTemplateName = response.name;
-          this.index1 = 1;
-          setTimeout(() => {
-            this.index1 = 0;
-          }, 5000);
-          this.model = {};
-          this.spinner.hide();
-
-          this.getAllTemplates(this.companyId);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+      return;
     }
+
+    if (!this.model.templateName) {
+      this.index1 = -2;
+      return;
+    }
+
+    const req = {
+      companyId: this.model.companyId,
+      userName: this.userName,
+      templateName: this.model.templateName,
+      includeAllElements: false,
+    };
+
+    this.spinner.show();
+    this.companyManagementService.saveTemplate(req).subscribe({
+      next: (response: any) => {
+        this.savedTemplateName = response.name;
+        this.index1 = 1;
+        setTimeout(() => (this.index1 = 0), 5000);
+        this.model = {};
+        this.getAllTemplates(this.companyId);
+        this.spinner.hide();
+      },
+      error: () => this.spinner.hide(),
+    });
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

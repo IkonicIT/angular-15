@@ -1,4 +1,4 @@
-<div class="animated fadeIn" *ngIf="highestRank > 2">
+<div class="animated fadeIn" *ngIf="highestRankNum > 2">
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
@@ -299,11 +299,11 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Add new Item"
-                          (click)="saveItem()" *ngIf="highestRank > 2" class="btn btn-primary btn-right" style="border-radius: 6px;">
+                          (click)="saveItem()" *ngIf="highestRankNum > 2" class="btn btn-primary btn-right" style="border-radius: 6px;">
                           Add
                         </button>
                         <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Cancel" type="button"
-                          [routerLink]="['../../../items']" *ngIf="highestRank > 2" class="btn btn-primary btn-right" style="border-radius: 6px;">
+                          [routerLink]="['../../../items']" *ngIf="highestRankNum > 2" class="btn btn-primary btn-right" style="border-radius: 6px;">
                           Cancel
                         </button>
                         <button (click)="back()" type="button" data-bs-placement="bottom" data-bs-toggle="tooltip"
@@ -377,7 +377,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

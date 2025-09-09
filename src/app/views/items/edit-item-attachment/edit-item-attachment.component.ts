@@ -52,7 +52,6 @@ export class EditItemAttachmentComponent implements OnInit {
     this.itemId = route.snapshot.params['itemId'];
     this.attachmentId = route.snapshot.params['id'];
     this.currentAttachmentId = route.snapshot.params['attachmentId'];
-    console.log('itemId=' + this.itemId);
     this.router = router;
     this.spinner.show();
 

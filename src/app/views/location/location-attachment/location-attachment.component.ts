@@ -12,46 +12,47 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./location-attachment.component.scss'],
 })
 export class LocationAttachmentComponent implements OnInit {
-  locationId: string;
-  companyId: string;
-  p: any;
+  locationId: string = '';
+  companyId: number = 0;
+  p: number = 1;
 
-  companyName: any;
+  companyName: string = '';
   model: any;
-  authToken: any;
+  authToken: string | null = null;
   index: string = 'locationdocument';
   documents: any[] = [];
-  route: ActivatedRoute;
-  userName: any;
-  router: Router;
-  message: string;
-  modalRef: BsModalRef;
+  userName: string | null = null;
+  message: string = '';
+  modalRef: BsModalRef | null = null;
   order: string = 'description';
   reverse: string = '';
-  documentFilter: any = '';
-  itemsForPagination: any = 5;
+  documentFilter: string = '';
+  itemsForPagination: number = 5;
   globalCompany: any;
   loader = false;
+
   constructor(
     private modalService: BsModalService,
     private locationAttachmentsService: LocationAttachmentsService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.locationId = route.snapshot.params['id'];
+    this.locationId = this.route.snapshot.params['id'] ?? '';
     this.authToken = sessionStorage.getItem('auth_token');
-    this.router = router;
-    this.route = route;
-    console.log('locationId=' + this.locationId);
+
     if (this.companyId) {
       this.getAllDocuments(this.companyId, this.locationId);
     } else {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
-      this.companyId = this.globalCompany.companyId;
-      this.getAllDocuments(this.companyId, this.locationId);
+      if (this.globalCompany) {
+        this.companyId = this.globalCompany.companyId;
+        this.companyName = this.globalCompany.name;
+        this.getAllDocuments(this.companyId, this.locationId);
+      }
     }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
@@ -59,46 +60,44 @@ export class LocationAttachmentComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  getAllDocuments(companyId: string, locationId: string) {
+  getAllDocuments(companyId: number, locationId: string): void {
     this.spinner.show();
 
     this.locationAttachmentsService
-      .getAllLocationDocuments(companyId, locationId)
+      .getAllLocationDocuments(String(companyId), locationId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-
-          console.log(response);
-          this.documents = response;
+          this.documents = response ?? [];
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
   }
 
-  refresh() {}
+  refresh(): void {
+    if (this.companyId && this.locationId) {
+      this.getAllDocuments(this.companyId, this.locationId);
+    }
+  }
 
-  openModal(template: TemplateRef<any>, id: string) {
+  openModal(template: TemplateRef<any>, id: string): void {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  addLocationDocument() {
-    console.log(this.companyId);
-    this.router.navigate(['/location/addAttachment/' + this.locationId]);
+  addLocationDocument(): void {
+    this.router.navigate([`/location/addAttachment/${this.locationId}`]);
   }
 
-  editLocationDocument(document: { attachmentId: string }) {
+  editLocationDocument(document: { attachmentId: string }): void {
     this.router.navigate([
-      '/location/editAttachment/' +
-        document.attachmentId +
-        '/' +
-        this.locationId,
+      `/location/editAttachment/${document.attachmentId}/${this.locationId}`,
     ]);
   }
 
@@ -107,15 +106,14 @@ export class LocationAttachmentComponent implements OnInit {
     this.spinner.show();
 
     this.locationAttachmentsService
-      .removeLocationDocuments(this.index, this.companyId, this.userName)
+      .removeLocationDocuments(this.index, String(this.companyId), this.userName ?? '')
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-
-          this.modalRef.hide();
+          this.modalRef?.hide();
           this.getAllDocuments(this.companyId, this.locationId);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -123,15 +121,12 @@ export class LocationAttachmentComponent implements OnInit {
 
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
-  setOrder(value: string) {
+
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
@@ -139,50 +134,41 @@ export class LocationAttachmentComponent implements OnInit {
   downloadDocument(companyDocument: {
     attachmentFile: string;
     contentType: string;
-    fileName: string | undefined;
-  }) {
-    var blob = this.locationAttachmentsService.b64toBlob(
+    fileName: string;
+  }): void {
+    const blob = this.locationAttachmentsService.b64toBlob(
       companyDocument.attachmentFile,
       companyDocument.contentType
-    ); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
+    );
     saveAs(blob, companyDocument.fileName);
   }
 
-  downloadFile(companyDocument: { fileName: string; attachmentId: string }) {
-    if (
-      companyDocument.fileName.split('.')[1].toLowerCase() == 'pdf' ||
-      companyDocument.fileName.split('.')[1].toLowerCase() == 'txt'
-    ) {
-      var pdfStr = `<div style="text-align:center">
-    <h4>Pdf viewer</h4>
-    <iframe src="https://docs.google.com/viewer?url=http://18.216.158.31:8088/api/attachment/downloadaudiofile/${
-      companyDocument.attachmentId + '?access_token=' + this.authToken
-    }&embedded=true" frameborder="0" height="500px" width="100%"></iframe>
+  downloadFile(companyDocument: { fileName: string; attachmentId: string }): void {
+    const extension = companyDocument.fileName.split('.').pop()?.toLowerCase() ?? '';
+
+    if (['pdf', 'txt'].includes(extension)) {
+      const pdfStr = `<div style="text-align:center">
+        <h4>Pdf viewer</h4>
+        <iframe src="https://docs.google.com/viewer?url=http://18.216.158.31:8088/api/attachment/downloadaudiofile/${
+          companyDocument.attachmentId + '?access_token=' + this.authToken
+        }&embedded=true" frameborder="0" height="500px" width="100%"></iframe>
       </div>`;
 
-      var wnd = window.open('about:blank');
+      const wnd = window.open('about:blank');
       if (wnd) wnd.document.write(pdfStr);
-    } else if (
-      companyDocument.fileName.split('.')[1].toLowerCase() == 'jpg' ||
-      companyDocument.fileName.split('.')[1].toLowerCase() == 'png' ||
-      companyDocument.fileName.split('.')[1].toLowerCase() == 'jpeg' ||
-      companyDocument.fileName.split('.')[1].toLowerCase() == 'gif'
-    ) {
-      var pdfStr = `<div style="text-align:center">
-      <h4>Image Viewer</h4>
-      <img src="http://18.216.158.31:8088/api/attachment/downloadaudiofile/${
-        companyDocument.attachmentId + '?access_token=' + this.authToken
-      }&embedded=true" >
-        </div>`;
+    } else if (['jpg', 'png', 'jpeg', 'gif'].includes(extension)) {
+      const imgStr = `<div style="text-align:center">
+        <h4>Image Viewer</h4>
+        <img src="http://18.216.158.31:8088/api/attachment/downloadaudiofile/${
+          companyDocument.attachmentId + '?access_token=' + this.authToken
+        }&embedded=true" >
+      </div>`;
 
-      var wnd = window.open('about:blank');
-      if (wnd) wnd.document.write(pdfStr);
+      const wnd = window.open('about:blank');
+      if (wnd) wnd.document.write(imgStr);
     } else {
       window.open(
-        'http://18.216.158.31:8088/api/attachment/downloadaudiofile/' +
-          companyDocument.attachmentId +
-          '?access_token=' +
-          this.authToken
+        `http://18.216.158.31:8088/api/attachment/downloadaudiofile/${companyDocument.attachmentId}?access_token=${this.authToken}`
       );
     }
   }

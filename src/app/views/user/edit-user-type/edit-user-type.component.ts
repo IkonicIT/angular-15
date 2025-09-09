@@ -162,7 +162,6 @@ export class EditUserTypeComponent implements OnInit {
 
   onValueChange(value: number): void {
     this.value = value;
-    console.log(value);
   }
 
   print(): void {

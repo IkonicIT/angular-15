@@ -89,7 +89,6 @@ export class WarrantyTypeManagementComponent implements OnInit {
             totalWarrantyTypesCount / this.itemsForPagination
           );
 
-          // Check if the current page exceeds the maximum available page
           if (this.p > maxPageAvailable) {
             this.p = maxPageAvailable;
           }

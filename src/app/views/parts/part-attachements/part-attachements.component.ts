@@ -3,7 +3,6 @@ import { CompanyDocumentsService } from '../../../services/company-documents.ser
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router, ActivatedRoute } from '@angular/router';
-// import { saveAs } from 'file-saver/FileSaver';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PartsService } from 'src/app/services/parts.service';
 import { Location } from '@angular/common';
@@ -52,7 +51,6 @@ export class PartAttachementsComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.frame = params['frame'] || '';
     });
-    console.log('VendorId = ' + this.partNoteId);
     if (this.partNoteId) {
       this.getAllDocuments(this.partNoteId);
     }
@@ -67,7 +65,6 @@ export class PartAttachementsComponent implements OnInit {
     this.partsService.geAllPartAttachments(this.partNoteId).subscribe(
       (response) => {
         this.spinner.hide();
-        console.log(response);
         this.documents = response;
       },
       (error) => {
@@ -85,7 +82,6 @@ export class PartAttachementsComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
   addDocument() {
-    console.log('Part', this.companyId);
     this.router.navigate(['/parts/addDocument/', this.partNoteId]);
   }
   editDocument(document: any) {
@@ -126,11 +122,6 @@ export class PartAttachementsComponent implements OnInit {
     this.order = value;
   }
 
-  // downloadDocument(companyDocument) {
-  //   var blob = this.companyDocumentsService.b64toBlob(companyDocument.attachmentFile, companyDocument.contentType); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
-  //   saveAs(blob, companyDocument.fileName);
-  // }
-
   getPartAttachment(document: any): void {
     this.partsService
       .getPartAttachment(document.partAttachmentID)
@@ -142,7 +133,6 @@ export class PartAttachementsComponent implements OnInit {
 
   openAttachment(): void {
     if (this.isImage()) {
-      // Open image in a new tab
       const imageWindow = window.open();
       if (imageWindow) {
         imageWindow.document.write(
@@ -150,7 +140,6 @@ export class PartAttachementsComponent implements OnInit {
         );
       }
     } else {
-      // Download the attachment
       const blob = this.base64ToBlob(
         this.vendorAttachment.attachmentFile,
         this.vendorAttachment.contentType

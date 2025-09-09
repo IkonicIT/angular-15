@@ -39,13 +39,11 @@ export class CranesComponent implements OnInit {
     this.historyStack = historyStackBackup
       ? JSON.parse(historyStackBackup)
       : [];
-    console.log('Data::', this.data, this.historyStack);
 
     this.route.queryParams.subscribe((params) => {
       const bmdrnk = params['bmdrnk'];
       const bmkey1 = params['bmkey1'];
       const bmkey = params['bmkey2'];
-      console.log('bmkey:::', bmdrnk, bmkey1, bmkey);
       if (!bmdrnk && !bmkey1 && !bmkey) {
         this.data = historyStackData ? JSON.parse(historyStackData) : [];
         this.isFromQueryParams = false;
@@ -90,8 +88,7 @@ export class CranesComponent implements OnInit {
           );
 
           this.errorMessage = '';
-          // }
-          this.isFromQueryParams = false;
+                    this.isFromQueryParams = false;
         }
       },
       (error) => {
@@ -118,7 +115,7 @@ export class CranesComponent implements OnInit {
           );
           this.spinner.hide();
           this.errorMessage = '';
-          // }
+        
           this.isFromQueryParams = false;
         }
       },

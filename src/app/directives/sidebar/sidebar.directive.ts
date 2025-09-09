@@ -1,8 +1,5 @@
 import { Directive, HostListener } from '@angular/core';
 
-/**
- * Allows the sidebar to be toggled via click.
- */
 @Directive({
   selector: '[appSidebarToggler]',
 })
@@ -47,8 +44,6 @@ export class BrandMinimizeDirective {
 })
 export class MobileSidebarToggleDirective {
   constructor() {}
-
-  // Check if element has class
   private hasClass(target: any, elementClassName: string) {
     return new RegExp('(\\s|^)' + elementClassName + '(\\s|$)').test(
       target.className
@@ -62,23 +57,16 @@ export class MobileSidebarToggleDirective {
   }
 }
 
-/**
- * Allows the off-canvas sidebar to be closed via click.
- */
 @Directive({
   selector: '[appSidebarClose]',
 })
 export class SidebarOffCanvasCloseDirective {
   constructor() {}
-
-  // Check if element has class
   private hasClass(target: any, elementClassName: string) {
     return new RegExp('(\\s|^)' + elementClassName + '(\\s|$)').test(
       target.className
     );
   }
-
-  // Toggle element class
   private toggleClass(elem: any, elementClassName: string) {
     let newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
     if (this.hasClass(elem, elementClassName)) {

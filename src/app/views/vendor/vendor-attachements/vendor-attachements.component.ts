@@ -44,8 +44,6 @@ export class VendorAttachementsComponent implements OnInit {
     this.authToken = sessionStorage.getItem('auth_token');
     this.router = router;
     this.route = route;
-
-    console.log('VendorId = ' + this.vendorId);
     if (this.vendorId) {
       this.getAllDocuments(this.vendorId);
     }
@@ -60,7 +58,6 @@ export class VendorAttachementsComponent implements OnInit {
     this.companyDocumentsService.getAllVendorDocuments(vendorId).subscribe(
       (response: any) => {
         this.spinner.hide();
-        console.log(response);
         this.documents = response;
       },
       (error: any) => {
@@ -78,7 +75,6 @@ export class VendorAttachementsComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
   addDocument() {
-    console.log(this.companyId);
     this.router.navigate(['/vendor/addDocument/'], {
       queryParams: { q: this.vendorId },
     });
@@ -125,11 +121,6 @@ export class VendorAttachementsComponent implements OnInit {
     this.order = value;
   }
 
-  // downloadDocument(companyDocument) {
-  //   var blob = this.companyDocumentsService.b64toBlob(companyDocument.attachmentFile, companyDocument.contentType); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
-  //   saveAs(blob, companyDocument.fileName);
-  // }
-
   getVendorAttachment(document: any): void {
     this.companyDocumentsService
       .getVendorDocument(document.vendorAttachmentId)
@@ -141,7 +132,6 @@ export class VendorAttachementsComponent implements OnInit {
 
   openAttachment(): void {
     if (this.isImage()) {
-      // Open image in a new tab
       const imageWindow = window.open();
       if (imageWindow) {
         imageWindow.document.write(
@@ -149,7 +139,6 @@ export class VendorAttachementsComponent implements OnInit {
         );
       }
     } else {
-      // Download the attachment
       const blob = this.base64ToBlob(
         this.vendorAttachment.attachmentFile,
         this.vendorAttachment.contentType

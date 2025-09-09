@@ -1,4 +1,3 @@
-// excel.service.ts
 
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
@@ -10,12 +9,10 @@ export class VendorExcelService {
   exportToExcel(data: any, fileName: string): void {
     const workbook: XLSX.WorkBook = { Sheets: {}, SheetNames: [] };
 
-    // Iterate over each company's data and create a sheet for each
     for (const companyName in data) {
       if (data.hasOwnProperty(companyName)) {
         const companyData = data[companyName];
 
-        // Flatten data and include attribute values
         const flattenedData = this.flattenData(companyData);
         workbook.SheetNames.push(companyName);
         workbook.Sheets[companyName] = XLSX.utils.json_to_sheet(flattenedData);
@@ -30,7 +27,7 @@ export class VendorExcelService {
   }
 
   private flattenData(data: any[]): any[] {
-    const flattenedData: any[] = []; // Explicitly define the type
+    const flattenedData: any[] = []; 
     data.forEach((item) => {
       const flatItem = {
         jobNumber: item.jobNumber,
@@ -40,7 +37,7 @@ export class VendorExcelService {
         poNumber: item.poNumber,
         estimatedShipDate: item.estimatedShipDate,
         completed: item.completed,
-        attributeValues: this.concatenateAttributes(item.attributeValues), // Include attribute values
+        attributeValues: this.concatenateAttributes(item.attributeValues), 
       };
       flattenedData.push(flatItem);
     });

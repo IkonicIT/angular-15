@@ -19,8 +19,6 @@ export class serviceReportsComponent implements OnInit {
   companyId: any;
   report: any = {};
   public isloaded = false;
-  // itemsForPagination: any = 5;
-  // currentPage: number = 1;
   itemsForPagination: any = 5;
   completedServicesForPagination: any = 5;
   page1: any = 1;

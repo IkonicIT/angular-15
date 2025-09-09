@@ -99,7 +99,7 @@
                           style="margin-right: 3px">
                           Service
                         </button>
-                        <button type="button" [disabled]="itemRank < 5 || highestRank == 9"
+                        <button type="button" [disabled]="itemRank < 5 || highestRankNum == 9"
                           class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px"
                           data-bs-placement="bottom" data-bs-toggle="tooltip" title="Delete Item"
                           (click)="openModal(confirmtemplate, itemId)">
@@ -503,7 +503,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

@@ -48,7 +48,6 @@ export class EditCompanyTypeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
 
-    // Subscribe to query params
     this.sub.add(
       this.route.queryParams.subscribe((params) => {
         this.companyId = +params['q'] || 0;

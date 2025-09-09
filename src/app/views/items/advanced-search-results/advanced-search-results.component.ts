@@ -71,7 +71,6 @@ export class AdvancedSearchResultsComponent implements OnInit {
       const dnobj = { itemsForPagination: 10, p: 1 };
       this.dynLst.push(dnobj);
     }
-    console.log('searchkeylength' + this.searchResultKeys.length);
     if (this.searchResultKeys.length == 1) {
       let key: any;
       let itemId: any;
@@ -79,12 +78,10 @@ export class AdvancedSearchResultsComponent implements OnInit {
       let count: number = 0;
 
       key = this.searchResultKeys[0];
-      console.log('key' + key);
       this.searchResults[key].forEach((obj: any) => {
         count++;
       });
       this.itemsLength = count;
-      console.log('length:' + count);
       if (count == 1) {
         this.searchResults[key].forEach((obj: any) => {
           itemId = obj.itemId;
@@ -108,7 +105,6 @@ export class AdvancedSearchResultsComponent implements OnInit {
         count = count + itemcount;
       }
       this.itemsLength = count;
-      console.log('length:' + count);
     }
 
     (error: any) => {

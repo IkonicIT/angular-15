@@ -31,10 +31,8 @@ export class EditCraneNoteAttachmentComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.route.paramMap.subscribe((params) => {
-      this.documentId = params.get('id'); // 'id' is the placeholder used in the route
-      console.log('Part ID:', this.documentId); // Now you have access to the partId
+      this.documentId = params.get('id'); 
     });
-    console.log('compaanyid=' + this.companyId);
     this.router = router;
   }
 
@@ -60,7 +58,6 @@ export class EditCraneNoteAttachmentComponent implements OnInit {
           window.scroll(0, 0);
           this.spinner.hide();
           this.index = 1;
-          //  this.router.navigate(['/parts/manageAttachments/' + this.partId]);
         },
         (error) => {
           this.spinner.hide();

@@ -17,42 +17,41 @@ import { CompanyDocumentsService } from '../../../services/index';
   styleUrls: ['./notes.component.scss'],
 })
 export class NotesComponent implements OnInit {
-  companyId: string;
-  locationId: string;
+  companyId: string = '';
+  locationId: string = '';
   model: any = {};
   index: string = 'companydocument';
   notes: any[] = [];
-  message: string;
-  modalRef: BsModalRef;
+  message: string = '';
+  modalRef!: BsModalRef;
   companyName: string = '';
   order: string = 'date';
   reverse: string = '';
-  locationNotesFilter: any = '';
-  itemsForPagination: any = 5;
+  locationNotesFilter: string = '';
+  itemsForPagination: number = 5;
   globalCompany: any;
   currentRole: any;
   highestRank: any;
   journalId: number = 0;
-  private sub: any;
-  id: number;
-  userName: any;
+  id!: number;
+  userName: string = '';
   bsConfig: Partial<BsDatepickerConfig>;
-  viewFlag: any = false;
-  editFlag: any = false;
-  newFlag: any = true;
-  locationName: any;
-  helpFlag: any = false;
+  viewFlag: boolean = false;
+  editFlag: boolean = false;
+  newFlag: boolean = true;
+  locationName: string = '';
+  helpFlag: boolean = false;
   index1: number = 0;
-  authToken: any;
-  currentLocationName: any;
+  authToken: string | null;
+  currentLocationName: string = '';
   dismissible = true;
-  p: any;
+  p: number = 1;
   loader = false;
+
   constructor(
     private locationNotesService: LocationNotesService,
     private locationManagementService: LocationManagementService,
     private companyDocumentsService: CompanyDocumentsService,
-    private locationNoteService: LocationNotesService,
     private router: Router,
     private companyManagementService: CompanyManagementService,
     private route: ActivatedRoute,
@@ -65,12 +64,10 @@ export class NotesComponent implements OnInit {
     this.locationId = route.snapshot.params['locationId'];
     this.authToken = sessionStorage.getItem('auth_token');
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.currentLocationName =
-      this.locationManagementService.currentLocationName;
+    this.currentLocationName = this.locationManagementService.currentLocationName;
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
     }
-    console.log('locationId=' + this.locationId);
     if (this.companyId) {
       this.getAllNotes(this.locationId);
     }
@@ -82,30 +79,24 @@ export class NotesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userName = sessionStorage.getItem('userName');
+    this.userName = sessionStorage.getItem('userName') ?? '';
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
     this.model.date = new Date();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
-
     this.model.effectiveOn = new Date();
   }
 
   getAllNotes(locationId: string) {
     this.spinner.show();
-
     this.locationNotesService
       .getAllLocationNotes(this.companyId, locationId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-
-          console.log(response);
-          this.notes = response;
+          this.notes = Array.isArray(response) ? response : [];
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -116,9 +107,10 @@ export class NotesComponent implements OnInit {
     this.editFlag = false;
     this.viewFlag = false;
     this.helpFlag = false;
-    this.model = [];
+    this.model = {};
     this.model.effectiveOn = new Date();
   }
+
   saveLocationNote() {
     if (!this.model.entityName || !this.model.effectiveOn) {
       this.index1 = -1;
@@ -144,14 +136,11 @@ export class NotesComponent implements OnInit {
         trackingNumber: '',
         moduleType: 'locationtype',
       };
-      console.log(JSON.stringify(this.model));
       this.spinner.show();
-
-      this.locationNoteService.saveLocationNotes(this.model).subscribe(
+      this.locationNotesService.saveLocationNotes(this.model).subscribe(
         (response) => {
           this.model = response;
           this.spinner.hide();
-
           this.model.effectiveOn = this.datepipe.transform(
             this.model.effectiveOn,
             'MM/dd/yyyy'
@@ -167,32 +156,33 @@ export class NotesComponent implements OnInit {
             this.index1 = 0;
           }, 7000);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
     }
   }
 
-  goToAttachments(journalId: string, entityName: any) {
+  goToAttachments(journalId: string, entityName: string) {
     this.broadcasterService.currentNoteAttachmentTitle = entityName;
     this.router.navigate([
       '/location/noteAttchments/' + journalId + '/' + journalId,
     ]);
   }
+
   editNote() {
     this.editFlag = true;
     this.viewFlag = false;
     this.newFlag = false;
     this.helpFlag = false;
   }
+
   updateLocationNotes() {
     if (!this.model.entityName || !this.model.effectiveOn) {
       this.index1 = -1;
       window.scroll(0, 0);
     } else {
       this.spinner.show();
-
       this.model.moduleType = 'locationtype';
       this.model.locationName = this.currentLocationName;
       this.model.effectiveOn = new Date(this.model.effectiveOn);
@@ -203,7 +193,6 @@ export class NotesComponent implements OnInit {
             'MM/dd/yyyy'
           );
           this.spinner.hide();
-
           window.scroll(0, 0);
           this.viewFlag = true;
           this.newFlag = false;
@@ -215,7 +204,7 @@ export class NotesComponent implements OnInit {
             this.index1 = 0;
           }, 7000);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -228,12 +217,10 @@ export class NotesComponent implements OnInit {
     this.editFlag = false;
     this.helpFlag = false;
     this.spinner.show();
-
     this.locationNotesService
       .getLocationNotes(journalId, this.locationId)
       .subscribe((response) => {
         this.spinner.hide();
-
         this.model = response;
         if (this.model.effectiveOn) {
           this.model.effectiveOn = new Date(this.model.effectiveOn);
@@ -245,20 +232,23 @@ export class NotesComponent implements OnInit {
       });
     window.scroll(0, 0);
   }
+
   cancelLocationNotes() {
     this.newFlag = true;
     this.editFlag = false;
     this.viewFlag = false;
     this.helpFlag = false;
-    this.model = [];
+    this.model = {};
     this.model.effectiveOn = new Date();
   }
+
   backToItem() {
     this.helpFlag = false;
     this.router.navigate(['/location/list']);
   }
+
   download(companyDocument: any) {
-    if (companyDocument.new == false) {
+    if (companyDocument.new === false) {
       this.downloadFile(companyDocument);
     } else {
       this.downloadDocumentFromDB(companyDocument);
@@ -267,36 +257,34 @@ export class NotesComponent implements OnInit {
 
   downloadDocumentFromDB(document: { attachmentId: number }) {
     this.spinner.show();
-
     this.companyDocumentsService
       .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-
           this.downloadDocument(response);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
   }
 
   downloadDocument(companyDocument: any) {
-    var blob = this.companyDocumentsService.b64toBlob(
+    const blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
       companyDocument.contentType
     );
-    var fileURL = URL.createObjectURL(blob);
+    const fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
   }
 
   downloadFile(attachment: any) {
-    var index = attachment.fileName.lastIndexOf('.');
-    var extension = attachment.fileName.slice(index + 1);
-    if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
-      var wnd = window.open('about:blank');
-      var pdfStr = `<div style="text-align:center">
+    const index = attachment.fileName.lastIndexOf('.');
+    const extension = attachment.fileName.slice(index + 1);
+    if (['pdf', 'txt'].includes(extension.toLowerCase())) {
+      const wnd = window.open('about:blank');
+      const pdfStr = `<div style="text-align:center">
       <h4>Document viewer</h4>
       <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
         attachment.attachmentId + '?access_token=' + this.authToken
@@ -305,42 +293,32 @@ export class NotesComponent implements OnInit {
         <script>
           function reloadIFrame() {
             var iframe = document.getElementById("iFrame");
-              console.log(iframe); //work control
-              console.log(iframe.contentDocument); //work control
               if(iframe.contentDocument.URL == "about:blank"){
-                console.log("loaded");
                 iframe.src =  iframe.src;
               }
             }
             var timerId = setInterval("reloadIFrame();", 1300);
             setTimeout(() => {
               clearInterval(timerId);
-              console.log("Finally Loaded");
               }, 25000);
-  
+
             $( document ).ready(function() {
                 $('#menuiFrame').on('load', function() {
                     clearInterval(timerId);
-                    console.log("Finally Loaded"); //work control
                 });
             });
           </script>`;
-
       if (wnd) wnd.document.write(pdfStr);
     } else if (
-      extension.toLowerCase() == 'jpg' ||
-      extension.toLowerCase() == 'png' ||
-      extension.toLowerCase() == 'jpeg' ||
-      extension.toLowerCase() == 'gif'
+      ['jpg', 'png', 'jpeg', 'gif'].includes(extension.toLowerCase())
     ) {
-      var pdfStr = `<div style="text-align:center">
+      const pdfStr = `<div style="text-align:center">
       <h4>Image Viewer</h4>
       <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
         attachment.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" >
         </div>`;
-
-      var wnd = window.open('about:blank');
+      const wnd = window.open('about:blank');
       if (wnd) wnd.document.write(pdfStr);
     } else {
       window.open(
@@ -351,16 +329,14 @@ export class NotesComponent implements OnInit {
       );
     }
   }
+
   refreshCall() {
     this.getAllNotes(this.locationId);
   }
+
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
@@ -368,16 +344,10 @@ export class NotesComponent implements OnInit {
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
+
   confirm(): void {
     this.message = 'Confirmed!';
-    console.log(
-      'removeLocationnotess journalId=' +
-        this.companyId +
-        ',index==' +
-        this.index
-    );
     this.spinner.show();
-
     this.locationNotesService
       .removeLocationNotes(
         this.model.journalId,
@@ -385,13 +355,12 @@ export class NotesComponent implements OnInit {
         this.currentLocationName
       )
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-
           this.modalRef.hide();
           this.index1 = 4;
           this.refreshCall();
-          this.model = [];
+          this.model = {};
           this.model.effectiveOn = new Date();
           this.newFlag = true;
           this.editFlag = false;
@@ -401,20 +370,23 @@ export class NotesComponent implements OnInit {
             this.index1 = 0;
           }, 7000);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
   }
+
   decline(): void {
     this.message = 'Declined!';
     this.modalRef.hide();
   }
+
   print() {
     this.helpFlag = false;
     window.print();
   }
+
   help() {
-    this.helpFlag = true;
+    this.helpFlag =!this.helpFlag;
   }
 }

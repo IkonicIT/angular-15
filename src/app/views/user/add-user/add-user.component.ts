@@ -127,7 +127,6 @@ export class AddUserComponent implements OnInit {
     this.isEmailCheckVisible = true;
     this.isDuplicate = false;
 
-    // Simple regex, Angular 15 accepts stricter typing
     const emailRegex = /\S+@\S+\.\S+/;
 
     if (emailRegex.test(input.value)) {

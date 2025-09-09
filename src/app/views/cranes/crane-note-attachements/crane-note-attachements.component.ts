@@ -3,12 +3,11 @@ import { CompanyDocumentsService } from '../../../services/company-documents.ser
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router, ActivatedRoute } from '@angular/router';
-// import { saveAs } from "file-saver/FileSaver";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { CranesService } from 'src/app/services/cranes.service';
-import { NgPipesModule } from 'ngx-pipes'; // Import NgPipesModule if needed
-import { NgxPaginationModule } from 'ngx-pagination'; // Import NgxPaginationModule
+import { NgPipesModule } from 'ngx-pipes'; 
+import { NgxPaginationModule } from 'ngx-pagination'; 
 
 @Component({
   selector: 'app-crane-note-attachements',
@@ -55,7 +54,6 @@ export class CraneNoteAttachementsComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.frame = params['frame'] || '';
     });
-    console.log('VendorId = ' + this.craneNoteId);
     if (this.craneNoteId) {
       this.getAllDocuments(this.craneNoteId);
     }
@@ -71,7 +69,6 @@ export class CraneNoteAttachementsComponent implements OnInit {
     this.craensService.geAllCraneNoteAttachments(this.craneNoteId).subscribe(
       (response) => {
         this.spinner.hide();
-        console.log(response);
         this.documents = response;
       },
       (error) => {
@@ -89,7 +86,6 @@ export class CraneNoteAttachementsComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
   addDocument() {
-    console.log('Part', this.companyId);
     this.router.navigate([
       '/cranes/addCraneNoteAttachments/',
       this.craneNoteId,
@@ -136,10 +132,6 @@ export class CraneNoteAttachementsComponent implements OnInit {
     this.order = value;
   }
 
-  // downloadDocument(companyDocument) {
-  //   var blob = this.companyDocumentsService.b64toBlob(companyDocument.attachmentFile, companyDocument.contentType); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
-  //   saveAs(blob, companyDocument.fileName);
-  // }
 
   getCraneNoteAttachment(document: any): void {
     this.craensService
@@ -152,7 +144,6 @@ export class CraneNoteAttachementsComponent implements OnInit {
 
   openAttachment(): void {
     if (this.isImage()) {
-      // Open image in a new tab
       const imageWindow = window.open();
       if (imageWindow) {
         imageWindow.document.write(
@@ -160,7 +151,6 @@ export class CraneNoteAttachementsComponent implements OnInit {
         );
       }
     } else {
-      // Download the attachment
       const blob = this.base64ToBlob(
         this.vendorAttachment.attachmentFile,
         this.vendorAttachment.contentType

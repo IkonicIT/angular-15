@@ -55,16 +55,7 @@ export class CraneNotesComponent implements OnInit {
     this.router = router;
 
     this.getAllNotes(this.craneId);
-    // if(this.companyId){
-    //   this.getAllNotes(this.craneId);
-    // }
-    // this.companyManagementService.globalCompanyChange.subscribe((value) => {
-    //   this.globalCompany = value;
-    //   this.companyName = value.name;
-    //   this.companyId = value.companyId;
-    //   this.getAllNotes(this.vendorId);
-    // });
-  }
+   }
 
   ngOnInit() {
     this.highestRank = sessionStorage.getItem('highestRank');
@@ -97,8 +88,6 @@ export class CraneNotesComponent implements OnInit {
         createdBy: this.userName,
         createdDate: this.model.createdDate,
         name: this.model.name,
-        // "jobNumber": this.model.jobNumber,
-        // "poNumber": this.model.poNumber,
         details: this.model.details,
         isNew: true,
         BMKEY1: this.craneId,

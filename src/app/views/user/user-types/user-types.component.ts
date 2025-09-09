@@ -57,8 +57,8 @@ export class UserTypesComponent implements OnInit {
     const highestRankStr = sessionStorage.getItem('highestRank');
     this.highestRank = highestRankStr ? Number(highestRankStr) : null;
 
-    console.log('currentRole is', this.currentRole);
-    console.log('highestRank is', this.highestRank);
+    
+    
   }
 
   getAllUserTypes(): void {

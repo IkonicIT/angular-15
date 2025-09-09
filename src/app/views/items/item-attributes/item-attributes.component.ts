@@ -151,7 +151,6 @@ export class ItemAttributesComponent implements OnInit {
 
   onValueChange(value: any) {
     this.value = value;
-    console.log(value);
     this.addEditFlag = false;
     this.model = {
       type: {},
@@ -211,8 +210,6 @@ export class ItemAttributesComponent implements OnInit {
 
     this.itemTypesService.getItemTypeDetails(typeId).subscribe((response) => {
       this.spinner.hide();
-
-      console.log(response);
       this.itemType1 = response;
       if (!this.itemType1.parentId) {
         this.itemType1.parentId = {

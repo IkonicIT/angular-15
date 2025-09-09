@@ -28,7 +28,6 @@ export class BroadcasterService {
   public tracratAnnouncement: any;
   public switchCompanyId: any;
   public itemRepair: any;
-  //public currentLocationName:any;
   constructor() {
     this._eventBus = new Subject<BroadcastEvent>();
     this._locationBus = new Subject<any>();

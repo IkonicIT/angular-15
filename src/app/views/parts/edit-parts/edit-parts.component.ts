@@ -164,13 +164,13 @@ export class EditPartComponent implements OnInit {
         .subscribe((response) => {
           this.successMessage = 'Part updated successfully';
           this.cdr.detectChanges();
-          window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
+          window.scrollTo({ top: 0, behavior: 'smooth' }); 
           this.spinner.hide();
           setTimeout(() => {
             this.successMessage = '';
             this.cdr.detectChanges();
             this.navigateToParts();
-          }, 3000); // 3 seconds
+          }, 3000);
         });
     }
   }

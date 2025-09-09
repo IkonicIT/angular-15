@@ -49,7 +49,6 @@ export class StatusManagementComponent implements OnInit {
 
   getStatuses() {
     this.companyStatusService.getAllCompanyStatuses(this.companyId).subscribe(response => {
-      console.log(response);
       this.statuses = response;
     });
   }
@@ -60,7 +59,6 @@ export class StatusManagementComponent implements OnInit {
 
 
   editStatus(status) {
-    console.log('statusId=' + status.statusId);
     this.router.navigate(['/status/editStatus/'], { queryParams: { q: status.statusId } });
   }
 

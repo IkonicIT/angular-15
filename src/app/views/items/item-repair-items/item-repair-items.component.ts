@@ -15,47 +15,47 @@ import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
   styleUrls: ['./item-repair-items.component.scss'],
 })
 export class ItemRepairItemsComponent implements OnInit {
-  itemTypes: any;
-  model: any;
-  globalCompany: any;
-  companyId: any;
-  companyName: any;
-  itemType: any = '';
-  repairItem: any;
-  userName: any;
-  repairItems: any;
-  repairItemFilter: any;
-  itemsForPagination: any = 5;
-  index: number;
-  order: string = '';
-  reverse: string = '';
-  modalRef: BsModalRef;
-  router: Router;
-  currentRole: any;
-  highestRank: any;
-  itemTypeItems: TreeviewItem[];
-  message: string;
-  helpFlag: any = false;
-  p: any;
+  itemTypes: any[] = [];
+  model: any = {};
+  globalCompany: any = {};
+  companyId = 0;
+  companyName = '';
+  itemType = 0;
+  repairItem = '';
+  userName = '';
+  repairItems: any[] = [];
+  repairItemFilter = '';
+  itemsForPagination = 5;
+  index = 0;
+  order = '';
+  reverse = '';
+  modalRef: BsModalRef | null = null;
+  currentRole = '';
+  highestRank = 0;
+  itemTypeItems: TreeviewItem[] = [];
+  message = '';
+  helpFlag = false;
+  p = 1;
   dismissible = true;
   loader = false;
+
   constructor(
     private modalService: BsModalService,
     private itemTypesService: ItemTypesService,
     sanitizer: DomSanitizer,
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
-    private itemReairItemsService: ItemRepairItemsService,
-    router: Router,
+    private itemRepairItemsService: ItemRepairItemsService,
+    private router: Router,
     private broadcasterService: BroadcasterService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.router = router;
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
       this.companyName = this.globalCompany.name;
       this.getAllItemTypes();
     }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyId = value.companyId;
@@ -64,54 +64,46 @@ export class ItemRepairItemsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userName = sessionStorage.getItem('userName');
-    this.currentRole = sessionStorage.getItem('currentRole');
-    this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    this.userName = sessionStorage.getItem('userName') ?? '';
+    this.currentRole = sessionStorage.getItem('currentRole') ?? '';
+    this.highestRank = Number(sessionStorage.getItem('highestRank') ?? 0);
   }
 
   getAllItemTypes() {
-    this.itemTypes = this.broadcasterService.itemTypeHierarchy;
-    if (this.itemTypes && this.itemTypes.length > 0) {
+    this.itemTypes = this.broadcasterService.itemTypeHierarchy ?? [];
+    if (this.itemTypes.length > 0) {
       this.itemTypeItems = this.generateHierarchyForItemTypes(this.itemTypes);
     }
   }
-  generateHierarchyForItemTypes(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchyForItemTypes(type.typeList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeId,
-          collapsed: true,
-          children: children,
-        })
-      );
+
+  generateHierarchyForItemTypes(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children = type.typeList?.length
+        ? this.generateHierarchyForItemTypes(type.typeList)
+        : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
   getRepairItems() {
-    if (this.itemType != '' && this.itemType != undefined) {
+    if (this.itemType) {
       this.spinner.show();
-
-      this.itemReairItemsService
-        .getAllItemRepairItems(this.companyId, this.itemType)
+      this.itemRepairItemsService
+        .getAllItemRepairItems(String(this.companyId), String(this.itemType))
         .subscribe((response) => {
           this.spinner.hide();
-
-          this.repairItems = response;
+          this.repairItems = Array.isArray(response) ? response : [];
         });
     }
   }
 
   openModal(template: TemplateRef<any>, id: number) {
-    if (this.itemType && this.itemType != '') {
+    if (this.itemType) {
       this.index = id;
       this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
     } else {
@@ -120,37 +112,31 @@ export class ItemRepairItemsComponent implements OnInit {
   }
 
   saveRepairItem() {
-    if (this.repairItem === undefined) {
+    if (!this.repairItem) {
       this.index = -1;
-    } else {
-      this.spinner.show();
-
-      var request = {
-        lastModifiedBy: this.userName,
-        companyId: this.companyId,
-        repairDescription: this.repairItem,
-        repairId: 0,
-        typeId: this.itemType,
-      };
-      this.itemReairItemsService
-        .saveRepairItemType(request)
-        .subscribe((response) => {
-          this.repairItem = undefined;
-          this.spinner.hide();
-
-          this.modalRef.hide();
-          this.getRepairItems();
-        });
+      return;
     }
+
+    this.spinner.show();
+    const request = {
+      lastModifiedBy: this.userName,
+      companyId: this.companyId,
+      repairDescription: this.repairItem,
+      repairId: 0,
+      typeId: this.itemType,
+    };
+
+    this.itemRepairItemsService.saveRepairItemType(request).subscribe(() => {
+      this.repairItem = '';
+      this.spinner.hide();
+      this.modalRef?.hide();
+      this.getRepairItems();
+    });
   }
 
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
@@ -159,21 +145,22 @@ export class ItemRepairItemsComponent implements OnInit {
     this.message = 'Confirmed!';
     this.spinner.show();
 
-    this.itemReairItemsService.removeRepairItem(this.index).subscribe(
-      (response) => {
+    this.itemRepairItemsService.removeRepairItem(this.index).subscribe(
+      () => {
         this.spinner.hide();
-
-        this.modalRef.hide();
+        this.modalRef?.hide();
         this.getRepairItems();
-        const currentPage = this.p;
-        const repairItemsCount = this.repairItems.length;
-        const maxPageAvailable =
-          Math.ceil(repairItemsCount / this.itemsForPagination) - 1;
-        if (currentPage > maxPageAvailable) {
+
+        const repairItemsCount = this.repairItems.length - 1;
+        const maxPageAvailable = Math.ceil(
+          repairItemsCount / this.itemsForPagination
+        );
+
+        if (this.p > maxPageAvailable) {
           this.p = maxPageAvailable;
         }
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
@@ -181,10 +168,10 @@ export class ItemRepairItemsComponent implements OnInit {
 
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
-  editItemrepairItem(repairId: string) {
+  editItemRepairItem(repairId: string) {
     this.router.navigate(['items/editItemRepairItem/' + repairId]);
   }
 
@@ -197,13 +184,13 @@ export class ItemRepairItemsComponent implements OnInit {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e: any) {
-    const currentPage = this.p;
+  onChange() {
     const repairItemsCount = this.repairItems.length;
     const maxPageAvailable = Math.ceil(
       repairItemsCount / this.itemsForPagination
     );
-    if (currentPage > maxPageAvailable) {
+
+    if (this.p > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

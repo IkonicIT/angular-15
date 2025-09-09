@@ -1,4 +1,3 @@
-// src/app/views/parts/parts.component.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PartsService } from 'src/app/services/parts.service';
@@ -28,12 +27,6 @@ export class PartsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // const partId = this.route.snapshot.paramMap.get('id');
-    // if (partId) {
-    //   this.partsService.getPartData(+partId).subscribe(data => {
-    //     this.onMpvpClick(partId)
-    //   });
-    // }
     this.userName = sessionStorage.getItem('userName') || '';
     this.highestRank = sessionStorage.getItem('highestRank');
     this.frame = sessionStorage.getItem('frameParts') || '';
@@ -42,7 +35,6 @@ export class PartsComponent implements OnInit {
 
   onSearch() {
     if (this.frame) {
-      console.log('frameParts:', this.frame);
       sessionStorage.setItem('frameParts', this.frame);
       this.spinner.show();
       this.partsService.getParts(this.frame).subscribe((response) => {
@@ -54,7 +46,6 @@ export class PartsComponent implements OnInit {
         } else {
           this.spinner.hide();
           this.highestRank = sessionStorage.getItem('highestRank');
-          console.log(this.highestRank);
           this.errorMessage1 = '';
           this.parts = response.map((part) => ({
             mpbn: part.mpbn,
@@ -99,7 +90,7 @@ export class PartsComponent implements OnInit {
               partDetail.prdes4,
               partDetail.prdes5,
             ]
-              .filter((desc) => desc) // Filter out null or undefined values
+              .filter((desc) => desc) 
               .join(', '),
             prqnty: partDetail.prqnty,
             prbloc: partDetail.prbloc,

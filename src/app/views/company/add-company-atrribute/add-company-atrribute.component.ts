@@ -48,14 +48,14 @@ export class AddCompanyAtrributeComponent implements OnInit {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
+      
     });
 
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
-    console.log('companyId=' + this.companyId);
+    
+    
+    
   }
 
   saveAttributes() {

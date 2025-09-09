@@ -31,19 +31,16 @@ export class EditPartNoteComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.noteId = route.snapshot.params['id'];
-    console.log('NoteId=' + this.noteId);
     this.router = router;
   }
 
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
-      console.log('Query params ', this.noteId);
     });
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.noteId = +params['a'] || 0;
-      console.log('Query params ', this.journalId);
     });
 
     this.companynotesService

@@ -125,9 +125,7 @@ export class ItemRepairItemsService {
   }
 
   updateFailureTypeAndCauses(failureTypeAndCause: any, failureTypeId: any) {
-    console.log(
-      'failureTypeId in updateFailureTypeAndCauses service is' + failureTypeId
-    );
+    
     return this.http
       .put(
         this.serviceURL + 'failureType/' + parseInt(failureTypeId),

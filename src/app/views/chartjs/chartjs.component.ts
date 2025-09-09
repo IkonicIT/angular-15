@@ -5,13 +5,13 @@ import { ChartType, ChartData } from 'chart.js';
   templateUrl: 'chartjs.component.html',
 })
 export class ChartJSComponent {
-  // lineChart
+
   public lineChartData: ChartData<'line'> = {
     datasets: [
       {
         data: [65, 59, 80, 81, 56, 55, 40],
         label: 'Series A',
-        // grey
+    
         backgroundColor: 'rgba(148,159,177,0.2)',
         borderColor: 'rgba(148,159,177,1)',
         pointBackgroundColor: 'rgba(148,159,177,1)',
@@ -22,7 +22,7 @@ export class ChartJSComponent {
       {
         data: [28, 48, 40, 19, 86, 27, 90],
         label: 'Series B',
-        // dark grey
+        
         backgroundColor: 'rgba(77,83,96,0.2)',
         borderColor: 'rgba(77,83,96,1)',
         pointBackgroundColor: 'rgba(77,83,96,1)',
@@ -33,7 +33,7 @@ export class ChartJSComponent {
       {
         data: [18, 48, 77, 9, 100, 27, 40],
         label: 'Series C',
-        // grey
+        
         backgroundColor: 'rgba(148,159,177,0.2)',
         borderColor: 'rgba(148,159,177,1)',
         pointBackgroundColor: 'rgba(148,159,177,1)',
@@ -59,7 +59,6 @@ export class ChartJSComponent {
   public lineChartLegend = true;
   public lineChartType: ChartType = 'line';
 
-  // barChart
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
@@ -81,7 +80,7 @@ export class ChartJSComponent {
     { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
   ];
 
-  // Doughnut
+  
   public doughnutChartLabels: string[] = [
     'Download Sales',
     'In-Store Sales',
@@ -90,7 +89,7 @@ export class ChartJSComponent {
   public doughnutChartData = [{ data: [350, 450, 100] }];
   public doughnutChartType: ChartType = 'doughnut';
 
-  // Radar
+  
   public radarChartLabels: string[] = [
     'Eating',
     'Drinking',
@@ -107,7 +106,7 @@ export class ChartJSComponent {
   ];
   public radarChartType: ChartType = 'radar';
 
-  // Pie
+
   public pieChartLabels: string[] = [
     'Download Sales',
     'In-Store Sales',
@@ -116,7 +115,6 @@ export class ChartJSComponent {
   public pieChartData = [{ data: [300, 500, 100] }];
   public pieChartType: ChartType = 'pie';
 
-  // PolarArea
   public polarAreaChartLabels: string[] = [
     'Download Sales',
     'In-Store Sales',
@@ -129,12 +127,8 @@ export class ChartJSComponent {
 
   public polarAreaChartType: ChartType = 'polarArea';
 
-  // events
-  public chartClicked(e: any): void {
-    console.log(e);
+  public chartClicked(e: any): void { 
   }
-
   public chartHovered(e: any): void {
-    console.log(e);
   }
 }

@@ -91,7 +91,6 @@ export class CompanyattributesComponent implements OnInit {
     this.companyType = this.typeId;
     this.companyId = route.snapshot.params['cmpId'];
     console.log(this.companyId);
-    //this.userName = this.broadcasterService.userName;
     this.router = router;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
@@ -504,7 +503,6 @@ export class CompanyattributesComponent implements OnInit {
 
   closeFirstModal() {
     this.modalRef.hide();
-    // this.modalRef = null;
   }
 
   confirm(): void {

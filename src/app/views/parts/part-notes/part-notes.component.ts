@@ -58,13 +58,7 @@ export class PartNotesComponent implements OnInit {
 
     this.getAllNotes(this.partId);
 
-    // this.companyManagementService.globalCompanyChange.subscribe((value) => {
-    //   this.globalCompany = value;
-    //   this.companyName = value.name;
-    //   this.companyId = value.companyId;
-    //   this.getAllNotes(this.vendorId);
-    // });
-  }
+   }
 
   ngOnInit() {
     this.highestRank = sessionStorage.getItem('highestRank');
@@ -161,14 +155,12 @@ export class PartNotesComponent implements OnInit {
       this.spinner.hide();
       this.model = response;
       this.partNoteId = this.model.partNoteId;
-      console.log(this.model.createdDate);
       if (this.model.createdDate) {
         const date = this.datePipe.transform(
           this.model.createdDate,
           'MM/dd/yyyy'
         );
         this.model.createdDate = date;
-        console.log('Date', this.model.createdDate, date);
       }
     });
     window.scroll(0, 0);
@@ -210,7 +202,6 @@ export class PartNotesComponent implements OnInit {
               'MM/dd/yyyy'
             );
             this.model.createdDate = date;
-            console.log('Date', this.model.createdDate, date);
           }
           this.spinner.hide();
           window.scroll(0, 0);

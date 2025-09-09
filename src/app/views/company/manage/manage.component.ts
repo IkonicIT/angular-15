@@ -86,8 +86,8 @@ export class ManageComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    
+    
     this.model.date = new Date();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
     this.model.effectiveOn = new Date();
@@ -313,8 +313,6 @@ export class ManageComponent implements OnInit {
       <script>
         function reloadIFrame() {
           var iframe = document.getElementById("iFrame");
-            console.log(iframe); //work control
-            console.log(iframe.contentDocument); //work control
             if(iframe.contentDocument.URL == "about:blank"){
               console.log("loaded");
               iframe.src =  iframe.src;
@@ -329,7 +327,7 @@ export class ManageComponent implements OnInit {
           $( document ).ready(function() {
               $('#menuiFrame').on('load', function() {
                   clearInterval(timerId);
-                  console.log("Finally Loaded"); //work control
+                  console.log("Finally Loaded"); 
               });
           });
         </script>

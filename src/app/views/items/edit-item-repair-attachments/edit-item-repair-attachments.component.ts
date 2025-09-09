@@ -47,9 +47,9 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
     }
 
     this.repairLogId = route.snapshot.params['repairLogId'];
-    console.log('repairLogId=' + this.repairLogId);
+    
     this.documentId = route.snapshot.params['attachmentId'];
-    console.log('repairLogId=' + this.documentId);
+    
     this.router = router;
     this.spinner.show();
 

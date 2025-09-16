@@ -9,7 +9,7 @@
             Item Notes Updated successfully.
           </alert>
 
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert type="danger" *ngIf="index === -1" [dismissible]="dismissible">
             Please Enter Title and Date
           </alert>
 
@@ -17,7 +17,6 @@
             <div class="col-sm-12 mobile-padding">
               <div class="card">
                 <form
-                  name="form"
                   (ngSubmit)="f.form.valid && updateItemNotes()"
                   #f="ngForm"
                   novalidate
@@ -95,12 +94,12 @@
                         <label for="details">Details</label>
                         <textarea
                           id="details"
-                          name="details"
                           rows="2"
                           cols="4"
                           #details="ngModel"
                           class="form-control"
                           [(ngModel)]="model.entry"
+                          name="details"
                           placeholder="Enter Description"
                         ></textarea>
                       </div>

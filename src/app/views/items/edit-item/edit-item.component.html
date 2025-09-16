@@ -11,37 +11,26 @@
             (Item type, Tag(must not be duplicate))
           </alert>
           <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
-            Please Enter Required Item Attribute Fields(Attributes with * beside
-            them). <br />
+            Please Enter Required Item Attribute Fields(Attributes with * beside them). <br />
           </alert>
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="form-group col-sm-12 text-right">
-                  <button type="button" (click)="print()" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                    title="Click to Print this Page" class="btn btn-outline-danger btn-sm btn-right btn-top">
+                  <button type="button" (click)="print()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Click to Print this Page" class="btn btn-outline-danger btn-sm btn-right btn-top">
                     Print
                   </button>
-                  <button type="button" (click)="help()" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                    title=" Instructions" class="btn btn-outline-danger btn-sm btn-top">
+                  <button type="button" (click)="help()" data-bs-placement="bottom" data-bs-toggle="tooltip" title=" Instructions" class="btn btn-outline-danger btn-sm btn-top">
                     Help
                   </button>
-                  <div style="
-                      text-align: left;
-                      border: 1px solid;
-                      width: fit-content;
-                      background-color: whitesmoke;
-                    " *ngIf="helpFlag == true">
+                  <div style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;" *ngIf="helpFlag">
                     Note: Mandatory Fields are required.<br />
                     *To add a new item:<br />
                     1.Enter the data for the new item.<br />
                     2.Click the 'Save' button.<br />
                     *To edit an existing item: <br />
-                    1.Enter the tag number and click 'Search' or click the
-                    'Edit' button.<br />
-                    2.If more than one item type is found for the tag number,
-                    select the desired type in the 'Select Type' drop down
-                    list.<br />
+                    1.Enter the tag number and click 'Search' or click the 'Edit' button.<br />
+                    2.If more than one item type is found for the tag number, select the desired type in the 'Select Type' drop down list.<br />
                     3.Make the necessary changes.<br />
                     4.Click the 'Save' button.
                   </div>
@@ -53,162 +42,89 @@
                         <strong>Editing "{{ itemType }}" '{{ itemTag }}'</strong>
                       </div>
                       <div class="col-12 col-md-9 col-padding">
-                        <button [routerLink]="['../../cloneItem/' + itemId]" [disabled]="itemRank < 3"
-                          data-bs-placement="bottom" data-bs-toggle="tooltip" title="Clone Item"
-                          class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
+                        <button [routerLink]="['../../cloneItem/' + itemId]" [disabled]="itemRank < 3" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Clone Item" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
                           Clone
                         </button>
-                        <button type="button" class="btn btn-primary margin-bottom-mobile"
-                          [routerLink]="['../../itemRepairs/' + itemId]" *ngIf="itemRank > 0" data-bs-placement="bottom"
-                          data-bs-toggle="tooltip" title="Item Repairs" placement="top" style="margin-right: 3px">
+                        <button type="button" class="btn btn-primary margin-bottom-mobile" [routerLink]="['../../itemRepairs/' + itemId]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Item Repairs" placement="top" style="margin-right: 3px">
                           Item Repairs
                         </button>
-                        <button [routerLink]="['../../itemNotes/' + itemId + '/' + 0]" *ngIf="itemRank > 0"
-                          data-bs-placement="bottom" data-bs-toggle="tooltip" title="Notes"
-                          class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
+                        <button [routerLink]="['../../itemNotes/' + itemId + '/' + 0]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Notes" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
                           Notes
                         </button>
-                        <button [routerLink]="[
-                            '../../attachments/' +
-                              itemId +
-                              '/' +
-                              currentAttachmentId
-                          ]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                          title="Click here to see Item Pictures" class="btn btn-primary margin-bottom-mobile"
-                          style="margin-right: 3px">
+                        <button [routerLink]="['../../attachments/' + itemId + '/' + currentAttachmentId]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Click here to see Item Pictures" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
                           Pictures/Prints
                         </button>
-
-                        <button (click)="GoToWareHousetag()" *ngIf="itemRank > 0" data-bs-placement="bottom"
-                          data-bs-toggle="tooltip" title="WarehouseTag" class="btn btn-primary margin-bottom-mobile"
-                          style="margin-right: 3px">
+                        <button (click)="GoToWareHousetag()" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="WarehouseTag" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
                           WarehouseTag
                         </button>
-                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Find Replacement"
-                          [routerLink]="[
-                            '/items/advancedSearch/' +
-                              itemId +
-                              '/' +
-                              model.typeId
-                          ]" *ngIf="itemRank > 0" class="btn btn-primary margin-bottom-mobile"
-                          style="margin-right: 3px">
+                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Find Replacement" [routerLink]="['/items/advancedSearch/' + itemId + '/' + model.typeId]" *ngIf="itemRank > 0" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
                           Find Replacement
                         </button>
-                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Item Service"
-                          (click)="goToItemService()" *ngIf="itemRank > 3" class="btn btn-primary margin-bottom-mobile"
-                          style="margin-right: 3px">
+                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Item Service" (click)="goToItemService()" *ngIf="itemRank > 3" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
                           Service
                         </button>
-                        <button type="button" [disabled]="itemRank < 5 || highestRankNum == 9"
-                          class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px"
-                          data-bs-placement="bottom" data-bs-toggle="tooltip" title="Delete Item"
-                          (click)="openModal(confirmtemplate, itemId)">
+                        <button type="button" [disabled]="itemRank < 5 || highestRankNum == 9" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Delete Item" (click)="openModal(confirmtemplate, itemId)">
                           Delete
-                        </button> 
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <form name="form" #f="ngForm" novalidate>
+                <form #f="ngForm" novalidate>
                   <div class="card-body mobile-padding">
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="type">Type Of Item
-                          <strong class="text-danger">*</strong></label>
-<select
-  class="form-control custom-dropdown"
-  id="type"
-  [(ngModel)]="model.typeId"
-  name="type"
-  (change)="getItemTypeAttributes(model.typeId)"
->
-  <option [value]="null">Select Item Type</option>
-  <option *ngFor="let item of itemTypeItems" [value]="item.value">
-    {{ item.text }}
-  </option>
-</select>
+                        <label for="type">Type Of Item <strong class="text-danger">*</strong></label>
+                        <select class="form-control custom-dropdown" id="type" [(ngModel)]="model.typeId" name="type" (change)="getItemTypeAttributes(model.typeId)">
+                          <option [ngValue]="null">Select Item Type</option>
+                          <option *ngFor="let item of itemTypeItems" [ngValue]="item.value">
+                            {{ item.text }}
+                          </option>
+                        </select>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="tag">Item Tag#
-                          <strong class="text-danger">*</strong></label>
-                        <input type="text" class="form-control form-color" (change)="
-                            openModalForChangeTag(confirmtemplateforTag)
-                          " [(ngModel)]="model.tag" name="tag" #tag="ngModel" id="tag" placeholder="Enter Item Tag" />
+                        <label for="tag">Item Tag# <strong class="text-danger">*</strong></label>
+                        <input type="text" class="form-control form-color" (change)="openModalForChangeTag(confirmtemplateforTag)" [(ngModel)]="model.tag" name="tag" #tag="ngModel" id="tag" placeholder="Enter Item Tag" />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6"></div>
                       <div class="form-group col-sm-6">
                         <label for="name">Tag Check:</label>
-                        <label for="name" style="color: red" *ngIf="model.typeId == null">select type before entering
-                          tag# </label><br />
-
-                        <span class="form-control form-color" style="color: red" *ngIf="
-                            isDuplicateTag &&
-                            model.typeId != null &&
-                            model.tag != ''
-                          ">
+                        <label for="name" style="color: red" *ngIf="model.typeId == null">select type before entering tag# </label><br />
+                        <span class="form-control form-color" style="color: red" *ngIf="isDuplicateTag && model.typeId != null && model.tag != ''">
                           Tag already exists
                         </span>
-                        <span class="form-control form-color" style="color: blue" *ngIf="
-                            !isDuplicateTag &&
-                            model.typeId != null &&
-                            model.tag != null &&
-                            model.tag != ''
-                          ">
+                        <span class="form-control form-color" style="color: blue" *ngIf="!isDuplicateTag && model.typeId != null && model.tag != null && model.tag != ''">
                           Tag Available
                         </span>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-12 col-md-6" *ngIf="itemRank > 1">
-                        <p style="
-                            color: #002a64;
-                            font-size: 18px;
-                            font-weight: bold;
-                          ">
-                          Changes Log Feed:
-                        </p>
+                        <p style="color: #002a64; font-size: 18px; font-weight: bold;">Changes Log Feed:</p>
                         <div style="height: auto; border: 3px red solid">
                           <br />
-                          <ul *ngFor="
-                              let journal of journals | slice : 0 : 3;
-                              let i = index
-                            ">
+                          <ul *ngFor="let journal of journals | slice : 0 : 3; let i = index">
                             <li>
-                              {{ journal.entry }} on
-                              {{ journal.enteredOn | date : "MM/dd/yyyy" }} by
-                              {{ journal.enteredBy }}...........<a [routerLink]="[
-                                  '../../../items/changeLog/',
-                                  journal.entityId,
-                                  journal.journalId
-                                ]" (click)="modalRef.hide()">details</a>
+                              {{ journal.entry }} on {{ journal.enteredOn | date : 'MM/dd/yyyy' }} by {{ journal.enteredBy }}...........
+                              <a [routerLink]="['../../../items/changeLog/', journal.entityId, journal.journalId]" (click)="modalRef.hide()">details</a>
                             </li>
                           </ul>
-
-                          <button type="button" (click)="openMoreChanges()" data-bs-placement="bottom"
-                            data-bs-toggle="tooltip" title="click here for More Changes Log Feed"
-                            class="btn btn-primary more-changes">
+                          <button type="button" (click)="openMoreChanges()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="click here for More Changes Log Feed" class="btn btn-primary more-changes">
                             More Changes
                           </button>
                         </div>
                       </div>
-
                       <div id="image" class="form-group col-12 col-md-6" *ngIf="itemRank > 0">
                         <div class="row">
-                          <div class="col-sm-9" style="padding: 100px" *ngIf="
-                              model.defaultImageAttachmentId == null ||
-                                model.defaultImageAttachmentId == 0;
-                              else showImage
-                            ">
+                          <div class="col-sm-9" style="padding: 100px" *ngIf="model.defaultImageAttachmentId == null || model.defaultImageAttachmentId == 0; else showImage">
                             <div id="box">No Image for this Item</div>
                           </div>
                           <ng-template #showImage>
                             <div class="form-group col-sm-12">
                               <a (click)="openImage()" style="cursor: pointer">
-                                <img class="img-fluid pull-right" [src]="imageSource"
-                                  style="width: 500px; height: 300px" />
+                                <img class="img-fluid pull-right" [src]="imageSource" style="width: 500px; height: 300px" />
                               </a>
                             </div>
                           </ng-template>
@@ -218,56 +134,43 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control form-color" [(ngModel)]="model.name" name="name"
-                          #name="ngModel" id="name" placeholder="Enter Item Name" />
+                        <input type="text" class="form-control form-color" [(ngModel)]="model.name" name="name" #name="ngModel" id="name" placeholder="Enter Item Name" />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="status">
-                          Status <strong class="text-danger">*</strong></label>
-                        <input type="text" readonly class="form-control" [(ngModel)]="model.status" name="status"
-                          #status="ngModel" id="status" />
+                        <label for="status">Status <strong class="text-danger">*</strong></label>
+                        <input type="text" readonly class="form-control" [(ngModel)]="model.status" name="status" #status="ngModel" id="status" />
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="price">Purchase price</label>
-                        <input type="number" class="form-control form-color" [(ngModel)]="model.purchasePrice"
-                          id="price" name="purchasePrice" />
+                        <input type="number" class="form-control form-color" [(ngModel)]="model.purchasePrice" id="price" name="purchasePrice" />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="date">Purchase Date</label>
-                        <input type="text" class="form-control form-color" [(ngModel)]="model.purchaseDate" id="date"
-                          name="critical" bsDatepicker />
+                        <input type="text" class="form-control form-color" [(ngModel)]="model.purchaseDate" id="date" name="critical" bsDatepicker />
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="mtbs">MTBS</label>
-                        <input type="number" class="form-control form-color" [(ngModel)]="model.meanTimeBetweenService"
-                          id="mtbs" name="mtbs" />
+                        <input type="number" class="form-control form-color" [(ngModel)]="model.meanTimeBetweenService" id="mtbs" name="mtbs" />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="spareratio">Desired Spare Ratio</label>
-                        <input type="number" class="form-control form-color" [(ngModel)]="model.desiredSpareRatio"
-                          id="spareratio" name="spareratio" />
+                        <input type="number" class="form-control form-color" [(ngModel)]="model.desiredSpareRatio" id="spareratio" name="spareratio" />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="mtbs">Days in "{{ model.status }}" status:
-                          {{ model.daysInService }}</label>
+                        <label for="mtbs">Days in "{{ model.status }}" status: {{ model.daysInService }}</label>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="warranty">Warranty Type</label>
-                        <select class="form-control form-color custom-dropdown" [(ngModel)]="model.warrantyTypeId"
-                          name="warranty" #warranty="ngModel" id="warranty">
-                          <option value="0" selected="true">
-                            Select Warranty Type
-                          </option>
+                        <select class="form-control form-color custom-dropdown" [(ngModel)]="model.warrantyTypeId" name="warranty" #warranty="ngModel" id="warranty">
+                          <option [ngValue]="0" selected="true">Select Warranty Type</option>
                           <option [ngValue]="type.warrantyTypeId" *ngFor="let type of warrantyTypes">
                             {{ type.warrantyType }}
                           </option>
@@ -275,110 +178,69 @@
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="exp">Warranty Exp.</label>
-                        <input type="text" class="form-control form-color" [(ngModel)]="model.warrantyExpiration"
-                          id="exp" name="exp" bsDatepicker />
+                        <input type="text" class="form-control form-color" [(ngModel)]="model.warrantyExpiration" id="exp" name="exp" bsDatepicker />
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="form-group col-sm-10">
-                        <label for="location">Location
-                          <strong class="text-danger">*</strong></label>
-                        <input type="text" readonly class="form-control" [(ngModel)]="model.locationName"
-                          name="locationName" #location="ngModel" id="locationName" />
+                        <label for="location">Location <strong class="text-danger">*</strong></label>
+                        <input type="text" readonly class="form-control" [(ngModel)]="model.locationName" name="locationName" #location="ngModel" id="locationName" />
                       </div>
                       <div class="form-group col-sm-2">
                         <label for="location"><strong class="text-danger"></strong></label>
                         <br />
-                        <button type="button" style="
-                            padding: 6px, 30px;
-                            margin-top: 8px;
-                            margin-left: -30px;
-                          " data-bs-placement="bottom" data-bs-toggle="tooltip" title=" Click here for Item Transfer "
-                          class="btn btn-primary" [routerLink]="['../../transferItem/' + itemId]">
+                        <button type="button" style="padding: 6px, 30px; margin-top: 8px; margin-left: -30px;" data-bs-placement="bottom" data-bs-toggle="tooltip" title=" Click here for Item Transfer " class="btn btn-primary" [routerLink]="['../../transferItem/' + itemId]">
                           Item Transfer
                         </button>
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="description">Description</label>
-                        <input type="text" class="form-control form-color" [(ngModel)]="model.description"
-                          name="description" #description="ngModel" id="description" />
+                        <input type="text" class="form-control form-color" [(ngModel)]="model.description" name="description" #description="ngModel" id="description" />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6" *ngFor="let eachAttr of typeAttributes; let i = index">
                         <div>
-                          <label *ngIf="eachAttr.isRequired == true">{{ eachAttr.name
-                            }}<span style="color: red"><strong>*</strong></span></label>
-                          <label *ngIf="eachAttr.isRequired == false">{{
-                            eachAttr.name
-                            }}</label>
+                          <label *ngIf="eachAttr.isRequired">{{ eachAttr.name }}<span style="color: red"><strong>*</strong></span></label>
+                          <label *ngIf="!eachAttr.isRequired">{{ eachAttr.name }}</label>
                           <div>
-                            <input *ngIf="
-                                eachAttr.attributeType.attributeTypeId == 1
-                              " type="number" class="form-control" [(ngModel)]="eachAttr.value" name="number{{ i }}" />
-                            <input *ngIf="
-                                eachAttr.attributeType.attributeTypeId == 2
-                              " type="text" class="form-control" [(ngModel)]="eachAttr.value" name="text{{ i }}" />
-                            <input *ngIf="
-                                eachAttr.attributeType.attributeTypeId == 6
-                              " type="text" class="form-control" [(ngModel)]="eachAttr.value"
-                              name="multiValue{{ i }}" />
-                            <input *ngIf="
-                                eachAttr.attributeType.attributeTypeId == 3
-                              " type="date" class="form-control" [(ngModel)]="eachAttr.value" name="radio{{ i }}"
-                              #state="ngModel" />
-                            <select *ngIf="
-                                eachAttr.attributeType.attributeTypeId == 4
-                              " class="form-control custom-dropdown" [(ngModel)]="eachAttr.value" name="select{{ i }}"
-                              #type="ngModel">
-                              <option value="">Choose..</option>
-                              <option [ngValue]="list.listItem" *ngFor="
-                                  let list of eachAttr.attributeListItemResource
-                                ">
+                            <input *ngIf="eachAttr.attributeType.attributeTypeId == 1" type="number" class="form-control" [(ngModel)]="eachAttr.value" name="number{{ i }}" />
+                            <input *ngIf="eachAttr.attributeType.attributeTypeId == 2" type="text" class="form-control" [(ngModel)]="eachAttr.value" name="text{{ i }}" />
+                            <input *ngIf="eachAttr.attributeType.attributeTypeId == 6" type="text" class="form-control" [(ngModel)]="eachAttr.value" name="multiValue{{ i }}" />
+                            <input *ngIf="eachAttr.attributeType.attributeTypeId == 3" type="date" class="form-control" [(ngModel)]="eachAttr.value" name="radio{{ i }}" #state="ngModel" />
+                            <select *ngIf="eachAttr.attributeType.attributeTypeId == 4" class="form-control custom-dropdown" [(ngModel)]="eachAttr.value" name="select{{ i }}" #type="ngModel">
+                              <option [ngValue]="''">Choose..</option>
+                              <option [ngValue]="list.listItem" *ngFor="let list of eachAttr.attributeListItemResource">
                                 {{ list.listItem }}
                               </option>
                             </select>
                             <div class="form-check d-flex align-items-center gap-3" *ngIf="eachAttr.attributeType.attributeTypeId == 5">
                               <div class="form-check">
-                                <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value"
-                                  name="radios{{ i }}" id="radio1" value="True" checked />
+                                <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value" name="radios{{ i }}" id="radio1" [value]="'True'" checked />
                                 <label class="form-check-label" for="radio1">Y</label>
                               </div>
-                            
                               <div class="form-check">
-                                <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value"
-                                  name="radios{{ i }}" id="radio2" value="False" />
+                                <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value" name="radios{{ i }}" id="radio2" [value]="'False'" />
                                 <label class="form-check-label" for="radio2">N</label>
                               </div>
-                            
                               <div class="form-check">
-                                <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value"
-                                  name="radios{{ i }}" id="radio3" value="N/A" />
+                                <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value" name="radios{{ i }}" id="radio3" [value]="'N/A'" />
                                 <label class="form-check-label" for="radio3">N/A</label>
                               </div>
                             </div>
-                            
-                            <textarea *ngIf="
-                                eachAttr.attributeType.attributeTypeId == 7
-                              " name="textarea{{ i }}" rows="2" cols="4" class="form-control"
-                              [(ngModel)]="eachAttr.value" placeholder="Enter Value"></textarea>
+                            <textarea *ngIf="eachAttr.attributeType.attributeTypeId == 7" name="textarea{{ i }}" rows="2" cols="4" class="form-control" [(ngModel)]="eachAttr.value" placeholder="Enter Value"></textarea>
                           </div>
                         </div>
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Update this Item"
-                          (click)="updateItem()" class="btn btn-primary btn-right">
+                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Update this Item" (click)="updateItem()" class="btn btn-primary btn-right">
                           Update
                         </button>
-                        <button type="button" (click)="back()" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                          title="Back to ViewItem" class="btn btn-primary" style="border-radius: 6px;">
+                        <button type="button" (click)="back()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Back to ViewItem" class="btn btn-primary" style="border-radius: 6px;">
                           Back
                         </button>
                       </div>
@@ -393,9 +255,7 @@
     </div>
   </div>
 </div>
-
-<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -405,12 +265,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <ngx-image-viewer [src]="images"> </ngx-image-viewer>
+        <ngx-image-viewer [src]="images"></ngx-image-viewer>
       </div>
       <div class="modal-footer">
-        <a class="btn btn-primary" [routerLink]="[
-            '../../attachments/' + itemId + '/' + currentAttachmentId
-          ]">Manage Pictures</a>
+        <a class="btn btn-primary" [routerLink]="['../../attachments/' + itemId + '/' + currentAttachmentId]">Manage Pictures</a>
         <button type="button" class="btn btn-secondary" (click)="myModal.hide()">
           Close
         </button>
@@ -418,12 +276,10 @@
     </div>
   </div>
 </div>
-
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>
-      Click(Yes) to permanently delete this item or Click(No) to discard This
-      action.
+      Click(Yes) to permanently delete this item or Click(No) to discard This action.
     </p>
     <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
       Yes
@@ -433,12 +289,10 @@
     </button>
   </div>
 </ng-template>
-
 <ng-template #confirmtemplateforTag>
   <div class="modal-body text-center">
     <p>
-      The Tag Number Has been changed.Click OK if you are sure that you want to
-      change Tag number.
+      The Tag Number Has been changed.Click OK if you are sure that you want to change Tag number.
     </p>
     <button type="button" class="btn btn-outline-danger btn-sm" (click)="checkItemTag()">
       OK
@@ -448,22 +302,8 @@
     </button>
   </div>
 </ng-template>
-
-<div *ngIf="loader" style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  ">
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 2; cursor: pointer; -ms-transform: translate(-50%, -50%); transform: translate(-1%, -1%);">
+  <div _ngcontent-c0 class="loader"></div>
 </div>
 <style>
   .loader {
@@ -482,28 +322,22 @@
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
   @-webkit-keyframes spin {
     0% {
       -webkit-transform: rotate(0deg);
     }
-
     100% {
       -webkit-transform: rotate(360deg);
     }
   }
-
   @keyframes spin {
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
-
-  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -511,35 +345,29 @@
     animation-name: animatebottom;
     animation-duration: 1s;
   }
-
   @-webkit-keyframes animatebottom {
     from {
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0px;
       opacity: 1;
     }
   }
-
   @keyframes animatebottom {
     from {
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0;
       opacity: 1;
     }
   }
-
   .btn-link[routerLink="/forgot-password"] {
     color: red;
   }
-
   .cent {
     position: absolute;
     top: 50%;

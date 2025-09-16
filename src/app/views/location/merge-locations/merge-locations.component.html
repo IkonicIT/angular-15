@@ -6,34 +6,23 @@
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
             data-bs-toggle="tooltip"
-            title=" Instructions"
+            title="Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            style="text-align:left; border:1px solid; width:fit-content; background-color:whitesmoke;"
           >
-            1.To Merge Locations, select the Location you want to Merge from in
-            the first location selector below.<br />
-            2.Then select the Location you would like to Merge into in the
-            second selector.<br />
+            1. To Merge Locations, select the Location you want to Merge from in the first location selector below.<br />
+            2. Then select the Location you would like to Merge into in the second selector.<br />
             * Pressing 'Merge' will commit your changes. Remember:<br />
-            1.All child locations of the first location will now be children of
-            the second location.<br />
-            2.All items located at the first location will now be located at the
-            second location.<br />
-            3.The first location will be deleted.<br />
-            * Pressing 'Cancel' will bring you back to the Manage Locations
-            screen.
+            1. All child locations of the first location will now be children of the second location.<br />
+            2. All items located at the first location will now be located at the second location.<br />
+            3. The first location will be deleted.<br />
+            * Pressing 'Cancel' will bring you back to the Manage Locations screen.
           </div>
         </div>
 
@@ -44,8 +33,7 @@
           <alert *ngIf="index == 2" type="danger" [dismissible]="dismissible">
             The selected Locations are the same
           </alert>
-
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
             Please Enter required fields
           </alert>
 
@@ -65,38 +53,30 @@
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="location">Location to be Merged:</label>
-
-                      <app-dropdown-treeview-select
+                        <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.fromlocationId"
-                        >
-                        </app-dropdown-treeview-select>
+                        ></app-dropdown-treeview-select>
                         <span class="dropdown-arrow">&#9662;</span>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="location"
-                          >Location to be Merged into:</label
-                        >
-
-         <div class="dropdown-wrapper">
-  <app-dropdown-treeview-select
-    [items]="locationItems"
-    [(value)]="model.tolocationId">
-  </app-dropdown-treeview-select>
-  <span class="dropdown-arrow">&#9662;</span> 
-</div>
-
+                        <label for="location">Location to be Merged into:</label>
+                        <div class="dropdown-wrapper">
+                          <app-dropdown-treeview-select
+                            [items]="locationItems"
+                            [(value)]="model.tolocationId"
+                          ></app-dropdown-treeview-select>
+                          <span class="dropdown-arrow">&#9662;</span>
+                        </div>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="locationName"
-                          >New Location Name:<strong class="text-danger"
-                            >*</strong
-                          ></label
-                        >
+                        <label for="locationName">New Location Name: <strong class="text-danger">*</strong></label>
                         <input
                           type="text"
                           class="form-control"
@@ -109,15 +89,13 @@
                     </div>
 
                     <div class="row">
-                      <div
-                        class="form-group col-sm-12 tebtn btn-primaryxt-center"
-                      >
+                      <div class="form-group col-sm-12 text-center">
                         <button
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Mergelocations"
+                          type="submit"
                           class="btn btn-primary btn-right"
-                          style="border-radius: 6px;"
+                          data-bs-toggle="tooltip"
+                          title="Merge Locations"
+                          style="border-radius:6px;"
                         >
                           Merge
                         </button>
@@ -125,20 +103,21 @@
                           type="button"
                           [routerLink]="['../list']"
                           class="btn btn-primary"
-                          data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Cancel"
-                          style="border-radius: 6px;"
+                          style="border-radius:6px;"
                         >
                           Cancel
                         </button>
                       </div>
                     </div>
+
                   </div>
                 </form>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -147,102 +126,25 @@
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  style="position: fixed; width:100%; height:100%; top:0; left:0; background-color: rgba(0,0,0,0.5); z-index:2; cursor:pointer;"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.loader {
+  position: fixed;
+  left: 60%;
+  top: 60%;
+  width: 60px;
+  height: 60px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid red;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 </style>

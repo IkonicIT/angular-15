@@ -2,49 +2,44 @@
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+        <div class="form-group col-12 text-end">
           <button
             type="button"
-            (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
+            class="btn btn-outline-danger btn-sm btn-top me-2"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            (click)="print()"
           >
             Print
           </button>
           <button
             type="button"
-            (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
+            title="Instructions"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            (click)="help()"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            class="mt-2 p-2 border"
+            style="background-color: whitesmoke; width: fit-content; text-align: left;"
           >
             *To add a new Repair:<br />
             1.Click the 'AddRepair' button.<br />
             2.Enter the data for the new Repair.<br />
             3.Click the 'Save' button.<br />
             *To update a repair:<br />
-            1.Select the repair by clicking 'View' button & then click on 'Edit'
-            button.<br />
+            1.Select the repair by clicking 'View' button & then click 'Edit' button.<br />
             2.Modify repair job information.<br />
             3.Click the 'Save' button.<br />
-            4.Checking the 'Complete' box will complete the repair ticket and
-            submit it to reporting.
+            4.Checking the 'Complete' box will complete the repair ticket and submit it to reporting.
           </div>
         </div>
+
         <div class="card-body">
           <strong>Item "{{ itemType }}" '{{ itemTag }}'</strong>
           <p class="card-text">
@@ -52,124 +47,81 @@
             <button
               type="button"
               [disabled]="itemRank < 3"
-              class="btn btn-primary float-right"
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
+              class="btn btn-primary float-end"
               title="Add Repair."
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
               [routerLink]="['../../addItemRepair/' + itemId]"
-              placement="top"
             >
               Add Repair
             </button>
           </p>
-          <div class="select-pagination-option">
-            <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="repairsForPagination">
-                  <option>5</option>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                </select>
-                entries
-              </span>
+
+          <div class="row mb-3">
+            <div class="col-md-4 col-12">
+              Show
+              <select [(ngModel)]="repairsForPagination" class="form-select d-inline w-auto">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              entries
+            </div>
+            <div class="col-md-4 col-12 mt-3 mt-md-0">
+              Search:
+              <input [(ngModel)]="itemRepairsFilter" class="form-control d-inline w-auto ms-2"/>
             </div>
           </div>
-          <div class="float-right div-search">
-            <span>Search : </span>
-            <input [(ngModel)]="itemRepairsFilter" />
-          </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'title'"
-                  (click)="setOrder('title')"
-                >
-                  Title<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='title'" (click)="setOrder('title')">
+                  Title <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'jobNumber'"
-                  (click)="setOrder('jobNumber')"
-                >
-                  Job Number<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='jobNumber'" (click)="setOrder('jobNumber')">
+                  Job Number <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'poNumber'"
-                  (click)="setOrder('poNumber')"
-                >
-                  PO Number<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='poNumber'" (click)="setOrder('poNumber')">
+                  PO Number <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'warrantyType'"
-                  (click)="setOrder('warrantyType')"
-                >
-                  Warranty Type<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='warrantyType'" (click)="setOrder('warrantyType')">
+                  Warranty Type <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
                 <th>Attachments</th>
                 <th>Actions</th>
               </tr>
             </thead>
-
             <tbody>
               <tr
-                *ngFor="
-                  let repair of repairs
-                    | orderBy : reverse + order
-                    | filterBy
-                      : [
-                          'itemType',
-                          'title',
-                          'jobNumber',
-                          'poNumber',
-                          'warrantyType'
-                        ]
-                      : itemRepairsFilter
-                    | paginate
-                      : {
-                          itemsPerPage: repairsForPagination,
-                          currentPage: page1,
-                          id: 'p1'
-                        }
-                "
+                *ngFor="let repair of repairs
+                  | orderBy: reverse + order
+                  | filterBy: ['itemType','title','jobNumber','poNumber','warrantyType']:itemRepairsFilter
+                  | paginate: { itemsPerPage: repairsForPagination, currentPage: page1, id: 'p1' }"
               >
                 <td [innerHTML]="repair.title"></td>
                 <td [innerHTML]="repair.jobNumber"></td>
                 <td [innerHTML]="repair.poNumber"></td>
                 <td [innerHTML]="repair.warrantyType"></td>
                 <td>
-                  <ng-container
-                    *ngFor="let attachment of repair.attachmentList"
-                  >
+                  <ng-container *ngFor="let attachment of repair.attachmentList">
                     <br /><a
                       href="javascript:void(0)"
-                      data-bs-placement="bottom"
-                      data-bs-toggle="tooltip"
                       title="View this ItemRepair Attachment"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
                       (click)="downloadFile(attachment)"
                       [innerHTML]="attachment.fileName"
                     ></a>
                   </ng-container>
                 </td>
-
                 <td>
                   <button
-                    type="button"
                     *ngIf="itemRank > 0"
+                    type="button"
                     class="btn btn-outline-danger btn-sm"
-                    [routerLink]="[
-                      '../../viewItemRepair/' +
-                        itemId +
-                        '/' +
-                        repair.repairLogId
-                    ]"
+                    [routerLink]="['../../viewItemRepair/' + itemId + '/' + repair.repairLogId]"
                   >
                     View
                   </button>
@@ -177,120 +129,77 @@
               </tr>
             </tbody>
           </table>
+
           <pagination-controls
             class="my-pagination"
             (pageChange)="page1 = $event"
             id="p1"
-          ></pagination-controls>
+          >
+          </pagination-controls>
         </div>
       </div>
-    </div>
-    <div class="col-lg-12">
-      <div class="card">
+
+      <div class="card mt-3">
         <div class="card-body">
           <p class="card-text"><strong>Previous Repairs</strong></p>
-          <div>
-            <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="completedRepairsForPagination">
-                  <option>5</option>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                </select>
-                entries
-              </span>
+          <div class="row mb-3">
+            <div class="col-md-4 col-12">
+              Show
+              <select [(ngModel)]="completedRepairsForPagination" class="form-select d-inline w-auto">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              entries
+            </div>
+            <div class="col-md-4 col-12 mt-3 mt-md-0">
+              Search:
+              <input [(ngModel)]="completedRepairsFilter" class="form-control d-inline w-auto ms-2"/>
             </div>
           </div>
-          <div class="float-right div-search">
-            <span>Search : </span>
-            <input [(ngModel)]="completedRepairsFilter" />
-          </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="completedOrder === 'Date'"
-                  (click)="setCompletedOrder('Date')"
-                >
-                  Date<span [hidden]="completedReverse == ''">▼</span
-                  ><span [hidden]="completedReverse != ''">▲</span>
+                <th [class.active]="completedOrder==='Date'" (click)="setCompletedOrder('Date')">
+                  Date <span [hidden]="completedReverse==''">▼</span><span [hidden]="completedReverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="completedOrder === 'title'"
-                  (click)="setCompletedOrder('title')"
-                >
-                  Title<span [hidden]="completedReverse == ''">▼</span
-                  ><span [hidden]="completedReverse != ''">▲</span>
+                <th [class.active]="completedOrder==='title'" (click)="setCompletedOrder('title')">
+                  Title <span [hidden]="completedReverse==''">▼</span><span [hidden]="completedReverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="completedOrder === 'jobNumber'"
-                  (click)="setCompletedOrder('jobNumber')"
-                >
-                  Job Number<span [hidden]="completedReverse == ''">▼</span
-                  ><span [hidden]="completedReverse != ''">▲</span>
+                <th [class.active]="completedOrder==='jobNumber'" (click)="setCompletedOrder('jobNumber')">
+                  Job Number <span [hidden]="completedReverse==''">▼</span><span [hidden]="completedReverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="completedOrder === 'poNumber'"
-                  (click)="setCompletedOrder('poNumber')"
-                >
-                  PO Number<span [hidden]="completedReverse == ''">▼</span
-                  ><span [hidden]="completedReverse != ''">▲</span>
+                <th [class.active]="completedOrder==='poNumber'" (click)="setCompletedOrder('poNumber')">
+                  PO Number <span [hidden]="completedReverse==''">▼</span><span [hidden]="completedReverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="completedOrder === 'By'"
-                  (click)="setCompletedOrder('By')"
-                >
-                  By<span [hidden]="completedReverse == ''">▼</span
-                  ><span [hidden]="completedReverse != ''">▲</span>
+                <th [class.active]="completedOrder==='By'" (click)="setCompletedOrder('By')">
+                  By <span [hidden]="completedReverse==''">▼</span><span [hidden]="completedReverse!=''">▲</span>
                 </th>
                 <th>Attachments</th>
                 <th>Actions</th>
               </tr>
             </thead>
-
             <tbody>
               <tr
-                *ngFor="
-                  let repair of completedRepairs
-                    | orderBy : completedReverse + completedOrder
-                    | filterBy
-                      : [
-                          'itemType',
-                          'Date',
-                          'title',
-                          'jobNumber',
-                          'poNumber',
-                          'By'
-                        ]
-                      : completedRepairsFilter
-                    | paginate
-                      : {
-                          itemsPerPage: completedRepairsForPagination,
-                          currentPage: page2,
-                          id: 'p2'
-                        }
-                "
+                *ngFor="let repair of completedRepairs
+                  | orderBy: completedReverse + completedOrder
+                  | filterBy: ['itemType','Date','title','jobNumber','poNumber','By']:completedRepairsFilter
+                  | paginate: { itemsPerPage: completedRepairsForPagination, currentPage: page2, id: 'p2' }"
               >
-                <td
-                  [innerHTML]="repair.actualCompletion | date : 'MM/dd/yyyy'"
-                ></td>
+                <td [innerHTML]="repair.actualCompletion | date:'MM/dd/yyyy'"></td>
                 <td [innerHTML]="repair.title"></td>
                 <td [innerHTML]="repair.jobNumber"></td>
                 <td [innerHTML]="repair.poNumber"></td>
                 <td [innerHTML]="repair.completedBy"></td>
                 <td>
-                  <ng-container
-                    *ngFor="let attachment of repair.attachmentList"
-                  >
+                  <ng-container *ngFor="let attachment of repair.attachmentList">
                     <br /><a
                       href="javascript:void(0)"
-                      data-bs-placement="bottom"
-                      data-bs-toggle="tooltip"
                       title="View this ItemRepair Attachment"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
                       (click)="download(attachment)"
                       [innerHTML]="attachment.fileName"
                     ></a>
@@ -298,18 +207,13 @@
                 </td>
                 <td>
                   <button
-                    type="button"
                     *ngIf="itemRank > 0"
+                    type="button"
                     class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
                     title="Click here to View this ItemRepair"
-                    [routerLink]="[
-                      '../../viewItemRepair/' +
-                        itemId +
-                        '/' +
-                        repair.repairLogId
-                    ]"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    [routerLink]="['../../viewItemRepair/' + itemId + '/' + repair.repairLogId]"
                   >
                     View
                   </button>
@@ -317,25 +221,28 @@
               </tr>
             </tbody>
           </table>
+
           <pagination-controls
             class="my-pagination"
             (pageChange)="page2 = $event"
             id="p2"
-          ></pagination-controls>
+          >
+          </pagination-controls>
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="form-group col-sm-12 text-center">
+
+  <div class="row mt-3">
+    <div class="col-12 text-center">
       <button
         type="button"
-        (click)="backToViewItem()"
-        data-bs-placement="bottom"
-        data-bs-toggle="tooltip"
-        title="Back to View Item"
-        class="btn btn-primary mb-3"
+        class="btn btn-primary"
         style="border-radius: 6px;"
+        title="Back to View Item"
+        data-bs-toggle="tooltip"
+        data-bs-placement="bottom"
+        (click)="backToViewItem()"
       >
         Back To Item
       </button>
@@ -343,106 +250,35 @@
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
+<div *ngIf="loader" class="loader-backdrop">
+  <div class="loader"></div>
+</div>
+
+<style>
+  .loader-backdrop {
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0,0.5);
     z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
+  }
   .loader {
     position: absolute;
     left: 60%;
     top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    z-index: 3;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>
-
-

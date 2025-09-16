@@ -6,31 +6,27 @@
           <button
             type="button"
             (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
+            title="Click to Print this Page"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
+            title=" Instructions"
           >
             Help
           </button>
           <div
+            *ngIf="helpFlag"
             style="
               text-align: left;
               border: 1px solid;
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
           >
             *To add an attachment:<br />
             1.Click the 'Choose File' button to locate the desired file.<br />
@@ -44,7 +40,7 @@
           </div>
         </div>
         <div class="card-body">
-          <alert *ngIf="msg == 2" type="success" [dismissible]="dismissible">
+          <alert *ngIf="msg === 2" type="success" [dismissible]="dismissible">
             Image is saved as Default Image for this Item.
           </alert>
           <div>
@@ -54,22 +50,19 @@
             Manage Pictures
             <button
               type="button"
-              [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
+              [disabled]="itemRank < 3 || itemRank === 4 || itemRank === 5"
               class="btn btn-primary float-right"
               (click)="addItemDocument()"
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
               title="Add Item Attachment."
-              placement="top"
-               style="border-radius: 6px;"
+              style="border-radius: 6px;"
             >
               Add Document
             </button>
           </p>
           <div class="select-pagination-option">
             <div class="float-left">
-              <span
-                >Show
+              <span>
+                Show
                 <select [(ngModel)]="itemsForPagination">
                   <option>5</option>
                   <option>10</option>
@@ -84,47 +77,45 @@
             <span>Search : </span>
             <input [(ngModel)]="documentFilter" />
           </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
                 <th
                   [class.active]="order === 'description'"
                   (click)="setOrder('description')"
                 >
-                  Description<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                  Description
+                  <span [hidden]="reverse === ''">▼</span>
+                  <span [hidden]="reverse !== ''">▲</span>
                 </th>
                 <th
                   [class.active]="order === 'dateAdded'"
                   (click)="setOrder('dateAdded')"
                 >
-                  Added<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                  Added
+                  <span [hidden]="reverse === ''">▼</span>
+                  <span [hidden]="reverse !== ''">▲</span>
                 </th>
                 <th
                   [class.active]="order === 'addedBy'"
                   (click)="setOrder('addedBy')"
                 >
-                  By<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                  By
+                  <span [hidden]="reverse === ''">▼</span>
+                  <span [hidden]="reverse !== ''">▲</span>
                 </th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr
-                [class.color]="currentAttachmentId == document.attachmentId"
                 *ngFor="
                   let document of documents
                     | orderBy : reverse + order
-                    | filterBy
-                      : ['description', 'dateAdded', 'addedBy']
-                      : documentFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                    | filterBy : ['description', 'dateAdded', 'addedBy'] : documentFilter
+                    | paginate : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
+                [class.color]="currentAttachmentId === document.attachmentId"
               >
                 <td [innerHTML]="document.description"></td>
                 <td [innerHTML]="document.dateAdded | date : 'MM/dd/yyyy'"></td>
@@ -132,26 +123,20 @@
                 <td>
                   <button
                     type="button"
-                    [disabled]="itemRank < 6 || document.show == false"
+                    [disabled]="itemRank < 6 || !document.show"
                     *ngIf="itemRank > 0"
                     class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="View Picture and Set As Default"
-                    data-toggle="modal"
                     (click)="setActiveCompany(document)"
+                    title="View Picture and Set As Default"
                   >
                     View and SetAsDefault
                   </button>
-
                   <button
                     type="button"
                     *ngIf="itemRank > 0"
                     class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Download File"
                     (click)="downloadDocuments(document)"
+                    title="Download File"
                   >
                     View
                   </button>
@@ -159,21 +144,17 @@
                     type="button"
                     [disabled]="itemRank < 6"
                     class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Edit Item Attachment"
                     (click)="editItemDocument(document)"
+                    title="Edit Item Attachment"
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    [disabled]="itemRank < 6 || highestRank == 9"
+                    [disabled]="itemRank < 6 || highestRank === 9"
                     class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Delete Item Attachment"
                     (click)="openModal(confirmtemplate, document.attachmentId)"
+                    title="Delete Item Attachment"
                   >
                     Delete
                   </button>
@@ -195,11 +176,9 @@
       <button
         type="button"
         (click)="backToViewItem()"
-        data-bs-placement="bottom"
-        data-bs-toggle="tooltip"
-        title="Back to View Item"
         class="btn btn-primary"
         style="border-radius: 6px;"
+        title="Back to View Item"
       >
         Back To Item
       </button>
@@ -255,21 +234,17 @@
         <button
           type="button"
           class="btn btn-secondary"
-          data-bs-placement="bottom"
-          data-bs-toggle="tooltip"
-          title="Click here to Close"
           (click)="myModal.hide()"
+          title="Click here to Close"
         >
           Close
         </button>
         <button
           type="button"
-          [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
+          [disabled]="itemRank < 3 || itemRank === 4 || itemRank === 5"
           class="btn btn-primary"
-          data-bs-placement="bottom"
-          data-bs-toggle="tooltip"
-          title="Click here to SetAsDefault Image"
           (click)="setAsDefault(activeCompanyDocument)"
+          title="Click here to SetAsDefault Image"
         >
           Set As Default
         </button>
@@ -291,87 +266,51 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
     cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: absolute;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
     margin: -75px 0 0 -75px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
     width: 60px;
     height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
-
-  
   .animate-bottom {
     position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
+    animation: animatebottom 1s;
   }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
   @keyframes animatebottom {
     from {
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0;
       opacity: 1;
     }
   }
-
   .btn-link[routerLink="/forgot-password"] {
     color: red;
   }
-
   .cent {
     position: absolute;
     top: 50%;
@@ -379,5 +318,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

@@ -6,7 +6,6 @@
           <button
             type="button"
             (click)="print()"
-            data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
@@ -16,21 +15,15 @@
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
             data-bs-toggle="tooltip"
-            title=" Instructions"
+            title="Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
+            *ngIf="helpFlag"
           >
             Note: Mandatory Fields are required.<br />
             * To create a new Location:<br />
@@ -45,39 +38,36 @@
             1. Click on 'Delete' button.
           </div>
         </div>
+
         <div class="card-body">
           <p class="card-text">
             Manage {{ companyName }} Locations
             <button
               type="button"
-              style="margin: 5px"
-              [disabled]="highestRankNum < 6"
               class="btn btn-primary float-right"
               [routerLink]="['../mergeLocations']"
-              data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Merge Locations"
-              placement="top"
-               style="border-radius: 6px; margin-right: 2px;"
+              style="border-radius: 6px; margin-right: 2px;"
+              [disabled]="highestRankNum < 6"
             >
               MergeLocations
             </button>
             <button
               type="button"
-              style="margin: 5px"
-              *ngIf="highestRankNum > 4"
               class="btn btn-primary float-right"
+              *ngIf="highestRankNum > 4"
               [routerLink]="['../addLocation', companyId]"
-              data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add a new Location."
-              placement="top"
-               style="border-radius: 6px; margin-right: 2px;"
+              style="border-radius: 6px; margin-right: 2px;"
             >
               Add Location
             </button>
           </p>
+
           <div style="clear: both;"></div>
+
           <div class="float-right div-search">
             <span>Search : </span>
             <input [(ngModel)]="locationFilter" style="width: 250px;" />
@@ -85,77 +75,59 @@
 
           <div class="row">
             <div class="form-group col-sm-8 form-group-margin">
-              <label for="loc">Location</label>            
-                        <div class="custom-dropdown-wrapper">
-              <app-dropdown-treeview-select
-                [items]="items"
-                [(value)]="locationId"
-                id="loc"
-                (valueChange)="onValueChange($event)"
-              >
-               
-              </app-dropdown-treeview-select>
-              <span class="custom-dropdown-arrow">&#9662;</span>
+              <label for="loc">Location</label>
+              <div class="custom-dropdown-wrapper">
+                <app-dropdown-treeview-select
+                  [items]="items"
+                  [(value)]="locationId"
+                  id="loc"
+                  (valueChange)="onValueChange($event)"
+                >
+                </app-dropdown-treeview-select>
+                <span class="custom-dropdown-arrow">&#9662;</span>
               </div>
-
             </div>
           </div>
 
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'name'"
-                  (click)="setOrder('name')"
-                >
-                  Location Name<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'name'" (click)="setOrder('name')">
+                  Location Name
+                  <span [hidden]="reverse === ''">▼</span><span [hidden]="reverse !== ''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'state'"
-                  (click)="setOrder('state')"
-                >
-                  State<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'state'" (click)="setOrder('state')">
+                  State
+                  <span [hidden]="reverse === ''">▼</span><span [hidden]="reverse !== ''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'description'"
-                  (click)="setOrder('description')"
-                >
-                  Description<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'description'" (click)="setOrder('description')">
+                  Description
+                  <span [hidden]="reverse === ''">▼</span><span [hidden]="reverse !== ''">▲</span>
                 </th>
-
                 <th>Notes</th>
                 <th>Actions</th>
               </tr>
             </thead>
+
             <tbody>
               <tr
                 *ngFor="
                   let location of locations
-                    | orderBy : reverse + order
-                    | filterBy
-                      : ['name', 'state', 'description']
-                      : locationFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                    | orderBy: reverse + order
+                    | filterBy: ['name', 'state', 'description']: locationFilter
+                    | paginate: { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
                 <td>{{ location.name }}</td>
                 <td>{{ location.state }}</td>
                 <td>{{ location.description }}</td>
-
                 <td>
                   <button
                     type="button"
-                    data-bs-placement="bottom"
+                    class="btn btn-outline-success btn-sm"
+                    [disabled]="highestRankNum < 5"
                     data-bs-toggle="tooltip"
                     title="Location Notes"
-                    [disabled]="highestRankNum < 5"
-                    class="btn btn-outline-success btn-sm"
                     (click)="locationNotes(location)"
                   >
                     Notes
@@ -164,24 +136,18 @@
                 <td>
                   <button
                     type="button"
-                    [disabled]="highestRankNum < 5"
                     class="btn btn-outline-danger btn-sm mb-1 btn-right"
-                    data-bs-placement="bottom"
+                    [disabled]="highestRankNum < 5"
+                    [routerLink]="['../editLocation', location.locationId, companyId]"
                     data-bs-toggle="tooltip"
                     title="Update this Location"
-                    [routerLink]="[
-                      '../editLocation',
-                      location.locationId,
-                      companyId
-                    ]"
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    [disabled]="highestRankNum < 6 || highestRankNum == 9"
                     class="btn btn-outline-danger btn-sm mb-1"
-                    data-bs-placement="bottom"
+                    [disabled]="highestRankNum < 6 || highestRankNum === 9"
                     data-bs-toggle="tooltip"
                     title="Delete this Location"
                     (click)="openModal(confirmtemplate, location.locationId)"
@@ -192,12 +158,8 @@
               </tr>
             </tbody>
           </table>
-          <pagination-controls
-            class="my-pagination"
-            (pageChange)="p = $event"
-            [autoHide]="true"
-          >
-          </pagination-controls>
+
+          <pagination-controls class="my-pagination" (pageChange)="p = $event" [autoHide]="true"></pagination-controls>
         </div>
       </div>
     </div>
@@ -207,142 +169,45 @@
 <ng-template #templateNested>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Second modal</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef?.hide()"
-    >
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef?.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     This is nested modal.
-    <br />
-    <button
-      *ngIf="modalRef"
-      type="button"
-      class="btn btn-danger"
-      (click)="closeFirstModal()"
-    >
-      Close first modal
-    </button>
+    <button *ngIf="modalRef" type="button" class="btn btn-danger" (click)="closeFirstModal()">Close first modal</button>
   </div>
 </ng-template>
 
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>
-      Deleting a location will delete all childLocations and Items under
-      them,click [Yes] to continue (or) click [No] to discard this action
+      Deleting a location will delete all childLocations and Items under them, click [Yes] to continue (or) click [No] to discard this action
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
   </div>
 </ng-template>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" style="position: fixed; width: 100%; height: 100%; top:0; left:0; background-color: rgba(0,0,0,0.5); z-index: 2; cursor:pointer;">
+  <div class="loader"></div>
 </div>
+
 <style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.loader {
+  position: fixed;
+  left: 60%;
+  top: 60%;
+  z-index: 1;
+  width: 60px;
+  height: 60px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid red;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 </style>

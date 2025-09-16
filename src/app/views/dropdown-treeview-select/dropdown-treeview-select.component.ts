@@ -4,8 +4,10 @@ import {
   Output,
   EventEmitter,
   ViewChild,
-  OnChanges,
   ElementRef,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
 } from '@angular/core';
 import {
   TreeviewConfig,
@@ -16,7 +18,6 @@ import {
   DropdownDirective,
 } from 'ngx-treeview';
 import { DropdownTreeviewSelectI18n } from './dropdown-treeview-select-i18n';
-import { isNil } from 'lodash';
 
 @Component({
   selector: 'app-dropdown-treeview-select',
@@ -24,49 +25,53 @@ import { isNil } from 'lodash';
   styleUrls: ['./dropdown-treeview-select.component.scss'],
   providers: [{ provide: TreeviewI18n, useClass: DropdownTreeviewSelectI18n }],
 })
-export class DropdownTreeviewSelectComponent implements OnChanges {
-  @Input() config: TreeviewConfig;
-  @Input() items: TreeviewItem[];
+export class DropdownTreeviewSelectComponent implements OnInit, OnChanges {
+  @Input() config: TreeviewConfig = TreeviewConfig.create({
+    hasAllCheckBox: true,
+    hasCollapseExpand: true,
+    hasFilter: true,
+    maxHeight: 200,
+  });
+
+  @Input() items: TreeviewItem[] = [];
   @Input() value: any;
+
   @Output() valueChange = new EventEmitter<any>();
 
-  @ViewChild(DropdownTreeviewComponent, { static: false })
-  dropdownTreeviewComponent: DropdownTreeviewComponent;
-  @ViewChild('myfckvi') myFocusText: ElementRef;
+  @ViewChild(DropdownTreeviewComponent)
+  dropdownTreeviewComponent?: DropdownTreeviewComponent;
 
-  dropdownDirective: DropdownDirective;
-  filterText: string;
+  @ViewChild('myfckvi')
+  myFocusText!: ElementRef<HTMLElement>;
+
+  dropdownDirective?: DropdownDirective;
+  filterText = '';
+
   private dropdownTreeviewSelectI18n: DropdownTreeviewSelectI18n;
 
   constructor(public i18n: TreeviewI18n) {
-    this.config = TreeviewConfig.create({
-      hasAllCheckBox: true,
-      hasCollapseExpand: true,
-      hasFilter: true,
-      maxHeight: 200,
-    });
     this.dropdownTreeviewSelectI18n = i18n as DropdownTreeviewSelectI18n;
   }
 
-  ngOnInit() {
-    if (this.items && this.items.length > 0) {
+  ngOnInit(): void {
+    if (this.items?.length > 0) {
+      this.updateSelectedItem();
     }
   }
 
-  ngOnChanges(): void {
-    this.updateSelectedItem();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['items'] || changes['value']) {
+      this.updateSelectedItem();
+    }
   }
 
   select(item: TreeviewItem): void {
     this.selectItem(item);
   }
 
-  private updateSelectedItem() {
-    if (!isNil(this.items)) {
-      const selectedItem = TreeviewHelper.findItemInList(
-        this.items,
-        this.value
-      );
+  private updateSelectedItem(): void {
+    if (this.items && this.items.length > 0) {
+      const selectedItem = TreeviewHelper.findItemInList(this.items, this.value);
       if (selectedItem) {
         this.selectItem(selectedItem);
       } else {
@@ -76,23 +81,21 @@ export class DropdownTreeviewSelectComponent implements OnChanges {
   }
 
   private selectItem(item: TreeviewItem): void {
-    this.myFocusText.nativeElement.click();
+    this.myFocusText?.nativeElement.click();
+
     if (this.dropdownTreeviewSelectI18n.selectedItem !== item) {
       this.dropdownTreeviewSelectI18n.selectedItem = item;
-      if (this.dropdownTreeviewComponent) {
-        this.dropdownTreeviewComponent.onSelectedChange([item]);
-      }
 
-      if (item) {
-        if (this.value !== item.value) {
-          this.value = item.value;
-          this.valueChange.emit(item.value);
-        }
+      this.dropdownTreeviewComponent?.onSelectedChange([item]);
+
+      if (item && this.value !== item.value) {
+        this.value = item.value;
+        this.valueChange.emit(item.value);
       }
     }
   }
 
-  private selectAll() {
+  private selectAll(): void {
     if (this.dropdownTreeviewComponent) {
       const allItem = this.dropdownTreeviewComponent.treeviewComponent.allItem;
       this.selectItem(allItem);

@@ -30,7 +30,7 @@
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag === true"
           >
             *To add an attachment:<br />
             1.Click the 'Choose File' button to locate the desired file.<br />
@@ -59,7 +59,6 @@
             <div class="col-sm-12 mobile-padding">
               <div class="card">
                 <form
-                  name="form"
                   (ngSubmit)="f.form.valid && updateItemNoteAttachment()"
                   #f="ngForm"
                   novalidate
@@ -70,7 +69,6 @@
                         <label for="desc">Description</label>
                         <textarea
                           id="desc"
-                          name="textarea-input"
                           rows="2"
                           cols="4"
                           class="form-control"
@@ -88,11 +86,10 @@
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Update Document"
-                          class="btn btn-primary me-3" 
+                          class="btn btn-primary me-3"
                         >
                           Update
                         </button>
-                    
                         <button
                           type="button"
                           (click)="cancelItemNoteAttachment()"
@@ -105,7 +102,6 @@
                         </button>
                       </div>
                     </div>
-                    
                   </div>
                 </form>
               </div>
@@ -134,8 +130,9 @@
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
@@ -158,7 +155,6 @@
     0% {
       -webkit-transform: rotate(0deg);
     }
-
     100% {
       -webkit-transform: rotate(360deg);
     }
@@ -168,13 +164,11 @@
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
 
-  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -188,7 +182,6 @@
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0px;
       opacity: 1;
@@ -200,7 +193,6 @@
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0;
       opacity: 1;

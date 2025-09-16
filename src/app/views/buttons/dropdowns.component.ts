@@ -1,40 +1,34 @@
 import { Component } from '@angular/core';
 
 @Component({
-  templateUrl: 'dropdowns.component.html',
+  selector: 'app-dropdowns',
+  templateUrl: './dropdowns.component.html',
 })
 export class DropdownsComponent {
-
-  constructor() { }
-
+  // Dropdown items
   items: string[] = [
     'The first choice!',
-    'And another choice for you.',
-    'but wait! A third!'
+    'Another choice for you.',
+    'A third choice here!'
   ];
 
-  onHidden(): void {
-  }
-  onShown(): void {
-  }
-  isOpenChange(): void {
-  }
+  // Dropdown state
+  isOpen = false;
 
-  status: { isOpen: boolean } = { isOpen: false };
+  constructor() {}
 
-  toggleDropdown($event: MouseEvent): void {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.status.isOpen = !this.status.isOpen;
+  // Open dropdown programmatically
+  openDropdown(): void {
+    this.isOpen = true;
   }
 
-  change(value: boolean): void {
-    this.status.isOpen = value;
+  // Close dropdown programmatically
+  closeDropdown(): void {
+    this.isOpen = false;
   }
 
-  disabled: boolean = false;
-
-  isDropup: boolean = true;
-
-  autoClose: boolean = false;
+  // Toggle dropdown manually
+  toggleDropdown(): void {
+    this.isOpen = !this.isOpen;
+  }
 }

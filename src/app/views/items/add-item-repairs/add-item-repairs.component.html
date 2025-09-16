@@ -23,15 +23,7 @@
           >
             Help
           </button>
-          <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
-          >
+          <div *ngIf="helpFlag" class="help-box">
             *To add a new Repair:<br />
             1.Click the 'AddRepair' button.<br />
             2.Enter the data for the new Repair.<br />
@@ -49,15 +41,12 @@
           <div class="card-header">
             <strong>Add Item Repair</strong>
           </div>
-
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Item Repair saved successfully.
           </alert>
-
           <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
             Please Enter PO number,Job number,Vendor and Failure Date
           </alert>
-
           <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
             Please Select Failure Type & Failure Cause
           </alert>
@@ -87,7 +76,6 @@
                           [(ngModel)]="model.warrantyType"
                           (change)="setWarrantyTypeID()"
                           name="type"
-                          #type="ngModel"
                           id="warrantyType"
                         >
                           <option
@@ -108,38 +96,29 @@
                           [(ngModel)]="model.warrantyExpiration"
                           id="warrantyExp"
                           name="warrantyExp"
-                          #warrantyExp="ngModel"
                         />
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="job"
-                          >JOB Number
-                          <strong class="text-danger">*</strong></label
-                        >
+                        <label for="job">JOB Number <strong class="text-danger">*</strong></label>
                         <input
                           type="text"
                           class="form-control form-color"
                           [(ngModel)]="model.jobNumber"
                           name="job"
-                          #job="ngModel"
                           id="job"
                           placeholder="Enter JOB Number"
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="po"
-                          >PO Number
-                          <strong class="text-danger">*</strong></label
-                        >
+                        <label for="po">PO Number <strong class="text-danger">*</strong></label>
                         <input
                           type="text"
                           class="form-control form-color"
                           [(ngModel)]="model.poNumber"
                           id="po"
                           name="po"
-                          #po="ngModel"
                           placeholder="Enter PO Number"
                         />
                       </div>
@@ -147,14 +126,12 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="location">Location</label>
-
-                      <app-dropdown-treeview-select
+                        <app-dropdown-treeview-select
                           class="form-color"
                           [items]="locationItems"
                           [(value)]="model.repairlocationId"
                         >
                         </app-dropdown-treeview-select>
-
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="title">Title</label>
@@ -164,7 +141,6 @@
                           [(ngModel)]="model.title"
                           id="title"
                           name="title"
-                          #title="ngModel"
                           placeholder="Enter Title"
                         />
                       </div>
@@ -172,13 +148,9 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="vendor">
-                          Vendor<strong
-                            *ngIf="highestRankNum == 2"
-                            class="text-danger"
-                            >*</strong
-                          >
+                          Vendor<strong *ngIf="highestRankNum == 2" class="text-danger">*</strong>
                         </label>
-                      <app-dropdown-treeview-select
+                        <app-dropdown-treeview-select
                           class="form-color"
                           [items]="vendorItems"
                           [(value)]="model.vendorId"
@@ -194,7 +166,6 @@
                           [(ngModel)]="model.repairNotes"
                           id="details"
                           name="details"
-                          #repairNotes="ngModel"
                           placeholder="Enter Details"
                         ></textarea>
                       </div>
@@ -206,7 +177,6 @@
                           class="form-control form-color custom-dropdown"
                           [(ngModel)]="model.repairType"
                           name="repairType"
-                          #repairType="ngModel"
                           id="repairType"
                         >
                           <option value="priority/Rush">Priority/Rush</option>
@@ -228,9 +198,7 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="estimatedDate"
-                          >Estimated Completion Date</label
-                        >
+                        <label for="estimatedDate">Estimated Completion Date</label>
                         <input
                           type="text"
                           [bsConfig]="bsConfig"
@@ -238,7 +206,6 @@
                           class="form-control form-color"
                           [(ngModel)]="model.estimatedCompletion"
                           name="estimatedDate"
-                          #estimatedDate="ngModel"
                           id="estimatedDate"
                         />
                       </div>
@@ -250,7 +217,6 @@
                           [(ngModel)]="model.repairCost"
                           id="repairCost"
                           name="repairCost"
-                          #repairCost="ngModel"
                         />
                       </div>
                     </div>
@@ -262,15 +228,11 @@
                           class="form-control form-color"
                           [(ngModel)]="model.repairJobStatus"
                           name="repairstatus"
-                          #repairstatus="ngModel"
                           id="repairstatus"
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="failureDate"
-                          >Failure Date
-                          <strong class="text-danger">*</strong></label
-                        >
+                        <label for="failureDate">Failure Date <strong class="text-danger">*</strong></label>
                         <input
                           type="text"
                           [bsConfig]="bsConfig"
@@ -279,7 +241,6 @@
                           [(ngModel)]="model.failureDate"
                           id="failureDate"
                           name="failureDate"
-                          #failureDate="ngModel"
                         />
                       </div>
                     </div>
@@ -290,7 +251,6 @@
                           class="form-control form-color custom-dropdown mb-3"
                           [(ngModel)]="model.failureType"
                           name="failureType"
-                          #failureType="ngModel"
                           id="failureType"
                           (ngModelChange)="onValueChange($event)"
                         >
@@ -301,7 +261,6 @@
                             {{ type }}
                           </option>
                         </select>
-
                         <div>
                           <button
                             type="button"
@@ -323,12 +282,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                *ngFor="
-                                  let sitem of model.secondaryTypeAndCauses;
-                                  let i = index
-                                "
-                              >
+                              <tr *ngFor="let sitem of model.secondaryTypeAndCauses; let i = index">
                                 <td>
                                   <select
                                     class="form-control custom-dropdown"
@@ -352,11 +306,7 @@
                                   >
                                     <option
                                       [value]="cause"
-                                      *ngFor="
-                                        let cause of getFailureCause(
-                                          sitem.failureType
-                                        )
-                                      "
+                                      *ngFor="let cause of getFailureCause(sitem.failureType)"
                                     >
                                       {{ cause }}
                                     </option>
@@ -384,7 +334,6 @@
                           [disabled]="model.failureType == null"
                           [(ngModel)]="model.failureCause"
                           name="failureCause"
-                          #failureCause="ngModel"
                           id="failureCause"
                         >
                           <option value="0" selected="false">Other</option>
@@ -403,7 +352,6 @@
                             *ngIf="model.failureType != null"
                             [(ngModel)]="model.newFailureCauseSp"
                             name="failureCause"
-                            #failureCause="ngModel"
                             id="failureCause"
                           />
                         </div>
@@ -419,7 +367,6 @@
                             [(ngModel)]="model.complete"
                             (change)="checkValue(model.complete ? 'A' : 'B')"
                             name="complete"
-                            #complete="ngModel"
                             id="complete"
                           />
                         </div>
@@ -434,7 +381,6 @@
                           [(ngModel)]="model.actualCompletion"
                           id="actualCompletion"
                           name="actualCompletion"
-                          #actualCompletion="ngModel"
                         />
                       </div>
                     </div>
@@ -473,3 +419,14 @@
     </div>
   </div>
 </div>
+
+<style>
+  .help-box {
+    text-align: left;
+    border: 1px solid;
+    width: fit-content;
+    background-color: whitesmoke;
+    padding: 10px;
+    margin-top: 10px;
+  }
+</style>

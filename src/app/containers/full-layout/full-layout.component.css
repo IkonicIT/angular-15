@@ -1,4 +1,88 @@
+/* Topbar Layout */
+.topbar {
+  background-color: white;
+  border-bottom: 1px solid gray;
+  margin-bottom: 4%;
+}
 
+.topbar-left {
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+}
+
+.breadcrumb {
+  float: left;
+  border-bottom: none;
+  margin-left: 64px;
+  padding-top: 16px;
+  padding-bottom: 12px;
+  width: auto;
+}
+
+/* Right Section */
+.topbar-right {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  overflow-x: visible;
+}
+
+.company-logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.company-logo-img {
+  height: 50px;
+  max-width: 70%;
+  object-fit: contain;
+}
+
+.company-dropdown {
+  float: right;
+  margin-left: 64px;
+}
+
+/* Tag Input */
+.tag-input {
+  flex: 0 0 80px;
+  padding: 4px;
+  min-width: 80px;
+}
+
+/* Item Dropdown */
+.item-dropdown {
+  flex: 0 1 160px;
+}
+
+/* Buttons */
+.go-btn {
+  padding: 5px 10px;
+}
+
+.advanced-btn {
+  padding: 5px 10px;
+  margin-right: 64px;
+}
+
+.action-group {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  min-width: max-content;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/* Existing Styles */
 .margin-tag {
   margin-left: -10px;
   margin-top: 2px;
@@ -12,36 +96,30 @@
   max-width: 160px;
 }
 
-.ngx-dropdown-container[_ngcontent-yxf-c7]
-  .ngx-dropdown-list-container[_ngcontent-yxf-c7] {
-  box-sizing: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
-  padding-left: 10px;
-  padding-right: 10px;
-  z-index: 999999999;
-  width: auto !important;
-  background-clip: padding-box;
-  background: white;
-  position: absolute;
-  box-shadow: 5px 5px 5px #00000036;
-}
-
 .text-overflow-button {
   background-color: #f86c6b;
 }
 
+.side-bar-margin {
+  margin-top: 55px;
+}
+
+.main {
+  flex: 1;
+}
+
+/* Tooltips */
 bs-tooltip-container {
   z-index: 99999;
 }
 
+/* Responsive Adjustments */
 @media (min-width: 400px) and (max-width: 520px) {
   .margin-tag {
     margin-left: 0px;
     margin-top: 4px;
     text-align: center;
   }
-
 
   .mobile-padding {
     padding: 0px;
@@ -87,6 +165,7 @@ bs-tooltip-container {
   .margin-mobile {
     margin-left: 90px;
   }
+
   .margin-new-top {
     margin-top: 5px;
   }
@@ -121,15 +200,7 @@ bs-tooltip-container {
   }
 }
 
-.main {
-  flex: 1;
-}
-
-.side-bar-margin {
-  margin-top: 55px;
-}
-
-
+/* Force dropdowns to display properly */
 :host ::ng-deep .ngx-dropdown-container {
   width: auto !important;
   min-width: 200px;
@@ -145,19 +216,14 @@ bs-tooltip-container {
 :host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container {
   width: auto !important;
   min-width: 100%;
-}
-:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button::after {
-  display: none !important;
-}
-
-:host ::ng-deep .dropdown-toggle::after {
-  display: none !important;
-}
-
-:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container {
   top: 100% !important;
   bottom: auto !important;
   margin-top: 4px !important;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button::after,
+:host ::ng-deep .dropdown-toggle::after {
+  display: none !important;
 }
 
 .side-bar-margin,
@@ -166,3 +232,111 @@ bs-tooltip-container {
 .btn-group {
   overflow: visible !important;
 }
+/* Top bar */
+.top-bar {
+  background-color: white;
+  border-bottom: 1px solid gray;
+  margin-bottom: 4%;
+}
+
+/* Breadcrumb column */
+.breadcrumb-col {
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+}
+
+.custom-breadcrumb {
+  float: left;
+  border-bottom: none;
+  margin-left: 64px;
+  padding-top: 16px;
+  padding-bottom: 12px;
+  width: auto;
+}
+
+/* Controls row */
+.top-controls {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  overflow-x: visible;
+}
+
+/* Logo */
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.company-logo {
+  height: 50px;
+  max-width: 70%;
+  object-fit: contain;
+}
+
+/* Company select */
+.company-select {
+  float: right;
+  margin-left: 64px;
+}
+
+/* Tag input */
+.tag-input {
+  flex: 0 0 80px;
+  padding: 4px;
+  min-width: 80px;
+}
+
+/* Dropdown wrapper */
+.dropdown-wrapper {
+  flex: 0 1 160px;
+}
+
+/* Buttons */
+.go-btn {
+  padding: 5px 10px;
+}
+
+.advanced-btn {
+  padding: 5px 10px;
+  margin-right: 64px; /* same spacing as Master PieCharts */
+}
+
+.master-pie-btn {
+  padding: 5px 10px;
+  margin-right: 64px;
+}
+
+
+.action-buttons {
+  margin-left: auto; /* keep them all to the far right */
+  display: flex;
+  gap: 8px;
+  min-width: max-content;
+}
+
+/* Content */
+.content-wrapper {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/* Already existing CSS (your file) */
+.margin-tag {
+  margin-left: -10px;
+  margin-top: 2px;
+}
+
+.height {
+  height: 34px;
+}
+
+.img-side-logo {
+  max-width: 160px;
+}
+
+/* etc… (keep your original CSS rules you posted earlier) */

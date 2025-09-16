@@ -24,13 +24,8 @@
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
+            *ngIf="helpFlag"
           >
             *To add an attachment:<br />
             1.Click the 'Choose File' button to locate the desired file.<br />
@@ -49,53 +44,18 @@
             <div class="col-sm-12 mobile-padding">
               <div class="card">
                 <form
-                  name="form"
-                  (ngSubmit)="f.form.valid && updateItemRepairDocument()"
                   #f="ngForm"
+                  (ngSubmit)="f.form.valid && updateItemRepairDocument()"
                   novalidate
                 >
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <input
-                          type="file"
-                          class="form-control"
-                          name="logo"
-                          id="logo"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.dateAdded"
-                          name="added"
-                          #added="ngModel"
-                          id="added"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.addedBy"
-                          name="by"
-                          #by="ngModel"
-                          id="by"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.attachmentId"
-                          name="_id"
-                          #_id="ngModel"
-                          id="_id"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.entityId"
-                          name="companyId"
-                          #companyId="ngModel"
-                          id="companyId"
-                          hidden
-                        />
+                        <input type="file" class="form-control" name="logo" id="logo" hidden />
+                        <input type="text" [(ngModel)]="model.dateAdded" name="added" id="added" hidden />
+                        <input type="text" [(ngModel)]="model.addedBy" name="by" id="by" hidden />
+                        <input type="text" [(ngModel)]="model.attachmentId" name="_id" id="_id" hidden />
+                        <input type="text" [(ngModel)]="model.entityId" name="companyId" id="companyId" hidden />
                       </div>
                     </div>
 
@@ -104,13 +64,11 @@
                         <label for="desc">Description</label>
                         <textarea
                           id="desc"
-                          name="textarea-input"
                           rows="2"
                           cols="4"
                           class="form-control"
                           [(ngModel)]="model.description"
                           name="description"
-                          #description="ngModel"
                           placeholder="Enter Description"
                         ></textarea>
                       </div>
@@ -119,21 +77,21 @@
                     <div class="row mt-3">
                       <div class="form-group col-sm-12 text-center">
                         <button
+                          class="btn btn-primary me-3"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Update this ItemRepair Attachment"
-                          class="btn btn-primary  me-3"
                         >
                           Update
                         </button>
                         <button
                           type="button"
                           (click)="back()"
+                          class="btn btn-primary"
+                          style="border-radius: 6px;"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Back to itemRepair Attachments"
-                          class="btn btn-primary"
-                          style="border-radius: 6px;"
                         >
                           Cancel
                         </button>
@@ -152,23 +110,11 @@
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 2; cursor: pointer; -ms-transform: translate(-50%, -50%); transform: translate(-1%, -1%);"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
@@ -186,28 +132,22 @@
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
   @-webkit-keyframes spin {
     0% {
       -webkit-transform: rotate(0deg);
     }
-
     100% {
       -webkit-transform: rotate(360deg);
     }
   }
-
   @keyframes spin {
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
-
-  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -215,35 +155,29 @@
     animation-name: animatebottom;
     animation-duration: 1s;
   }
-
   @-webkit-keyframes animatebottom {
     from {
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0px;
       opacity: 1;
     }
   }
-
   @keyframes animatebottom {
     from {
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0;
       opacity: 1;
     }
   }
-
   .btn-link[routerLink="/forgot-password"] {
     color: red;
   }
-
   .cent {
     position: absolute;
     top: 50%;

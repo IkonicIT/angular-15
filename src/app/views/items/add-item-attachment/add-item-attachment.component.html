@@ -9,8 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
-          >
+            class="btn btn-outline-danger btn-sm btn-right btn-top">
             Print
           </button>
           <button
@@ -18,36 +17,29 @@
             (click)="help()"
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
-          >
+            title="Instructions"
+            class="btn btn-outline-danger btn-sm btn-top">
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
-          >
+            *ngIf="helpFlag"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;">
             *To add an attachment:<br />
-            1.Click the 'Choose File' button to locate the desired file.<br />
-            2.Enter a description for the file.<br />
-            3.Click the 'Save' button.<br />
+            1. Click the 'Choose File' button to locate the desired file.<br />
+            2. Enter a description for the file.<br />
+            3. Click the 'Save' button.<br />
             *For Items, a default image can be supplied:<br />
-            1.The Default Image is highlighted yellow in the Attachment list.<br />
-            2.Only Image type files may be designated as the Default Image
-            (.jpg, .gif, etc.).<br />
-            3.Only one Image may be designated as the Default Image.<br />
+            1. The Default Image is highlighted yellow in the Attachment list.<br />
+            2. Only Image type files may be designated as the Default Image (.jpg, .gif, etc.).<br />
+            3. Only one Image may be designated as the Default Image.<br />
           </div>
         </div>
+
         <div class="card-body">
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Item Attachments saved successfully.
           </alert>
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
             Please Upload the file.
           </alert>
 
@@ -55,19 +47,14 @@
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="card-header">
-                  <strong
-                    >Add Item Attachments : "{{ itemType }}" '{{
-                      itemTag
-                    }}'</strong
-                  >
+                  <strong>Add Item Attachments : "{{ itemType }}" '{{ itemTag }}'</strong>
                 </div>
 
                 <form
                   name="form"
-                  (ngSubmit)="saveItemDocument()"
                   #f="ngForm"
                   novalidate
-                >
+                  (ngSubmit)="saveItemDocument()">
                   <div style="overflow: auto">
                     <table class="table table-bordered">
                       <thead>
@@ -83,69 +70,60 @@
                             <input
                               type="file"
                               class="form-control form-color"
-                              (change)="fileChangeListener($event, i)"
-                              id="file"
-                            />
+                              (change)="fileChangeListener($event, i)" />
                           </td>
                           <td>
                             <textarea
-                              id="desc"
                               rows="2"
                               cols="4"
                               class="form-control form-color"
                               [(ngModel)]="item.description"
+                              [ngModelOptions]="{standalone: true}"
                               [name]="'description' + i"
-                              placeholder="Enter Description"
-                            ></textarea>
+                              placeholder="Enter Description">
+                            </textarea>
                           </td>
                           <td>
                             <button
                               type="button"
                               *ngIf="i > 0"
-                              type="button"
                               (click)="remove(i)"
                               data-bs-placement="bottom"
                               data-bs-toggle="tooltip"
-                              title=" Click here to remove File"
-                            >
+                              title="Click here to remove File">
                               Remove
                             </button>
                           </td>
                         </tr>
                       </tbody>
                     </table>
-                    <div>
-                      <div class="form-group col-sm-12">
-                        <label>Make the Image as Default</label>
-                        <div class="form-check">
-                          <label
-                            class="form-check-label margin-right"
-                            for="radio1"
-                          >
-                            <input
-                              class="form-check-input"
-                              type="radio"
-                              [(ngModel)]="setDefault"
-                              name="radios"
-                              id="radio1"
-                              value="true"
-                              checked
-                            />Yes
-                          </label>
-                          <label
-                            class="form-check-label margin-right"
-                            for="radio2"
-                          >
-                            <input
-                              class="form-check-input"
-                              type="radio"
-                              [(ngModel)]="setDefault"
-                              name="radios"
-                              id="radio2"
-                              value="false"
-                            />No
-                          </label>
-                        </div>
+
+                    <div class="form-group col-sm-12">
+                      <label>Make the Image as Default</label>
+                      <div class="form-check">
+                        <label class="form-check-label margin-right" for="radio1">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            [(ngModel)]="setDefault"
+                            [ngModelOptions]="{standalone: true}"
+                            name="radios"
+                            id="radio1"
+                            value="true"
+                            checked />
+                          Yes
+                        </label>
+                        <label class="form-check-label margin-right" for="radio2">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            [(ngModel)]="setDefault"
+                            [ngModelOptions]="{standalone: true}"
+                            name="radios"
+                            id="radio2"
+                            value="false" />
+                          No
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -157,8 +135,7 @@
                         (click)="addNewAttachment()"
                         data-bs-placement="bottom"
                         data-bs-toggle="tooltip"
-                        title=" Click here to Add File"
-                      >
+                        title="Click here to Add File">
                         Add File
                       </button>
                     </div>
@@ -171,8 +148,7 @@
                         data-bs-placement="bottom"
                         data-bs-toggle="tooltip"
                         title="Save Item Attachment"
-                        style="border-radius: 6px;"
-                      >
+                        style="border-radius: 6px;">
                         Save
                       </button>
                       <button
@@ -182,8 +158,7 @@
                         title="Cancel"
                         (click)="cancelItemDocument()"
                         class="btn btn-primary"
-                        style="border-radius: 6px;"
-                      >
+                        style="border-radius: 6px;">
                         Cancel
                       </button>
                     </div>
@@ -200,31 +175,18 @@
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0;
+         background-color: rgba(0, 0, 0, 0.5); z-index: 2; cursor: pointer;
+         -ms-transform: translate(-50%, -50%); transform: translate(-1%, -1%);">
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: absolute;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
     margin: -75px 0 0 -75px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
@@ -234,28 +196,14 @@
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
   @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
   }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
-
-  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -263,35 +211,15 @@
     animation-name: animatebottom;
     animation-duration: 1s;
   }
-
   @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
-
   @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
+  .btn-link[routerLink="/forgot-password"] { color: red; }
   .cent {
     position: absolute;
     top: 50%;
@@ -299,5 +227,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

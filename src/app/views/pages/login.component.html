@@ -4,8 +4,10 @@
   color="#fff"
   type="ball-clip-rotate"
   [fullScreen]="true"
-  ><p style="color: white">Loading...</p></ngx-spinner
 >
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+
 <div class="app flex-row align-items-center">
   <div class="container">
     <div class="row justify-content-center">
@@ -19,11 +21,13 @@
               <p class="alert-danger" *ngIf="loginError == true">
                 Wrong Credentials. Please try again.
               </p>
+
               <form name="myForm" (keyup.enter)="login()">
+                <!-- Username -->
                 <div class="input-group mb-3">
-                  <span class="input-group-text"
-                    ><i class="icon-user"></i
-                  ></span>
+                  <span class="input-group-text">
+                    <i class="icon-user"></i>
+                  </span>
                   <input
                     type="text"
                     class="form-control loginForm"
@@ -32,39 +36,32 @@
                     name="userName"
                   />
                 </div>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Link 1</a>
-                  <a class="dropdown-item" href="#">Link 2</a>
-                  <a class="dropdown-item" href="#">Link 3</a>
-                </div>
+
+                <!-- Password -->
                 <div class="input-group mb-4">
-                  <span class="input-group-text"
-                    ><i class="icon-lock"></i
-                  ></span>
-                  <div class="password-input">
-                    <form (submit)="onSubmit($event)">
-                      <input
-                        [type]="showPassword ? 'password' : 'text'"
-                        class="form-control loginForm"
-                        [(ngModel)]="password"
-                        placeholder="Password"
-                        name="password"
-                        (keydown.enter)="$event.preventDefault()"
-                        style="padding-right: 12px"
-                      />
-                      <button (click)="togglePasswordVisibility()">
-                        <i
-                          class="fas"
-                          [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
-                        ></i>
-                      </button>
-                      <input
-                        type="submit"
-                        style="position: absolute; left: -9999px"
-                      />
-                    </form>
-                  </div>
+                  <span class="input-group-text">
+                    <i class="icon-lock"></i>
+                  </span>
+                  <input
+                    [type]="showPassword ? 'password' : 'text'"
+                    class="form-control loginForm"
+                    [(ngModel)]="password"
+                    placeholder="Password"
+                    name="password"
+                    (keydown.enter)="$event.preventDefault()"
+                  />
+                  <span
+                    class="input-group-text toggle-eye"
+                    (click)="togglePasswordVisibility()"
+                  >
+                    <i
+                      class="fas"
+                      [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                    ></i>
+                  </span>
                 </div>
+
+                <!-- Buttons -->
                 <div class="row">
                   <div class="col-6">
                     <button
@@ -88,6 +85,8 @@
               </form>
             </div>
           </div>
+
+          <!-- Right Side -->
           <div
             class="card text-white bg-danger py-5 d-md-down-none"
             style="width: 44%"
@@ -109,6 +108,8 @@
     </div>
   </div>
 </div>
+
+<!-- Custom Loader -->
 <div
   *ngIf="loader"
   style="
@@ -126,22 +127,22 @@
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
+  /* Spinner Loader */
   .loader {
     position: absolute;
     left: 50%;
     top: 50%;
     z-index: 1;
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     margin: -75px 0 0 -75px;
     border: 16px solid #f3f3f3;
     border-radius: 50%;
     border-top: 16px solid red;
-    width: 120px;
-    height: 120px;
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
@@ -150,7 +151,6 @@
     0% {
       -webkit-transform: rotate(0deg);
     }
-
     100% {
       -webkit-transform: rotate(360deg);
     }
@@ -160,13 +160,12 @@
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
 
-  
+  /* Smooth entrance */
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -180,7 +179,6 @@
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0px;
       opacity: 1;
@@ -192,15 +190,27 @@
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0;
       opacity: 1;
     }
   }
 
+  /* Forgot password link */
   .btn-link[routerLink="/forgot-password"] {
     color: red;
+  }
+
+  /* Eye toggle styling */
+  .toggle-eye {
+    cursor: pointer;
+    background-color: #fff !important; /* same as input fields */
+    border-left: none; /* avoid double border */
+    color: #000; /* black eye icon */
+  }
+
+  .toggle-eye:hover {
+    background-color: #f0f0f0; /* light hover effect */
   }
 
   .cent {

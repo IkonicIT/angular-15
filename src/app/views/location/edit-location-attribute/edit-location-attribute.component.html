@@ -6,8 +6,7 @@
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Location Attribute Updated successfully.
           </alert>
-
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             Please Enter Location Attribute Name
           </alert>
 
@@ -17,24 +16,12 @@
                 <div class="card-header">
                   <strong>Add Company Details</strong>
                 </div>
-                <form
-                  name="form"
-                  (ngSubmit)="f.form.valid && updateLocationAttribute()"
-                  #f="ngForm"
-                  novalidate
-                >
+                <form (ngSubmit)="f.form.valid && updateLocationAttribute()" #f="ngForm" novalidate>
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="name">location Name</label>
-                        <input
-                          type="text"
-                          [(ngModel)]="model._id"
-                          name="_id"
-                          #_id="ngModel"
-                          id="_id"
-                          hidden
-                        />
+                        <input type="hidden" [(ngModel)]="model._id" name="_id" #_id="ngModel" id="_id" />
+                        <label for="name">Location Name</label>
                         <input
                           type="text"
                           class="form-control"
@@ -54,7 +41,7 @@
                           #type="ngModel"
                           id="type"
                         >
-                          <option value="" selected="true">Choose..</option>
+                          <option value="" selected>Choose..</option>
                         </select>
                       </div>
                     </div>
@@ -72,9 +59,7 @@
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="listType"
-                          >List Type Attribute condition</label
-                        >
+                        <label for="listType">List Type Attribute condition</label>
                         <input
                           type="checkbox"
                           class="form-control"
@@ -96,7 +81,7 @@
                           #searchType="ngModel"
                           id="searchType"
                         >
-                          <option value="" selected="true">Choose..</option>
+                          <option value="" selected>Choose..</option>
                         </select>
                       </div>
                       <div class="form-group col-sm-6">
@@ -113,23 +98,23 @@
 
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button class="btn btn-primary" *ngIf="highestRankNum > 5">
-                          Update
-                        </button>
+                        <button class="btn btn-primary" *ngIf="highestRankNum > 5">Update</button>
                         <button
                           type="button"
                           [routerLink]="['../attributes']"
-                          class="btn btn btn-outline-danger btn-sm"
+                          class="btn btn-outline-danger btn-sm"
                         >
                           Cancel
                         </button>
                       </div>
                     </div>
+
                   </div>
                 </form>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

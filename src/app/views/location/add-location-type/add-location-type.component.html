@@ -6,31 +6,26 @@
           <button
             type="button"
             (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="Click to Print this Page"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="Instructions"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
           >
             * To create a new type:<br />
             1.Enter the information for the new type.<br />
@@ -48,8 +43,7 @@
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Location Type saved successfully.
           </alert>
-
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             Please Enter Location Type
           </alert>
 
@@ -59,46 +53,33 @@
                 <div class="card-header">
                   <strong>Add New Location Type</strong>
                 </div>
-                <form
-                  name="form"
-                  (ngSubmit)="f.form.valid && saveLocation()"
-                  #f="ngForm"
-                  novalidate
-                >
+
+                <form (ngSubmit)="f.form.valid && saveLocation()" #f="ngForm" novalidate>
                   <div class="card-body">
+                    <input type="hidden" [(ngModel)]="model._id" name="_id" id="_id" />
+
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="lType"
-                          >Name of Location Type
-                          <strong class="text-danger">*</strong></label
-                        >
+                        <label for="lType">Name of Location Type <strong class="text-danger">*</strong></label>
                         <input
-                          type="text"
-                          [(ngModel)]="model._id"
-                          name="_id"
-                          #_id="ngModel"
-                          id="_id"
-                          hidden
-                        />
-                        <input
+                          id="lType"
                           type="text"
                           class="form-control"
                           [(ngModel)]="model.name"
                           name="lType"
                           #name="ngModel"
-                          id="lType"
                           placeholder="Enter Location Type Name"
                         />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="hostingFee">Hosting Fee</label>
                         <input
+                          id="hostingFee"
                           type="number"
                           class="form-control"
                           [(ngModel)]="model.hostingFee"
                           name="hostingFee"
                           #hostingFee="ngModel"
-                          id="hostingFee"
                         />
                       </div>
                     </div>
@@ -106,7 +87,6 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="parentType">Select Parent Type</label>
-
                         <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
@@ -117,22 +97,24 @@
                       <div class="form-group col-sm-6">
                         <label for="description">Description</label>
                         <input
+                          id="description"
                           type="text"
                           class="form-control"
                           [(ngModel)]="model.description"
                           name="description"
                           #description="ngModel"
-                          id="description"
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Save this Type"
+                          type="submit"
                           class="btn btn-primary btn-right"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="bottom"
+                          title="Save this Type"
                           style="border-radius: 6px;"
                         >
                           Save
@@ -140,126 +122,70 @@
                         <button
                           type="button"
                           [routerLink]="['../types']"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Cancel"
                           class="btn btn-primary"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="bottom"
+                          title="Cancel"
                           style="border-radius: 6px;"
                         >
-
                           Cancel
                         </button>
                       </div>
                     </div>
                   </div>
                 </form>
+
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" class="loader-backdrop">
+  <div class="loader"></div>
 </div>
+
 <style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
+.loader-backdrop {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
 
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
+.loader {
+  position: fixed;
+  left: 60%;
+  top: 60%;
+  z-index: 3;
+  width: 60px;
+  height: 60px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid red;
+  animation: spin 2s linear infinite;
+}
 
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
+.animate-bottom {
+  position: relative;
+  animation: animatebottom 1s;
+}
 
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+@keyframes animatebottom {
+  from { bottom: -100px; opacity: 0; }
+  to { bottom: 0; opacity: 1; }
+}
 </style>

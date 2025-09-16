@@ -14,6 +14,7 @@
             Show/Change Search Fields Criteria
           </button>
         </ng-container>
+
         <div class="card-body" *ngIf="isExpandAdvancedSearch">
           <p class="card-text">Advanced Item Search Replacement</p>
           <tabset>
@@ -30,20 +31,21 @@
                 >
                   Search
                 </button>
+
                 <div class="row">
                   <div class="form-group col-sm-6">
                     <label for="itemId">Item Type</label>
-
-                   <select
-  class="form-control custom-dropdown"
-  [(ngModel)]="itemValue"
-  (change)="onItemValueChange(itemValue)">
-  <option *ngFor="let item of itemTypeItems" [value]="item.value">
-    {{ item.text }}
-  </option>
-</select>
-
+                    <select
+                      class="form-control custom-dropdown"
+                      [(ngModel)]="itemValue"
+                      (change)="onItemValueChange(itemValue)"
+                    >
+                      <option *ngFor="let item of itemTypeItems" [value]="item.value">
+                        {{ item.text }}
+                      </option>
+                    </select>
                   </div>
+
                   <div class="form-group col-sm-6">
                     <label for="tag">Tag #</label>
                     <input
@@ -56,6 +58,7 @@
                     />
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="form-group col-sm-6">
                     <label for="name">Name</label>
@@ -68,25 +71,23 @@
                       placeholder="Enter Name"
                     />
                   </div>
+
                   <div class="form-group col-sm-6">
                     <label for="status">Status</label>
                     <select
                       class="form-control custom-dropdown"
                       [(ngModel)]="itemModel.status"
                       name="status"
-                      #status="ngModel"
                       id="status"
                     >
-                      <option value="" selected="true">Choose Status</option>
-                      <option
-                        [ngValue]="stat.statusId"
-                        *ngFor="let stat of statuses"
-                      >
+                      <option value="" selected>Choose Status</option>
+                      <option *ngFor="let stat of statuses" [ngValue]="stat.statusId">
                         {{ stat.status }}
                       </option>
                     </select>
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="form-group col-sm-6">
                     <label for="locName">Location Name Includes</label>
@@ -98,124 +99,106 @@
                       id="locName"
                     />
                   </div>
+
                   <div class="form-group col-sm-6">
                     <label for="loc">Location</label>
-
-                   <select
-  id="loc"
-  class="form-control custom-dropdown"
-  [(ngModel)]="itemModel.locationId">
-  <option *ngFor="let item of items" [value]="item.value">
-    {{ item.text }}
-  </option>
-</select>
-
+                    <select
+                      id="loc"
+                      class="form-control custom-dropdown"
+                      [(ngModel)]="itemModel.locationId"
+                    >
+                      <option *ngFor="let item of items" [value]="item.value">
+                        {{ item.text }}
+                      </option>
+                    </select>
                   </div>
                 </div>
+
                 <div class="row">
                   <div
                     class="form-group col-sm-6"
-                    *ngFor="
-                      let eachAttr of itemModel.attributeValues;
-                      let i = index
-                    "
+                    *ngFor="let eachAttr of itemModel.attributeValues; let i = index"
                   >
                     <div>
                       <label>{{ eachAttr.name }}</label>
                       <div>
                         <input
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 1"
+                          *ngIf="eachAttr.attributeType.attributeTypeId === 1"
                           type="number"
                           class="form-control"
                           [(ngModel)]="eachAttr.value"
                           name="number{{ i }}"
                         />
                         <input
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 2"
+                          *ngIf="eachAttr.attributeType.attributeTypeId === 2"
                           type="text"
                           class="form-control"
                           [(ngModel)]="eachAttr.value"
                           name="text{{ i }}"
                         />
                         <input
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 6"
+                          *ngIf="eachAttr.attributeType.attributeTypeId === 6"
                           type="text"
                           class="form-control"
                           [(ngModel)]="eachAttr.value"
                           name="multiValue{{ i }}"
                         />
                         <input
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 3"
+                          *ngIf="eachAttr.attributeType.attributeTypeId === 3"
                           type="date"
                           class="form-control"
                           [(ngModel)]="eachAttr.value"
                           name="radio{{ i }}"
-                          #state="ngModel"
                         />
                         <select
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 4"
+                          *ngIf="eachAttr.attributeType.attributeTypeId === 4"
                           class="form-control custom-dropdown"
                           [(ngModel)]="eachAttr.value"
                           name="select{{ i }}"
-                          #type="ngModel"
                         >
                           <option value="">Choose..</option>
                           <option
+                            *ngFor="let list of eachAttr.attributeListItemResource"
                             [ngValue]="list.listItem"
-                            *ngFor="
-                              let list of eachAttr.attributeListItemResource
-                            "
                           >
                             {{ list.listItem }}
                           </option>
                         </select>
                         <div
                           class="form-check"
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 5"
+                          *ngIf="eachAttr.attributeType.attributeTypeId === 5"
                         >
-                          <label
-                            class="form-check-label margin-right"
-                            for="radio1"
-                          >
-                            &nbsp;
+                          <label class="form-check-label margin-right">
                             <input
                               class="form-check-input"
                               type="radio"
                               [(ngModel)]="eachAttr.value"
                               name="radios{{ i }}"
-                              id="radio1"
                               value="Y"
                               checked
-                            />Y &nbsp; &nbsp; &nbsp;
+                            />Y
                           </label>
-                          <label
-                            class="form-check-label margin-right"
-                            for="radio2"
-                          >
-                            &nbsp;
+                          <label class="form-check-label margin-right">
                             <input
                               class="form-check-input"
                               type="radio"
                               [(ngModel)]="eachAttr.value"
                               name="radios{{ i }}"
-                              id="radio2"
                               value="N"
-                            />N &nbsp; &nbsp; &nbsp;
+                            />N
                           </label>
-                          <label class="form-check-label" for="radio3">
-                            &nbsp;
+                          <label class="form-check-label">
                             <input
                               class="form-check-input"
                               type="radio"
                               [(ngModel)]="eachAttr.value"
                               name="radios{{ i }}"
-                              id="radio3"
                               value="N/A"
                             />N/A
                           </label>
                         </div>
                         <textarea
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 7"
+                          *ngIf="eachAttr.attributeType.attributeTypeId === 7"
                           name="textarea{{ i }}"
                           rows="2"
                           cols="4"
@@ -227,32 +210,29 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="form-group col-sm-12 text-center">
-                    <button
-                      type="button"
-                      class="btn btn-primary btn-right"
-                      (click)="searchItems()"
-                    >
+                    <button type="button" class="btn btn-primary btn-right" (click)="searchItems()">
                       Search
                     </button>
                     <button
                       type="button"
+                      class="btn btn-primary btn-right"
                       (click)="clearItem()"
                       data-bs-placement="bottom"
                       data-bs-toggle="tooltip"
                       title="Clear"
-                      class="btn btn-primary btn-right"
                     >
                       Clear
                     </button>
                     <button
                       type="button"
+                      class="btn btn-primary"
                       (click)="back()"
                       data-bs-placement="bottom"
                       data-bs-toggle="tooltip"
                       title="Back to View Item"
-                      class="btn btn-primary"
                     >
                       Back To Item
                     </button>
@@ -265,19 +245,10 @@
               <div class="card-body mobile-padding">
                 <div class="row">
                   <div class="form-group col-sm-6">
-                    <label for="itemrepairNotesrfqModel">Notes:</label> &nbsp;
-                    <input
-                      type="checkbox"
-                      [(ngModel)]="itemrepairNotesrfqModel.isitemnote"
-                      id="isitemnote"
-                    />&nbsp;&nbsp;&nbsp;&nbsp;
-                    <label for="itemrepairNotesrfqModel">Repair Logs:</label
-                    >&nbsp;
-                    <input
-                      type="checkbox"
-                      [(ngModel)]="itemrepairNotesrfqModel.isitemrepair"
-                      id="isitemrepair"
-                    />&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label>Notes:</label>
+                    <input type="checkbox" [(ngModel)]="itemrepairNotesrfqModel.isitemnote" />&nbsp;&nbsp;
+                    <label>Repair Logs:</label>
+                    <input type="checkbox" [(ngModel)]="itemrepairNotesrfqModel.isitemrepair" />
                   </div>
                 </div>
 
@@ -305,6 +276,7 @@
                     />
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="form-group col-sm-6">
                     <label for="po">PO</label>
@@ -323,12 +295,13 @@
                       type="text"
                       class="form-control"
                       [(ngModel)]="itemrepairNotesrfqModel.job"
-                      name="po"
+                      name="job"
                       id="job"
                       placeholder="Enter job"
                     />
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="form-group col-sm-12">
                     <label for="vendor">Vendor</label>
@@ -336,19 +309,16 @@
                       class="form-control custom-dropdown"
                       [(ngModel)]="repairModel.vendorId"
                       name="vendor"
-                      #vendor="ngModel"
                       id="vendor"
                     >
-                      <option value="" selected="true">Choose Vendor</option>
-                      <option
-                        [value]="vendor.companyId"
-                        *ngFor="let vendor of vendors"
-                      >
+                      <option value="" selected>Choose Vendor</option>
+                      <option *ngFor="let vendor of vendors" [value]="vendor.companyId">
                         {{ vendor.name }}
                       </option>
                     </select>
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="form-group col-sm-12 text-center">
                     <button
@@ -360,30 +330,27 @@
                     </button>
                     <button
                       type="button"
+                      class="btn btn-outline-danger btn-sm btn-right"
                       (click)="clearRepairNoteQuote()"
                       data-bs-placement="bottom"
                       data-bs-toggle="tooltip"
                       title="Clear"
-                      class="btn btn btn-outline-danger btn-sm btn-right"
                     >
                       Clear
                     </button>
                     <button
                       type="button"
+                      class="btn btn-outline-danger btn-sm"
                       (click)="back()"
                       data-bs-placement="bottom"
                       data-bs-toggle="tooltip"
                       title="back button"
-                      class="btn btn btn-outline-danger btn-sm"
                     >
                       Back
                     </button>
                   </div>
 
-                  <div
-                    class="table-responsive"
-                    *ngIf="searchresults.rfqFlag == true"
-                  >
+                  <div class="table-responsive" *ngIf="searchresults.rfqFlag">
                     <table class="table">
                       <thead class="thead-light">
                         <tr>
@@ -402,10 +369,7 @@
                     </table>
                   </div>
 
-                  <div
-                    class="table-responsive"
-                    *ngIf="searchresults.repairFlag == true"
-                  >
+                  <div class="table-responsive" *ngIf="searchresults.repairFlag">
                     <table class="table">
                       <thead class="thead-light">
                         <tr>
@@ -431,15 +395,7 @@
                               data-bs-placement="bottom"
                               data-bs-toggle="tooltip"
                               title="View"
-                              (click)="
-                                goToItemRepair(
-                                  repairsearch.itemId,
-                                  repairsearch.repairLogId,
-                                  repairsearch.rank,
-                                  repairsearch.tag,
-                                  repairsearch.typeName
-                                )
-                              "
+                              (click)="goToItemRepair(repairsearch.itemId, repairsearch.repairLogId, repairsearch.rank, repairsearch.tag, repairsearch.typeName)"
                             >
                               View
                             </button>
@@ -454,10 +410,7 @@
                     </table>
                   </div>
 
-                  <div
-                    class="table-responsive"
-                    *ngIf="searchresults.noteFlag == true"
-                  >
+                  <div class="table-responsive" *ngIf="searchresults.noteFlag">
                     <table class="table">
                       <thead class="thead-light">
                         <tr>
@@ -477,26 +430,13 @@
                               class="btn btn-outline-danger btn-sm"
                               data-bs-placement="bottom"
                               data-bs-toggle="tooltip"
-                              title="View "
-                              (click)="
-                                goToNote(
-                                  itemnotessearch.itemId,
-                                  itemnotessearch.journalId,
-                                  itemnotessearch.rank,
-                                  itemnotessearch.tag,
-                                  itemnotessearch.typeName
-                                )
-                              "
+                              title="View"
+                              (click)="goToNote(itemnotessearch.itemId, itemnotessearch.journalId, itemnotessearch.rank, itemnotessearch.tag, itemnotessearch.typeName)"
                             >
                               View
                             </button>
                           </td>
-                          <td>
-                            {{
-                              itemnotessearch.enteredOn
-                                | date : "MM/dd/yyyy h:mm:ss a "
-                            }}
-                          </td>
+                          <td>{{ itemnotessearch.enteredOn | date : 'MM/dd/yyyy h:mm:ss a' }}</td>
                           <td>{{ itemnotessearch.entry }}</td>
                           <td>{{ itemnotessearch.jobNumber }}</td>
                           <td>{{ itemnotessearch.poNumber }}</td>
@@ -511,107 +451,57 @@
           </tabset>
         </div>
       </div>
-      <div [style.display]="showSearchResults ? 'block' : 'none'">
+
+      <div *ngIf="showSearchResults">
         <app-advanced-search-results></app-advanced-search-results>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
+</div>
+
+<style>
+  .loader-overlay {
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
     cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
+  }
   .loader {
     position: absolute;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
     margin: -75px 0 0 -75px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
-
-  
   .animate-bottom {
     position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
+    animation: animatebottom 1s;
   }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
   @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
-
   .btn-link[routerLink="/forgot-password"] {
     color: red;
   }
-
   .cent {
     position: absolute;
     top: 50%;

@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+        <div class="form-group col-sm-12 text-end">
           <button
             type="button"
             (click)="help()"
@@ -14,13 +14,13 @@
             Help
           </button>
           <div
+            *ngIf="helpFlag"
             style="
               text-align: left;
               border: 1px solid;
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
           >
             * To create a new status:<br />
             1.Click the 'Add Status' button.<br />
@@ -37,117 +37,105 @@
         <div class="card-body">
           <p class="card-text">Edit item Status</p>
 
-          <alert *ngIf="index == 1" type="success" [dismissible]="dismissible">
+          <alert *ngIf="index === 1" type="success" [dismissible]="dismissible">
             Item Status Updated successfully.
           </alert>
-          <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             Please enter Status or No changes to update.
           </alert>
-          <alert *ngIf="index == 2" type="danger" [dismissible]="dismissible">
+          <alert *ngIf="index === 2" type="danger" [dismissible]="dismissible">
             Status size should be less than 100 characters.
           </alert>
+
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <form
-                  name="form"
-                  (ngSubmit)="f.form.valid && updateStatus()"
                   #f="ngForm"
+                  (ngSubmit)="f.valid && updateStatus()"
                   novalidate
                 >
                   <div class="card-body">
+                    <input
+                      type="text"
+                      [(ngModel)]="model.added"
+                      name="added"
+                      hidden
+                    />
+                    <input
+                      type="text"
+                      [(ngModel)]="model.by"
+                      name="by"
+                      hidden
+                    />
+                    <input
+                      type="text"
+                      [(ngModel)]="model._id"
+                      name="_id"
+                      hidden
+                    />
+
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <input
-                          type="text"
-                          [(ngModel)]="model.added"
-                          name="added"
-                          #added="ngModel"
-                          id="added"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.by"
-                          name="by"
-                          #by="ngModel"
-                          id="by"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model._id"
-                          name="_id"
-                          #_id="ngModel"
-                          id="_id"
-                          hidden
-                        />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="form-group col-sm-12">
-                        <label for="Status">Status</label>
+                        <label for="status">Status</label>
                         <input
                           id="status"
                           type="text"
                           class="form-control"
                           [(ngModel)]="model.status"
                           name="status"
-                          #status="ngModel"
                           placeholder="Enter Status"
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-3">
-                        <label for="inservice">
+                        <label>
                           <input
                             id="inservice"
                             type="checkbox"
                             [(ngModel)]="model.inService"
                             name="inservice"
-                            #inservice="ngModel"
-                            placeholder="Enter Status"
-                          />In Service</label
-                        >
+                          />
+                          In Service
+                        </label>
                       </div>
                       <div class="form-group col-sm-3">
-                        <label for="repair">
+                        <label>
                           <input
                             id="repair"
                             type="checkbox"
                             [(ngModel)]="model.underRepair"
                             name="underRepair"
-                            #underRepair="ngModel"
-                            placeholder="Enter Status"
-                          />Under Repair</label
-                        >
+                          />
+                          Under Repair
+                        </label>
                       </div>
                       <div class="form-group col-sm-3">
-                        <label for="spare">
+                        <label>
                           <input
                             id="spare"
                             type="checkbox"
                             [(ngModel)]="model.spare"
                             name="spare"
-                            #spare="ngModel"
-                            placeholder="Enter Status"
-                          />Spare</label
-                        >
+                          />
+                          Spare
+                        </label>
                       </div>
                       <div class="form-group col-sm-3">
-                        <label for="destroyed">
+                        <label>
                           <input
                             id="destroyed"
                             type="checkbox"
                             [(ngModel)]="model.destroyed"
                             name="destroyed"
-                            #destroyed="ngModel"
-                            placeholder="Enter Status"
-                          />Destroyed</label
-                        >
+                          />
+                          Destroyed
+                        </label>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
@@ -198,34 +186,22 @@
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
     margin: -75px 0 0 -75px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
   }
 
   @keyframes spin {
@@ -238,25 +214,9 @@
     }
   }
 
-  
   .animate-bottom {
     position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
+    animation: animatebottom 1s;
   }
 
   @keyframes animatebottom {

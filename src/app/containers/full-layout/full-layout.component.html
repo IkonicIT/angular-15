@@ -13,75 +13,41 @@
   </div>
 
   <main class="main">
-    <div
-      class="row"
-      style="
-        background-color: white;
-        border-bottom: 1px solid gray;
-        margin-bottom: 4%;
-      "
-    >
-      <div
-        class="col-12 col-md-12 col-lg-2"
-        style="padding-left: 15px; padding-right: 15px; position: relative"
-      >
-        <ol
-          class="breadcrumb"
-          style="
-            float: left;
-            border-bottom: none;
-            margin-left: 64px;
-            padding-top: 16px;
-            padding-bottom: 12px;
-            width: auto;
-          "
-        >
+    <div class="row top-bar">
+      <div class="col-12 col-md-12 col-lg-2 breadcrumb-col">
+        <ol class="breadcrumb custom-breadcrumb">
           <app-breadcrumbs></app-breadcrumbs>
         </ol>
       </div>
 
-      <div
-        class="col-12 col-md-12 col-lg-10"
-        style="
-          display: flex;
-          flex-wrap: nowrap;
-          align-items: center;
-          gap: 8px;
-          padding: 8px;
-          border-bottom: 1px solid #ccc;
-          overflow-x: visible;
-        "
-      >
+      <div class="col-12 col-md-12 col-lg-10 top-controls">
         <a
           *ngIf="userSelectedCompany.companyId != 0 && !noLogo"
-          style="display: inline-flex; align-items: center;"
+          class="logo-link"
         >
-          <img
-            [src]="imageSource"
-            style="height: 50px; max-width: 70%; object-fit: contain;"
-          />
+          <img [src]="imageSource" class="company-logo" />
         </a>
 
-                  <div
-              class="btn-group float-right margin-new-top"
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="click here to Manage Companies"
-              style="float: right; margin-left:64px"
-            >
-              <ngx-select-dropdown
-                [(ngModel)]="userSelectedCompany1"
-                (change)="selectRootCompany($event)"
-                [config]="ngxconfig"
-                [options]="userCompanies"
-                tabindex="0"
-                class="text-overflow-button"
-              ></ngx-select-dropdown>
+        <div
+          class="btn-group float-right margin-new-top company-select"
+          data-bs-placement="bottom"
+          data-bs-toggle="tooltip"
+          title="click here to Manage Companies"
+        >
+          <ngx-select-dropdown
+            [(ngModel)]="userSelectedCompany1"
+            (change)="selectRootCompany($event)"
+            [config]="ngxconfig"
+            [options]="userCompanies"
+            tabindex="0"
+            class="text-overflow-button"
+          ></ngx-select-dropdown>
 
-              <alert type="danger" *ngIf="highestRank == 0">
-                This account has been disabled for this company. <br />
-              </alert>
-            </div>
+          <alert type="danger" *ngIf="highestRank == 0">
+            This account has been disabled for this company. <br />
+          </alert>
+        </div>
+
         <input
           [(ngModel)]="itemTag"
           [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0"
@@ -90,70 +56,60 @@
           typeaheadOptionField="tag"
           (keyup.enter)="navigateToItems()"
           placeholder="#Tag"
-          style="
-            flex: 0 0 80px;
-            padding: 4px;
-            min-width: 80px;
-          "
+          class="tag-input"
         />
 
-        <div style="flex: 0 1 160px;">
-         <select
-  #selectRef
-  class="form-control custom-dropdown"
-  [(ngModel)]="value"
-  (change)="selectRootItemType(selectRef.value)"
->
-  <option *ngFor="let item of items" [value]="item.value">
-    {{ item.text }}
-  </option>
-</select>
-
+        <div class="dropdown-wrapper">
+          <select
+            #selectRef
+            class="form-control custom-dropdown"
+            [(ngModel)]="value"
+            (change)="selectRootItemType(selectRef.value)"
+          >
+            <option *ngFor="let item of items" [value]="item.value">
+              {{ item.text }}
+            </option>
+          </select>
         </div>
 
         <button
           (click)="navigateToItems()"
           [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0"
-          class="btn btn-danger"
-          style="padding: 5px 10px;"
+          class="btn btn-danger go-btn"
         >
           GO
         </button>
 
-         <div style="margin-left: auto; display: flex; gap: 8px; min-width: max-content;">
-        <button
-          *ngIf="masterSearchFlag == 'false'"
-          (click)="navigateToAdvanceItemSearch()"
-          [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0"
-          class="btn btn-danger"
-          style="padding: 5px 10px; margin-right: 64px; "
-        >
-          Advanced search
-        </button>
-        </div>
-        <div style="margin-left: auto; display: flex; gap: 8px; min-width: max-content;">
-          <button
-            *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyId == 0"
-            (click)="navigateToMasterSearch()"
-            class="btn btn-danger"
-            style="padding: 5px 10px;"
-          >
-            Master search
-          </button>
+        <div class="action-buttons">
+  <button
+    *ngIf="masterSearchFlag == 'false'"
+    (click)="navigateToAdvanceItemSearch()"
+    [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0"
+    class="btn btn-danger advanced-btn"
+  >
+    Advanced search
+  </button>
 
-          <button
-            *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyId == 0"
-            (click)="navigateToMasterPieCharts()"
-            class="btn btn-danger"
-            style="padding: 5px 10px; margin-right: 64px;"
-          >
-            Master PieCharts
-          </button>
-        </div>
+  <button
+    *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyId == 0"
+    (click)="navigateToMasterSearch()"
+    class="btn btn-danger"
+  >
+    Master search
+  </button>
+
+  <button
+    *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyId == 0"
+    (click)="navigateToMasterPieCharts()"
+    class="btn btn-danger master-pie-btn"
+  >
+    Master PieCharts
+  </button>
+</div>
       </div>
     </div>
 
-    <div style="margin-left: 15px; margin-right: 15px;">
+    <div class="content-wrapper">
       <router-outlet></router-outlet>
     </div>
   </main>

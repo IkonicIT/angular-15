@@ -24,13 +24,8 @@
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
+            *ngIf="helpFlag === true"
           >
             Note: Mandatory Fields are required.<br />
             * To create a new Location:<br />
@@ -47,44 +42,35 @@
         </div>
 
         <div class="card-body">
-          <alert *ngIf="index == 1" type="success" [dismissible]="dismissible">
+          <alert *ngIf="index === 1" type="success" [dismissible]="dismissible">
             Location details Updated successfully.
           </alert>
-
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             Please Enter Location Name and Location Type
           </alert>
-          <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
+          <alert *ngIf="index === -2" type="danger" [dismissible]="dismissible">
             Please Enter Required Location Attributes
           </alert>
-          <alert type="success" *ngIf="index == 2" [dismissible]="dismissible">
+          <alert *ngIf="index === 2" type="success" [dismissible]="dismissible">
             Cloned Address from Parent Location.
           </alert>
-          <alert type="danger" *ngIf="index == -3" [dismissible]="dismissible">
+          <alert *ngIf="index === -3" type="danger" [dismissible]="dismissible">
             Parent Location and Location must not be the same
           </alert>
+
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Update Location Details</strong>
                 </div>
-                <form name="form" #f="ngForm" novalidate>
+                <form #f="ngForm" novalidate>
                   <div class="card-body">
+
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="name"
-                          >location Name
-                          <strong class="text-danger">*</strong></label
-                        >
-                        <input
-                          type="text"
-                          [(ngModel)]="location.locationId"
-                          name="_id"
-                          #_id="ngModel"
-                          id="_id"
-                          hidden
-                        />
+                        <input type="hidden" [(ngModel)]="location.locationId" name="_id" #_id="ngModel" id="_id" />
+                        <label for="name">Location Name <strong class="text-danger">*</strong></label>
                         <input
                           type="text"
                           class="form-control"
@@ -103,25 +89,17 @@
                           name="name"
                           placeholder="Enter Location Name"
                         />
-                        <span
-                          class="add-loc"
-                          (click)="addedlocations.push({ locationName: '' })"
-                          >+</span
-                        >
+                        <span class="add-loc" (click)="addedlocations.push({ locationName: '' })">+</span>
                       </div>
-                      <div class="form-group col-sm-6">
-                        <label for="type"
-                          >Type Of Location
-                          <strong class="text-danger">*</strong></label
-                        >
 
+                      <div class="form-group col-sm-6">
+                        <label for="type">Type Of Location <strong class="text-danger">*</strong></label>
                         <app-dropdown-treeview-select
                           [items]="itemTypeItems"
                           id="type"
                           [(value)]="location.typeId"
                           (valueChange)="getTypeAttributes(location.typeId)"
-                        >
-                        </app-dropdown-treeview-select>
+                        ></app-dropdown-treeview-select>
                       </div>
                     </div>
 
@@ -136,16 +114,13 @@
                           id="status"
                         >
                           <option value="">Choose..</option>
-                          <option
-                            [ngValue]="stat.statusId"
-                            *ngFor="let stat of statuses"
-                          >
+                          <option [ngValue]="stat.statusId" *ngFor="let stat of statuses">
                             {{ stat.status }}
                           </option>
                         </select>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="critical" class="col-md-12">Critical</label>
+                        <label for="critical">Critical</label>
                         <input
                           type="checkbox"
                           class="form-check-input checkbox-large"
@@ -158,9 +133,7 @@
 
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="isvendor" class="col-md-12"
-                          >Vendor Location</label
-                        >
+                        <label for="isvendor">Vendor Location</label>
                         <input
                           type="checkbox"
                           class="form-check-input checkbox-large"
@@ -182,7 +155,8 @@
                         />
                       </div>
                     </div>
-                    <div class="row" *ngIf="location.isvendor == true">
+
+                    <div class="row" *ngIf="location.isVendor">
                       <div class="form-group col-sm-12">
                         <label for="vendor">Vendors</label>
                         <select
@@ -192,30 +166,25 @@
                           #vendor="ngModel"
                           id="vendor"
                         >
-                          <option value="0" selected="true">
-                            Select Vendor
-                          </option>
-                          <option
-                            [ngValue]="vendor.companyId"
-                            *ngFor="let vendor of vendors"
-                          >
+                          <option value="0" selected>Select Vendor</option>
+                          <option [ngValue]="vendor.companyId" *ngFor="let vendor of vendors">
                             {{ vendor.name }}
                           </option>
                         </select>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="pLocation">Parent Location</label>
-
                         <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
                           (valueChange)="onValueChange($event)"
-                        >
-                        </app-dropdown-treeview-select>
+                        ></app-dropdown-treeview-select>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="AddressLine1">Address Line1</label>
@@ -242,6 +211,7 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="city">City</label>
@@ -269,6 +239,7 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="pcode">Postal Code</label>
@@ -283,12 +254,7 @@
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <button
-                          type="button"
-                          (click)="cloneaddressfromParentLoc()"
-                        >
-                          Clone Address from Parent Location
-                        </button>
+                        <button type="button" (click)="cloneaddressfromParentLoc()">Clone Address from Parent Location</button>
                       </div>
                     </div>
 
@@ -305,258 +271,71 @@
                         />
                       </div>
                     </div>
-                    <div
-                      class="row"
-                      *ngFor="let eachAttr of typeAttributes; let i = index"
-                    >
+
+                    <div class="row" *ngFor="let eachAttr of typeAttributes; let i = index">
                       <div class="form-group col-sm-12">
-                        <label *ngIf="eachAttr.isRequired == true"
-                          >{{ eachAttr.name
-                          }}<span style="color: red">*</span></label
-                        >
-                        <label *ngIf="eachAttr.isRequired == false">{{
-                          eachAttr.name
-                        }}</label>
+                        <label *ngIf="eachAttr.isRequired">{{ eachAttr.name }}<span style="color: red">*</span></label>
+                        <label *ngIf="!eachAttr.isRequired">{{ eachAttr.name }}</label>
                         <div>
-                          <input
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 1"
-                            type="number"
-                            class="form-control"
-                            [(ngModel)]="eachAttr.value"
-                            [tooltip]="eachAttr.tooltip"
-                            name="number{{ index }}"
-                            #state="ngModel"
-                            placeholder="Enter Value"
-                          />
-                          <input
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 2"
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="eachAttr.value"
-                            name="text{{ i }}"
-                          />
-                          <input
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 6"
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="eachAttr.value"
-                            name="multiValue{{ i }}"
-                          />
-                          <input
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 3"
-                            type="date"
-                            class="form-control"
-                            [tooltip]="eachAttr.tooltip"
-                            [(ngModel)]="eachAttr.value"
-                            name="date{{ index }}"
-                            #state="ngModel"
-                            placeholder="Select date"
-                          />
-                          <select
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 4"
-                            class="form-control custom-dropdown"
-                            [tooltip]="eachAttr.tooltip"
-                            [(ngModel)]="eachAttr.value"
-                            name="select{{ index }}"
-                            #type="ngModel"
-                          >
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId === 1" type="number" class="form-control" [(ngModel)]="eachAttr.value" [tooltip]="eachAttr.tooltip" name="number{{ i }}" placeholder="Enter Value"/>
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId === 2" type="text" class="form-control" [(ngModel)]="eachAttr.value" name="text{{ i }}"/>
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId === 6" type="text" class="form-control" [(ngModel)]="eachAttr.value" name="multiValue{{ i }}"/>
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId === 3" type="date" class="form-control" [(ngModel)]="eachAttr.value" [tooltip]="eachAttr.tooltip" name="date{{ i }}" placeholder="Select date"/>
+                          <select *ngIf="eachAttr.attributeType.attributeTypeId === 4" class="form-control custom-dropdown" [(ngModel)]="eachAttr.value" [tooltip]="eachAttr.tooltip" name="select{{ i }}">
                             <option value="">Choose..</option>
-                            <option
-                              [ngValue]="list.listItem"
-                              *ngFor="
-                                let list of eachAttr.attributeListItemResource
-                              "
-                            >
-                              {{ list.listItem }}
-                            </option>
+                            <option [ngValue]="list.listItem" *ngFor="let list of eachAttr.attributeListItemResource">{{ list.listItem }}</option>
                           </select>
-                          <div
-                            class="form-check"
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 5"
-                          >
-                            <label
-                              class="form-check-label margin-right"
-                              for="radio1"
-                            >
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                [(ngModel)]="eachAttr.value"
-                                name="radios{{ index }}"
-                                id="radio1"
-                                value="Y"
-                                checked
-                              />Y
+                          <div class="form-check" *ngIf="eachAttr.attributeType.attributeTypeId === 5">
+                            <label class="form-check-label margin-right">
+                              <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value" name="radios{{ i }}" value="Y" checked/>Y
                             </label>
-                            <label
-                              class="form-check-label margin-right"
-                              for="radio2"
-                            >
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                [(ngModel)]="eachAttr.value"
-                                name="radios{{ index }}"
-                                id="radio2"
-                                value="N"
-                              />N
+                            <label class="form-check-label margin-right">
+                              <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value" name="radios{{ i }}" value="N"/>N
                             </label>
-                            <label class="form-check-label" for="radio2">
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                [(ngModel)]="eachAttr.value"
-                                name="radios{{ index }}"
-                                id="radio3"
-                                value="N/A"
-                              />N/A
+                            <label class="form-check-label">
+                              <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value" name="radios{{ i }}" value="N/A"/>N/A
                             </label>
                           </div>
-                          <textarea
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 7"
-                            [tooltip]="eachAttr.tooltip"
-                            name="textarea{{ index }}"
-                            rows="2"
-                            cols="4"
-                            class="form-control"
-                            [(ngModel)]="eachAttr.value"
-                            placeholder="Enter Value"
-                          ></textarea>
+                          <textarea *ngIf="eachAttr.attributeType.attributeTypeId === 7" class="form-control" rows="2" cols="4" [(ngModel)]="eachAttr.value" [tooltip]="eachAttr.tooltip" name="textarea{{ i }}" placeholder="Enter Value"></textarea>
                         </div>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button
-                          (click)="updateLocation()"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Update Location"
-                          class="btn btn-primary btn-right"
-                        >
-                          Update
-                        </button>
-                        <button
-                          type="button"
-                          [routerLink]="['../../../list']"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Cancel"
-                          class="btn btn-primary"
-                        >
-                          Cancel
-                        </button>
+                        <button (click)="updateLocation()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Update Location" class="btn btn-primary btn-right">Update</button>
+                        <button type="button" [routerLink]="['../../../list']" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Cancel" class="btn btn-primary">Cancel</button>
                       </div>
                     </div>
+
                   </div>
                 </form>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index:2; cursor:pointer; transform:translate(-1%, -1%)">
+  <div class="loader"></div>
 </div>
+
 <style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.loader {
+  position: fixed;
+  left: 60%;
+  top: 60%;
+  z-index: 1;
+  width: 60px;
+  height: 60px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid red;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>

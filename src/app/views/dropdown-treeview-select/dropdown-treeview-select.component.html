@@ -6,16 +6,16 @@
 >
   <div class="form-inline row-item">
     <i
-      *ngIf="item.children"
+      *ngIf="item?.children?.length"
       (click)="onCollapseExpand()"
-      aria-hidden="true"
       class="fa"
-      [class.fa-caret-right]="item.collapsed"
-      [class.fa-caret-down]="!item.collapsed"
+      [class.fa-caret-right]="item?.collapsed"
+      [class.fa-caret-down]="!item?.collapsed"
+      aria-hidden="true"
     ></i>
-    <label class="form-check-label" (click)="select(item)">{{
-      item.text
-    }}</label>
+    <label class="form-check-label" (click)="select(item)">
+      {{ item?.text }}
+    </label>
   </div>
 </ng-template>
 
@@ -27,7 +27,8 @@
   let-onCheckedChange="onCheckedChange"
   let-onFilterTextChange="onFilterTextChange"
 >
-  <div *ngIf="config.hasFilter" class="row row-filter">
+  <!-- Filter -->
+  <div *ngIf="config?.hasFilter" class="row row-filter">
     <div class="col-12">
       <input
         class="form-control"
@@ -39,29 +40,33 @@
     </div>
   </div>
 
-  <div *ngIf="config.hasAllCheckBox || config.hasCollapseExpand" class="row">
-    <div class="col-12">
-      <label *ngIf="config.hasAllCheckBox" (click)="select(item)">
+  <!-- All checkbox + collapse/expand -->
+  <div *ngIf="config?.hasAllCheckBox || config?.hasCollapseExpand" class="row">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+      <label *ngIf="config?.hasAllCheckBox" (click)="select(item)">
         <strong>{{ i18n.getAllCheckboxText() }}</strong>
       </label>
-      <label
-        *ngIf="config.hasCollapseExpand"
-        class="pull-right"
+      <button
+        *ngIf="config?.hasCollapseExpand"
+        type="button"
+        class="btn btn-link p-0 float-end"
         (click)="onCollapseExpand()"
       >
         <i
-          [title]="i18n.getTooltipCollapseExpandText(item.collapsed)"
-          aria-hidden="true"
+          [title]="i18n.getTooltipCollapseExpandText(item?.collapsed)"
           class="fa"
-          [class.fa-expand]="item.collapsed"
-          [class.fa-compress]="!item.collapsed"
-        >
-        </i>
-      </label>
+          [class.fa-expand]="item?.collapsed"
+          [class.fa-compress]="!item?.collapsed"
+          aria-hidden="true"
+        ></i>
+      </button>
     </div>
   </div>
-  <div *ngIf="config.hasDivider" class="dropdown-divider"></div>
+
+  <!-- Divider -->
+  <div *ngIf="config?.hasDivider" class="dropdown-divider"></div>
 </ng-template>
+
 <div #myfckvi></div>
 
 <ngx-dropdown-treeview

@@ -1,102 +1,90 @@
-<div
-  class="animated fadeIn"
-  id="print-section"
-  onload="window.print();window.close()"
->
+<div class="animated fadeIn" id="print-section">
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
           <div class="modal-body">
             <div class="row">
-              <div class="form-group col-sm-6">
-                <label for="name">Effective Date</label>
+              <div class="col-sm-6">
+                <label for="transferDate">Effective Date</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.transfeDate"
-                  name="transferDate"
-                  #transferDate="ngModel"
                   id="transferDate"
+                  name="transferDate"
                 />
               </div>
             </div>
-            <div class="row">
-              <div class="form-group col-sm-6">
-                <label for="name">PO Number</label>
+            <div class="row mt-2">
+              <div class="col-sm-6">
+                <label for="PONumber">PO Number</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.poNumber"
-                  name="PONumber"
-                  #PONumber="ngModel"
                   id="PONumber"
+                  name="PONumber"
                 />
               </div>
-              <div class="form-group col-sm-6">
-                <label for="name">Job Number</label>
+              <div class="col-sm-6">
+                <label for="jobNumber">Job Number</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.jobNumber"
-                  name="jobNumber"
-                  #jobNumber="ngModel"
                   id="jobNumber"
+                  name="jobNumber"
                 />
               </div>
             </div>
-            <div class="row">
-              <div class="form-group col-sm-6">
-                <label for="name">Shipping Number</label>
+            <div class="row mt-2">
+              <div class="col-sm-6">
+                <label for="shippingNumber">Shipping Number</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.shippingNumber"
-                  name="shippingNumber"
-                  #shippingNumber="ngModel"
                   id="shippingNumber"
+                  name="shippingNumber"
                 />
               </div>
-              <div class="form-group col-sm-6">
-                <label for="name">Tracking Number</label>
+              <div class="col-sm-6">
+                <label for="trackingNumber">Tracking Number</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.trackingNumber"
-                  name="trackingNumber"
-                  #trackingNumber="ngModel"
                   id="trackingNumber"
+                  name="trackingNumber"
                 />
               </div>
             </div>
-            <div class="row">
-              <div class="form-group col-sm-6">
-                <label for="name">Previous Status</label>
+            <div class="row mt-2">
+              <div class="col-sm-6">
+                <label for="oldStatus">Previous Status</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.oldStatus"
                   id="oldStatus"
-                  #oldStatus="ngModel"
                   name="oldStatus"
                 />
               </div>
-              <div class="form-group col-sm-6">
-                <label for="name">Status</label>
+              <div class="col-sm-6">
+                <label for="newStatus">Status</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.newStatusName"
                   id="newStatus"
-                  #newStatus="ngModel"
                   name="newStatus"
                 />
               </div>
             </div>
-
-            <div class="row">
-              <div class="form-group col-sm-6">
-                <label for="mtbs">Days in Previous Status</label>
+            <div class="row mt-2">
+              <div class="col-sm-6">
+                <label for="daysinOldStatus">Days in Previous Status</label>
                 <input
                   type="number"
                   class="form-control"
@@ -106,120 +94,76 @@
                 />
               </div>
             </div>
-
-            <div class="row">
-              <div class="form-group col-sm-12">
-                <label for="toLocation">To Location:</label>
+            <div class="row mt-2">
+              <div class="col-sm-12">
+                <label for="toLocation">To Location</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.toLocation"
-                  name="toLocation"
-                  #toLocation="ngModel"
                   id="toLocation"
+                  name="toLocation"
                 />
               </div>
             </div>
-            <div class="row">
-              <div class="form-group col-sm-12">
-                <label for="description">Details</label>
+            <div class="row mt-2">
+              <div class="col-sm-12">
+                <label for="details">Details</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.details"
-                  name="details"
-                  #details="ngModel"
                   id="details"
+                  name="details"
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="card">
-        <table style="width: 85%">
+      <div class="card mt-3">
+        <table class="w-100 mb-2">
           <tr>
-            <th
-              style="
-                padding: 12px;
-                text-align: right;
-                font-size: 50px;
-                color: darkblue;
-                border: 1px solid black;
-              "
-            >
-              Company Name :
+            <th class="text-end" style="font-size:50px; color:darkblue; border:1px solid black; padding:12px;">
+              Company Name:
             </th>
             <td>
-              <u style="color: darkblue">
-                <b style="font-size: 50px; color: darkblue">{{
-                  this.companyName
-                }}</b></u
-              >
+              <u style="color:darkblue">
+                <b style="font-size:50px;">{{ companyName }}</b>
+              </u>
             </td>
           </tr>
         </table>
-        <table style="width: 111%">
+        <table class="w-100 mb-2">
           <tr>
-            <th
-              style="
-                padding: 12px;
-                text-align: right;
-                font-size: 50px;
-                color: darkblue;
-                border: 1px solid black;
-              "
-            >
-              Tag :
+            <th class="text-end" style="font-size:50px; color:darkblue; border:1px solid black; padding:12px;">
+              Tag:
             </th>
             <td>
-              <u style="color: darkblue">
-                <b style="font-size: 50px; color: darkblue">{{
-                  item.tag
-                }}</b></u
-              >
+              <u style="color:darkblue">
+                <b style="font-size:50px;">{{ item.tag }}</b>
+              </u>
             </td>
           </tr>
         </table>
-        <table style="width: 60%">
+        <table class="w-100">
           <tr *ngFor="let attribute of attributes">
-            <th
-              style="
-                padding: 12px;
-                text-align: right;
-                font-size: 50px;
-                color: darkblue;
-                border: 1px solid black;
-              "
-            >
-              {{ attribute.attributeName }} :
+            <th class="text-end" style="font-size:50px; color:darkblue; border:1px solid black; padding:12px;">
+              {{ attribute.attributeName }}:
             </th>
             <td>
-              <u style="color: darkblue">
-                <b style="font-size: 50px; color: darkblue">{{
-                  attribute.attributevalue
-                }}</b></u
-              >
+              <u style="color:darkblue">
+                <b style="font-size:50px;">{{ attribute.attributevalue }}</b>
+              </u>
             </td>
           </tr>
         </table>
       </div>
-      <div class="row">
-        <div class="form-group col-sm-12 text-center">
-          <button
-            type="button"
-            (click)="back()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Back to View Item Transfer "
-            class="btn btn-primary"
-            style="border-radius: 6px;"
-          >
+
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <button type="button" class="btn btn-primary" style="border-radius:6px;" (click)="back()">
             Back To Item
           </button>
         </div>
@@ -228,104 +172,35 @@
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
+<div *ngIf="loader" class="loader-backdrop">
+  <div class="loader"></div>
+</div>
+
+<style>
+  .loader-backdrop {
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0,0.5);
     z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
+  }
   .loader {
     position: fixed;
     left: 60%;
     top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    z-index: 3;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>

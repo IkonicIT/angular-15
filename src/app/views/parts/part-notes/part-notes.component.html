@@ -3,9 +3,7 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
-          <div
-            class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2"
-          >
+          <div class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2">
             <button
               type="button"
               (click)="print()"
@@ -23,12 +21,7 @@
               Help
             </button>
             <div
-              style="
-                text-align: left;
-                border: 1px solid;
-                width: fit-content;
-                background-color: whitesmoke;
-              "
+              style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
               *ngIf="helpFlag == true"
             >
               * To create a Note <br />
@@ -37,15 +30,15 @@
               * Pressing 'Cancel' will undo the changes you've made.
             </div>
           </div>
+
           <p class="card-text" style="font-weight: bold; font-size: 22px">
             Part Notes:
           </p>
 
+          <!-- New Note Section -->
           <div *ngIf="newFlag == true">
             <div class="row">
-              <div
-                class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2"
-              >
+              <div class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2">
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
@@ -97,42 +90,25 @@
                 </button>
               </div>
             </div>
-            <alert
-              *ngIf="index1 == 1"
-              type="success"
-              [dismissible]="dismissible"
-            >
+
+            <!-- Alerts -->
+            <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible">
               Note was successfully Saved
             </alert>
-            <alert
-              *ngIf="index1 == 2"
-              type="success"
-              [dismissible]="dismissible"
-            >
+            <alert *ngIf="index1 == 2" type="success" [dismissible]="dismissible">
               Note was successfully Updated
             </alert>
-
-            <alert
-              type="danger"
-              *ngIf="index1 == -1"
-              [dismissible]="dismissible"
-            >
+            <alert type="danger" *ngIf="index1 == -1" [dismissible]="dismissible">
               Please Enter Title and Date
             </alert>
-
-            <alert
-              type="success"
-              *ngIf="index1 == 4"
-              [dismissible]="dismissible"
-            >
+            <alert type="success" *ngIf="index1 == 4" [dismissible]="dismissible">
               Note was successfully Deleted
             </alert>
 
+            <!-- Form -->
             <div class="row">
               <div class="form-group col-sm-6">
-                <label for="title"
-                  >Title <strong class="text-danger">*</strong></label
-                >
+                <label for="title">Title <strong class="text-danger">*</strong></label>
                 <input
                   type="text"
                   class="form-control bg-white"
@@ -144,9 +120,7 @@
                 />
               </div>
               <div class="form-group col-sm-6">
-                <label for="date"
-                  >Date <strong class="text-danger">*</strong></label
-                >
+                <label for="date">Date <strong class="text-danger">*</strong></label>
                 <input
                   type="text"
                   class="form-control bg-white"
@@ -165,7 +139,6 @@
                 <label for="details">Details</label>
                 <textarea
                   id="details"
-                  name="textarea-input"
                   rows="2"
                   cols="4"
                   name="details"
@@ -178,14 +151,11 @@
             </div>
           </div>
 
+          <!-- View Note Section -->
           <div *ngIf="viewFlag == true">
             <div class="row">
-              <p style="text-align: left">
-                <strong>Viewing Part Note'</strong>
-              </p>
-              <div
-                class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2"
-              >
+              <p style="text-align: left"><strong>Viewing Part Note'</strong></p>
+              <div class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2">
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
@@ -195,13 +165,7 @@
                 >
                   New
                 </button>
-                <button
-                  type="button"
-                  tooltip="Save Location Note"
-                  (click)="savePartNotes()"
-                  disabled
-                  class="btn btn-primary"
-                >
+                <button type="button" tooltip="Save Location Note" (click)="savePartNotes()" disabled class="btn btn-primary">
                   Save
                 </button>
                 <button
@@ -213,7 +177,6 @@
                 >
                   Edit
                 </button>
-
                 <button
                   type="button"
                   class="btn btn-primary"
@@ -232,52 +195,30 @@
                 >
                   Attachments
                 </button>
-                <button
-                  type="button"
-                  tooltip="Back"
-                  (click)="backToParts()"
-                  class="btn btn-primary"
-                >
+                <button type="button" tooltip="Back" (click)="backToParts()" class="btn btn-primary">
                   Back
                 </button>
               </div>
             </div>
-            <alert
-              *ngIf="index1 == 1"
-              type="success"
-              [dismissible]="dismissible"
-            >
+
+            <!-- Alerts -->
+            <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible">
               Note for Part was successfully Saved
             </alert>
-            <alert
-              *ngIf="index1 == 2"
-              type="success"
-              [dismissible]="dismissible"
-            >
+            <alert *ngIf="index1 == 2" type="success" [dismissible]="dismissible">
               Note for 'Part' was successfully Updated
             </alert>
-
-            <alert
-              type="danger"
-              *ngIf="index1 == -1"
-              [dismissible]="dismissible"
-            >
+            <alert type="danger" *ngIf="index1 == -1" [dismissible]="dismissible">
               Please Enter Title and Date
             </alert>
-
-            <alert
-              type="success"
-              *ngIf="index1 == 4"
-              [dismissible]="dismissible"
-            >
+            <alert type="success" *ngIf="index1 == 4" [dismissible]="dismissible">
               Note for Part was successfully Deleted
             </alert>
 
+            <!-- Form -->
             <div class="row mt-2">
               <div class="form-group col-sm-6 gap-1">
-                <label for="title"
-                  >Title <strong class="text-danger">*</strong></label
-                >
+                <label for="title">Title <strong class="text-danger">*</strong></label>
                 <input
                   disabled
                   class="form-control bg-color"
@@ -290,9 +231,7 @@
                 />
               </div>
               <div class="form-group col-sm-6">
-                <label for="date"
-                  >Date <strong class="text-danger">*</strong></label
-                >
+                <label for="date">Date <strong class="text-danger">*</strong></label>
                 <input
                   disabled
                   type="text"
@@ -311,7 +250,6 @@
                 <textarea
                   disabled
                   id="details"
-                  name="textarea-input"
                   rows="2"
                   cols="4"
                   name="details"
@@ -324,14 +262,11 @@
             </div>
           </div>
 
+          <!-- Edit Note Section -->
           <div *ngIf="editFlag == true">
             <div class="row">
-              <p style="text-align: left">
-                <strong>Editing Vendor Note</strong>
-              </p>
-              <div
-                class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2"
-              >
+              <p style="text-align: left"><strong>Editing Vendor Note</strong></p>
+              <div class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2">
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
@@ -352,7 +287,6 @@
                 >
                   Update
                 </button>
-
                 <button
                   *ngIf="highestRank > 5"
                   type="button"
@@ -394,42 +328,25 @@
                 </button>
               </div>
             </div>
-            <alert
-              *ngIf="index1 == 1"
-              type="success"
-              [dismissible]="dismissible"
-            >
+
+            <!-- Alerts -->
+            <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible">
               Note for 'Part:' was successfully Saved
             </alert>
-            <alert
-              *ngIf="index1 == 2"
-              type="success"
-              [dismissible]="dismissible"
-            >
+            <alert *ngIf="index1 == 2" type="success" [dismissible]="dismissible">
               Note for 'Part:' was successfully Updated
             </alert>
-
-            <alert
-              type="danger"
-              *ngIf="index1 == -1"
-              [dismissible]="dismissible"
-            >
+            <alert type="danger" *ngIf="index1 == -1" [dismissible]="dismissible">
               Please Enter Title and Date
             </alert>
-
-            <alert
-              type="success"
-              *ngIf="index1 == 4"
-              [dismissible]="dismissible"
-            >
+            <alert type="success" *ngIf="index1 == 4" [dismissible]="dismissible">
               Note for 'Part:' was successfully Deleted
             </alert>
 
+            <!-- Form -->
             <div class="row mt-2">
               <div class="form-group col-sm-6 gap-1">
-                <label for="title"
-                  >Title <strong class="text-danger">*</strong></label
-                >
+                <label for="title">Title <strong class="text-danger">*</strong></label>
                 <input
                   type="text"
                   [(ngModel)]="model.vendorNoteId"
@@ -450,10 +367,7 @@
                 />
               </div>
               <div class="form-group col-sm-6">
-                <label for="date"
-                  >Date <strong class="text-danger">*</strong></label
-                >
-
+                <label for="date">Date <strong class="text-danger">*</strong></label>
                 <input
                   type="text"
                   class="form-control bg-white"
@@ -466,14 +380,11 @@
               </div>
             </div>
 
-         
-
             <div class="row mt-2">
               <div class="form-group col-sm-12">
                 <label for="details">Details</label>
                 <textarea
                   id="details"
-                  name="textarea-input"
                   rows="2"
                   cols="4"
                   name="details"
@@ -486,21 +397,18 @@
             </div>
           </div>
 
+          <!-- Current Notes Section -->
           <div class="animated fadeIn" *ngIf="highestRank > 4">
-            
             <div class="row">
               <div class="col-lg-12">
-                <p
-                  class="card-text"
-                  style="font-weight: bold; font-size: 18px; margin-top: 10px"
-                >
+                <p class="card-text" style="font-weight: bold; font-size: 18px; margin-top: 10px">
                   Current Notes:
                 </p>
                 <div class="card-body">
                   <div>
                     <div class="float-start">
-                      <span
-                        >Show
+                      <span>
+                        Show
                         <select [(ngModel)]="itemsForPagination">
                           <option>5</option>
                           <option>10</option>
@@ -515,33 +423,26 @@
                     <span>Search : </span>
                     <input [(ngModel)]="vendorNotesFilter" />
                   </div>
-                  <table
-                    class="table table-responsive-sm table-hover table-outline mb-0"
-                  >
+
+                  <!-- Notes Table -->
+                  <table class="table table-responsive-sm table-hover table-outline mb-0">
                     <thead class="bg-danger">
                       <tr>
-                        <th
-                          [class.active]="order === 'createdDate'"
-                          (click)="setOrder('createdDate')"
-                        >
-                          Date<span [hidden]="reverse == ''">▼</span
-                          ><span [hidden]="reverse != ''">▲</span>
+                        <th [class.active]="order === 'createdDate'" (click)="setOrder('createdDate')">
+                          Date
+                          <span [hidden]="reverse == ''">▼</span>
+                          <span [hidden]="reverse != ''">▲</span>
                         </th>
-                        <th
-                          [class.active]="order === 'name'"
-                          (click)="setOrder('name')"
-                        >
-                          Title<span [hidden]="reverse == ''">▼</span
-                          ><span [hidden]="reverse != ''">▲</span>
+                        <th [class.active]="order === 'name'" (click)="setOrder('name')">
+                          Title
+                          <span [hidden]="reverse == ''">▼</span>
+                          <span [hidden]="reverse != ''">▲</span>
                         </th>
-                        <th
-                          [class.active]="order === 'createdBy'"
-                          (click)="setOrder('createdBy')"
-                        >
-                          By <span [hidden]="reverse == ''">▼</span
-                          ><span [hidden]="reverse != ''">▲</span>
+                        <th [class.active]="order === 'createdBy'" (click)="setOrder('createdBy')">
+                          By
+                          <span [hidden]="reverse == ''">▼</span>
+                          <span [hidden]="reverse != ''">▲</span>
                         </th>
-
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -550,24 +451,12 @@
                       <tr
                         *ngFor="
                           let note of notes
-                            | orderBy : reverse + order
-                            | filterBy
-                              : [
-                                  'createdDate',
-                                  'name',
-                                  'jobNumber',
-                                  'poNumber',
-                                  'createdBy'
-                                ]
-                              : vendorNotesFilter
-                            | paginate
-                              : {
-                                  itemsPerPage: itemsForPagination,
-                                  currentPage: p
-                                }
+                            | orderBy: reverse + order
+                            | filterBy: ['createdDate', 'name', 'jobNumber', 'poNumber', 'createdBy']: vendorNotesFilter
+                            | paginate: { itemsPerPage: itemsForPagination, currentPage: p }
                         "
                       >
-                        <td>{{ note.createdDate | date : "MM/dd/yyyy" }}</td>
+                        <td>{{ note.createdDate | date: 'MM/dd/yyyy' }}</td>
                         <td>{{ note.name }}</td>
                         <td>{{ note.createdBy }}</td>
                         <td>
@@ -583,11 +472,8 @@
                       </tr>
                     </tbody>
                   </table>
-                  <pagination-controls
-                    class="my-pagination"
-                    (pageChange)="p = $event"
-                    [autoHide]="true"
-                  >
+
+                  <pagination-controls class="my-pagination" (pageChange)="p = $event" [autoHide]="true">
                   </pagination-controls>
                 </div>
               </div>
@@ -598,18 +484,14 @@
     </div>
   </div>
 
+  <!-- Confirmation Modal -->
   <ng-template #confirmtemplate>
     <div class="modal-body text-center">
       <p>
-        Click(Yes) to permanently delete this Note or Click(No) to discard this
-        action.
+        Click(Yes) to permanently delete this Note or Click(No) to discard this action.
       </p>
-      <button type="button" class="btn btn-primary me-2" (click)="confirm()">
-        Yes
-      </button>
-      <button type="button" class="btn btn-primary" (click)="decline()">
-        No
-      </button>
+      <button type="button" class="btn btn-primary me-2" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
     </div>
   </ng-template>
 </div>

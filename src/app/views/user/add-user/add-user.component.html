@@ -6,7 +6,9 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
@@ -14,20 +16,14 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
-          <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
-          >
+          <div *ngIf="helpFlag === true" class="help-box">
             Note: Mandatory Fields are required.<br />
             * To create a new user:<br />
             1.Click the 'Add User' button.<br />
@@ -41,27 +37,29 @@
             1.Click the 'Delete' button.
           </div>
         </div>
+
         <div class="card-body">
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             User saved successfully.
           </alert>
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             Please Enter Required fields
           </alert>
-          <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
+          <alert *ngIf="index === -2" type="danger" [dismissible]="dismissible">
             Password and Confirm password should be same
           </alert>
-          <alert type="danger" *ngIf="index == -3" [dismissible]="dismissible">
+          <alert *ngIf="index === -3" type="danger" [dismissible]="dismissible">
             You have entered an invalid email address!
           </alert>
-          <alert type="danger" *ngIf="index == -4" [dismissible]="dismissible">
+          <alert *ngIf="index === -4" type="danger" [dismissible]="dismissible">
             Password and Confirm password should be between 8 to 15 characters
             which contain at least one lowercase letter, one uppercase letter,
             one numeric digit, and one special character
           </alert>
-          <alert type="danger" *ngIf="index == -5" [dismissible]="dismissible">
+          <alert *ngIf="index === -5" type="danger" [dismissible]="dismissible">
             Please Select the Vendor
           </alert>
+
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding">
               <div class="card">
@@ -71,9 +69,10 @@
                 <form name="form" (ngSubmit)="saveUser()" #addUserForm="ngForm">
                   <div class="card-body">
                     <div class="row">
+                      <!-- User Name -->
                       <div class="form-group col-sm-6">
-                        <label for="lType">User Name</label
-                        ><strong class="text-danger"> *</strong>
+                        <label for="lType">User Name</label>
+                        <strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -88,37 +87,27 @@
                         />
                       </div>
 
-                      <div
-                        class="form-group col-sm-6"
-                        *ngIf="isNameCheckVisible == true"
-                      >
+                      <!-- Username check -->
+                      <div class="form-group col-sm-6" *ngIf="isNameCheckVisible === true">
                         <label for="name">User Name Check:</label> <br />
-                        <span
-                          class="form-control"
-                          style="color: red"
-                          *ngIf="isMinLength == false"
-                        >
+                        <span class="form-control text-danger" *ngIf="isMinLength === false">
                           User Name cannot be empty or minimum lengh should be 4
                         </span>
-                        <span
-                          class="form-control"
-                          style="color: red"
-                          *ngIf="isDuplicateTag == true"
-                        >
+                        <span class="form-control text-danger" *ngIf="isDuplicateTag === true">
                           User Name already exists
                         </span>
                         <span
-                          class="form-control"
-                          style="color: blue"
-                          *ngIf="isDuplicateTag == false && isMinLength == true"
+                          class="form-control text-primary"
+                          *ngIf="isDuplicateTag === false && isMinLength === true"
                         >
                           User Name Available
                         </span>
                       </div>
 
+                      <!-- Email -->
                       <div class="form-group col-sm-6">
-                        <label for="email">E-mail</label
-                        ><strong class="text-danger"> *</strong>
+                        <label for="email">E-mail</label>
+                        <strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -132,93 +121,88 @@
                           pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
                         />
                       </div>
-                      <div
-                        class="form-group col-sm-6"
-                        *ngIf="isEmailCheckVisible == true"
-                      >
-                        <label for="name">Email Check:</label> <br />
 
+                      <!-- Email check -->
+                      <div class="form-group col-sm-6" *ngIf="isEmailCheckVisible === true">
+                        <label for="name">Email Check:</label> <br />
                         <span
-                          class="form-control"
-                          style="color: red"
-                          *ngIf="
-                            isDuplicate == true &&
-                            model.email != null &&
-                            model.email != ''
-                          "
+                          class="form-control text-danger"
+                          *ngIf="isDuplicate === true && model.email != null && model.email !== ''"
                         >
                           Email already exists
                         </span>
                         <span
-                          class="form-control"
-                          style="color: blue"
-                          *ngIf="
-                            isDuplicate == false &&
-                            model.email != null &&
-                            model.email != ''
-                          "
+                          class="form-control text-primary"
+                          *ngIf="isDuplicate === false && model.email != null && model.email !== ''"
                         >
                           Email Available
                         </span>
                       </div>
                     </div>
+
+                    <!-- Passwords -->
                     <div class="row">
                       <div class="form-group col-md-6">
-                        <label for="password">Password</label
-                        ><strong class="text-danger"> *</strong>
+                        <label for="password">Password</label>
+                        <strong class="text-danger">*</strong>
                         <div class="input-group">
-                        <input
-                          [type]="showPassword.password ? 'text' : 'password'"
-                          class="form-control"
-                          [(ngModel)]="model.password"
-                          name="password"
-                          #password="ngModel"
-                          id="password"
-                          pattern=" /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/"
-                          ngModel
-                          required
-                        />
-                        <div class="input-group-append">
-                          <button
-                            type="button"
-                            class="btn btn-outline-secondary"
-                            (click)="togglePasswordVisibility('password')"
-                        >
-                            <i class="fa" [ngClass]="showPassword.password ? 'fa-eye-slash' : 'fa-eye'"></i>
-                          </button>
+                          <input
+                            [type]="showPassword.password ? 'text' : 'password'"
+                            class="form-control"
+                            [(ngModel)]="model.password"
+                            name="password"
+                            #password="ngModel"
+                            id="password"
+                            ngModel
+                            required
+                          />
+                          <div class="input-group-append">
+                            <button
+                              type="button"
+                              class="btn btn-outline-secondary"
+                              (click)="togglePasswordVisibility('password')"
+                            >
+                              <i class="fa" [ngClass]="showPassword.password ? 'fa-eye-slash' : 'fa-eye'"></i>
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
+
                       <div class="form-group col-md-6">
-                        <label for="cPassword">Confirm Password</label
-                        ><strong class="text-danger"> *</strong>
+                        <label for="cPassword">Confirm Password</label>
+                        <strong class="text-danger">*</strong>
                         <div class="input-group">
-                        <input
-                          [type]="showPassword.confirmPassword ? 'text' : 'password'"
-                          class="form-control"
-                          [(ngModel)]="model.confirmPassword"
-                          name="cPassword"
-                          #cPassword="ngModel"
-                          id="cPassword"
-                          ngModel
-                          required
-                        />
-                        <div class="input-group-append">
-                          <button
-                            type="button"
-                            class="btn btn-outline-secondary"
-                            (click)="togglePasswordVisibility('confirmPassword')"
-                        >
-                            <i class="fa" [ngClass]="showPassword.confirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-                          </button>
+                          <input
+                            [type]="showPassword.confirmPassword ? 'text' : 'password'"
+                            class="form-control"
+                            [(ngModel)]="model.confirmPassword"
+                            name="cPassword"
+                            #cPassword="ngModel"
+                            id="cPassword"
+                            ngModel
+                            required
+                          />
+                          <div class="input-group-append">
+                            <button
+                              type="button"
+                              class="btn btn-outline-secondary"
+                              (click)="togglePasswordVisibility('confirmPassword')"
+                            >
+                              <i
+                                class="fa"
+                                [ngClass]="showPassword.confirmPassword ? 'fa-eye-slash' : 'fa-eye'"
+                              ></i>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+
+                    <!-- Names -->
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="fname">First Name</label
-                        ><strong class="text-danger"> *</strong>
+                        <label for="fname">First Name</label>
+                        <strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -229,8 +213,8 @@
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="lName">Last Name</label
-                        ><strong class="text-danger"> *</strong>
+                        <label for="lName">Last Name</label>
+                        <strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -241,10 +225,12 @@
                         />
                       </div>
                     </div>
+
+                    <!-- Company + Dept -->
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="company">Select Company</label
-                        ><strong class="text-danger"> *</strong>
+                        <label for="company">Select Company</label>
+                        <strong class="text-danger">*</strong>
                         <select
                           class="form-control custom-dropdown"
                           [(ngModel)]="model.companyId"
@@ -252,10 +238,7 @@
                           #companyId="ngModel"
                           id="company"
                         >
-                          <option
-                            [ngValue]="company.companyId"
-                            *ngFor="let company of allCompanies"
-                          >
+                          <option [ngValue]="company.companyId" *ngFor="let company of allCompanies">
                             {{ company.name }}
                           </option>
                         </select>
@@ -272,6 +255,8 @@
                         />
                       </div>
                     </div>
+
+                    <!-- Job + Phone -->
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="job">Job Title</label>
@@ -296,6 +281,8 @@
                         />
                       </div>
                     </div>
+
+                    <!-- Fax + Mobile -->
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fax">Fax</label>
@@ -320,6 +307,8 @@
                         />
                       </div>
                     </div>
+
+                    <!-- Vendor -->
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="req" class="me-1">Vendor</label>
@@ -333,7 +322,7 @@
                       </div>
                       <div *ngIf="model.isVendor" class="form-group col-sm-6">
                         <label for="vendor">
-                          Select Vendor<strong class="text-danger"> *</strong>
+                          Select Vendor<strong class="text-danger">*</strong>
                         </label>
                         <app-dropdown-treeview-select
                           [items]="vendorItems"
@@ -343,11 +332,11 @@
                         </app-dropdown-treeview-select>
                       </div>
                     </div>
+
+                    <!-- RFQ -->
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="req" class="me-1"
-                          >Receive RFQ Notification</label
-                        >
+                        <label for="req" class="me-1">Receive RFQ Notification</label>
                         <input
                           type="checkbox"
                           [(ngModel)]="model.sendReceiveRFQ"
@@ -358,18 +347,21 @@
                       </div>
                     </div>
 
+                    <!-- Buttons -->
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
                           type="submit"
-                          tooltip="Save this User"
+                          data-bs-toggle="tooltip"
+                          title="Save this User"
                           class="btn btn-primary btn-right"
                         >
                           Save
                         </button>
                         <button
                           type="button"
-                          tooltip="Cancel"
+                          data-bs-toggle="tooltip"
+                          title="Cancel"
                           (click)="cancelUser()"
                           class="btn btn-primary"
                         >

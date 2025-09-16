@@ -303,7 +303,7 @@ const routes: Routes = [
         },
       },
       {
-        path: 'advancedSearch/:itemId/:typeID',
+        path: 'advancedSearch/:itemId/:typeId',
         component: AdvancedItemSearchReplacementComponent,
         data: {
           title: 'Advanced Item Search',

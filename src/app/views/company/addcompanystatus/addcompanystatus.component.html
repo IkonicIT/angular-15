@@ -20,7 +20,7 @@
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
           >
             * To create a new status:<br />
             1.Click the 'Add Status' button.<br />
@@ -53,7 +53,7 @@
                 </div>
                 <form
                   name="form"
-                  (ngSubmit)="saveStatus()"
+                  (ngSubmit)="f.form.valid && saveStatus()"
                   #f="ngForm"
                   novalidate
                 >
@@ -88,9 +88,9 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="Status"
-                          >Status<strong class="text-danger">*</strong></label
-                        >
+                        <label for="status">
+                          Status<strong class="text-danger">*</strong>
+                        </label>
                         <input
                           id="status"
                           type="text"
@@ -154,8 +154,9 @@
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: absolute;
@@ -175,26 +176,15 @@
   }
 
   @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
   }
 
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
-  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -204,27 +194,13 @@
   }
 
   @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0px; opacity: 1; }
   }
 
   @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
 
   .btn-link[routerLink="/forgot-password"] {
@@ -238,5 +214,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

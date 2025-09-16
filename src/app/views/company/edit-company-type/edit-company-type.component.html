@@ -104,19 +104,17 @@
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="parentType">Select Parent Type</label>
-
-                       <select
-  #dropdown
-  id="itemType"
-  class="form-control custom-dropdown"
-  [(ngModel)]="value"
-  (change)="onValueChange(+dropdown.value)"
->
-  <option *ngFor="let item of items" [value]="item.value">
-    {{ item.text }}
-  </option>
-</select>
-
+                        <select
+                          #dropdown
+                          id="itemType"
+                          class="form-control custom-dropdown"
+                          [(ngModel)]="value"
+                          (change)="onValueChange(+dropdown.value)"
+                        >
+                          <option *ngFor="let item of items" [value]="item.value">
+                            {{ item.text }}
+                          </option>
+                        </select>
                       </div>
                     </div>
 
@@ -189,85 +187,81 @@
 >
   <div _ngcontent-c0="" class="loader"></div>
 </div>
+
 <style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
+.loader {
+  position: fixed;
+  left: 60%;
+  top: 60%;
+  z-index: 1;
+  width: 75px;
+  height: 75px;
+  margin: -75px 0 0 -75px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid red;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
+  100% {
+    -webkit-transform: rotate(360deg);
   }
+}
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
+  100% {
+    transform: rotate(360deg);
   }
+}
 
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s;
+}
 
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
+@-webkit-keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
   }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+  to {
+    bottom: 0px;
+    opacity: 1;
   }
+}
 
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
+@keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
   }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
 
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.btn-link[routerLink="/forgot-password"] {
+  color: red;
+}
+
+.cent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>

@@ -366,10 +366,10 @@ export class AdvancedItemSearchComponent implements OnInit {
   searchItemRepairNotesRfqModel(): void {
     this.advancedsearchflag = 1;
     const request = {
-      companyId: this.companyId,
+      companyID: this.companyId,
       extraTag: this.itemrepairNotesrfqModel.exactTag ?? null,
       RFQ: this.itemrepairNotesrfqModel.rfq ?? null,
-      po: this.itemrepairNotesrfqModel.po ?? null,
+      PO: this.itemrepairNotesrfqModel.PO ?? null,
       job: this.itemrepairNotesrfqModel.job ?? null,
       noteFlag: this.itemrepairNotesrfqModel.isitemnote,
       repairFlag: this.itemrepairNotesrfqModel.isitemrepair,

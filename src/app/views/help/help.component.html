@@ -1,71 +1,90 @@
 <div class="col-lg-12 mobile-padding col-padding">
   <div class="card">
     <div class="card-header">
-      <strong style="color: red">Tracrat Manual</strong>
+      <strong class="text-danger">Tracrat Manual</strong>
     </div>
     <div class="card-body">
-      <alert *ngIf="index1 > 0" type="success" [dismissible]="dismissible">
+      <!-- Success Alert -->
+      <alert
+        *ngIf="index1 > 0"
+        type="success"
+        [dismissible]="dismissible"
+      >
         Manual uploaded successfully.
       </alert>
-      <alert type="danger" *ngIf="index1 == -1" [dismissible]="dismissible">
+
+      <!-- Error Alert -->
+      <alert
+        *ngIf="index1 == -1"
+        type="danger"
+        [dismissible]="dismissible"
+      >
         Please Upload Manual.
       </alert>
-      <div class="row" style="text-align: center">
+
+      <!-- Manual Upload Section -->
+      <div class="row text-center">
         <div class="form-group col-sm-12">
           <a
             href="javascript:void(0)"
             (click)="getManual()"
-            style="border: 1px solid"
+            class="d-inline-block border p-1"
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="click here to view Manual"
             >Tracrat Manual</a
           >
+
           <input
             *ngIf="isOwnerAdmin === 'true'"
             type="file"
-            style="margin-top: 10px"
-            class="form-control"
+            class="form-control mt-2"
             (change)="fileChangeListener($event)"
             id="file"
           />
+
           <button
             *ngIf="isOwnerAdmin === 'true'"
             type="button"
             (click)="saveManual()"
+            class="btn btn-primary mt-2"
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click here to upload new manual"
-            class="mt-2"
           >
             Upload
           </button>
         </div>
       </div>
-      <div style="margin-bottom: 10px">
-        <strong class="card-text" style="color: red"
-          >Company Documents:
-        </strong>
+
+      <!-- Company Documents Section -->
+      <div class="mb-2">
+        <strong class="card-text text-danger">Company Documents: </strong>
       </div>
 
-      <div class="select-pagination-option">
-        <div class="float-left">
-          <span
-            >Show
-            <select [(ngModel)]="itemsForPagination">
-              <option>5</option>
-              <option>10</option>
-              <option>25</option>
-              <option>50</option>
-            </select>
-            entries
-          </span>
-        </div>
-      </div>
+      <!-- Pagination Option -->
+        <div class="select-pagination-option">
+            <div class="float-left">
+              <span
+                >Show
+                <select [(ngModel)]="itemsForPagination">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </span>
+            </div>
+          </div>
+
+      <!-- Search -->
       <div class="float-right div-search mb-2">
         <span>Search : </span>
-        <input [(ngModel)]="documentFilter" />
+        <input [(ngModel)]="documentFilter" class="form-control d-inline w-auto" />
       </div>
+
+      <!-- Documents Table -->
       <table class="table table-hover table-outline mb-0">
         <thead class="thead-light">
           <tr>
@@ -79,11 +98,8 @@
           <tr
             *ngFor="
               let document of documents
-                | filterBy
-                  : ['description', 'dateAddedOn', 'addedBy']
-                  : documentFilter
-                | paginate
-                  : { itemsPerPage: itemsForPagination, currentPage: p }
+                | filterBy : ['description', 'dateAddedOn', 'addedBy'] : documentFilter
+                | paginate : { itemsPerPage: itemsForPagination, currentPage: p }
             "
           >
             <td>
@@ -93,16 +109,18 @@
                 data-bs-placement="bottom"
                 data-bs-toggle="tooltip"
                 title="click here to view this Company Document"
-                >{{ document.fileName }}</a
               >
+                {{ document.fileName }}
+              </a>
             </td>
-
             <td>{{ document.description }}</td>
-            <td>{{ document.dateAdded | date : "MM/dd/yyyy" }}</td>
+            <td>{{ document.dateAdded | date : 'MM/dd/yyyy' }}</td>
             <td>{{ document.addedBy }}</td>
           </tr>
         </tbody>
       </table>
+
+      <!-- Pagination Controls -->
       <pagination-controls
         class="my-pagination"
         (pageChange)="p = $event"
@@ -112,105 +130,7 @@
   </div>
 </div>
 
-
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<!-- Loader -->
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

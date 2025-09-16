@@ -30,7 +30,7 @@ export class EditcompanydetailsComponent implements OnInit {
   statuses: any[] = [];
   companyTypes: any[] = [];
   typeAttributes: any[] = [];
-  typeID: number = 0;
+  typeId: number = 0;
   file: File | null = null;
 
   items: TreeviewItem[] = [];

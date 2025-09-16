@@ -13,15 +13,7 @@
           >
             Help
           </button>
-          <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
-          >
+          <div class="help-note" *ngIf="helpFlag">
             Note: Mandatory Fields are required.<br />
             * To add new warrantyType:<br />
             1.Click the 'Add Warranty Type' button.<br />
@@ -40,25 +32,20 @@
             Manage Warranty Types
             <button
               type="button"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right btn-rounded"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add Warranty type"
               (click)="openModal(templateAdd)"
-              placement="top"
-              style="border-radius: 6px;"
             >
               Add Warranty Type
             </button>
           </p>
           <div class="select-pagination-option">
             <div class="float-left">
-              <span
-                >Show
-                <select
-                  [(ngModel)]="itemsForPagination"
-                  (change)="onChange($event.target)"
-                >
+              <span>
+                Show
+                <select [(ngModel)]="itemsForPagination" (change)="onChange($event.target)">
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
@@ -80,8 +67,9 @@
                   [class.active]="order === 'warrantyType'"
                   (click)="setOrder('warrantyType')"
                 >
-                  Warranty Type name<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                  Warranty Type name
+                  <span [hidden]="reverse == ''">▼</span>
+                  <span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th>Actions</th>
               </tr>
@@ -90,10 +78,9 @@
               <tr
                 *ngFor="
                   let type of warrantyTypes
-                    | orderBy : reverse + order
-                    | filterBy : ['warrantyType'] : warrantyFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                    | orderBy: reverse + order
+                    | filterBy: ['warrantyType']: warrantyFilter
+                    | paginate: { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
                 <td>{{ type.warrantyType }}</td>
@@ -134,15 +121,11 @@
   </div>
 </div>
 
+<!-- Add Modal -->
 <ng-template #templateAdd>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Add Warranty Type</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef?.hide()"
-    >
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef?.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -154,8 +137,7 @@
     </div>
     <div class="row">
       <div class="form-group col-sm-12">
-        <label for="name">Add New Warranty Type</label
-        ><strong class="text-danger">*</strong>
+        <label for="name">Add New Warranty Type</label><strong class="text-danger">*</strong>
         <input
           type="text"
           class="form-control"
@@ -169,14 +151,7 @@
     </div>
     <div class="row">
       <div class="form-group col-sm-12 text-center">
-        <button
-          class="btn btn-primary"
-          (click)="saveWarranty()"
-          data-bs-placement="bottom"
-          data-bs-toggle="tooltip"
-          title="Save Warranty Type"
-          style="border-radius: 6px;"
-        >
+        <button class="btn btn-primary btn-rounded" (click)="saveWarranty()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Save Warranty Type">
           Save
         </button>
       </div>
@@ -184,145 +159,31 @@
   </div>
 </ng-template>
 
+<!-- Nested Modal -->
 <ng-template #templateNested>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Second modal</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef2?.hide()"
-    >
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2?.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     This is nested modal.
     <br />
-    <button
-      *ngIf="modalRef"
-      type="button"
-      class="btn btn-danger"
-      (click)="closeFirstModal()"
-    >
-      Close first modal
-    </button>
+    <button *ngIf="modalRef" type="button" class="btn btn-danger" (click)="closeFirstModal()">Close first modal</button>
   </div>
 </ng-template>
 
+<!-- Confirm Modal -->
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
-    <p>
-      Click(Yes) to permanently delete this WarrantyType or Click(No) to discard
-      This action.
-    </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <p>Click(Yes) to permanently delete this WarrantyType or Click(No) to discard This action.</p>
+    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
   </div>
 </ng-template>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<!-- Loader -->
+<div *ngIf="loader" class="loader-backdrop">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

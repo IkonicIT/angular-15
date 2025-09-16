@@ -3,13 +3,12 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
-          <div
-            class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2"
-          >
+          <!-- Top buttons -->
+          <div class="form-group col-sm-12 d-flex justify-content-end gap-1 mb-2">
             <button
               type="button"
               (click)="print()"
-              tooltip="Click to Print this Page"
+              ngbTooltip="Click to Print this Page"
               class="btn btn-outline-danger btn-sm"
             >
               Print
@@ -17,38 +16,36 @@
             <button
               type="button"
               (click)="help()"
-              tooltip=" Instructions"
+              ngbTooltip="Instructions"
               class="btn btn-outline-danger btn-sm"
             >
               Help
             </button>
-            <div
-              style="
-                text-align: left;
-                border: 1px solid;
-                width: fit-content;
-                background-color: whitesmoke;
-              "
-              *ngIf="helpFlag == true"
-            >
+
+            <!-- Help box -->
+            <div class="help-box text-start" *ngIf="helpFlag === true">
               *To add an attachment:<br />
-              1.Click the 'Choose File' button to locate the desired file.<br />
-              2.Enter a description for the file.<br />
-              3.Click the 'Save' button.<br />
+              1. Click the 'Choose File' button to locate the desired file.<br />
+              2. Enter a description for the file.<br />
+              3. Click the 'Save' button.<br />
               *To edit an attachment:<br />
-              1.Click the 'Edit' button.<br />
-              2.Make neccesary changes.<br />
-              3.Click on 'Update' button.<br />
+              1. Click the 'Edit' button.<br />
+              2. Make necessary changes.<br />
+              3. Click on 'Update' button.<br />
               *To delete an attachment:<br />
-              1.Click the 'Delete' button.
+              1. Click the 'Delete' button.
             </div>
           </div>
+
+          <!-- Alerts -->
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Part Documents saved successfully.
           </alert>
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert type="danger" *ngIf="index === -1" [dismissible]="dismissible">
             Please Upload the file.
           </alert>
+
+          <!-- Form -->
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding">
               <div class="card">
@@ -62,43 +59,18 @@
                   novalidate
                 >
                   <div class="card-body">
+                    <!-- Hidden fields -->
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <input
-                          type="text"
-                          [(ngModel)]="model.added"
-                          name="added"
-                          #added="ngModel"
-                          id="added"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.by"
-                          name="by"
-                          #by="ngModel"
-                          id="by"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model._id"
-                          name="_id"
-                          #_id="ngModel"
-                          id="_id"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.companyId"
-                          name="companyId"
-                          #companyId="ngModel"
-                          id="companyId"
-                          hidden
-                        />
+                        <input type="hidden" [(ngModel)]="model.added" name="added" #added="ngModel" id="added" />
+                        <input type="hidden" [(ngModel)]="model.by" name="by" #by="ngModel" id="by" />
+                        <input type="hidden" [(ngModel)]="model._id" name="_id" #_id="ngModel" id="_id" />
+                        <input type="hidden" [(ngModel)]="model.companyId" name="companyId" #companyId="ngModel" id="companyId" />
                       </div>
                     </div>
-                    <div style="overflow: auto">
+
+                    <!-- Attachments table -->
+                    <div class="scroll-box">
                       <table class="table table-bordered">
                         <thead>
                           <tr>
@@ -133,7 +105,7 @@
                                 *ngIf="i > 0"
                                 type="button"
                                 (click)="remove(i)"
-                                tooltip=" Click here to remove File"
+                                ngbTooltip="Click here to remove File"
                               >
                                 Remove
                               </button>
@@ -142,33 +114,27 @@
                         </tbody>
                       </table>
                     </div>
+
+                    <!-- Add file button -->
                     <div class="row">
-                      <div
-                        class="form-group col-sm-12 d-flex justify-content-center gap-2 m-1"
-                      >
-                        <button
-                          type="button"
-                          (click)="addNewAttachment()"
-                          tooltip=" Click here to Add File"
-                        >
+                      <div class="form-group col-sm-12 d-flex justify-content-center gap-2 m-1">
+                        <button type="button" (click)="addNewAttachment()" ngbTooltip="Click here to Add File">
                           Add File
                         </button>
                       </div>
                     </div>
 
+                    <!-- Save & Cancel buttons -->
                     <div class="row">
-                      <div
-                        class="form-group col-sm-12 d-flex justify-content-center gap-2 m-1"
-                      >
-                        <button class="btn btn-primary" tooltip="Save Document" style="border-radius: 6px;">
+                      <div class="form-group col-sm-12 d-flex justify-content-center gap-2 m-1">
+                        <button class="btn btn-primary rounded-btn" ngbTooltip="Save Document">
                           Save
                         </button>
                         <button
                           type="button"
                           (click)="cancelVendorDocument()"
-                          tooltip="Cancel"
-                          class="btn btn-primary"
-                          style="border-radius: 6px;"
+                          ngbTooltip="Cancel"
+                          class="btn btn-primary rounded-btn"
                         >
                           Cancel
                         </button>
@@ -179,8 +145,10 @@
               </div>
             </div>
           </div>
+          <!-- End form -->
         </div>
       </div>
     </div>
   </div>
 </div>
+

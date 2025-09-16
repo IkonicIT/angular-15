@@ -24,12 +24,7 @@
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
+            class="help-box"
             *ngIf="helpFlag == true"
           >
             * To create a new type:<br />
@@ -49,21 +44,20 @@
             Manage {{ companyName }} User Types
             <button
               type="button"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right rounded"
               [routerLink]="['../addUserType']"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add new User Type."
-              placement="top"
-              style="border-radius: 6px;"
             >
               Add User Type
             </button>
           </p>
+
           <div class="select-pagination-option">
             <div class="float-left">
-              <span
-                >Show
+              <span>
+                Show
                 <select
                   [(ngModel)]="itemsForPagination"
                   (change)="onChange($event.target)"
@@ -77,20 +71,16 @@
               </span>
             </div>
           </div>
+
           <div class="float-right div-search">
             <span>Search : </span>
             <input [(ngModel)]="userTypeFilter" />
           </div>
 
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'name'"
-                  (click)="setOrder('name')"
-                >
+                <th [class.active]="order === 'name'" (click)="setOrder('name')">
                   User Type Name<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
@@ -124,11 +114,8 @@
                 *ngFor="
                   let type of userTypes
                     | orderBy : reverse + order
-                    | filterBy
-                      : ['name', 'hostingFee', 'parentId', 'description']
-                      : userTypeFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                    | filterBy : ['name', 'hostingFee', 'parentId', 'description'] : userTypeFilter
+                    | paginate : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
                 <td>{{ type.name }}</td>
@@ -176,6 +163,7 @@
               </tr>
             </tbody>
           </table>
+
           <pagination-controls
             class="my-pagination"
             (pageChange)="p = $event"
@@ -187,6 +175,7 @@
   </div>
 </div>
 
+<!-- Nested modal -->
 <ng-template #templateNested>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Second modal</h4>
@@ -213,6 +202,7 @@
   </div>
 </ng-template>
 
+<!-- Confirm modal -->
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>
@@ -228,104 +218,7 @@
   </div>
 </ng-template>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<!-- Loader -->
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

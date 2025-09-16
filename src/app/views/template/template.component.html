@@ -14,12 +14,7 @@
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
+            class="help-box"
             *ngIf="helpFlag == true"
           >
             * To create a new company from an existing template:<br />
@@ -34,54 +29,38 @@
             1.Click the 'Delete Template' button.
           </div>
         </div>
-        <div class="card-header" style="background-color: #e02725">
+
+        <div class="card-header bg-danger-custom">
           <strong>Template</strong>
         </div>
+
         <div class="card-body">
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding modal-body-padding">
               <div class="card">
-                <div class="card-header" style="background-color: #e02725">
+                <div class="card-header bg-danger-custom">
                   <strong>Create Company from Template</strong>
                 </div>
 
                 <div class="card-body">
-                  <alert
-                    *ngIf="index == 1"
-                    type="success"
-                    [dismissible]="dismissible"
-                  >
+                  <alert *ngIf="index == 1" type="success" [dismissible]="dismissible">
                     Company "{{ savedCompanyName }}" saved successfully.
                   </alert>
-                  <alert
-                    *ngIf="index == 2"
-                    type="success"
-                    [dismissible]="dismissible"
-                  >
+                  <alert *ngIf="index == 2" type="success" [dismissible]="dismissible">
                     Template "{{ deletedTemplateName }}" Deleted successfully.
                   </alert>
-                  <alert
-                    type="danger"
-                    *ngIf="index == -1"
-                    [dismissible]="dismissible"
-                  >
+                  <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
                     Please select Template
                   </alert>
-                  <alert
-                    type="danger"
-                    *ngIf="index == -2"
-                    [dismissible]="dismissible"
-                  >
+                  <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
                     Please Enter company Name
                   </alert>
 
                   <div class="row">
                     <div class="form-group col-sm-5">
-                      <label for="template"
-                        >Select Template:<strong class="text-danger"
-                          >*</strong
-                        ></label
-                      >
+                      <label for="template">
+                        Select Template:<strong class="text-danger">*</strong>
+                      </label>
                       <select
                         class="form-control custom-dropdown"
                         [(ngModel)]="templateId"
@@ -121,8 +100,7 @@
                         data-bs-toggle="tooltip"
                         title="Save new company"
                         (click)="saveCompany()"
-                        class="btn btn-primary btn-right"
-                        style="border-radius: 6px;"
+                        class="btn btn-primary btn-right btn-rounded"
                       >
                         Create Company
                       </button>
@@ -132,9 +110,8 @@
                         data-bs-toggle="tooltip"
                         title="Delete this Template"
                         (click)="openModal(confirmtemplate, templateId)"
-                        class="btn btn-primary"
+                        class="btn btn-primary btn-rounded"
                         [disabled]="highestRank === '9'"
-                        style="border-radius: 6px;"
                       >
                         Delete Template
                       </button>
@@ -143,42 +120,29 @@
                 </div>
               </div>
             </div>
+
             <div class="col-sm-12 mobile-padding modal-body-padding">
               <div class="card">
-                <div class="card-header" style="background-color: #e02725">
+                <div class="card-header bg-danger-custom">
                   <strong>Create Template from Company</strong>
                 </div>
 
                 <div class="card-body">
-                  <alert
-                    *ngIf="index1 == 1"
-                    type="success"
-                    [dismissible]="dismissible"
-                  >
+                  <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible">
                     Template "{{ savedTemplateName }}" saved successfully.
                   </alert>
-                  <alert
-                    type="danger"
-                    *ngIf="index1 == -1"
-                    [dismissible]="dismissible"
-                  >
+                  <alert type="danger" *ngIf="index1 == -1" [dismissible]="dismissible">
                     Please select Company
                   </alert>
-                  <alert
-                    type="danger"
-                    *ngIf="index1 == -2"
-                    [dismissible]="dismissible"
-                  >
+                  <alert type="danger" *ngIf="index1 == -2" [dismissible]="dismissible">
                     Please Enter Template Name
                   </alert>
 
                   <div class="row">
                     <div class="form-group col-sm-5">
-                      <label for="template"
-                        >Select Company:<strong class="text-danger"
-                          >*</strong
-                        ></label
-                      >
+                      <label for="template">
+                        Select Company:<strong class="text-danger">*</strong>
+                      </label>
                       <select
                         class="form-control custom-dropdown"
                         [(ngModel)]="model.companyId"
@@ -195,9 +159,7 @@
                     <div class="form-group col-sm-1"></div>
 
                     <div class="form-group col-sm-5">
-                      <label for="templateName"
-                        >Enter New Template's Name:</label
-                      >
+                      <label for="templateName">Enter New Template's Name:</label>
                       <input
                         type="text"
                         class="form-control"
@@ -218,8 +180,7 @@
                         data-bs-toggle="tooltip"
                         title="Save Template"
                         (click)="saveTemplate()"
-                        class="btn btn-primary"
-                        style="border-radius: 6px;"
+                        class="btn btn-primary btn-rounded"
                       >
                         Create Template
                       </button>
@@ -238,8 +199,7 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>
-      Click(Yes) to permanently delete this Template or Click(No) to discard
-      This action.
+      Click(Yes) to permanently delete this Template or Click(No) to discard This action.
     </p>
     <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
       Yes
@@ -250,104 +210,6 @@
   </div>
 </ng-template>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

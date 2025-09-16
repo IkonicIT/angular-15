@@ -13,7 +13,7 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="form-group col-sm-6">
-                      <label for="description">Hp</label>
+                      <label for="hp">Hp</label>
                       <input
                         type="text"
                         class="form-control"
@@ -24,7 +24,7 @@
                       />
                     </div>
                     <div class="form-group col-sm-6">
-                      <label for="description">Rpm</label>
+                      <label for="rpm">Rpm</label>
                       <input
                         type="text"
                         class="form-control"
@@ -71,23 +71,25 @@
                     >
                       Export to Excel
                     </button>
+
                     <mat-tab-group
                       (selectedTabChange)="onTabChanged($event)"
                       [selectedIndex]="activeTab"
                     >
+                      <!-- Tab 1 -->
                       <mat-tab>
                         <ng-template mat-tab-label>
                           <span> InserviceVsSpare </span>
                         </ng-template>
                         <div>
                           <br />
-                          <h5 class="card-title mb-0" style="color: red">
+                          <h5 class="card-title mb-0 text-danger">
                             Inservice and Related Spare Motors
                           </h5>
                           <br />
                           <div class="float-left">
-                            <span
-                              >Show
+                            <span>
+                              Show
                               <select [(ngModel)]="itemsForPaginationISAS">
                                 <option>5</option>
                                 <option>10</option>
@@ -111,32 +113,33 @@
                                 [class.active]="order === 'tag'"
                                 (click)="setOrder('tag')"
                               >
-                                Tag<span [hidden]="reverse == ''">▼</span
-                                ><span [hidden]="reverse != ''">▲</span>
+                                Tag
+                                <span [hidden]="reverse == ''">▼</span>
+                                <span [hidden]="reverse != ''">▲</span>
                               </th>
-
                               <th
                                 [class.active]="order === 'hp'"
                                 (click)="setOrder('hp')"
                               >
-                                Hp<span [hidden]="reverse == ''">▼</span
-                                ><span [hidden]="reverse != ''">▲</span>
+                                Hp
+                                <span [hidden]="reverse == ''">▼</span>
+                                <span [hidden]="reverse != ''">▲</span>
                               </th>
-
                               <th
                                 [class.active]="order === 'rpm'"
                                 (click)="setOrder('rpm')"
                               >
-                                Rpm<span [hidden]="reverse == ''">▼</span
-                                ><span [hidden]="reverse != ''">▲</span>
+                                Rpm
+                                <span [hidden]="reverse == ''">▼</span>
+                                <span [hidden]="reverse != ''">▲</span>
                               </th>
-
                               <th
                                 [class.active]="order === 'frame'"
                                 (click)="setOrder('frame')"
                               >
-                                Frame<span [hidden]="reverse == ''">▼</span
-                                ><span [hidden]="reverse != ''">▲</span>
+                                Frame
+                                <span [hidden]="reverse == ''">▼</span>
+                                <span [hidden]="reverse != ''">▲</span>
                               </th>
                               <th>Spares</th>
                             </tr>
@@ -160,13 +163,7 @@
                               <td>
                                 <a
                                   href="javascript:void(0)"
-                                  (click)="
-                                    goToView(
-                                      motor.itemId,
-                                      motor.tag,
-                                      motor.typeName
-                                    )
-                                  "
+                                  (click)="goToView(motor.itemId, motor.tag, motor.typeName)"
                                   data-bs-placement="bottom"
                                   data-bs-toggle="tooltip"
                                   title="click here to view this Item"
@@ -179,11 +176,10 @@
                               <td>
                                 <a
                                   href="javascript:void(0)"
-                                  (click)="
-                                    showSpares(sparesTemplate, motor.itemId)
-                                  "
-                                  >Spares</a
+                                  (click)="showSpares(sparesTemplate, motor.itemId)"
                                 >
+                                  Spares
+                                </a>
                               </td>
                             </tr>
                           </tbody>
@@ -195,131 +191,128 @@
                           [autoHide]="true"
                         ></pagination-controls>
                       </mat-tab>
+
+                      <!-- Tab 2 -->
                       <mat-tab>
                         <ng-template mat-tab-label>
                           <span> Inservice </span>
                         </ng-template>
                         <div>
-                          <div>
-                            <br />
-                            <h5 class="card-title mb-0" style="color: red">
-                              Unmatched Inservice Motors
-                            </h5>
-                            <br />
-                            <div class="float-left">
-                              <span
-                                >Show
-                                <select [(ngModel)]="itemsForPaginationIS">
-                                  <option>5</option>
-                                  <option>10</option>
-                                  <option>25</option>
-                                  <option>50</option>
-                                </select>
-                                entries
-                              </span>
-                            </div>
+                          <br />
+                          <h5 class="card-title mb-0 text-danger">
+                            Unmatched Inservice Motors
+                          </h5>
+                          <br />
+                          <div class="float-left">
+                            <span>
+                              Show
+                              <select [(ngModel)]="itemsForPaginationIS">
+                                <option>5</option>
+                                <option>10</option>
+                                <option>25</option>
+                                <option>50</option>
+                              </select>
+                              entries
+                            </span>
                           </div>
-                          <div class="float-right div-search">
-                            <span>Search : </span>
-                            <input [(ngModel)]="typeFilter" />
-                          </div>
-                          <table
-                            class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
-                          >
-                            <thead class="thead-light">
-                              <tr>
-                                <th
-                                  [class.active]="orderIS === 'tag'"
-                                  (click)="setOrderforInservice('tag')"
-                                >
-                                  Tag<span [hidden]="reverseIS == ''">▼</span
-                                  ><span [hidden]="reverseIS != ''">▲</span>
-                                </th>
-
-                                <th
-                                  [class.active]="orderIS === 'hp'"
-                                  (click)="setOrderforInservice('hp')"
-                                >
-                                  Hp<span [hidden]="reverseIS == ''">▼</span
-                                  ><span [hidden]="reverseIS != ''">▲</span>
-                                </th>
-
-                                <th
-                                  [class.active]="orderIS === 'rpm'"
-                                  (click)="setOrderforInservice('rpm')"
-                                >
-                                  Rpm<span [hidden]="reverseIS == ''">▼</span
-                                  ><span [hidden]="reverseIS != ''">▲</span>
-                                </th>
-
-                                <th
-                                  [class.active]="orderIS === 'frame'"
-                                  (click)="setOrderforInservice('frame')"
-                                >
-                                  Frame<span [hidden]="reverseIS == ''">▼</span
-                                  ><span [hidden]="reverseIS != ''">▲</span>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr
-                                *ngFor="
-                                  let motor of inServiceMotors
-                                    | orderBy : reverseIS + orderIS
-                                    | filterBy
-                                      : ['tag', 'hp', 'rpm', 'frame']
-                                      : typeFilter
-                                    | paginate
-                                      : {
-                                          id: 'paginationIS',
-                                          itemsPerPage: itemsForPaginationIS,
-                                          currentPage: pageIs
-                                        }
-                                "
-                              >
-                                <td>
-                                  <a
-                                    href="javascript:void(0)"
-                                    (click)="
-                                      goToView(
-                                        motor.itemId,
-                                        motor.tag,
-                                        motor.typeName
-                                      )
-                                    "
-                                    data-bs-placement="bottom"
-                                    data-bs-toggle="tooltip"
-                                    title="click here to view this Item"
-                                    [innerHTML]="motor.tag"
-                                  ></a>
-                                </td>
-                                <td>{{ motor.hp }}</td>
-                                <td>{{ motor.rpm }}</td>
-                                <td>{{ motor.frame }}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <pagination-controls
-                            class="my-pagination"
-                            id="paginationIS"
-                            (pageChange)="pageIs = $event"
-                            [autoHide]="true"
-                          ></pagination-controls>
                         </div>
+                        <div class="float-right div-search">
+                          <span>Search : </span>
+                          <input [(ngModel)]="typeFilter" />
+                        </div>
+                        <table
+                          class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
+                        >
+                          <thead class="thead-light">
+                            <tr>
+                              <th
+                                [class.active]="orderIS === 'tag'"
+                                (click)="setOrderforInservice('tag')"
+                              >
+                                Tag
+                                <span [hidden]="reverseIS == ''">▼</span>
+                                <span [hidden]="reverseIS != ''">▲</span>
+                              </th>
+                              <th
+                                [class.active]="orderIS === 'hp'"
+                                (click)="setOrderforInservice('hp')"
+                              >
+                                Hp
+                                <span [hidden]="reverseIS == ''">▼</span>
+                                <span [hidden]="reverseIS != ''">▲</span>
+                              </th>
+                              <th
+                                [class.active]="orderIS === 'rpm'"
+                                (click)="setOrderforInservice('rpm')"
+                              >
+                                Rpm
+                                <span [hidden]="reverseIS == ''">▼</span>
+                                <span [hidden]="reverseIS != ''">▲</span>
+                              </th>
+                              <th
+                                [class.active]="orderIS === 'frame'"
+                                (click)="setOrderforInservice('frame')"
+                              >
+                                Frame
+                                <span [hidden]="reverseIS == ''">▼</span>
+                                <span [hidden]="reverseIS != ''">▲</span>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              *ngFor="
+                                let motor of inServiceMotors
+                                  | orderBy : reverseIS + orderIS
+                                  | filterBy
+                                    : ['tag', 'hp', 'rpm', 'frame']
+                                    : typeFilter
+                                  | paginate
+                                    : {
+                                        id: 'paginationIS',
+                                        itemsPerPage: itemsForPaginationIS,
+                                        currentPage: pageIs
+                                      }
+                              "
+                            >
+                              <td>
+                                <a
+                                  href="javascript:void(0)"
+                                  (click)="goToView(motor.itemId, motor.tag, motor.typeName)"
+                                  data-bs-placement="bottom"
+                                  data-bs-toggle="tooltip"
+                                  title="click here to view this Item"
+                                  [innerHTML]="motor.tag"
+                                ></a>
+                              </td>
+                              <td>{{ motor.hp }}</td>
+                              <td>{{ motor.rpm }}</td>
+                              <td>{{ motor.frame }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <pagination-controls
+                          class="my-pagination"
+                          id="paginationIS"
+                          (pageChange)="pageIs = $event"
+                          [autoHide]="true"
+                        ></pagination-controls>
                       </mat-tab>
+
+                      <!-- Tab 3 -->
                       <mat-tab>
                         <ng-template mat-tab-label>
                           <span> Spare </span>
                         </ng-template>
                         <div>
                           <br />
-                          <h5 class="card-title mb-0" style="color: red">
+                          <h5 class="card-title mb-0 text-danger">
                             Unmatched Spare Motors
                           </h5>
                           <br />
                           <div class="float-left">
-                            <span
-                              >Show
+                            <span>
+                              Show
                               <select [(ngModel)]="itemsForPaginationS">
                                 <option>5</option>
                                 <option>10</option>
@@ -343,32 +336,33 @@
                                 [class.active]="orderS === 'tag'"
                                 (click)="setOrderForSpare('tag')"
                               >
-                                Tag<span [hidden]="reverseS == ''">▼</span
-                                ><span [hidden]="reverseS != ''">▲</span>
+                                Tag
+                                <span [hidden]="reverseS == ''">▼</span>
+                                <span [hidden]="reverseS != ''">▲</span>
                               </th>
-
                               <th
                                 [class.active]="orderS === 'hp'"
                                 (click)="setOrderForSpare('hp')"
                               >
-                                Hp<span [hidden]="reverseS == ''">▼</span
-                                ><span [hidden]="reverseS != ''">▲</span>
+                                Hp
+                                <span [hidden]="reverseS == ''">▼</span>
+                                <span [hidden]="reverseS != ''">▲</span>
                               </th>
-
                               <th
                                 [class.active]="orderS === 'rpm'"
                                 (click)="setOrderForSpare('rpm')"
                               >
-                                Rpm<span [hidden]="reverseS == ''">▼</span
-                                ><span [hidden]="reverseS != ''">▲</span>
+                                Rpm
+                                <span [hidden]="reverseS == ''">▼</span>
+                                <span [hidden]="reverseS != ''">▲</span>
                               </th>
-
                               <th
                                 [class.active]="orderS === 'frame'"
                                 (click)="setOrderForSpare('frame')"
                               >
-                                Frame<span [hidden]="reverseS == ''">▼</span
-                                ><span [hidden]="reverseS != ''">▲</span>
+                                Frame
+                                <span [hidden]="reverseS == ''">▼</span>
+                                <span [hidden]="reverseS != ''">▲</span>
                               </th>
                             </tr>
                           </thead>
@@ -391,13 +385,7 @@
                               <td>
                                 <a
                                   href="javascript:void(0)"
-                                  (click)="
-                                    goToView(
-                                      motor.itemId,
-                                      motor.tag,
-                                      motor.typeName
-                                    )
-                                  "
+                                  (click)="goToView(motor.itemId, motor.tag, motor.typeName)"
                                   data-bs-placement="bottom"
                                   data-bs-toggle="tooltip"
                                   title="click here to view this Item"
@@ -429,6 +417,7 @@
   </div>
 </div>
 
+<!-- Spare Item Modal -->
 <ng-template #mytemplate>
   <div class="card">
     <div class="card-body">
@@ -458,13 +447,7 @@
             <td>
               <a
                 href="javascript:void(0)"
-                (click)="
-                  goToViewForSpare(
-                    spareItem.itemId,
-                    spareItem.tag,
-                    spareItem.typeName
-                  )
-                "
+                (click)="goToViewForSpare(spareItem.itemId, spareItem.tag, spareItem.typeName)"
                 data-bs-placement="bottom"
                 data-bs-toggle="tooltip"
                 title="click here to view this Item"
@@ -480,6 +463,8 @@
     </div>
   </div>
 </ng-template>
+
+<!-- Spares Modal -->
 <ng-template #sparesTemplate>
   <div class="card">
     <div class="card-body">
@@ -519,104 +504,8 @@
     </div>
   </div>
 </ng-template>
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+
+<!-- Loader Overlay -->
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

@@ -40,7 +40,7 @@ export class EditLocationDetailsComponent implements OnInit {
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  typeID: any;
+  typeId: any;
   locationattr: any = {};
   userName: string | null;
   isReqdAttr: any;
@@ -229,7 +229,7 @@ export class EditLocationDetailsComponent implements OnInit {
             this.location.typeId
           );
           this.getTypeAttributes(this.location.typeId);
-          this.typeID = this.location.typeId;
+          this.typeId = this.location.typeId;
         },
         () => {
           this.spinner.hide();

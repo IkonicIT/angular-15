@@ -4,10 +4,13 @@
       <div class="card">
         <div class="container">
           <h2 class="text-danger">Edit Parts</h2>
+
           <form class="m-4" [formGroup]="partForm" (ngSubmit)="updatePart()">
+            <!-- Success Message -->
             <p *ngIf="successMessage" class="alert alert-success">
               {{ successMessage }}
             </p>
+
             <div class="d-flex flex-row justify-content-center col-md-12 gap-4">
               <div class="form-group col-md-6">
                 <label class="ms-2" for="prdes1">PRDES1</label>
@@ -121,24 +124,25 @@
                 />
               </div>
             </div>
+
             <div class="d-flex flex-row justify-content-center col-md-12 gap-4">
               <div class="form-group col-md-12">
                 <label class="ms-2" for="prwrd1">PRWRD1</label>
                 <input
                   id="prwrd1"
                   formControlName="prwrd1"
-                  class="form-control m-2 bg-white"
+                  class="form-control bg-white"
                 />
               </div>
             </div>
 
+            <!-- Buttons -->
             <div class="d-flex flex-row justify-content-center">
-              <button type="submit" class="btn btn-primary me-2">Update</button>
+              <button type="submit" class="btn btn-primary me-2 mt-2">Update</button>
               <button
-                class="btn btn-primary ml-3"
+                class="btn btn-primary ml-3 back-button mt-2"
                 (click)="navigateToParts()"
                 type="button"
-                style="border-radius: 6px;"
               >
                 Back
               </button>

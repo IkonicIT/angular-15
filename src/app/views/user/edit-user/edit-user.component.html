@@ -6,7 +6,7 @@
           <button
             type="button"
             (click)="print()"
-            tooltip="Click to Print this Page"
+            ngbTooltip="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
@@ -14,18 +14,14 @@
           <button
             type="button"
             (click)="help()"
-            tooltip=" Instructions"
+            ngbTooltip=" Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
+            class="text-start"
+            style="border: 1px solid; width: fit-content; background-color: whitesmoke;"
             *ngIf="helpFlag == true"
           >
             Note: Mandatory Fields are required.<br />
@@ -82,22 +78,19 @@
                       >
                         <label for="name">User Name Check:</label> <br />
                         <span
-                          class="form-control"
-                          style="color: red"
+                          class="form-control text-danger"
                           *ngIf="isMinLength == false"
                         >
                           User Name cannot be empty or minimum lengh should be 4
                         </span>
                         <span
-                          class="form-control"
-                          style="color: red"
+                          class="form-control text-danger"
                           *ngIf="isDuplicateTag == true"
                         >
                           User Name already exists
                         </span>
                         <span
-                          class="form-control"
-                          style="color: blue"
+                          class="form-control text-primary"
                           *ngIf="isDuplicateTag == false && isMinLength == true"
                         >
                           User Name Available
@@ -191,10 +184,8 @@
                         *ngIf="isEmailCheckVisible == true"
                       >
                         <label for="name">Email Check:</label> <br />
-
                         <span
-                          class="form-control"
-                          style="color: red"
+                          class="form-control text-danger"
                           *ngIf="
                             isDuplicate == true &&
                             model.email != null &&
@@ -204,8 +195,7 @@
                           Email already exists
                         </span>
                         <span
-                          class="form-control"
-                          style="color: blue"
+                          class="form-control text-primary"
                           *ngIf="
                             isDuplicate == false &&
                             model.email != null &&
@@ -255,7 +245,6 @@
                     <div *ngIf="model.isVendor != true" class="row">
                       <div class="form-group col-sm-6">
                         <label for="location">User's Top Location</label>
-
                         <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.topLocationId"
@@ -264,7 +253,6 @@
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="pLocation">User's Preferred Location</label>
-
                         <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.preferredLocationId"
@@ -279,7 +267,7 @@
                           type="checkbox"
                           [(ngModel)]="model.isVendor"
                           name="isVendor"
-                          #req="ngModel"
+                          #isVendor="ngModel"
                           id="isVendor"
                         />
                       </div>
@@ -297,15 +285,15 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="req" class="me-1"
+                        <label for="sendRFQ" class="me-1"
                           >Receive RFQ Notification
                         </label>
                         <input
                           type="checkbox"
                           [(ngModel)]="model.sendReceiveRFQ"
-                          name="req"
-                          #req="ngModel"
-                          id="req"
+                          name="sendRFQ"
+                          #sendRFQ="ngModel"
+                          id="sendRFQ"
                         />
                       </div>
                     </div>
@@ -313,14 +301,14 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          tooltip="Update this User"
+                          ngbTooltip="Update this User"
                           class="btn btn-primary btn-right"
                         >
                           Update
                         </button>
                         <button
                           type="button"
-                          tooltip="Cancel"
+                          ngbTooltip="Cancel"
                           (click)="cancelUser()"
                           class="btn btn-primary"
                         >
@@ -336,7 +324,7 @@
                         <div>
                           <label *ngIf="eachAttr.isRequired == true"
                             >{{ eachAttr.name
-                            }}<span style="color: red">*</span></label
+                            }}<span class="text-danger">*</span></label
                           >
                           <label *ngIf="eachAttr.isRequired == false">{{
                             eachAttr.name

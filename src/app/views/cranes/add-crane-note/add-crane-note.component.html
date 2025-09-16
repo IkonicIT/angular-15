@@ -2,12 +2,14 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+
+        <!-- Top Buttons -->
+        <div class="form-group col-sm-12 text-end">
           <button
             type="button"
             (click)="print()"
             tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm me-2"
           >
             Print
           </button>
@@ -20,13 +22,8 @@
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            class="help-box"
           >
             Note: Mandatory Fields are required.<br />
             *To create a new note:<br />
@@ -34,7 +31,7 @@
             2.Enter the data for the new note.<br />
             3.Click the 'Save' button.<br />
             *To edit an existing note: <br />
-            1.click the 'Edit' button.<br />
+            1.Click the 'Edit' button.<br />
             2.Make the necessary changes.<br />
             3.Click the 'Update' button.<br />
             *To delete an existing note: <br />
@@ -45,14 +42,16 @@
         <div class="card-body">
           <p class="card-text">Add Vendor Notes</p>
 
+          <!-- Alerts -->
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
-            vendor Notes successfully.
+            Vendor Notes successfully.
           </alert>
 
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
             Please Enter Title
           </alert>
 
+          <!-- Form -->
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding">
               <div class="card">
@@ -63,6 +62,8 @@
                   novalidate
                 >
                   <div class="card-body">
+
+                    <!-- Title & Date -->
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="title">Title</label>
@@ -100,6 +101,7 @@
                       </div>
                     </div>
 
+                    <!-- JOB & PO Numbers -->
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="job">JOB Number</label>
@@ -127,29 +129,29 @@
                       </div>
                     </div>
 
+                    <!-- Details -->
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="details">Details</label>
                         <textarea
                           id="details"
-                          name="textarea-input"
-                          rows="2"
-                          cols="4"
                           name="details"
-                          #details="ngModel"
+                          rows="2"
                           class="form-control"
                           [(ngModel)]="model.details"
+                          #details="ngModel"
                           placeholder="Enter Description"
                         ></textarea>
                       </div>
                     </div>
 
+                    <!-- Save & Cancel Buttons -->
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
+                          type="submit"
                           tooltip="Save Vendor Note"
-                          class="btn btn-primary"
-                          style="border-radius: 6px;"
+                          class="btn btn-primary save-btn"
                         >
                           Save
                         </button>
@@ -157,18 +159,20 @@
                           type="button"
                           tooltip="Cancel"
                           (click)="cancelVendorNotes()"
-                          class="btn btn-outline-danger btn-sm"
-                          style="border-radius: 6px;"
+                          class="btn btn-outline-danger btn-sm cancel-btn"
                         >
                           Cancel
                         </button>
                       </div>
                     </div>
+
                   </div>
                 </form>
               </div>
             </div>
           </div>
+          <!-- End Form -->
+
         </div>
       </div>
     </div>

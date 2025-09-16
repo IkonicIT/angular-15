@@ -24,13 +24,13 @@
             Help
           </button>
           <div
+            *ngIf="helpFlag"
             style="
               text-align: left;
               border: 1px solid;
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
           >
             Note: Mandatory Fields are required.<br />
             * To create a new Company:<br />
@@ -50,25 +50,25 @@
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Company details updated successfully.
           </alert>
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert type="danger" *ngIf="index === -1" [dismissible]="dismissible">
             Please Enter Company Name and Required Attributes
           </alert>
-          <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
+          <alert type="danger" *ngIf="index === -2" [dismissible]="dismissible">
             Entered Company Name already present
           </alert>
+
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding col-sm-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Editing Company '{{ model.name }}'</strong>
                 </div>
+
                 <form name="form" #f="ngForm" novalidate>
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-6 form-group-padding">
-                        <label for="name"
-                          >Name <span style="color: red">*</span></label
-                        >
+                        <label for="name">Name <span style="color: red">*</span></label>
                         <input
                           type="text"
                           [(ngModel)]="model.comapnyid"
@@ -87,6 +87,7 @@
                           placeholder="Enter Company Name"
                         />
                       </div>
+
                       <div class="form-group col-sm-6 form-group-padding">
                         <label for="url">URL</label>
                         <input
@@ -100,6 +101,7 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6 form-group-padding">
                         <label for="phone">Phone</label>
@@ -113,19 +115,21 @@
                           placeholder="Enter Phone"
                         />
                       </div>
+
                       <div class="form-group col-sm-6 form-group-padding">
                         <label for="fax">Fax</label>
                         <input
                           type="text"
                           class="form-control"
                           [(ngModel)]="model.fax"
-                          id="fax"
                           name="fax"
                           #fax="ngModel"
+                          id="fax"
                           placeholder="Enter Fax"
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6 form-group-padding">
                         <label for="AddressLine1">Address Line1</label>
@@ -139,6 +143,7 @@
                           placeholder="Enter Address 1"
                         />
                       </div>
+
                       <div class="form-group col-sm-6 form-group-padding">
                         <label for="AddressLine2">Address Line2</label>
                         <input
@@ -152,6 +157,7 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6 form-group-padding">
                         <label for="city">City</label>
@@ -165,6 +171,7 @@
                           placeholder="Enter City"
                         />
                       </div>
+
                       <div class="form-group col-sm-6 form-group-padding">
                         <label for="state">State</label>
                         <input
@@ -178,6 +185,7 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6 form-group-padding">
                         <label for="pcode">Postal Code</label>
@@ -202,37 +210,33 @@
                           id="status"
                         >
                           <option value="">Choose..</option>
-                          <option
-                            [ngValue]="stat.statusId"
-                            *ngFor="let stat of statuses"
-                          >
+                          <option *ngFor="let stat of statuses" [ngValue]="stat.statusId">
                             {{ stat.status }}
                           </option>
                         </select>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 form-group-padding">
                         <label for="desc">Description</label>
                         <textarea
                           id="desc"
-                          name="textarea-input"
+                          name="description"
                           rows="2"
                           cols="4"
                           class="form-control"
                           [(ngModel)]="model.description"
-                          name="description"
                           #description="ngModel"
                           placeholder="Enter Description"
                         ></textarea>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 form-group-padding">
-                        <label for="logo">Add Company Logo: </label>
-                        <label for="desc"
-                          ><strong>{{ model.companyfileName }}</strong></label
-                        >
+                        <label for="logo">Add Company Logo:</label>
+                        <label for="desc"><strong>{{ model.companyfileName }}</strong></label>
                         <input
                           type="file"
                           class="form-control"
@@ -242,38 +246,35 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 form-group-padding">
                         <label for="companyType">Company Types</label>
-
-                       <select
-  #dropdown
-  id="itemType"
-  class="form-control custom-dropdown"
-  [(ngModel)]="model.typeId"
-  (change)="getAttributes(dropdown.value)"
->
-  <option *ngFor="let item of items" [value]="item.value">
-    {{ item.text }}
-  </option>
-</select>
-
+                        <select
+                          #dropdown
+                          id="itemType"
+                          class="form-control custom-dropdown"
+                          [(ngModel)]="model.typeId"
+                          (change)="getAttributes(dropdown.value)"
+                        >
+                          <option *ngFor="let item of items" [value]="item.value">
+                            {{ item.text }}
+                          </option>
+                        </select>
                       </div>
                     </div>
+
                     <div class="row" *ngIf="isOwnerAdmin === 'true'">
                       <div class="form-group col-sm-12 form-group-padding">
-                        <label for="tracratAnnouncements"
-                          >Tracrat Announcements</label
-                        >
+                        <label for="tracratAnnouncements">Tracrat Announcements</label>
                         <textarea
                           id="tracratAnnouncement"
-                          name="textarea-input"
+                          name="tracratAnnouncements"
                           rows="2"
                           cols="4"
-                          name="tracratAnnouncements"
-                          #tracratAnnouncements="ngModel"
                           class="form-control"
                           [(ngModel)]="model.tracratAnnouncements"
+                          #tracratAnnouncements="ngModel"
                           placeholder="Enter Description"
                         ></textarea>
                         <button
@@ -288,158 +289,59 @@
                         </button>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 form-group-padding">
-                        <label for="companyAnnouncements"
-                          >Company Announcements</label
-                        >
+                        <label for="companyAnnouncements">Company Announcements</label>
                         <textarea
                           id="companyAnnouncements"
-                          name="textarea-input"
+                          name="companyAnnouncements"
                           rows="2"
                           cols="4"
-                          name="companyAnnouncements"
-                          #companyAnnouncements="ngModel"
                           class="form-control"
                           [(ngModel)]="model.announcement.announcementText"
+                          #companyAnnouncements="ngModel"
                           placeholder="Enter announcement"
                         ></textarea>
                       </div>
                     </div>
-                    <div
-                      class="row"
-                      *ngFor="let eachAttr of typeAttributes; let i = index"
-                    >
-                      <div class="form-group col-sm-12">
-                        <label *ngIf="eachAttr.isRequired == true"
-                          >{{ eachAttr.name
-                          }}<span style="color: red">*</span></label
-                        >
-                        <label *ngIf="eachAttr.isRequired == false">{{
-                          eachAttr.name
-                        }}</label>
-                        <div>
-                          <input
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 1"
-                            type="number"
-                            class="form-control"
-                            [(ngModel)]="eachAttr.value"
-                            [tooltip]="eachAttr.tooltip"
-                            name="number{{ i }}"
-                            #state="ngModel"
-                            placeholder="Enter Value"
-                          />
-                          <input
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 2"
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="eachAttr.value"
-                            name="text{{ i }}"
-                          />
-                          <input
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 6"
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="eachAttr.value"
-                            name="multiValue{{ i }}"
-                          />
-                          <input
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 3"
-                            type="date"
-                            class="form-control"
-                            [(ngModel)]="eachAttr.value"
-                            [tooltip]="eachAttr.tooltip"
-                            triggers="focus"
-                            placement="top"
-                            name="state"
-                            #state="ngModel"
-                            placeholder="Select date"
-                          />
 
-                          <select
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 4"
-                            class="form-control custom-dropdown"
-                            [tooltip]="eachAttr.tooltip"
-                            triggers="focus"
-                            placement="top"
-                            [(ngModel)]="eachAttr.value"
-                            name="select{{ i }}"
-                            name="type"
-                            #type="ngModel"
-                          >
+                    <div class="row" *ngFor="let eachAttr of typeAttributes; let i = index">
+                      <div class="form-group col-sm-12">
+                        <label *ngIf="eachAttr.isRequired">{{ eachAttr.name }}<span style="color: red">*</span></label>
+                        <label *ngIf="!eachAttr.isRequired">{{ eachAttr.name }}</label>
+
+                        <div>
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId === 1" type="number" class="form-control" [(ngModel)]="eachAttr.value" name="number{{ i }}" [tooltip]="eachAttr.tooltip" placeholder="Enter Value" />
+
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId === 2" type="text" class="form-control" [(ngModel)]="eachAttr.value" name="text{{ i }}" />
+
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId === 6" type="text" class="form-control" [(ngModel)]="eachAttr.value" name="multiValue{{ i }}" />
+
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId === 3" type="date" class="form-control" [(ngModel)]="eachAttr.value" name="date{{ i }}" [tooltip]="eachAttr.tooltip" placeholder="Select date" />
+
+                          <select *ngIf="eachAttr.attributeType.attributeTypeId === 4" class="form-control custom-dropdown" [(ngModel)]="eachAttr.value" name="select{{ i }}" [tooltip]="eachAttr.tooltip">
                             <option value="">Choose..</option>
-                            <option
-                              [ngValue]="list.listItem"
-                              *ngFor="
-                                let list of eachAttr.attributeListItemResource
-                              "
-                            >
-                              {{ list.listItem }}
-                            </option>
+                            <option *ngFor="let list of eachAttr.attributeListItemResource" [ngValue]="list.listItem">{{ list.listItem }}</option>
                           </select>
-                          <div
-                            class="form-check"
-                            [tooltip]="eachAttr.tooltip"
-                            triggers="focus"
-                            placement="top"
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 5"
-                          >
-                            <label
-                              class="form-check-label margin-right"
-                              for="radio1"
-                              >&nbsp;
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                [(ngModel)]="eachAttr.value"
-                                name="radios"
-                                id="radio1"
-                                value="Y"
-                                checked
-                              />Y&nbsp;&nbsp;&nbsp;&nbsp;
+
+                          <div *ngIf="eachAttr.attributeType.attributeTypeId === 5" class="form-check" [tooltip]="eachAttr.tooltip">
+                            <label class="form-check-label margin-right">
+                              <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value" name="radio{{ i }}" value="Y" checked />Y
                             </label>
-                            <label
-                              class="form-check-label margin-right"
-                              for="radio2"
-                              >&nbsp;
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                [(ngModel)]="eachAttr.value"
-                                name="radios"
-                                id="radio2"
-                                value="N"
-                              />N&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label class="form-check-label margin-right">
+                              <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value" name="radio{{ i }}" value="N" />N
                             </label>
-                            <label class="form-check-label" for="radio3"
-                              >&nbsp;&nbsp;
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                [(ngModel)]="eachAttr.value"
-                                name="radios"
-                                id="radio3"
-                                value="N/A"
-                              />N/A
+                            <label class="form-check-label">
+                              <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value" name="radio{{ i }}" value="N/A" />N/A
                             </label>
                           </div>
-                          <textarea
-                            *ngIf="eachAttr.attributeType.attributeTypeId == 7"
-                            [tooltip]="eachAttr.tooltip"
-                            triggers="focus"
-                            placement="top"
-                            name="textarea-input"
-                            rows="2"
-                            cols="4"
-                            name="companyAnnouncements"
-                            #companyAnnouncements="ngModel"
-                            class="form-control"
-                            [(ngModel)]="eachAttr.value"
-                            placeholder="Enter Value"
-                          ></textarea>
+
+                          <textarea *ngIf="eachAttr.attributeType.attributeTypeId === 7" rows="2" cols="4" class="form-control" [(ngModel)]="eachAttr.value" placeholder="Enter Value" name="textarea{{ i }}"></textarea>
                         </div>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
@@ -468,70 +370,42 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index:2; cursor:pointer;">
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    width: 60px;
+    height: 60px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
 
   @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
   }
 
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
-  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -541,37 +415,15 @@
   }
 
   @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
 
   @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
 
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  .btn-link[routerLink="/forgot-password"] { color: red; }
+  .cent { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 </style>

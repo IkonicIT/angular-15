@@ -24,13 +24,13 @@
             Help
           </button>
           <div
+            *ngIf="helpFlag"
             style="
               text-align: left;
               border: 1px solid;
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
           >
             Note: Mandatory Fields are required.<br />
             * To create a new Company:<br />
@@ -49,7 +49,6 @@
         <div class="card-body">
           <p class="card-text">
             Manage Companies
-
             <button
               type="button"
               class="btn btn-primary float-right"
@@ -57,17 +56,17 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add a new Company."
-               style="border-radius: 6px;"
-              placement="top"
+              style="border-radius: 6px;"
             >
               Add Company
             </button>
           </p>
+
           <div class="select-pagination-option">
             <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="itemsForPagination" (change) = "onChange($event.target)">
+              <span>
+                Show
+                <select [(ngModel)]="itemsForPagination" (change)="onChange($event.target)">
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
@@ -77,36 +76,29 @@
               </span>
             </div>
           </div>
+
           <div class="float-right div-search">
             <span>Search : </span>
             <input [(ngModel)]="companyFilter" />
           </div>
 
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'name'"
-                  (click)="setOrder('name')"
-                >
-                  Companyname<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'name'" (click)="setOrder('name')">
+                  Companyname
+                  <span [hidden]="reverse === ''">▼</span>
+                  <span [hidden]="reverse !== ''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'phone'"
-                  (click)="setOrder('phone')"
-                >
-                  Phone<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'phone'" (click)="setOrder('phone')">
+                  Phone
+                  <span [hidden]="reverse === ''">▼</span>
+                  <span [hidden]="reverse !== ''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'city'"
-                  (click)="setOrder('city')"
-                >
-                  City<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'city'" (click)="setOrder('city')">
+                  City
+                  <span [hidden]="reverse === ''">▼</span>
+                  <span [hidden]="reverse !== ''">▲</span>
                 </th>
                 <th>Attachments</th>
                 <th>Notes</th>
@@ -115,13 +107,10 @@
             </thead>
             <tbody>
               <tr
-                *ngFor="
-                  let company of companies
-                    | orderBy : reverse + order
-                    | filterBy : ['name', 'phone', 'city'] : companyFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
-                "
+                *ngFor="let company of companies
+                  | orderBy: reverse + order
+                  | filterBy: ['name','phone','city']:companyFilter
+                  | paginate: { itemsPerPage: itemsForPagination, currentPage: p }"
               >
                 <td>{{ company.name }}</td>
                 <td>{{ company.phone }}</td>
@@ -138,7 +127,6 @@
                     Attachments
                   </button>
                 </td>
-
                 <td>
                   <button
                     type="button"
@@ -157,7 +145,7 @@
                     class="btn btn-outline-danger btn-sm mb-1 btn-right"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
-                    title="view this Company"
+                    title="View this Company"
                     [routerLink]="['../view', company.companyId]"
                   >
                     View
@@ -187,12 +175,12 @@
               </tr>
             </tbody>
           </table>
+
           <pagination-controls
             class="my-pagination"
             (pageChange)="p = $event"
             [autoHide]="true"
-          >
-          </pagination-controls>
+          ></pagination-controls>
         </div>
       </div>
     </div>
@@ -202,24 +190,14 @@
 <ng-template #templateNested>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Second modal</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-     (click)="modalRef2?.hide()"
-    >
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2?.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     This is nested modal.
     <br />
-    <button
-      *ngIf="modalRef"
-      type="button"
-      class="btn btn-danger"
-      (click)="closeFirstModal()"
-    >
+    <button *ngIf="modalRef" type="button" class="btn btn-danger" (click)="closeFirstModal()">
       Close first modal
     </button>
   </div>
@@ -228,15 +206,10 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>
-      Click(Yes) to permanently delete this Company or Click(No) to discard this
-      action.
+      Click(Yes) to permanently delete this Company or Click(No) to discard this action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
   </div>
 </ng-template>
 
@@ -253,91 +226,42 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
     cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    width: 60px;
+    height: 60px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
 
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
-  
   .animate-bottom {
     position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
     animation-name: animatebottom;
     animation-duration: 1s;
   }
 
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
   @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
 
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  .btn-link[routerLink="/forgot-password"] { color: red; }
+  .cent { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 </style>

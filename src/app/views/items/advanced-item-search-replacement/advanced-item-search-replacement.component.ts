@@ -87,7 +87,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
     }
 
     this.itemId = this.route.snapshot.params['itemId'];
-    this.typeId = this.route.snapshot.params['typeID'];
+    this.typeId = this.route.snapshot.params['typeId'];
 
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;

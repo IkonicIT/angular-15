@@ -24,13 +24,13 @@
             Help
           </button>
           <div
+            *ngIf="helpFlag"
             style="
               text-align: left;
               border: 1px solid;
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
           >
             Note: Mandatory Fields are required.<br />
             * To create a new Company:<br />
@@ -51,10 +51,10 @@
             Company Details saved successfully.
           </alert>
 
-          <alert type="danger" *ngIf="index == -1">
+          <alert type="danger" *ngIf="index === -1">
             Please Enter Company Name
           </alert>
-          <alert type="danger" *ngIf="index == -2">
+          <alert type="danger" *ngIf="index === -2">
             Company Name already present
           </alert>
 
@@ -66,9 +66,9 @@
                 </div>
                 <form
                   name="form"
-                  (ngSubmit)="f.form.valid && saveCompany()"
                   #f="ngForm"
-                  nphonephonneovalidate
+                  (ngSubmit)="f.form.valid && saveCompany()"
+                  novalidate
                 >
                   <div class="card-body">
                     <div class="row">
@@ -105,10 +105,18 @@
                           placeholder="Enter URL"
                         />
                       </div>
-                        <div class="form-check ms-3 mb-2">
-                          <input type="checkbox" class="form-check-input" [(ngModel)]="model.isPartnerCompany" name="isPartnerCompany" id="isPartnerCompany">
-                          <label class="form-check-label" for="isPartnerCompany">Partner Company</label>
-                        </div>
+                      <div class="form-check ms-3 mb-2">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          [(ngModel)]="model.isPartnerCompany"
+                          name="isPartnerCompany"
+                          id="isPartnerCompany"
+                        />
+                        <label class="form-check-label" for="isPartnerCompany">
+                          Partner Company
+                        </label>
+                      </div>
                     </div>
 
                     <div class="row">
@@ -130,9 +138,9 @@
                           type="text"
                           class="form-control"
                           [(ngModel)]="model.fax"
-                          id="fax"
                           name="fax"
                           #fax="ngModel"
+                          id="fax"
                           placeholder="Enter Fax"
                         />
                       </div>
@@ -208,7 +216,6 @@
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="status">Status</label>
-
                         <select
                           class="form-control custom-dropdown"
                           [(ngModel)]="model.status"
@@ -216,10 +223,10 @@
                           #status="ngModel"
                           id="status"
                         >
-                          <option value="" selected="true">Choose..</option>
+                          <option value="" selected>Choose..</option>
                           <option
-                            [ngValue]="stat.status"
                             *ngFor="let stat of statuses"
+                            [ngValue]="stat.status"
                           >
                             {{ stat.status }}
                           </option>
@@ -232,12 +239,11 @@
                         <label for="desc">Description</label>
                         <textarea
                           id="desc"
-                          name="textarea-input"
+                          name="description"
                           rows="2"
                           cols="4"
                           class="form-control"
                           [(ngModel)]="model.description"
-                          name="description"
                           #description="ngModel"
                           placeholder="Enter Description"
                         ></textarea>
@@ -274,18 +280,17 @@
 
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="companyAnnouncement"
-                          >Company Announcements</label
-                        >
+                        <label for="companyAnnouncement">
+                          Company Announcements
+                        </label>
                         <textarea
                           id="companyAnnouncement"
-                          name="textarea-input"
+                          name="companyAnnouncements"
                           rows="2"
                           cols="4"
-                          name="companyAnnouncements"
-                          #companyAnnouncements="ngModel"
                           class="form-control"
                           [(ngModel)]="model.companyAnnouncements"
+                          #companyAnnouncements="ngModel"
                           placeholder="Enter Description"
                         ></textarea>
                       </div>
@@ -294,6 +299,7 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
+                          type="submit"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Save Company"
@@ -325,6 +331,7 @@
     </div>
   </div>
 </div>
+
 <div
   *ngIf="loader"
   style="
@@ -342,8 +349,9 @@
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: absolute;
@@ -366,7 +374,6 @@
     0% {
       -webkit-transform: rotate(0deg);
     }
-
     100% {
       -webkit-transform: rotate(360deg);
     }
@@ -376,13 +383,11 @@
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
 
-  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -396,7 +401,6 @@
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0px;
       opacity: 1;
@@ -408,7 +412,6 @@
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0;
       opacity: 1;

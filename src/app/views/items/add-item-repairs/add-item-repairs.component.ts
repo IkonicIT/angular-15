@@ -276,7 +276,7 @@ export class AddItemRepairsComponent implements OnInit {
           this.index = -2;
           window.scroll(0, 0);
         } else {
-          this.model.completedby = this.model.complete == true ? this.userName : null;
+          this.model.completedBy = this.model.complete == true ? this.userName : null;
           if (this.model.failureCause == 0) {
             if (this.model.newFailureCauseSp != undefined)
               this.updateFailureTypeAndCauses(this.model.failureType);
@@ -289,7 +289,7 @@ export class AddItemRepairsComponent implements OnInit {
           this.addItemRepair();
         }
       } else {
-        this.model.completedby = this.model.complete == true ? this.userName : null;
+        this.model.completedBy = this.model.complete == true ? this.userName : null;
         if (this.model.failureType != null && this.model.failureCause == 0) {
           if (this.model.newFailureCauseSp != undefined)
             this.updateFailureTypeAndCauses(this.model.failureType);
@@ -323,7 +323,7 @@ export class AddItemRepairsComponent implements OnInit {
           this.index = -2;
           window.scroll(0, 0);
         } else {
-          this.model.completedby = this.model.complete == true ? this.userName : null;
+          this.model.completedBy = this.model.complete == true ? this.userName : null;
           if (this.model.failureCause == 0) {
             if (this.model.newFailureCauseSp != undefined)
               this.updateFailureTypeAndCauses(this.model.failureType);
@@ -336,7 +336,7 @@ export class AddItemRepairsComponent implements OnInit {
           this.addItemRepair();
         }
       } else {
-        this.model.completedby = this.model.complete == true ? this.userName : null;
+        this.model.completedBy = this.model.complete == true ? this.userName : null;
         if (this.model.failureType != null && this.model.failureCause == 0) {
           if (this.model.newFailureCauseSp != undefined)
             this.updateFailureTypeAndCauses(this.model.failureType);
@@ -357,7 +357,7 @@ export class AddItemRepairsComponent implements OnInit {
       typeName: this.model.typeName,
       actualCompletion: this.model.actualCompletion ?? null,
       complete: this.model.complete ?? false,
-      completedBy: this.model.completedby,
+      completedBy: this.model.completedBy,
       dateAcknowledged: new Date(),
       dateInitiated: new Date(),
       estimatedCompletion: this.model.estimatedCompletion ?? null,

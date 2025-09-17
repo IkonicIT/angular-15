@@ -293,7 +293,7 @@ export class EditcompanydetailsComponent implements OnInit {
       const result = reader.result as string;
       this.model.logo = result.split(',')[1];
       this.model.companycontentType = result.split(',')[0].split(':')[1].split(';')[0];
-      this.model.companyfileName = this.file?.name;
+      this.model.companyFileName = this.file?.name;
     };
   }
 

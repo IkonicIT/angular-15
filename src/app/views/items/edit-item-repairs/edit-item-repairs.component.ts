@@ -321,9 +321,9 @@ export class EditItemRepairsComponent implements OnInit {
         window.scroll(0, 0);
       } else {
         if (this.model.complete === true) {
-          this.model.completedby = this.userName;
+          this.model.completedBy = this.userName;
         } else {
-          this.model.completedby = null;
+          this.model.completedBy = null;
         }
         if (this.model.failureType != null && this.model.failureCause == 0) {
           if (this.model.newFailureCauseSp !== undefined)
@@ -338,9 +338,9 @@ export class EditItemRepairsComponent implements OnInit {
       }
     } else {
       if (this.model.complete === true) {
-        this.model.completedby = this.userName;
+        this.model.completedBy = this.userName;
       } else {
-        this.model.completedby = null;
+        this.model.completedBy = null;
       }
 
       if (this.model.failureType != null && this.model.failureCause == 0) {
@@ -360,9 +360,9 @@ export class EditItemRepairsComponent implements OnInit {
     this.model = {
       actualCompletion: this.model.actualCompletion ?? null,
       complete: this.model.complete ?? false,
-      completedBy: this.model.completedby,
-      dateAcknowledged: this.model.dateacknowledged,
-      dateInitiated: this.model.dateinitiated,
+      completedBy: this.model.completedBy,
+      dateAcknowledged: this.model.dateAcknowledged,
+      dateInitiated: this.model.dateInitiated,
       estimatedCompletion: this.model.estimatedCompletion ?? null,
       failureCause:
         this.model.failureCause != 0

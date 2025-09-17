@@ -113,3 +113,12 @@ label {
 ::ng-deep .alert-dismissible .btn-close {
   opacity: 0;
 }
+.col-padding .btn {
+  margin: 3px 5px 3px 0; 
+}
+
+.col-12.col-md-9.col-padding {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px; 
+}

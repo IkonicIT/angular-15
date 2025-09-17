@@ -37,24 +37,23 @@ export class AddcompanydetailsComponent implements OnInit {
     this.highestRank = parseInt(sessionStorage.getItem('highestRank') || '0', 10);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyId = this.globalCompany?.companyId ?? null;
-  
   }
 
   getStatuses(): void {
     this.spinner.show();
     this.statuses = [];
-    if(this.companyId != null){
-    this.companyStatusesService.getAllCompanyStatuses(this.companyId).subscribe(
-      (response: any) => {
-        this.spinner.hide();
-        this.statuses = response;
-      },
-      () => {
-        this.spinner.hide();
-      }
-    );
+    if (this.companyId != null) {
+      this.companyStatusesService.getAllCompanyStatuses(this.companyId).subscribe(
+        (response: any[]) => {
+          this.spinner.hide();
+          this.statuses = response;
+        },
+        () => {
+          this.spinner.hide();
+        }
+      );
+    }
   }
-}
 
   back(): void {
     this.router.navigate(['/company/list']);
@@ -86,7 +85,7 @@ export class AddcompanydetailsComponent implements OnInit {
       },
       city: this.model.city || '',
       companyContentType: this.model.companycontentType || '',
-      companyFileName: this.model.companyfileName || '',
+      companyFileName: this.model.companyFileName || '',
       logo: this.model.logo || '',
       companyId: 0,
       userId: sessionStorage.getItem('userId'),
@@ -127,7 +126,7 @@ export class AddcompanydetailsComponent implements OnInit {
         this.spinner.hide();
 
         window.scroll(0, 0);
-       if (this.file && this.companyId !== null) {
+        if (this.file && this.companyId !== null) {
           this.AddCompanyLogo(this.companyId.toString());
         }
         alert('Company successfully Added, Refreshing List');
@@ -179,7 +178,7 @@ export class AddcompanydetailsComponent implements OnInit {
       if (typeof myReader.result === 'string') {
         this.model.logo = myReader.result.split(',')[1];
         this.model.companycontentType = myReader.result.split(',')[0].split(':')[1].split(';')[0];
-        this.model.companyfileName = this.file?.name;
+        this.model.companyFileName = this.file?.name;
       }
     };
   }

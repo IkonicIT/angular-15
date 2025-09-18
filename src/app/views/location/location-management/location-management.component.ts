@@ -21,6 +21,7 @@ export class LocationManagementComponent implements OnInit {
   locationsWithHierarchy: any[] = [];
   order: string = 'name';
   reverse: string = '';
+  
   userName: string = '';
   locationFilter: string = '';
   itemsForPagination: number = 5;

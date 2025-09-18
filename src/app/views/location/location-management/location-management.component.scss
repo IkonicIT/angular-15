@@ -118,21 +118,24 @@ button,
 .custom-dropdown-wrapper {
   position: relative;
   display: block;
-  width: 100%;
+  width: 50%;
 }
 
 .custom-dropdown-wrapper app-dropdown-treeview-select {
   display: block;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .custom-dropdown-arrow {
   position: absolute;
-  right: 12px;
+  right: 8px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-45%);
   pointer-events: none;
-  font-size: 16px;
-  color: #555;
-  z-index: 1;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray; 
 }

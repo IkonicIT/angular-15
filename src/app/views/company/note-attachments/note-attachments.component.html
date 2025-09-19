@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
@@ -47,7 +47,7 @@
             Manage Note Attachments
             <button
               type="button"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right btn-group"
               (click)="addNoteAttachments()"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
@@ -189,10 +189,10 @@
       Click(Yes) to permanently delete this Company NoteAttachments or Click(No)
       to discard This action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">
       Yes
     </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">
       No
     </button>
   </div>

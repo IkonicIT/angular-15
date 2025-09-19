@@ -5,7 +5,7 @@
         <div class="form-group col-12 text-end">
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
             title="Click to Print this Page"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -15,7 +15,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group me-2"
             title="Instructions"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -44,12 +44,11 @@
             <button
               type="button"
               *ngIf="highestRankNum > 3"
-              class="btn btn-primary float-end"
+              class="btn btn-primary float-end btn-group"
               [routerLink]="['../addItemType']"
               title="Add a new Item."
               data-bs-toggle="tooltip"
               data-bs-placement="bottom"
-              style="border-radius: 6px;"
             >
               Add Item Type
             </button>
@@ -68,7 +67,7 @@
             </div>
             <div>
               Search:
-              <input [(ngModel)]="typeFilter" class="form-control d-inline-block ms-2" style="width: auto;" />
+              <input [(ngModel)]="typeFilter" style="width: auto;" />
             </div>
           </div>
 
@@ -166,8 +165,8 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Do you want to confirm?</p>
-    <button type="button" class="btn btn-outline-danger btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

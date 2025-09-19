@@ -17,10 +17,10 @@
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="form-group col-sm-12 text-right">
-                  <button type="button" (click)="print()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Click to Print this Page" class="btn btn-outline-danger btn-sm btn-right btn-top">
+                  <button type="button" (click)="print()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Click to Print this Page" class="btn btn-outline-danger btn-sm btn-right btn-top btn-group">
                     Print
                   </button>
-                  <button type="button" (click)="help()" data-bs-placement="bottom" data-bs-toggle="tooltip" title=" Instructions" class="btn btn-outline-danger btn-sm btn-top">
+                  <button type="button" (click)="help()" data-bs-placement="bottom" data-bs-toggle="tooltip" title=" Instructions" class="btn btn-outline-danger btn-sm btn-top btn-group">
                     Help
                   </button>
                   <div style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;" *ngIf="helpFlag">
@@ -42,28 +42,28 @@
                         <strong>Editing "{{ itemType }}" '{{ itemTag }}'</strong>
                       </div>
                       <div class="col-12 col-md-9 col-padding">
-                        <button [routerLink]="['../../cloneItem/' + itemId]" [disabled]="itemRank < 3" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Clone Item" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
+                        <button [routerLink]="['../../cloneItem/' + itemId]" [disabled]="itemRank < 3" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Clone Item" class="btn btn-primary margin-bottom-mobile btn-group" style="margin-right: 3px">
                           Clone
                         </button>
-                        <button type="button" class="btn btn-primary margin-bottom-mobile" [routerLink]="['../../itemRepairs/' + itemId]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Item Repairs" placement="top" style="margin-right: 3px">
+                        <button type="button" class="btn btn-primary margin-bottom-mobile btn-group" [routerLink]="['../../itemRepairs/' + itemId]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Item Repairs" placement="top" style="margin-right: 3px">
                           Item Repairs
                         </button>
-                        <button [routerLink]="['../../itemNotes/' + itemId + '/' + 0]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Notes" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
+                        <button [routerLink]="['../../itemNotes/' + itemId + '/' + 0]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Notes" class="btn btn-primary margin-bottom-mobile btn-group" style="margin-right: 3px">
                           Notes
                         </button>
-                        <button [routerLink]="['../../attachments/' + itemId + '/' + currentAttachmentId]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Click here to see Item Pictures" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
+                        <button [routerLink]="['../../attachments/' + itemId + '/' + currentAttachmentId]" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Click here to see Item Pictures" class="btn btn-primary margin-bottom-mobile btn-group" style="margin-right: 3px">
                           Pictures/Prints
                         </button>
-                        <button (click)="GoToWareHousetag()" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="WarehouseTag" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
+                        <button (click)="GoToWareHousetag()" *ngIf="itemRank > 0" data-bs-placement="bottom" data-bs-toggle="tooltip" title="WarehouseTag" class="btn btn-primary margin-bottom-mobile btn-group" style="margin-right: 3px">
                           WarehouseTag
                         </button>
-                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Find Replacement" [routerLink]="['/items/advancedSearch/' + itemId + '/' + model.typeId]" *ngIf="itemRank > 0" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
+                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Find Replacement" [routerLink]="['/items/advancedSearch/' + itemId + '/' + model.typeId]" *ngIf="itemRank > 0" class="btn btn-primary margin-bottom-mobile btn-group" style="margin-right: 3px">
                           Find Replacement
                         </button>
-                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Item Service" (click)="goToItemService()" *ngIf="itemRank > 3" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px">
+                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Item Service" (click)="goToItemService()" *ngIf="itemRank > 3" class="btn btn-primary margin-bottom-mobile btn-group" style="margin-right: 3px">
                           Service
                         </button>
-                        <button type="button" [disabled]="itemRank < 5 || highestRankNum == 9" class="btn btn-primary margin-bottom-mobile" style="margin-right: 3px" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Delete Item" (click)="openModal(confirmtemplate, itemId)">
+                        <button type="button" [disabled]="itemRank < 5 || highestRankNum == 9" class="btn btn-primary margin-bottom-mobile btn-group" style="margin-right: 3px" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Delete Item" (click)="openModal(confirmtemplate, itemId)">
                           Delete
                         </button>
                       </div>
@@ -111,7 +111,7 @@
                               <a [routerLink]="['../../../items/changeLog/', journal.entityId, journal.journalId]" (click)="modalRef.hide()">details</a>
                             </li>
                           </ul>
-                          <button type="button" (click)="openMoreChanges()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="click here for More Changes Log Feed" class="btn btn-primary more-changes">
+                          <button type="button" (click)="openMoreChanges()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="click here for More Changes Log Feed" class="btn btn-primary more-changes btn-group">
                             More Changes
                           </button>
                         </div>
@@ -189,7 +189,7 @@
                       <div class="form-group col-sm-2">
                         <label for="location"><strong class="text-danger"></strong></label>
                         <br />
-                        <button type="button" style="padding: 6px, 30px; margin-top: 8px; margin-left: -30px;" data-bs-placement="bottom" data-bs-toggle="tooltip" title=" Click here for Item Transfer " class="btn btn-primary" [routerLink]="['../../transferItem/' + itemId]">
+                        <button type="button" style="padding: 6px, 30px; margin-top: 8px; margin-left: -30px;" data-bs-placement="bottom" data-bs-toggle="tooltip" title=" Click here for Item Transfer " class="btn btn-primary btn-group" [routerLink]="['../../transferItem/' + itemId]">
                           Item Transfer
                         </button>
                       </div>
@@ -237,10 +237,10 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Update this Item" (click)="updateItem()" class="btn btn-primary btn-right">
+                        <button data-bs-placement="bottom" data-bs-toggle="tooltip" title="Update this Item" (click)="updateItem()" class="btn btn-primary btn-right btn-group">
                           Update
                         </button>
-                        <button type="button" (click)="back()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Back to ViewItem" class="btn btn-primary" style="border-radius: 6px;">
+                        <button type="button" (click)="back()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Back to ViewItem" class="btn btn-primary btn-group">
                           Back
                         </button>
                       </div>

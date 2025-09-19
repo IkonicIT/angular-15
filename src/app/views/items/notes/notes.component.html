@@ -54,7 +54,7 @@
                 </p>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New ItemNote"
@@ -68,8 +68,7 @@
                   title="Save Item Note"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   (click)="saveItemNote()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -80,20 +79,18 @@
                   title="Cancel the Changes for this Note"
                   *ngIf="itemRank > 3 && itemRank != 4 && itemRank != 5"
                   (click)="cancelItemNotes()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Item Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -102,9 +99,8 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add ItemNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   [routerLink]="['../../noteAttachments/' + model.journalId]"
-                  style="border-radius: 6px;"
                 >
                   Attachments
                 </button>
@@ -113,8 +109,7 @@
                   data-bs-toggle="tooltip"
                   title="Back to View Item"
                   (click)="backToItem()"
-                  class="btn btn-primary"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-group"
                 >
                   Back To Item
                 </button>
@@ -253,7 +248,7 @@
                 </p>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New ItemNote"
@@ -267,14 +262,14 @@
                   title="Save Item Note"
                   (click)="saveItemNote()"
                   disabled
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
                 <button
                   type="button"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Edit Item Note"
@@ -285,7 +280,7 @@
 
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Item Note"
@@ -299,7 +294,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add ItemNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   (click)="goToAttachments(model.journalId, model.entityName)"
                 >
                   Attachments
@@ -310,7 +305,7 @@
                   data-bs-toggle="tooltip"
                   title="Back to View Item"
                   (click)="backToItem()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                 >
                   Back To Item
                 </button>
@@ -452,11 +447,10 @@
                 </p>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New ItemNote"
-                  style="border-radius: 6px;"
                   (click)="addNotes()"
                 >
                   New
@@ -467,8 +461,7 @@
                   title="Save Item Note"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   (click)="updateItemNotes()"
-                  style="border-radius: 6px;"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -479,20 +472,18 @@
                   title="Cancel the Changes for this Note"
                   *ngIf="itemRank > 3"
                   (click)="cancelItemNotes()"
-                  style="border-radius: 6px;"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   [disabled]="itemRank < 6 || highestRank == 9"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Item Note"
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -501,7 +492,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add ItemNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   (click)="goToAttachments(model.journalId, model.entityName)"
                 >
                   Attachments
@@ -511,8 +502,7 @@
                   data-bs-toggle="tooltip"
                   title="Back to View Item"
                   (click)="backToItem()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Back To Item
                 </button>

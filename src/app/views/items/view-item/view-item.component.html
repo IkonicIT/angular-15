@@ -10,7 +10,7 @@
                   <button
                     type="button"
                     (click)="print()"
-                    class="btn btn-outline-danger btn-sm btn-right btn-top"
+                    class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
                     title="Click to Print this Page"
                   >
                     Print
@@ -18,7 +18,7 @@
                   <button
                     type="button"
                     (click)="help()"
-                    class="btn btn-outline-danger btn-sm btn-top"
+                    class="btn btn-outline-danger btn-sm btn-top btn-group"
                     title="Instructions"
                   >
                     Help
@@ -49,63 +49,63 @@
                       <button
                         [routerLink]="['../../cloneItem/' + itemId]"
                         [disabled]="itemRank < 3"
-                        class="btn btn-primary margin-bottom-mobile"
+                        class="btn btn-primary margin-bottom-mobile btn-group"
                       >
                         Clone
                       </button>
                       <button
                         *ngIf="itemRank > 0"
                         [routerLink]="['../../itemRepairs/' + itemId]"
-                        class="btn btn-primary margin-bottom-mobile"
+                        class="btn btn-primary margin-bottom-mobile btn-group"
                       >
                         Item Repairs
                       </button>
                       <button
                         *ngIf="itemRank > 0"
                         [routerLink]="['../../itemNotes/' + itemId + '/' + 0]"
-                        class="btn btn-primary margin-bottom-mobile"
+                        class="btn btn-primary margin-bottom-mobile btn-group"
                       >
                         Notes
                       </button>
                       <button
                         *ngIf="itemRank > 0"
                         [routerLink]="['../../attachments/' + itemId + '/' + currentAttachmentId]"
-                        class="btn btn-primary margin-bottom-mobile"
+                        class="btn btn-primary margin-bottom-mobile btn-group"
                       >
                         Pictures/Prints
                       </button>
                       <button
                         [routerLink]="['../../transferItem/' + itemId]"
                         [disabled]="itemRank < 4"
-                        class="btn btn-primary margin-bottom-mobile"
+                        class="btn btn-primary margin-bottom-mobile btn-group"
                       >
                         Item Transfer
                       </button>
                       <button
                         *ngIf="itemRank > 0"
                         (click)="GoToWareHousetag()"
-                        class="btn btn-primary margin-bottom-mobile"
+                        class="btn btn-primary margin-bottom-mobile btn-group"
                       >
                         WarehouseTag
                       </button>
                       <button
                         *ngIf="itemRank > 0"
                         [routerLink]="['/items/advancedSearch/' + itemId + '/' + model.typeId]"
-                        class="btn btn-primary margin-bottom-mobile"
+                        class="btn btn-primary margin-bottom-mobile btn-group"
                       >
                         Find Replacement
                       </button>
                       <button
                         *ngIf="itemRank > 3"
                         (click)="goToItemService()"
-                        class="btn btn-primary margin-bottom-mobile"
+                        class="btn btn-primary margin-bottom-mobile btn-group"
                       >
                         Service
                       </button>
                       <button
                         type="button"
                         [disabled]="itemRank < 5 || highestRankNum == 9"
-                        class="btn btn-primary margin-bottom-mobile"
+                        class="btn btn-primary margin-bottom-mobile btn-group"
                         (click)="openModal(confirmtemplate, itemId)"
                       >
                         Delete
@@ -141,7 +141,7 @@
                               <a [routerLink]="['../../../items/changeLog/', journal.entityId, journal.journalId]" (click)="modalRef.hide()">details</a>
                             </li>
                           </ul>
-                          <button type="button" (click)="openMoreChanges()" class="btn btn-primary more-changes">More Changes</button>
+                          <button type="button" (click)="openMoreChanges()" class="btn btn-primary more-changes btn-group">More Changes</button>
                         </div>
                       </div>
 

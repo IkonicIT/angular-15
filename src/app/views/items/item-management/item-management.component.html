@@ -8,6 +8,7 @@
             (click)="print()"
             tooltip="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-top btn-right"
+            style="border-radius: 6px;"
           >
             Print
           </button>
@@ -15,7 +16,8 @@
             type="button"
             (click)="help()"
             tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
+            style="border-radius: 6px;"
           >
             Help
           </button>
@@ -45,11 +47,10 @@
             <button
               type="button"
               *ngIf="highestRankNum > 2"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right btn-group"
               (click)="goToAddItem()"
               tooltip="Add a new Item."
               placement="top"
-              style="border-radius: 6px;"
             >
               Add Item
             </button>
@@ -124,8 +125,7 @@
                 type="button"
                 (click)="getSearchedItems()"
                 tooltip="Search an item"
-                class="btn btn-primary"
-                style="border-radius: 6px;"
+                class="btn btn-primary btn-group"
               >
                 Search
               </button>

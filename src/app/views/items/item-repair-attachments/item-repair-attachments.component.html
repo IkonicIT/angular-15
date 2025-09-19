@@ -54,7 +54,7 @@
           <div class="select-pagination-option mb-2">
             <div class="float-start">
               Show
-              <select [(ngModel)]="itemsForPagination" class="form-select d-inline w-auto">
+              <select [(ngModel)]="itemsForPagination">
                 <option>5</option>
                 <option>10</option>
                 <option>25</option>
@@ -64,7 +64,7 @@
             </div>
             <div class="float-end div-search">
               Search:
-              <input [(ngModel)]="documentFilter" class="form-control d-inline w-auto ms-2" />
+              <input [(ngModel)]="documentFilter"/>
             </div>
           </div>
 

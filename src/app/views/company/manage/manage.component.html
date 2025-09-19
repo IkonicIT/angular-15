@@ -14,6 +14,7 @@
               data-bs-toggle="tooltip"
               title="Click to Print this Page"
               class="btn btn-outline-danger btn-sm btn-right btn-top"
+              style="border-radius: 6px;"
             >
               Print
             </button>
@@ -24,6 +25,7 @@
               data-bs-toggle="tooltip"
               title=" Instructions"
               class="btn btn-outline-danger btn-sm btn-top"
+              style="border-radius: 6px;"
             >
               Help
             </button>
@@ -105,6 +107,7 @@
                   class="btn btn-primary btn-right"
                   disabled
                   [routerLink]="['../../../noteAttachments/' + model.journalId]"
+                  style="border-radius: 6px;"
                 >
                   Attachments
                 </button>
@@ -259,6 +262,7 @@
                   data-bs-toggle="tooltip"
                   title="Add New CompanyNote"
                   (click)="addNotes()"
+                  style="border-radius: 6px;"
                 >
                   New
                 </button>

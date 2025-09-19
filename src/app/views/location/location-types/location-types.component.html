@@ -9,7 +9,7 @@
             (click)="print()"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
@@ -18,7 +18,7 @@
             (click)="help()"
             data-bs-toggle="tooltip"
             title="Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
@@ -44,11 +44,10 @@
             <button
               type="button"
               [disabled]="highestRank < 6"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right btn-group"
               [routerLink]="['../addLocationType']"
               data-bs-toggle="tooltip"
               title="Add a new LocationType."
-              style="border-radius:6px;"
             >
               Add Location Type
             </button>
@@ -146,8 +145,8 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Click Yes to permanently delete this type or No to cancel.</p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

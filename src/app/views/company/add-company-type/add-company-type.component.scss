@@ -96,3 +96,15 @@ button,
 ::ng-deep .alert-dismissible .btn-close {
   opacity: 0;
 }
+.custom-dropdown-arrow {
+  position: absolute;
+  top: 56%;
+  right: 32px; /* adjust this value to move left/right */
+  transform: translateY(-45%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}

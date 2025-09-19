@@ -123,3 +123,19 @@ button, .card { border-radius: 0; }
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.company-type-dropdown {
+  position: relative;
+}
+
+.custom-dropdown-arrow {
+  position: absolute;
+  top: 50%;
+  left :64px;
+  transform: translateY(-50%); 
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}

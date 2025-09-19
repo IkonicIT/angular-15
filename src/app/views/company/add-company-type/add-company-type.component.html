@@ -101,17 +101,13 @@
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="parentType">Select Parent Type</label>
-                        <select
-                          #dropdown
-                          class="form-control custom-dropdown"
-                          id="itemType"
-                          [(ngModel)]="value"
-                          (change)="onValueChange(dropdown.value)"
+                        <app-dropdown-treeview-select
+                          [items]="items"
+                          [(value)]="value"
+                          (valueChange)="onValueChange($event)"
                         >
-                          <option *ngFor="let item of items" [value]="item.value">
-                            {{ item.text }}
-                          </option>
-                        </select>
+                        </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
                       </div>
                     </div>
 

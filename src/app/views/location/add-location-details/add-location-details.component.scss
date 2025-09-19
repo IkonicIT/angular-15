@@ -91,3 +91,27 @@ button {
   background-color: #e02725;
   border-color: #e02725;
 }
+.custom-dropdown-arrow {
+  position: absolute;
+  top: 13.5%;
+  right: 28px; 
+  transform: translateY(-50%); 
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}
+.custom-dropdown-arrow1 {
+  position: absolute;
+  top: 48.5%;
+  right: 28px; 
+  transform: translateY(-50%); 
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}

@@ -118,12 +118,18 @@ button,
 .custom-dropdown-wrapper {
   position: relative;
   display: block;
-  width: 50%;
+  width: 50%; /* this controls overall size */
 }
 
 .custom-dropdown-wrapper app-dropdown-treeview-select {
   display: block;
   width: 100%;
+  box-sizing: border-box;
+}
+
+::ng-deep app-dropdown-treeview-select .dropdown-menu {
+
+  width: 50%;
   box-sizing: border-box;
 }
 

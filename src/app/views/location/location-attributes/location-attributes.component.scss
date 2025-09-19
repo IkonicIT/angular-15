@@ -161,3 +161,16 @@ button {
 ::ng-deep .alert-dismissible .btn-close {
   opacity: 0;
 }
+
+.custom-dropdown-arrow {
+  position: absolute;
+  top: 16%;
+  left:656px;
+  transform: translateY(-50%); 
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}

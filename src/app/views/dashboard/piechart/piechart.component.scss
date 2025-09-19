@@ -7,7 +7,6 @@
   margin-top: 25px;
   width: fit-content;
   border: solid 1px #a4b7c1;
-  padding-left: 0px;
 }
 
 .my-pagination ::ng-deep .ngx-pagination .current {
@@ -64,23 +63,41 @@ tbody td {
 ::ng-deep .remove-radius .dropdown .btn {
   --bs-btn-padding-y: 0.34rem;
 }
+
 ::ng-deep app-dropdown-treeview-select .dropdown-menu {
-  min-width: 350px !important; 
   width: 100% !important;
-  box-sizing: border-box;
+}
+::ng-deep app-dropdown-treeview-select .form-control,
+::ng-deep app-dropdown-treeview-select .form-control span {
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+}
+
+::ng-deep app-dropdown-treeview-select .dropdown-menu .treeview-item,
+::ng-deep app-dropdown-treeview-select .dropdown-menu .treeview-item span,
+::ng-deep app-dropdown-treeview-select .dropdown-menu .treeview-item button {
+  font-size: 1rem !important; 
+  line-height: 1.5 !important;
+}
+
+
+::ng-deep .custom-dropdown-arrow {
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid rgb(17, 9, 9);
 }
 
 .btn-danger,
 .btn-danger.disabled,
 .btn-danger:disabled {
   color: #fff;
-     background-color: #e02725;
+  background-color: #e02725;
   border-color: #e02725;
 }
 
 .btn-danger:hover {
-  color: #fff; 
-   background-color: #c31e1c;
+  color: #fff;
+  background-color: #c31e1c;
   border-color: #b81c1a;
 }
 
@@ -167,8 +184,9 @@ a {
   height: 0;
 }
 
+/* Expansion panel table fix */
 ::ng-deep mat-expansion-panel table tbody td {
-  font-size: 0.875rem;
+  font-size: 2.625rem; /* 3× */
   font-weight: 400;
   line-height: 1.5;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -194,16 +212,19 @@ a {
   margin-top: 5px;
 }
 
-.marginAlignment{
+.marginAlignment {
   margin: 0 15px;
 }
+
 .x_Scrolling {
-  overflow-x:auto
+  overflow-x: auto;
 }
+
 textarea {
-    resize: vertical;
-    width: 100%;
+  resize: vertical;
+  width: 100%;
 }
+
 .custom-dropdown-wrapper {
   position: relative;
   display: block;
@@ -214,7 +235,7 @@ textarea {
 
 .custom-dropdown-wrapper app-dropdown-treeview-select {
   display: block;
-  width: calc(100% - 2px); 
+  width: calc(100% - 2px);
   box-sizing: border-box;
 }
 
@@ -222,11 +243,11 @@ textarea {
   position: absolute;
   right: 8px;
   top: 50%;
-  transform: translateY(-45%);
+  transform: translateY(-50%);
   pointer-events: none;
   width: 0;
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 6px solid gray; 
+  border-top: 6px solid gray;
 }

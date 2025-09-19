@@ -46,7 +46,7 @@
             <button
               type="button"
               [disabled]="itemRank < 3"
-              class="btn btn-primary float-end"
+              class="btn btn-primary float-end btn-group"
               (click)="addItemDocument()"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
@@ -58,7 +58,7 @@
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div>
               Show
-              <select [(ngModel)]="itemsForPagination" class="form-select d-inline w-auto">
+              <select [(ngModel)]="itemsForPagination">
                 <option>5</option>
                 <option>10</option>
                 <option>25</option>
@@ -68,7 +68,7 @@
             </div>
             <div>
               Search:
-              <input [(ngModel)]="documentFilter" class="form-control d-inline w-auto" />
+              <input [(ngModel)]="documentFilter" />
             </div>
           </div>
           <div class="table-responsive">
@@ -150,7 +150,7 @@
         data-bs-placement="bottom"
         data-bs-toggle="tooltip"
         title="Back"
-        class="btn btn-primary"
+        class="btn btn-primary btn-group"
       >
         Back
       </button>

@@ -10,7 +10,7 @@
             (click)="help()"
             data-bs-toggle="tooltip"
             title="Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
@@ -125,8 +125,8 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Click Yes to permanently delete this status or No to cancel.</p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

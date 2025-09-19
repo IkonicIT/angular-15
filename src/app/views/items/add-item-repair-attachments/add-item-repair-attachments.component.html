@@ -73,7 +73,7 @@
                             <td>
                               <input
                                 type="file"
-                                class="form-control"
+                                class="form-control bg-white"
                                 (change)="fileChangeListener($event, i)"
                               />
                             </td>
@@ -81,7 +81,7 @@
                               <textarea
                                 rows="2"
                                 cols="4"
-                                class="form-control"
+                                class="form-control bg-white"
                                 [(ngModel)]="item.description"
                                 [name]="'description' + i"
                                 placeholder="Enter Description"

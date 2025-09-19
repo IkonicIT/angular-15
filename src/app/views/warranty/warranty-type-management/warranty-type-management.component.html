@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-rounded"
           >
             Help
           </button>
@@ -178,8 +178,8 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Click(Yes) to permanently delete this WarrantyType or Click(No) to discard This action.</p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right btn-rounded" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-rounded" (click)="decline()">No</button>
   </div>
 </ng-template>
 

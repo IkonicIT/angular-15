@@ -10,7 +10,7 @@
             Manage Note Attachments
             <button
               type="button"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right btn-group"
               (click)="addNoteAttachments()"
               data-bs-toggle="tooltip"
               title="Add Attachment."
@@ -130,8 +130,8 @@
     <p>
       Click(Yes) to permanently delete this Attachment or Click(No) to discard This action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

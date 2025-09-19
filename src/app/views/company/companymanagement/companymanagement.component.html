@@ -10,6 +10,7 @@
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
+            style="border-radius: 6px;"
           >
             Print
           </button>
@@ -19,7 +20,8 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
+            style="border-radius: 6px;"
           >
             Help
           </button>
@@ -51,12 +53,11 @@
             Manage Companies
             <button
               type="button"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right btn-group"
               [routerLink]="['../add']"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add a new Company."
-              style="border-radius: 6px;"
             >
               Add Company
             </button>

@@ -10,6 +10,7 @@
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
+            style="border-radius: 6px;"
           >
             Print
           </button>
@@ -20,6 +21,7 @@
             data-bs-toggle="tooltip"
             title=" Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
+            style="border-radius: 6px;"
           >
             Help
           </button>
@@ -338,8 +340,8 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Click(Yes) to permanently delete this Attribute or Click(No) to discard This action.</p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

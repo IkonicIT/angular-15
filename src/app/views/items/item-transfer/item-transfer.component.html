@@ -5,7 +5,7 @@
         <div class="form-group col-12 text-end">
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
             title="Instructions"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -52,7 +52,7 @@
                   </div>
                 </div>
 
-                <form #f="ngForm" novalidate>
+                <form #f="ngForm" class="ms-3 me-3" novalidate>
                   <div class="row mb-3">
                     <div class="col-sm-6">
                       <label>Effective Date <strong class="text-danger">*</strong></label>
@@ -181,7 +181,7 @@
                       <button
                         type="button"
                         [disabled]="addLocationFlag == 0"
-                        class="btn btn-primary btn-right"
+                        class="btn btn-primary btn-right btn-group"
                         (click)="newLocation()"
                         data-bs-placement="bottom"
                         data-bs-toggle="tooltip"
@@ -191,7 +191,7 @@
                       </button>
                       <button
                         type="button"
-                        class="btn btn-primary"
+                        class="btn btn-primary btn-group"
                         (click)="existingLocation()"
                         data-bs-placement="bottom"
                         data-bs-toggle="tooltip"
@@ -266,7 +266,7 @@
 
                     <button
                       type="button"
-                      class="btn btn-primary"
+                      class="btn btn-primary btn-group"
                       (click)="saveLocation()"
                       data-bs-placement="bottom"
                       data-bs-toggle="tooltip"
@@ -290,29 +290,16 @@
                     </div>
                   </div>
 
-                  <div class="row mb-3 text-center">
-                    <button
-                      class="btn btn-primary btn-right me-2"
-                      (click)="saveTransfer()"
-                      data-bs-placement="bottom"
-                      data-bs-toggle="tooltip"
-                      title="SaveItemTransfer"
-                      style="border-radius: 6px;"
-                    >
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      (click)="backToViewItem()"
-                      data-bs-placement="bottom"
-                      data-bs-toggle="tooltip"
-                      title="Back to View Item"
-                      style="border-radius: 6px;"
-                    >
-                      Back To Item
-                    </button>
-                  </div>
+                      <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button class="btn btn-primary btn-group" (click)="saveTransfer()"
+                          tooltip="SaveItemTransfer">Save</button>
+                       
+                        <button type="button" (click)="backToViewItem()" tooltip="Back to View Item"
+                          class="btn btn-primary ms-2 btn-group">Back To Item</button>
+                      </div>
+
+                    </div>
 
                   <div>
                     <p class="fw-bold fs-5">Previous Transfers</p>
@@ -354,7 +341,7 @@
                           <td>
                             <button
                               type="button"
-                              class="btn btn-outline-danger btn-sm mb-1 me-2"
+                              class="btn btn-outline-danger btn-sm mb-1 me-2 btn-group"
                               title="View Item Transfer"
                               data-bs-toggle="tooltip"
                               data-bs-placement="bottom"
@@ -364,7 +351,7 @@
                             </button>
                             <button
                               type="button"
-                              class="btn btn-outline-danger btn-sm mb-1"
+                              class="btn btn-outline-danger btn-sm mb-1 btn-group"
                               title="Delete Item Transfer"
                               data-bs-toggle="tooltip"
                               data-bs-placement="bottom"
@@ -392,8 +379,8 @@
       <p>
         Click(Yes) to permanently delete this Item Transfer Log or Click(No) to discard This action.
       </p>
-      <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+      <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
     </div>
   </ng-template>
 </div>

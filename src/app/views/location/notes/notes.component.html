@@ -13,7 +13,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Click to Print this Page"
-              class="btn btn-outline-danger btn-sm btn-right"
+              class="btn btn-outline-danger btn-sm btn-right btn-group"
             >
               Print
             </button>
@@ -23,7 +23,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title=" Instructions"
-              class="btn btn-outline-danger btn-sm"
+              class="btn btn-outline-danger btn-sm btn-group"
             >
               Help
             </button>
@@ -55,7 +55,7 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New LocationNote"
@@ -70,7 +70,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Location Note"
                   (click)="saveLocationNote()"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -81,13 +81,13 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelLocationNotes()"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Location Note"
@@ -101,7 +101,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add LocationNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   disabled
                   (click)="goToAttachments(model.journalId, model.entityName)"
                 >
@@ -113,7 +113,7 @@
                   data-bs-toggle="tooltip"
                   title="Back  "
                   (click)="backToItem()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                 >
                   Back
                 </button>
@@ -253,7 +253,7 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New LocationNote"
@@ -268,33 +268,30 @@
                   title="Save Location Note"
                   (click)="saveLocationNote()"
                   disabled
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Edit Location Note"
                   (click)="editNote()"
-                  style="border-radius: 6px;"
                 >
                   Edit
                 </button>
 
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Location Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -304,9 +301,8 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add LocationNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   (click)="goToAttachments(model.journalId, model.entityName)"
-                  style="border-radius: 6px;"
                 >
                   Attachments
                 </button>
@@ -316,8 +312,7 @@
                   data-bs-toggle="tooltip"
                   title="Back"
                   (click)="backToItem()"
-                  class="btn btn-primary"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-group"
                 >
                   Back
                 </button>
@@ -459,10 +454,9 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
-                  style="border-radius: 6px;"
                   title="Add New LocationNote"
                   (click)="addNotes()"
                 >
@@ -475,8 +469,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Location Note"
                   (click)="updateLocationNotes()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -488,20 +481,18 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelLocationNotes()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   [disabled]="highestRank < 6 || highestRank == 9"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Location Note"
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -511,9 +502,8 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add LocationNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   (click)="goToAttachments(model.journalId, model.entityName)"
-                  style="border-radius: 6px;"
                 >
                   Attachments
                 </button>
@@ -523,8 +513,7 @@
                   data-bs-toggle="tooltip"
                   title="Back"
                   (click)="backToItem()"
-                  style="border-radius: 6px;"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                 >
                   Back
                 </button>

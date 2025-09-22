@@ -59,18 +59,16 @@
           class="tag-input"
         />
 
-        <div class="dropdown-wrapper">
-          <select
-            #selectRef
-            class="form-control custom-dropdown"
-            [(ngModel)]="value"
-            (change)="selectRootItemType(selectRef.value)"
-          >
-            <option *ngFor="let item of items" [value]="item.value">
-              {{ item.text }}
-            </option>
-          </select>
-        </div>
+        <div class="dropdown-wrapper99">
+  <app-dropdown-treeview-select
+    [items]="items"
+    [(value)]="value"
+    (valueChange)="selectRootItemType($event)"
+    class="custom-dropdown99"
+  ></app-dropdown-treeview-select>
+  <span class="custom-dropdown-arrow99"></span>
+</div>
+
 
         <button
           (click)="navigateToItems()"

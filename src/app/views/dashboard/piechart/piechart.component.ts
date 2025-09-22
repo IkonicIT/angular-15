@@ -31,7 +31,7 @@ export class PiechartComponent implements OnInit {
   repairJobs: any = [];
   recentItems: any = [];
   recentNotes: any = [];
-  loader = false;
+ loading: boolean = true;
   locations: TreeviewItem[];
   allLocations: any;
   locationId: any = 0;
@@ -195,6 +195,7 @@ export class PiechartComponent implements OnInit {
     this.getFailureTypes();
     this.getLocationsWithHierarchy();
     this.getAllTypesWithHierarchy();
+    this.getAllItemTypes();
     this.broadcasterService.on('piechart').subscribe((data: any) => {
       if (data != 0) {
         this.clearOldData();
@@ -845,17 +846,18 @@ export class PiechartComponent implements OnInit {
   }
 
   getAllItemTypes() {
-    this.itemTypesService
-      .getAllItemTypesWithHierarchy(this.companyId)
-      .subscribe((response) => {
-        this.itemTypes = response;
-        if (this.itemTypes && this.itemTypes.length > 0) {
-          this.itemTypeItems = this.generateHierarchyForItemTypes(
-            this.itemTypes
-          );
-        }
-      });
-  }
+  this.itemTypesService
+    .getAllItemTypesWithHierarchy(this.companyId)
+    .subscribe((response) => {
+      this.itemTypes = response;
+      if (this.itemTypes && this.itemTypes.length > 0) {
+        this.itemTypeItems = this.generateHierarchyForItemTypes(this.itemTypes);
+      }
+      this.loading = false; // ✅ mark loading as complete
+    }, (error) => {
+      this.loading = false; // also stop loader in case of error
+    });
+}
 
   generateHierarchyForItemTypes(typeList: any[]) {
     var items: TreeviewItem[] = [];

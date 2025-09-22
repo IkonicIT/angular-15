@@ -137,3 +137,15 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.custom-dropdown-arrow {
+  position: absolute;
+  top: 65%;
+  left :560px;
+  transform: translateY(-50%); 
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}

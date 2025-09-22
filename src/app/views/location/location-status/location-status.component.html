@@ -10,7 +10,7 @@
             (click)="help()"
             data-bs-toggle="tooltip"
             title="Instructions"
-            class="btn btn-outline-danger btn-sm btn-top btn-group"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
@@ -88,7 +88,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm btn-right"
+                    class="btn btn-outline-danger btn-sm btn-right my-btn-group"
                     data-bs-toggle="tooltip"
                     title="Update this Status"
                     (click)="editStatus(company)"
@@ -97,7 +97,7 @@
                   </button>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm my-btn-group"
                     data-bs-toggle="tooltip"
                     title="Delete this Status"
                     (click)="openModal(confirmtemplate, company.statusId)"
@@ -125,8 +125,8 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Click Yes to permanently delete this status or No to cancel.</p>
-    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

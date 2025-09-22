@@ -83,6 +83,9 @@ export class EditWarrantyTypeComponent implements OnInit, OnDestroy {
       next: () => {
         this.spinner.hide();
         this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+        window.scroll(0, 0);
+        this.router.navigate(['/warranty/list']);
       },
       error: () => {
         this.spinner.hide();

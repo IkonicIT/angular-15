@@ -5,7 +5,7 @@
         <div class="form-group col-12 text-end">
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-top me-2"
+            class="btn btn-outline-danger btn-sm btn-top me-2 btn-group"
             title="Click to Print this Page"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -15,7 +15,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
             title="Instructions"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -47,7 +47,7 @@
             <button
               type="button"
               [disabled]="itemRank < 3"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right btn-group"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add Repair."
@@ -121,7 +121,7 @@
                   <button
                     *ngIf="itemRank > 0"
                     type="button"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-group"
                     [routerLink]="['../../viewItemRepair/' + itemId + '/' + repair.repairLogId]"
                   >
                     View
@@ -213,7 +213,7 @@
                   <button
                     *ngIf="itemRank > 0"
                     type="button"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-group"
                     title="Click here to View this ItemRepair"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
@@ -241,8 +241,7 @@
     <div class="col-12 text-center">
       <button
         type="button"
-        class="btn btn-primary"
-        style="border-radius: 6px;"
+        class="btn btn-primary btn-group"
         title="Back to View Item"
         data-bs-toggle="tooltip"
         data-bs-placement="bottom"

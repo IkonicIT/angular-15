@@ -9,7 +9,7 @@
             (click)="print()"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
           >
             Print
           </button>
@@ -18,7 +18,7 @@
             (click)="help()"
             data-bs-toggle="tooltip"
             title="Instructions"
-            class="btn btn-outline-danger btn-sm btn-top btn-group"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
@@ -44,7 +44,7 @@
             <button
               type="button"
               [disabled]="highestRank < 6"
-              class="btn btn-primary float-right btn-group"
+              class="btn btn-primary float-right my-btn-group"
               [routerLink]="['../addLocationType']"
               data-bs-toggle="tooltip"
               title="Add a new LocationType."
@@ -96,7 +96,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-sm my-btn-group"
                     [disabled]="highestRank < 5"
                     [routerLink]="['../attributes', type.typeId, companyId]"
                     data-bs-toggle="tooltip"
@@ -109,7 +109,7 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 6"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     [routerLink]="['../editLocationType', type.typeId, companyId]"
                     data-bs-toggle="tooltip"
                     title="Update this Type"
@@ -119,7 +119,7 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 6 || highestRank == 9"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     (click)="openModal(confirmtemplate, type.typeId)"
                     data-bs-toggle="tooltip"
                     title="Delete this Type"
@@ -145,8 +145,8 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Click Yes to permanently delete this type or No to cancel.</p>
-    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

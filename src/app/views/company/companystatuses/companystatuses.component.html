@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top btn-group"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
@@ -103,7 +103,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title=" Edit this Company Status"
-                    class="btn btn-outline-danger btn-sm btn-right"
+                    class="btn btn-outline-danger btn-sm btn-right my-btn-group"
                     (click)="editStatus(company)"
                   >
                     Edit
@@ -113,7 +113,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title=" Delete this Company Status"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm my-btn-group"
                     (click)="openModal(confirmtemplate, company.statusId)"
                     [disabled]="highestRank == 9"
                   >
@@ -140,10 +140,10 @@
     <p>
       Click(Yes) to permanently delete this CompanyStatus or Click(No) to discard this action.
     </p>
-    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">
       Yes
     </button>
-    <button type="button" class="btn btn-primary btn-group" (click)="decline()">
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">
       No
     </button>
   </div>

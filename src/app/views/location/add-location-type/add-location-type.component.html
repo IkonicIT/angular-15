@@ -6,7 +6,7 @@
           <button
             type="button"
             (click)="print()"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Click to Print this Page"
@@ -16,7 +16,7 @@
           <button
             type="button"
             (click)="help()"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Instructions"
@@ -112,22 +112,20 @@
                       <div class="form-group col-sm-12 text-center">
                         <button
                           type="submit"
-                          class="btn btn-primary btn-right"
+                          class="btn btn-primary btn-right btn-group"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Save this Type"
-                          style="border-radius: 6px;"
                         >
                           Save
                         </button>
                         <button
                           type="button"
                           [routerLink]="['../types']"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-group"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Cancel"
-                          style="border-radius: 6px;"
                         >
                           Cancel
                         </button>

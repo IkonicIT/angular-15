@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top btn-group"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
@@ -48,7 +48,7 @@
             <button
               type="button"
               [disabled]="highestRank < 5"
-              class="btn btn-primary float-right btn-group"
+              class="btn btn-primary float-right my-btn-group"
               (click)="addUser()"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
@@ -112,7 +112,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Add SecurityRole"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm my-btn-group"
                   >
                     Security Roles
                   </button>
@@ -121,7 +121,7 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 5"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="View this User"
@@ -135,7 +135,7 @@
                       highestRank < 7 ||
                       (highestRank == 7 && user.isOwnerAdmin === true)
                     "
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this User"
@@ -150,7 +150,7 @@
                       (highestRank == 7 && user.isOwnerAdmin === true) ||
                       highestRank == 9
                     "
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this User"
@@ -180,10 +180,10 @@
       Click(Yes) to permanently delete this User or Click(No) to discard This
       action.
     </p>
-    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">
       Yes
     </button>
-    <button type="button" class="btn btn-primary btn-group" (click)="decline()">
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">
       No
     </button>
   </div>

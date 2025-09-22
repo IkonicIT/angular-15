@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
@@ -44,7 +44,7 @@
             Manage {{ companyName }} User Types
             <button
               type="button"
-              class="btn btn-primary float-right rounded"
+              class="btn btn-primary float-right my-btn-group"
               [routerLink]="['../addUserType']"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
@@ -129,7 +129,7 @@
                     data-bs-toggle="tooltip"
                     title="Click here to Manage User Attributes"
                     *ngIf="highestRank > 5"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-sm my-btn-group"
                     [routerLink]="['../attributes', type.typeId, companyId]"
                   >
                     Manage Attributes
@@ -139,7 +139,7 @@
                   <button
                     type="button"
                     *ngIf="highestRank > 5"
-                    class="btn btn-outline-danger btn-sm btn-right"
+                    class="btn btn-outline-danger btn-sm btn-right my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this UserType"
@@ -150,7 +150,7 @@
                   <button
                     type="button"
                     *ngIf="highestRank > 5"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this UserType"

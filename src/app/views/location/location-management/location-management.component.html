@@ -8,7 +8,7 @@
             (click)="print()"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
           >
             Print
           </button>
@@ -17,7 +17,7 @@
             (click)="help()"
             data-bs-toggle="tooltip"
             title="Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
@@ -124,7 +124,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-sm my-btn-group"
                     [disabled]="highestRankNum < 5"
                     data-bs-toggle="tooltip"
                     title="Location Notes"
@@ -136,7 +136,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     [disabled]="highestRankNum < 5"
                     [routerLink]="['../editLocation', location.locationId, companyId]"
                     data-bs-toggle="tooltip"
@@ -146,7 +146,7 @@
                   </button>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     [disabled]="highestRankNum < 6 || highestRankNum === 9"
                     data-bs-toggle="tooltip"
                     title="Delete this Location"
@@ -184,8 +184,8 @@
     <p>
       Deleting a location will delete all childLocations and Items under them, click [Yes] to continue (or) click [No] to discard this action
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

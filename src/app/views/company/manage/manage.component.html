@@ -13,8 +13,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Click to Print this Page"
-              class="btn btn-outline-danger btn-sm btn-right btn-top"
-              style="border-radius: 6px;"
+              class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
             >
               Print
             </button>
@@ -24,8 +23,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title=" Instructions"
-              class="btn btn-outline-danger btn-sm btn-top"
-              style="border-radius: 6px;"
+              class="btn btn-outline-danger btn-sm btn-top btn-group"
             >
               Help
             </button>
@@ -54,12 +52,11 @@
                 </p>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New CompanyNote"
                   (click)="addNotes()"
-                  style="border-radius: 6px;"
                 >
                   New
                 </button>
@@ -69,8 +66,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Company Note"
                   (click)="saveCompanyNote()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -81,21 +77,18 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelCompanyNotes()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
-
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Company Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -104,10 +97,9 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add CompanyNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   disabled
                   [routerLink]="['../../../noteAttachments/' + model.journalId]"
-                  style="border-radius: 6px;"
                 >
                   Attachments
                 </button>
@@ -117,8 +109,7 @@
                   data-bs-toggle="tooltip"
                   title="Back "
                   (click)="backToItem()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Back
                 </button>
@@ -257,12 +248,11 @@
                 </p>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New CompanyNote"
                   (click)="addNotes()"
-                  style="border-radius: 6px;"
                 >
                   New
                 </button>
@@ -273,32 +263,29 @@
                   title="Save Company Note"
                   (click)="saveCompanyNote()"
                   disabled
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Edit Company Note"
                   (click)="editNote()"
-                  style="border-radius: 6px;"
                 >
                   Edit
                 </button>
 
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Company Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -307,9 +294,8 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add CompanyNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   (click)="goToAttachments(model.journalId, model.entityName)"
-                  style="border-radius: 6px;"
                 >
                   Attachments
                 </button>
@@ -320,8 +306,7 @@
                   data-bs-toggle="tooltip"
                   title="Back "
                   (click)="backToItem()"
-                  class="btn btn-primary"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-group"
                 >
                   Back
                 </button>
@@ -461,7 +446,7 @@
                 </p>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New CompanyNote"
@@ -475,8 +460,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Company Note"
                   (click)="updateCompanyNotes()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -487,13 +471,13 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelCompanyNotes()"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Company Note"
@@ -507,7 +491,7 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add CompanyNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   (click)="goToAttachments(model.journalId, model.entityName)"
                 >
                   Attachments
@@ -518,7 +502,7 @@
                   data-bs-toggle="tooltip"
                   title="Back "
                   (click)="backToItem()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                 >
                   Back
                 </button>
@@ -761,7 +745,7 @@
                         <td>
                           <button
                             type="button"
-                            class="btn btn-outline-danger btn-sm"
+                            class="btn btn-outline-danger btn-sm btn-group"
                             data-bs-placement="bottom"
                             data-bs-toggle="tooltip"
                             title="Click here to View this Note"
@@ -795,10 +779,10 @@
       Click(Ok) to permanently delete this Note or Click(No) to discard this
       action.
     </p>
-    <button type="button" class="btn btn-primary" (click)="confirm()">
+    <button type="button" class="btn btn-primary btn-group" (click)="confirm()">
       Yes
     </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
+    <button type="button" class="btn btn-primary btn-group ms-2" (click)="decline()">
       No
     </button>
   </div>

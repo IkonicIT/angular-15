@@ -22,7 +22,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Click to Print this Page"
-                    class="btn btn-outline-danger btn-sm btn-right btn-top"
+                    class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
                   >
                     Print
                   </button>
@@ -32,7 +32,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title=" Instructions"
-                    class="btn btn-outline-danger btn-sm btn-top"
+                    class="btn btn-outline-danger btn-sm btn-top btn-group"
                   >
                     Help
                   </button>
@@ -196,7 +196,7 @@
                         <button
                           type="button"
                           [disabled]="addLocationFlag === 0"
-                          class="btn btn-primary btn-right"
+                          class="btn btn-primary btn-right btn-group"
                           (click)="newLocation()"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
@@ -206,7 +206,7 @@
                         </button>
                         <button
                           type="button"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-group"
                           (click)="existingLocation()"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
@@ -263,7 +263,7 @@
                         </div>
                       </div>
 
-                      <button type="button" class="btn btn-primary" (click)="saveLocation()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Save Location" style="border-radius: 6px;">
+                      <button type="button" class="btn btn-primary btn-group" (click)="saveLocation()" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Save Location">
                         Save Location
                       </button>
                     </div>
@@ -363,8 +363,7 @@
                           title="Add new Item"
                           (click)="saveItem()"
                           *ngIf="highestRankNum > 2"
-                          class="btn btn-primary btn-right"
-                          style="border-radius: 6px;"
+                          class="btn btn-primary btn-right btn-group"
                         >
                           Add
                         </button>
@@ -375,8 +374,7 @@
                           type="button"
                           [routerLink]="['../../../items']"
                           *ngIf="highestRankNum > 2"
-                          class="btn btn-primary btn-right"
-                          style="border-radius: 6px;"
+                          class="btn btn-primary btn-right btn-group"
                         >
                           Cancel
                         </button>
@@ -386,8 +384,7 @@
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Back button"
-                          class="btn btn-primary"
-                          style="border-radius: 6px;"
+                          class="btn btn-primary btn-group"
                         >
                           Back
                         </button>

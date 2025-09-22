@@ -348,6 +348,7 @@ export class NotesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    this.modalRef.hide();
     this.locationNotesService
       .removeLocationNotes(
         this.model.journalId,

@@ -6,7 +6,7 @@
           <button
             type="button"
             (click)="print()"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Click to Print this Page"
@@ -16,7 +16,7 @@
           <button
             type="button"
             (click)="help()"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Instructions"
@@ -48,7 +48,7 @@
             <button
               type="button"
               [disabled]="highestRank < 7"
-              class="btn btn-primary float-right btn-add-doc"
+              class="btn btn-primary float-right my-btn-group"
               (click)="addDocument()"
               data-bs-toggle="tooltip"
               data-bs-placement="bottom"
@@ -115,7 +115,7 @@
                 <td>
                   <button
                     *ngIf="highestRank > 0"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     title="View this Company Document"
@@ -126,7 +126,7 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 7"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     title="Edit this Company Document"
@@ -137,7 +137,7 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 7 || highestRank == 9"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     title="Delete this Company Document"

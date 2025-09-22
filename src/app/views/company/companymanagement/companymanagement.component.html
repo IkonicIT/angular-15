@@ -20,7 +20,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top btn-group"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
             style="border-radius: 6px;"
           >
             Help
@@ -53,7 +53,7 @@
             Manage Companies
             <button
               type="button"
-              class="btn btn-primary float-right btn-group"
+              class="btn btn-primary float-right my-btn-group"
               [routerLink]="['../add']"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
@@ -122,7 +122,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Company Attachments"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-sm my-btn-group"
                     [routerLink]="['../documents', company.companyId]"
                   >
                     Attachments
@@ -134,7 +134,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Company Notes"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-sm my-btn-group"
                     (click)="companyNotes(company)"
                   >
                     Notes
@@ -143,7 +143,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="View this Company"
@@ -153,7 +153,7 @@
                   </button>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this Company"
@@ -163,7 +163,7 @@
                   </button>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this Company"

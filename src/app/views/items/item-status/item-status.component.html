@@ -5,7 +5,7 @@
         <div class="form-group col-12 text-end">
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-top me-2 btn-group"
+            class="btn btn-outline-danger btn-sm btn-top me-2 my-btn-group"
             title="Instructions"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -93,7 +93,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm btn-right me-2"
+                    class="btn btn-outline-danger btn-sm btn-right me-2 my-btn-group"
                     title="Edit Status"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
@@ -103,7 +103,7 @@
                   </button>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm my-btn-group"
                     title="Delete Status"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
@@ -133,8 +133,8 @@
     <p>
       Click(Yes) to permanently delete this status or Click(No) to discard this action.
     </p>
-    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

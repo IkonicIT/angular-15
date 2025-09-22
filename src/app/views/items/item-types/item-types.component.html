@@ -5,7 +5,7 @@
         <div class="form-group col-12 text-end">
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
             title="Click to Print this Page"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -15,7 +15,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-top btn-group me-2"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group me-2"
             title="Instructions"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -44,7 +44,7 @@
             <button
               type="button"
               *ngIf="highestRankNum > 3"
-              class="btn btn-primary float-end btn-group"
+              class="btn btn-primary float-end my-btn-group"
               [routerLink]="['../addItemType']"
               title="Add a new Item."
               data-bs-toggle="tooltip"
@@ -103,7 +103,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-sm my-btn-group"
                     title="Click here to Manage Item Attributes"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
@@ -116,7 +116,7 @@
                   <button
                     *ngIf="highestRankNum > 3"
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     title="Edit this Type"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
@@ -127,7 +127,7 @@
                   <button
                     *ngIf="highestRankNum > 3"
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     title="Delete this Type"
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
@@ -165,8 +165,8 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Do you want to confirm?</p>
-    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

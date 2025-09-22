@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+        <div class="form-group col-sm-12 text-end">
           <button
             type="button"
             (click)="print()"
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm mt-1"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm"
+            class="btn btn-outline-danger btn-sm btn-right mt-1 ms-1 me-1"
           >
             Help
           </button>
@@ -66,7 +66,7 @@
                           id="desc"
                           rows="2"
                           cols="4"
-                          class="form-control"
+                          class="form-control bg-white"
                           [(ngModel)]="model.description"
                           name="description"
                           placeholder="Enter Description"
@@ -77,7 +77,7 @@
                     <div class="row mt-3">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          class="btn btn-primary me-3"
+                          class="btn btn-primary btn-group me-1"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Update this ItemRepair Attachment"
@@ -87,8 +87,7 @@
                         <button
                           type="button"
                           (click)="back()"
-                          class="btn btn-primary"
-                          style="border-radius: 6px;"
+                          class="btn btn-primary btn-group"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Back to itemRepair Attachments"

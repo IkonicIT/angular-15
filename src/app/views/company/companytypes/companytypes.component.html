@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
@@ -49,12 +49,11 @@
             Manage {{ companyName }} Company Types
             <button
               type="button"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right my-btn-group"
               (click)="addCompanyType()"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add a new Company Type."
-              style="border-radius: 6px;"
             >
               Add Company Type
             </button>
@@ -115,7 +114,7 @@
                   <button
                     type="button"
                     *ngIf="highestRank > 6"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-sm my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Click here to Manage Company Attributes"
@@ -128,7 +127,7 @@
                   <button
                     type="button"
                     *ngIf="highestRank > 6"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this Company Type"
@@ -139,7 +138,7 @@
                   <button
                     type="button"
                     *ngIf="highestRank > 6"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this Type"
@@ -184,8 +183,8 @@
     <p>
       Click(Yes) to permanently delete this CompanyType or Click(No) to discard this action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

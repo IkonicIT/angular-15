@@ -6,14 +6,14 @@
           <button
             type="button"
             (click)="print()"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
@@ -43,7 +43,7 @@
             <strong>Open Services</strong>
             <button
               type="button"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right btn-group"
               (click)="openModal(addtemplate)"
             >
               Add Item Service
@@ -176,8 +176,7 @@
       <button
         type="button"
         (click)="back()"
-        class="btn btn-primary"
-        style="border-radius:6px;"
+        class="btn btn-primary btn-group"
       >
         Back To Item
       </button>
@@ -266,15 +265,13 @@
           <div class="form-group col-sm-12 text-center">
             <button
               (click)="saveItemServiceData()"
-              class="btn btn-primary btn-right"
-              style="border-radius:6px;"
+              class="btn btn-primary btn-right btn-group"
             >
               Save
             </button>
             <button
               (click)="closeModel()"
-              class="btn btn-primary"
-              style="border-radius:6px;"
+              class="btn btn-primary btn-group"
             >
               Close
             </button>
@@ -290,8 +287,8 @@
     <p>
       Click(Yes) to permanently delete this Item Service or Click(No) to discard this action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

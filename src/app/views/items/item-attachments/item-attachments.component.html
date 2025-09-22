@@ -2,11 +2,11 @@
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+        <div class="form-group col-sm-12 text-end">
           <button
             type="button"
             (click)="print()"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group mt-1"
             title="Click to Print this Page"
           >
             Print
@@ -14,7 +14,7 @@
           <button
             type="button"
             (click)="help()"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group mt-1 ms-1 me-1"
             title=" Instructions"
           >
             Help
@@ -51,10 +51,9 @@
             <button
               type="button"
               [disabled]="itemRank < 3 || itemRank === 4 || itemRank === 5"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right btn-group"
               (click)="addItemDocument()"
               title="Add Item Attachment."
-              style="border-radius: 6px;"
             >
               Add Document
             </button>
@@ -176,8 +175,7 @@
       <button
         type="button"
         (click)="backToViewItem()"
-        class="btn btn-primary"
-        style="border-radius: 6px;"
+        class="btn btn-primary btn-group"
         title="Back to View Item"
       >
         Back To Item
@@ -192,10 +190,10 @@
       Click(Yes) to permanently delete this ItemAttachments or Click(No) to
       discard This action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">
       Yes
     </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">
       No
     </button>
   </div>

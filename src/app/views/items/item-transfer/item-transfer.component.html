@@ -157,12 +157,15 @@
                   <div class="row mb-3">
                     <div class="col-sm-12">
                       <label>Transfer To: <strong class="text-danger">*</strong></label>
+                      <div class="custom-dropdown-wrapper">
                       <app-dropdown-treeview-select
                         [items]="locationItems"
                         [(value)]="model.toLocation"
                         (valueChange)="onValueChange($event)"
                       >
                       </app-dropdown-treeview-select>
+                      <span class="custom-dropdown-arrow"></span>
+                      </div>
                     </div>
                   </div>
 

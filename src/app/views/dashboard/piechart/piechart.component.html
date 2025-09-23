@@ -62,52 +62,74 @@
       <option value="range">Range</option>
     </select>
   </div>
+<ng-container [ngSwitch]="params.type">
+                <ng-container *ngSwitchCase="'location'" style="padding: 0px">
+                  <div
+                    class="col"
+                    style="padding: 0px"
+                    [ngClass]="{ 'show-location': showLocation }"
+                  >
+                    <label for="location"
+                      ><strong>Select Location</strong></label
+                    >
+                    <app-dropdown-treeview-select
+                      [items]="locations"
+                      [(value)]="locationId"
+                      (valueChange)="setLocation(locationId)"
+                    >
+                    </app-dropdown-treeview-select>
+                    <span class="custom-dropdown-arrow11"></span>
+                  </div>
+                </ng-container>
 
-  <div
-    class="col remove-padding"
-    style="min-width: 220px;"
-    *ngIf="params.charttype === 'location'"
-  >
-    <label for="location"><strong>Location</strong></label>
-    <select
-    id="locationType"
-    class="form-control custom-dropdown"
-    [(ngModel)]="locationId"
-    (change)="setLocation(locationId)"
-  >
-    <option *ngFor="let loc of locations" [value]="loc.value">
-      {{ loc.text }}
-    </option>
-  </select>
-  </div>
+                <ng-container *ngSwitchCase="'range'">
+                  <div
+                    class="col remove-padding"
+                    [ngClass]="{ 'show-range': showRange }"
+                  >
+                    <label for="status"
+                      ><strong>From</strong
+                      ><strong class="text-danger"> *</strong></label
+                    >
+                    <div>
+                      <dp-date-picker
+                        [(ngModel)]="params.from"
+                        theme="dp-material"
+                      ></dp-date-picker>
+                    </div>
+                  </div>
+                  <div class="col remove-padding">
+                    <label for="status"
+                      ><strong>To</strong
+                      ><strong class="text-danger"> *</strong></label
+                    >
+                    <div>
+                      <dp-date-picker
+                        [(ngModel)]="params.to"
+                        theme="dp-material"
+                      ></dp-date-picker>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
 
-  <div
-    class="col remove-padding"
-    *ngIf="params.type === 'range'"
-    style="min-width: 180px;"
-  >
-    <label for="fromDate"><strong>From</strong><strong class="text-danger"> *</strong></label>
-    <div>
-      <dp-date-picker
-        [(ngModel)]="params.from"
-        theme="dp-material"
-      ></dp-date-picker>
-    </div>
-  </div>
+              <ng-container [ngSwitch]="params.charttype">
+                <ng-container *ngSwitchCase="'location'">
+                  <div class="col location-padding">
+                    <label for="location"
+                      ><strong>Select Location</strong></label
+                    >
+                    <app-dropdown-treeview-select
+                      [items]="locations"
+                      [(value)]="locationId"
+                      (valueChange)="setLocation(locationId)"
+                    >
+                    </app-dropdown-treeview-select>
+                    <span class="custom-dropdown-arrow11"></span>
+                  </div>
+                </ng-container>
+              </ng-container>
 
-  <div
-    class="col remove-padding"
-    *ngIf="params.type === 'range'"
-    style="min-width: 180px;"
-  >
-    <label for="toDate"><strong>To</strong><strong class="text-danger"> *</strong></label>
-    <div>
-      <dp-date-picker
-        [(ngModel)]="params.to"
-        theme="dp-material"
-      ></dp-date-picker>
-    </div>
-  </div>
 
   <div class="col-auto remove-padding d-flex align-items-end" >
     <label><strong>&nbsp;</strong></label>

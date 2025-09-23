@@ -76,6 +76,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="parentType">Select Parent Type</label>
+                        <div class="custom-dropdown-wrapper">
                          <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
@@ -83,6 +84,7 @@
                         >
                         </app-dropdown-treeview-select>
                         <span class="custom-dropdown-arrow"></span>
+                        </div>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="searchdisplay">No. of attributes to display for Search Results</label>

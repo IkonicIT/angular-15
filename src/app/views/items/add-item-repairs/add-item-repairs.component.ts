@@ -372,7 +372,7 @@ export class AddItemRepairsComponent implements OnInit {
       repairCompanyId: this.model.repaircompanyId,
       repairCost: this.model.repairCost ?? 0,
       repairJobStatus: this.model.repairJobStatus,
-      repairLocationId: this.model.repairlocationId ?? 0,
+      repairLocationId: this.model.repairLocationId ?? 0,
       repairLogId: 0,
       repairNotes: this.model.repairNotes ?? '',
       repairVendorNumber: this.model.repairVendorNumber ?? 0,

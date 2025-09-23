@@ -154,6 +154,7 @@ export class AddItemComponent implements OnInit {
   }
 
   getLocations(): void {
+    console.log(this.broadcasterService.locations);
     this.locations = this.broadcasterService.locations;
     if (this.locations && this.locations.length > 0) {
       this.locationItems = this.generateHierarchy(this.locations);

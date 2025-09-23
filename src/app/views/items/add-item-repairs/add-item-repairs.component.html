@@ -126,12 +126,15 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="location">Location</label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           class="form-color"
                           [items]="locationItems"
-                          [(value)]="model.repairlocationId"
+                          [(value)]="model.repairLocationId"
                         >
                         </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                      </div>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="title">Title</label>
@@ -150,6 +153,7 @@
                         <label for="vendor">
                           Vendor<strong *ngIf="highestRankNum == 2" class="text-danger">*</strong>
                         </label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           class="form-color"
                           [items]="vendorItems"
@@ -157,6 +161,8 @@
                           (valueChange)="onVendorChange($event)"
                         >
                         </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                      </div>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="details">Details</label>

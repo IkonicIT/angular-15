@@ -65,7 +65,7 @@
                 >
                   <div class="card-body">
                     <div class="row">
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-12">
                         <label for="lType">
                           Name of User Type
                           <strong class="text-danger">*</strong>
@@ -80,7 +80,7 @@
                           placeholder="Enter User Type Name"
                         />
                       </div>
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-12">
                         <label for="hostingFee">Hosting Fee</label>
                         <input
                           type="number"
@@ -94,8 +94,9 @@
                     </div>
 
                     <div class="row">
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-12">
                         <label for="parentType">Select Parent Type</label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
@@ -103,8 +104,9 @@
                         >
                         </app-dropdown-treeview-select>
                         <span class="custom-dropdown-arrow"></span>
+                        </div>
                       </div>
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-12">
                         <label for="description">Description</label>
                         <input
                           type="text"

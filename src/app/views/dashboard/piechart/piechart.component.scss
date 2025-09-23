@@ -251,7 +251,18 @@ textarea {
   border-right: 5.5px solid transparent;
   border-top: 5.5px solid gray;
 }
-
+.custom-dropdown-arrow11 {
+  position: absolute;
+  right: 88px;
+  top: 20.5%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 5.5px solid transparent;
+  border-right: 5.5px solid transparent;
+  border-top: 5.5px solid gray;
+}
 .btn-group{
   border-radius: 6px;
 }

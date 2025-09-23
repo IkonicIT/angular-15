@@ -61,6 +61,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="itemType">Type Of Item<strong class="text-danger">*</strong></label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="itemTypeItems"
                           id="itemType"
@@ -68,6 +69,8 @@
                           (valueChange)="getItemTypeAttributes(model.typeId)"
                         >
                         </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                        </div>
                       </div>
 
                       <div class="form-group col-sm-6">
@@ -176,6 +179,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="locationSelect">Location<strong class="text-danger">*</strong></label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="locationItems"
                           id="locationSelect"
@@ -183,6 +187,8 @@
                           (valueChange)="onValueChange($event)"
                         >
                         </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                      </div>
                       </div>
                     </div>
 

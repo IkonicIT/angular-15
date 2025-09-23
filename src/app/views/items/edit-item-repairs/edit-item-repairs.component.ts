@@ -103,7 +103,8 @@ export class EditItemRepairsComponent implements OnInit {
       .subscribe((response) => {
         this.spinner.hide();
         this.model = response;
-
+         if (this.model.warrantyExpiration)
+          this.model.warrantyExpiration = new Date(this.model.warrantyExpiration);
         if (this.model.failureType === '') {
           this.model.failureType = null;
         }

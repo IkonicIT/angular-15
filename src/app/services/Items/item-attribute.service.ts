@@ -62,7 +62,7 @@ export class ItemAttributeService {
   getAttributesForFindReplacement(itemId: string) {
     return this.http
       .get(
-        AppConfiguration.locationRestURL + '/item/findReplacement/' + itemId,
+        AppConfiguration.locationRestURL + 'item/findReplacement/' + itemId,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));

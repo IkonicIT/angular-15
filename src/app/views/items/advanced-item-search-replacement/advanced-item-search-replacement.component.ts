@@ -235,7 +235,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
   searchItemRepairNotesRfqModel(): void {
     this.advancedsearchflag = 1;
     const request = {
-      companyId: this.companyId,
+      companyID: this.companyId,
       extraTag: this.itemrepairNotesrfqModel.exactTag || null,
       RFQ: this.itemrepairNotesrfqModel.rfq || null,
       po: this.itemrepairNotesrfqModel.po || null,

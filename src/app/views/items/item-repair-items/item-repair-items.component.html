@@ -5,23 +5,21 @@
         <div class="form-group col-12 text-end">
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-top me-2"
+            class="btn btn-outline-danger btn-sm btn-top me-2 my-btn-group"
             title="Click to Print this Page"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             (click)="print()"
-            style="border-radius: 6px;"
           >
             Print
           </button>
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
             title="Instructions"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             (click)="help()"
-            style="border-radius: 6px;"
           >
             Help
           </button>
@@ -61,8 +59,7 @@
                       <div class="col-12 col-md-4 text-end">
                         <button
                           type="button"
-                          class="btn btn-primary"
-                          style="border-radius: 6px;"
+                          class="btn btn-primary my-btn-group"
                           [disabled]="itemType === undefined || itemType === 0"
                           (click)="openModal(templateAdd, companyId)"
                           title="Add new Repair Item"
@@ -122,7 +119,7 @@
                           <td>
                             <button
                               type="button"
-                              class="btn btn-outline-danger btn-sm me-1"
+                              class="btn btn-outline-danger btn-sm me-1 my-btn-group"
                               title="Edit Repair Item"
                               data-bs-toggle="tooltip"
                               data-bs-placement="bottom"
@@ -132,7 +129,7 @@
                             </button>
                             <button
                               type="button"
-                              class="btn btn-outline-danger btn-sm"
+                              class="btn btn-outline-danger btn-sm my-btn-group"
                               [disabled]="highestRank == 9"
                               title="Delete Repair Item"
                               data-bs-toggle="tooltip"
@@ -186,9 +183,8 @@
       <div class="text-center">
         <button
           type="button"
-          class="btn btn-primary"
+          class="btn btn-primary my-btn-group"
           (click)="saveRepairItem()"
-          style="border-radius: 6px;"
           title="Save this repairItem"
           data-bs-toggle="tooltip"
           data-bs-placement="bottom"

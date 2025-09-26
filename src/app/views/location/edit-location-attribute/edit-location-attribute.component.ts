@@ -7,19 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditLocationAttributeComponent implements OnInit {
   model: any = {};
-  index: any;
+  index = 0;
   statuses: any;
-  currentRole: any;
-  highestRank: any;
+  currentRole: string | null = null;
+  highestRank: string | null = null;
+  get highestRankNum(): number {
+    return Number(this.highestRank ?? 0);
+  }
   dismissible = true;
+
   constructor() {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.currentRole = sessionStorage.getItem('currentRole');
-    this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    this.highestRank = sessionStorage.getItem('highestRank');    
   }
 
-  updateLocationAttribute() {}
+  updateLocationAttribute(): void {
+  }
 }

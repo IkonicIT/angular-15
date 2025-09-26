@@ -14,98 +14,83 @@ import { CranesService } from 'src/app/services/cranes.service';
   styleUrls: ['./crane-notes.component.scss'],
 })
 export class CraneNotesComponent implements OnInit {
-  companyId: string;
+  companyId!: string;
   model: any = {};
   p: any;
   index: any;
   notes: any[] = [];
-  router: Router;
-  message: string;
-  modalRef: BsModalRef;
+  message: string = '';
+  modalRef!: BsModalRef;
   companyName: string = '';
   vendorName: string = '';
   order: string = 'date';
   reverse: string = '';
   vendorNotesFilter: any = '';
-  itemsForPagination: any = 5;
+  itemsForPagination: number = 5;
   globalCompany: any;
-  helpFlag: any = false;
-  craneId: string;
-  index1: any;
-  viewFlag: any = false;
-  editFlag: any = false;
-  newFlag: any = true;
+  helpFlag: boolean = false;
+  craneId!: string;
+  index1: number = 0;
+  viewFlag: boolean = false;
+  editFlag: boolean = false;
+  newFlag: boolean = true;
   highestRank: any;
-  dismissible = true;
+  dismissible: boolean = true;
   craneNoteId: number = 0;
   userName: any;
+
   constructor(
     private modalService: BsModalService,
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
     private location: Location,
     private companynotesService: CompanynotesService,
-    public datepipe: DatePipe,
+    private datepipe: DatePipe,
     private cranesService: CranesService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.craneId = route.snapshot.params['id'];
-    this.router = router;
-
+    this.craneId = this.route.snapshot.params['id'];
     this.getAllNotes(this.craneId);
-    // if(this.companyId){
-    //   this.getAllNotes(this.craneId);
-    // }
-    // this.companyManagementService.globalCompanyChange.subscribe((value) => {
-    //   this.globalCompany = value;
-    //   this.companyName = value.name;
-    //   this.companyId = value.companyid;
-    //   this.getAllNotes(this.vendorId);
-    // });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.highestRank = sessionStorage.getItem('highestRank');
     this.userName = sessionStorage.getItem('userName');
   }
 
-  getAllNotes(craneId: any) {
+  getAllNotes(craneId: string): void {
     this.spinner.show();
-    this.cranesService.getAllCraneNotes(craneId).subscribe(
-      (response) => {
+    this.cranesService.getAllCraneNotes(craneId).subscribe({
+      next: (response) => {
         this.spinner.hide();
         this.notes = response;
       },
-      (error) => {
+      error: () => {
         this.spinner.hide();
-      }
-    );
+      },
+    });
   }
 
-  saveCraneNotes() {
+  saveCraneNotes(): void {
     if (!this.model.name || !this.model.createdDate) {
       this.index1 = -1;
       window.scroll(0, 0);
-      setTimeout(() => {
-        this.index1 = 0;
-      }, 3000);
+      setTimeout(() => (this.index1 = 0), 3000);
     } else {
       this.model = {
         craneNoteId: 0,
         createdBy: this.userName,
         createdDate: this.model.createdDate,
         name: this.model.name,
-        // "jobnumber": this.model.jobnumber,
-        // "ponumber": this.model.ponumber,
         details: this.model.details,
         isNew: true,
         BMKEY1: this.craneId,
       };
       this.spinner.show();
-      this.cranesService.addCraneNote(this.model).subscribe(
-        (response) => {
+      this.cranesService.addCraneNote(this.model).subscribe({
+        next: () => {
           this.spinner.hide();
           window.scroll(0, 0);
           this.index1 = 1;
@@ -115,14 +100,14 @@ export class CraneNotesComponent implements OnInit {
             this.addNotes();
           }, 3000);
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-        }
-      );
+        },
+      });
     }
   }
 
-  openModal(template: TemplateRef<any>, id: any) {
+  openModal(template: TemplateRef<any>, id: any): void {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
@@ -130,8 +115,8 @@ export class CraneNotesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.cranesService.deleteCraneNote(this.craneNoteId).subscribe(
-      (response) => {
+    this.cranesService.deleteCraneNote(this.craneNoteId).subscribe({
+      next: () => {
         this.model = [];
         this.spinner.hide();
         this.modalRef.hide();
@@ -141,49 +126,51 @@ export class CraneNotesComponent implements OnInit {
         this.helpFlag = false;
         this.getAllNotes(this.craneId);
       },
-      (error) => {
+      error: () => {
         this.spinner.hide();
-      }
-    );
+      },
+    });
   }
 
-  viewCraneNote(noteId: any) {
+  viewCraneNote(noteId: any): void {
     this.viewFlag = true;
     this.newFlag = false;
     this.editFlag = false;
     this.helpFlag = false;
     this.spinner.show();
-    this.cranesService.getCraneNote(noteId).subscribe((response) => {
-      this.craneNoteId = this.model.partNoteId;
-      this.spinner.hide();
-      this.model = response;
-      sessionStorage.setItem('BMKEY1', this.model.BMKEY1);
-      this.craneNoteId = this.model.craneNoteId;
-      if (this.model.createdDate) {
-        this.model.createdDate = this.datepipe.transform(
-          this.model.createdDate,
-          'MM/dd/yyyy'
-        );
-      }
+    this.cranesService.getCraneNote(noteId).subscribe({
+      next: (response) => {
+        this.spinner.hide();
+        this.model = response;
+        sessionStorage.setItem('BMKEY1', this.model.BMKEY1);
+        this.craneNoteId = this.model.craneNoteId;
+        if (this.model.createdDate) {
+          this.model.createdDate = this.datepipe.transform(
+            this.model.createdDate,
+            'MM/dd/yyyy'
+          );
+        }
+      },
+      error: () => {
+        this.spinner.hide();
+      },
     });
     window.scroll(0, 0);
   }
 
-  backToCrane() {
+  backToCrane(): void {
     this.location.back();
   }
 
-  goToAttachments(vendorNoteId: any) {
+  goToAttachments(vendorNoteId: any): void {
     this.router.navigateByUrl(`cranes/craneNoteAttachments/${vendorNoteId}`);
   }
 
-  updateCraneNotes() {
+  updateCraneNotes(): void {
     if (!this.model.name || !this.model.createdDate) {
       this.index1 = -1;
       window.scroll(0, 0);
-      setTimeout(() => {
-        this.index1 = 0;
-      }, 3000);
+      setTimeout(() => (this.index1 = 0), 3000);
     } else {
       const currentDate = new Date();
       const createdDate = this.model.createdDate;
@@ -196,71 +183,68 @@ export class CraneNotesComponent implements OnInit {
         currentDate,
         "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
       );
-      this.cranesService
-        .updateCraneNote(this.craneNoteId, this.model)
-        .subscribe(
-          (response) => {
-            this.model.createdDate = this.datepipe.transform(
-              this.model.createdDate,
-              'MM/dd/yyyy'
-            );
-            this.spinner.hide();
-            window.scroll(0, 0);
-            this.viewFlag = true;
-            this.newFlag = false;
-            this.editFlag = false;
-            this.helpFlag = false;
-            this.refreshCall();
-            this.index1 = 2;
-            setTimeout(() => {
-              this.index1 = 0;
-            }, 7000);
-          },
-          (error) => {
-            this.spinner.hide();
-          }
-        );
+
+      this.cranesService.updateCraneNote(this.craneNoteId, this.model).subscribe({
+        next: () => {
+          this.model.createdDate = this.datepipe.transform(
+            this.model.createdDate,
+            'MM/dd/yyyy'
+          );
+          this.spinner.hide();
+          window.scroll(0, 0);
+          this.viewFlag = true;
+          this.newFlag = false;
+          this.editFlag = false;
+          this.helpFlag = false;
+          this.refreshCall();
+          this.index1 = 2;
+          setTimeout(() => (this.index1 = 0), 7000);
+        },
+        error: () => {
+          this.spinner.hide();
+        },
+      });
     }
   }
 
-  refreshCall() {
+  refreshCall(): void {
     this.getAllNotes(this.craneId);
   }
 
-  addNotes() {
+  addNotes(): void {
     this.newFlag = true;
     this.editFlag = false;
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
-  editNote() {
+  editNote(): void {
     this.editFlag = true;
     this.viewFlag = false;
     this.newFlag = false;
     this.helpFlag = false;
   }
+
   decline(): void {
     this.message = 'Declined!';
     this.modalRef.hide();
   }
-  setOrder(value: string) {
+
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

@@ -39,7 +39,7 @@ export class UserAttributesService {
   updateTypeAttributes(attribute: any) {
     return this.http
       .put(
-        AppConfiguration.attributeRestURL + '/' + attribute.attributenameid,
+        AppConfiguration.attributeRestURL + '/' + attribute.attributeNameId,
         attribute,
         this.httpOptions
       )
@@ -54,7 +54,7 @@ export class UserAttributesService {
 
   getTypeAttributes(typeId: string) {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId,
         this.httpOptions
       )
@@ -63,7 +63,7 @@ export class UserAttributesService {
 
   getAllAttributeTypes() {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.attributeRestURL + '/getAllAttributetypes',
         this.httpOptions
       )
@@ -72,7 +72,7 @@ export class UserAttributesService {
 
   getAllSearchTypes(attributeType: string) {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.attributeRestURL +
           '/getAllAttributeSearchType/' +
           attributeType,
@@ -95,13 +95,13 @@ export class UserAttributesService {
 
   removeUserAttributess(
     attributeId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     attributeName: string,
     typeName: string,
     moduleType: string
   ) {
-    const url = `${AppConfiguration.attributeRestURL}/${attributeId}/${companyid}/${username}/${attributeName}/${typeName}/${moduleType}`;
+    const url = `${AppConfiguration.attributeRestURL}/${attributeId}/${companyId}/${userName}/${attributeName}/${typeName}/${moduleType}`;
 
     return this.http
       .delete(url, { ...this.httpOptions, responseType: 'text' })

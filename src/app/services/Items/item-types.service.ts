@@ -54,7 +54,7 @@ export class ItemTypesService {
 
   getAllItemTypesWithHierarchy(companyId: string | number) {
     return this.http
-      .get(
+      .get<any[]>(
         this.serviceURL + '/getAllTypeWithHierarchy/itemtype/' + companyId,
         this.httpOptions
       )

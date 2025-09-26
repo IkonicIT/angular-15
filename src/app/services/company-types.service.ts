@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
-// import 'rxjs/add/operator/toPromise';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { AppConfiguration } from '../configuration';
@@ -44,17 +43,18 @@ export class CompanyTypesService {
       .pipe(catchError(this.handleError));
   }
 
-  getAllCompanyTypes(companyId: string) {
-    return this.http
-      .get(this.serviceURL + '/getAllType/companytype/' + companyId, this.httpOptions)
-      .pipe(catchError(this.handleError));
-  }
+getAllCompanyTypes(companyId: string) {
+  return this.http
+    .get<any[]>(this.serviceURL + '/getAllType/companytype/' + companyId, this.httpOptions)
+    .pipe(catchError(this.handleError));
+}
 
-  getAllCompanyTypesWithHierarchy(companyId: string | number) {
-    return this.http
-      .get(this.serviceURL + '/getAllTypeWithHierarchy/companytype/' + companyId, this.httpOptions)
-      .pipe(catchError(this.handleError));
-  }
+getAllCompanyTypesWithHierarchy(companyId: string | number) {
+  return this.http
+    .get<any[]>(this.serviceURL + '/getAllTypeWithHierarchy/companytype/' + companyId, this.httpOptions)
+    .pipe(catchError(this.handleError));
+}
+
 
   getBooks(): TreeviewItem[] {
     const childrenCategory = new TreeviewItem({

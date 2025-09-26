@@ -11,9 +11,9 @@ import { Location } from '@angular/common';
   styleUrls: ['./item-packing-list.component.scss'],
 })
 export class ItemPackingListComponent implements OnInit {
-  companyId: string;
-  itemId: string | null;
-  transferLogID: string;
+  companyId: number = 0;
+  itemId: string | null = null;
+  transferLogId: string = '';
   model: any;
   item: any;
   attributes: any;
@@ -22,6 +22,7 @@ export class ItemPackingListComponent implements OnInit {
   order: string = 'date';
   globalCompany: any;
   loader = false;
+
   constructor(
     private companyManagementService: CompanyManagementService,
     private _location: Location,
@@ -30,64 +31,91 @@ export class ItemPackingListComponent implements OnInit {
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.transferLogID = route.snapshot.params['transferLogID'];
-    this.getItemTransferDetails(this.transferLogID);
+    this.transferLogId = this.route.snapshot.params['transferLogId'] ?? '';
+
+    if (this.transferLogId) {
+      this.getItemTransferDetails(this.transferLogId);
+    }
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
+      this.companyId = this.globalCompany.companyId;
     }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
+      this.companyId = value.companyId;
     });
-    this.itemId = sessionStorage.getItem('transferItemId');
-    this.itemManagementService
-      .getItemDetails(this.itemId)
-      .subscribe((response) => {
-        this.item = response;
-      });
 
-    this.itemManagementService
-      .getAttributesForReplacements(this.itemId)
-      .subscribe((response) => {
-        this.attributes = response;
-      });
+    this.itemId = sessionStorage.getItem('transferItemId');
+    if (this.itemId) {
+      this.itemManagementService.getItemDetails(this.itemId).subscribe(
+        (response) => {
+          this.item = response;
+        },
+        () => {}
+      );
+
+      this.itemManagementService
+        .getAttributesForReplacements(this.itemId)
+        .subscribe(
+          (response) => {
+            this.attributes = response;
+          },
+          () => {}
+        );
+    }
 
     setTimeout(() => {
       this.print();
     }, 2000);
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
+
   print(): void {
-    let printContents, popupWin: any;
-    printContents = document.getElementById('print-section')?.innerHTML;
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=100%');
-    popupWin.document.open();
-    popupWin.document.write(printContents);
-    popupWin.focus();
-    popupWin.print();
-    popupWin.document.close();
+    const printContents = document.getElementById('print-section')?.innerHTML;
+    if (!printContents) return;
+
+    const popupWin = window.open(
+      '',
+      '_blank',
+      'top=0,left=0,height=100%,width=100%'
+    );
+
+    if (popupWin) {
+      popupWin.document.open();
+      popupWin.document.write(printContents);
+      popupWin.focus();
+      popupWin.print();
+      popupWin.document.close();
+    }
   }
 
-  getItemTransferDetails(transferLogID: string) {
+  getItemTransferDetails(transferLogId: string): void {
     this.spinner.show();
 
-    this.itemManagementService.getItemTransferDetails(transferLogID).subscribe(
+    this.itemManagementService.getItemTransferDetails(transferLogId).subscribe(
       (response) => {
         this.spinner.hide();
 
         this.model = response;
-        this.model.transfeDate = this.model.transfeDate.split(' ')[0];
+        if (this.model?.transfeDate) {
+          this.model.transfeDate = this.model.transfeDate.split(' ')[0];
+        }
         this.itemTransfer = response;
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  back() {
-    this.router.navigate(['../items/viewtItemTransfer/' + this.transferLogID]);
+  back(): void {
+    this.router.navigate([
+      `../items/viewtItemTransfer/${this.transferLogId}`,
+    ]);
   }
 }

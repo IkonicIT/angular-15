@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+        <div class="form-group col-sm-12 text-end">
           <button
             type="button"
             (click)="print()"
@@ -10,6 +10,7 @@
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
             class="btn btn-outline-danger btn-sm btn-right btn-top"
+            style="border-radius: 6px;"
           >
             Print
           </button>
@@ -20,28 +21,28 @@
             data-bs-toggle="tooltip"
             title=" Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
+            style="border-radius: 6px;"
           >
             Help
           </button>
 
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            class="p-2 mb-2"
+            [ngStyle]="{
+              textAlign: 'left',
+              border: '1px solid',
+              width: 'fit-content',
+              backgroundColor: 'whitesmoke'
+            }"
+            *ngIf="helpFlag"
           >
             Note: Mandatory Fields are required.<br />
             * To add new Attributes:<br />
-            1.Select the Type from the 'Select a Type' pop-up for the new
-            Attribute or Click the 'Add' button.<br />
+            1.Select the Type from the 'Select a Type' pop-up for the new Attribute or Click the 'Add' button.<br />
             2.Enter the information for the Attribute.<br />
             3.Click the 'Save' button.<br />
             * To edit an Attribute:<br />
-            1.Select the Type from the 'Select a Type' pop-up for the
-            Attribute.<br />
+            1.Select the Type from the 'Select a Type' pop-up for the Attribute.<br />
             2.Select the Attribute from the 'Select an Attribute' list.<br />
             3.Make necessary changes to the Attribute.<br />
             4.Click the 'Save' button.<br />
@@ -49,74 +50,72 @@
             1.Click on 'Remove' button.
           </div>
         </div>
-        <div class="card-body" style="padding: 20px">
-          <div class="modal-body mobile-padding" style="padding: 16px">
-            <div
-              class="col-sm-12 mobile-padding"
-              style="padding-right: 15px; padding-left: 15px"
-            >
+
+        <div class="card-body p-3">
+          <div class="modal-body p-3">
+            <div class="col-sm-12">
               <div class="card">
-                <div class="card-header" style="padding: 12px 20px">
+                <div class="card-header">
                   <strong>Manage {{ companyName }} Attributes</strong>
                 </div>
                 <form name="form">
-                  <div class="card-body" style="padding: 20px">
-                    <div class="row" style="margin: 0px -15px">
-                      <div class="col-sm-10" style="padding: 0px 15px">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-10">
                         <alert
+                          *ngIf="index === -1"
                           type="danger"
-                          *ngIf="index == -1"
                           [dismissible]="dismissible"
                         >
                           Please Enter Required Fields
                         </alert>
                         <alert
-                          *ngIf="index == 1"
+                          *ngIf="index === 1"
                           type="success"
                           [dismissible]="dismissible"
                         >
                           Company Attribute saved successfully.
                         </alert>
                         <alert
-                          *ngIf="index == 2"
+                          *ngIf="index === 2"
                           type="success"
                           [dismissible]="dismissible"
                         >
                           Company Attribute Updated successfully.
                         </alert>
                         <alert
-                          *ngIf="index == 3"
+                          *ngIf="index === 3"
                           type="success"
                           [dismissible]="dismissible"
                         >
                           Company Attribute Deleted successfully.
                         </alert>
                         <alert
-                          *ngIf="index == 4"
+                          *ngIf="index === 4"
                           type="success"
                           [dismissible]="dismissible"
                         >
                           Company Attributes Order Saved successfully.
                         </alert>
                       </div>
-                      <div class="col-sm-3" style="padding: 0 15px">
-                        Select Company Type
-                      </div>
 
-                      <div class="col-sm-4 company-type-dropdown">
-                       <app-dropdown-treeview-select
+                      <div class="col-sm-3">Select Company Type</div>
+                      <div class="col-sm-4">
+                        <div class="custom-dropdown-wrapper">
+                        <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
                           (valueChange)="onValueChange($event)"
-                        >
-                        </app-dropdown-treeview-select>
-
+                        ></app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                        </div>
                       </div>
                       <div class="col-sm-8"></div>
                     </div>
-                    <div class="col-12" style="padding: 0 15px">
-                      <div class="row" style="margin: 0 -15px">
-                        <div class="col-12 col-md-4" style="padding: 0 15px">
+
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col-12 col-md-4">
                           Select Attribute
                           <ngx-sortable
                             [items]="typeAttributes"
@@ -130,17 +129,15 @@
                                   model = item;
                                   selectedAttrType = item.attributeType;
                                   index = 0;
-                                  getSearchTypes(
-                                    item.attributeType?.attributeTypeId
-                                  );
+                                  getSearchTypes(item.attributeType?.attributeTypeId);
                                   addEditFlag = true
                                 "
                               >
-                                <a> {{ item.name }} </a>
+                                <a>{{ item.name }}</a>
                               </ul>
                             </ng-template>
                           </ngx-sortable>
-                          <div class="form-group col-sm-12 text-center">
+                          <div class="text-center mt-2">
                             <button
                               type="button"
                               *ngIf="addEditFlag"
@@ -156,16 +153,10 @@
                           </div>
                         </div>
 
-                        <div class="col-12 col-md-8" style="padding: 0 15px">
-                          <div class="row" style="margin: 0 -15px">
-                            <div
-                              class="form-group col-sm-12"
-                              style="padding: 0 15px; margin-bottom: 16px"
-                            >
-                              <label for="name"
-                                >Name
-                                <strong class="text-danger">*</strong></label
-                              >
+                        <div class="col-12 col-md-8">
+                          <div class="row">
+                            <div class="form-group col-sm-12 mb-3">
+                              <label for="name">Name <strong class="text-danger">*</strong></label>
                               <input
                                 type="text"
                                 class="form-control"
@@ -178,35 +169,18 @@
                             </div>
                           </div>
 
-                          <div class="row" style="margin: 0 -15px">
-                            <div
-                              class="form-group col-sm-12"
-                              style="padding: 0 15px; margin-bottom: 16px"
-                            >
-                              <label for="Toa"
-                                >Type of Attribute
-                                <strong class="text-danger">*</strong></label
-                              >
+                          <div class="row">
+                            <div class="form-group col-sm-12 mb-3">
+                              <label for="Toa">Type of Attribute <strong class="text-danger">*</strong></label>
                               <select
                                 class="form-control custom-dropdown"
-                                [(ngModel)]="
-                                  model.attributetype.attributeTypeId
-                                "
+                                [(ngModel)]="model.attributeType.attributeTypeId"
                                 name="Toa"
                                 id="Toa"
-                                (change)="
-                                  getSearchTypes(
-                                    model.attributeType.attributeTypeId
-                                  )
-                                "
+                                (change)="getSearchTypes(model.attributeType.attributeTypeId)"
                               >
-                                <option [value]="null">
-                                  Select attribute Type
-                                </option>
-                                <option
-                                  [ngValue]="type.attributeTypeId"
-                                  *ngFor="let type of attributeTypes"
-                                >
+                                <option [value]="null">Select attribute Type</option>
+                                <option *ngFor="let type of attributeTypes" [ngValue]="type.attributeTypeId">
                                   {{ type.typeName }}
                                 </option>
                               </select>
@@ -214,10 +188,7 @@
                           </div>
 
                           <div class="row">
-                            <div
-                              class="form-group col-sm-12"
-                              style="padding: 0 15px; margin-bottom: 16px"
-                            >
+                            <div class="form-group col-sm-12 mb-3">
                               <label for="aToolTip">Attribute Tooltip</label>
                               <input
                                 type="text"
@@ -231,76 +202,44 @@
                             </div>
                           </div>
 
-                          <div
-                            class="row"
-                            *ngIf="model.attributeType.attributeTypeId == 4"
-                          >
-                            <div
-                              class="form-group col-sm-12"
-                              style="padding: 0 15px; margin-bottom: 16px"
-                            >
+                          <div class="row" *ngIf="model.attributeType.attributeTypeId == 4">
+                            <div class="form-group col-sm-12 mb-3">
                               <label for="listValues">List Values</label>
                               <div class="row">
                                 <div class="col-sm-5">
-                                <input
-                                  
-                                  type="text"
-                                  class="form-control"
-                                  [(ngModel)]="listItem"
-                                  name="lItem"
-                                  #lItem="ngModel"
-                                  id="listValues"
-                                  placeholder="Enter List value"
-                                />
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    [(ngModel)]="listItem"
+                                    name="lItem"
+                                    #lItem="ngModel"
+                                    id="listValues"
+                                    placeholder="Enter List value"
+                                  />
+                                </div>
+                                <div class="col-sm-5">
+                                  <select name="listItems" class="form-control custom-dropdown ms-1">
+                                    <option *ngFor="let addedItem of model.attributeListItemResource">
+                                      {{ addedItem.listItem }}
+                                    </option>
+                                  </select>
+                                </div>
                               </div>
-                              <div class="col-sm-5">
-                                <select
-                                  name="listItems"
-                                  style="margin-left: 2%"
-                                  class="form-control custom-dropdown"
-                                >
-                                  <option
-                                    *ngFor="
-                                      let addedItem of model.attributeListItemResource
-                                    "
-                                  >
-                                    {{ addedItem.listItem }}
-                                  </option>
-                                </select>
-                              </div>
-                              </div>
-                              <button
-                                type="button"
-                                class="btn btn-primary btn-list"
-                                style="margin-top: 8px;"
-                                (click)="addListItem()"
-                              >
-                                Add to List
-                              </button>
+                              <button type="button" class="btn btn-primary btn-list mt-2 btn-group" (click)="addListItem()">Add to List</button>
                             </div>
                           </div>
 
                           <div class="row">
-                            <div
-                              class="form-group col-sm-12"
-                              style="padding: 0 15px; margin-bottom: 16px"
-                            >
+                            <div class="form-group col-sm-12 mb-3">
                               <label for="sType">Search Type</label>
                               <select
                                 class="form-control custom-dropdown"
-                                [(ngModel)]="
-                                  model.searchtype.attributeSearchTypeId
-                                "
+                                [(ngModel)]="model.searchType.attributeSearchTypeId"
                                 id="sType"
                                 name="sType"
                               >
-                                <option [value]="null">
-                                  Select Search Type
-                                </option>
-                                <option
-                                  [ngValue]="searchType.attributeSearchTypeId"
-                                  *ngFor="let searchType of searchTypes"
-                                >
+                                <option [value]="null">Select Search Type</option>
+                                <option *ngFor="let searchType of searchTypes" [ngValue]="searchType.attributeSearchTypeId">
                                   {{ searchType.searchType }}
                                 </option>
                               </select>
@@ -308,13 +247,8 @@
                           </div>
 
                           <div class="row">
-                            <div
-                              class="form-group col-sm-12"
-                              style="padding: 0 15px; margin-bottom: 16px"
-                            >
-                              <label for="rField" class="btn-right">
-                                Required Field</label
-                              >
+                            <div class="form-group col-sm-12 mb-3">
+                              <label for="rField" class="btn-right">Required Field</label>
                               <input
                                 type="checkbox"
                                 id="rField"
@@ -326,67 +260,54 @@
                           </div>
 
                           <div class="row">
-                            <div
-                              class="form-group col-sm-12 text-center add-form"
-                              style="padding: 0 15px; margin-bottom: 16px"
-                            >
+                            <div class="form-group col-sm-12 text-center add-form mb-3">
                               <button
                                 type="button"
-                                data-bs-placement="bottom"
-                                data-bs-toggle="tooltip"
-                                title="Add New Attribute"
                                 *ngIf="!addEditFlag && highestRank > 6"
                                 [disabled]="typeId == 0"
                                 class="btn btn-primary btn-right"
                                 (click)="createAttribute()"
+                                title="Add New Attribute"
                                 style="border-radius: 6px;"
                               >
                                 Add
                               </button>
                               <button
                                 type="button"
-                                data-bs-placement="bottom"
-                                data-bs-toggle="tooltip"
-                                title="Edit this Attribute"
                                 *ngIf="addEditFlag && highestRank > 6"
                                 class="btn btn-primary btn-right"
                                 (click)="editAttribute()"
+                                title="Edit this Attribute"
                                 style="border-radius: 6px;"
                               >
                                 Update
                               </button>
                               <button
                                 type="button"
-                                data-bs-placement="bottom"
-                                data-bs-toggle="tooltip"
-                                title="Add New Attribute"
                                 *ngIf="addEditFlag && highestRank > 6"
                                 class="btn btn-primary btn-right"
                                 (click)="newAttribute()"
+                                title="Add New Attribute"
                                 style="border-radius: 6px;"
                               >
                                 New
                               </button>
                               <button
                                 type="button"
-                                data-bs-placement="bottom"
-                                data-bs-toggle="tooltip"
-                                title="Delete this  Attribute"
                                 *ngIf="addEditFlag && highestRank > 6"
+                                [disabled]="highestRank == 9"
                                 class="btn btn-primary btn-right"
                                 (click)="openModal(confirmtemplate)"
-                                [disabled]="highestRank == 9"
+                                title="Delete this Attribute"
                                 style="border-radius: 6px;"
                               >
                                 Remove
                               </button>
                               <button
                                 type="button"
-                                data-bs-placement="bottom"
-                                data-bs-toggle="tooltip"
-                                title="Back"
-                                (click)="cancelCompanyAttributes()"
                                 class="btn btn-primary"
+                                (click)="cancelCompanyAttributes()"
+                                title="Back"
                                 style="border-radius: 6px;"
                               >
                                 Back
@@ -409,143 +330,24 @@
 
 <ng-template #templateNested>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Second modal</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <h4 class="modal-title">Second modal</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()"></button>
   </div>
   <div class="modal-body">
     This is nested modal.
     <br />
-    <button
-      *ngIf="modalRef"
-      type="button"
-      class="btn btn-danger"
-      (click)="closeFirstModal()"
-    >
-      Close first modal
-    </button>
+    <button *ngIf="modalRef" type="button" class="btn btn-danger" (click)="closeFirstModal()">Close first modal</button>
   </div>
 </ng-template>
 
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
-    <p>
-      Click(Yes) to permanently delete this Attribute or Click(No) to discard
-      This action.
-    </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <p>Click(Yes) to permanently delete this Attribute or Click(No) to discard This action.</p>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" class="loader-backdrop">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

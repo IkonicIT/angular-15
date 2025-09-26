@@ -86,7 +86,6 @@ import {
 } from './components';
 import { FullLayoutComponent } from './containers/full-layout/full-layout.component';
 import { SimpleLayoutComponent } from './containers/simple-layout/simple-layout.component';
-//import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   AsideToggleDirective,
   NAV_DROPDOWN_DIRECTIVES,
@@ -140,10 +139,8 @@ const APP_CONTAINERS = [FullLayoutComponent, SimpleLayoutComponent];
     DropdownTreeviewModule,
     NgxSortableModule,
     NgxSpinnerModule,
-    //NgbDropdownModule,
     BrowserAnimationsModule,
     SelectDropDownModule,
-    //DpDatePickerModule,
     MatButtonModule,
     MatRadioModule,
     TabsModule.forRoot(),

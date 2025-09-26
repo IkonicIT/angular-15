@@ -12,9 +12,6 @@ export class NavDropdownDirective {
   }
 }
 
-/**
-* Allows the dropdown to be toggled via click.
-*/
 @Directive({
   selector: '[appNavDropdownToggle]'
 })

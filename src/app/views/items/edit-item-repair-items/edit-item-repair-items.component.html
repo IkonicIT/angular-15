@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
@@ -19,18 +19,13 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
+            *ngIf="helpFlag"
           >
             Note: Mandatory Fields are required.<br />
             * To add new Repair Item:<br />
@@ -59,9 +54,8 @@
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <form
-                  name="form"
-                  (ngSubmit)="f.form.valid && UpdateRepairItem()"
                   #f="ngForm"
+                  (ngSubmit)="f.form.valid && UpdateRepairItem()"
                   novalidate
                 >
                   <div class="card-body">
@@ -71,7 +65,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        [(ngModel)]="model.repairdescription"
+                        [(ngModel)]="model.repairDescription"
                         name="name"
                         id="name"
                         placeholder="Enter Item name"
@@ -80,20 +74,20 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
+                          class="btn btn-primary btn-right btn-group"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Update "
-                          class="btn btn-primary btn-right"
                         >
                           Update
                         </button>
                         <button
                           type="button"
                           (click)="cancel()"
+                          class="btn btn-primary btn-group"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Cancel"
-                          class="btn btn-primary"
                         >
                           Cancel
                         </button>
@@ -112,23 +106,11 @@
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 2; cursor: pointer; -ms-transform: translate(-50%, -50%); transform: translate(-1%, -1%);"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
@@ -146,28 +128,22 @@
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
   @-webkit-keyframes spin {
     0% {
       -webkit-transform: rotate(0deg);
     }
-
     100% {
       -webkit-transform: rotate(360deg);
     }
   }
-
   @keyframes spin {
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
-
-  /* Add animation to "page content" */
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -175,35 +151,29 @@
     animation-name: animatebottom;
     animation-duration: 1s;
   }
-
   @-webkit-keyframes animatebottom {
     from {
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0px;
       opacity: 1;
     }
   }
-
   @keyframes animatebottom {
     from {
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0;
       opacity: 1;
     }
   }
-
   .btn-link[routerLink="/forgot-password"] {
     color: red;
   }
-
   .cent {
     position: absolute;
     top: 50%;

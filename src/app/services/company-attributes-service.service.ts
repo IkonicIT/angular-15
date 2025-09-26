@@ -29,7 +29,7 @@ export class CompanyAttributesServiceService {
 
   updateTypeAttributes(attribute: any) {
     return this.http
-      .put(AppConfiguration.attributeRestURL + '/' + attribute.attributenameid, attribute, this.httpOptions)
+      .put(AppConfiguration.attributeRestURL + '/' + attribute.attributeNameId, attribute, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -43,19 +43,19 @@ export class CompanyAttributesServiceService {
 
   getTypeAttributes(typeId: string) {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId, this.httpOptions)
+      .get<any[]>(AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllAttributeTypes() {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributetypes', this.httpOptions)
+      .get<any[]>(AppConfiguration.attributeRestURL + '/getAllAttributetypes', this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllSearchTypes(attributeType: string) {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributeSearchType/' + attributeType, this.httpOptions)
+      .get<any[]>(AppConfiguration.attributeRestURL + '/getAllAttributeSearchType/' + attributeType, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -73,14 +73,14 @@ export class CompanyAttributesServiceService {
 
   removeCompanyAttributess(
     attributeId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     attributeName: string,
     typeName: string,
     moduleType: string
   ) {
     return this.http
-      .delete(AppConfiguration.attributeRestURL + '/' + attributeId + '/' + companyid + '/' + username +
+      .delete(AppConfiguration.attributeRestURL + '/' + attributeId + '/' + companyId + '/' + userName +
           '/' + attributeName + '/' + typeName + '/' + moduleType, { responseType: 'text' })
       .pipe(catchError(this.handleError));
   }

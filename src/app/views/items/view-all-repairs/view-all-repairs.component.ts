@@ -15,27 +15,28 @@ import { DashboardService } from '../../../services/dashboard.service';
 })
 export class ViewAllRepairsComponent implements OnInit {
   companyId: any;
-  completedRepairs: any = [];
+  completedRepairs: any[] = [];
   flag: number;
-  inCompletedRepairs: any = [];
+  inCompletedRepairs: any[] = [];
   isOwnerAdmin: any;
   userId: any;
   repairsFlag: boolean;
   selectedVal: string;
   document: any;
   authToken: any;
-  completedRepairsForPagination: any = 5;
-  completedRepairsFilter: any = '';
-  page1: any = 1;
-  page2: any = 1;
-  inCompletedRepairsForPagination: any = 5;
-  inCompletedRepairsFilter: any = '';
+  completedRepairsForPagination: number = 5;
+  completedRepairsFilter: string = '';
+  page1: number = 1;
+  page2: number = 1;
+  inCompletedRepairsForPagination: number = 5;
+  inCompletedRepairsFilter: string = '';
   timeFrame: any;
   public params: any = {};
   period: string;
   index: number;
   viewAllRepairs: any = {};
   loader = false;
+
   constructor(
     private dashboardService: DashboardService,
     private router: Router,
@@ -45,13 +46,16 @@ export class ViewAllRepairsComponent implements OnInit {
     private broadcasterService: BroadcasterService,
     private itemManagementService: ItemManagementService
   ) {
-    this.companyId = route.snapshot.params['companyID'];
+    this.companyId = route.snapshot.params['companyId'];
   }
 
   ngOnInit() {
-    this.completedRepairs = this.itemManagementService.getCompletedRepairs();
-    this.inCompletedRepairs =
-      this.itemManagementService.getInCompletedRepairs();
+    this.completedRepairs = Array.isArray(this.itemManagementService.getCompletedRepairs())
+      ? this.itemManagementService.getCompletedRepairs()
+      : [];
+    this.inCompletedRepairs = Array.isArray(this.itemManagementService.getInCompletedRepairs())
+      ? this.itemManagementService.getInCompletedRepairs()
+      : [];
     this.viewAllRepairs = this.itemManagementService.getViewAllRepairs();
     if (
       this.completedRepairs.length > 1 ||
@@ -79,11 +83,10 @@ export class ViewAllRepairsComponent implements OnInit {
 
   getAllCompletedRepairs() {
     this.spinner.show();
-
     this.flag = 1;
     this.repairsFlag = true;
     this.setTimeFrame();
-    var req = {
+    const req = {
       companyId: this.companyId,
       isOwnerAdmin: this.isOwnerAdmin,
       userId: this.userId,
@@ -97,11 +100,10 @@ export class ViewAllRepairsComponent implements OnInit {
     this.dashboardService.getAllRepairs(req).subscribe(
       (response: any) => {
         this.spinner.hide();
-
-        this.completedRepairs = response;
-        this.itemManagementService.setCompletedRepairs(response);
+        this.completedRepairs = Array.isArray(response) ? response : [];
+        this.itemManagementService.setCompletedRepairs(this.completedRepairs);
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
@@ -132,10 +134,9 @@ export class ViewAllRepairsComponent implements OnInit {
 
   getIncompletedRepairs() {
     this.spinner.show();
-
     this.flag = 0;
     this.setTimeFrame();
-    var req = {
+    const req = {
       companyId: this.companyId,
       isOwnerAdmin: this.isOwnerAdmin,
       userId: this.userId,
@@ -149,11 +150,10 @@ export class ViewAllRepairsComponent implements OnInit {
     this.dashboardService.getAllRepairs(req).subscribe(
       (response: any) => {
         this.spinner.hide();
-
-        this.inCompletedRepairs = response;
-        this.itemManagementService.setInCompletedRepairs(response);
+        this.inCompletedRepairs = Array.isArray(response) ? response : [];
+        this.itemManagementService.setInCompletedRepairs(this.inCompletedRepairs);
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
@@ -196,28 +196,26 @@ export class ViewAllRepairsComponent implements OnInit {
   downloadDocument(companyDocument: { isNew?: number; attachmentId?: any }) {
     this.document = {};
     this.spinner.show();
-
     this.companyDocumentsService
       .getCompanyDocuments(companyDocument.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-
           this.document = response;
           this.downloadFromDB();
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
   }
 
   downloadFromDB() {
-    var blob = this.companyDocumentsService.b64toBlob(
+    const blob = this.companyDocumentsService.b64toBlob(
       this.document.attachmentFile,
-      this.document.contenttype
+      this.document.contentType
     );
-    var fileURL = URL.createObjectURL(blob);
+    const fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
   }
 
@@ -226,12 +224,11 @@ export class ViewAllRepairsComponent implements OnInit {
     fileName?: any;
     attachmentId?: any;
   }) {
-    var index = attachment.fileName.lastIndexOf('.');
-    var extension = attachment.fileName.slice(index + 1);
+    const index = attachment.fileName.lastIndexOf('.');
+    const extension = attachment.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
-      var wnd = window.open('about:blank');
-
-      var pdfStr = `<div style="text-align:center">
+      const wnd = window.open('about:blank');
+      const pdfStr = `<div style="text-align:center">
       <h4>Document viewer</h4>
       <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
         attachment.attachmentId + '?access_token=' + this.authToken
@@ -240,23 +237,18 @@ export class ViewAllRepairsComponent implements OnInit {
         <script>
         function reloadIFrame() {
           var iframe = document.getElementById("iFrame");
-            console.log(iframe); //work control
-            console.log(iframe.contentDocument); //work control
             if(iframe.contentDocument.URL == "about:blank"){
-              console.log("loaded");
               iframe.src =  iframe.src;
             }
           }
           var timerId = setInterval("reloadIFrame();", 1300);
           setTimeout(() => {
             clearInterval(timerId);
-            console.log("Finally Loaded");
             }, 25000);
 
           $( document ).ready(function() {
               $('#menuiFrame').on('load', function() {
                   clearInterval(timerId);
-                  console.log("Finally Loaded"); //work control
               });
           });
         </script>
@@ -268,14 +260,13 @@ export class ViewAllRepairsComponent implements OnInit {
       extension.toLowerCase() == 'jpeg' ||
       extension.toLowerCase() == 'gif'
     ) {
-      var pdfStr = `<div style="text-align:center">
+      const pdfStr = `<div style="text-align:center">
     <h4>Image Viewer</h4>
     <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
       attachment.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" >
       </div>`;
-
-      var wnd = window.open('about:blank');
+      const wnd = window.open('about:blank');
       if (wnd) wnd.document.write(pdfStr);
     } else {
       window.open(
@@ -288,7 +279,7 @@ export class ViewAllRepairsComponent implements OnInit {
   }
 
   goToView(itemId: string, rank: any, tag: any, typeName: any) {
-    var model = {
+    const model = {
       selectedVal: this.selectedVal,
       repairFlag: this.repairsFlag,
       paramsType: this.params.type,
@@ -309,7 +300,7 @@ export class ViewAllRepairsComponent implements OnInit {
     tag: any,
     typeName: any
   ) {
-    var model = {
+    const model = {
       selectedVal: this.selectedVal,
       repairFlag: this.repairsFlag,
       paramsType: this.params.type,
@@ -330,11 +321,9 @@ export class ViewAllRepairsComponent implements OnInit {
     if (!failureType) {
       return typeAndCause;
     }
-
     typeAndCause = failureCause
       ? failureType + ' : ' + failureCause
-      : failureType + ' : ' + ' ';
-
+       : failureType + ' : ' + ' ';
     return typeAndCause;
   }
 }

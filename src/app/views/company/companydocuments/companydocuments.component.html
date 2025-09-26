@@ -6,31 +6,28 @@
           <button
             type="button"
             (click)="print()"
-            data-bs-placement="bottom"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
             data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
             data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            data-bs-placement="bottom"
+            title="Instructions"
           >
             Help
           </button>
+
+          <!-- Help instructions -->
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
           >
             *To add an attachment:<br />
             1.Click the 'Choose File' button to locate the desired file.<br />
@@ -51,22 +48,23 @@
             <button
               type="button"
               [disabled]="highestRank < 7"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right my-btn-group"
               (click)="addDocument()"
-              data-bs-placement="bottom"
               data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
               title="Add Company Document."
-               style="border-radius: 6px;"
               placement="top"
             >
               Add Document
             </button>
           </p>
+
+          <!-- Pagination option -->
           <div class="select-pagination-option">
             <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="itemsForPagination" (change) = "onChange($event.target)">
+              <span>
+                Show
+                <select [(ngModel)]="itemsForPagination" (change)="onChange($event.target)">
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
@@ -76,33 +74,26 @@
               </span>
             </div>
           </div>
+
+          <!-- Search -->
           <div class="float-right div-search">
             <span>Search : </span>
             <input [(ngModel)]="documentFilter" />
           </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+
+          <!-- Table -->
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'description'"
-                  (click)="setOrder('description')"
-                >
+                <th [class.active]="order === 'description'" (click)="setOrder('description')">
                   Description<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'dateaddedOn'"
-                  (click)="setOrder('dateaddedOn')"
-                >
+                <th [class.active]="order === 'dateAddedOn'" (click)="setOrder('dateAddedOn')">
                   Added<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'addedby'"
-                  (click)="setOrder('addedby')"
-                >
+                <th [class.active]="order === 'addedBy'" (click)="setOrder('addedBy')">
                   By<span [hidden]="reverse == ''">▼</span
                   ><span [hidden]="reverse != ''">▲</span>
                 </th>
@@ -113,24 +104,21 @@
               <tr
                 *ngFor="
                   let document of documents
-                    | orderBy : reverse + order
-                    | filterBy
-                      : ['description', 'dateaddedOn', 'addedby']
-                      : documentFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                    | orderBy: reverse + order
+                    | filterBy: ['description', 'dateAddedOn', 'addedBy']: documentFilter
+                    | paginate: { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
                 <td>{{ document.description }}</td>
-                <td>{{ document.dateadded | date : "MM/dd/yyyy" }}</td>
-                <td>{{ document.addedby }}</td>
+                <td>{{ document.dateAdded | date: 'MM/dd/yyyy' }}</td>
+                <td>{{ document.addedBy }}</td>
                 <td>
                   <button
                     *ngIf="highestRank > 0"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
-                    data-bs-placement="bottom"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-toggle="tooltip"
-                    title="View this  Company Document"
+                    data-bs-placement="bottom"
+                    title="View this Company Document"
                     (click)="download(document)"
                   >
                     View
@@ -138,9 +126,9 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 7"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
-                    data-bs-placement="bottom"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
                     title="Edit this Company Document"
                     (click)="editDocument(document)"
                   >
@@ -149,9 +137,9 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 7 || highestRank == 9"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    data-bs-placement="bottom"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
                     title="Delete this Company Document"
                     (click)="openModal(confirmtemplate, document.attachmentId)"
                   >
@@ -161,6 +149,8 @@
               </tr>
             </tbody>
           </table>
+
+          <!-- Pagination -->
           <pagination-controls
             class="my-pagination"
             (pageChange)="p = $event"
@@ -173,119 +163,19 @@
   </div>
 </div>
 
+<!-- Delete confirm modal -->
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>
       Click(Yes) to permanently delete this Company Document or Click(No) to
       discard This action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<!-- Loader -->
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

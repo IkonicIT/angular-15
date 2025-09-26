@@ -67,10 +67,6 @@ tbody td a:hover {
   background-color: lightgrey;
 }
 
-// .card {
-//   margin-bottom: 5px;
-//   margin-top: 10px;
-// }
 
 .card,
 button {
@@ -172,11 +168,30 @@ button {
 
 .custom-dropdown-arrow {
   position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 55.5%;
+  right: 12px; /* adjust this value to move left/right */
+  transform: translateY(-45%);
   pointer-events: none;
-  font-size: 16px;
-  color: #555;
-  z-index: 1;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
 }
+.custom-dropdown-arrow1 {
+  position: absolute;
+  top: 55.5%;
+  right: 12px; /* adjust this value to move left/right */
+  transform: translateY(-45%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}
+
+.btn-group{
+  border-radius: 6px;
+}
+

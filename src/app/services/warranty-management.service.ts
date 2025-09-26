@@ -40,10 +40,10 @@ export class WarrantyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  updateWarrantyType(type: any, warrantytypeid: string) {
+  updateWarrantyType(type: any, warrantyTypeId: number) {
     return this.http
       .put(
-        AppConfiguration.locationRestURL + 'warrantytype/' + warrantytypeid,
+        AppConfiguration.locationRestURL + 'warrantytype/' + warrantyTypeId,
         type,
         this.httpOptions
       )
@@ -52,7 +52,7 @@ export class WarrantyManagementService {
 
   removeWarrantyType(
     typeId: number,
-    companyId: string,
+    companyId: number,
     userName: string,
     warrantyType: string
   ) {
@@ -72,16 +72,16 @@ export class WarrantyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getWarrantyType(warrantytypeid: string) {
+  getWarrantyType(warrantyTypeId: number) {
     return this.http
       .get(
-        AppConfiguration.locationRestURL + 'warrantytype/' + warrantytypeid,
+        AppConfiguration.locationRestURL + 'warrantytype/' + warrantyTypeId,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
   }
 
-  getAllWarrantyTypes(companyId: string) {
+  getAllWarrantyTypes(companyId: number) {
     return this.http
       .get(
         AppConfiguration.locationRestURL +

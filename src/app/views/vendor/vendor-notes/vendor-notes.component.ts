@@ -58,7 +58,7 @@ export class VendorNotesComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.getAllNotes(this.vendorId);
     });
   }
@@ -92,8 +92,8 @@ export class VendorNotesComponent implements OnInit {
         createdBy: this.userName,
         createdDate: this.model.createdDate,
         name: this.model.name,
-        jobnumber: this.model.jobnumber,
-        ponumber: this.model.ponumber,
+        jobNumber: this.model.jobNumber,
+        poNumber: this.model.poNumber,
         details: this.model.details,
         isNew: true,
         vendorId: this.vendorId,
@@ -170,8 +170,7 @@ export class VendorNotesComponent implements OnInit {
   }
 
   goToAttachments(vendorNoteId: string) {
-    // Update this line
-    console.log('attachement:', vendorNoteId);
+    
     this.router.navigate(['vendor/note/documents/' + vendorNoteId], {
       queryParams: { q: this.vendorId },
     });
@@ -186,12 +185,11 @@ export class VendorNotesComponent implements OnInit {
       this.model.updatedBy = this.userName;
       const parsedDate = new Date(this.model.createdDate);
     
-    // Format it into the desired format
       this.model.createdDate = this.datePipe.transform(parsedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
       this.companynotesService.updateVenodrNotes(this.model).subscribe(
         (response: any) => {
-          this.model.effectiveon = this.datePipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datePipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
@@ -223,7 +221,7 @@ export class VendorNotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   addNotes() {
@@ -232,7 +230,7 @@ export class VendorNotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   editNote() {

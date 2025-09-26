@@ -19,36 +19,37 @@ export class NotesComponent implements OnInit {
   index: number = 0;
   date = Date.now();
   itemId: number = 0;
-  showAll: number;
+  showAll: number = 0;
   private sub: any;
   currentRole: any;
   highestRank: any;
-  id: number;
+  id: number = 0;
   globalCompany: any;
-  message: string;
-  modalRef: BsModalRef;
-  companyId: string;
+  message: string = '';
+  modalRef!: BsModalRef;
+  companyId: string = '';
   notes: any[] = [];
   companyName: string = '';
   itemRank: any;
-  itemNotesFilter: any = '';
-  itemsForPagination: any = 5;
+  itemNotesFilter: string = '';
+  itemsForPagination: number = 5;
   order: string = 'date';
   reverse: string = '';
   authToken: any;
   userName: any;
-  journalId: any;
-  bsConfig: Partial<BsDatepickerConfig>;
-  viewFlag: any = false;
-  editFlag: any = false;
-  newFlag: any = true;
+  journalId: number = 0;
+  bsConfig!: Partial<BsDatepickerConfig>;
+  viewFlag: boolean = false;
+  editFlag: boolean = false;
+  newFlag: boolean = true;
   itemTag: any;
   itemType: any;
-  helpFlag: any = false;
-  entityname: any;
+  helpFlag: boolean = false;
+  entityName: any;
   dismissible = true;
-  p: any;
+  p: number = 1;
   loader = false;
+
   constructor(
     private itemNoteService: ItemNotesService,
     private itemNotesService: ItemNotesService,
@@ -67,7 +68,7 @@ export class NotesComponent implements OnInit {
     this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
 
     if (this.companyId) {
@@ -76,7 +77,7 @@ export class NotesComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -90,13 +91,11 @@ export class NotesComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    
+    
     this.model.date = new Date();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
-
-    console.log('itemId=' + this.itemId);
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   getAllNotes(companyId: string) {
@@ -105,21 +104,18 @@ export class NotesComponent implements OnInit {
     this.itemNotesService.getAllItemNotes(companyId, this.itemId).subscribe(
       (response: any) => {
         this.spinner.hide();
-
-        console.log(response);
-        this.notes = response;
+        this.notes = Array.isArray(response) ? response : [];
         this.showAll = this.notes.length;
         const totalWarrantyTypesCount = this.notes.length;
         const maxPageAvailable = Math.ceil(
           totalWarrantyTypesCount / this.itemsForPagination
         );
 
-        // Check if the current page exceeds the maximum available page
         if (this.p > maxPageAvailable) {
           this.p = maxPageAvailable;
         }
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
@@ -131,44 +127,43 @@ export class NotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   saveItemNote() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.model = {
-        companyid: this.companyId,
-        effectiveon: this.model.effectiveon,
-        enteredby: this.userName,
-        enteredon: new Date(),
-        entityid: this.itemId,
-        entityname: this.model.entityname,
-        entitytypeid: 0,
-        entityxml: '',
+        companyId: this.companyId,
+        effectiveOn: this.model.effectiveOn,
+        enteredBy: this.userName,
+        enteredOn: new Date(),
+        entityId: this.itemId,
+        entityName: this.model.entityName,
+        entitytypeId: 0,
+        entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
-        journaltypeid: 0,
-        locationid: 0,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
-        moduleType: 'itemtype',
+        jobNumber: this.model.jobNumber,
+        journalId: 0,
+        journalTypeId: 0,
+        locationId: 0,
+        locationName: '',
+        poNumber: this.model.poNumber,
+        shippingNumber: '',
+        trackingNumber: '',
+        moduleType: 'itemType',
         itemTypeName: this.itemType,
         itemTag: this.itemTag,
       };
-      console.log(JSON.stringify(this.model));
       this.spinner.show();
 
       this.itemNoteService.saveItemNote(this.model).subscribe(
         (response) => {
           this.model = response;
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
@@ -184,7 +179,7 @@ export class NotesComponent implements OnInit {
             this.index = 0;
           }, 7000);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -199,20 +194,20 @@ export class NotesComponent implements OnInit {
   }
 
   updateItemNotes() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.spinner.show();
 
-      this.model.moduleType = 'itemtype';
-      this.model.effectiveon = new Date(this.model.effectiveon);
+      this.model.moduleType = 'itemType';
+      this.model.effectiveOn = new Date(this.model.effectiveOn);
       this.model.itemTypeName = this.itemType;
       this.model.itemTag = this.itemTag;
       this.itemNotesService.updateItemNotes(this.model).subscribe(
-        (response) => {
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+        () => {
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
@@ -228,35 +223,35 @@ export class NotesComponent implements OnInit {
             this.index = 0;
           }, 7000);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
     }
   }
 
-  goToAttachments(journalid: string, entityname: any) {
-    this.broadcasterService.currentNoteAttachmentTitle = entityname;
+  goToAttachments(journalId: string, entityName: any) {
+    this.broadcasterService.currentNoteAttachmentTitle = entityName;
     this.router.navigate([
-      '/items/noteAttachments/' + journalid + '/' + this.itemId,
+      '/items/noteAttachments/' + journalId + '/' + this.itemId,
     ]);
   }
 
-  viewItemNotes(journalid: number) {
+  viewItemNotes(journalId: number) {
     this.viewFlag = true;
     this.newFlag = false;
     this.editFlag = false;
     this.helpFlag = false;
     this.spinner.show();
 
-    this.itemNotesService.getItemNotes(journalid).subscribe((response) => {
+    this.itemNotesService.getItemNotes(journalId).subscribe((response) => {
       this.spinner.hide();
 
       this.model = response;
-      if (this.model.effectiveon) {
-        this.model.effectiveon = new Date(this.model.effectiveon);
-        this.model.effectiveon = this.datepipe.transform(
-          this.model.effectiveon,
+      if (this.model.effectiveOn) {
+        this.model.effectiveOn = new Date(this.model.effectiveOn);
+        this.model.effectiveOn = this.datepipe.transform(
+          this.model.effectiveOn,
           'MM/dd/yyyy'
         );
       }
@@ -270,7 +265,7 @@ export class NotesComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   backToItem() {
@@ -286,65 +281,53 @@ export class NotesComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { attachmentID: number }) {
+  downloadDocumentFromDB(document: { attachmentId: number }) {
     this.spinner.show();
 
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentID)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-
           this.downloadDocument(response);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
   }
 
   downloadDocument(companyDocument: any) {
-    var blob = this.companyDocumentsService.b64toBlob(
+    const blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
-    var fileURL = URL.createObjectURL(blob);
+    const fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
   }
 
   downloadFile(attachment: any) {
-    var index = attachment.fileName.lastIndexOf('.');
-    var extension = attachment.fileName.slice(index + 1);
+    const index = attachment.fileName.lastIndexOf('.');
+    const extension = attachment.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
-      var wnd = window.open('about:blank');
-      var pdfStr = `<div style="text-align:center">
+      const wnd = window.open('about:blank');
+      const pdfStr = `<div style="text-align:center">
       <h4>Pdf viewer</h4>
       <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentID + '?access_token=' + this.authToken
+        attachment.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
         </div>
         <script>
           function reloadIFrame() {
             var iframe = document.getElementById("iFrame");
-              console.log(iframe); //work control
-              console.log(iframe.contentDocument); //work control
               if(iframe.contentDocument.URL == "about:blank"){
-                console.log("loaded");
                 iframe.src =  iframe.src;
               }
             }
             var timerId = setInterval("reloadIFrame();", 1300);
             setTimeout(() => {
               clearInterval(timerId);
-              console.log("Finally Loaded");
               }, 25000);
-  
-            $( document ).ready(function() {
-                $('#menuiFrame').on('load', function() {
-                    clearInterval(timerId);
-                    console.log("Finally Loaded"); //work control
-                });
-            });
           </script>`;
 
       if (wnd) wnd.document.write(pdfStr);
@@ -354,19 +337,19 @@ export class NotesComponent implements OnInit {
       extension.toLowerCase() == 'jpeg' ||
       extension.toLowerCase() == 'gif'
     ) {
-      var pdfStr = `<div style="text-align:center">
+      const pdfStr = `<div style="text-align:center">
       <h4>Image Viewer</h4>
       <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentID + '?access_token=' + this.authToken
+        attachment.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" >
         </div>`;
 
-      var wnd = window.open('about:blank');
+      const wnd = window.open('about:blank');
       if (wnd) wnd.document.write(pdfStr);
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          attachment.attachmentID +
+          attachment.attachmentId +
           '?access_token=' +
           this.authToken
       );
@@ -375,11 +358,7 @@ export class NotesComponent implements OnInit {
 
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse == '' ? '-' : '';
     }
     this.order = value;
   }
@@ -394,30 +373,24 @@ export class NotesComponent implements OnInit {
 
   confirm(): void {
     this.message = 'Confirmed!';
-    console.log(
-      'removeLocationnotess journalId=' +
-        this.companyId +
-        ',index==' +
-        this.index
-    );
     this.spinner.show();
 
     this.itemNotesService
       .removeItemNotes(
-        this.model.journalid,
+        this.model.journalId,
         this.userName,
         this.itemTag,
         this.itemType
       )
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
 
           this.modalRef.hide();
           this.index = 4;
           this.refreshCall();
           this.model = [];
-          this.model.effectiveon = new Date();
+          this.model.effectiveOn = new Date();
           this.newFlag = true;
           this.editFlag = false;
           this.viewFlag = false;
@@ -426,7 +399,7 @@ export class NotesComponent implements OnInit {
             this.index = 0;
           }, 7000);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -445,12 +418,12 @@ export class NotesComponent implements OnInit {
   help() {
     this.helpFlag = !this.helpFlag;
   }
+
   onChange(e: any) {
     const totalWarrantyTypesCount = this.notes.length;
     const maxPageAvailable = Math.ceil(
       totalWarrantyTypesCount / this.itemsForPagination
     );
-    // Check if the current page exceeds the maximum available page
     if (this.p > maxPageAvailable) {
       this.p = maxPageAvailable;
     }

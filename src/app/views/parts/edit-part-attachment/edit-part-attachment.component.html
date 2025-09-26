@@ -8,7 +8,7 @@
               <button
                 type="button"
                 (click)="print()"
-                tooltip="Click to Print this Page"
+                ngbTooltip="Click to Print this Page"
                 class="btn btn-outline-danger btn-sm"
               >
                 Print
@@ -16,20 +16,15 @@
               <button
                 type="button"
                 (click)="help()"
-                tooltip="Instructions"
+                ngbTooltip="Instructions"
                 class="btn btn-outline-danger btn-sm"
               >
                 Help
               </button>
               <div
-                style="
-                  text-align: left;
-                  border: 1px solid;
-                  width: fit-content;
-                  background-color: whitesmoke;
-                "
-                *ngIf="helpFlag == true"
-              >
+                *ngIf="helpFlag === true"
+                class="help-box"
+                >
                 *To add an attachment:<br />
                 1.Click the 'Choose File' button to locate the desired file.<br />
                 2.Enter a description for the file.<br />
@@ -42,6 +37,7 @@
                 1.Click the 'Delete' button.
               </div>
             </div>
+
             <p class="card-text">Edit Parts Documents</p>
 
             <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
@@ -69,7 +65,7 @@
                           />
                           <input
                             type="text"
-                            [(ngModel)]="model.dateadded"
+                            [(ngModel)]="model.dateAdded"
                             name="added"
                             #added="ngModel"
                             id="added"
@@ -77,7 +73,7 @@
                           />
                           <input
                             type="text"
-                            [(ngModel)]="model.addedby"
+                            [(ngModel)]="model.addedBy"
                             name="by"
                             #by="ngModel"
                             id="by"
@@ -85,7 +81,7 @@
                           />
                           <input
                             type="text"
-                            [(ngModel)]="model.attachmentid"
+                            [(ngModel)]="model.attachmentId"
                             name="_id"
                             #_id="ngModel"
                             id="_id"
@@ -93,7 +89,7 @@
                           />
                           <input
                             type="text"
-                            [(ngModel)]="model.entityid"
+                            [(ngModel)]="model.entityId"
                             name="companyId"
                             #companyId="ngModel"
                             id="companyId"
@@ -107,7 +103,6 @@
                           <label for="desc">Description</label>
                           <textarea
                             id="desc"
-                            name="textarea-input"
                             rows="2"
                             cols="4"
                             class="form-control"
@@ -120,20 +115,18 @@
                       </div>
 
                       <div class="row">
-                        <div
-                          class="form-group col-sm-12 d-flex justify-content-center gap-2 m-1"
-                        >
+                        <div class="form-group col-sm-12 d-flex justify-content-center gap-2 m-1">
                           <button
-                            tooltip="Update Attachment"
-                            class="btn btn-primary"
+                            ngbTooltip="Update Attachment"
+                            class="btn btn-primary mt-2"
                           >
                             Update
                           </button>
                           <button
                             type="button"
-                            tooltip="Cancel"
+                            ngbTooltip="Cancel"
                             (click)="cancelVendorDocument()"
-                            class="btn btn-outline-danger btn-sm"
+                            class="btn btn-outline-danger mt-2"
                           >
                             Cancel
                           </button>

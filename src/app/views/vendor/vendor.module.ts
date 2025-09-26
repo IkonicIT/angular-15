@@ -10,12 +10,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgPipesModule } from 'ngx-pipes';
 import { VendorAttachementsComponent } from './vendor-attachements/vendor-attachements.component';
 import { AddVendorAttachmentComponent } from './add-vendor-attachment/add-vendor-attachment.component';
-// Removed the problematic import
 import { EditVendorAttachmentComponent } from './edit-vendor-attachment/edit-vendor-attachment.component';
 import { VendorNotesComponent } from './vendor-notes/vendor-notes.component';
 import { AddVendorNoteComponent } from './add-vendor-note/add-vendor-note.component';
 import { EditVendorNoteComponent } from './edit-vendor-note/edit-vendor-note.component';
-// Removed the problematic imports
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { VendorDashBoardComponent } from './vendor-dashboard/vendor-dashboard.component';
@@ -38,7 +36,7 @@ import { AddVendorNoteAttachmentComponent } from './add-vendor-note-attachment/a
     AlertModule.forRoot(),
   ],
   providers: [
-    VendorExcelService, // Add your service to providers array
+    VendorExcelService, 
   ],
   declarations: [
     VendorManagementComponent,

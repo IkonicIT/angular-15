@@ -5,7 +5,7 @@ import {
   TemplateRef,
   NgIterable,
 } from '@angular/core';
-import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { LocationManagementService } from '../../../services/location-management.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
@@ -27,43 +27,46 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./view-item.component.scss'],
 })
 export class ViewItemComponent implements OnInit {
-  message: string;
+  message: string = '';
   isOwnerAdmin: any;
-  authToken: any;
+  authToken: string | null = null;
   model: any = {
-    locationid: 0,
+    locationId: 0,
     typeId: 0,
-    warrantytypeid: 0,
+    warrantyTypeId: 0,
   };
   journals: any[] = [];
   index: number = 0;
-  companyId: any;
+  companyId: number = 0;
   globalCompany: any;
-  companyName: any;
-  warrantyTypes: any;
+  companyName: string = '';
+  warrantyTypes: any[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   itemId: any;
-  currentRole: any;
-  highestRank: any;
-  images = [];
+  currentRole: string | null = null;
+  highestRank: string | null = null;
+  get highestRankNum(): number {
+    return Number(this.highestRank ?? 0);
+  }
+  images: any[] = [];
   itemRank: any;
-  imageIndexOne = 0;
-  imageIndexTwo = 0;
-  journalid: any;
+  imageIndexOne: number = 0;
+  imageIndexTwo: number = 0;
+  journalId: any;
   currentAttachmentId: any;
   itemTag: any;
   itemType: any;
-  helpFlag: any = false;
+  helpFlag: boolean = false;
   config: ImageViewerConfig = {
     customBtns: [{ name: 'setAsDefault', icon: 'fa fa-sliders' }],
   };
-  @ViewChild('myModal') public myModal: ModalDirective;
-
-  modalRef: BsModalRef;
-  userName: any;
+  @ViewChild('myModal') public myModal!: ModalDirective;
+  modalRef!: BsModalRef;
+  userName: string | null = null;
   imageSource: any;
-  itemAttachments: any = [];
-  loader = false;
+  itemAttachments: any[] = [];
+  loader: boolean = false;
+
   constructor(
     private locationManagementService: LocationManagementService,
     private companyManagementService: CompanyManagementService,
@@ -84,16 +87,16 @@ export class ViewItemComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
     this.itemRank = this.broadcasterService.itemRank;
@@ -106,13 +109,11 @@ export class ViewItemComponent implements OnInit {
     this.highestRank = sessionStorage.getItem('highestRank');
   }
 
-  getItemDetails() {
+  getItemDetails(): void {
     this.spinner.show();
-
     this.itemManagementService.getItemById(this.itemId).subscribe(
       (response) => {
         this.spinner.hide();
-
         this.model = response;
         this.currentAttachmentId = this.model.defaultImageAttachmentId;
         if (this.currentAttachmentId != 0) this.getItemDefaultImage();
@@ -121,13 +122,13 @@ export class ViewItemComponent implements OnInit {
         this.changeAttributes();
         this.getWarrantyTypes();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  changeAttributes() {
+  changeAttributes(): void {
     if (this.model.attributeValues && this.model.attributeValues.length > 0) {
       this.model.attributeValues.forEach((attr: { value: string }) => {
         if (attr.value == 'True') attr.value = 'Yes';
@@ -136,44 +137,39 @@ export class ViewItemComponent implements OnInit {
     }
   }
 
-  getItemDefaultImage() {
+  getItemDefaultImage(): void {
     this.spinner.show();
-
-    this.itemAttachmentsService
-      .getItemDocuments(this.currentAttachmentId)
-      .subscribe(
-        (response: any) => {
-          this.spinner.hide();
-
-          if (response.isNew)
-            this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
-              `data:image/png;base64, ${response.attachmentFile}`
-            );
-          else
-            this.imageSource =
-              'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-              response.attachmentid +
-              '?access_token=' +
-              this.authToken;
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+    this.itemAttachmentsService.getItemDocuments(this.currentAttachmentId).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response.isNew)
+          this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
+            `data:image/png;base64, ${response.attachmentFile}`
+          );
+        else
+          this.imageSource =
+            'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
+            response.attachmentId +
+            '?access_token=' +
+            this.authToken;
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  getAttachments() {
+  getAttachments(): void {
     this.spinner.show();
-
     this.itemAttachmentsService.getAllItemPictures(this.itemId).subscribe(
       (response: any) => {
-        this.itemAttachments = response;
-        this.images = response
-          .filter((e: { contenttype: string | string[] }) =>
-            e.contenttype.includes('image')
+        this.itemAttachments = Array.isArray(response) ? response : [];
+        this.images = this.itemAttachments
+          .filter((e: { contentType: string | string[] }) =>
+            e.contentType.includes('image')
           )
           .map(
-            (e: { isNew: any; attachmentFile: any; attachmentid: string }) => {
+            (e: { isNew: any; attachmentFile: any; attachmentId: string }) => {
               if (e.isNew)
                 return this.sanitizer.bypassSecurityTrustResourceUrl(
                   `data:image/png;base64, ${e.attachmentFile}`
@@ -181,58 +177,56 @@ export class ViewItemComponent implements OnInit {
               else
                 return (
                   'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-                  e.attachmentid +
+                  e.attachmentId +
                   '?access_token=' +
                   this.authToken
                 );
             }
           );
         this.spinner.hide();
-
         this.myModal.show();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  getWarrantyTypes() {
-    this.warrantyManagementService
-      .getAllWarrantyTypes(this.companyId)
-      .subscribe(
-        (response) => {
-          this.warrantyTypes = response;
-          this.setWarrantyType(response);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+  getWarrantyTypes(): void {
+    this.warrantyManagementService.getAllWarrantyTypes(this.companyId).subscribe(
+      (response: any) => {
+        this.warrantyTypes = Array.isArray(response) ? response : [];
+        this.setWarrantyType(this.warrantyTypes);
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  setWarrantyType(response: any) {
+  setWarrantyType(response: any[]): void {
     response.forEach((element: any) => {
-      if (element.warrantytypeid == this.model.warrantyTypeId)
-        this.model.warrantytype = element.warrantytype;
+      if (element.warrantyTypeId == this.model.warrantyTypeId)
+        this.model.warrantyType = element.warrantyType;
     });
   }
 
-  getJournalLog() {
+  getJournalLog(): void {
     this.itemManagementService.getJournalLog(this.itemId).subscribe(
       (response: any) => {
-        this.journals = response;
+        this.journals = Array.isArray(response) ? response : [];
       },
-      (error) => {
+      () => {
         this.spinner.hide();
       }
     );
   }
 
-  openImage() {
+  openImage(): void {
     this.getAttachments();
   }
-  handleEvent(event: any) {
+
+  handleEvent(event: any): void {
     let image: any = this.images[event.imageIndex];
     this.itemAttachmentsService
       .updateItemDefaultImage(
@@ -240,36 +234,31 @@ export class ViewItemComponent implements OnInit {
         image.substring(image.lastIndexOf('/') + 1, image.lastIndexOf('?'))
       )
       .subscribe(
-        (response) => {
+        () => {
           this.refreshCall();
-        },
-        (error) => {}
+        }
       );
     this.myModal.hide();
   }
 
-  refreshCall() {
+  refreshCall(): void {
     this.spinner.show();
-
-    this.itemManagementService
-      .getItemById(this.itemId)
-      .subscribe((response: any) => {
-        this.currentAttachmentId = response.defaultImageAttachmentId;
-        this.spinner.hide();
-
-        this.model = response;
-      });
+    this.itemManagementService.getItemById(this.itemId).subscribe((response: any) => {
+      this.currentAttachmentId = response.defaultImageAttachmentId;
+      this.spinner.hide();
+      this.model = response;
+    });
   }
 
-  back() {
+  back(): void {
     this._location.back();
   }
 
-  openMoreChanges() {
+  openMoreChanges(): void {
     this.router.navigate(['/items/changeLog/' + this.itemId + '/' + 0]);
   }
 
-  openModal(template: TemplateRef<any>, id: number) {
+  openModal(template: TemplateRef<any>, id: number): void {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
@@ -277,20 +266,18 @@ export class ViewItemComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.itemManagementService
       .removeItem(
         this.itemId,
         this.companyId,
-        this.userName,
+        this.userName ?? '',
         this.itemTag,
         this.itemType
       )
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-
           this.modalRef.hide();
           this.itemManagementService.deleteFlag = 1;
           this.itemManagementService.itemSearchResults = [];
@@ -300,7 +287,7 @@ export class ViewItemComponent implements OnInit {
           this.itemManagementService.setSearchedItemStatusId(0);
           this.router.navigate(['/items/lists/all']);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
@@ -311,21 +298,21 @@ export class ViewItemComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  GoToWareHousetag() {
+  GoToWareHousetag(): void {
     this.itemManagementService.item = this.model;
     this.router.navigate(['/items/warehousetag/' + this.itemId]);
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 
-  goToItemService() {
+  goToItemService(): void {
     this.itemManagementService.item = this.model;
     this.router.navigate(['/items/itemService/' + this.itemId]);
   }

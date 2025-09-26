@@ -10,15 +10,16 @@ import { UserManagementService } from '../../../services/user-management.service
 })
 export class ChangePasswordComponent implements OnInit {
   model: any = {};
-  showPassword = {
+  showPassword: { current: boolean; new: boolean; confirm: boolean } = {
     current: false,
     new: false,
-    confirm: false
+    confirm: false,
   };
   user: any = {};
-  index: number;
+  index: number = 0;
   dismissible = true;
   loader = false;
+
   constructor(
     private userManagementService: UserManagementService,
     private router: Router,
@@ -26,50 +27,49 @@ export class ChangePasswordComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.model.date = new Date();
   }
 
-  changePassword() {
+  changePassword(): void {
     if (
       this.model.currentPassword &&
       this.model.newPassword &&
       this.model.confirmPassword &&
-      this.model.newPassword == this.model.confirmPassword
+      this.model.newPassword === this.model.confirmPassword
     ) {
-      var req = {
+      const req = {
         currentPassword: this.model.currentPassword,
         newPassword: this.model.newPassword,
         confirmPassword: this.model.confirmPassword,
         lastPasswordChangedDate: this.model.date,
-        userid: sessionStorage.getItem('userId'),
+        userId: sessionStorage.getItem('userId'),
       };
-      if (
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(
-          this.model.newPassword
-        )
-      ) {
+
+      const passwordPattern =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+
+      if (passwordPattern.test(this.model.newPassword)) {
         this.spinner.show();
 
-        this.userManagementService.changePassword(req).subscribe(
-          (response) => {
+        this.userManagementService.changePassword(req).subscribe({
+          next: (response) => {
             this.spinner.hide();
-
             this.user = response;
-
             this.index = 1;
             window.scroll(0, 0);
-            if (this.user.email == null) {
+
+            if (this.user?.email == null) {
               this.index = -4;
               window.scroll(0, 0);
             }
 
             this.model = {};
           },
-          (error) => {
+          error: () => {
             this.spinner.hide();
-          }
-        );
+          },
+        });
       } else {
         this.index = -3;
         window.scroll(0, 0);
@@ -78,14 +78,13 @@ export class ChangePasswordComponent implements OnInit {
       window.scroll(0, 0);
       this.index = -1;
 
-      if (this.model.newPassword != this.model.confirmPassword) {
+      if (this.model.newPassword !== this.model.confirmPassword) {
         this.index = -2;
       }
     }
   }
 
-  togglePasswordVisibility(field: 'current' | 'new' | 'confirm') {
+  togglePasswordVisibility(field: 'current' | 'new' | 'confirm'): void {
     this.showPassword[field] = !this.showPassword[field];
-  }  
-
+  }
 }

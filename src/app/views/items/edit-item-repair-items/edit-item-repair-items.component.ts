@@ -28,7 +28,7 @@ export class EditItemRepairItemsComponent implements OnInit {
   order: string = '';
   reverse: string = '';
   modalRef: BsModalRef;
-  repairid: any;
+  repairId: any;
   route: ActivatedRoute;
   router: Router;
   helpFlag: any = false;
@@ -47,7 +47,7 @@ export class EditItemRepairItemsComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
 
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.companyName = this.globalCompany.name;
       this.getAllItemTypes();
     }
@@ -55,15 +55,15 @@ export class EditItemRepairItemsComponent implements OnInit {
     this.route = route;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = value.name;
     });
   }
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
-    this.repairid = this.route.snapshot.params['repairId'];
-    this.itemReairItemsService.getItemRepairItem(this.repairid).subscribe(
+    this.repairId = this.route.snapshot.params['repairId'];
+    this.itemReairItemsService.getItemRepairItem(this.repairId).subscribe(
       (response) => {
         this.spinner.hide();
 
@@ -105,14 +105,14 @@ export class EditItemRepairItemsComponent implements OnInit {
     this.spinner.show();
 
     var request = {
-      lastmodifiedby: this.userName,
-      companyid: this.companyId,
-      repairdescription: this.model.repairdescription,
-      repairid: this.repairid,
-      typeid: this.model.typeid,
+      lastModifiedBy: this.userName,
+      companyId: this.companyId,
+      repairDescription: this.model.repairDescription,
+      repairId: this.repairId,
+      typeId: this.model.typeId,
     };
     this.itemReairItemsService
-      .updateRepairItemType(request, this.repairid)
+      .updateRepairItemType(request, this.repairId)
       .subscribe((response) => {
         this.spinner.hide();
 

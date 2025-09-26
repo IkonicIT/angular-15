@@ -13,25 +13,25 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
 })
 export class EditLocationNoteAttachmentsComponent implements OnInit {
   model: any = {};
-  index: number = 0;
+  index = 0;
   date = Date.now();
-  itemid: number = 0;
-  documentId: any;
+
+  itemId = 0;
+  documentId!: number;
   globalCompany: any;
-  private sub: any;
-  id: number;
-  userName: any;
-  router: Router;
-  companyId: any;
-  noteId: any;
-  noteName: any;
-  locationName: any;
+  companyId!: number;
+  noteId!: number;
+  noteName!: string;
+  locationName!: string;
+  userName!: string | null;
+
   dismissible = true;
   loader = false;
+
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private broadcasterService: BroadcasterService,
@@ -39,67 +39,61 @@ export class EditLocationNoteAttachmentsComponent implements OnInit {
   ) {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value?.companyId;
     });
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    //var globalCompanyName = sessionStorage.getItem('globalCompany');
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
-    this.documentId = route.snapshot.params['attachmentId'];
-    this.noteId = route.snapshot.params['noteId'];
-    this.router = router;
+
+    this.documentId = Number(this.route.snapshot.params['attachmentId']);
+    this.noteId = Number(this.route.snapshot.params['noteId']);
   }
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.noteName = this.broadcasterService.currentNoteAttachmentTitle;
     this.locationName = this.locationManagementService.currentLocationName;
     this.userName = sessionStorage.getItem('userName');
-    this.spinner.show();
 
+    this.spinner.show();
     this.companyDocumentsService.getCompanyDocuments(this.documentId).subscribe(
       (response) => {
         this.spinner.hide();
-
         this.model = response;
       },
-      (error) => {
-        this.spinner.hide();
-      }
+      () => this.spinner.hide()
     );
   }
-  updateLocationNoteAttachment() {
+
+  updateLocationNoteAttachment(): void {
     this.spinner.show();
 
     this.model.moduleType = 'itemnotetype';
-    this.model.companyID = this.companyId;
+    this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {
       noteType: 'locationnoteattachment',
       noteName: this.noteName,
       locationName: this.locationName,
     };
     this.model.updatedBy = this.userName;
-    this.companyDocumentsService.updateCompanyDocument(this.model).subscribe(
-      (response) => {
-        this.spinner.hide();
 
+    this.companyDocumentsService.updateCompanyDocument(this.model).subscribe(
+      () => {
+        this.spinner.hide();
         window.scroll(0, 0);
         this.index = 1;
-        setTimeout(() => {
-          this.index = 0;
-        }, 7000);
+        setTimeout(() => (this.index = 0), 7000);
+
         this.router.navigate([
-          '/location/noteAttchments/' + this.noteId + '/' + this.noteId,
+          `/location/noteAttchments/${this.noteId}/${this.noteId}`,
         ]);
       },
-      (error) => {
-        this.spinner.hide();
-      }
+      () => this.spinner.hide()
     );
   }
 
-  cancel() {
-    this.router.navigate([
-      '/location/noteAttchments/' + this.noteId + '/' + this.noteId,
-    ]);
+  cancel(): void {
+    this.router.navigate([`/location/noteAttchments/${this.noteId}/${this.noteId}`]);
   }
 }

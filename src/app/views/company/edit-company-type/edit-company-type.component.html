@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
@@ -92,7 +92,7 @@
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="model.hostingfee"
+                          [(ngModel)]="model.hostingFee"
                           id="hostingFee"
                           name="hostingFee"
                           #hostingFee="ngModel"
@@ -104,19 +104,15 @@
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="parentType">Select Parent Type</label>
-
-                       <select
-  #dropdown
-  id="itemType"
-  class="form-control custom-dropdown"
-  [(ngModel)]="value"
-  (change)="onValueChange(dropdown.value)"
->
-  <option *ngFor="let item of items" [value]="item.value">
-    {{ item.text }}
-  </option>
-</select>
-
+                        <div class="custom-dropdown-wrapper">
+                        <app-dropdown-treeview-select
+                          [items]="items"
+                          [(value)]="value"
+                          (valueChange)="onValueChange($event)"
+                        >
+                        </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                        </div>
                       </div>
                     </div>
 
@@ -140,7 +136,7 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          class="btn btn-primary btn-right"
+                          class="btn btn-primary btn-right btn-group"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Update this Company Type"
@@ -153,7 +149,7 @@
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Cancel"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-group"
                         >
                           Cancel
                         </button>
@@ -189,85 +185,81 @@
 >
   <div _ngcontent-c0="" class="loader"></div>
 </div>
+
 <style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
+.loader {
+  position: fixed;
+  left: 60%;
+  top: 60%;
+  z-index: 1;
+  width: 75px;
+  height: 75px;
+  margin: -75px 0 0 -75px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid red;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
+  100% {
+    -webkit-transform: rotate(360deg);
   }
+}
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
+  100% {
+    transform: rotate(360deg);
   }
+}
 
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s;
+}
 
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
+@-webkit-keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
   }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+  to {
+    bottom: 0px;
+    opacity: 1;
   }
+}
 
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
+@keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
   }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
 
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.btn-link[routerLink="/forgot-password"] {
+  color: red;
+}
+
+.cent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>

@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
-// import 'rxjs/add/operator/toPromise';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -46,9 +45,9 @@ export class LocationStatusService {
       .pipe(catchError(this.handleError));
   }
 
-  removeLocationStatus(id: string | number, username: string) {
+  removeLocationStatus(id: string | number, userName: string) {
     return this.http
-      .delete(this.serviceURL + '/' + id + '/' + username, this.httpOptions)
+      .delete(this.serviceURL + '/' + id + '/' + userName, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

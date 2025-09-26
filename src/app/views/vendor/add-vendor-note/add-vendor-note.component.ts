@@ -36,36 +36,34 @@ export class AddVendorNoteComponent implements OnInit {
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
     });
 
-    console.log('companyId=' + this.companyId);
-    this.model.enteredon = new Date();
+    this.model.enteredOn = new Date();
   }
 
   saveNotes() {
-    if (!this.model.entityname || !this.model.enteredon) {
+    if (!this.model.entityName || !this.model.enteredOn) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
       this.model = {
-        companyid: this.companyId,
-        effectiveon: new Date(),
-        enteredby: 'Yogi Patel',
-        enteredon: new Date(),
-        entityid: this.companyId,
-        entityname: this.model.entityname,
-        entitytypeid: 0,
-        entityxml: '',
+        companyId: this.companyId,
+        effectiveOn: new Date(),
+        enteredBy: 'Yogi Patel',
+        enteredOn: new Date(),
+        entityId: this.companyId,
+        entityName: this.model.entityName,
+        entitytypeId: 0,
+        entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
-        journaltypeid: 0,
-        locationid: 0,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
+        jobNumber: this.model.jobNumber,
+        journalId: 0,
+        journaltypeId: 0,
+        locationId: 0,
+        locationName: '',
+        poNumber: this.model.poNumber,
+        shippingNumber: '',
+        trackingNumber: '',
         moduleType: 'vendorType',
       };
       this.spinner.show();

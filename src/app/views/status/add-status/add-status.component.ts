@@ -10,38 +10,35 @@ import { CompanyManagementService } from '../../../services/company-management.s
 })
 export class AddStatusComponent implements OnInit {
   model: any = {};
-  index: number = 0;
+  index = 0;
   date = Date.now();
-  companyId: number;
-  private sub: any;
-  id: number;
-  router: Router;
+  companyId!: number;
+  id!: number;
   globalCompany: any = {};
   dismissible = true;
 
   constructor(
     private companyStatusesService: CompanyStatusesService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute
   ) {
-    this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
+
+    this.companyManagementService.globalCompanyChange.subscribe((value: any) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
-      console.log('compaanyid=' + this.companyId);
+      this.companyId = this.globalCompany.companyId;
     });
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
-  saveStatus() {
+  saveStatus(): void {
     if (this.model.status === undefined) {
       this.index = -1;
     } else {
       this.model = {
-        companyId: this.globalCompany.companyid,
+        companyId: this.globalCompany.companyId,
         destroyed: true,
         entityTypeId: 0,
         inService: true,
@@ -50,17 +47,19 @@ export class AddStatusComponent implements OnInit {
         statusId: 0,
         underRepair: true,
       };
-      console.log(JSON.stringify(this.model));
-      this.companyStatusesService
-        .saveCompanyStatus(this.model)
-        .subscribe((response) => {
+
+      this.companyStatusesService.saveCompanyStatus(this.model).subscribe({
+        next: () => {
           window.scroll(0, 0);
           this.index = 1;
-        });
+        },
+        error: (err) => {
+        },
+      });
     }
   }
 
-  cancelAddStatus() {
+  cancelAddStatus(): void {
     this.router.navigate(['/status/list']);
   }
 }

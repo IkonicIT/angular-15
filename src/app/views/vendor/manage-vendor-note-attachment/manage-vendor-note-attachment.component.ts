@@ -31,7 +31,7 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
   userName: any;
   globalCompany: any;
   authToken: any;
-  entityname: any;
+  entityName: any;
   helpFlag: any = false;
   vendorAttachment: any;
   vendorId: any;
@@ -45,27 +45,25 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.vendorNoteId = route.snapshot.params['id'];
-    console.log('VendorNoteId in manage vendor note att:' + this.vendorNoteId);
     this.router = router;
     this.route = route;
     if (this.companyId) {
       this.getAllDocuments(this.vendorNoteId);
     } else {
       this.globalCompany = this.companyManagementService.getGlobalCompany();
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getAllDocuments(this.vendorNoteId);
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
-      console.log('Query params of VendorNoteId ', this.vendorNoteId);
     });
     this.userName = sessionStorage.getItem('userName');
   }
@@ -77,7 +75,6 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
       .subscribe(
         (response) => {
           this.spinner.hide();
-          console.log(response);
           this.documents = response as any[];
         },
         (error) => {
@@ -91,7 +88,6 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
   addVendorNoteAttachments() {
-    console.log(this.companyId);
     this.router.navigate([
       '/vendor/addVendorNoteDocument/' + this.vendorNoteId,
     ]);
@@ -146,23 +142,21 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
 
   openAttachment(): void {
     if (this.isImage()) {
-      // Open image in a new tab
       const imageWindow = window.open();
       if (imageWindow) {
         imageWindow.document.write(
-          `<img src="data:${this.vendorAttachment.contenttype};base64,${this.vendorAttachment.attachmentFile}" />`
+          `<img src="data:${this.vendorAttachment.contentType};base64,${this.vendorAttachment.attachmentFile}" />`
         );
       }
     } else {
-      // Download the attachment
       const blob = this.base64ToBlob(
         this.vendorAttachment.attachmentFile,
-        this.vendorAttachment.contenttype
+        this.vendorAttachment.contentType
       );
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = this.vendorAttachment.filename;
+      a.download = this.vendorAttachment.fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -172,7 +166,7 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
   isImage(): boolean {
     return (
       this.vendorAttachment &&
-      this.vendorAttachment.contenttype.startsWith('image')
+      this.vendorAttachment.contentType.startsWith('image')
     );
   }
 
@@ -198,7 +192,7 @@ export class ManageVendorNoteAttachmentComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
 

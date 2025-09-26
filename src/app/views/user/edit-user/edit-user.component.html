@@ -7,7 +7,7 @@
             type="button"
             (click)="print()"
             tooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-group mt-1"
           >
             Print
           </button>
@@ -15,7 +15,7 @@
             type="button"
             (click)="help()"
             tooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-group mt-1 ms-1"
           >
             Help
           </button>
@@ -52,7 +52,7 @@
             <div class="col-sm-12 mobile-padding">
               <div class="card">
                 <div class="card-header">
-                  <strong>Editing User [User:{{ username }}]</strong>
+                  <strong>Editing User [User:{{ userName }}]</strong>
                 </div>
                 <form
                   name="form"
@@ -64,11 +64,11 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="lType">User Name</label
-                        ><strong class="text-danger"> *</strong>
+                        ><strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.username"
+                          [(ngModel)]="model.userName"
                           (change)="checkUserName($event)"
                           name="lType"
                           #name="ngModel"
@@ -103,19 +103,18 @@
                           User Name Available
                         </span>
                       </div>
-                      <div class="form-group col-sm-6">
+                     <div class="form-group col-sm-6">
                         <label for="commpanyid">Select Company</label
                         ><strong class="text-danger"> *</strong>
                         <select
                           class="form-control custom-dropdown"
                           [(ngModel)]="model.companyId"
                           name="commpanyid"
-                          #companyid="ngModel"
+                          #companyId="ngModel"
                           id="commpanyid"
                         >
-                          <!-- <option value="0" selected="true">Select Company</option>-->
                           <option
-                            [ngValue]="company.companyid"
+                            [ngValue]="company.companyId"
                             *ngFor="let company of allCompanies"
                           >
                             {{ company.name }}
@@ -126,7 +125,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fname">First Name</label
-                        ><strong class="text-danger"> *</strong>
+                        ><strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -138,7 +137,7 @@
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="lName">Last Name</label
-                        ><strong class="text-danger"> *</strong>
+                        ><strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -176,7 +175,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="email">E-mail</label
-                        ><strong class="text-danger"> *</strong>
+                        ><strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -256,26 +255,26 @@
                     <div *ngIf="model.isVendor != true" class="row">
                       <div class="form-group col-sm-6">
                         <label for="location">User's Top Location</label>
-
                         <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.topLocationId"
                         >
                         </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow1"></span>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="pLocation">User's Preferred Location</label>
-
                         <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.preferredLocationId"
                         >
                         </app-dropdown-treeview-select>
                       </div>
+                      </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="isVendor" class="me-1">Vendor </label>
+                        <label for="isVendor">Vendor</label>
                         <input
                           type="checkbox"
                           [(ngModel)]="model.isVendor"
@@ -286,21 +285,21 @@
                       </div>
                       <div *ngIf="model.isVendor" class="form-group col-sm-6">
                         <label for="vendor">
-                          Select Vendor<strong class="text-danger"> *</strong>
+                          Select Vendor<strong class="text-danger">*</strong>
                         </label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="vendorItems"
                           [(value)]="model.vendorResource.vendorId"
                           (valueChange)="onVendorChange($event)"
                         >
                         </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow1"></span>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="req" class="me-1"
-                          >Receive RFQ Notification
-                        </label>
+                        <label for="req">Receive RFQ Notification</label>
                         <input
                           type="checkbox"
                           [(ngModel)]="model.sendReceiverFq"
@@ -315,7 +314,7 @@
                       <div class="form-group col-sm-12 text-center">
                         <button
                           tooltip="Update this User"
-                          class="btn btn-primary btn-right"
+                          class="btn btn-primary btn-group"
                         >
                           Update
                         </button>
@@ -323,7 +322,7 @@
                           type="button"
                           tooltip="Cancel"
                           (click)="cancelUser()"
-                          class="btn btn-primary"
+                          class="btn btn-primary ms-1 btn-group"
                         >
                           Cancel
                         </button>
@@ -345,7 +344,7 @@
                           <div>
                             <input
                               *ngIf="
-                                eachAttr.attributetype.attributetypeid == 1
+                                eachAttr.attributeType.attributeTypeId == 1
                               "
                               type="number"
                               class="form-control"
@@ -354,7 +353,7 @@
                             />
                             <input
                               *ngIf="
-                                eachAttr.attributetype.attributetypeid == 2
+                                eachAttr.attributeType.attributeTypeId == 2
                               "
                               type="text"
                               class="form-control"
@@ -363,7 +362,7 @@
                             />
                             <input
                               *ngIf="
-                                eachAttr.attributetype.attributetypeid == 6
+                                eachAttr.attributeType.attributeTypeId == 6
                               "
                               type="text"
                               class="form-control"
@@ -372,7 +371,7 @@
                             />
                             <input
                               *ngIf="
-                                eachAttr.attributetype.attributetypeid == 3
+                                eachAttr.attributeType.attributeTypeId == 3
                               "
                               type="date"
                               class="form-control"
@@ -382,67 +381,71 @@
                             />
                             <select
                               *ngIf="
-                                eachAttr.attributetype.attributetypeid == 4
+                                eachAttr.attributeType.attributeTypeId == 4
                               "
-                              class="form-control custom-dropdown"
+                              class="form-control"
                               [(ngModel)]="eachAttr.value"
                               name="select{{ i }}"
                               #type="ngModel"
                             >
                               <option value="">Choose..</option>
                               <option
-                                [ngValue]="list.listItem"
+                                [ngValue]="list.listitem"
                                 *ngFor="
-                                  let list of eachAttr.attributelistitemResource
+                                  let list of eachAttr.attributeListItemResource
                                 "
                               >
-                                {{ list.listItem }}
+                                {{ list.listitem }}
                               </option>
                             </select>
                             <div
                               class="form-check"
                               *ngIf="
-                                eachAttr.attributetype.attributetypeid == 5
+                                eachAttr.attributeType.attributeTypeId == 5
                               "
                             >
-                              <label class="form-check-label" for="radio1"
+                              <label
+                                class="form-check-label margin-right"
+                                for="radio1"
                                 >&nbsp;
                                 <input
+                                  class="form-check-input"
                                   type="radio"
                                   [(ngModel)]="eachAttr.value"
                                   name="radios{{ i }}"
                                   id="radio1"
                                   value="Y"
                                   checked
-                                />
-                                Y&nbsp;&nbsp;&nbsp;&nbsp;
+                                />Y&nbsp;&nbsp;&nbsp;&nbsp;
                               </label>
-                              <label class="form-check-label ms-2" for="radio2"
+                              <label
+                                class="form-check-label margin-right"
+                                for="radio2"
                                 >&nbsp;
                                 <input
+                                  class="form-check-input"
                                   type="radio"
                                   [(ngModel)]="eachAttr.value"
                                   name="radios{{ i }}"
                                   id="radio2"
                                   value="N"
-                                />
-                                N&nbsp;&nbsp;&nbsp;&nbsp;
+                                />N&nbsp;&nbsp;&nbsp;&nbsp;
                               </label>
-                              <label class="form-check-label ms-2" for="radio3"
+                              <label class="form-check-label" for="radio3"
                                 >&nbsp;
                                 <input
+                                  class="form-check-input"
                                   type="radio"
                                   [(ngModel)]="eachAttr.value"
                                   name="radios{{ i }}"
                                   id="radio3"
                                   value="N/A"
-                                />
-                                N/A
+                                />N/A
                               </label>
                             </div>
                             <textarea
                               *ngIf="
-                                eachAttr.attributetype.attributetypeid == 7
+                                eachAttr.attributeType.attributeTypeId == 7
                               "
                               name="textarea{{ i }}"
                               rows="2"

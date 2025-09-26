@@ -1,4 +1,3 @@
-// excel.service.ts
 
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
@@ -7,15 +6,13 @@ import * as XLSX from 'xlsx';
 export class VendorExcelService {
   constructor() {}
 
-  exportToExcel(data: any, filename: string): void {
+  exportToExcel(data: any, fileName: string): void {
     const workbook: XLSX.WorkBook = { Sheets: {}, SheetNames: [] };
 
-    // Iterate over each company's data and create a sheet for each
     for (const companyName in data) {
       if (data.hasOwnProperty(companyName)) {
         const companyData = data[companyName];
 
-        // Flatten data and include attribute values
         const flattenedData = this.flattenData(companyData);
         workbook.SheetNames.push(companyName);
         workbook.Sheets[companyName] = XLSX.utils.json_to_sheet(flattenedData);
@@ -26,11 +23,11 @@ export class VendorExcelService {
       bookType: 'xlsx',
       type: 'array',
     });
-    this.saveAsExcelFile(excelBuffer, filename);
+    this.saveAsExcelFile(excelBuffer, fileName);
   }
 
   private flattenData(data: any[]): any[] {
-    const flattenedData: any[] = []; // Explicitly define the type
+    const flattenedData: any[] = []; 
     data.forEach((item) => {
       const flatItem = {
         jobNumber: item.jobNumber,
@@ -40,7 +37,7 @@ export class VendorExcelService {
         poNumber: item.poNumber,
         estimatedShipDate: item.estimatedShipDate,
         completed: item.completed,
-        attributeValues: this.concatenateAttributes(item.attributeValues), // Include attribute values
+        attributeValues: this.concatenateAttributes(item.attributeValues), 
       };
       flattenedData.push(flatItem);
     });
@@ -53,13 +50,13 @@ export class VendorExcelService {
       .join(', ');
   }
 
-  private saveAsExcelFile(buffer: any, filename: string): void {
+  private saveAsExcelFile(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
     const url: string = window.URL.createObjectURL(data);
     const a: HTMLAnchorElement = document.createElement('a');
     document.body.appendChild(a);
     a.href = url;
-    a.download = filename + '.xlsx';
+    a.download = fileName + '.xlsx';
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);

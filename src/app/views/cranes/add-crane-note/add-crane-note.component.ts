@@ -3,6 +3,7 @@ import { CompanynotesService } from '../../../services/companynotes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-crane-note',
@@ -15,12 +16,13 @@ export class AddCraneNoteComponent implements OnInit {
 
   companyId: number = 0;
   vendorId: number = 0;
-  private sub: any;
-  id: number;
+  private sub: Subscription | undefined;
+  id: number = 0;
   router: Router;
-  bsConfig: Partial<BsDatepickerConfig>;
-  dismissible = true;
+  bsConfig: Partial<BsDatepickerConfig> = {};
+  dismissible: boolean = true;
   helpFlag: any = false;
+
   constructor(
     private companynotesService: CompanynotesService,
     router: Router,
@@ -30,20 +32,17 @@ export class AddCraneNoteComponent implements OnInit {
     this.router = router;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.model.date = new Date();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
+    this.bsConfig = { containerClass: 'theme-red' };
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
-      console.log('Query params ', this.vendorId);
     });
-
-    console.log('companyId=' + this.companyId);
-    this.model.enteredon = new Date();
+    this.model.enteredOn = new Date();
   }
 
-  saveNotes() {
+  saveNotes(): void {
     if (!this.model.name || !this.model.createdDate) {
       this.index = -1;
       window.scroll(0, 0);
@@ -53,34 +52,36 @@ export class AddCraneNoteComponent implements OnInit {
         createdBy: 'Yogi Patel',
         createdDate: this.model.createdDate,
         name: this.model.name,
-        jobnumber: this.model.jobnumber,
-        ponumber: this.model.ponumber,
+        jobNumber: this.model.jobNumber,
+        poNumber: this.model.poNumber,
         details: this.model.details,
         isNew: true,
         vendorId: this.vendorId,
       };
       this.spinner.show();
-      this.companynotesService.saveVendorNotes(this.model).subscribe(
-        (response) => {
+      this.companynotesService.saveVendorNotes(this.model).subscribe({
+        next: () => {
           this.spinner.hide();
           window.scroll(0, 0);
           this.index = 1;
         },
-        (error) => {
+        error: () => {
           this.spinner.hide();
-        }
-      );
+        },
+      });
     }
   }
 
-  cancelVendorNotes() {
-    this.router.navigate(['/vendor/notes/' + this.vendorId]);
+  cancelVendorNotes(): void {
+    this.router.navigate([`/vendor/notes/${this.vendorId}`]);
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

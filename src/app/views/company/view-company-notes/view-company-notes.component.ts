@@ -1,74 +1,74 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompanynotesService } from '../../../services/index';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Company } from '../../../models/company';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DatePipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-view-company-notes',
   templateUrl: './view-company-notes.component.html',
   styleUrls: ['./view-company-notes.component.scss'],
 })
-export class ViewCompanyNotesComponent implements OnInit {
+export class ViewCompanyNotesComponent implements OnInit, OnDestroy {
   model: any = {};
   p: any;
   bsConfig: any;
   index: number = 0;
-  date = Date.now();
+  date: number = Date.now();
   companyId: number = 0;
-  journalid: number = 0;
-  private sub: any;
-  id: number;
-  router: Router;
+  journalId: number = 0;
+  private sub: Subscription | null = null;
+  id!: number;
   loader = false;
+
   constructor(
     private companynotesService: CompanynotesService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     public datepipe: DatePipe
   ) {
-    this.companyId = route.snapshot.params['id'];
-    console.log('compaanyid=' + this.companyId);
-    this.router = router;
+    this.companyId = Number(this.route.snapshot.params['id']) || 0;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sub = this.route.queryParams.subscribe((params) => {
-      this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
-    });
+      this.companyId = +params['q'] || this.companyId;
+      this.journalId = +params['a'] || this.journalId;
 
-    this.sub = this.route.queryParams.subscribe((params) => {
-      this.journalid = +params['a'] || 0;
-      console.log('Query params ', this.journalid);
+      if (this.journalId && this.companyId) {
+        this.loadCompanyNotes();
+      }
     });
+  }
+
+  private loadCompanyNotes(): void {
     this.spinner.show();
 
-    this.companynotesService
-      .getCompanynotess(this.journalid, this.companyId)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
+    this.companynotesService.getCompanynotess(this.journalId, this.companyId).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.model = response;
 
-          this.model = response;
-
-          if (this.model.effectiveon) {
-            this.model.effectiveon = new Date(this.model.effectiveon);
-            this.model.effectiveon = this.datepipe.transform(
-              this.model.effectiveon,
-              'MM/dd/yyyy'
-            );
-          }
-        },
-        (error) => {
-          this.spinner.hide();
+        if (this.model?.effectiveOn) {
+          const parsedDate = new Date(this.model.effectiveOn);
+          this.model.effectiveOn = this.datepipe.transform(parsedDate, 'MM/dd/yyyy');
         }
-      );
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  cancelCompanyNotes() {
+  cancelCompanyNotes(): void {
     this.router.navigate(['/company/notes/' + this.companyId]);
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }

@@ -1,15 +1,134 @@
-/* .ng-select.disabled .ng-arrow-wrapper .ng-arrow {
-    display: none;
- }
- 
- .ng-select.disabled ng-dropdown-panel {
-   display: none;
- }
- 
- .ng-select.disabled .ng-clear-wrapper {
-  display: none;
- } */
+/* ===============================
+   Top bar layout
+   =============================== */
+.top-bar {
+  background-color: white;
+  border-bottom: 1px solid gray;
+  margin-bottom: 4%;
+}
 
+.breadcrumb-col {
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+}
+
+.custom-breadcrumb {
+  float: left;
+  border-bottom: none;
+  margin-left: 64px;
+  padding-top: 16px;
+  padding-bottom: 12px;
+  width: auto;
+}
+
+.top-controls {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  overflow-x: visible;
+}
+
+/* ===============================
+   Logo
+   =============================== */
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.company-logo {
+  height: 50px;
+  max-width: 70%;
+  object-fit: contain;
+}
+
+/* ===============================
+   Company select
+   =============================== */
+.company-select {
+  float: right;
+  margin-left: 64px;
+}
+
+.text-overflow-button {
+  background-color: #f86c6b;
+}
+
+/* ===============================
+   Tag input
+   =============================== */
+.tag-input {
+  flex: 0 0 80px;
+  padding: 4px;
+  min-width: 80px;
+}
+
+/* ===============================
+   Dropdown wrapper + custom arrow
+   =============================== */
+.dropdown-wrapper99 {
+  position: relative;
+  display: inline-block;
+  flex: 0 1 160px;
+}
+
+.custom-dropdown99 {
+  width: 100%;
+  display: block;
+}
+
+.custom-dropdown-arrow99 {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}
+
+/* ===============================
+   Buttons
+   =============================== */
+.go-btn {
+  padding: 5px 10px;
+}
+
+.advanced-btn {
+  padding: 5px 10px;
+  margin-right: 64px;
+}
+
+.master-pie-btn {
+  padding: 5px 10px;
+  margin-right: 64px;
+}
+
+.action-buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  min-width: max-content;
+}
+
+/* ===============================
+   Content
+   =============================== */
+.content-wrapper {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/* ===============================
+   Utility / general
+   =============================== */
 .margin-tag {
   margin-left: -10px;
   margin-top: 2px;
@@ -20,44 +139,70 @@
 }
 
 .img-side-logo {
-  /* margin-right: 10px;  */
-  /* margin-top: -16px; */
   max-width: 160px;
 }
 
-.ngx-dropdown-container[_ngcontent-yxf-c7]
-  .ngx-dropdown-list-container[_ngcontent-yxf-c7] {
-  box-sizing: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
-  padding-left: 10px;
-  padding-right: 10px;
-  z-index: 999999999;
-  width: auto !important;
-  background-clip: padding-box;
-  background: white;
-  position: absolute;
-  box-shadow: 5px 5px 5px #00000036;
+.side-bar-margin {
+  margin-top: 55px;
 }
 
-.text-overflow-button {
-  background-color: #f86c6b;
+.main {
+  flex: 1;
 }
 
 bs-tooltip-container {
   z-index: 99999;
 }
 
+/* ===============================
+   Force ngx-dropdown styles
+   =============================== */
+:host ::ng-deep .ngx-dropdown-container {
+  width: auto !important;
+  min-width: 200px;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container {
+  width: auto !important;
+  min-width: 100%;
+  top: 100% !important;
+  bottom: auto !important;
+  margin-top: 4px !important;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button::after,
+:host ::ng-deep .dropdown-toggle::after {
+  display: none !important;
+}
+:host ::ng-deep app-dropdown-treeview-select .dropdown-toggle::after,
+:host ::ng-deep app-dropdown-treeview-select .ng-arrow-wrapper,
+:host ::ng-deep app-dropdown-treeview-select .ng-select-container::after {
+  display: none !important;
+  content: none !important;
+}
+.side-bar-margin,
+.main,
+.col-12,
+.btn-group {
+  overflow: visible !important;
+}
+
+/* ===============================
+   Responsive adjustments
+   =============================== */
 @media (min-width: 400px) and (max-width: 520px) {
   .margin-tag {
     margin-left: 0px;
     margin-top: 4px;
     text-align: center;
   }
-
-  /* .margin-mobile{
-    margin-left: 30px;
-  } */
 
   .mobile-padding {
     padding: 0px;
@@ -79,16 +224,11 @@ bs-tooltip-container {
     margin-left: -17px;
   }
 
-  /* .margin-mobile{
-    margin-left: 90px;
-  } */
   .margin-new-top {
     margin-top: 5px;
   }
 
   .img-side-logo {
-    /* margin-right: 10px;  */
-    /* margin-top: -16px; */
     max-width: 180px;
   }
 
@@ -108,13 +248,12 @@ bs-tooltip-container {
   .margin-mobile {
     margin-left: 90px;
   }
+
   .margin-new-top {
     margin-top: 5px;
   }
 
   .img-side-logo {
-    /* margin-right: 10px;  */
-    /* margin-top: -16px; */
     max-width: 180px;
   }
 
@@ -142,41 +281,4 @@ bs-tooltip-container {
   .ml-15 {
     margin-left: 7px;
   }
-}
-
-.main {
-  /* margin-top: 55px; */
-  flex: 1;
-}
-
-.side-bar-margin {
-  margin-top: 55px;
-}
-
-
-/* Add these styles for the dropdown */
-:host ::ng-deep .ngx-dropdown-container {
-  width: auto !important;
-  min-width: 200px;
-}
-
-:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button {
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container {
-  width: auto !important;
-  min-width: 100%;
-}
-
-/* Remove dropdown arrow */
-:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button::after {
-  display: none !important;
-}
-
-:host ::ng-deep .dropdown-toggle::after {
-  display: none !important;
 }

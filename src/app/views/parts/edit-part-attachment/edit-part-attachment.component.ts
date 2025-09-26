@@ -1,84 +1,93 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompanyDocumentsService } from '../../../services/company-documents.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PartsService } from 'src/app/services/parts.service';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-part-attachment',
   templateUrl: './edit-part-attachment.component.html',
   styleUrls: ['./edit-part-attachment.component.scss'],
 })
-export class EditPartAttachmentComponent implements OnInit {
+export class EditPartAttachmentComponent implements OnInit, OnDestroy {
   model: any = {};
-  index: number = 0;
+  index = 0;
   date = Date.now();
-  companyId: number = 0;
-  documentId: any = 0;
-  private sub: any;
-  id: number;
-  router: Router;
-  dismissible: boolean = true;
-  helpFlag: any = false;
+  companyId = 0;
+  documentId: any;
+  id!: number;
+  dismissible = true;
+  helpFlag = false;
   partId: any;
-  userName: any;
+  userName: string | null = '';
+
+  private subscriptions = new Subscription();
+
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
-    router: Router,
+    private router: Router,
     private partService: PartsService,
     private location: Location,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.route.paramMap.subscribe((params) => {
-      this.documentId = params.get('id'); // 'id' is the placeholder used in the route
-      console.log('Part ID:', this.documentId); // Now you have access to the partId
+    const routeSub = this.route.paramMap.subscribe((params) => {
+      this.documentId = params.get('id');
     });
-    console.log('compaanyid=' + this.companyId);
-    this.router = router;
+    this.subscriptions.add(routeSub);
+
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
-    this.partService.getPartAttachment(this.documentId).subscribe(
-      (response) => {
-        this.model = response;
-        this.spinner.hide();
-      },
-      (error) => {
-        this.spinner.hide();
-      }
-    );
+
+    if (this.documentId) {
+      this.partService.getPartAttachment(this.documentId).subscribe({
+        next: (response) => {
+          this.model = response;
+          this.spinner.hide();
+        },
+        error: () => {
+          this.spinner.hide();
+        },
+      });
+    } else {
+      this.spinner.hide();
+    }
   }
 
-  updateVendorDocument() {
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  updateVendorDocument(): void {
     this.spinner.show();
     this.model.updatedBy = this.userName;
-    this.partService
-      .updatePartAttachment(this.documentId, this.model)
-      .subscribe(
-        (response) => {
-          window.scroll(0, 0);
-          this.spinner.hide();
-          this.index = 1;
-          //  this.router.navigate(['/parts/manageAttachments/' + this.partId]);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+    this.partService.updatePartAttachment(this.documentId, this.model).subscribe({
+      next: () => {
+        window.scroll(0, 0);
+        this.spinner.hide();
+        this.index = 1;
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
   }
 
-  cancelVendorDocument() {
+  cancelVendorDocument(): void {
     this.location.back();
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

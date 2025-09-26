@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
@@ -19,18 +19,13 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
           >
             *To add an attachment:<br />
             1.Click the 'Choose File' button to locate the desired file.<br />
@@ -45,125 +40,99 @@
           </div>
         </div>
         <div class="card-body">
-          <div>
-            <strong>Note: "{{ entityname }}" </strong>
-          </div>
+          <div><strong>Note: "{{ entityName }}"</strong></div>
           <p class="card-text">
-            Manage Item Note Attachment's
+            Manage Item Note Attachments
             <button
               type="button"
               [disabled]="itemRank < 3"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-end btn-group"
               (click)="addItemDocument()"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add New Note Attachment."
-              placement="top"
             >
               Add Document
             </button>
           </p>
-          <div class="select-pagination-option">
-            <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="itemsForPagination">
-                  <option>5</option>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                </select>
-                entries
-              </span>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              Show
+              <select [(ngModel)]="itemsForPagination">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              entries
+            </div>
+            <div>
+              Search:
+              <input [(ngModel)]="documentFilter" />
             </div>
           </div>
-          <div class="float-right div-search">
-            <span>Search : </span>
-            <input [(ngModel)]="documentFilter" />
+          <div class="table-responsive">
+            <table class="table table-hover table-outline mb-0">
+              <thead class="thead-light">
+                <tr>
+                  <th [class.active]="order === 'description'" (click)="setOrder('description')">
+                    Description<span [hidden]="reverse == ''">▼</span><span [hidden]="reverse != ''">▲</span>
+                  </th>
+                  <th [class.active]="order === 'dateAdded'" (click)="setOrder('dateAdded')">
+                    Added<span [hidden]="reverse == ''">▼</span><span [hidden]="reverse != ''">▲</span>
+                  </th>
+                  <th [class.active]="order === 'addedBy'" (click)="setOrder('addedBy')">
+                    By<span [hidden]="reverse == ''">▼</span><span [hidden]="reverse != ''">▲</span>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let document of documents | orderBy: reverse + order | filterBy: ['description','dateAddedOn','addedBy']:documentFilter | paginate: { itemsPerPage: itemsForPagination, currentPage: p }"
+                >
+                  <td>{{ document.description }}</td>
+                  <td>{{ document.dateAdded | date: 'MM/dd/yyyy' }}</td>
+                  <td>{{ document.addedBy }}</td>
+                  <td>
+                    <button
+                      type="button"
+                      [disabled]="itemRank < 3"
+                      class="btn btn-outline-danger btn-sm me-1"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="View Note Attachments"
+                      (click)="download(document)"
+                    >
+                      View
+                    </button>
+                    <button
+                      type="button"
+                      [disabled]="itemRank < 4"
+                      class="btn btn-outline-danger btn-sm me-1"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Edit Note Attachment"
+                      (click)="editItemDocument(document)"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      [disabled]="itemRank < 4 || highestRank == 9"
+                      class="btn btn-outline-danger btn-sm"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Delete Note Attachment"
+                      (click)="openModal(confirmtemplate, document.attachmentId)"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
-            <thead class="thead-light">
-              <tr>
-                <th
-                  [class.active]="order === 'description'"
-                  (click)="setOrder('description')"
-                >
-                  Description<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th
-                  [class.active]="order === 'dateadded'"
-                  (click)="setOrder('dateadded')"
-                >
-                  Added<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th
-                  [class.active]="order === 'addedby'"
-                  (click)="setOrder('addedby')"
-                >
-                  By<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let document of documents
-                    | orderBy : reverse + order
-                    | filterBy
-                      : ['description', 'dateaddedOn', 'addedby']
-                      : documentFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
-                "
-              >
-                <td>{{ document.description }}</td>
-                <td>{{ document.dateadded | date : "MM/dd/yyyy" }}</td>
-                <td>{{ document.addedby }}</td>
-                <td>
-                  <button
-                    type="button"
-                    [disabled]="itemRank < 3"
-                    class="btn btn-outline-danger btn-sm btn-right"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="View Note Attachments"
-                    (click)="download(document)"
-                  >
-                    View
-                  </button>
-                  <!--<button type="button" class="btn btn-outline-danger btn-sm" (click)=downloadDocument(document)>Download</button>-->
-                  <button
-                    type="button"
-                    [disabled]="itemRank < 4"
-                    class="btn btn-outline-danger btn-sm btn-right"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Edit Note Attachment"
-                    (click)="editItemDocument(document)"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    [disabled]="itemRank < 4 || highestRank == 9"
-                    class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Delete Note Attachment"
-                    (click)="openModal(confirmtemplate, document.attachmentid)"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
           <pagination-controls
             class="my-pagination"
             (pageChange)="p = $event"
@@ -173,15 +142,15 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="form-group col-sm-12 text-center">
+  <div class="row mt-2">
+    <div class="col-12 text-center">
       <button
         type="button"
         (click)="back()"
         data-bs-placement="bottom"
         data-bs-toggle="tooltip"
         title="Back"
-        class="btn btn-primary"
+        class="btn btn-primary btn-group"
       >
         Back
       </button>
@@ -192,116 +161,36 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>
-      Click(Yes) to permanently delete this Item NoteAttachemnts or Click(No) to
-      discard This action.
+      Click (Yes) to permanently delete this Item Note Attachment or Click (No) to discard this action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <button type="button" class="btn btn-primary btn-group me-1" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0,0,0,0.5); z-index: 2;"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>

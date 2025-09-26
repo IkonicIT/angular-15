@@ -1,0 +1,15 @@
+/* Help Box Styling */
+.help-box {
+  text-align: left;
+  border: 1px solid;
+  width: fit-content;
+  background-color: whitesmoke;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Save & Cancel Buttons */
+.save-btn,
+.cancel-btn {
+  border-radius: 6px;
+}

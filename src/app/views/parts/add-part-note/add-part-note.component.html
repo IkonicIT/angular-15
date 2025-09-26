@@ -3,6 +3,7 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
+          <!-- Top Right Action Buttons -->
           <div class="form-group col-sm-12 d-flex justify-content-end gap-1">
             <button
               type="button"
@@ -20,15 +21,9 @@
             >
               Help
             </button>
-            <div
-              style="
-                text-align: left;
-                border: 1px solid;
-                width: fit-content;
-                background-color: whitesmoke;
-              "
-              *ngIf="helpFlag == true"
-            >
+
+            <!-- Help Instructions -->
+            <div *ngIf="helpFlag === true" class="help-box border p-2">
               Note: Mandatory Fields are required.<br />
               *To create a new note:<br />
               1.Click the 'AddNotes' button.<br />
@@ -42,16 +37,20 @@
               1.Click the 'Delete' button.
             </div>
           </div>
+
           <p class="card-text">Add Part Notes</p>
 
+          <!-- Success Alert -->
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Added Part Notes successfully.
           </alert>
 
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <!-- Error Alert -->
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             Please Enter Title
           </alert>
 
+          <!-- Form Section -->
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding">
               <div class="card">
@@ -63,13 +62,14 @@
                 >
                   <div class="card-body">
                     <div class="row">
+                      <!-- Title -->
                       <div class="form-group col-sm-6">
                         <label for="title">Title</label>
                         <input
                           type="text"
-                          [(ngModel)]="model.journalid"
-                          name="journalid"
-                          #journalid="ngModel"
+                          [(ngModel)]="model.journalId"
+                          name="journalId"
+                          #journalId="ngModel"
                           id="_id"
                           hidden
                         />
@@ -83,6 +83,8 @@
                           placeholder="Enter Title"
                         />
                       </div>
+
+                      <!-- Date -->
                       <div class="form-group col-sm-6">
                         <label for="date">Date</label>
                         <input
@@ -100,24 +102,27 @@
                     </div>
 
                     <div class="row">
+                      <!-- Job Number -->
                       <div class="form-group col-sm-6">
                         <label for="job">JOB Number</label>
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="model.jobnumber"
+                          [(ngModel)]="model.jobNumber"
                           name="job"
                           #job="ngModel"
                           id="job"
                           placeholder="Enter JOB Number"
                         />
                       </div>
+
+                      <!-- PO Number -->
                       <div class="form-group col-sm-6">
                         <label for="po">PO Number</label>
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="model.ponumber"
+                          [(ngModel)]="model.poNumber"
                           id="po"
                           name="po"
                           #po="ngModel"
@@ -127,11 +132,11 @@
                     </div>
 
                     <div class="row">
+                      <!-- Details -->
                       <div class="form-group col-sm-12">
                         <label for="details">Details</label>
                         <textarea
                           id="details"
-                          name="textarea-input"
                           rows="2"
                           cols="4"
                           name="details"
@@ -143,14 +148,15 @@
                       </div>
                     </div>
 
+                    <!-- Action Buttons -->
                     <div class="row">
                       <div
                         class="form-group col-sm-12 d-flex justify-content-center gap-2 m-1"
                       >
                         <button
                           tooltip="Save Vendor Note"
-                          class="btn btn-primary"
-                          style="border-radius: 6px;"
+                          class="btn btn-primary rounded"
+                          type="submit"
                         >
                           Save
                         </button>
@@ -158,8 +164,7 @@
                           type="button"
                           tooltip="Cancel"
                           (click)="cancelPartNotes()"
-                          class="btn btn-outline-danger btn-sm"
-                          style="border-radius: 6px;"
+                          class="btn btn-outline-danger btn-sm rounded"
                         >
                           Cancel
                         </button>
@@ -170,6 +175,7 @@
               </div>
             </div>
           </div>
+          <!-- End Form Section -->
         </div>
       </div>
     </div>

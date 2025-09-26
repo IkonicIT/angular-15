@@ -117,3 +117,176 @@ button {
   font-size: 16px;     /* Medium size arrow */
   color: #555;
 }
+
+/* ---------- MOVED FROM INLINE STYLES ---------- */
+
+/* help note box (was inline on the help div) */
+.help-note-box {
+  text-align: left;
+  border: 1px solid;
+  width: fit-content;
+  background-color: whitesmoke;
+}
+
+/* scrollable list for Primary Findings (height + scroll + border + bg) */
+.scrollable-primary-list {
+  height: 50vh;
+  overflow-y: auto;
+  border: 1px solid lightgray;
+  background-color: white;
+}
+
+/* unstyled list items used in two places */
+.unstyled-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* small bordered paragraph used as instruction box */
+.bordered-note {
+  border: 1px solid;
+}
+
+/* highlighted primary finding badge (was inline on span) */
+.primary-finding-badge {
+  background-color: whitesmoke;
+  color: black;
+  border: 1px solid;
+}
+
+/* scrollable causes box */
+.scrollable-causes-list {
+  height: 40vh;
+  overflow-y: auto;
+  border: 1px solid lightgray;
+  background-color: white;
+}
+
+/* buttons that need a 6px radius to override global button radius:0 */
+.btn-radius-6 {
+  border-radius: 6px;
+}
+
+/* loader overlay (was inline on the overlay div) */
+.loader-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  cursor: pointer;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-1%, -1%);
+}
+
+/* loader and animations moved from <style> block */
+.loader {
+  position: absolute;
+  left: 60%;
+  top: 60%;
+  z-index: 1;
+  width: 75px;
+  height: 75px;
+  margin: -75px 0 0 -75px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid red;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s;
+}
+
+@-webkit-keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+
+.btn-link[routerLink="/forgot-password"] {
+  color: red;
+}
+
+.cent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-dropdown-arrow {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}

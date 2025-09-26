@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core'; // Adjust the path as needed
-import { Router } from '@angular/router';
-import { CranesService } from 'src/app/services/cranes.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CranesService } from 'src/app/services/cranes.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cranes',
   templateUrl: './cranes.component.html',
   styleUrls: ['./cranes.component.scss'],
 })
-export class CranesComponent implements OnInit {
+export class CranesComponent implements OnInit, OnDestroy {
   searchKey: string = '';
   data: any[] = [];
-  errorMessage: string;
-  successMessage: string;
+  errorMessage: string = '';
+  successMessage: string = '';
   highestRank: any;
   plantName: any;
   bmdrnk: any;
@@ -24,6 +24,8 @@ export class CranesComponent implements OnInit {
   previousData: any[] = [];
   historyStack: any[][] = [];
 
+  private subscriptions = new Subscription();
+
   constructor(
     private cranesService: CranesService,
     private router: Router,
@@ -31,53 +33,53 @@ export class CranesComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute
   ) {}
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.highestRank = sessionStorage.getItem('highestRank') ?? '';
     this.searchKey = sessionStorage.getItem('searchKey') ?? '';
+
     const historyStackData = sessionStorage.getItem('historyStack');
     const historyStackBackup = sessionStorage.getItem('historyStackBackup');
+
     this.historyStack = historyStackBackup
       ? JSON.parse(historyStackBackup)
       : [];
-    console.log('Data::', this.data, this.historyStack);
 
-    this.route.queryParams.subscribe((params) => {
+    const sub = this.route.queryParams.subscribe((params) => {
       const bmdrnk = params['bmdrnk'];
       const bmkey1 = params['bmkey1'];
       const bmkey = params['bmkey2'];
-      console.log('bmkey:::', bmdrnk, bmkey1, bmkey);
       if (!bmdrnk && !bmkey1 && !bmkey) {
         this.data = historyStackData ? JSON.parse(historyStackData) : [];
         this.isFromQueryParams = false;
         return;
       } else {
+        this.isFromQueryParams = true;
         if (bmdrnk === this.searchKey) {
-          this.isFromQueryParams = true;
           this.fetchCranesByBMDRNK(bmdrnk);
         } else {
-          this.isFromQueryParams = true;
           this.fetchData(bmkey, bmdrnk);
         }
       }
+
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: { bmdrnk: null, bmkey1: null, bmkey2: null },
         queryParamsHandling: 'merge',
       });
     });
+
+    this.subscriptions.add(sub);
   }
 
-  fetchData(key: string, bmdrnk: string) {
+  fetchData(key: string, bmdrnk: string): void {
     this.spinner.show();
-    this.cranesService.getCranesData(key).subscribe(
+    const sub = this.cranesService.getCranesData(key).subscribe(
       (response: any[]) => {
         this.spinner.hide();
         if (response.length === 0) {
           setTimeout(() => {
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth',
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }, 0);
           this.errorMessage = 'No Data Found For BMDRNK:' + bmdrnk;
         } else {
@@ -88,22 +90,20 @@ export class CranesComponent implements OnInit {
             'historyStackBackup',
             JSON.stringify(this.historyStack)
           );
-
           this.errorMessage = '';
-          // }
           this.isFromQueryParams = false;
         }
       },
       (error) => {
-        console.error('Error fetching data:', error);
         this.spinner.hide();
       }
     );
+    this.subscriptions.add(sub);
   }
 
-  fetchCranesByBMDRNK(key: string) {
+  fetchCranesByBMDRNK(key: string): void {
     this.spinner.show();
-    this.cranesService.getCranesByBMDRNK(key).subscribe(
+    const sub = this.cranesService.getCranesByBMDRNK(key).subscribe(
       (response: any[]) => {
         if (response.length === 0) {
           this.errorMessage = 'No Data Found';
@@ -118,18 +118,17 @@ export class CranesComponent implements OnInit {
           );
           this.spinner.hide();
           this.errorMessage = '';
-          // }
           this.isFromQueryParams = false;
         }
       },
       (error) => {
-        console.error('Error fetching data:', error);
         this.spinner.hide();
       }
     );
+    this.subscriptions.add(sub);
   }
 
-  handleSearch() {
+  handleSearch(): void {
     this.historyStack.length = 0;
     this.data = [];
     sessionStorage.removeItem('historyStack');
@@ -138,22 +137,21 @@ export class CranesComponent implements OnInit {
     this.fetchCranesByBMDRNK(this.searchKey);
   }
 
-  handleBMDRNKClick(bmkey: string, bmdrnk: string) {
+  handleBMDRNKClick(bmkey: string, bmdrnk: string): void {
     this.fetchData(bmkey, bmdrnk);
   }
 
   navigateToEdit(bmkey1: number): void {
     this.spinner.show();
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 2000);
+    setTimeout(() => this.spinner.hide(), 2000);
     this.router.navigateByUrl(`cranes/editCrane/${bmkey1}`);
   }
 
   navigateToCraneNotes(bmkey1: number): void {
     this.router.navigateByUrl(`cranes/craneNotes/${bmkey1}`);
   }
-  goBack() {
+
+  goBack(): void {
     const poppedData = this.historyStack.pop();
     if (poppedData) {
       this.data = poppedData;
@@ -164,10 +162,11 @@ export class CranesComponent implements OnInit {
       );
     }
 
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-    this, (this.errorMessage = '');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.errorMessage = '';
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

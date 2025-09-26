@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
@@ -20,7 +20,7 @@
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
           >
             * To create a new status:<br />
             1.Click the 'Add Status' button.<br />
@@ -38,15 +38,16 @@
         <div class="card-body">
           <p class="card-text">Edit Company Status</p>
 
-          <alert *ngIf="index == 1" type="success" [dismissible]="dismissible">
+          <alert *ngIf="index === 1" type="success" [dismissible]="dismissible">
             Company Status Updated successfully.
           </alert>
-          <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             Please enter Status or No changes to update.
           </alert>
-          <alert *ngIf="index == 2" type="danger" [dismissible]="dismissible">
+          <alert *ngIf="index === 2" type="danger" [dismissible]="dismissible">
             Status size should be less than 100 characters.
           </alert>
+
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
@@ -85,9 +86,10 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <label for="Status">Status</label>
+                        <label for="status">Status</label>
                         <input
                           id="status"
                           type="text"
@@ -99,10 +101,11 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          class="btn btn-primary btn-right"
+                          class="btn btn-primary btn-right btn-group"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Update Status"
@@ -115,7 +118,7 @@
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Cancel"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-group"
                         >
                           Cancel
                         </button>
@@ -149,11 +152,12 @@
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
-    position: fixed;
+    position: absolute;
     left: 60%;
     top: 60%;
     z-index: 1;
@@ -173,7 +177,6 @@
     0% {
       -webkit-transform: rotate(0deg);
     }
-
     100% {
       -webkit-transform: rotate(360deg);
     }
@@ -183,13 +186,11 @@
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
 
-  /* Add animation to "page content" */
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -203,7 +204,6 @@
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0px;
       opacity: 1;
@@ -215,7 +215,6 @@
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0;
       opacity: 1;

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ItemManagementService } from '../../../services';
@@ -10,14 +10,15 @@ import { Location } from '@angular/common';
   styleUrls: ['./item-warehouse-tag.component.scss'],
 })
 export class ItemWareHouseTagComponent implements OnInit {
-  companyId: string;
+  companyId: string = '';
   itemId: string;
   model: any;
   attributes: any;
-  companyName: string = '';
-  order: string = 'date';
+  companyName = '';
+  order = 'date';
   globalCompany: any;
   repair: any;
+
   constructor(
     private companyManagementService: CompanyManagementService,
     private _location: Location,
@@ -25,28 +26,32 @@ export class ItemWareHouseTagComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.itemId = route.snapshot.params['itemId'];
+    this.itemId = this.route.snapshot.params['itemId'];
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
     }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
     });
+
     this.model = this.itemManagementService.item;
 
     this.itemManagementService
       .getLastRepairAndRepairBy(this.itemId)
       .subscribe((response) => {
         this.repair = response;
-        if (this.repair.lastRepairDate != null) {
-          this.repair.lastRepairDate = this.repair.lastRepairDate.split(' ')[0];
-        } else {
-          this.repair.lastRepairDate = 'N/A';
+        if (this.repair) {
+          this.repair.lastRepairDate = this.repair.lastRepairDate
+            ? this.repair.lastRepairDate.split(' ')[0]
+            : 'N/A';
+          this.repair.repairBy = this.repair.repairBy ? this.repair.repairBy : 'N/A';
         }
-        if (this.repair.repairBy == null) this.repair.repairBy = 'N/A';
       });
+
     this.itemManagementService
       .getAttributesForReplacements(this.itemId)
       .subscribe((response) => {
@@ -54,51 +59,39 @@ export class ItemWareHouseTagComponent implements OnInit {
       });
 
     setTimeout(() => {
-       this.print();
+      this.print();
     }, 3000);
   }
 
   ngOnInit() {}
 
-  // print(): void {
-  //   let printContents, popupWin: any;
-  //   printContents = document.getElementById('print-section')!.innerHTML;
-  //   popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=100%');
-  //   popupWin?.document.open();
-  //   popupWin?.document.write(printContents);
-  //   popupWin?.focus();
-  //   popupWin?.print();
-  //   popupWin?.document.close();
-  // }
-
   print(): void {
     const printContents = document.getElementById('print-section');
-    
+
     if (printContents) {
-      // Create a temporary iframe to hold the print contents
-      let printFrame:any = document.createElement('iframe');
+      const printFrame: HTMLIFrameElement = document.createElement('iframe');
       printFrame.style.display = 'none';
       document.body.appendChild(printFrame);
-  
-      printFrame.contentDocument.open();
-      printFrame.contentDocument.write(`
-        <html>
-          <head>
-            <title>Print</title>
-          </head>
-          <body>${printContents.innerHTML}</body>
-        </html>
-      `);
-      printFrame.contentDocument.close();
-  
-      // Wait for content to be loaded before printing
-      printFrame.contentWindow.onafterprint = () => {
-        // Close the iframe after printing
-        document.body.removeChild(printFrame);
-      };
-  
-      // Initiate the print dialog
-      printFrame.contentWindow.print();
+
+      if (printFrame.contentDocument) {
+        printFrame.contentDocument.open();
+        printFrame.contentDocument.write(`
+          <html>
+            <head>
+              <title>Print</title>
+            </head>
+            <body>${printContents.innerHTML}</body>
+          </html>
+        `);
+        printFrame.contentDocument.close();
+      }
+
+      if (printFrame.contentWindow) {
+        printFrame.contentWindow.onafterprint = () => {
+          document.body.removeChild(printFrame);
+        };
+        printFrame.contentWindow.print();
+      }
     }
   }
 

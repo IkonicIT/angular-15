@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PartsService } from 'src/app/services/parts.service';
 import { Location } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Router } from '@angular/router';
+
+import { PartsService } from 'src/app/services/parts.service';
 
 @Component({
   selector: 'app-edit-part',
@@ -15,7 +14,7 @@ import { Router } from '@angular/router';
 export class EditPartComponent implements OnInit {
   partForm: FormGroup;
   highestRank: any;
-  successMessage: string;
+  successMessage: string = '';
   frame: any;
 
   constructor(
@@ -148,7 +147,7 @@ export class EditPartComponent implements OnInit {
     });
   }
 
-  navigateToParts() {
+  navigateToParts(): void {
     this.location.back();
   }
 
@@ -159,19 +158,19 @@ export class EditPartComponent implements OnInit {
       setTimeout(() => {
         this.spinner.hide();
       }, 2000);
-      this.partsService
-        .updatePart(+partId, this.partForm.value)
-        .subscribe((response) => {
-          this.successMessage = 'Part updated successfully';
+
+      this.partsService.updatePart(+partId, this.partForm.value).subscribe(() => {
+        this.successMessage = 'Part updated successfully';
+        this.cdr.detectChanges();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        this.spinner.hide();
+
+        setTimeout(() => {
+          this.successMessage = '';
           this.cdr.detectChanges();
-          window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
-          this.spinner.hide();
-          setTimeout(() => {
-            this.successMessage = '';
-            this.cdr.detectChanges();
-            this.navigateToParts();
-          }, 3000); // 3 seconds
-        });
+          this.navigateToParts();
+        }, 3000);
+      });
     }
   }
 }

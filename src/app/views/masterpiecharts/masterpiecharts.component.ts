@@ -1,8 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { IDatePickerConfig } from 'ng2-date-picker'; // Updated import path
+import { IDatePickerConfig } from 'ng2-date-picker'; 
 import { NgxSpinnerService } from 'ngx-spinner';
-// import { BaseChartDirective, Color } from 'ng2-charts';
-// import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -10,7 +8,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { cloneDeep } from 'lodash';
 import { ExcelService } from 'src//app/services/excel-service';
-import * as moment from 'moment'; // Corrected import for moment
+import * as moment from 'moment'; 
 import { BroadcasterService } from 'src/app/services/broadcaster.service';
 import { LocationManagementService } from 'src/app/services';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
@@ -61,13 +59,13 @@ export class TemplateComponent implements OnInit {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true, // Ensures the legend is visible
-        position: 'left', // Moves legend to the left
+        display: true, 
+        position: 'left', 
         labels: {
           font: {
-            size: 10, // Adjust font size
+            size: 10,
           },
-          boxWidth: 10, // Adjust legend color box width
+          boxWidth: 10, 
         },
       },
     },
@@ -79,7 +77,7 @@ export class TemplateComponent implements OnInit {
     { label: 'last two years', value: 2 },
   ];
   public params: any = {};
-  public companyid = 0;
+  public companyId = 0;
   public datePickerConfig: IDatePickerConfig = {
     showMultipleYearsNavigation: true,
   };
@@ -152,8 +150,8 @@ export class TemplateComponent implements OnInit {
   ngOnInit() {
     this.params = {
       type: 'yearly',
-      from: moment(), // Initialize with the current date or any default value
-      to: moment(), // Initialize with the current date or any default value
+      from: moment(), 
+      to: moment(), 
     };
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin') ?? '';
     this.userId = sessionStorage.getItem('userId') ?? '';
@@ -170,12 +168,10 @@ export class TemplateComponent implements OnInit {
     this.userId = sessionStorage.getItem('userId') ?? '';
     const clickedLabel =
       e.event.chart.config._config.data.labels[e.active[0].index];
-    // const matches = clickedLabel.replace(/\d+\.\d+\s*/g, '');
     const matches = clickedLabel.replace(/\b\d+(\.\d+)?\b\s*/g, '');
     const type = matches;
     this.selectedFailureType = type;
     sessionStorage.setItem('failureType', matches);
-    console.log(this.selectedFailureType);
     var req = {
       timeFrame: this.timeFrame,
       failureType: type,
@@ -266,12 +262,6 @@ export class TemplateComponent implements OnInit {
         this.pieChartCauseData = [];
 
         this.pieChartLabels.length = 0;
-        // this.pieChartLabels = Object.keys(this.failureTypesandPercentage);
-        // this.pieChartData.length = 0;
-        // this.pieChartLabels.forEach(failureType => {
-        //   const percentage = this.failureTypesandPercentage[failureType];
-        //   this.pieChartData.push(percentage);
-        // });
         this.pieChartLabels = [];
         this.pieChartData = [];
 
@@ -289,7 +279,6 @@ export class TemplateComponent implements OnInit {
         this.pieChartData = [dataset];
 
         this.chartFlag = this.isDataGreaterThanZero(this.pieChartData[0].data);
-        console.log('pieChartData', this.pieChartData);
       });
     this.loader = false;
   }
@@ -309,18 +298,13 @@ export class TemplateComponent implements OnInit {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.userId = sessionStorage.getItem('userId');
     this.failureType = sessionStorage.getItem('failureType');
-    //const cause = e.active[0]._chart.data.labels[e.active[0]._index];
     const clickedLabel =
       e.event.chart.config._config.data.labels[e.active[0].index];
     const matches = clickedLabel.replace(/\b\d+(\.\d+)?\b\s*/g, '');
     const type = matches;
     this.selectedFailureType = type;
     const cause = causeText;
-    console.log(
-      'selectedFailureCause1',
-      this.selectedFailureType,
-      clickedLabel
-    );
+    
     var req = {
       timeFrame: this.timeFrame,
       failureType: this.failureType,
@@ -348,9 +332,8 @@ export class TemplateComponent implements OnInit {
   }
 
   public onValChange(val: string) {
-    console.log(val);
     this.selectedVal = val;
-    if (this.selectedVal == 'repaircost') {
+    if (this.selectedVal == 'repairCost') {
       this.isRepairFlag = true;
       this.repairFlag = 'true';
       this.params.type = 'yearly';
@@ -368,8 +351,6 @@ export class TemplateComponent implements OnInit {
     const clonedsearchResults = cloneDeep(this.repairJobs);
 
     clonedsearchResults.forEach((obj: any) => {
-      //const robj = {};
-
       if (this.highestRank <= 5) {
         delete obj.repairCost;
       }
@@ -382,7 +363,6 @@ export class TemplateComponent implements OnInit {
       delete obj.itemId;
       delete obj.repairLogId;
 
-      // obj = Object.assign(obj, robj);
     });
 
     this.excelService.exportAsExcelFile(clonedsearchResults, 'RepairJobs');
@@ -405,31 +385,6 @@ export class TemplateComponent implements OnInit {
     this.exportAsExcelFile();
   }
 
-  // exportAsExcelFile() {
-  //   const groupedData = this.groupBy(this.repairJobs, item => item.companyName);
-  //   const results: { [key: string]: any[] } = {};
-  //   groupedData.forEach((value, key) => {
-  //     results[key] = value;
-  //   });
-
-  //   const clonedsearchResults = cloneDeep(results);
-  //   Object.keys(clonedsearchResults).forEach(companyName => {
-  //     const result = clonedsearchResults[companyName];
-  //     result.forEach((obj: any) => {
-  //       // Remove unnecessary fields
-  //       delete obj.repairLogId;
-  //       delete obj.companyId;
-  //       delete obj.itemId;
-  //       delete obj.rank;
-  //       delete obj.complete;
-  //       delete obj.attachmentListFromXml;
-  //       delete obj.attachmentList;
-  //     });
-  //   });
-
-  //   this.excelService.exportAsExcelFileWithMultipleSheets(clonedsearchResults, 'MasterPieCharts');
-  // }
-
   exportAsExcelFile() {
     const clonedsearchResults = cloneDeep(this.repairJobs);
 
@@ -451,7 +406,7 @@ export class TemplateComponent implements OnInit {
   groupBy(list: any, keyGetter: any) {
     const map = new Map();
     list.forEach((item: any) => {
-      const key = keyGetter(item).replace(/\//g, ''); // Replace slashes
+      const key = keyGetter(item).replace(/\//g, ''); 
       const collection = map.get(key);
       if (!collection) {
         map.set(key, [item]);

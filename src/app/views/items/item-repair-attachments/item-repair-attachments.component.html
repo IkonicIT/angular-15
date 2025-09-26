@@ -2,40 +2,36 @@
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+        <div class="form-group col-12 text-end">
           <button
             type="button"
-            (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
+            class="btn btn-outline-danger btn-sm btn-top me-2"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            (click)="print()"
           >
             Print
           </button>
           <button
             type="button"
-            (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
             class="btn btn-outline-danger btn-sm btn-top"
+            title="Instructions"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            (click)="help()"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            class="mt-2 p-2 border"
+            style="background-color: whitesmoke; width: fit-content; text-align: left;"
           >
             *To add an attachment:<br />
-            1.Click the 'Choose File' button to locate the desired file.<br />
-            2.Enter a description for the file.<br />
-            3.Click the 'Save' button.
+            1. Click the 'Choose File' button to locate the desired file.<br />
+            2. Enter a description for the file.<br />
+            3. Click the 'Save' button.
           </div>
         </div>
         <div class="card-body">
@@ -43,63 +39,46 @@
             Manage Item Repair Attachments
             <button
               type="button"
+              class="btn btn-primary float-end"
+              style="border-radius: 6px;"
+              [routerLink]="['../../addItemRepairAttachments/', repairLogId]"
               [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-              class="btn btn-primary float-right"
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
               title="Add ItemRepair Attachment"
-              [routerLink]="[
-                '../../addItemRepairAttachments/' + this.repairlogId
-              ]"
-              placement="top"
-               style="border-radius: 6px;"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
             >
               Add Document
             </button>
           </p>
-          <div class="select-pagination-option">
-            <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="itemsForPagination">
-                  <option>5</option>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                </select>
-                entries
-              </span>
+
+          <div class="select-pagination-option mb-2">
+            <div class="float-start">
+              Show
+              <select [(ngModel)]="itemsForPagination">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              entries
+            </div>
+            <div class="float-end div-search">
+              Search:
+              <input [(ngModel)]="documentFilter"/>
             </div>
           </div>
-          <div class="float-right div-search">
-            <span>Search : </span>
-            <input [(ngModel)]="documentFilter" />
-          </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'description'"
-                  (click)="setOrder('description')"
-                >
-                  Description<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='description'" (click)="setOrder('description')">
+                  Description <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'dateadded'"
-                  (click)="setOrder('dateadded')"
-                >
-                  Added<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='dateAdded'" (click)="setOrder('dateAdded')">
+                  Added <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'addedby'"
-                  (click)="setOrder('addedby')"
-                >
-                  By<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='addedBy'" (click)="setOrder('addedBy')">
+                  By <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
                 <th>Actions</th>
               </tr>
@@ -108,54 +87,45 @@
               <tr
                 *ngFor="
                   let document of documents
-                    | orderBy : reverse + order
-                    | filterBy
-                      : ['description', 'dateaddedOn', 'addedby']
-                      : documentFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                    | orderBy: reverse + order
+                    | filterBy: ['description','dateAddedOn','addedBy']:documentFilter
+                    | paginate: { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
                 <td>{{ document.description }}</td>
-                <td>{{ document.dateadded | date : "MM/dd/yyyy" }}</td>
-                <td>{{ document.addedby }}</td>
+                <td>{{ document.dateAdded | date:'MM/dd/yyyy' }}</td>
+                <td>{{ document.addedBy }}</td>
                 <td>
                   <button
+                    *ngIf="itemRank>0"
                     type="button"
-                    *ngIf="itemRank > 0"
-                    class="btn btn-outline-danger btn-sm btn-right"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
+                    class="btn btn-outline-danger btn-sm me-1"
                     title="View this ItemRepair Attachment"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
                     (click)="download(document)"
                   >
                     View
                   </button>
-
                   <button
                     type="button"
-                    [disabled]="itemRank < 5 || itemRank == 4 || itemRank == 5"
-                    class="btn btn-outline-danger btn-sm btn-right"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
+                    class="btn btn-outline-danger btn-sm me-1"
+                    [routerLink]="['../../editItemRepairAttachments/', repairLogId, document.attachmentId]"
+                    [disabled]="itemRank<5 || itemRank==4 || itemRank==5"
                     title="Edit this ItemRepair Attachment"
-                    [routerLink]="[
-                      '../../editItemRepairAttachments/' +
-                      this.repairlogId +
-                        '/' +
-                        document.attachmentid
-                    ]"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    [disabled]="itemRank < 6 || itemRank == 9"
                     class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
+                    [disabled]="itemRank<6 || itemRank==9"
                     title="Delete this ItemRepair Attachment"
-                    (click)="openModal(confirmtemplate, document.attachmentid)"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    (click)="openModal(confirmtemplate, document.attachmentId)"
                   >
                     Delete
                   </button>
@@ -163,6 +133,7 @@
               </tr>
             </tbody>
           </table>
+
           <pagination-controls
             class="my-pagination"
             (pageChange)="p = $event"
@@ -172,16 +143,14 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="form-group col-sm-12 text-center">
+
+  <div class="row mt-3">
+    <div class="col-12 text-center">
       <button
         type="button"
-        (click)="back()"
-        data-bs-placement="bottom"
-        data-bs-toggle="tooltip"
-        title="Back to view ItemRepair"
         class="btn btn-primary"
         style="border-radius: 6px;"
+        (click)="back()"
       >
         Back
       </button>
@@ -195,113 +164,40 @@
       Click(Yes) to permanently delete this ItemRepair Attachment or Click(No)
       to discard This action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <button type="button" class="btn btn-primary me-2" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
   </div>
 </ng-template>
 
-<div
-  *ngIf="loader"
-  style="
+<div *ngIf="loader" class="loader-backdrop">
+  <div class="loader"></div>
+</div>
+
+<style>
+  .loader-backdrop {
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0,0.5);
     z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
+  }
   .loader {
     position: absolute;
     left: 60%;
     top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    z-index: 3;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>

@@ -13,7 +13,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Click to Print this Page"
-              class="btn btn-outline-danger btn-sm btn-right btn-top"
+              class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
             >
               Print
             </button>
@@ -23,7 +23,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title=" Instructions"
-              class="btn btn-outline-danger btn-sm btn-top"
+              class="btn btn-outline-danger btn-sm btn-top btn-group"
             >
               Help
             </button>
@@ -54,7 +54,7 @@
                 </p>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New ItemNote"
@@ -68,8 +68,7 @@
                   title="Save Item Note"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   (click)="saveItemNote()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -80,20 +79,18 @@
                   title="Cancel the Changes for this Note"
                   *ngIf="itemRank > 3 && itemRank != 4 && itemRank != 5"
                   (click)="cancelItemNotes()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Item Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -102,9 +99,8 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add ItemNote Attachment"
-                  class="btn btn-primary btn-right"
-                  [routerLink]="['../../noteAttachments/' + model.journalid]"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
+                  [routerLink]="['../../noteAttachments/' + model.journalId]"
                 >
                   Attachments
                 </button>
@@ -113,8 +109,7 @@
                   data-bs-toggle="tooltip"
                   title="Back to View Item"
                   (click)="backToItem()"
-                  class="btn btn-primary"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-group"
                 >
                   Back To Item
                 </button>
@@ -162,7 +157,7 @@
                 <input
                   type="text"
                   [(ngModel)]="model._id"
-                  name="journalid"
+                  name="journalId"
                   #_id="ngModel"
                   id="_id"
                   hidden
@@ -171,7 +166,7 @@
                   class="form-control"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.entityname"
+                  [(ngModel)]="model.entityName"
                   name="title"
                   #title="ngModel"
                   id="title"
@@ -186,7 +181,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.effectiveon"
+                  [(ngModel)]="model.effectiveOn"
                   name="date"
                   #date="ngModel"
                   id="date"
@@ -202,7 +197,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -214,7 +209,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -253,7 +248,7 @@
                 </p>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New ItemNote"
@@ -267,14 +262,14 @@
                   title="Save Item Note"
                   (click)="saveItemNote()"
                   disabled
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
                 <button
                   type="button"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Edit Item Note"
@@ -285,7 +280,7 @@
 
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Item Note"
@@ -299,8 +294,8 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add ItemNote Attachment"
-                  class="btn btn-primary btn-right"
-                  (click)="goToAttachments(model.journalid, model.entityname)"
+                  class="btn btn-primary btn-right btn-group"
+                  (click)="goToAttachments(model.journalId, model.entityName)"
                 >
                   Attachments
                 </button>
@@ -310,7 +305,7 @@
                   data-bs-toggle="tooltip"
                   title="Back to View Item"
                   (click)="backToItem()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                 >
                   Back To Item
                 </button>
@@ -358,7 +353,7 @@
                 <input
                   type="text"
                   [(ngModel)]="model._id"
-                  name="journalid"
+                  name="journalId"
                   #_id="ngModel"
                   id="_id"
                   hidden
@@ -368,7 +363,7 @@
                   class="form-control"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.entityname"
+                  [(ngModel)]="model.entityName"
                   name="title"
                   #title="ngModel"
                   id="title"
@@ -384,7 +379,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.effectiveon"
+                  [(ngModel)]="model.effectiveOn"
                   name="date"
                   #date="ngModel"
                   id="date"
@@ -399,7 +394,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -412,7 +407,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -452,11 +447,10 @@
                 </p>
                 <button
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New ItemNote"
-                  style="border-radius: 6px;"
                   (click)="addNotes()"
                 >
                   New
@@ -467,8 +461,7 @@
                   title="Save Item Note"
                   [disabled]="itemRank < 3 || itemRank == 4 || itemRank == 5"
                   (click)="updateItemNotes()"
-                  style="border-radius: 6px;"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -479,20 +472,18 @@
                   title="Cancel the Changes for this Note"
                   *ngIf="itemRank > 3"
                   (click)="cancelItemNotes()"
-                  style="border-radius: 6px;"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   [disabled]="itemRank < 6 || highestRank == 9"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Item Note"
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -501,8 +492,8 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add ItemNote Attachment"
-                  class="btn btn-primary btn-right"
-                  (click)="goToAttachments(model.journalid, model.entityname)"
+                  class="btn btn-primary btn-right btn-group"
+                  (click)="goToAttachments(model.journalId, model.entityName)"
                 >
                   Attachments
                 </button>
@@ -511,8 +502,7 @@
                   data-bs-toggle="tooltip"
                   title="Back to View Item"
                   (click)="backToItem()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Back To Item
                 </button>
@@ -560,7 +550,7 @@
                 <input
                   type="text"
                   [(ngModel)]="model._id"
-                  name="journalid"
+                  name="journalId"
                   #_id="ngModel"
                   id="_id"
                   hidden
@@ -570,7 +560,7 @@
                   class="form-control"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.entityname"
+                  [(ngModel)]="model.entityName"
                   name="title"
                   #title="ngModel"
                   id="title"
@@ -586,7 +576,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.effectiveon"
+                  [(ngModel)]="model.effectiveOn"
                   name="date"
                   #date="ngModel"
                   id="date"
@@ -600,7 +590,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -612,7 +602,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -673,29 +663,29 @@
                     <thead class="thead-light">
                       <tr>
                         <th
-                          [class.active]="order === 'enteredon'"
-                          (click)="setOrder('enteredon')"
+                          [class.active]="order === 'enteredOn'"
+                          (click)="setOrder('enteredOn')"
                         >
                           Date<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'entityname'"
-                          (click)="setOrder('entityname')"
+                          [class.active]="order === 'entityName'"
+                          (click)="setOrder('entityName')"
                         >
                           Title<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'jobnumber'"
-                          (click)="setOrder('jobnumber')"
+                          [class.active]="order === 'jobNumber'"
+                          (click)="setOrder('jobNumber')"
                         >
                           Job#<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'ponumber'"
-                          (click)="setOrder('ponumber')"
+                          [class.active]="order === 'poNumber'"
+                          (click)="setOrder('poNumber')"
                         >
                           PO#<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
@@ -713,11 +703,11 @@
                             | orderBy : reverse + order
                             | filterBy
                               : [
-                                  'enteredon',
-                                  'entityname',
-                                  'jobnumber',
-                                  'ponumber',
-                                  'enteredby'
+                                  'enteredOn',
+                                  'entityName',
+                                  'jobNumber',
+                                  'poNumber',
+                                  'enteredBy'
                                 ]
                               : itemNotesFilter
                             | paginate
@@ -727,12 +717,12 @@
                                 }
                         "
                       >
-                        <td>{{ note.effectiveon | date : "MM/dd/yyyy" }}</td>
+                        <td>{{ note.effectiveOn | date : "MM/dd/yyyy" }}</td>
 
-                        <td>{{ note.entityname }}</td>
-                        <td>{{ note.jobnumber }}</td>
-                        <td>{{ note.ponumber }}</td>
-                        <td>{{ note.enteredby }}</td>
+                        <td>{{ note.entityName }}</td>
+                        <td>{{ note.jobNumber }}</td>
+                        <td>{{ note.poNumber }}</td>
+                        <td>{{ note.enteredBy }}</td>
                         <td>
                           <ng-container
                             *ngFor="let attachment of note.attachmentList"
@@ -751,11 +741,11 @@
                         <td>
                           <button
                             type="button"
-                            class="btn btn-outline-danger btn-sm"
+                            class="btn btn-outline-danger btn-sm btn-group"
                             data-bs-placement="bottom"
                             data-bs-toggle="tooltip"
                             title="Click here to View this Note"
-                            (click)="viewItemNotes(note.journalid)"
+                            (click)="viewItemNotes(note.journalId)"
                           >
                             View
                           </button>
@@ -785,10 +775,10 @@
       Click(Yes) to permanently delete this Note or Click(No) to discard this
       action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">
       Yes
     </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">
       No
     </button>
   </div>
@@ -851,7 +841,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

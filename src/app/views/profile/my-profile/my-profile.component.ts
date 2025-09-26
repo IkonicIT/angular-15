@@ -4,7 +4,7 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { LocationManagementService } from '../../../services/location-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UserManagementService } from '../../../services/user-management.service';
-import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
+import { TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Location } from '@angular/common';
 
@@ -16,23 +16,23 @@ import { Location } from '@angular/common';
 export class MyProfileComponent implements OnInit {
   loader = false;
   model: any = {};
-  companyId: any = 0;
-  profileId: any;
-  loggedInuser: any;
-  userId: any;
+  companyId: number;
+  profileId : number;
+  loggedInuser: string = '';
+  userId!: string;
   profile: any = {};
-  transfers: any = [];
-  router: Router;
-  locations: any = [];
-  locationItems: TreeviewItem[];
+  transfers: any[] = [];
+  locations: any[] = [];
+  locationItems: TreeviewItem[] = [];
   globalCompany: any;
-  allLocations: any = [];
-  index: any;
-  username: any;
+  allLocations: any[] = [];
+  index!: number;
+  userName: string = '';
   dismissible = true;
-  helpFlag: any = false;
+  helpFlag = false;
+
   constructor(
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private locationManagementService: LocationManagementService,
     private companyManagementService: CompanyManagementService,
@@ -41,107 +41,99 @@ export class MyProfileComponent implements OnInit {
     private broadcasterService: BroadcasterService,
     private _location: Location
   ) {
-    this.router = router;
     this.getProfile();
   }
 
-  ngOnInit() {
-    this.loggedInuser = sessionStorage.getItem('userId');
+  ngOnInit(): void {
+    this.loggedInuser = sessionStorage.getItem('userId') ?? '';
     this.globalCompany = this.companyManagementService.getGlobalCompany();
+
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
-      console.log('userId=' + this.loggedInuser);
-      console.log('companyId=' + this.companyId);
+      this.companyId = this.globalCompany.companyId;
     }
   }
 
-  getProfile() {
+  getProfile(): void {
     this.spinner.show();
+    this.loggedInuser = sessionStorage.getItem('userId') ?? '';
 
-    this.loggedInuser = sessionStorage.getItem('userId');
-    this.userManagementService.getProfileWithUser(this.loggedInuser).subscribe(
-      (response) => {
+    this.userManagementService.getProfileWithUser(this.loggedInuser).subscribe({
+      next: (response) => {
         this.spinner.hide();
-
         this.model = response;
-        console.log('user  profile ' + this.model.profileid);
         this.getLocationNames(this.loggedInuser, this.companyId);
       },
-      (error) => {
+      error: () => {
         this.spinner.hide();
-      }
-    );
+      },
+    });
   }
 
-  getLocationNames(userId: any, companyId: any) {
+  getLocationNames(userId: string, companyId: number): void {
     this.locations = this.broadcasterService.locations;
-    console.log('user  profile ' + this.locations);
+
     if (this.locations && this.locations.length > 0) {
-      this.locationItems = [];
       this.locationItems = this.generateHierarchy(this.locations);
     }
   }
 
-  generateHierarchy(locList: any[]) {
-    var items: TreeviewItem[] = [];
+  generateHierarchy(locList: any[]): TreeviewItem[] {
+    const items: TreeviewItem[] = [];
     locList.forEach((loc) => {
-      var children: TreeviewItem[] = [];
-      if (
+      const children =
         loc.parentLocationResourceList &&
         loc.parentLocationResourceList.length > 0
-      ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
-      }
+          ? this.generateHierarchy(loc.parentLocationResourceList)
+          : [];
+
       items.push(
         new TreeviewItem({
           text: loc.name,
           value: loc.locationId,
           collapsed: true,
-          children: children,
+          children,
         })
       );
     });
     return items;
   }
 
-  onValueChange(value: any) {
-    this.model.preferredlocationid = value;
-
-    console.log(value);
+  onValueChange(value: string): void {
+    this.model.preferredlocationId = value;
   }
 
-  saveProfile(profileId: any, companyId: any, model: any) {
-    if (this.model.email && this.model.username) {
-      this.model.userid = sessionStorage.getItem('userId');
+  saveProfile(profileId: number, companyId: number, model: any): void {
+    if (this.model.email && this.model.userName) {
+      this.model.userId = sessionStorage.getItem('userId') ?? '';
+
       this.userManagementService
-        .updateProfile(this.model.profileid, this.model.companyid, this.model)
-        .subscribe(
-          (response: any) => {
+        .updateProfile(this.model.profileId, this.model.companyId, this.model)
+        .subscribe({
+          next: (response: any) => {
             this.profile = response;
-            this.username = response.username;
+            this.userName = response.userName;
             this.index = 1;
             window.scroll(0, 0);
-            console.log('user status roles ' + this.profile);
           },
-          (error) => {
+          error: () => {
             this.spinner.hide();
-          }
-        );
+          },
+        });
     } else {
       this.index = -1;
     }
   }
 
-  back() {
+  back(): void {
     this._location.back();
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

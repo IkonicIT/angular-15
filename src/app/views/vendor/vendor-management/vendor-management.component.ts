@@ -43,12 +43,12 @@ export class VendorManagementComponent implements OnInit {
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
 
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     this.router = router;
   }
@@ -57,7 +57,7 @@ export class VendorManagementComponent implements OnInit {
     this.spinner.show();
     this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
-        console.log(response);
+        
         setTimeout(() => {
           this.vendors = response;
           this.spinner.hide();
@@ -69,8 +69,8 @@ export class VendorManagementComponent implements OnInit {
     );
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    
+    
   }
   refresh() {
     this.vendors = [];

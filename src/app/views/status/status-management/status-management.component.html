@@ -81,7 +81,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete  Status."
-                    (click)="openModal(confirmtemplate, company.statusid)"
+                    (click)="openModal(confirmtemplate, company.statusId)"
                     [disabled]="highestRank == 9"
                   >
                     Delete
@@ -98,9 +98,9 @@
         </div>
       </div>
     </div>
-    <!--/.col-->
+    
   </div>
-  <!--/.row-->
+  
 </div>
 
 <ng-template #confirmtemplate>

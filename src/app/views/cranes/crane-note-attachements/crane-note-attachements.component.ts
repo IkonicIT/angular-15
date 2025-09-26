@@ -3,12 +3,11 @@ import { CompanyDocumentsService } from '../../../services/company-documents.ser
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router, ActivatedRoute } from '@angular/router';
-// import { saveAs } from "file-saver/FileSaver";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { CranesService } from 'src/app/services/cranes.service';
-import { NgPipesModule } from 'ngx-pipes'; // Import NgPipesModule if needed
-import { NgxPaginationModule } from 'ngx-pagination'; // Import NgxPaginationModule
+import { NgPipesModule } from 'ngx-pipes'; 
+import { NgxPaginationModule } from 'ngx-pagination'; 
 
 @Component({
   selector: 'app-crane-note-attachements',
@@ -55,7 +54,6 @@ export class CraneNoteAttachementsComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.frame = params['frame'] || '';
     });
-    console.log('VendorId = ' + this.craneNoteId);
     if (this.craneNoteId) {
       this.getAllDocuments(this.craneNoteId);
     }
@@ -71,7 +69,6 @@ export class CraneNoteAttachementsComponent implements OnInit {
     this.craensService.geAllCraneNoteAttachments(this.craneNoteId).subscribe(
       (response) => {
         this.spinner.hide();
-        console.log(response);
         this.documents = response;
       },
       (error) => {
@@ -89,7 +86,6 @@ export class CraneNoteAttachementsComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
   addDocument() {
-    console.log('Part', this.companyId);
     this.router.navigate([
       '/cranes/addCraneNoteAttachments/',
       this.craneNoteId,
@@ -98,7 +94,7 @@ export class CraneNoteAttachementsComponent implements OnInit {
   editDocument(document: any) {
     this.router.navigate([
       '/cranes/editCraneNoteAttachments/',
-      document.craneAttachmentID,
+      document.craneAttachmentId,
     ]);
   }
 
@@ -136,14 +132,10 @@ export class CraneNoteAttachementsComponent implements OnInit {
     this.order = value;
   }
 
-  // downloadDocument(companyDocument) {
-  //   var blob = this.companyDocumentsService.b64toBlob(companyDocument.attachmentFile, companyDocument.contenttype); //new Blob([companyDocument.attachmentFile], { type: 'text/plain' });
-  //   saveAs(blob, companyDocument.filename);
-  // }
 
   getCraneNoteAttachment(document: any): void {
     this.craensService
-      .getCraneNoteAttachment(document.craneAttachmentID)
+      .getCraneNoteAttachment(document.craneAttachmentId)
       .subscribe((data: any) => {
         this.vendorAttachment = data;
         this.openAttachment();
@@ -152,23 +144,21 @@ export class CraneNoteAttachementsComponent implements OnInit {
 
   openAttachment(): void {
     if (this.isImage()) {
-      // Open image in a new tab
       const imageWindow = window.open();
       if (imageWindow) {
         imageWindow.document.write(
-          `<img src="data:${this.vendorAttachment.contenttype};base64,${this.vendorAttachment.attachmentFile}" />`
+          `<img src="data:${this.vendorAttachment.contentType};base64,${this.vendorAttachment.attachmentFile}" />`
         );
       }
     } else {
-      // Download the attachment
       const blob = this.base64ToBlob(
         this.vendorAttachment.attachmentFile,
-        this.vendorAttachment.contenttype
+        this.vendorAttachment.contentType
       );
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = this.vendorAttachment.filename;
+      a.download = this.vendorAttachment.fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -178,7 +168,7 @@ export class CraneNoteAttachementsComponent implements OnInit {
   isImage(): boolean {
     return (
       this.vendorAttachment &&
-      this.vendorAttachment.contenttype.startsWith('image')
+      this.vendorAttachment.contentType.startsWith('image')
     );
   }
 
@@ -204,7 +194,7 @@ export class CraneNoteAttachementsComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
 

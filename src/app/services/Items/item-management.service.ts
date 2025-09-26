@@ -39,7 +39,7 @@ export class ItemManagementService {
   public itemTypes = [];
   public itemTypeId: any = 0;
   public deleteFlag: any = 0;
-  public itemrepairnotesrfqModel: any = {};
+  public itemrepairNotesrfqModel: any = {};
   public itemModel: any = {};
   public masterSearchModel: any = {};
   public viewAllRepairs: any = {};
@@ -113,7 +113,6 @@ export class ItemManagementService {
 
   public setItemSearchResults(results: any) {
     this.itemSearchResults = results;
-    console.log(this.itemSearchResults);
   }
 
   public getItemSearchResults() {
@@ -201,10 +200,10 @@ export class ItemManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  removeItem(itemId: any, companyId: any, username: any, tag: any, type: any) {
+  removeItem(itemId: any, companyId: any, userName: any, tag: any, type: any) {
     return this.http
       .delete(AppConfiguration.locationRestURL + 'item/' + itemId + '/' + companyId + '/' + 
-                username + '/' + tag + '/' + type, { responseType: 'text' }
+                userName + '/' + tag + '/' + type, { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));
   }
@@ -234,7 +233,6 @@ export class ItemManagementService {
   }
 
   getAllItems(item: any, companyId: any, isOwnerAdmin: any, userId: any) {
-    console.log(AppConfiguration.locationRestURL + "item/search/"+companyId+"/"+isOwnerAdmin+"/"+userId ,item ,this.httpOptions);
     return this.http
       .post(AppConfiguration.locationRestURL + 'item/search/' + companyId + '/' + isOwnerAdmin + '/' + userId,
               item, this.httpOptions

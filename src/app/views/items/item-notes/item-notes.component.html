@@ -6,145 +6,106 @@
           <p class="card-text">
             Manage Notes
             <button
-              type="button"
               *ngIf="itemRank > 3"
-              class="btn btn-primary float-right"
+              type="button"
+              class="btn btn-primary float-end"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add Notes."
               (click)="addNotes()"
-              placement="top"
             >
               Add Notes
             </button>
           </p>
-          <div>
-            <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="itemsForPagination">
-                  <option>5</option>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                </select>
-                entries
-              </span>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              Show
+              <select [(ngModel)]="itemsForPagination" class="form-select d-inline w-auto">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              entries
+            </div>
+            <div>
+              Search:
+              <input [(ngModel)]="itemNotesFilter" class="form-control d-inline w-auto" />
             </div>
           </div>
-          <div class="float-right div-search">
-            <span>Search : </span>
-            <input [(ngModel)]="itemNotesFilter" />
-          </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
-            <thead class="thead-light">
-              <tr>
-                <th
-                  [class.active]="order === 'enteredon'"
-                  (click)="setOrder('enteredon')"
+          <div class="table-responsive">
+            <table class="table table-hover table-outline mb-0">
+              <thead class="thead-light">
+                <tr>
+                  <th [class.active]="order === 'enteredOn'" (click)="setOrder('enteredOn')">
+                    Date <span [hidden]="reverse == ''">▼</span><span [hidden]="reverse != ''">▲</span>
+                  </th>
+                  <th [class.active]="order === 'entityName'" (click)="setOrder('entityName')">
+                    Title <span [hidden]="reverse == ''">▼</span><span [hidden]="reverse != ''">▲</span>
+                  </th>
+                  <th [class.active]="order === 'jobNumber'" (click)="setOrder('jobNumber')">
+                    Job <span [hidden]="reverse == ''">▼</span><span [hidden]="reverse != ''">▲</span>
+                  </th>
+                  <th [class.active]="order === 'poNumber'" (click)="setOrder('poNumber')">
+                    PO <span [hidden]="reverse == ''">▼</span><span [hidden]="reverse != ''">▲</span>
+                  </th>
+                  <th>Attachments</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let note of notes | orderBy: reverse + order | filterBy: ['enteredOn','entityName','jobNumber','poNumber','enteredBy']:itemNotesFilter | paginate: { itemsPerPage: itemsForPagination, currentPage: p }"
                 >
-                  Date<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th
-                  [class.active]="order === 'entityname'"
-                  (click)="setOrder('entityname')"
-                >
-                  Title<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th
-                  [class.active]="order === 'jobnumber'"
-                  (click)="setOrder('jobnumber')"
-                >
-                  Job<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th
-                  [class.active]="order === 'ponumber'"
-                  (click)="setOrder('ponumber')"
-                >
-                  PO<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
-                </th>
-                <th>Attachments</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr
-                *ngFor="
-                  let note of notes
-                    | orderBy : reverse + order
-                    | filterBy
-                      : [
-                          'enteredon',
-                          'entityname',
-                          'jobnumber',
-                          'ponumber',
-                          'enteredby'
-                        ]
-                      : itemNotesFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
-                "
-              >
-                <td [innerHTML]="note.effectiveon | date : 'MM/dd/yyyy'"></td>
-                <td>
-                  <a
-                    href="javascript:void(0)"
-                    (click)="openModalView(templateView, note.journalid)"
-                    placement="top"
-                    style="color: red"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="click here to View Notes Screen"
-                    [innerHTML]="note.entityname"
-                  ></a>
-                </td>
-
-                <td [innerHTML]="note.jobnumber"></td>
-                <td [innerHTML]="note.ponumber"></td>
-                <td>
-                  <ng-container *ngFor="let attachment of note.attachmentList">
-                    <br /><a
+                  <td [innerHTML]="note.effectiveOn | date:'MM/dd/yyyy'"></td>
+                  <td>
+                    <a
                       href="javascript:void(0)"
-                      (click)="downloadFile(attachment)"
-                      [innerHTML]="attachment.fileName"
+                      (click)="openModalView(templateView, note.journalId)"
+                      class="text-danger"
+                      data-bs-toggle="tooltip"
+                      title="Click to View Notes"
+                      [innerHTML]="note.entityName"
                     ></a>
-                  </ng-container>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    *ngIf="itemRank > 3"
-                    class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Edit Item Note"
-                    (click)="editItemNotes(note)"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    *ngIf="itemRank > 3"
-                    class="btn btn-outline-danger btn-sm"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Delete Item Note"
-                    (click)="openModal(confirmtemplate, note.journalid)"
-                    [disabled]="highestRank == 9"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  </td>
+                  <td [innerHTML]="note.jobNumber"></td>
+                  <td [innerHTML]="note.poNumber"></td>
+                  <td>
+                    <ng-container *ngFor="let attachment of note.attachmentList">
+                      <br /><a
+                        href="javascript:void(0)"
+                        (click)="downloadFile(attachment)"
+                        [innerHTML]="attachment.fileName"
+                      ></a>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <button
+                      *ngIf="itemRank > 3"
+                      type="button"
+                      class="btn btn-outline-danger btn-sm me-1"
+                      data-bs-toggle="tooltip"
+                      title="Edit Item Note"
+                      (click)="editItemNotes(note)"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      *ngIf="itemRank > 3"
+                      type="button"
+                      class="btn btn-outline-danger btn-sm"
+                      data-bs-toggle="tooltip"
+                      title="Delete Item Note"
+                      (click)="openModal(confirmtemplate, note.journalId)"
+                      [disabled]="highestRankNum == 9"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <pagination-controls
             class="my-pagination"
             (pageChange)="p = $event"
@@ -154,130 +115,96 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="form-group col-sm-12 text-center">
+  <div class="row mt-2">
+    <div class="col-12 text-center">
       <button
         type="button"
-        (click)="back()"
-        data-bs-placement="bottom"
-        data-bs-toggle="tooltip"
-        title="Back"
-        class="btn btn-outline-danger btn-sm"
+        class="btn btn-outline-danger btn-sm me-1"
         style="border-radius: 6px;"
+        (click)="back()"
       >
         Back
       </button>
       <button
         type="button"
-        (click)="backToViewItem()"
-        data-bs-placement="bottom"
-        data-bs-toggle="tooltip"
-        title="Back to View Item"
         class="btn btn-primary"
         style="border-radius: 6px;"
+        (click)="backToViewItem()"
       >
         Back To Item
       </button>
     </div>
   </div>
 </div>
+
 <ng-template #templateView>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">View Item Notes</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <h4 class="modal-title">View Item Notes</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()"></button>
   </div>
-
   <div class="modal-body">
     <div class="row">
-      <div class="form-group col-sm-6">
+      <div class="col-sm-6">
         <label for="title">Title</label>
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.entityname"
-          name="title"
-          #title="ngModel"
+          [(ngModel)]="model.entityName"
           id="title"
-          placeholder="Enter Title"
           readonly
         />
       </div>
-      <div class="form-group col-sm-6">
+      <div class="col-sm-6">
         <label for="date">Date</label>
-
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.effectiveon"
-          name="date"
-          #date="ngModel"
+          [(ngModel)]="model.effectiveOn"
           id="date"
           readonly
         />
       </div>
     </div>
-
-    <div class="row">
-      <div class="form-group col-sm-6">
+    <div class="row mt-2">
+      <div class="col-sm-6">
         <label for="job">JOB Number</label>
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.jobnumber"
-          name="job"
-          #job="ngModel"
+          [(ngModel)]="model.jobNumber"
           id="job"
-          placeholder="Enter JOB Number"
           readonly
         />
       </div>
-      <div class="form-group col-sm-6">
+      <div class="col-sm-6">
         <label for="po">PO Number</label>
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="model.ponumber"
+          [(ngModel)]="model.poNumber"
           id="po"
-          name="po"
-          #po="ngModel"
-          placeholder="Enter PO Number"
           readonly
         />
       </div>
     </div>
-
-    <div class="row">
-      <div class="form-group col-sm-12">
+    <div class="row mt-2">
+      <div class="col-12">
         <label for="details">Details</label>
         <textarea
-          id="details"
-          name="textarea-input"
-          rows="2"
-          cols="4"
-          name="details"
-          #details="ngModel"
           class="form-control"
+          id="details"
+          rows="2"
           [(ngModel)]="model.entry"
-          placeholder="Enter Description"
           readonly
         ></textarea>
       </div>
     </div>
-    <div class="row">
-      <div class="form-group col-sm-12 text-center">
+    <div class="row mt-2">
+      <div class="col-12 text-center">
         <button
-          (click)="cancelViewItemNotes()"
-          data-bs-placement="bottom"
-          data-bs-toggle="tooltip"
-          title="Back To Notes"
+          type="button"
           class="btn btn-outline-danger btn-sm"
+          (click)="cancelViewItemNotes()"
         >
           Back
         </button>
@@ -289,118 +216,34 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Do you want to confirm?</p>
-    <button
-      type="button"
-      class="btn btn-outline-danger btn-sm"
-      (click)="confirm()"
-    >
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <button type="button" class="btn btn-outline-danger btn-sm me-1" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
   </div>
 </ng-template>
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0,0,0,0.5); z-index: 2;"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>
-

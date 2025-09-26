@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ItemManagementService } from '../../../services/Items/item-management.service';
 import { BroadcasterService } from '../../../services/broadcaster.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { CompanyManagementService } from '../../../services/index';
 import * as cloneDeep from 'lodash';
 import { ExcelService } from '../../../services/excel-service';
@@ -16,20 +16,21 @@ export class MasterSearchComponent implements OnInit {
   public isExpandAdvancedSearch = true;
   model: any = {};
   public searchResults: any = [];
-  public searchResultKeys: any = [];
-  public flag: any;
-  public sampleData = [];
-  public searchTypeNameResultKeys: any = [];
-  public items: any = [];
-  public results = [];
-  index: number;
+  public searchResultKeys: string[] = [];
+  public flag: number | undefined;
+  public sampleData: any[] = [];
+  public searchTypeNameResultKeys: string[] = [];
+  public items: { [key: string]: any[] } = {};
+  public results: any[] = [];
+  index: number | undefined;
   public dynLst: any[][] = [];
-  public masterSearchResults = [];
-  helpFlag: any = false;
+  public masterSearchResults: any = [];
+  helpFlag = false;
   dismissible = true;
-  order: string;
-  reverse: string;
+  order: string | undefined;
+  reverse = '';
   loader = false;
+
   constructor(
     private itemManagementService: ItemManagementService,
     private spinner: NgxSpinnerService,
@@ -42,12 +43,13 @@ export class MasterSearchComponent implements OnInit {
   ngOnInit() {
     this.initializeData();
   }
+
   setData() {}
 
   initializeData() {
     this.masterSearchResults =
       this.itemManagementService.getItemMasterSearchResults();
-    let keys = Object.keys(this.masterSearchResults);
+    const keys = Object.keys(this.masterSearchResults);
     if (keys.length > 0) {
       this.model = this.itemManagementService.masterSearchModel;
       this.searchResults = this.masterSearchResults;
@@ -58,12 +60,12 @@ export class MasterSearchComponent implements OnInit {
   }
 
   getSearchedItems() {
-    if (this.model.tag && this.model.tag != '') {
+    if (this.model.tag && this.model.tag !== '') {
       this.index = 0;
       this.isExpandAdvancedSearch = false;
       this.spinner.show();
 
-      var req = {
+      const req = {
         tag: this.model.tag ? this.model.tag : null,
         name: this.model.name ? this.model.name : null,
         statusname: this.model.statusName ? this.model.statusName : null,
@@ -72,56 +74,39 @@ export class MasterSearchComponent implements OnInit {
       };
       this.searchResults = [];
       this.searchResultKeys = [];
-      this.itemManagementService
-        .masterSearch(req)
-        .subscribe((response: any) => {
-          this.spinner.hide();
+      this.itemManagementService.masterSearch(req).subscribe((response: any) => {
+        this.spinner.hide();
 
-          this.searchResults = response;
+        this.searchResults = Array.isArray(response) ? response : response || [];
 
-          this.itemManagementService.setItemMasterSearchResults(
-            this.searchResults
-          );
-          this.itemManagementService.masterSearchModel = req;
-          this.searchResultKeys = Object.keys(this.searchResults);
-          if (this.searchResultKeys.length == 0) {
-            this.flag = 1;
-          } else if (this.searchResultKeys.length == 1) {
-            let companyName: any;
-            companyName = this.searchResultKeys[0];
-            this.searchTypeNameResultKeys = Object.keys(
-              this.searchResults[companyName]
-            );
-            if (this.searchTypeNameResultKeys.length == 1) {
-              this.items = this.searchResults[companyName];
-              let key: any;
-              let itemId: any;
-              let rank: any;
-              let tag: any;
-              let typeName: any;
-              let companyId: any;
-              let count: number = 0;
+        this.itemManagementService.setItemMasterSearchResults(this.searchResults);
+        this.itemManagementService.masterSearchModel = req;
+        this.searchResultKeys = Object.keys(this.searchResults);
 
-              key = this.searchTypeNameResultKeys[0];
-              this.items[key].forEach((obj: any) => {
-                count++;
-              });
-              if (count == 1) {
-                this.items[key].forEach((obj: any) => {
-                  itemId = obj.itemId;
-                  rank = obj.itemRank;
-                  tag = obj.tag;
-                  typeName = obj.typeName;
-                  companyId = obj.companyid;
-                  this.goToView(itemId, rank, tag, typeName, companyId);
-                });
-              }
+        if (this.searchResultKeys.length === 0) {
+          this.flag = 1;
+        } else if (this.searchResultKeys.length === 1) {
+          const companyName = this.searchResultKeys[0];
+          this.searchTypeNameResultKeys = Object.keys(this.searchResults[companyName]);
+          if (this.searchTypeNameResultKeys.length === 1) {
+            this.items = this.searchResults[companyName] as { [key: string]: any[] };
+            const key = this.searchTypeNameResultKeys[0];
+
+            if (Array.isArray(this.items[key]) && this.items[key].length === 1) {
+              const obj = this.items[key][0];
+              const itemId = obj.itemId;
+              const rank = obj.itemRank;
+              const tag = obj.tag;
+              const typeName = obj.typeName;
+              const companyId = obj.companyId;
+              this.goToView(itemId, rank, tag, typeName, companyId);
             }
-          } else {
-            this.flag = 0;
-            this.setPaginationArray();
           }
-        });
+        } else {
+          this.flag = 0;
+          this.setPaginationArray();
+        }
+      });
     } else {
       this.index = -1;
     }
@@ -137,7 +122,7 @@ export class MasterSearchComponent implements OnInit {
   }
 
   getKeys(obj: {} | null | undefined) {
-    if (obj != null && obj != undefined) {
+    if (obj != null && obj !== undefined) {
       return Object.keys(obj);
     }
     return;
@@ -152,35 +137,32 @@ export class MasterSearchComponent implements OnInit {
   }
 
   setPaginationArray() {
-    let m: number = 0;
-    let n: number = 0;
+    let m = 0;
+    let n = 0;
 
     this.searchResultKeys.forEach((companyName: any) => {
-      let results = this.searchResults[companyName];
-      let itemTypes = Object.keys(results);
+      const results = this.searchResults[companyName];
+      const itemTypes = Object.keys(results);
       n = itemTypes.length;
       this.insertIntoPaginationArray(m, n);
       m++;
     });
-    console.log(this.dynLst);
   }
 
-  insertIntoPaginationArray(m: any, n: any) {
-    let i, j: number;
-    for (i = m; i <= m; i++) {
+  insertIntoPaginationArray(m: number, n: number) {
+    for (let i = m; i <= m; i++) {
       this.dynLst[i] = [];
 
-      for (j = 0; j < n; ++j) {
+      for (let j = 0; j < n; ++j) {
         const dnobj = { itemsForPagination: 15, p: 1 };
         this.dynLst[i][j] = dnobj;
-        console.log(this.dynLst[i][j]);
       }
     }
   }
 
   exportAsExcelFileWithMultipleSheets() {
     this.searchResultKeys.forEach((companyName: any) => {
-      let results = this.searchResults[companyName];
+      const results = this.searchResults[companyName];
       this.exportAsExcelFileForAcompany(results, companyName);
     });
   }
@@ -196,57 +178,52 @@ export class MasterSearchComponent implements OnInit {
         });
 
         delete obj.itemId;
-        delete obj.locationid;
-        delete obj.companyid;
+        delete obj.locationId;
+        delete obj.companyId;
         delete obj.companyName;
         delete obj.typeName;
         delete obj.name;
         delete obj.description;
-        delete obj.statusid;
-        delete obj.warrantytypeid;
-        delete obj.warrantyexpiration;
+        delete obj.statusId;
+        delete obj.warrantyTypeId;
         delete obj.warrantyExpiration;
-        delete obj.serialnumber;
-        delete obj.modelnumber;
-        delete obj.meantimebetweenservice;
-        delete obj.inserviceon;
-        delete obj.lastmodifiedby;
-        delete obj.isinrepair;
-        delete obj.desiredspareratio;
-        delete obj.manufacturerid;
-        delete obj.repairqual;
-        delete obj.purchaseprice;
-        delete obj.daysinservice;
-        delete obj.purchasedate;
-        delete obj.defaultimageattachmentid;
+        delete obj.serialNumber;
+        delete obj.modelNumber;
+        delete obj.meanTimeBetweenService;
+        delete obj.inServiceOn;
+        delete obj.lastModifiedBy;
+        delete obj.isInRepair;
+        delete obj.desiredSpareRatio;
+        delete obj.manufacturerId;
+        delete obj.repairQual;
+        delete obj.purchasePrice;
+        delete obj.daysInService;
+        delete obj.purchaseDate;
+        delete obj.defaultImageAttachmentId;
         delete obj.typeId;
         delete obj.isstale;
         delete obj.locationPath;
         delete obj.entityTypeId;
-        delete obj.roleid;
-        delete obj.userid;
+        delete obj.roleId;
+        delete obj.userId;
         delete obj.roleName;
         delete obj.updatedDate;
         delete obj.createdDate;
         delete obj.itemRank;
-        delete obj.attributevalues;
+        delete obj.attributeValues;
 
         obj = Object.assign(obj, robj);
       });
     });
     this.excelService.exportAsExcelFileWithMultipleSheets(
       clonedsearchResults,
-      companyName + ' ' + 'MasterSearchResults'
+      companyName + ' MasterSearchResults'
     );
   }
 
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }

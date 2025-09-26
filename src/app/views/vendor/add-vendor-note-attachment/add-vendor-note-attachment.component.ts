@@ -13,7 +13,7 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
   model: any = {};
   index: number = 0;
   date = Date.now();
-  dismissible: boolean = true; // Add this line
+  dismissible: boolean = true; 
   companyId: number = 0;
   vendorName: string;
   private sub: any;
@@ -39,20 +39,17 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.vendorName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.userName = sessionStorage.getItem('userName');
     });
     this.vendorNoteId = route.snapshot.params['id'];
-    console.log('VendorNoteId:', this.vendorNoteId);
     this.router = router;
     this.sub = this.route.queryParams.subscribe((params) => {
       this.vendorId = +params['q'] || 0;
-      console.log('Query params ', this.vendorId);
     });
   }
 
   ngOnInit() {
-    console.log('companyi=' + this.companyId);
     this.addedfiles.push({ file: '', description: '' });
   }
 
@@ -69,19 +66,18 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
     } else {
       const formdata: FormData = new FormData();
       formdata.append('file', this.file);
-      formdata.append('addedby', this.userName);
-      formdata.append('companyID', JSON.stringify(this.companyId));
+      formdata.append('addedBy', this.userName);
+      formdata.append('companyId', JSON.stringify(this.companyId));
       formdata.append(
         'description',
         this.model.description ? this.model.description : ''
       );
-      formdata.append('entityid', JSON.stringify(this.companyId));
+      formdata.append('entityId', JSON.stringify(this.companyId));
       formdata.append('moduleType', 'companytype');
       var jsonArr = this.addedfiles;
       for (var i = 0; i < jsonArr.length; i++) {
         delete jsonArr[i]['file'];
       }
-      console.log(jsonArr);
       var req = {
         vendorAttachmentResourceList: jsonArr,
         attachmentUserLogDTO: {},
@@ -117,7 +113,6 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
   }
 
   fileChangeListener($event: Event, fileIndex: number): void {
-    console.log(this.addedfiles);
 
     this.readThis($event.target, fileIndex);
   }
@@ -139,7 +134,6 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
       myReader.readAsDataURL(this.file);
       myReader.onloadend = (e) => {
         if (myReader.result) {
-          console.log(myReader.result);
           const resultString = myReader.result as string;
           this.fileContent = resultString.split(',')[1];
           this.fileType = resultString
@@ -152,14 +146,13 @@ export class AddVendorNoteAttachmentComponent implements OnInit {
         fileInfo['vendorId'] = this.vendorId;
         fileInfo['attachmentFile'] = this.fileContent;
         fileInfo['vendorAttachmentId'] = 0;
-        fileInfo['contenttype'] = this.fileType;
+        fileInfo['contentType'] = this.fileType;
         fileInfo['isNew'] = 1;
-        fileInfo['filename'] = this.fileName;
+        fileInfo['fileName'] = this.fileName;
         fileInfo['vendorNote'] = {
           vendorNoteId: this.vendorNoteId,
         };
         fileInfo['createdDate'] = new Date().toISOString();
-        console.log(this.addedfiles);
       };
     }
   }

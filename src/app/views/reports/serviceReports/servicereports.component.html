@@ -4,10 +4,11 @@
       <div class="card">
         <div class="card-body">
           <div>
-            <h4 class="card-title mb-0" style="color: red">SERVICE REPORTS</h4>
+            <!-- Inline style replaced with Bootstrap class -->
+            <h4 class="card-title mb-0 text-danger">SERVICE REPORTS</h4>
             <br />
 
-            <div class="row" style="padding: 15px">
+            <div class="row align-items-end px-3"> <!-- replaced style="padding: 15px" with Bootstrap -->
               <div class="col-md-2 remove-padding">
                 <label for="status"><strong>TimeSpan</strong></label>
                 <select class="form-control" [(ngModel)]="params.type">
@@ -16,6 +17,7 @@
                   <option value="range">Range</option>
                 </select>
               </div>
+
               <ng-container [ngSwitch]="params.type">
                 <ng-container *ngSwitchCase="'range'">
                   <div class="col-md-2 remove-padding">
@@ -45,22 +47,21 @@
                 </ng-container>
               </ng-container>
 
-              <div class="col-md-2 button-padding">
+              <div class="col-auto button-padding">
                 <label><strong>&nbsp;</strong></label>
                 <button
                   type="button"
-                  class="btn btn-danger"
-                  style="border-radius: 6px; display: inherit; margin-top: -1px; margin-left: 2px"
+                  class="btn btn-danger btn-get"
                   (click)="generateReport()"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Get ServiceReports"
-                  
                 >
                   GET
                 </button>
               </div>
             </div>
+
             <div *ngIf="isloaded">
               <div>
                 <button
@@ -73,6 +74,7 @@
               </div>
               <br />
 
+              <!-- Open Services Card -->
               <div class="card">
                 <div class="card-body">
                   <p class="card-text"><strong>Open Services</strong></p>
@@ -119,41 +121,22 @@
                     </thead>
                     <tbody>
                       <tr
-                        *ngFor="
-                          let service of incompletedServices
-                            | orderBy : reverse + order
-                            | filterBy
-                              : ['tag', 'serviceDate', 'serviceCause']
-                              : inCompletedServicesFilter
-                            | paginate
-                              : {
-                                  itemsPerPage: itemsForPagination,
-                                  currentPage: page1,
-                                  id: 'p1'
-                                }
-                        "
+                        *ngFor="let service of incompletedServices
+                          | orderBy : reverse + order
+                          | filterBy : ['tag', 'serviceDate', 'serviceCause'] : inCompletedServicesFilter
+                          | paginate : { itemsPerPage: itemsForPagination, currentPage: page1, id: 'p1' }"
                       >
                         <td>
                           <a
                             href="javascript:void(0)"
-                            (click)="
-                              goToView(
-                                service.itemId,
-                                service.tag,
-                                service.typeName
-                              )
-                            "
+                            (click)="goToView(service.itemId, service.tag, service.typeName)"
                             data-bs-placement="bottom"
                             data-bs-toggle="tooltip"
                             title="click here to view this Item"
                             [innerHTML]="service.tag"
                           ></a>
                         </td>
-                        <td
-                          [innerHTML]="
-                            service.serviceDate | date : 'MM/dd/yyyy'
-                          "
-                        ></td>
+                        <td [innerHTML]="service.serviceDate | date : 'MM/dd/yyyy'"></td>
                         <td [innerHTML]="service.serviceCause"></td>
                       </tr>
                     </tbody>
@@ -166,6 +149,8 @@
                   ></pagination-controls>
                 </div>
               </div>
+
+              <!-- Previous Services Card -->
               <div class="card">
                 <div class="card-body">
                   <p class="card-text"><strong>Previous Services</strong></p>
@@ -203,8 +188,7 @@
                           [class.active]="completedOrder === 'serviceDate'"
                           (click)="setCompletedOrder('serviceDate')"
                         >
-                          Service Date<span [hidden]="completedReverse == ''"
-                            >▼</span
+                          Service Date<span [hidden]="completedReverse == ''">▼</span
                           ><span [hidden]="completedReverse != ''">▲</span>
                         </th>
                         <th>Cause</th>
@@ -212,72 +196,38 @@
                           [class.active]="completedOrder === 'actualCompletion'"
                           (click)="setCompletedOrder('actualCompletion')"
                         >
-                          Actual Completion<span
-                            [hidden]="completedReverse == ''"
-                            >▼</span
+                          Actual Completion<span [hidden]="completedReverse == ''">▼</span
                           ><span [hidden]="completedReverse != ''">▲</span>
                         </th>
                         <th
                           [class.active]="completedOrder === 'completedBy'"
                           (click)="setCompletedOrder('completedBy')"
                         >
-                          Completed By<span [hidden]="completedReverse == ''"
-                            >▼</span
+                          Completed By<span [hidden]="completedReverse == ''">▼</span
                           ><span [hidden]="completedReverse != ''">▲</span>
                         </th>
                       </tr>
                     </thead>
-
                     <tbody>
                       <tr
-                        *ngFor="
-                          let service of completedServices
-                            | orderBy : completedReverse + completedOrder
-                            | filterBy
-                              : [
-                                  'tag',
-                                  '
-                                  serviceDate',
-                                  'serviceCause',
-                                  'completedBy',
-                                  'actualCompletion'
-                                ]
-                              : completedServicesFilter
-                            | paginate
-                              : {
-                                  itemsPerPage: completedServicesForPagination,
-                                  currentPage: page2,
-                                  id: 'p2'
-                                }
-                        "
+                        *ngFor="let service of completedServices
+                          | orderBy : completedReverse + completedOrder
+                          | filterBy : ['tag', 'serviceDate', 'serviceCause', 'completedBy', 'actualCompletion'] : completedServicesFilter
+                          | paginate : { itemsPerPage: completedServicesForPagination, currentPage: page2, id: 'p2' }"
                       >
                         <td>
                           <a
                             href="javascript:void(0)"
-                            (click)="
-                              goToView(
-                                service.itemId,
-                                service.tag,
-                                service.typeName
-                              )
-                            "
+                            (click)="goToView(service.itemId, service.tag, service.typeName)"
                             data-bs-placement="bottom"
                             data-bs-toggle="tooltip"
                             title="click here to view this Item"
                             [innerHTML]="service.tag"
                           ></a>
                         </td>
-                        <td
-                          [innerHTML]="
-                            service.serviceDate | date : 'MM/dd/yyyy'
-                          "
-                        ></td>
+                        <td [innerHTML]="service.serviceDate | date : 'MM/dd/yyyy'"></td>
                         <td [innerHTML]="service.serviceCause"></td>
-                        <td
-                          [innerHTML]="
-                            service.actualCompletion | date : 'MM/dd/yyyy'
-                          "
-                        ></td>
+                        <td [innerHTML]="service.actualCompletion | date : 'MM/dd/yyyy'"></td>
                         <td [innerHTML]="service.completedBy"></td>
                       </tr>
                     </tbody>
@@ -298,104 +248,7 @@
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<!-- Loader overlay -->
+<div *ngIf="loader" class="overlay">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

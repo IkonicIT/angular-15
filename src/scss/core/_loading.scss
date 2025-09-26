@@ -1,6 +1,4 @@
-// Angular Version
-// Make clicks pass-through
-// scss-lint:disable all
+
 #loading-bar,
 #loading-bar-spinner {
   -webkit-pointer-events: none;
@@ -41,7 +39,6 @@
   transition: width 350ms;
 }
 
-// Fancy blur effect
 #loading-bar .peg {
   position: absolute;
   top: 0;
@@ -103,7 +100,6 @@
   100% { transform: rotate(360deg); transform: rotate(360deg); }
 }
 
-//Ajax & Static Version
 .pace {
   -webkit-pointer-events: none;
   pointer-events: none;

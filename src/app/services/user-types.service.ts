@@ -37,7 +37,7 @@ export class UserTypesService {
       .pipe(catchError(this.handleError));
   }
 
-  getUserTypeDetails(typeId: string) {
+  getUserTypeDetails(typeId: number) {
     return this.http
       .get(this.serviceURL + '/' + typeId, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -45,13 +45,13 @@ export class UserTypesService {
 
   getAllUserTypes(companyId: string | number) {
     return this.http
-      .get(this.serviceURL + '/getAllType/usertype/' + companyId, this.httpOptions)
+      .get<any[]>(this.serviceURL + '/getAllType/usertype/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllUserTypesWithHierarchy(companyId: number) {
     return this.http
-      .get(this.serviceURL + '/getAllTypeWithHierarchy/usertype/' + companyId, this.httpOptions)
+      .get<any[]>(this.serviceURL + '/getAllTypeWithHierarchy/usertype/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
           >
             Print
           </button>
@@ -19,18 +19,14 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
+
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
             *ngIf="helpFlag == true"
+            class="help-box p-2 mb-2"
           >
             Note: Mandatory Fields are required.<br />
             * To create a new user:<br />
@@ -52,25 +48,21 @@
             <button
               type="button"
               [disabled]="highestRank < 5"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right my-btn-group"
               (click)="addUser()"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add New User."
-              placement="top"
-              style="border-radius: 6px;"
             >
               Add User
             </button>
           </p>
+
           <div class="select-pagination-option">
             <div class="float-left">
-              <span
-                >Show
-                <select
-                  [(ngModel)]="itemsForPagination"
-                  (change)="onChange($event.target)"
-                >
+              <span>
+                Show
+                <select [(ngModel)]="itemsForPagination" (change)="onChange($event.target)">
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
@@ -80,21 +72,19 @@
               </span>
             </div>
           </div>
+
           <div class="float-right div-search">
             <span>Search : </span>
             <input [(ngModel)]="userFilter" />
           </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'firstName'"
-                  (click)="setOrder('firstName')"
-                >
-                  User<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'firstName'" (click)="setOrder('firstName')">
+                  User
+                  <span [hidden]="reverse == ''">▼</span>
+                  <span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th>Security Roles</th>
                 <th>Actions</th>
@@ -106,11 +96,10 @@
                   let user of users
                     | orderBy : reverse + order
                     | filterBy : ['firstName'] : userFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                    | paginate : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
-                <td>{{ user.firstName + " " + user.lastName }}</td>
+                <td>{{ user.firstName + ' ' + user.lastName }}</td>
                 <td>
                   <button
                     type="button"
@@ -123,7 +112,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Add SecurityRole"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm my-btn-group"
                   >
                     Security Roles
                   </button>
@@ -132,7 +121,7 @@
                   <button
                     type="button"
                     [disabled]="highestRank < 5"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="View this User"
@@ -146,7 +135,7 @@
                       highestRank < 7 ||
                       (highestRank == 7 && user.isOwnerAdmin === true)
                     "
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this User"
@@ -161,7 +150,7 @@
                       (highestRank == 7 && user.isOwnerAdmin === true) ||
                       highestRank == 9
                     "
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this User"
@@ -173,6 +162,7 @@
               </tr>
             </tbody>
           </table>
+
           <pagination-controls
             class="my-pagination"
             (pageChange)="p = $event"
@@ -181,9 +171,7 @@
         </div>
       </div>
     </div>
-    <!--/.col-->
   </div>
-  <!--/.row-->
 </div>
 
 <ng-template #confirmtemplate>
@@ -192,113 +180,15 @@
       Click(Yes) to permanently delete this User or Click(No) to discard This
       action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">
       Yes
     </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">
       No
     </button>
   </div>
 </ng-template>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

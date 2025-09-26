@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CompanyStatusesService } from '../../../services/company-statuses.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
 
@@ -8,68 +9,77 @@ import { CompanyManagementService } from '../../../services/company-management.s
   templateUrl: './edit-status.component.html',
   styleUrls: ['./edit-status.component.scss'],
 })
-export class EditStatusComponent implements OnInit {
+export class EditStatusComponent implements OnInit, OnDestroy {
   model: any = {};
-  index: number = 0;
+  index = 0;
   date = Date.now();
-  companyId: number = 0;
-  documentId: number = 0;
-  private sub: any;
-  id: number;
-  router: Router;
+  companyId = 0;
+  documentId = 0;
+  private sub!: Subscription;
+  id!: number;
   globalCompany: any = {};
   dismissible = true;
 
   constructor(
     private companyStatusesService: CompanyStatusesService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute
   ) {
-    this.companyId = route.snapshot.params['q'];
-    console.log('companyid=' + this.companyId);
-    this.router = router;
+    this.companyId = Number(route.snapshot.params['q']) || 0;
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
+
+    this.companyManagementService.globalCompanyChange.subscribe((value: any) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
-      console.log('compaanyid=' + this.companyId);
+      this.companyId = this.globalCompany.companyId;
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
     });
 
-    console.log('companyi=' + this.companyId);
 
-    this.companyStatusesService
-      .getCompanyStatus(this.companyId)
-      .subscribe((response) => {
+    this.companyStatusesService.getCompanyStatus(this.companyId).subscribe({
+      next: (response: any) => {
         this.model = response;
-      });
+      },
+      error: (err) => {
+      },
+    });
   }
-  updateStatus() {
+
+  updateStatus(): void {
     this.model = {
-      companyId: this.globalCompany.companyid,
+      companyId: this.globalCompany.companyId,
       destroyed: true,
       entityTypeId: 0,
       inService: true,
       spare: true,
       status: this.model.status,
-      statusId: this.model.statusid,
+      statusId: this.model.statusId,
       underRepair: true,
     };
-    this.companyStatusesService
-      .updateCompanyStatus(this.model)
-      .subscribe((response) => {
+
+    this.companyStatusesService.updateCompanyStatus(this.model).subscribe({
+      next: () => {
         window.scroll(0, 0);
         this.index = 1;
-      });
+      },
+      error: (err) => {
+      },
+    });
   }
-  cancelUpdateStatus() {
+
+  cancelUpdateStatus(): void {
     this.router.navigate(['/status/list']);
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }

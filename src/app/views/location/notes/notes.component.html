@@ -13,7 +13,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Click to Print this Page"
-              class="btn btn-outline-danger btn-sm btn-right"
+              class="btn btn-outline-danger btn-sm btn-right btn-group"
             >
               Print
             </button>
@@ -23,7 +23,7 @@
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title=" Instructions"
-              class="btn btn-outline-danger btn-sm"
+              class="btn btn-outline-danger btn-sm btn-group"
             >
               Help
             </button>
@@ -55,7 +55,7 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New LocationNote"
@@ -70,7 +70,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Location Note"
                   (click)="saveLocationNote()"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -81,13 +81,13 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelLocationNotes()"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Location Note"
@@ -101,9 +101,9 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add LocationNote Attachment"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   disabled
-                  (click)="goToAttachments(model.journalid, model.entityname)"
+                  (click)="goToAttachments(model.journalId, model.entityName)"
                 >
                   Attachments
                 </button>
@@ -113,7 +113,7 @@
                   data-bs-toggle="tooltip"
                   title="Back  "
                   (click)="backToItem()"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                 >
                   Back
                 </button>
@@ -160,9 +160,9 @@
                 >
                 <input
                   type="text"
-                  [(ngModel)]="model.journalid"
-                  name="journalid"
-                  #journalid="ngModel"
+                  [(ngModel)]="model.journalId"
+                  name="journalId"
+                  #journalId="ngModel"
                   id="_id"
                   hidden
                 />
@@ -170,7 +170,7 @@
                   class="form-control"
                   type="text"
                   class="form-control form-control-bgcolor"
-                  [(ngModel)]="model.entityname"
+                  [(ngModel)]="model.entityName"
                   name="title"
                   #title="ngModel"
                   id="title"
@@ -184,7 +184,7 @@
                 <input
                   type="text"
                   class="form-control form-control-bgcolor"
-                  [(ngModel)]="model.effectiveon"
+                  [(ngModel)]="model.effectiveOn"
                   name="date"
                   #date="ngModel"
                   id="date"
@@ -200,7 +200,7 @@
                 <input
                   type="text"
                   class="form-control form-control-bgcolor"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -212,7 +212,7 @@
                 <input
                   type="text"
                   class="form-control form-control-bgcolor"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -253,7 +253,7 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Add New LocationNote"
@@ -268,33 +268,30 @@
                   title="Save Location Note"
                   (click)="saveLocationNote()"
                   disabled
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Edit Location Note"
                   (click)="editNote()"
-                  style="border-radius: 6px;"
                 >
                   Edit
                 </button>
 
                 <button
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Location Note"
                   disabled
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -304,9 +301,8 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add LocationNote Attachment"
-                  class="btn btn-primary btn-right"
-                  (click)="goToAttachments(model.journalid, model.entityname)"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
+                  (click)="goToAttachments(model.journalId, model.entityName)"
                 >
                   Attachments
                 </button>
@@ -316,8 +312,7 @@
                   data-bs-toggle="tooltip"
                   title="Back"
                   (click)="backToItem()"
-                  class="btn btn-primary"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-group"
                 >
                   Back
                 </button>
@@ -364,9 +359,9 @@
                 >
                 <input
                   type="text"
-                  [(ngModel)]="model.journalid"
-                  name="journalid"
-                  #journalid="ngModel"
+                  [(ngModel)]="model.journalId"
+                  name="journalId"
+                  #journalId="ngModel"
                   id="_id"
                   hidden
                 />
@@ -375,7 +370,7 @@
                   class="form-control"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.entityname"
+                  [(ngModel)]="model.entityName"
                   name="title"
                   #title="ngModel"
                   id="title"
@@ -386,12 +381,11 @@
                 <label for="date"
                   >Date <strong class="text-danger">*</strong></label
                 >
-                <!-- <input  class="form-control"  type="text"  [(ngModel)]="model.effectiveon" name="date" #date="ngModel" id="date"> -->
                 <input
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.effectiveon"
+                  [(ngModel)]="model.effectiveOn"
                   name="date"
                   #date="ngModel"
                   id="date"
@@ -406,7 +400,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -419,7 +413,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -460,10 +454,9 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
-                  style="border-radius: 6px;"
                   title="Add New LocationNote"
                   (click)="addNotes()"
                 >
@@ -476,8 +469,7 @@
                   data-bs-toggle="tooltip"
                   title="Save Location Note"
                   (click)="updateLocationNotes()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Save
                 </button>
@@ -489,20 +481,18 @@
                   data-bs-toggle="tooltip"
                   title="Cancel the Changes for this Note"
                   (click)="cancelLocationNotes()"
-                  class="btn btn-primary btn-right"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
                 >
                   Cancel
                 </button>
                 <button
                   [disabled]="highestRank < 6 || highestRank == 9"
                   type="button"
-                  class="btn btn-primary btn-right"
+                  class="btn btn-primary btn-right btn-group"
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title="Delete Location Note"
                   (click)="openModal(confirmtemplate)"
-                  style="border-radius: 6px;"
                 >
                   Delete
                 </button>
@@ -512,9 +502,8 @@
                   data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
                   title=" Add LocationNote Attachment"
-                  class="btn btn-primary btn-right"
-                  (click)="goToAttachments(model.journalid, model.entityname)"
-                  style="border-radius: 6px;"
+                  class="btn btn-primary btn-right btn-group"
+                  (click)="goToAttachments(model.journalId, model.entityName)"
                 >
                   Attachments
                 </button>
@@ -524,8 +513,7 @@
                   data-bs-toggle="tooltip"
                   title="Back"
                   (click)="backToItem()"
-                  style="border-radius: 6px;"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                 >
                   Back
                 </button>
@@ -572,9 +560,9 @@
                 >
                 <input
                   type="text"
-                  [(ngModel)]="model.journalid"
-                  name="journalid"
-                  #journalid="ngModel"
+                  [(ngModel)]="model.journalId"
+                  name="journalId"
+                  #journalId="ngModel"
                   id="_id"
                   hidden
                 />
@@ -583,7 +571,7 @@
                   class="form-control"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.entityname"
+                  [(ngModel)]="model.entityName"
                   name="title"
                   #title="ngModel"
                   id="title"
@@ -599,7 +587,7 @@
                   readonly
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.effectiveon"
+                  [(ngModel)]="model.effectiveOn"
                   name="date"
                   #date="ngModel"
                   id="date"
@@ -613,7 +601,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.jobnumber"
+                  [(ngModel)]="model.jobNumber"
                   name="job"
                   #job="ngModel"
                   id="job"
@@ -625,7 +613,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [(ngModel)]="model.ponumber"
+                  [(ngModel)]="model.poNumber"
                   id="po"
                   name="po"
                   #po="ngModel"
@@ -653,13 +641,11 @@
           </div>
 
           <div class="animated fadeIn" *ngIf="highestRank > 4">
-            <!--/.row-->
             <div class="row">
               <div class="col-lg-12">
                 <p class="card-text" style="font-weight: bold; font-size: 18px">
                   Current Notes:
                 </p>
-                <!-- Large modal -->
                 <div class="card-body">
                   <div class="select-pagination-option">
                     <div class="float-left">
@@ -685,36 +671,36 @@
                     <thead class="thead-light">
                       <tr>
                         <th
-                          [class.active]="order === 'effectiveon'"
-                          (click)="setOrder('effectiveon')"
+                          [class.active]="order === 'effectiveOn'"
+                          (click)="setOrder('effectiveOn')"
                         >
                           Date<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'entityname'"
-                          (click)="setOrder('entityname')"
+                          [class.active]="order === 'entityName'"
+                          (click)="setOrder('entityName')"
                         >
                           Title<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'jobnumber'"
-                          (click)="setOrder('jobnumber')"
+                          [class.active]="order === 'jobNumber'"
+                          (click)="setOrder('jobNumber')"
                         >
                           Job<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'ponumber'"
-                          (click)="setOrder('ponumber')"
+                          [class.active]="order === 'poNumber'"
+                          (click)="setOrder('poNumber')"
                         >
                           PO<span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
                         </th>
                         <th
-                          [class.active]="order === 'enteredby'"
-                          (click)="setOrder('enteredby')"
+                          [class.active]="order === 'enteredBy'"
+                          (click)="setOrder('enteredBy')"
                         >
                           By <span [hidden]="reverse == ''">▼</span
                           ><span [hidden]="reverse != ''">▲</span>
@@ -732,11 +718,11 @@
                             | orderBy : reverse + order
                             | filterBy
                               : [
-                                  'effectiveon',
-                                  'entityname',
-                                  'jobnumber',
-                                  'ponumber',
-                                  'enteredby'
+                                  'effectiveOn',
+                                  'entityName',
+                                  'jobNumber',
+                                  'poNumber',
+                                  'enteredBy'
                                 ]
                               : locationNotesFilter
                             | paginate
@@ -746,11 +732,11 @@
                                 }
                         "
                       >
-                        <td>{{ note.effectiveon | date : "MM/dd/yyyy" }}</td>
-                        <td>{{ note.entityname }}</td>
-                        <td>{{ note.jobnumber }}</td>
-                        <td>{{ note.ponumber }}</td>
-                        <td>{{ note.enteredby }}</td>
+                        <td>{{ note.effectiveOn | date : "MM/dd/yyyy" }}</td>
+                        <td>{{ note.entityName }}</td>
+                        <td>{{ note.jobNumber }}</td>
+                        <td>{{ note.poNumber }}</td>
+                        <td>{{ note.enteredBy }}</td>
                         <td>
                           <ng-container
                             *ngFor="let attachment of note.attachmentList"
@@ -769,11 +755,11 @@
                         <td>
                           <button
                             type="button"
-                            class="btn btn-outline-danger btn-sm"
+                            class="btn btn-outline-danger btn-sm btn-group"
                             data-bs-placement="bottom"
                             data-bs-toggle="tooltip"
                             title="Click here to View this Note"
-                            (click)="viewLocationNotes(note.journalid)"
+                            (click)="viewLocationNotes(note.journalId)"
                           >
                             View
                           </button>
@@ -804,12 +790,12 @@
       </p>
       <button
         type="button"
-        class="btn btn-primary btn-right"
+        class="btn btn-primary btn-right btn-group"
         (click)="confirm()"
       >
         Yes
       </button>
-      <button type="button" class="btn btn-primary" (click)="decline()">
+      <button type="button" class="btn btn-primary btn-group" (click)="decline()">
         No
       </button>
     </div>
@@ -873,7 +859,7 @@
     }
   }
 
-  /* Add animation to "page content" */
+  
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;

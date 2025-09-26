@@ -34,10 +34,10 @@ export class ItemAttributeService {
       .pipe(catchError(this.handleError));
   }
 
-  updateTypeAttributes(attribute: { attributenameid: string }) {
+  updateTypeAttributes(attribute: { attributeNameId: string }) {
     return this.http
       .put(
-        AppConfiguration.attributeRestURL + '/' + attribute.attributenameid,
+        AppConfiguration.attributeRestURL + '/' + attribute.attributeNameId,
         attribute,
         this.httpOptions
       )
@@ -62,7 +62,7 @@ export class ItemAttributeService {
   getAttributesForFindReplacement(itemId: string) {
     return this.http
       .get(
-        AppConfiguration.locationRestURL + '/item/findReplacement/' + itemId,
+        AppConfiguration.locationRestURL + 'item/findReplacement/' + itemId,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
@@ -105,13 +105,13 @@ export class ItemAttributeService {
 
   removeItemAttributess(
     attributeId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     attributeName: string,
     typeName: string,
     moduleType: string
   ) {
-    const url = `${AppConfiguration.attributeRestURL}/${attributeId}/${companyid}/${username}/${attributeName}/${typeName}/${moduleType}`;
+    const url = `${AppConfiguration.attributeRestURL}/${attributeId}/${companyId}/${userName}/${attributeName}/${typeName}/${moduleType}`;
     return this.http
       .delete(url, { ...this.httpOptions, responseType: 'text' })
 

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { lastValueFrom } from 'rxjs'; // Use this instead
+import { lastValueFrom } from 'rxjs'; 
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -38,10 +38,10 @@ export class CompanynotesService {
       .pipe(catchError(this.handleError));
   }
 
-  updateCompanynotes(companyNote: { journalid: string }) {
+  updateCompanynotes(companyNote: { journalId: string }) {
     return this.http
       .put(
-        this.serviceURL + '/' + companyNote.journalid,
+        this.serviceURL + '/' + companyNote.journalId,
         companyNote,
         this.httpOptions
       )
@@ -58,9 +58,9 @@ export class CompanynotesService {
       .pipe(catchError(this.handleError));
   }
 
-  getCompanynotess(journalid: string | number, companyId: number) {
+  getCompanynotess(journalId: string | number, companyId: number) {
     return this.http
-      .get(this.serviceURL + '/' + journalid, this.httpOptions)
+      .get(this.serviceURL + '/' + journalId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

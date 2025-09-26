@@ -38,7 +38,7 @@ export class LocationAttributeService {
   updateTypeAttributes(attribute: any) {
     return this.http
       .put(
-        AppConfiguration.attributeRestURL + '/' + attribute.attributenameid,
+        AppConfiguration.attributeRestURL + '/' + attribute.attributeNameId,
         attribute,
         this.httpOptions
       )
@@ -91,13 +91,13 @@ export class LocationAttributeService {
 
   removeLocationAttributess(
     attributeId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     attributeName: string,
     typeName: string,
     moduleType: string
   ) {
-    const url = `${AppConfiguration.attributeRestURL}/${attributeId}/${companyid}/${username}/${attributeName}/${typeName}/${moduleType}`;
+    const url = `${AppConfiguration.attributeRestURL}/${attributeId}/${companyId}/${userName}/${attributeName}/${typeName}/${moduleType}`;
 
     return this.http
       .delete(url, { ...this.httpOptions, responseType: 'text' })

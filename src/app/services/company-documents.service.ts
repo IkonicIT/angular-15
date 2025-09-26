@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
-// import 'rxjs/add/operator/toPromise';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -29,7 +28,7 @@ export class CompanyDocumentsService {
   ) {}
 
   saveCompanyDocument(document: any) {
-    // console.log(this.serviceURL, document, this.httpOptions);
+    
     return this.http
       .post(this.serviceURL, document, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -46,7 +45,7 @@ export class CompanyDocumentsService {
   }
 
   saveCompanyMultipleDocuments(attachList: any) {
-    console.log(attachList);
+  
     return this.http
       .post(
         this.serviceURL + '/createMultipleAttachments',
@@ -74,7 +73,7 @@ export class CompanyDocumentsService {
 
   getAllCompanyDocuments(companyId: string | number) {
     return this.http
-      .get(
+      .get<any[]>(
         this.serviceURL + '/getAllAttachments/companytype/' + companyId,
         this.httpOptions
       )
@@ -100,12 +99,12 @@ export class CompanyDocumentsService {
 
   removeCompanyDocuments(
     attachmentId: string,
-    companyid: string,
-    username: string
+    companyId: string,
+    userName: string
   ) {
     return this.http
       .delete(
-        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
+        this.serviceURL + '/' + attachmentId + '/' + companyId + '/' + userName,
         { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));
@@ -169,8 +168,8 @@ export class CompanyDocumentsService {
 
   removeCompanyNoteDocuments(
     attachmentId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     userLog: any
   ) {
     let params = new HttpParams();
@@ -185,7 +184,7 @@ export class CompanyDocumentsService {
 
     return this.http
       .delete(
-        this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username,
+        this.serviceURL + '/' + attachmentId + '/' + companyId + '/' + userName,
         httpOptions
       )
       .pipe(catchError(this.handleError));

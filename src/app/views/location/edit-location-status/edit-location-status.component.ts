@@ -10,113 +10,103 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./edit-location-status.component.scss'],
 })
 export class EditLocationStatusComponent implements OnInit {
-  index: number = 0;
+  index = 0;
   date = Date.now();
-  statusId: number = 0;
-  private sub: any;
-  userName: any;
-  id: number;
-  router: Router;
-  globalCompany: any = {};
-  companyId: number;
-  helpFlag: any = false;
-  oldStatus: any;
-  length: number;
+
+  statusId!: number;
+  companyId!: number;
+  userName!: string | null;
+
+  globalCompany: any;
   model: any = {};
+  oldStatus!: string;
+  helpFlag = false;
+
   dismissible = true;
   loader = false;
+
   constructor(
     private locationStatusService: LocationStatusService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.statusId = route.snapshot.params['id'];
-    console.log('companyid=' + this.statusId);
-    this.router = router;
+    this.statusId = Number(this.route.snapshot.params['id']);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany?.companyId;
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
-      console.log('compaanyid=' + this.companyId);
+      this.companyId = value?.companyId;
     });
-    this.spinner.show();
 
+    this.spinner.show();
     this.locationStatusService.getLocationStatus(this.statusId).subscribe(
       (response) => {
         this.spinner.hide();
-
         this.model = response;
         this.oldStatus = this.model.status;
       },
-      (error) => {
-        this.spinner.hide();
-      }
+      () => this.spinner.hide()
     );
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  updateStatus() {
-    if (this.model.status != undefined) {
-      this.model.status = this.model.status.trim();
-      this.length = this.model.status.length;
-      console.log(this.length);
-    }
-    if (
-      this.model.status == '' ||
-      this.model.status === this.oldStatus ||
-      this.model.status == undefined
-    ) {
+  updateStatus(): void {
+    const status = this.model?.status?.trim();
+
+    if (!status || status === this.oldStatus) {
       this.index = -1;
       window.scroll(0, 0);
-    } else if (this.length > 100) {
-      this.index = 2;
-    } else {
-      this.model = {
-        companyId: this.globalCompany.companyid,
-        lastModifiedBy: this.userName,
-        destroyed: false,
-        entityTypeId: 0,
-        inService: false,
-        moduleType: 'locationtype',
-        spare: false,
-        status: this.model.status,
-        statusId: this.model.statusid,
-        underRepair: false,
-        oldStatus: this.oldStatus,
-      };
-      this.spinner.show();
-
-      this.locationStatusService.updateLocationStatus(this.model).subscribe(
-        (response) => {
-          this.spinner.hide();
-
-          window.scroll(0, 0);
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-          this.router.navigate(['/location/status']);
-        },
-        (error) => {
-          this.spinner.hide();
-        }
-      );
+      return;
     }
+
+    if (status.length > 100) {
+      this.index = 2;
+      return;
+    }
+
+    const payload = {
+      companyId: this.companyId,
+      lastModifiedBy: this.userName,
+      destroyed: false,
+      entityTypeId: 0,
+      inService: false,
+      moduleType: 'locationtype',
+      spare: false,
+      status,
+      statusId: this.model.statusId,
+      underRepair: false,
+      oldStatus: this.oldStatus,
+    };
+
+    this.spinner.show();
+    this.locationStatusService.updateLocationStatus(payload).subscribe(
+      () => {
+        this.spinner.hide();
+        window.scroll(0, 0);
+        this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+        this.router.navigate(['/location/status']);
+      },
+      () => this.spinner.hide()
+    );
   }
-  cancelUpdateStatus() {
+
+  cancelUpdateStatus(): void {
     this.router.navigate(['/location/status']);
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

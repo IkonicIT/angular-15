@@ -76,9 +76,9 @@ export class LocationManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  removeLocation(locationId: number, companyId: number, username: string) {
+  removeLocation(locationId: number, companyId: number, userName: string) {
     return this.http
-      .delete(AppConfiguration.locationRestURL + 'location/' + locationId + '/' + companyId + '/' + username,
+      .delete(AppConfiguration.locationRestURL + 'location/' + locationId + '/' + companyId + '/' + userName,
         { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));
@@ -99,13 +99,13 @@ export class LocationManagementService {
 
   getAllLocationsWithHierarchy(companyId: string | number) {
     return this.http
-      .get(AppConfiguration.locationRestURL + 'location/getAllLocationsWithHierarchy/' + companyId, this.httpOptions)
+      .get<any[]>(AppConfiguration.locationRestURL + 'location/getAllLocationsWithHierarchy/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   getAllLocationsWithHierarchyforUser(companyId: string | number, userId: string) {
     return this.http
-      .get(AppConfiguration.locationRestURL + 'location/getAllLocationsByUser/' + companyId + '/' + userId, this.httpOptions)
+      .get<any[]>(AppConfiguration.locationRestURL + 'location/getAllLocationsByUser/' + companyId + '/' + userId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

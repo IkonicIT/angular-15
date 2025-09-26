@@ -74,25 +74,33 @@ button,
   background-color: #e02725;
   border-color: #e02725;
 }
-.dropdown-wrapper {
+.custom-dropdown-wrapper {
   position: relative;
   display: inline-block;
   width: 100%;
 }
 
-.dropdown-wrapper app-dropdown-treeview-select {
+.custom-dropdown-wrapper app-dropdown-treeview-select {
   display: block;
   width: 100%;
+  box-sizing: border-box;
 }
 
-.dropdown-arrow {
+.custom-dropdown-arrow {
   position: absolute;
-  right: 12px;
   top: 50%;
+  right: 12px;
   transform: translateY(-50%);
   pointer-events: none;
-  font-size: 16px;       /* Medium size */
-  font-weight: normal;   /* Not bold */
-  color: #555;           /* Subtle but visible */
-  line-height: 1;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
 }
+
+
+.btn-group{
+  border-radius: 6px;
+}
+

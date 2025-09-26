@@ -9,9 +9,21 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { ItemStatusService } from '../../../services/Items/item-status.service';
 import { ItemAttributeService } from '../../../services/Items/item-attribute.service';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
-import { isNullOrUndefined } from 'is-what';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Location } from '@angular/common';
+import { Observable } from 'rxjs';
+
+interface AttributeType {
+  attributeTypeId: number;
+}
+
+interface AttributeValue {
+  attributeNameId: number;
+  name: string;
+  value?: string;
+  attributeType?: AttributeType;
+  attributeListItemResource?: any[];
+}
 
 @Component({
   selector: 'app-advanced-item-search',
@@ -19,46 +31,40 @@ import { Location } from '@angular/common';
   styleUrls: ['./advanced-item-search-replacement.component.scss'],
 })
 export class AdvancedItemSearchReplacementComponent implements OnInit {
-  public showSearchResults = false;
-  public isExpandAdvancedSearch = true;
-  public itemModel: any = {};
-  public repairModel: any = {};
-  public locationModel: any = {};
-  public itemTypes = [];
-  public attributesList = [];
-  public attributesValuesList = [];
-  public statuses: any = [];
-  public locations = [];
-  public globalCompany;
-  public companyName = '';
-  public companyId;
-  public typeAttributes: any;
-  public itemTypeName: any;
-  public reqItemTypeId: String;
-  public reqItemTypeName: any;
-  public itemId: any;
-  public typeId: any;
-  public itrTypeId: any;
-  value: any;
-  itemValue: any;
-  public itemrepairnotesrfqModel: any = {};
-  public itemNotesList: any = {};
-  public repairlogList: any = [];
-  public RFQsList: any = [];
-  advancedsearchflag: number = 0;
+
+  showSearchResults = false;
+  isExpandAdvancedSearch = true;
+  advancedsearchflag = 0;
+  loader = false;
+
+  itemModel: any = {};
+  repairModel: any = {};
+  itemrepairNotesrfqModel: any = {};
   searchresults: any = {};
-  vendors: any = [];
-  items: TreeviewItem[];
-  public itemTypeItems: TreeviewItem[];
-  config = TreeviewConfig.create({
-    hasFilter: false,
-    hasCollapseExpand: false,
-  });
+  itemNotesList: any = {};
+  repairlogList: any[] = [];
+  RFQsList: any[] = [];
+
+  itemTypes: any[] = [];
+  statuses: any[] = [];
+  locations: any[] = [];
+  vendors: any[] = [];
+
+  items: TreeviewItem[] = [];
+  itemTypeItems: TreeviewItem[] = [];
+  config = TreeviewConfig.create({ hasFilter: false, hasCollapseExpand: false });
+
+  globalCompany: any;
+  companyId: number;
+  companyName = '';
+  itemId: string;
+  typeId: string;
+  itemValue: any;
   isOwnerAdmin: string | null;
   loggedInuser: string | null;
-  order: string;
-  reverse: string;
-  loader = false;
+  order = '';
+  reverse = '';
+
   constructor(
     private modalService: BsModalService,
     private locationManagementService: LocationManagementService,
@@ -76,302 +82,215 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getAllLocationsWithHierarchy();
     }
 
-    this.itemId = route.snapshot.params['itemId'];
-    this.typeId = route.snapshot.params['typeID'];
-    console.log('typeId from view item' + this.typeId);
-    this.itemTypes = this.itemManagementService.getItemTypes();
+    this.itemId = this.route.snapshot.params['itemId'];
+    this.typeId = this.route.snapshot.params['typeId'];
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
-      this.companyName = this.globalCompany.name;
-      console.log('inide item search');
+      this.companyId = value.companyId;
+      this.companyName = value.name;
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.getAllItemTypes();
   }
 
-  back() {
+  /** Navigation */
+  back(): void {
     this._location.back();
   }
 
-  getAllLocationsWithHierarchy() {
-    this.locations = this.broadcasterService.locations;
-    if (this.locations && this.locations.length > 0) {
-      this.items = [];
+  /** Locations */
+  getAllLocationsWithHierarchy(): void {
+    this.locations = this.broadcasterService.locations || [];
+    if (this.locations.length) {
       this.items = this.generateHierarchy(this.locations);
     }
   }
 
-  generateHierarchy(locList: any[]) {
-    var items: TreeviewItem[] = [];
-    locList.forEach((loc) => {
-      var children: TreeviewItem[] = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: loc.name,
-          value: loc.locationId,
-          collapsed: true,
-          children: children,
-        })
-      );
+  private generateHierarchy(locList: any[]): TreeviewItem[] {
+    return locList.map((loc) => {
+      const children = loc.parentLocationResourceList?.length
+        ? this.generateHierarchy(loc.parentLocationResourceList)
+        : [];
+      return new TreeviewItem({ text: loc.name, value: loc.locationId, collapsed: true, children });
     });
-    return items;
   }
 
-  generateHierarchyForItemTypes(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchyForItemTypes(type.typeList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeId + '',
-          collapsed: true,
-          children: children,
-        })
-      );
+  /** Item Types */
+  private generateHierarchyForItemTypes(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children = type.typeList?.length ? this.generateHierarchyForItemTypes(type.typeList) : [];
+      return new TreeviewItem({ text: type.name, value: String(type.typeId), collapsed: true, children });
     });
-
-    return items;
   }
 
-  getAllItemTypes() {
+  getAllItemTypes(): void {
     this.spinner.show();
-
-    this.itemTypesService
-      .getAllItemTypesWithHierarchy(this.companyId)
-      .subscribe(
-        (response: any) => {
-          this.itemTypes = response;
-          this.spinner.hide();
-
-          if (this.itemTypes && this.itemTypes.length > 0) {
-            this.itemTypeItems = this.generateHierarchyForItemTypes(
-              this.itemTypes
-            );
-
-            this.itemValue = this.typeId;
-            this.getTypeAttributes(this.typeId);
-          }
-          this.getItemStatus();
-        },
-        (error) => {
-          this.spinner.hide();
+    this.itemTypesService.getAllItemTypesWithHierarchy(this.companyId).subscribe({
+      next: (response: any) => {
+        this.itemTypes = response || [];
+        if (this.itemTypes.length) {
+          this.itemTypeItems = this.generateHierarchyForItemTypes(this.itemTypes);
+          this.itemValue = this.typeId;
+          if (this.itemValue) this.getTypeAttributes(this.itemValue);
         }
-      );
-  }
-
-  getItemStatus() {
-    this.spinner.show();
-
-    this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
-      (response: any) => {
-        this.statuses = response;
+        this.getItemStatus();
         this.spinner.hide();
       },
-      (error) => {
-        this.spinner.hide();
-      }
-    );
+      error: () => this.spinner.hide(),
+    });
   }
 
-  onItemValueChange(typeId: any) {
-    if (typeId != 0 && typeId != undefined) {
+  getItemStatus(): void {
+    this.spinner.show();
+    this.itemStatusService.getAllItemStatuses(String(this.companyId)).subscribe({
+      next: (response: any) => {
+        this.statuses = response || [];
+        this.spinner.hide();
+      },
+      error: () => this.spinner.hide(),
+    });
+  }
+
+  onItemValueChange(typeId: any): void {
+    if (typeId && typeId !== 0) {
       this.itemValue = typeId;
-      console.log('on value change type id is' + typeId);
       this.getTypeAttributes(typeId);
     }
   }
 
-  getTypeAttributes(typeId: string) {
-    console.log('hit type id is' + typeId);
-
-    if (typeId != '0') {
-      this.spinner.show();
-
-      this.itemAttributeService
-        .getTypeAttributes(typeId)
-        .subscribe((response) => {
-          this.spinner.hide();
-
-          this.itemModel.attributevalues = response;
-          this.attributesValuesList = this.itemModel.attributevalues;
-          this.itemAttributeService
-            .getAttributesForFindReplacement(this.itemId)
-            .subscribe((res) => {
-              this.itemModel.attributesList = res;
-              this.itemModel.attributename = null;
-              this.attributesValuesList.forEach((attrList: any) => {
-                this.itemModel.attributename = attrList.name;
-                this.itemModel.attributesList.forEach((attribtesList: any) => {
-                  this.itemModel.attributeeName = attribtesList.attributeName;
-                  if (
-                    this.itemModel.attributeeName ===
-                    this.itemModel.attributename
-                  ) {
-                    attrList.value = attribtesList.attributeValue;
-                  }
-                });
-              });
-            });
-        });
-    }
-  }
-
-  searchItems() {
-    this.isExpandAdvancedSearch = false;
-    var attributeLis: { attributeNameID: any; name: any; value: any }[] = [];
-    if (
-      this.itemModel.attributevalues &&
-      this.itemModel.attributevalues.length > 0
-    ) {
-      this.itemModel.attributevalues.forEach(
-        (attr: { value: string; attributenameid: any; name: any }) => {
-          if (attr.value && attr.value != '') {
-            let listItem = {
-              attributeNameID: attr.attributenameid,
-              name: attr.name,
-              value: attr.value,
-            };
-            attributeLis.push(listItem);
-          }
-        }
-      );
-    }
-    var request = {
-      companyId: this.companyId,
-      name: this.itemModel.name ? this.itemModel.name : null,
-      tag: this.itemModel.tag ? this.itemModel.tag : null,
-      locationName: this.itemModel.location ? this.itemModel.location : null,
-      statusId: this.itemModel.status ? this.itemModel.status : null,
-      locationId: this.itemModel.locationId ? this.itemModel.locationId : null,
-      typeId: this.itemValue ? this.itemValue : null,
-      maxHitCount: attributeLis.length,
-      ownerAdmin: this.isOwnerAdmin,
-      userId: this.loggedInuser,
-      attributeNameList: attributeLis,
-    };
-
-    console.log(JSON.stringify(request));
+  /** Attributes */
+  getTypeAttributes(typeId: string): void {
+    if (!typeId || typeId === '0') return;
     this.spinner.show();
 
-    this.itemManagementService
-      .getAdvancedSearchItems(request)
-      .subscribe((response) => {
-        this.itemManagementService.setAdvancedItemSearchResults(response);
+    this.itemAttributeService.getTypeAttributes(typeId).subscribe({
+      next: (response: any) => {
         this.spinner.hide();
-
-        this.showSearchResults = true;
-        this.broadcasterService.broadcast('advancedsearchresults', 'reload');
-      });
+        this.itemModel.attributeValues = response || [];
+        this.itemAttributeService.getAttributesForFindReplacement(this.itemId).subscribe({
+          next: (res: any) => {
+            this.itemModel.attributesList = res || [];
+            this.mergeAttributes();
+          },
+        });
+      },
+    });
   }
 
-  searchItemRepairNotesRfqModel() {
+  private mergeAttributes(): void {
+    if (!this.itemModel.attributeValues || !this.itemModel.attributesList) return;
+    this.itemModel.attributeValues.forEach((attr: AttributeValue) => {
+      const match = this.itemModel.attributesList.find((a: any) => a.attributeName === attr.name);
+      if (match) attr.value = match.attributeValue;
+    });
+  }
+
+  /** Search */
+  searchItems(): void {
+    this.isExpandAdvancedSearch = false;
+
+    const attributeList = (this.itemModel.attributeValues || [])
+      .filter((attr: AttributeValue) => !!attr.value)
+      .map((attr: AttributeValue) => ({
+        attributeNameId: attr.attributeNameId,
+        name: attr.name,
+        value: attr.value,
+      }));
+
+    const request = {
+      companyId: this.companyId,
+      name: this.itemModel.name || null,
+      tag: this.itemModel.tag || null,
+      locationName: this.itemModel.location || null,
+      statusId: this.itemModel.status || null,
+      locationId: this.itemModel.locationId || null,
+      typeId: this.itemValue || null,
+      maxHitCount: attributeList.length,
+      ownerAdmin: this.isOwnerAdmin,
+      userId: this.loggedInuser,
+      attributeNameList: attributeList,
+    };
+
+    this.spinner.show();
+    this.itemManagementService.getAdvancedSearchItems(request).subscribe({
+      next: (response) => {
+        this.spinner.hide();
+        this.itemManagementService.setAdvancedItemSearchResults(response);
+        this.showSearchResults = true;
+        this.broadcasterService.broadcast('advancedsearchresults', 'reload');
+      },
+      error: () => this.spinner.hide(),
+    });
+  }
+
+  searchItemRepairNotesRfqModel(): void {
     this.advancedsearchflag = 1;
-    var request = {
+    const request = {
       companyID: this.companyId,
-      extraTag: this.itemrepairnotesrfqModel.exactTag
-        ? this.itemrepairnotesrfqModel.exactTag
-        : null,
-      RFQ: this.itemrepairnotesrfqModel.rfq
-        ? this.itemrepairnotesrfqModel.rfq
-        : null,
-      po: this.itemrepairnotesrfqModel.po
-        ? this.itemrepairnotesrfqModel.po
-        : null,
-      job: this.itemrepairnotesrfqModel.job
-        ? this.itemrepairnotesrfqModel.job
-        : null,
-      noteFlag: this.itemrepairnotesrfqModel.isitemnote,
-      repairFlag: this.itemrepairnotesrfqModel.isitemrepair,
-      rfqFlag: this.itemrepairnotesrfqModel.isitemrfq,
+      extraTag: this.itemrepairNotesrfqModel.exactTag || null,
+      RFQ: this.itemrepairNotesrfqModel.rfq || null,
+      po: this.itemrepairNotesrfqModel.po || null,
+      job: this.itemrepairNotesrfqModel.job || null,
+      noteFlag: this.itemrepairNotesrfqModel.isitemnote,
+      repairFlag: this.itemrepairNotesrfqModel.isitemrepair,
+      rfqFlag: this.itemrepairNotesrfqModel.isitemrfq,
       itemNotes: null,
       repairlogList: null,
       RFQsList: null,
       isOwnerAdmin: this.isOwnerAdmin,
       userId: this.loggedInuser,
     };
-    this.spinner.show();
 
-    this.itemManagementService
-      .getAdvancedSearchItemRepairNotesRfq(request)
-      .subscribe((response: any) => {
+    this.spinner.show();
+    this.itemManagementService.getAdvancedSearchItemRepairNotesRfq(request).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
         this.searchresults = response;
         this.itemNotesList = response.itemNotes;
         this.repairlogList = response.repairlogList;
         this.RFQsList = response.rfqsList;
-        console.log('this.itemNotesList is' + this.itemNotesList);
-        console.log('this.repairlogList is' + this.repairlogList);
-        console.log('this.RFQsList is' + this.RFQsList);
-        console.log('this.itemNotesList is' + response.itemNotes);
-        console.log('this.repairlogList is' + response.repairlogList);
-        console.log('this.RFQsList is' + response.rfqsList);
-        this.spinner.hide();
-      });
+      },
+      error: () => this.spinner.hide(),
+    });
   }
 
-  setOrder(value: string) {
-    if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
-    }
+  /** Sorting */
+  setOrder(value: string): void {
+    if (this.order === value) this.reverse = this.reverse === '' ? '-' : '';
     this.order = value;
   }
 
-  clearItem() {
+  /** Clear */
+  clearItem(): void {
     this.itemModel = {};
     this.itemValue = 0;
   }
 
-  clearRepairNoteQuote() {
-    this.itemrepairnotesrfqModel = {};
+  clearRepairNoteQuote(): void {
+    this.itemrepairNotesrfqModel = {};
   }
 
-  goToNote(
-    itemId: string,
-    journalid: string,
-    rank: any,
-    tag: any,
-    typeName: any
-  ) {
+  /** Navigation */
+  goToNote(itemId: string, journalId: string, rank: any, tag: any, typeName: any): void {
     this.broadcasterService.itemRank = rank;
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
-    this.router.navigate(['/items/itemNotes/' + itemId + '/' + journalid]);
+    this.router.navigate(['/items/itemNotes', itemId, journalId]);
   }
 
-  goToItemRepair(
-    itemId: string,
-    repairLogId: string,
-    rank: any,
-    tag: any,
-    typeName: any
-  ) {
+  goToItemRepair(itemId: string, repairLogId: string, rank: any, tag: any, typeName: any): void {
     this.broadcasterService.itemRank = rank;
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
-    this.router.navigate([
-      '/items/viewItemRepair/' + itemId + '/' + repairLogId,
-    ]);
+    this.router.navigate(['/items/viewItemRepair', itemId, repairLogId]);
   }
 }

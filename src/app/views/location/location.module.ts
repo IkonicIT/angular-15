@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule ,ReactiveFormsModule } from '@angular/forms';
 import { LocationComponent } from './location.component';
 import { LocationRoutingModule } from './location-routing.module';
 import { LocationManagementComponent } from './location-management/location-management.component';
@@ -35,6 +35,11 @@ import { EditLocationNoteAttachmentsComponent } from './edit-location-note-attac
 import { MergeLocationsComponent } from './merge-locations/merge-locations.component';
 import { NotesComponent } from './notes/notes.component';
 import { ManagelocationsComponent } from './managelocations/managelocations.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -49,6 +54,12 @@ import { ManagelocationsComponent } from './managelocations/managelocations.comp
     TreeviewModule.forRoot(),
     DropdownTreeviewModule,
     TooltipModule.forRoot(),
+     MatFormFieldModule,
+    MatSelectModule,
+    MatTreeModule,
+    MatIconModule,
+    ReactiveFormsModule, // ✅ needed for [formControl]
+    MatOptionModule,
   ],
   declarations: [LocationComponent, LocationManagementComponent, AddLocationDetailsComponent, EditLocationDetailsComponent, LocationAttributesComponent, AddLocationAttributeComponent, EditLocationAttributeComponent, LocationTypesComponent, AddLocationTypeComponent, EditLocationTypeComponent, LocationNotesComponent, AddLocationNoteComponent, EditLocationNoteComponent, LocationStatusComponent, AddLocationStatusComponent, EditLocationStatusComponent, LocationAttachmentComponent, AddLocationAttachmentComponent, EditLocationAttachmentComponent, AddLocationNoteAttachmentsComponent, LocationNoteAttachmentsComponent, EditLocationNoteAttachmentsComponent, MergeLocationsComponent, NotesComponent, ManagelocationsComponent]
 })

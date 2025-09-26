@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CompanyStatusesService } from '../../../services/company-statuses.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocationStatusService } from '../../../services/location-status.service';
@@ -13,51 +12,53 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class AddLocationStatusComponent implements OnInit {
   model: any = {};
   index: number = 0;
-  date = Date.now();
-  companyId: number;
-  private sub: any;
-  id: number;
-  userName: any;
-  router: any;
+  date: number = Date.now();
+  companyId: number = 0;
+  id: number = 0;
+  userName: string | null = null;
   globalCompany: any = {};
-  length: any = 0;
-  helpFlag: any = false;
-  dismissible = true;
-  loader = false;
+  length: number = 0;
+  helpFlag: boolean = false;
+  dismissible: boolean = true;
+  loader: boolean = false;
+
   constructor(
     private locationStatusService: LocationStatusService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
+
+    if (this.globalCompany) {
+      this.companyId = this.globalCompany.companyId ?? 0;
+    }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
-      console.log('compaanyid=' + this.companyId);
+      this.companyId = value?.companyId ?? 0;
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  saveStatus() {
-    if (this.model.status != undefined) {
+  saveStatus(): void {
+    if (this.model.status !== undefined) {
       this.model.status = this.model.status.trim();
       this.length = this.model.status.length;
-      console.log(this.length);
     }
-    if (this.model.status == undefined || this.model.status == '') {
+
+    if (!this.model.status) {
       this.index = -1;
       window.scroll(0, 0);
     } else if (this.length > 100) {
       this.index = 2;
     } else {
-      this.model = {
-        companyId: this.globalCompany.companyid,
+      const payload = {
+        companyId: this.globalCompany?.companyId ?? 0,
         lastModifiedBy: this.userName,
         destroyed: true,
         entityTypeId: 0,
@@ -70,35 +71,31 @@ export class AddLocationStatusComponent implements OnInit {
       };
       this.spinner.show();
 
-      console.log(JSON.stringify(this.model));
-      this.locationStatusService.saveLocationStatus(this.model).subscribe(
-        (response) => {
+      this.locationStatusService.saveLocationStatus(payload).subscribe(
+        () => {
           this.spinner.hide();
-
           window.scroll(0, 0);
           this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
+          setTimeout(() => (this.index = 0), 7000);
           this.router.navigate(['/location/status']);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
         }
       );
     }
   }
 
-  cancelAddStatus() {
+  cancelAddStatus(): void {
     this.router.navigate(['/location/status']);
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

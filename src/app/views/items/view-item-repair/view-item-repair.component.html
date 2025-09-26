@@ -1,599 +1,366 @@
-<div class="animated fadeIn">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="card">
-        <div class="form-group col-sm-12 text-right">
-          <button
-            type="button"
-            (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
-          >
-            Print
-          </button>
-          <button
-            type="button"
-            (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
-          >
-            Help
-          </button>
-          <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
-          >
-            *To add a new Repair:<br />
-            1.Click the 'AddRepair' button.<br />
-            2.Enter the data for the new Repair.<br />
-            3.Click the 'Save' button.<br />
-            *To update a repair:<br />
-            1.Select the repair by clicking 'View' button & then click on 'Edit'
-            button.<br />
-            2.Modify repair job information.<br />
-            3.Click the 'Save' button.<br />
-            4.Checking the 'Complete' box will complete the repair ticket and
-            submit it to reporting.<br />
-            *To delete a repair:<br />
-            1.Click the 'Delete' button.
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="form-group col-sm-12 text-right">
+        <button
+          type="button"
+          (click)="print()"
+          class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
+        >
+          Print
+        </button>
+        <button
+          type="button"
+          (click)="help()"
+          class="btn btn-outline-danger btn-sm btn-top btn-group"
+        >
+          Help
+        </button>
+        <div
+          *ngIf="helpFlag"
+          style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
+        >
+          *To add a new Repair:<br />
+          1.Click the 'AddRepair' button.<br />
+          2.Enter the data for the new Repair.<br />
+          3.Click the 'Save' button.<br />
+          *To update a repair:<br />
+          1.Select the repair by clicking 'View' button & then click on 'Edit'
+          button.<br />
+          2.Modify repair job information.<br />
+          3.Click the 'Save' button.<br />
+          4.Checking the 'Complete' box will complete the repair ticket and
+          submit it to reporting.<br />
+          *To delete a repair:<br />
+          1.Click the 'Delete' button.
+        </div>
+      </div>
+      <div class="card-body">
+        <alert *ngIf="flag > 0" type="success" [dismissible]="dismissible">
+          Repair Deleted Successfully
+        </alert>
+        <div class="card-header">
+          <div class="col-12 p-0">
+            <div class="row">
+              <div class="col-12 col-md-3 margin-bottom-mobile">
+                <strong>View Item Repair Details</strong>
+              </div>
+              <div class="col-12 col-md-9">
+                <button
+                  type="button"
+                  class="btn btn-primary margin-bottom-mobile"
+                  style="float: right; margin: 5px; border-radius: 6px;"
+                  (click)="backToViewItem()"
+                >
+                  Back To Item
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary margin-bottom-mobile"
+                  style="float: right; margin: 5px; border-radius: 6px;"
+                  (click)="back()"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary margin-bottom-mobile"
+                  style="float: right; margin: 5px; border-radius: 6px;"
+                  [disabled]="itemRank < 3 || highestRank == 9"
+                  (click)="openModal(confirmtemplate, itemRepairId)"
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary margin-bottom-mobile"
+                  style="float: right; margin: 5px; border-radius: 6px;"
+                  *ngIf="itemRank > 0"
+                  [routerLink]="['../../../itemRepairAttachments/' + itemRepairId]"
+                >
+                  Attachments
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary margin-bottom-mobile"
+                  style="float: right; margin: 5px; border-radius: 6px;"
+                  [disabled]="itemRank < 3"
+                  (click)="updateItemRepair()"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary margin-bottom-mobile"
+                  style="float: right; margin: 5px; border-radius: 6px;"
+                  [disabled]="itemRank < 3"
+                  [routerLink]="['../../../addItemRepair/' + itemId]"
+                >
+                  Add Repair
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card-body">
-          <alert *ngIf="flag > 0" type="success" [dismissible]="dismissible">
-            Repair Deleted Successfully
-          </alert>
-          <div class="card-header">
-            <div class="col-12 p-0">
-              <div class="row">
-                <div class="col-12 col-md-3 margin-bottom-mobile">
-                  <strong>View Item Repair Details</strong>
+        <div class="modal-body mobile-padding">
+          <div class="col-sm-12 mobile-padding">
+            <div class="card">
+              <form #f="ngForm" novalidate>
+                <div class="card-body">
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Tag:</label>
+                      <span>{{ model.tag }}</span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Type:</label>
+                      <span>{{ model.itemType }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Warranty Type:</label>
+                      <span>{{ model.warrantyType }}</span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Warranty Exp:</label>
+                      <span>{{ model.warrantyExpiration | date:'MM/dd/yyyy' }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">JOB Number :</label>
+                      <span>{{ model.jobNumber }}</span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">PO Number :</label>
+                      <span>{{ model.poNumber }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Location :</label>
+                      <span>{{ model.repairLocationName }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Title:</label>
+                      <span>{{ model.title }}</span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Vendor:</label>
+                      <span>{{ model.repairVendorName }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Details:</label>
+                      <span>{{ model.repairNotes }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Estimated Completion Date:</label>
+                      <span>{{ model.estimatedCompletion | date:'MM/dd/yyyy' }}</span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Repair Cost:</label>
+                      <span>{{ model.repairCost | currency }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label>Vendor Warranty:</label>
+                      <input type="checkbox" [(ngModel)]="model.isVendorWarranty" name="VendorWarranty">
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label>Repair Type:</label>
+                      <span>{{ model.repairType }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Repair Status:</label>
+                      <span>{{ model.repairJobStatus }}</span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Failure Date:</label>
+                      <span>{{ model.failureDate | date:'MM/dd/yyyy' }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Failure Type:</label>
+                      <span>{{ model.failureType }}</span>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Failure Cause:</label>
+                      <span>{{ model.failureCause }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <label class="pr5">Secondary Findings and Causes:</label>
+                  </div>
+                  <ng-container *ngFor="let sitem of model.secondaryTypeAndCauses">
+                    <div class="row space">
+                      <div class="form-group col-sm-6">
+                        <label class="pr5">Failure Type:</label>
+                        <span>{{ sitem.failureType }}</span>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label class="pr5">Failure Cause:</label>
+                        <span>{{ sitem.failureCause }}</span>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Complete:</label>
+                      <input type="checkbox" [(ngModel)]="model.complete" name="complete">
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Actual Completion:</label>
+                      <span>{{ model.actualCompletion | date:'MM/dd/yyyy' }}</span>
+                    </div>
+                  </div>
+                  <div class="row space">
+                    <div class="form-group col-sm-6">
+                      <label class="pr5">Completed By:</label>
+                      <span>{{ model.completedBy }}</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-12 col-md-9">
-                  <button
-                    type="button"
-                    class="btn btn-primary margin-bottom-mobile"
-                    style="float: right; margin: 5px"
-                    (click)="backToViewItem()"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Back to View Item"
-                    class="btn btn-primary"
-                  >
-                    Back To Item
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary margin-bottom-mobile"
-                    style="float: right; margin: 5px"
-                    (click)="back()"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Back to Previous Screen"
-                    class="btn btn-primary"
-                    style="border-radius: 6px;"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    [disabled]="itemRank < 3 || highestRank == 9"
-                    class="btn btn-primary margin-bottom-mobile"
-                    style="float: right; margin: 5px"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Delete this ItemRepair"
-                    (click)="openModal(confirmtemplate, itemRepairId)"
-                    style="border-radius: 6px;"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary margin-bottom-mobile"
-                    style="float: right; margin: 5px"
-                    *ngIf="itemRank > 0"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Add Attachments to this ItemRepair"
-                    [routerLink]="[
-                      '../../../itemRepairAttachments/' + itemRepairId
-                    ]"
-                    style="border-radius: 6px;"
-                  >
-                    Attachments
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary margin-bottom-mobile"
-                    style="float: right; margin: 5px"
-                    [disabled]="itemRank < 3"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Update Item Repair"
-                    (click)="updateItemRepair()"
-                    style="border-radius: 6px;"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary margin-bottom-mobile"
-                    style="float: right; margin: 5px"
-                    [disabled]="itemRank < 3"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Add Repair."
-                    style="border-radius: 6px;"
-                    [routerLink]="['../../../addItemRepair/' + itemId]"
-                  >
-                    Add Repair
-                  </button>
-                </div>
-              </div>
+              </form>
             </div>
           </div>
-          <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding">
+        </div>
+
+        <div *ngIf="itemRank > 0">
+          <div class="row">
+            <div class="col-lg-12">
               <div class="card">
-                <form name="form" #f="ngForm" novalidate>
-                  <div class="card-body">
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5">Tag:</label>
-                        <span>{{ model.tag }}</span>
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label class="pr5">Type:</label>
-                        <span>{{ model.itemType }}</span>
-                      </div>
+                <div class="card-body">
+                  <p class="card-text"><strong>Open Repairs</strong></p>
+                  <div>
+                    <div class="float-left">
+                      <span>Show
+                        <select [(ngModel)]="repairsForPagination">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select>
+                        entries
+                      </span>
                     </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="warrantyType"
-                          >Warranty Type:</label
-                        >
-                        <span>{{ model.warrantyType }}</span>
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="warrantyExp"
-                          >warranty Exp:</label
-                        >
-                        <span>{{
-                          model.warrantyExpiration | date : "MM/dd/yyyy"
-                        }}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="job">JOB Number :</label>
-                        <span>{{ model.jobNumber }}</span>
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="po">PO Number :</label>
-                        <span>{{ model.poNumber }}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="job">Location :</label>
-                        <span>{{ model.repairLocationName }}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="title">Title:</label>
-                        <span>{{ model.title }}</span>
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="vendor">Vendor:</label>
-                        <span>{{ model.repairVendorName }}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="details">Details:</label>
-                        <span>{{ model.repairNotes }}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="estimatedDate"
-                          >Estimated Completion Date:</label
-                        >
-                        <span>{{
-                          model.estimatedCompletion | date : "MM/dd/yyyy"
-                        }}</span>
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="repairCost">Repair Cost:</label>
-                        <span>{{ model.repairCost | currency }}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label for="VendorWarranty">Vendor Warranty:</label>
-                        <input type="checkbox" [(ngModel)]="model.isVendorWarranty" name="VendorWarranty" #VendorWarranty="ngModel"
-                        id="VendorWarranty">
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label for="repairCost">Repair Type:</label>
-                        <span>{{model.repairType}}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="repairstatus"
-                          >Repair Status:</label
-                        >
-                        <span>{{ model.repairJobStatus }}</span>
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="failureDate"
-                          >Failure Date:</label
-                        >
-                        <span>{{
-                          model.failureDate | date : "MM/dd/yyyy"
-                        }}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="failuretype"
-                          >Failure Type:</label
-                        >
-                        <span>{{ model.failureType }}</span>
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="failurecause"
-                          >Failure Cause:</label
-                        >
-                        <span>{{ model.failureCause }}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <label class="pr5">Secondary Findings and Causes:</label>
-                    </div>
-                    <ng-container
-                      *ngFor="let sitem of model.secondaryTypeAndCauses"
-                    >
-                      <div class="row space">
-                        <div class="form-group col-sm-6">
-                          <label class="pr5" for="failuretype"
-                            >Failure Type:</label
-                          >
-                          <span>{{ sitem.failureType }}</span>
-                        </div>
-                        <div class="form-group col-sm-6">
-                          <label class="pr5" for="failurecause"
-                            >Failure Cause:</label
-                          >
-                          <span>{{ sitem.failureCause }}</span>
-                        </div>
-                      </div>
-                    </ng-container>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="complete">Complete:</label>
-                        <input
-                          type="checkbox"
-                          [(ngModel)]="model.complete"
-                          name="complete"
-                          #complete="ngModel"
-                          id="complete"
-                        />
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="actualCompletion"
-                          >Actual Completion:</label
-                        >
-                        <span>{{
-                          model.actualCompletion | date : "MM/dd/yyyy"
-                        }}</span>
-                      </div>
-                    </div>
-                    <div class="row space">
-                      <div class="form-group col-sm-6">
-                        <label class="pr5" for="Completed By"
-                          >Completed By:</label
-                        >
-                        <span>{{ model.completedBy }}</span>
-                      </div>
-                    </div>
-
-                    <div class="row space"></div>
                   </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          <div class="animated fadeIn" *ngIf="itemRank > 0">
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="card">
-                  <div class="card-body">
-                    <p class="card-text"><strong>Open Repairs</strong></p>
-                    <div>
-                      <div class="float-left">
-                        <span
-                          >Show
-                          <select [(ngModel)]="repairsForPagination">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>25</option>
-                            <option>50</option>
-                          </select>
-                          entries
-                        </span>
-                      </div>
-                    </div>
-                    <div class="float-right div-search">
-                      <span>Search : </span>
-                      <input [(ngModel)]="itemRepairsFilter" />
-                    </div>
-                    <table
-                      class="table table-responsive-sm table-hover table-outline mb-0"
-                    >
-                      <thead class="thead-light">
-                        <tr>
-                          <th
-                            [class.active]="order === 'title'"
-                            (click)="setOrder('title')"
-                          >
-                            Title<span [hidden]="reverse == ''">▼</span
-                            ><span [hidden]="reverse != ''">▲</span>
-                          </th>
-                          <th
-                            [class.active]="order === 'jobNumber'"
-                            (click)="setOrder('jobNumber')"
-                          >
-                            Job Number<span [hidden]="reverse == ''">▼</span
-                            ><span [hidden]="reverse != ''">▲</span>
-                          </th>
-                          <th
-                            [class.active]="order === 'poNumber'"
-                            (click)="setOrder('poNumber')"
-                          >
-                            PO Number<span [hidden]="reverse == ''">▼</span
-                            ><span [hidden]="reverse != ''">▲</span>
-                          </th>
-                          <th
-                            [class.active]="order === 'warrantyType'"
-                            (click)="setOrder('warrantyType')"
-                          >
-                            Warranty Type<span [hidden]="reverse == ''">▼</span
-                            ><span [hidden]="reverse != ''">▲</span>
-                          </th>
-                          <th
-                            [class.active]="completedOrder === 'Attachments'"
-                            (click)="setCompletedOrder('Attachments')"
-                          >
-                            Attachments<span [hidden]="completedReverse == ''"
-                              >▼</span
-                            ><span [hidden]="completedReverse != ''">▲</span>
-                          </th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <tr
-                          *ngFor="
-                            let repair of repairs
-                              | orderBy : reverse + order
-                              | filterBy
-                                : [
-                                    'itemType',
-                                    'title',
-                                    'jobNumber',
-                                    'poNumber',
-                                    'warrantyType'
-                                  ]
-                                : itemRepairsFilter
-                              | paginate
-                                : {
-                                    itemsPerPage: repairsForPagination,
-                                    currentPage: page1,
-                                    id: 'p1'
-                                  }
-                          "
-                        >
-                          <td>{{ repair.title }}</td>
-                          <td>{{ repair.jobNumber }}</td>
-                          <td>{{ repair.poNumber }}</td>
-                          <td>{{ repair.warrantyType }}</td>
-                          <td>
-                            <ng-container
-                              *ngFor="let attachment of repair.attachmentList"
-                            >
-                              <br /><a
-                                href="javascript:void(0)"
-                                data-bs-placement="bottom"
-                                data-bs-toggle="tooltip"
-                                title="View this ItemRepair Attachment"
-                                (click)="downloadFile(attachment)"
-                                >{{ attachment.fileName }}</a
-                              >
-                            </ng-container>
-                          </td>
-
-                          <td>
-                            <button
-                              type="button"
-                              *ngIf="itemRank > 0"
-                              data-bs-placement="bottom"
-                              data-bs-toggle="tooltip"
-                              title="Click here to View this ItemRepair"
-                              class="btn btn-outline-danger btn-sm"
-                              (click)="ViewItemRepair(repair.repairLogId)"
-                            >
-                              View
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <pagination-controls
-                      class="my-pagination"
-                      (pageChange)="page1 = $event"
-                      id="p1"
-                    >
-                    </pagination-controls>
+                  <div class="float-right div-search">
+                    <span>Search : </span>
+                    <input [(ngModel)]="itemRepairsFilter" />
                   </div>
+                  <table class="table table-responsive-sm table-hover table-outline mb-0">
+                    <thead class="thead-light">
+                      <tr>
+                        <th (click)="setOrder('title')">Title</th>
+                        <th (click)="setOrder('jobNumber')">Job Number</th>
+                        <th (click)="setOrder('poNumber')">PO Number</th>
+                        <th (click)="setOrder('warrantyType')">Warranty Type</th>
+                        <th (click)="setCompletedOrder('Attachments')">Attachments</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let repair of repairs">
+                        <td>{{ repair.title }}</td>
+                        <td>{{ repair.jobNumber }}</td>
+                        <td>{{ repair.poNumber }}</td>
+                        <td>{{ repair.warrantyType }}</td>
+                        <td>
+                          <ng-container *ngFor="let attachment of repair.attachmentList">
+                            <br /><a href="javascript:void(0)" (click)="downloadFile(attachment)">
+                              {{ attachment.fileName }}
+                            </a>
+                          </ng-container>
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            *ngIf="itemRank > 0"
+                            class="btn btn-outline-danger btn-sm btn-group"
+                            (click)="ViewItemRepair(repair.repairLogId)"
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <pagination-controls (pageChange)="page1 = $event" id="p1"></pagination-controls>
                 </div>
               </div>
-              <div class="col-lg-12">
-                <div class="card">
-                  <div class="card-body">
-                    <p class="card-text"><strong>Previous Repairs</strong></p>
-                    <div>
-                      <div class="float-left">
-                        <span
-                          >Show
-                          <select [(ngModel)]="completedRepairsForPagination">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>25</option>
-                            <option>50</option>
-                          </select>
-                          entries
-                        </span>
-                      </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-text"><strong>Previous Repairs</strong></p>
+                  <div>
+                    <div class="float-left">
+                      <span>Show
+                        <select [(ngModel)]="completedRepairsForPagination">
+                          <option>5</option>
+                          <option>10</option>
+                          <option>25</option>
+                          <option>50</option>
+                        </select>
+                        entries
+                      </span>
                     </div>
-                    <div class="float-right div-search">
-                      <span>Search : </span>
-                      <input [(ngModel)]="completedRepairsFilter" />
-                    </div>
-                    <table
-                      class="table table-responsive-sm table-hover table-outline mb-0"
-                    >
-                      <thead class="thead-light">
-                        <tr>
-                          <th
-                            [class.active]="completedOrder === 'Date'"
-                            (click)="setCompletedOrder('Date')"
-                          >
-                            Date<span [hidden]="completedReverse == ''">▼</span
-                            ><span [hidden]="completedReverse != ''">▲</span>
-                          </th>
-                          <th
-                            [class.active]="completedOrder === 'title'"
-                            (click)="setCompletedOrder('title')"
-                          >
-                            Title<span [hidden]="completedReverse == ''">▼</span
-                            ><span [hidden]="completedReverse != ''">▲</span>
-                          </th>
-                          <th
-                            [class.active]="completedOrder === 'jobNumber'"
-                            (click)="setCompletedOrder('jobNumber')"
-                          >
-                            Job Number<span [hidden]="completedReverse == ''"
-                              >▼</span
-                            ><span [hidden]="completedReverse != ''">▲</span>
-                          </th>
-                          <th
-                            [class.active]="completedOrder === 'poNumber'"
-                            (click)="setCompletedOrder('poNumber')"
-                          >
-                            PO Number<span [hidden]="completedReverse == ''"
-                              >▼</span
-                            ><span [hidden]="completedReverse != ''">▲</span>
-                          </th>
-                          <th
-                            [class.active]="completedOrder === 'By'"
-                            (click)="setCompletedOrder('By')"
-                          >
-                            By<span [hidden]="completedReverse == ''">▼</span
-                            ><span [hidden]="completedReverse != ''">▲</span>
-                          </th>
-                          <th
-                            [class.active]="completedOrder === 'Attachments'"
-                            (click)="setCompletedOrder('Attachments')"
-                          >
-                            Attachments<span [hidden]="completedReverse == ''"
-                              >▼</span
-                            ><span [hidden]="completedReverse != ''">▲</span>
-                          </th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <tr
-                          *ngFor="
-                            let repair of completedRepairs
-                              | orderBy : completedReverse + completedOrder
-                              | filterBy
-                                : [
-                                    'itemType',
-                                    'Date',
-                                    'title',
-                                    'jobNumber',
-                                    'poNumber',
-                                    'By'
-                                  ]
-                                : completedRepairsFilter
-                              | paginate
-                                : {
-                                    itemsPerPage: completedRepairsForPagination,
-                                    currentPage: page2,
-                                    id: 'p2'
-                                  }
-                          "
-                        >
-                          <td>
-                            {{ repair.actualcompletion | date : "MM/dd/yyyy" }}
-                          </td>
-                          <td>{{ repair.title }}</td>
-                          <td>{{ repair.jobNumber }}</td>
-                          <td>{{ repair.poNumber }}</td>
-                          <td>{{ repair.completedBy }}</td>
-                          <td>
-                            <ng-container
-                              *ngFor="let attachment of repair.attachmentList"
-                            >
-                              <br /><a
-                                href="javascript:void(0)"
-                                data-bs-placement="bottom"
-                                data-bs-toggle="tooltip"
-                                title="View this ItemRepair Attachment"
-                                (click)="download(attachment)"
-                                >{{ attachment.fileName }}</a
-                              >
-                            </ng-container>
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              *ngIf="itemRank > 0"
-                              data-bs-placement="bottom"
-                              data-bs-toggle="tooltip"
-                              title="Click here to View this ItemRepair"
-                              class="btn btn-outline-danger btn-sm"
-                              (click)="ViewItemRepair(repair.repairlogid)"
-                            >
-                              View
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <pagination-controls
-                      class="my-pagination"
-                      (pageChange)="page2 = $event"
-                      id="p2"
-                    >
-                    </pagination-controls>
                   </div>
+                  <div class="float-right div-search">
+                    <span>Search : </span>
+                    <input [(ngModel)]="completedRepairsFilter" />
+                  </div>
+                  <table class="table table-responsive-sm table-hover table-outline mb-0">
+                    <thead class="thead-light">
+                      <tr>
+                        <th (click)="setCompletedOrder('Date')">Date</th>
+                        <th (click)="setCompletedOrder('title')">Title</th>
+                        <th (click)="setCompletedOrder('jobNumber')">Job Number</th>
+                        <th (click)="setCompletedOrder('poNumber')">PO Number</th>
+                        <th (click)="setCompletedOrder('By')">By</th>
+                        <th (click)="setCompletedOrder('Attachments')">Attachments</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let repair of completedRepairs">
+                        <td>{{ repair.actualCompletion | date:'MM/dd/yyyy' }}</td>
+                        <td>{{ repair.title }}</td>
+                        <td>{{ repair.jobNumber }}</td>
+                        <td>{{ repair.poNumber }}</td>
+                        <td>{{ repair.completedBy }}</td>
+                        <td>
+                          <ng-container *ngFor="let attachment of repair.attachmentList">
+                            <br /><a href="javascript:void(0)" (click)="download(attachment)">
+                              {{ attachment.fileName }}
+                            </a>
+                          </ng-container>
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            *ngIf="itemRank > 0"
+                            class="btn btn-outline-danger btn-sm"
+                            (click)="ViewItemRepair(repair.repairLogId)"
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <pagination-controls (pageChange)="page2 = $event" id="p2"></pagination-controls>
                 </div>
               </div>
             </div>
@@ -602,125 +369,49 @@
       </div>
     </div>
   </div>
-
-  <ng-template #confirmtemplate>
-    <div class="modal-body text-center">
-      <p>
-        Click(Yes) to permanently delete this ItemRepair or Click(No) to discard
-        This action.
-      </p>
-      <button
-        type="button"
-        class="btn btn-primary btn-right"
-        (click)="confirm()"
-      >
-        Yes
-      </button>
-      <button type="button" class="btn btn-primary" (click)="decline()">
-        No
-      </button>
-    </div>
-  </ng-template>
 </div>
+
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center">
+    <p>
+      Click(Yes) to permanently delete this ItemRepair or Click(No) to discard
+      This action.
+    </p>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
+  </div>
+</ng-template>
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 2; cursor: pointer; transform: translate(-1%, -1%);"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: absolute;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
     margin: -75px 0 0 -75px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
+  .animate-bottom { position: relative; animation: animatebottom 1s; }
   @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  .btn-link[routerLink="/forgot-password"] { color: red; }
+  .cent { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 </style>

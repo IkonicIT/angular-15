@@ -50,16 +50,15 @@ export class ItemChangeLogComponent implements OnInit {
     this.journalId = route.snapshot.params['journalId'];
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
-    console.log('itemId=' + this.itemId);
     if (this.companyId) {
       this.getAllNotes(this.companyId);
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -83,11 +82,9 @@ export class ItemChangeLogComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-
-          console.log(response);
           this.notes = response;
           if (this.notes.length == 1) {
-            this.goToView(this.notes[0].journalid);
+            this.goToView(this.notes[0].journalId);
           }
         },
         (error) => {
@@ -97,7 +94,6 @@ export class ItemChangeLogComponent implements OnInit {
   }
 
   addNotes() {
-    console.log(this.itemId);
     this.router.navigate(['/items/addItemNotes/' + this.itemId]);
   }
 
@@ -111,9 +107,9 @@ export class ItemChangeLogComponent implements OnInit {
     this.ngOnInit();
   }
 
-  editItemNotes(notes: { journalid: string }) {
+  editItemNotes(notes: { journalId: string }) {
     this.router.navigate([
-      '/items/editItemNotes/' + notes.journalid + '/' + this.itemId,
+      '/items/editItemNotes/' + notes.journalId + '/' + this.itemId,
     ]);
   }
 
@@ -135,24 +131,24 @@ export class ItemChangeLogComponent implements OnInit {
     this.order = value;
   }
 
-  goToView(journalid: number) {
-    this.journalId = journalid;
+  goToView(journalId: number) {
+    this.journalId = journalId;
     this.spinner.show();
 
-    this.itemNotesService.getItemNotes(journalid).subscribe((response) => {
+    this.itemNotesService.getItemNotes(journalId).subscribe((response) => {
       this.spinner.hide();
 
       window.scroll(0, 0);
       this.model = response;
 
-      if (this.model.enteredon) {
-        this.model.enteredon = new Date(this.model.enteredon);
+      if (this.model.enteredOn) {
+        this.model.enteredOn = new Date(this.model.enteredOn);
       }
     });
   }
 
   addAttachments() {
-    this.broadcasterService.currentNoteAttachmentTitle = this.model.entityname;
+    this.broadcasterService.currentNoteAttachmentTitle = this.model.entityName;
     this.router.navigate([
       '/items/itemChangeLogAttachments/' + this.itemId + '/' + this.journalId,
     ]);
@@ -170,11 +166,11 @@ export class ItemChangeLogComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { new?: boolean; attachmentID?: any }) {
+  downloadDocumentFromDB(document: { new?: boolean; attachmentId?: any }) {
     this.spinner.show();
 
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentID)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
@@ -189,7 +185,7 @@ export class ItemChangeLogComponent implements OnInit {
   downloadDocument(companyDocument: any) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
@@ -198,7 +194,7 @@ export class ItemChangeLogComponent implements OnInit {
   downloadFile(attachment: {
     new?: boolean;
     fileName?: any;
-    attachmentID?: any;
+    attachmentId?: any;
   }) {
     var index = attachment.fileName.lastIndexOf('.');
     var extension = attachment.fileName.slice(index + 1);
@@ -207,29 +203,24 @@ export class ItemChangeLogComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
       <h4>Pdf viewer</h4>
       <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentID + '?access_token=' + this.authToken
+        attachment.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
         </div>
         <script>
           function reloadIFrame() {
             var iframe = document.getElementById("iFrame");
-              console.log(iframe); //work control
-              console.log(iframe.contentDocument); //work control
               if(iframe.contentDocument.URL == "about:blank"){
-                console.log("loaded");
                 iframe.src =  iframe.src;
               }
             }
             var timerId = setInterval("reloadIFrame();", 1300);
             setTimeout(() => {
               clearInterval(timerId);
-              console.log("Finally Loaded");
               }, 25000);
   
             $( document ).ready(function() {
                 $('#menuiFrame').on('load', function() {
                     clearInterval(timerId);
-                    console.log("Finally Loaded"); //work control
                 });
             });
           </script>
@@ -245,7 +236,7 @@ export class ItemChangeLogComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
       <h4>Image Viewer</h4>
       <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentID + '?access_token=' + this.authToken
+        attachment.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" >
         </div>`;
 
@@ -254,7 +245,7 @@ export class ItemChangeLogComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          attachment.attachmentID +
+          attachment.attachmentId +
           '?access_token=' +
           this.authToken
       );

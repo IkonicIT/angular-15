@@ -266,11 +266,22 @@ button {
   transform: translate(-50%, -50%);
 }
 
-/* ---------- END MOVED BLOCK ---------- */
+.custom-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .custom-dropdown-arrow {
   position: absolute;
-  top: 45%; 
-  right: 28px;
+  top: 50%;
+  right: 12px;
   transform: translateY(-50%);
   pointer-events: none;
   width: 0;

@@ -11,135 +11,119 @@
             (Item type, Tag, Status and Location)
           </alert>
           <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
-            Please Enter Required Attribute Fields (Attributes with * beside them are mandatory). <br />
+            Please Enter Required Attribute Fields(Attributes with * beside them
+            are mandatory). <br />
           </alert>
-
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
                 <div class="form-group col-sm-12 text-right">
-                  <button
-                    type="button"
-                    (click)="print()"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Click to Print this Page"
-                    class="btn btn-outline-danger btn-sm btn-right btn-top"
-                    style="border-radius: 6px;"
-                    >
-                    
+                  <button type="button" (click)="print()" data-bs-placement="bottom" data-bs-toggle="tooltip"
+                    title="Click to Print this Page" class="btn btn-outline-danger btn-sm btn-right btn-top">
                     Print
                   </button>
-                  <button
-                    type="button"
-                    (click)="help()"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title=" Instructions"
-                    class="btn btn-outline-danger btn-sm btn-top"
-                    style="border-radius: 6px;"
-                    >
+                  <button type="button" (click)="help()" data-bs-placement="bottom" data-bs-toggle="tooltip"
+                    title=" Instructions" class="btn btn-outline-danger btn-sm btn-top">
                     Help
                   </button>
-
-                  <div
-                    *ngIf="helpFlag"
-                    style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;">
+                  <div style="
+                      text-align: left;
+                      border: 1px solid;
+                      width: fit-content;
+                      background-color: whitesmoke;
+                    " *ngIf="helpFlag == true">
                     Note: Mandatory Fields are required.<br />
                     *To add a new item:<br />
-                    1. Enter the data for the new item.<br />
-                    2. Click the 'Save' button.<br />
+                    1.Enter the data for the new item.<br />
+                    2.Click the 'Save' button.<br />
                     *To edit an existing item: <br />
-                    1. Enter the tag number and click 'Search' or click the 'Edit' button.<br />
-                    2. If more than one item type is found for the tag number,
-                    select the desired type in the 'Select Type' drop down list.<br />
-                    3. Make the necessary changes.<br />
-                    4. Click the 'Save' button.
+                    1.Enter the tag number and click 'Search' or click the
+                    'Edit' button.<br />
+                    2.If more than one item type is found for the tag number,
+                    select the desired type in the 'Select Type' drop down
+                    list.<br />
+                    3.Make the necessary changes.<br />
+                    4.Click the 'Save' button.
                   </div>
                 </div>
-
                 <div class="card-header">
                   <strong style="color: red">ADD ITEM </strong>
                 </div>
-
                 <form name="form" #f="ngForm" novalidate>
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="type">Item Type <strong class="text-danger">*</strong></label>
-                        <div class="custom-dropdown-wrapper1">
-                        <app-dropdown-treeview-select
+                        <label for="type">Item Type
+                          <strong class="text-danger">*</strong></label>
+                          <div class="custom-dropdown-wrapper">
+                     <app-dropdown-treeview-select
                           [items]="itemTypeItems"
                           [(value)]="model.typeId"
                           id="type"
-                          (valueChange)="getItemTypeAttributes(model.typeId, $event)">
+                          (valueChange)="
+                            getItemTypeAttributes(model.typeId, $event)
+                          "
+                        >
                         </app-dropdown-treeview-select>
                         <span class="custom-dropdown-arrow"></span>
-                        </div>
                       </div>
-
+                      </div>
                       <div class="form-group col-sm-6">
-                        <label for="tag">Item Tag# <strong class="text-danger">*</strong></label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          [readonly]="model.typeId == null"
-                          (change)="checkItemTag($event)"
-                          [(ngModel)]="model.tag"
-                          [ngModelOptions]="{standalone: true}"
-                          id="tag"
+                        <label for="tag">Item Tag#
+                          <strong class="text-danger">*</strong></label>
+                        <input type="text" class="form-control" [readonly]="model.typeId == null"
+                          (change)="checkItemTag($event)" [(ngModel)]="model.tag" name="tag" #tag="ngModel" id="tag"
                           placeholder="Enter Item Tag" />
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="form-group col-sm-6"></div>
                       <div class="form-group col-sm-6">
-                        <label>Tag Check:</label>
-                        <label style="color: red" *ngIf="model.typeId == null">
-                          *Select Item type before entering tag#
-                        </label><br />
+                        <label for="name">Tag Check:</label>
+                        <label for="name" style="color: red" *ngIf="model.typeId == null">*Select Item type before
+                          entering tag# </label><br />
 
-                        <span
-                          class="form-control"
-                          style="color: red"
-                          *ngIf="isDuplicateTag && model.typeId && model.tag">
+                        <span class="form-control" style="color: red" *ngIf="
+                            isDuplicateTag &&
+                            model.typeId != null &&
+                            model.tag != ''
+                          ">
                           Tag already exists
                         </span>
-                        <span
-                          class="form-control"
-                          style="color: blue"
-                          *ngIf="!isDuplicateTag && model.typeId && model.tag">
+                        <span class="form-control" style="color: blue" *ngIf="
+                            !isDuplicateTag &&
+                            model.typeId != null &&
+                            model.tag != null &&
+                            model.tag != ''
+                          ">
                           Tag Available
                         </span>
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="name">Name</label>
-                        <input
-                          type="text"
-                          class="form-control add-item-background"
-                          [(ngModel)]="model.name"
-                          [ngModelOptions]="{standalone: true}"
-                          id="name"
-                          placeholder="Enter Item Name" />
+                        <input type="text" class="form-control add-item-background" [(ngModel)]="model.name" name="name"
+                          #name="ngModel" id="name" placeholder="Enter Item Name" />
                       </div>
-
                       <div class="form-group col-sm-6">
-                        <label for="status">Select Status <strong class="text-danger">*</strong></label>
-                        <select
+                        <label for="name">Select Status
+                          <strong class="text-danger">*</strong></label>
+                       <select
                           class="form-control add-item-background"
                           [(ngModel)]="model.statusId"
-                          [ngModelOptions]="{standalone: true}"
-                          id="status">
-                          <option value="0" selected>Choose Status</option>
+                          name="status"
+                          #status="ngModel"
+                          id="status"
+                        >
+                          <option value="0" selected="true">
+                            Choose Status
+                          </option>
                           <option
                             [ngValue]="status.statusId"
-                            *ngFor="let status of statuses">
-                            {{ status.status }}
-                          </option>
+                            *ngFor="let status of statuses"
+                            [innerHTML]="status.status"
+                          ></option>
                         </select>
                       </div>
                     </div>
@@ -147,100 +131,213 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="price">Purchase price</label>
-                        <input
-                          type="number"
-                          class="form-control add-item-background"
-                          [(ngModel)]="model.purchasePrice"
-                          [ngModelOptions]="{standalone: true}"
-                          id="price" />
+                        <input type="number" class="form-control add-item-background" [(ngModel)]="model.purchasePrice"
+                          id="price" name="critical" />
                       </div>
-
                       <div class="form-group col-sm-6">
                         <label for="date">Purchase Date</label>
-                        <input
-                          type="text"
-                          class="form-control add-item-background"
-                          [(ngModel)]="model.purchaseDate"
-                          [ngModelOptions]="{standalone: true}"
-                          id="date"
-                          bsDatepicker />
+                        <input type="text" class="form-control add-item-background" [(ngModel)]="model.purchaseDate"
+                          id="date" name="critical" bsDatepicker />
                       </div>
                     </div>
 
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="mtbs">MTBS</label>
+                        <input type="number" class="form-control add-item-background" [(ngModel)]="model.mtbs" id="mtbs"
+                          name="mtbs" />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="spareratio">Desired Spare Ratio</label>
+                        <input type="number" class="form-control add-item-background" [(ngModel)]="model.spareRatio"
+                          id="spareratio" name="spareratio" />
+                      </div>
+                    </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="warranty">Warranty Type</label>
-                        <select
-                          class="form-control add-item-background custom-dropdown"
-                          [(ngModel)]="model.warrantyTypeId"
-                          [ngModelOptions]="{standalone: true}"
-                          id="warranty">
-                          <option value="0" selected>Select Warranty Type</option>
-                          <option
-                            [ngValue]="type.warrantyTypeId"
-                            *ngFor="let type of warrantyTypes">
-                            {{ type.warrantyType }}
+                        <select class="form-control add-item-background custom-dropdown"
+                          [(ngModel)]="model.warrantyTypeId" name="warranty" #warranty="ngModel" id="warranty">
+                          <option value="0" selected="true">
+                            Select Warranty Type
                           </option>
+                          <option [ngValue]="type.warrantyTypeId" *ngFor="let type of warrantyTypes"
+                            [innerHTML]="type.warrantyType"></option>
                         </select>
                       </div>
-
                       <div class="form-group col-sm-6">
                         <label for="exp">Warranty Exp.</label>
-                        <input
-                          type="text"
-                          class="form-control add-item-background"
-                          [(ngModel)]="model.warrantyExpiration"
-                          [ngModelOptions]="{standalone: true}"
-                          id="exp"
-                          bsDatepicker />
+                        <input type="text" class="form-control add-item-background"
+                          [(ngModel)]="model.warrantyExpiration" id="exp" name="exp" bsDatepicker />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-sm-12">
+                        <label for="location">Location
+                          <strong class="text-danger">*</strong></label>
+  <app-dropdown-treeview-select
+                          [items]="locationItems"
+                          [(value)]="model.locationId"
+                          (valueChange)="onValueChange($event)"
+                        >
+                        </app-dropdown-treeview-select>
+
                       </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" *ngIf="!existingLocationFlag">
+                      <alert *ngIf="locationIndex > 0" type="success" [dismissible]="dismissible">
+                        Location Added Successfully.
+                      </alert>
+                      <alert type="danger" *ngIf="locationIndex == -1">
+                        Please Enter Required Fields. <br />
+                        ( LocationName and Type of Location are required)
+                      </alert>
                       <div class="form-group col-sm-12">
-                        <label for="location">Location <strong class="text-danger">*</strong></label>
-                        <div class="custom-dropdown-wrapper">
-                        <app-dropdown-treeview-select
-                          [items]="locationItems"
-                          [(value)]="model.locationId"
-                          (valueChange)="onValueChange($event)">
-                        </app-dropdown-treeview-select>
-                        <span class="custom-dropdown-arrow1"></span>
+                        <label for="location">
+                          Add New Location:
+                          <strong class="text-danger">*</strong></label>
+                        <label for="location">(Select Location To Add New Location)</label>
+                        <button type="button" [disabled]="addLocationFlag == 0" class="btn btn-primary btn-right"
+                          (click)="newLocation()" data-bs-placement="bottom" data-bs-toggle="tooltip"
+                          title=" Click here to add New Location">
+                          Yes
+                        </button>
+
+                        <button type="button" class="btn btn-primary" (click)="existingLocation()"
+                          data-bs-placement="bottom" data-bs-toggle="tooltip" title="Existing Location">
+                          No
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="card-body" *ngIf="newLocationFlag">
+                      <div class="row">
+                        <div class="form-group col-sm-6">
+                          <label for="name">Location Name
+                            <strong class="text-danger">*</strong></label>
+                          <input type="text" [(ngModel)]="locationModel._id" name="_id" #_id="ngModel" id="_id"
+                            hidden />
+                          <input type="text" class="form-control" [(ngModel)]="locationModel.locationName" name="name"
+                            #name="ngModel" id="name" placeholder="Enter Location Name" />
+                        </div>
+                        <div class="form-group col-sm-6">
+                          <label for="type">Type Of Location
+                            <strong class="text-danger">*</strong></label>
+                            <div class="custom-dropdown-wrapper">
+                            <app-dropdown-treeview-select [items]="locationTypeItems" id="type"
+                            [(value)]="locationModel.locationTypeId" (valueChange)="
+                              getItemTypeAttributesClone(model.locationTypeId)
+                            ">
+                          </app-dropdown-treeview-select>
+                          <span class="custom-dropdown-arrow"></span>
+                          </div>
                         </div>
                       </div>
+
+                      <div class="row">
+                        <div class="form-group col-sm-6">
+                          <label for="status">Status</label>
+                          <select class="form-control custom-dropdown" [(ngModel)]="locationModel.statusId"
+                            name="status" #status="ngModel" id="status">
+                            <option value="">Choose..</option>
+                            <option [value]="stat.statusId" [ngValue]="stat.statusId"
+                              *ngFor="let stat of locationStatuses" [innerHTML]="stat.status"></option>
+                          </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                          <label for="critical">Critical</label>
+                          <input type="checkbox" [checked]="locationModel.critical" id="critical" name="critical" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-sm-12">
+                          <label for="description">Description</label>
+                          <input type="text" class="form-control" [(ngModel)]="locationModel.description"
+                            name="description" #description="ngModel" id="description" />
+                        </div>
+                      </div>
+
+                      <button type="button" class="btn btn-primary" (click)="saveLocation()" data-bs-placement="bottom"
+                        data-bs-toggle="tooltip" title="Save Location"
+                        style="border-radius: 6px;">
+                        Save Location
+                      </button>
                     </div>
 
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="description">Description</label>
-                        <input
-                          type="text"
-                          class="form-control add-item-background"
-                          [(ngModel)]="model.description"
-                          [ngModelOptions]="{standalone: true}"
-                          id="description" />
+                        <input type="text" class="form-control add-item-background" [(ngModel)]="model.description"
+                          name="description" #description="ngModel" id="description" />
                       </div>
                     </div>
 
+                    <div class="row" *ngFor="let eachAttr of typeAttributes; let i = index">
+                      <div class="form-group col-sm-12">
+                        <label *ngIf="eachAttr.isRequired == true">{{ eachAttr.name
+                          }}<span style="color: red"><Strong>*</Strong></span></label>
+                        <label *ngIf="eachAttr.isRequired == false">{{
+                          eachAttr.name
+                          }}</label>
+                        <div>
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId == 1" type="number" class="form-control"
+                            [(ngModel)]="eachAttr.value" [tooltip]="eachAttr.tooltip" name="number{{ index }}"
+                            #state="ngModel" placeholder="Enter Value" />
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId == 2" type="text" class="form-control"
+                            [(ngModel)]="eachAttr.value" name="text{{ i }}" />
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId == 6" type="text" class="form-control"
+                            [(ngModel)]="eachAttr.value" name="multiValue{{ i }}" />
+                          <input *ngIf="eachAttr.attributeType.attributeTypeId == 3" type="date" class="form-control"
+                            [tooltip]="eachAttr.tooltip" [(ngModel)]="eachAttr.value" name="date{{ index }}"
+                            #state="ngModel" placeholder="Select date" />
+                          <select *ngIf="eachAttr.attributeType.attributeTypeId == 4"
+                            class="form-control custom-dropdown" [tooltip]="eachAttr.tooltip"
+                            [(ngModel)]="eachAttr.value" name="select{{ index }}" #type="ngModel">
+                            <option value="">Choose..</option>
+                            <option [ngValue]="list.listItem" *ngFor="
+                                let list of eachAttr.attributeListItemResource
+                              ">
+                              {{ list.listItem }}
+                            </option>
+                          </select>
+                          <div class="form-check d-flex align-items-center gap-3" *ngIf="eachAttr.attributeType.attributeTypeId == 5">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value"
+                                name="radios{{ i }}" id="radio1" value="True" checked />
+                              <label class="form-check-label" for="radio1">Y</label>
+                            </div>
+                          
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value"
+                                name="radios{{ i }}" id="radio2" value="False" />
+                              <label class="form-check-label" for="radio2">N</label>
+                            </div>
+                          
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" [(ngModel)]="eachAttr.value"
+                                name="radios{{ i }}" id="radio3" value="N/A" />
+                              <label class="form-check-label" for="radio3">N/A</label>
+                            </div>
+                          </div>
+                          
+                          <textarea *ngIf="
+                              eachAttr.attributeType.attributeTypeId == 7
+                            " name="textarea{{ i }}" rows="2" cols="4" class="form-control"
+                            [(ngModel)]="eachAttr.value" placeholder="Enter Value"></textarea>
+                        </div>
+                      </div>
+                    </div>
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button
-                          class="btn btn-primary btn-right"
-                          (click)="saveItem()"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Save Item"
+                        <button class="btn btn-primary btn-right" (click)="saveItem()" data-bs-placement="bottom"
+                          data-bs-toggle="tooltip" title="Save Item"
                           style="border-radius: 6px;">
                           Save
                         </button>
-                        <button
-                          type="button"
-                          [routerLink]="['../../items']"
-                          data-bs-placement="bottom"
+                        <button type="button" [routerLink]="['../../items']" data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
-                          style="border-radius: 6px;"
-                          title="Cancel"
-                          class="btn btn-primary">
+                          style="border-radius: 6px;" title="Cancel" class="btn btn-primary">
                           Cancel
                         </button>
                       </div>
@@ -249,9 +346,108 @@
                 </form>
               </div>
             </div>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<div *ngIf="loader" style="
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    cursor: pointer;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-1%, -1%);
+  ">
+  <div _ngcontent-c0="" class="loader"></div>
+</div>
+<style>
+  .loader {
+    position: fixed;
+    left: 60%;
+    top: 60%;
+    z-index: 1;
+    width: 75px;
+    height: 75px;
+    margin: -75px 0 0 -75px;
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid red;
+    width: 60px;
+    height: 60px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+  }
+
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Add animation to "page content" */
+  .animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s;
+  }
+
+  @-webkit-keyframes animatebottom {
+    from {
+      bottom: -100px;
+      opacity: 0;
+    }
+
+    to {
+      bottom: 0px;
+      opacity: 1;
+    }
+  }
+
+  @keyframes animatebottom {
+    from {
+      bottom: -100px;
+      opacity: 0;
+    }
+
+    to {
+      bottom: 0;
+      opacity: 1;
+    }
+  }
+
+  .btn-link[routerLink="/forgot-password"] {
+    color: red;
+  }
+
+  .cent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>

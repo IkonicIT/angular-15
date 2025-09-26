@@ -245,21 +245,25 @@
                     <div *ngIf="model.isVendor != true" class="row">
                       <div class="form-group col-sm-6">
                         <label for="location">User's Top Location</label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.topLocationId"
                         >
                         </app-dropdown-treeview-select>
-                        <span class="custom-dropdown-arrow1"></span>
+                        <span class="custom-dropdown-arrow"></span>
+                        </div>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="pLocation">User's Preferred Location</label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.preferredLocationId"
                         >
                         </app-dropdown-treeview-select>
                         <span class="custom-dropdown-arrow"></span>
+                      </div>
                       </div>
                     </div>
                     <div class="row">
@@ -277,13 +281,15 @@
                         <label for="vendor">
                           Select Vendor<strong class="text-danger"> *</strong>
                         </label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="vendorItems"
                           [(value)]="model.vendorResource.vendorId"
                           (valueChange)="onVendorChange($event)"
                         >
                         </app-dropdown-treeview-select>
-                        <span class="custom-dropdown-arrow1"></span>
+                        <span class="custom-dropdown-arrow"></span>
+                      </div>
                       </div>
                     </div>
                     <div class="row">

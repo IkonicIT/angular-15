@@ -117,24 +117,23 @@ button,
   border-radius: 6px;
 }
 
-.custom-dropdown-arrow {
-  position: absolute;
-  top: 59%;
-  left: 576px; 
-  transform: translateY(-50%); 
-  pointer-events: none;
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid gray;
+.custom-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
 }
 
-.custom-dropdown-arrow1 {
+.custom-dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-dropdown-arrow {
   position: absolute;
-  top: 59%;
-  right: 32px; 
-  transform: translateY(-50%); 
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
   pointer-events: none;
   width: 0;
   height: 0;

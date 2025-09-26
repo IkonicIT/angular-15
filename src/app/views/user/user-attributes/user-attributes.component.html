@@ -10,7 +10,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
@@ -20,7 +20,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
@@ -307,8 +307,7 @@
                               data-bs-toggle="tooltip"
                               title="Back"
                               (click)="cancelUserAttributes()"
-                              class="btn btn-primary"
-                              style="border-radius: 6px;"
+                              class="btn btn-primary btn-group"
                             >
                               Back
                             </button>
@@ -337,8 +336,8 @@
       Click(Yes) to permanently delete this Attribute or Click(No) to discard
       This action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">Yes</button>
-    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 

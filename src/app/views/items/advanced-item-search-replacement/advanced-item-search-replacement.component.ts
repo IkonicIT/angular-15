@@ -201,7 +201,7 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
     const attributeList = (this.itemModel.attributeValues || [])
       .filter((attr: AttributeValue) => !!attr.value)
       .map((attr: AttributeValue) => ({
-        attributeNameID: attr.attributeNameId,
+        attributeNameId: attr.attributeNameId,
         name: attr.name,
         value: attr.value,
       }));

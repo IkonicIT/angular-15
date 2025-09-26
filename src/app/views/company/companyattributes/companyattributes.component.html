@@ -100,13 +100,15 @@
                       </div>
 
                       <div class="col-sm-3">Select Company Type</div>
-                      <div class="col-sm-4 company-type-dropdown">
+                      <div class="col-sm-4">
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
                           (valueChange)="onValueChange($event)"
                         ></app-dropdown-treeview-select>
                         <span class="custom-dropdown-arrow"></span>
+                        </div>
                       </div>
                       <div class="col-sm-8"></div>
                     </div>

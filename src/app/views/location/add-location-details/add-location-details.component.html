@@ -91,6 +91,7 @@
 
                       <div class="form-group col-sm-6">
                         <label for="type">Type Of Location <strong class="text-danger">*</strong></label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="itemTypeItems"
                           id="type"
@@ -100,6 +101,7 @@
                         </app-dropdown-treeview-select>
                         <span class="custom-dropdown-arrow"></span>
                       </div>
+                    </div>
                     </div>
 
                     <div class="row">
@@ -172,13 +174,15 @@
                     <div class="row">
                       <div class="form-group col-sm-12">
                         <label for="pLocation">Parent Location</label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
                           (valueChange)="onValueChange($event)"
                         >
                         </app-dropdown-treeview-select>
-                        <span class="custom-dropdown-arrow1"></span>
+                        <span class="custom-dropdown-arrow"></span>
+                      </div>
                       </div>
                     </div>
 

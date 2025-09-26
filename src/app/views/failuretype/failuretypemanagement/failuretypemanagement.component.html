@@ -79,11 +79,11 @@
 
                       <div class="col-sm-4 col-padding">
                         <div
-                          class="dropdown-wrapper"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Select ItemType to add Primary Findings & causes"
                         >
+                        <div class="custom-dropdown-wrapper">
                           <app-dropdown-treeview-select
                             [items]="items"
                             [(value)]="value"
@@ -91,6 +91,7 @@
                           >
                           </app-dropdown-treeview-select>
                           <span class="custom-dropdown-arrow"></span>
+                        </div>
                         </div>
                       </div>
                       <div class="col-sm-8 col-padding"></div>

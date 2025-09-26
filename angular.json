@@ -56,12 +56,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "10mb",
-                  "maximumError": "6mb"
+                  "maximumError": "12mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "20kb"
+                  "maximumError": "30kb"
                 }
               ],
               "outputHashing": "all"

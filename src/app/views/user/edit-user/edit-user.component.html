@@ -6,22 +6,26 @@
           <button
             type="button"
             (click)="print()"
-            ngbTooltip="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
+            tooltip="Click to Print this Page"
+            class="btn btn-outline-danger btn-sm btn-group mt-1"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            ngbTooltip=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top btn-group"
+            tooltip=" Instructions"
+            class="btn btn-outline-danger btn-sm btn-group mt-1 ms-1"
           >
             Help
           </button>
           <div
-            class="text-start"
-            style="border: 1px solid; width: fit-content; background-color: whitesmoke;"
+            style="
+              text-align: left;
+              border: 1px solid;
+              width: fit-content;
+              background-color: whitesmoke;
+            "
             *ngIf="helpFlag == true"
           >
             Note: Mandatory Fields are required.<br />
@@ -60,7 +64,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="lType">User Name</label
-                        ><strong class="text-danger"> *</strong>
+                        ><strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -78,25 +82,28 @@
                       >
                         <label for="name">User Name Check:</label> <br />
                         <span
-                          class="form-control text-danger"
+                          class="form-control"
+                          style="color: red"
                           *ngIf="isMinLength == false"
                         >
                           User Name cannot be empty or minimum lengh should be 4
                         </span>
                         <span
-                          class="form-control text-danger"
+                          class="form-control"
+                          style="color: red"
                           *ngIf="isDuplicateTag == true"
                         >
                           User Name already exists
                         </span>
                         <span
-                          class="form-control text-primary"
+                          class="form-control"
+                          style="color: blue"
                           *ngIf="isDuplicateTag == false && isMinLength == true"
                         >
                           User Name Available
                         </span>
                       </div>
-                      <div class="form-group col-sm-6">
+                     <div class="form-group col-sm-6">
                         <label for="commpanyid">Select Company</label
                         ><strong class="text-danger"> *</strong>
                         <select
@@ -118,7 +125,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fname">First Name</label
-                        ><strong class="text-danger"> *</strong>
+                        ><strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -130,7 +137,7 @@
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="lName">Last Name</label
-                        ><strong class="text-danger"> *</strong>
+                        ><strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -168,7 +175,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="email">E-mail</label
-                        ><strong class="text-danger"> *</strong>
+                        ><strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
@@ -184,8 +191,10 @@
                         *ngIf="isEmailCheckVisible == true"
                       >
                         <label for="name">Email Check:</label> <br />
+
                         <span
-                          class="form-control text-danger"
+                          class="form-control"
+                          style="color: red"
                           *ngIf="
                             isDuplicate == true &&
                             model.email != null &&
@@ -195,7 +204,8 @@
                           Email already exists
                         </span>
                         <span
-                          class="form-control text-primary"
+                          class="form-control"
+                          style="color: blue"
                           *ngIf="
                             isDuplicate == false &&
                             model.email != null &&
@@ -245,41 +255,37 @@
                     <div *ngIf="model.isVendor != true" class="row">
                       <div class="form-group col-sm-6">
                         <label for="location">User's Top Location</label>
-                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.topLocationId"
                         >
                         </app-dropdown-treeview-select>
-                        <span class="custom-dropdown-arrow"></span>
-                        </div>
+                        <span class="custom-dropdown-arrow1"></span>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="pLocation">User's Preferred Location</label>
-                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="locationItems"
                           [(value)]="model.preferredLocationId"
                         >
                         </app-dropdown-treeview-select>
-                        <span class="custom-dropdown-arrow"></span>
                       </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="isVendor" class="me-1">Vendor </label>
+                        <label for="isVendor">Vendor</label>
                         <input
                           type="checkbox"
                           [(ngModel)]="model.isVendor"
                           name="isVendor"
-                          #isVendor="ngModel"
+                          #req="ngModel"
                           id="isVendor"
                         />
                       </div>
                       <div *ngIf="model.isVendor" class="form-group col-sm-6">
                         <label for="vendor">
-                          Select Vendor<strong class="text-danger"> *</strong>
+                          Select Vendor<strong class="text-danger">*</strong>
                         </label>
                         <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
@@ -288,21 +294,18 @@
                           (valueChange)="onVendorChange($event)"
                         >
                         </app-dropdown-treeview-select>
-                        <span class="custom-dropdown-arrow"></span>
-                      </div>
+                        <span class="custom-dropdown-arrow1"></span>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="sendRFQ" class="me-1"
-                          >Receive RFQ Notification
-                        </label>
+                        <label for="req">Receive RFQ Notification</label>
                         <input
                           type="checkbox"
-                          [(ngModel)]="model.sendReceiveRFQ"
-                          name="sendRFQ"
-                          #sendRFQ="ngModel"
-                          id="sendRFQ"
+                          [(ngModel)]="model.sendReceiverFq"
+                          name="req"
+                          #req="ngModel"
+                          id="req"
                         />
                       </div>
                     </div>
@@ -310,16 +313,16 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          ngbTooltip="Update this User"
-                          class="btn btn-primary btn-right btn-group"
+                          tooltip="Update this User"
+                          class="btn btn-primary btn-group"
                         >
                           Update
                         </button>
                         <button
                           type="button"
-                          ngbTooltip="Cancel"
+                          tooltip="Cancel"
                           (click)="cancelUser()"
-                          class="btn btn-primary btn-group"
+                          class="btn btn-primary ms-1 btn-group"
                         >
                           Cancel
                         </button>
@@ -331,11 +334,11 @@
                         *ngFor="let eachAttr of typeAttributes; let i = index"
                       >
                         <div>
-                          <label *ngIf="eachAttr.isRequired == true"
+                          <label *ngIf="eachAttr.isrequired == true"
                             >{{ eachAttr.name
-                            }}<span class="text-danger">*</span></label
+                            }}<span style="color: red">*</span></label
                           >
-                          <label *ngIf="eachAttr.isRequired == false">{{
+                          <label *ngIf="eachAttr.isrequired == false">{{
                             eachAttr.name
                           }}</label>
                           <div>
@@ -380,19 +383,19 @@
                               *ngIf="
                                 eachAttr.attributeType.attributeTypeId == 4
                               "
-                              class="form-control custom-dropdown"
+                              class="form-control"
                               [(ngModel)]="eachAttr.value"
                               name="select{{ i }}"
                               #type="ngModel"
                             >
                               <option value="">Choose..</option>
                               <option
-                                [ngValue]="list.listItem"
+                                [ngValue]="list.listitem"
                                 *ngFor="
                                   let list of eachAttr.attributeListItemResource
                                 "
                               >
-                                {{ list.listItem }}
+                                {{ list.listitem }}
                               </option>
                             </select>
                             <div
@@ -401,39 +404,43 @@
                                 eachAttr.attributeType.attributeTypeId == 5
                               "
                             >
-                              <label class="form-check-label" for="radio1"
+                              <label
+                                class="form-check-label margin-right"
+                                for="radio1"
                                 >&nbsp;
                                 <input
+                                  class="form-check-input"
                                   type="radio"
                                   [(ngModel)]="eachAttr.value"
                                   name="radios{{ i }}"
                                   id="radio1"
                                   value="Y"
                                   checked
-                                />
-                                Y&nbsp;&nbsp;&nbsp;&nbsp;
+                                />Y&nbsp;&nbsp;&nbsp;&nbsp;
                               </label>
-                              <label class="form-check-label ms-2" for="radio2"
+                              <label
+                                class="form-check-label margin-right"
+                                for="radio2"
                                 >&nbsp;
                                 <input
+                                  class="form-check-input"
                                   type="radio"
                                   [(ngModel)]="eachAttr.value"
                                   name="radios{{ i }}"
                                   id="radio2"
                                   value="N"
-                                />
-                                N&nbsp;&nbsp;&nbsp;&nbsp;
+                                />N&nbsp;&nbsp;&nbsp;&nbsp;
                               </label>
-                              <label class="form-check-label ms-2" for="radio3"
+                              <label class="form-check-label" for="radio3"
                                 >&nbsp;
                                 <input
+                                  class="form-check-input"
                                   type="radio"
                                   [(ngModel)]="eachAttr.value"
                                   name="radios{{ i }}"
                                   id="radio3"
                                   value="N/A"
-                                />
-                                N/A
+                                />N/A
                               </label>
                             </div>
                             <textarea

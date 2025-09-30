@@ -126,7 +126,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="View Note Attachment"
-                    class="btn btn-outline-danger btn-sm btn-right"
+                    class="btn btn-outline-danger btn-sm btn-right btn-group"
                     (click)="download(document)"
                   >
                     View
@@ -137,7 +137,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit Note Attachment"
-                    class="btn btn-outline-danger btn-sm btn-right"
+                    class="btn btn-outline-danger btn-sm btn-right btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit Document"
@@ -150,7 +150,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete Note Attachment"
-                    class="btn btn-outline-danger btn-sm"
+                    class="btn btn-outline-danger btn-sm btn-group"
                     (click)="openModal(confirmtemplate, document.attachmentId)"
                     [disabled]="highestRank == 9"
                   >

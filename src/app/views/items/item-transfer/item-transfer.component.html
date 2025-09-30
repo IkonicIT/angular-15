@@ -304,11 +304,12 @@
 
                     </div>
 
-                  <div>
+                   <div>
                     <p class="fw-bold fs-5">Previous Transfers</p>
-                    <table class="table table-responsive-sm table-hover table-outline mb-0">
-                      <thead class="thead-light">
-                        <tr>
+                      <table class="table table-responsive-sm1 table-hover table-outline mb-0">
+                        <thead class="thead-light">
+                          <tr>
+       <tr>
                           <th [class.active]="order==='transferDate'" (click)="setOrder('transferDate')">TransferDate</th>
                           <th [class.active]="order==='fromLocation'" (click)="setOrder('fromLocation')">FromLocation</th>
                           <th [class.active]="order==='toLocation'" (click)="setOrder('toLocation')">ToLocation</th>
@@ -319,9 +320,9 @@
                           <th [class.active]="order==='daysinOldStatus'" (click)="setOrder('daysinOldStatus')">DaysinStatus</th>
                           <th [class.active]="order==='newStatus'" (click)="setOrder('newStatus')">Status</th>
                           <th [class.active]="order==='transferredBy'" (click)="setOrder('transferredBy')">TransferredBy</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
                       <tbody>
                         <tr
                           *ngFor="let transfer of transfers

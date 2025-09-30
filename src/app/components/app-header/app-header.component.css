@@ -40,3 +40,13 @@
 :host ::ng-deep .dropdown-toggle::after {
   display: none !important;
 }
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  margin-right: 0; /* remove extra space */
+}
+
+.navbar-toggler {
+  margin-left: 8px; /* adjust spacing as needed */
+  border: none;     /* optional, cleaner look */
+}

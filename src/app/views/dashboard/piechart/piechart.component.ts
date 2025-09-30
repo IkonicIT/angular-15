@@ -853,9 +853,9 @@ export class PiechartComponent implements OnInit {
       if (this.itemTypes && this.itemTypes.length > 0) {
         this.itemTypeItems = this.generateHierarchyForItemTypes(this.itemTypes);
       }
-      this.loading = false; // ✅ mark loading as complete
+      this.loading = false;
     }, (error) => {
-      this.loading = false; // also stop loader in case of error
+      this.loading = false; 
     });
 }
 

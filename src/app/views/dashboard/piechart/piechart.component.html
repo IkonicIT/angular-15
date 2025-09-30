@@ -78,7 +78,7 @@
                       (valueChange)="setLocation(locationId)"
                     >
                     </app-dropdown-treeview-select>
-                    <span class="custom-dropdown-arrow11"></span>
+                    <span class="custom-dropdown-arrow"></span>
                   </div>
                 </ng-container>
 
@@ -119,13 +119,15 @@
                     <label for="location"
                       ><strong>Select Location</strong></label
                     >
+                    <div class="custom-dropdown-wrapper" >
                     <app-dropdown-treeview-select
                       [items]="locations"
                       [(value)]="locationId"
                       (valueChange)="setLocation(locationId)"
                     >
                     </app-dropdown-treeview-select>
-                    <span class="custom-dropdown-arrow11"></span>
+                    <span class="custom-dropdown-arrow"></span>
+                  </div>
                   </div>
                 </ng-container>
               </ng-container>

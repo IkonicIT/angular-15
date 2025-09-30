@@ -67,19 +67,45 @@ tbody td {
 ::ng-deep app-dropdown-treeview-select .dropdown-menu {
   width: 100% !important;
 }
+
 ::ng-deep app-dropdown-treeview-select .form-control,
 ::ng-deep app-dropdown-treeview-select .form-control span {
   font-size: 1rem !important;
   line-height: 1.5 !important;
 }
 
-::ng-deep app-dropdown-treeview-select .dropdown-menu .treeview-item,
-::ng-deep app-dropdown-treeview-select .dropdown-menu .treeview-item span,
-::ng-deep app-dropdown-treeview-select .dropdown-menu .treeview-item button {
-  font-size: 1rem !important; 
-  line-height: 1.5 !important;
+::ng-deep app-dropdown-treeview-select .treeview-item {
+  display: block;       
+  margin: 4px 0;        
 }
 
+::ng-deep app-dropdown-treeview-select .treeview-item i,
+::ng-deep app-dropdown-treeview-select .treeview-item .toggle-icon {
+  margin-right: 8px;    
+}
+
+::ng-deep app-dropdown-treeview-select .treeview-item .treeview-text {
+  padding-left: 2px;    
+}
+
+/* ✅ Fix 2: hierarchy indentation */
+::ng-deep app-dropdown-treeview-select ul {
+  padding-left: 0;      
+  list-style: none;
+}
+
+::ng-deep app-dropdown-treeview-select ul ul {
+  margin-left: 16px;    
+  padding-left: 12px;  
+}
+
+::ng-deep app-dropdown-treeview-select .dropdown-toggle,
+::ng-deep app-dropdown-treeview-select .btn {
+  height: 35px !important;             
+  line-height: 1.5 !important;
+  padding: 0.375rem 0.75rem !important; 
+  box-sizing: border-box !important;
+}
 
 ::ng-deep .custom-dropdown-arrow {
   border-left: 12px solid transparent;
@@ -227,45 +253,33 @@ textarea {
 
 .custom-dropdown-wrapper {
   position: relative;
-  display: block;
+  display: inline-block;
   width: 100%;
-  padding: 1px;
-  box-sizing: border-box;
 }
 
 .custom-dropdown-wrapper app-dropdown-treeview-select {
   display: block;
-  width: calc(100% - 2px);
+  width: 100%;
   box-sizing: border-box;
 }
 
 .custom-dropdown-arrow {
   position: absolute;
-  right: 14px;
   top: 50%;
+  right: 12px;
   transform: translateY(-50%);
   pointer-events: none;
   width: 0;
   height: 0;
-  border-left: 5.5px solid transparent;
-  border-right: 5.5px solid transparent;
-  border-top: 5.5px solid gray;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid gray;
 }
-.custom-dropdown-arrow11 {
-  position: absolute;
-  right: 88px;
-  top: 20.5%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  width: 0;
-  height: 0;
-  border-left: 5.5px solid transparent;
-  border-right: 5.5px solid transparent;
-  border-top: 5.5px solid gray;
-}
-.btn-group{
+
+.btn-group {
   border-radius: 6px;
 }
+
 .loader-container {
   display: flex;
   justify-content: center;

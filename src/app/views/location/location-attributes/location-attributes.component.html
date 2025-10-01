@@ -178,10 +178,10 @@
                       <div class="row">
                         <div class="form-group col-sm-12 text-center btn-group-gap">
                           <button *ngIf="!addEditFlag" type="button" class="btn btn-primary btn-right btn-group" (click)="createAttribute()">Add</button>
-                          <button *ngIf="addEditFlag" class="btn btn-primary btn-group" [disabled]="highestRank < 6" (click)="editAttribute()">Update</button>
-                          <button *ngIf="addEditFlag" class="btn btn-primary btn-group" (click)="newAttribute()">New</button>
-                          <button *ngIf="addEditFlag" class="btn btn-primary btn-group" [disabled]="highestRank == 9" (click)="openModal(confirmtemplate)">Remove</button>
-                          <button type="button" class="btn btn-primary btn-group" (click)="cancelLocationAttributes()">Back</button>
+                          <button *ngIf="addEditFlag" class="btn btn-primary btn-group ms-1" [disabled]="highestRank < 6" (click)="editAttribute()">Update</button>
+                          <button *ngIf="addEditFlag" class="btn btn-primary btn-group ms-1" (click)="newAttribute()">New</button>
+                          <button *ngIf="addEditFlag" class="btn btn-primary btn-group ms-1" [disabled]="highestRank == 9" (click)="openModal(confirmtemplate)">Remove</button>
+                          <button type="button" class="btn btn-primary btn-group ms-1" (click)="cancelLocationAttributes()">Back</button>
                         </div>
                       </div>
 

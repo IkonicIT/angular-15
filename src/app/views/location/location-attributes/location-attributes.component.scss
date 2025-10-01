@@ -19,7 +19,6 @@
 .btn-group-gap {
   display: flex;
   justify-content: center;
-  gap: 10px; /* Adjust the gap as needed */
 }
 
 thead th {
@@ -68,12 +67,6 @@ ul > li {
 
 .checkbox-margin {
   margin-left: 15%;
-}
-
-.btn-list {
-  margin-top: 2%;
-  border-color: red;
-  background-color: red;
 }
 
 .row {

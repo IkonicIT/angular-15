@@ -359,7 +359,8 @@ export class UserAttributesComponent implements OnInit {
     this.modalRef?.hide();
     this.spinner.show();
 
-    const moduleType = 'User';
+    const moduleType = 'User';    
+    this.typeName = this.model.type.name;
     this.userAttributeService
       .removeUserAttributess(
         this.model.attributeNameId,

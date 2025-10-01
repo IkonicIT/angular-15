@@ -19,11 +19,11 @@
               <div class="card">
                 <div class="form-group col-sm-12 text-right">
                   <button type="button" (click)="print()" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                    title="Click to Print this Page" class="btn btn-outline-danger btn-sm btn-right btn-top">
+                    title="Click to Print this Page" class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group">
                     Print
                   </button>
                   <button type="button" (click)="help()" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                    title=" Instructions" class="btn btn-outline-danger btn-sm btn-top">
+                    title=" Instructions" class="btn btn-outline-danger btn-sm btn-top my-btn-group">
                     Help
                   </button>
                   <div style="
@@ -110,7 +110,7 @@
                         <label for="name">Select Status
                           <strong class="text-danger">*</strong></label>
                        <select
-                          class="form-control add-item-background"
+                          class="form-control add-item-background custom-dropdown"
                           [(ngModel)]="model.statusId"
                           name="status"
                           #status="ngModel"
@@ -198,13 +198,13 @@
                           Add New Location:
                           <strong class="text-danger">*</strong></label>
                         <label for="location">(Select Location To Add New Location)</label>
-                        <button type="button" [disabled]="addLocationFlag == 0" class="btn btn-primary btn-right"
+                        <button type="button" [disabled]="addLocationFlag == 0" class="btn btn-primary btn-right my-btn-group"
                           (click)="newLocation()" data-bs-placement="bottom" data-bs-toggle="tooltip"
                           title=" Click here to add New Location">
                           Yes
                         </button>
 
-                        <button type="button" class="btn btn-primary" (click)="existingLocation()"
+                        <button type="button" class="btn btn-primary my-btn-group" (click)="existingLocation()"
                           data-bs-placement="bottom" data-bs-toggle="tooltip" title="Existing Location">
                           No
                         </button>
@@ -213,7 +213,7 @@
 
                     <div class="card-body" *ngIf="newLocationFlag">
                       <div class="row">
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-6 bg-white">
                           <label for="name">Location Name
                             <strong class="text-danger">*</strong></label>
                           <input type="text" [(ngModel)]="locationModel._id" name="_id" #_id="ngModel" id="_id"
@@ -258,9 +258,8 @@
                         </div>
                       </div>
 
-                      <button type="button" class="btn btn-primary" (click)="saveLocation()" data-bs-placement="bottom"
-                        data-bs-toggle="tooltip" title="Save Location"
-                        style="border-radius: 6px;">
+                      <button type="button" class="btn btn-primary my-btn-group" (click)="saveLocation()" data-bs-placement="bottom"
+                        data-bs-toggle="tooltip" title="Save Location">
                         Save Location
                       </button>
                     </div>
@@ -330,14 +329,14 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button class="btn btn-primary btn-right" (click)="saveItem()" data-bs-placement="bottom"
+                        <button class="btn btn-primary btn-right my-btn-group" (click)="saveItem()" data-bs-placement="bottom"
                           data-bs-toggle="tooltip" title="Save Item"
-                          style="border-radius: 6px;">
+                          >
                           Save
                         </button>
                         <button type="button" [routerLink]="['../../items']" data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
-                          style="border-radius: 6px;" title="Cancel" class="btn btn-primary">
+                          title="Cancel" class="btn btn-primary my-btn-group">
                           Cancel
                         </button>
                       </div>

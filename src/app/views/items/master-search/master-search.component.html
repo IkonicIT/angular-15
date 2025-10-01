@@ -18,7 +18,7 @@
         <div class="form-group col-sm-12 text-right">
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
             (click)="print()"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -28,7 +28,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
             (click)="help()"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
@@ -58,7 +58,7 @@
           </alert>
 
           <ng-container *ngIf="isExpandAdvancedSearch">
-            <p class="card-text">Master Search</p>
+            <p class="card-text btn-group">Master Search</p>
             <div class="row">
               <div class="col-sm-1"></div>
               <div class="form-group col-sm-5">
@@ -139,7 +139,7 @@
               <div class="col-sm-4 d-flex gap-2 justify-content-center">
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                   (click)="getSearchedItems()"
                   data-bs-toggle="tooltip"
                   data-bs-placement="bottom"
@@ -149,7 +149,7 @@
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                   (click)="clear()"
                   data-bs-toggle="tooltip"
                   data-bs-placement="bottom"
@@ -160,7 +160,7 @@
                 <button
                   *ngIf="isExpandAdvancedSearch"
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary btn-group"
                   (click)="Hide()"
                   data-bs-toggle="tooltip"
                   data-bs-placement="bottom"

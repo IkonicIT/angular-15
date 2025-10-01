@@ -846,6 +846,9 @@ export class PiechartComponent implements OnInit {
   }
 
   getAllItemTypes() {
+    console.log(this.companyId);
+    if(this.companyId!==undefined)
+    {
   this.itemTypesService
     .getAllItemTypesWithHierarchy(this.companyId)
     .subscribe((response) => {
@@ -857,6 +860,7 @@ export class PiechartComponent implements OnInit {
     }, (error) => {
       this.loading = false; 
     });
+  }
 }
 
   generateHierarchyForItemTypes(typeList: any[]) {

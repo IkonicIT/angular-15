@@ -58,6 +58,7 @@ export class LoginService {
 
   getUserIdByName(userName: string): Observable<any> {
     this.authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
+    console.log(this.authToken);
     return this.http
       .get(this.locationRestURL + 'users/' + userName + '?access_token=' + this.authToken)
       .pipe(catchError(this.handleError));

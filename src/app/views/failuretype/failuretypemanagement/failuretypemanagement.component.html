@@ -79,7 +79,7 @@
                     <div class="row form-group align-items-center g-0">
                       <div class="col-auto">
                         <label class="mb-0" style="padding-left :16px; padding-right: 16px;">
-                          Select Item Type : <strong class="text-danger">*</strong>
+                          <strong>Select Item Type :</strong> <strong class="text-danger">*</strong>
                         </label>
                       </div>
                       <div class="col-auto">
@@ -106,7 +106,7 @@
                       <!-- Primary Finding -->
                       <div class="col-md-6 col-12">
                         <label for="failureType">
-                          Primary Finding: <strong class="text-danger">*</strong>
+                          <strong>Primary Finding:</strong> <strong class="text-danger">*</strong>
                         </label>
                         <input
                           *ngIf="addFailure === 1"
@@ -116,6 +116,7 @@
                           name="failureType"
                           id="failureType"
                           placeholder="Enter Primary Finding"
+                          style="max-width: 500px;"
                         />
                         <span *ngIf="addFailure !== 1" class="primary-finding-badge">
                           {{ failureType }}
@@ -123,13 +124,33 @@
                       </div>
 
                       <!-- Causes -->
-                      <div class="col-md-6 col-12">
-                        <label for="causes">Failure Causes:</label>
+                      <div class="col-md-6 col-12" *ngIf="addFailure === 0">
+                        <label for="causes"><strong>Failure Causes:</strong></label>
                         <p class="small">
                           Type each cause on a separate line. Add or remove causes as needed.
                         </p>
+                        </div>
+
+                         <div class="form-group col-sm-12" *ngIf="addFailure === 1">
+                                <label for="desc" style="padding-top: 8px;"><strong>Failure Causes:</strong></label>
+                                <p class="small">
+                          Type each cause on a separate line. Add or remove causes as needed.
+                        </p>
+                                <textarea
+  id="desc"
+  rows="8"
+  cols="15"
+  class="form-control"
+  [(ngModel)]="model.causes"
+  name="causes"
+  #description="ngModel"
+  placeholder="Enter Causes"
+  style="max-width: 500px;"
+></textarea>
+
+                              </div>
                       </div>
-                    </div>
+                    
 
                     <!-- Select Primary Finding & Causes side by side -->
                     <div class="row form-group" *ngIf="addFailure === 0">

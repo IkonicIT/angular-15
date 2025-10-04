@@ -120,7 +120,7 @@ export class AddLocationDetailsComponent implements OnInit {
   }
 
   getAllVendors() {
-    this.companyManagementService.getAllVendors(this.companyId).subscribe(
+    this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
         this.vendors = Array.isArray(response) ? response : [];
       },

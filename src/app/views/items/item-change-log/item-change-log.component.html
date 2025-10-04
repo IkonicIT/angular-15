@@ -45,8 +45,8 @@
                 data-bs-placement="bottom"
                 data-bs-toggle="tooltip"
                 title=" Back to View Item "
-                class="btn btn-primary float-right"
-                style="margin: 5px; border-radius: 6px;"
+                class="btn btn-primary float-right btn-group"
+                style="margin: 5px;"
                 (click)="backToItem()"
               >
                 Back To Item
@@ -56,8 +56,8 @@
                 data-bs-placement="bottom"
                 data-bs-toggle="tooltip"
                 title="ChangeLog Attachments "
-                class="btn btn-primary float-right"
-                style="margin: 5px; border-radius: 6px;"
+                class="btn btn-primary float-right btn-group"
+                style="margin: 5px;"
                 (click)="addAttachments()"
                 [disabled]="itemRank < 3 || journalId == 0 || itemRank == 4 || itemRank == 5"
               >
@@ -221,7 +221,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-success btn-sm"
+                    class="btn btn-outline-success btn-sm btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="View Change Log"

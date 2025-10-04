@@ -11,12 +11,14 @@
             <div class="row align-items-end px-3"> <!-- replaced style="padding: 15px" with Bootstrap -->
               <div class="col-md-2 remove-padding">
                 <label for="status"><strong>TimeSpan</strong></label>
+                <div class="custom-dropdown-wrapper">
                 <select class="form-control" [(ngModel)]="params.type">
                   <option value="monthly">Next Month</option>
                   <option value="quarterly">Next Quarter</option>
                   <option value="range">Range</option>
                 </select>
-              </div>
+                <span class="custom-dropdown-arrow"></span>
+              </div></div>
 
               <ng-container [ngSwitch]="params.type">
                 <ng-container *ngSwitchCase="'range'">

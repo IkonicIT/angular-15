@@ -208,9 +208,11 @@ export class CompanyattributesComponent implements OnInit {
   }
 
   getTypeAttributes(typeId: any): void {
-    this.typeId = Number(typeId);
+    if(typeId!=='undefined' && typeId!==0)
+    {
+     this.typeId = Number(typeId);
     this.index = 0;
-    if (typeId !== 0) {
+    if (typeId) {
       this.spinner.show();
       this.companyAttributesServiceService.getTypeAttributes(typeId).subscribe({
         next: (resp) => {
@@ -221,6 +223,7 @@ export class CompanyattributesComponent implements OnInit {
         error: () => this.spinner.hide(),
       });
     }
+  }
   }
 
   getAttributeTypes(): void {

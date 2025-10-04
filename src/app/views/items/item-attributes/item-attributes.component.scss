@@ -15,7 +15,6 @@
 .btn-group-gap {
   display: flex;
   justify-content: center;
-  gap: 10px; /* Adjust the gap as needed */
 }
 
 .btn-outline-danger:hover {
@@ -109,4 +108,11 @@ button {
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-top: 6px solid gray;
+}
+.help-box
+{
+  text-align: left;
+  border: 1px solid;
+  width: fit-content;
+  background-color: whitesmoke;           
 }

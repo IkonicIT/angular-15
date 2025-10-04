@@ -49,8 +49,8 @@ export class LoginComponent {
 
     this.loginService.loginAuth(req).subscribe(
       (response) => {
-        sessionStorage.setItem('auth_token', response.access_token);
-        console.log(response.access_token);
+        sessionStorage.setItem('auth_token', response.accessToken);
+        console.log(response);
         this.getUserIdByNameForLogged();
       },
       (error) => {

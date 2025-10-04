@@ -90,7 +90,7 @@ export const navigation = [
   {
     name: 'Template',
     url: '/template',
-    icon: 'fa fa-user-circle-o',
+    icon: 'fas fa-user-circle',
   },
   {
     name: 'Vendor',

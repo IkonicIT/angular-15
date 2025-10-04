@@ -334,108 +334,90 @@ export class FullLayoutComponent implements OnInit {
     );
   }
 
-  selectRootCompany(userSelectedCompany: any) {
-    let userSelectedCompany1 = userSelectedCompany.value;
-    this.itemManagementService.setSearchedItemTag('');
-    this.itemManagementService.setSearchedItemTypeId(0);
-    this.itemManagementService.setItemSearchResults([]);
-    this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
-    this.reportsService.setInserviceVsSpareReport({});
-    this.reportsService.setserviceReport([]);
-    this.itemManagementService.setAdvancedItemSearchResults([]);
-    this.itemManagementService.itemModel = {};
-    this.itemManagementService.itemrepairNotesrfqModel = {};
-    this.itemManagementService.setCompletedRepairs([]);
-    this.itemManagementService.setInCompletedRepairs([]);
-    this.broadcasterService.locations = [];
-    if (typeof userSelectedCompany1 == 'undefined') {
-      userSelectedCompany1 = { name: 'Select Company', companyId: 0 };
-    }
+ selectRootCompany(userSelectedCompany: any) {
+  let selectedCompany = userSelectedCompany?.value || userSelectedCompany;
 
-    if (this.isOwnerAdmin == 'true' || this.isOwnerAminReadOnly == 'true') {
-      this.selectRootCompanyForAdmin(userSelectedCompany1);
-    } else {
-      if (userSelectedCompany1.companyId == 0) {
-        sessionStorage.removeItem('currentRole');
-        sessionStorage.removeItem('highestRank');
-        this.broadcasterService.currentCompany = 'selectcompany';
-        this.userSelectedCompany = { name: 'Select Company', companyId: 0 };
-        this.broadcasterService.selectedCompanyId =
-          userSelectedCompany1.companyId;
-        this.broadcasterService.broadcast('refreshNavBar', true);
-        this.broadcasterService.broadcast(
-          'piechart',
-          userSelectedCompany1.companyId
-        );
-        this.router.navigate(['/dashboard']);
-        return true;
-      }
-      this.getCompanyLogo(userSelectedCompany1.companyId);
-      this.broadcasterService.currentCompany = 'nonselectcompany';
-      this.broadcasterService.locations = [];
-      this.itemTag = null;
-      this.userSelectedCompany = userSelectedCompany1;
-      this.authToken = sessionStorage.getItem('auth_token');
-      this.userName = sessionStorage.getItem('userName');
-      this.locationManagementService.setLocations([]);
-      this.spinner.show();
-      this.companyManagementService.setGlobalCompany(userSelectedCompany1);
-      this.broadcasterService.selectedCompanyId =
-        userSelectedCompany1.companyId;
-      this.itemTypesService
-        .getAllItemTypesWithHierarchy(userSelectedCompany1.companyId)
-        .subscribe((response) => {
-          this.broadcasterService.itemTypeHierarchy = response;
-          this.highestRank = 0;
-          this.currentRole = '';
-          this.userId = sessionStorage.getItem('userId');
-          this.loginService
-            .getRolesForALoggedInUser(
-              this.userName,
-              userSelectedCompany1.companyId
-            )
-            .subscribe((response: any) => {
-              this.userSecurityRoles = response;
-              this.broadcasterService.userRoles = this.userSecurityRoles;
-              if (this.userSecurityRoles && this.userSecurityRoles.length > 0) {
-                this.userSecurityRoles.forEach((userRolesObj: any) => {
-                  this.rolesListForLoggedInUser = userRolesObj.roleName;
-                  if (true) {
-                    if (userRolesObj.rank >= this.highestRank) {
-                      this.highestRank = userRolesObj.rank;
-                      this.currentRole = userRolesObj.roleName;
-                    } else {
-                    }
-
-                    sessionStorage.setItem('currentRole', this.currentRole);
-                    sessionStorage.setItem('highestRank', this.highestRank);
-
-                  }
-                });
-                this.broadcasterService.broadcast(
-                  'piechart',
-                  userSelectedCompany.companyId
-                );
-                setTimeout(() => {
-                  this.broadcasterService.broadcast('refreshNavBar', true);
-                }, 1000);
-              } else {
-              }
-            });
-
-          this.itemTypes = response;
-          if (this.itemTypes && this.itemTypes.length > 0) {
-            this.items = this.generateHierarchy(this.itemTypes);
-          }
-          this.itemManagementService.setItemTypes(response);
-          this.spinner.hide();
-          this.router.navigate(['/dashboard']);
-        });
-    }
+  if (!selectedCompany || typeof selectedCompany.companyId === 'undefined') {
+    selectedCompany = { name: 'Select Company', companyId: 0 };
+  }
+  this.itemManagementService.setSearchedItemTag('');
+  this.itemManagementService.setSearchedItemTypeId(0);
+  this.itemManagementService.setItemSearchResults([]);
+  this.itemManagementService.setAdvancedItemSearchResults([]);
+  this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
+  this.reportsService.setInserviceVsSpareReport({});
+  this.reportsService.setserviceReport([]);
+  this.itemManagementService.itemModel = {};
+  this.itemManagementService.itemrepairNotesrfqModel = {};
+  this.itemManagementService.setCompletedRepairs([]);
+  this.itemManagementService.setInCompletedRepairs([]);
+  this.broadcasterService.locations = [];
+  if (this.isOwnerAdmin === 'true' || this.isOwnerAminReadOnly === 'true') {
+    this.selectRootCompanyForAdmin(selectedCompany);
+    return;
+  }
+  if (selectedCompany.companyId === 0) {
+    sessionStorage.removeItem('currentRole');
+    sessionStorage.removeItem('highestRank');
+    this.broadcasterService.currentCompany = 'selectcompany';
+    this.userSelectedCompany = { name: 'Select Company', companyId: 0 };
+    this.broadcasterService.selectedCompanyId = 0;
+    this.broadcasterService.broadcast('refreshNavBar', true);
+    this.broadcasterService.broadcast('piechart', 0);
+    this.router.navigate(['/dashboard']);
     return;
   }
 
-  generateHierarchy(typeList: any[]) {
+  this.getCompanyLogo(selectedCompany.companyId);
+  this.userSelectedCompany = selectedCompany;
+  this.broadcasterService.currentCompany = 'nonselectcompany';
+  this.authToken = sessionStorage.getItem('auth_token');
+  this.userName = sessionStorage.getItem('userName');
+  this.locationManagementService.setLocations([]);
+  this.spinner.show();
+  this.companyManagementService.setGlobalCompany(selectedCompany);
+  this.broadcasterService.selectedCompanyId = selectedCompany.companyId;
+
+  this.itemTypesService.getAllItemTypesWithHierarchy(selectedCompany.companyId)
+    .subscribe((response) => {
+      this.broadcasterService.itemTypeHierarchy = response;
+      this.itemTypes = response;
+      if (this.itemTypes?.length > 0) {
+        this.items = this.generateHierarchy(this.itemTypes);
+      }
+      this.itemManagementService.setItemTypes(response);
+
+      // Fetch roles for user
+      this.userId = sessionStorage.getItem('userId');
+      this.loginService.getRolesForALoggedInUser(this.userName, selectedCompany.companyId)
+        .subscribe((roles: any[]) => {
+          this.userSecurityRoles = roles;
+          this.broadcasterService.userRoles = roles;
+
+          this.highestRank = 0;
+          this.currentRole = '';
+
+          roles.forEach((r) => {
+            if (r.rank >= this.highestRank) {
+              this.highestRank = r.rank;
+              this.currentRole = r.roleName;
+            }
+          });
+
+          sessionStorage.setItem('currentRole', this.currentRole);
+          sessionStorage.setItem('highestRank', this.highestRank.toString());
+
+          this.broadcasterService.broadcast('piechart', selectedCompany.companyId);
+          setTimeout(() => {
+            this.broadcasterService.broadcast('refreshNavBar', true);
+          }, 500);
+        });
+
+      this.spinner.hide();
+      this.router.navigate(['/dashboard']);
+    });
+}
+ generateHierarchy(typeList: any[]) {
     let items: TreeviewItem[] = [];
     typeList.forEach((type) => {
       var children: TreeviewItem[] = [];

@@ -167,7 +167,7 @@
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this Company"
-                    [disabled]="+(highestRank ?? 0) === 9"
+                    [disabled]="+(highestRank ?? 0) === 9 || company.companyId === 4715"
                     (click)="openModal(confirmtemplate, company.companyId)"
                   >
                     Delete

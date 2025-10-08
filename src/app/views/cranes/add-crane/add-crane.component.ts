@@ -69,28 +69,7 @@ export class AddCraneComponent implements OnInit, OnDestroy {
       BMKEY2: 
       {
         BMKEY1 :this.BMKEY2,
-        "BMKEY2": null,
-        "BMDRNK": null,
-        "BMDES1": null,
-        "BMDES2": null,
-        "BMDES3": null,
-        "BMDRNO": null,
-        "BMSTO1": null,
-        "BMSTO2": null,
-        "BMQTYU": null,
-        "BMCOMM": null,
-        "BMNOT1": null,
-        "BMNOT2": null,
-        "BMNOT3": null,
-        "BMBIN1": null,
-        "BMBIN2": null,
-        "BMFRAM": null,
-        "BMINIT": null,
-        "BMTERM": null,
-        "BMPCHG": null,
-        "BMDCHG": null,
-        "BMTCHG": null
-        }
+      }
     };
 
     const sub = this.cranesService.addCrane(payload).subscribe(() => {

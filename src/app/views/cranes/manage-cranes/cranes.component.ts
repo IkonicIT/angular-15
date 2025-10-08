@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CranesService } from 'src/app/services/cranes.service';
 import { Subscription } from 'rxjs';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-cranes',
@@ -15,11 +16,14 @@ export class CranesComponent implements OnInit, OnDestroy {
   data: any[] = [];
   errorMessage: string = '';
   successMessage: string = '';
+  index: any;
+  message: string = '';
+  modalRef: BsModalRef | null = null;
   highestRank: any;
   plantName: any;
-  bmdrnk: any;
-  bmkey: any;
-  bmkey1: any;
+  BMDRNK: any;
+  BMKEY: any;
+  BMKEY1: any;
   isFromQueryParams: boolean = false;
   previousData: any[] = [];
   historyStack: any[][] = [];
@@ -27,6 +31,7 @@ export class CranesComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   constructor(
+    private modalService: BsModalService,
     private cranesService: CranesService,
     private router: Router,
     private location: Location,
@@ -41,30 +46,29 @@ export class CranesComponent implements OnInit, OnDestroy {
     const historyStackData = sessionStorage.getItem('historyStack');
     const historyStackBackup = sessionStorage.getItem('historyStackBackup');
 
-    this.historyStack = historyStackBackup
-      ? JSON.parse(historyStackBackup)
-      : [];
+    this.historyStack = historyStackBackup ? JSON.parse(historyStackBackup) : [];
 
     const sub = this.route.queryParams.subscribe((params) => {
-      const bmdrnk = params['bmdrnk'];
-      const bmkey1 = params['bmkey1'];
-      const bmkey = params['bmkey2'];
-      if (!bmdrnk && !bmkey1 && !bmkey) {
+      const BMDRNK = params['BMDRNK'];
+      const BMKEY1 = params['BMKEY1'];
+      const BMKEY = params['BMKEY2'];
+
+      if (!BMDRNK && !BMKEY1 && !BMKEY) {
         this.data = historyStackData ? JSON.parse(historyStackData) : [];
         this.isFromQueryParams = false;
         return;
       } else {
         this.isFromQueryParams = true;
-        if (bmdrnk === this.searchKey) {
-          this.fetchCranesByBMDRNK(bmdrnk);
+        if (BMDRNK === this.searchKey) {
+          this.fetchCranesByBMDRNK(BMDRNK);
         } else {
-          this.fetchData(bmkey, bmdrnk);
+          this.fetchData(BMKEY, BMDRNK);
         }
       }
 
       this.router.navigate([], {
         relativeTo: this.route,
-        queryParams: { bmdrnk: null, bmkey1: null, bmkey2: null },
+        queryParams: { BMDRNK: null, BMKEY1: null, BMKEY2: null },
         queryParamsHandling: 'merge',
       });
     });
@@ -72,31 +76,24 @@ export class CranesComponent implements OnInit, OnDestroy {
     this.subscriptions.add(sub);
   }
 
-  fetchData(key: string, bmdrnk: string): void {
+  fetchData(key: string, BMDRNK: string): void {
     this.spinner.show();
     const sub = this.cranesService.getCranesData(key).subscribe(
       (response: any[]) => {
         this.spinner.hide();
         if (response.length === 0) {
-          setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }, 0);
-          this.errorMessage = 'No Data Found For BMDRNK:' + bmdrnk;
+          this.errorMessage = 'No Data Found For BMDRNK: ' + BMDRNK;
+          this.data = [];
         } else {
           this.historyStack.push([...this.data]);
           this.data = response;
           sessionStorage.setItem('historyStack', JSON.stringify(this.data));
-          sessionStorage.setItem(
-            'historyStackBackup',
-            JSON.stringify(this.historyStack)
-          );
+          sessionStorage.setItem('historyStackBackup', JSON.stringify(this.historyStack));
           this.errorMessage = '';
           this.isFromQueryParams = false;
         }
       },
-      (error) => {
-        this.spinner.hide();
-      }
+      () => this.spinner.hide()
     );
     this.subscriptions.add(sub);
   }
@@ -105,6 +102,7 @@ export class CranesComponent implements OnInit, OnDestroy {
     this.spinner.show();
     const sub = this.cranesService.getCranesByBMDRNK(key).subscribe(
       (response: any[]) => {
+        this.spinner.hide();
         if (response.length === 0) {
           this.errorMessage = 'No Data Found';
           this.data = [];
@@ -112,18 +110,12 @@ export class CranesComponent implements OnInit, OnDestroy {
           this.historyStack.push([...this.data]);
           this.data = response;
           sessionStorage.setItem('historyStack', JSON.stringify(this.data));
-          sessionStorage.setItem(
-            'historyStackBackup',
-            JSON.stringify(this.historyStack)
-          );
-          this.spinner.hide();
+          sessionStorage.setItem('historyStackBackup', JSON.stringify(this.historyStack));
           this.errorMessage = '';
           this.isFromQueryParams = false;
         }
       },
-      (error) => {
-        this.spinner.hide();
-      }
+      () => this.spinner.hide()
     );
     this.subscriptions.add(sub);
   }
@@ -134,21 +126,94 @@ export class CranesComponent implements OnInit, OnDestroy {
     sessionStorage.removeItem('historyStack');
     sessionStorage.removeItem('historyStackBackup');
     sessionStorage.setItem('searchKey', this.searchKey);
-    this.fetchCranesByBMDRNK(this.searchKey);
+
+    this.spinner.show();
+    this.cranesService.getCranesByBMDRNK(this.searchKey).subscribe({
+      next: (response: any[]) => {
+        this.spinner.hide();
+        this.data = response || [];
+        this.errorMessage = this.data.length ? '' : 'No Data Found';
+      },
+      error: () => this.spinner.hide(),
+    });
   }
 
-  handleBMDRNKClick(bmkey: string, bmdrnk: string): void {
-    this.fetchData(bmkey, bmdrnk);
+  handleBMDRNKClick(BMKEY: string, BMDRNK: string): void {
+    this.fetchData(BMKEY, BMDRNK);
   }
 
-  navigateToEdit(bmkey1: number): void {
+  navigateToEdit(BMKEY1: number): void {
     this.spinner.show();
     setTimeout(() => this.spinner.hide(), 2000);
-    this.router.navigateByUrl(`cranes/editCrane/${bmkey1}`);
+    this.router.navigateByUrl(`cranes/editCrane/${BMKEY1}`);
   }
 
-  navigateToCraneNotes(bmkey1: number): void {
-    this.router.navigateByUrl(`cranes/craneNotes/${bmkey1}`);
+  navigateToCraneNotes(BMKEY1: number): void {
+    this.router.navigateByUrl(`cranes/craneNotes/${BMKEY1}`);
+  }
+
+  navigateToAdd(BMKEY1: number): void {
+    this.router.navigateByUrl(`cranes/addCrane/${BMKEY1}`);
+  }
+
+  openModal(template: TemplateRef<any>, id: string): void {
+    if (this.modalRef) {
+      this.modalRef.hide();
+      this.modalRef = null;
+    }
+    this.index = id;
+    this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
+  }
+
+  confirm(): void {
+  this.message = 'Confirmed!';
+
+  if (this.modalRef) {
+    this.modalRef.hide();
+    this.modalRef = null;
+  }
+  this.forceCloseModal();
+
+  this.spinner.show();
+
+  this.cranesService.deleteCrane(this.index).subscribe({
+    next: () => {
+      this.data = this.data.filter(item => item.BMKEY1 !== this.index);
+
+      setTimeout(() => {
+        this.handleSearch();
+      }, 500);
+
+      this.spinner.hide();
+      this.forceCloseModal();
+    },
+    error: () => {
+      this.spinner.hide();
+      this.forceCloseModal();
+    },
+  });
+}
+
+  decline(): void {
+    this.message = 'Declined!';
+    if (this.modalRef) {
+      this.modalRef.hide();
+      this.modalRef = null;
+    }
+    this.forceCloseModal();
+  }
+
+  private forceCloseModal(): void {
+    try {
+      this.modalService.hide();
+    } catch (err) {}
+
+    setTimeout(() => {
+      const backdrops = document.querySelectorAll('.modal-backdrop');
+      backdrops.forEach((b) => b.remove());
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = 'auto';
+    }, 100);
   }
 
   goBack(): void {
@@ -156,10 +221,7 @@ export class CranesComponent implements OnInit, OnDestroy {
     if (poppedData) {
       this.data = poppedData;
       sessionStorage.setItem('historyStack', JSON.stringify(this.data));
-      sessionStorage.setItem(
-        'historyStackBackup',
-        JSON.stringify(this.historyStack)
-      );
+      sessionStorage.setItem('historyStackBackup', JSON.stringify(this.historyStack));
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });

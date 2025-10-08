@@ -115,8 +115,8 @@ export class PartsComponent implements OnInit {
     });
   }
 
-  navigateToEdit(bmkey1: number): void {
-    this.router.navigateByUrl(`parts/edit/${bmkey1}/${this.frame}`);
+  navigateToEdit(BMKEY1: number): void {
+    this.router.navigateByUrl(`parts/edit/${BMKEY1}/${this.frame}`);
   }
 
   navigateToParts(partId: number): void {

@@ -8,7 +8,7 @@ import { EditCraneNoteComponent } from './edit-crane-note/edit-crane-note.compon
 import { CraneNoteAttachementsComponent } from './crane-note-attachements/crane-note-attachements.component';
 import { AddCraneNoteAttachmentComponent } from './add-crane-note-attachment/add-crane-note-attachment.component';
 import { EditCraneNoteAttachmentComponent } from './edit-crane-note-attachment/edit-crane-note-attachment.component';
-
+import { AddCraneComponent } from './add-crane/add-crane.component';
 const routes: Routes = [
   {
     path: '',
@@ -47,6 +47,8 @@ const routes: Routes = [
     path: 'editCraneNoteAttachments/:id',
     component: EditCraneNoteAttachmentComponent,
   },
+  { path: 'addCrane/:id', component: AddCraneComponent },
+
 ];
 
 @NgModule({

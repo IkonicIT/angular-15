@@ -15,6 +15,7 @@ import { EditCraneNoteComponent } from './edit-crane-note/edit-crane-note.compon
 import { CraneNoteAttachementsComponent } from './crane-note-attachements/crane-note-attachements.component';
 import { AddCraneNoteAttachmentComponent } from './add-crane-note-attachment/add-crane-note-attachment.component';
 import { EditCraneNoteAttachmentComponent } from './edit-crane-note-attachment/edit-crane-note-attachment.component';
+import { AddCraneComponent } from './add-crane/add-crane.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgPipesModule } from 'ngx-pipes';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; 
@@ -42,6 +43,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     CraneNoteAttachementsComponent,
     AddCraneNoteAttachmentComponent,
     EditCraneNoteAttachmentComponent,
+    AddCraneComponent,
   ],
 })
 export class CranesModule {}

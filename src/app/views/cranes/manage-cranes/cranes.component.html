@@ -24,8 +24,8 @@
                   Search
                 </button>
               </div>
-              <p *ngIf="data[0]?.bmkey2?.bmdes1" class="mt-2 text-primary">
-                <strong>{{ data[0].bmkey2.bmdes1 }}</strong>
+              <p *ngIf="data[0]?.BMKEY2?.BMDES1" class="mt-2 text-primary">
+                <strong>{{ data[0].BMKEY2.BMDES1 }}</strong>
               </p>
             </div>
 
@@ -47,32 +47,39 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of data">
-                  <td>{{ item.bmkey1 }}</td>
-                  <td>{{ item.bmkey2?.bmkey1 }}</td>
+                  <td>{{ item.BMKEY1 }}</td>
+                  <td>{{ item.BMKEY2?.BMKEY1 }}</td>
                   <td
-                    (click)="handleBMDRNKClick(item.bmkey1, item.bmdrnk)"
-                    class="bmdrnk-link"
+                    (click)="handleBMDRNKClick(item.BMKEY1, item.BMDRNK)"
+                    class="BMDRNK-link"
                   >
-                    {{ item.bmdrnk }}
+                    {{ item.BMDRNK }}
                   </td>
                   <td>
-                    {{ item.bmdes1 }}
-                    {{ item.bmdes2 ? ', ' + item.bmdes2 : '' }}
-                    {{ item.bmdes3 ? ', ' + item.bmdes3 : '' }}
+                    {{ item.BMDES1 }}
+                    {{ item.BMDES2 ? ', ' + item.BMDES2 : '' }}
+                    {{ item.BMDES3 ? ', ' + item.BMDES3 : '' }}
                   </td>
-                  <td>{{ item.bmdrno }}</td>
-                  <td>{{ item.bmqtyu }}</td>
+                  <td>{{ item.BMDRNO }}</td>
+                  <td>{{ item.BMQTYU }}</td>
                   <td>
-                    {{ item.bmnot1 }}
-                    {{ item.bmnot2 ? ', ' + item.bmnot2 : '' }}
-                    {{ item.bmnot3 ? ', ' + item.bmnot3 : '' }}
+                    {{ item.BMNOT1 }}
+                    {{ item.BMNOT2 ? ', ' + item.BMNOT2 : '' }}
+                    {{ item.BMNOT3 ? ', ' + item.BMNOT3 : '' }}
                   </td>
                   <td>
                     <div class="rowAlign">
                       <button
                         [disabled]="highestRank < 5"
                         class="btn btn-danger"
-                        (click)="navigateToEdit(item.bmkey1)"
+                        (click)="navigateToAdd(item.BMKEY1)"
+                      >
+                        Add
+                      </button>
+                      <button
+                        [disabled]="highestRank < 5"
+                        class="btn btn-danger"
+                        (click)="navigateToEdit(item.BMKEY1)"
                       >
                         Edit
                       </button>
@@ -80,9 +87,16 @@
                         class="btn btn-danger"
                         tooltip="Crane Notes"
                         [disabled]="highestRank < 5"
-                        (click)="navigateToCraneNotes(item.bmkey1)"
+                        (click)="navigateToCraneNotes(item.BMKEY1)"
                       >
                         Notes
+                      </button>
+                       <button
+                        [disabled]="highestRank < 5"
+                        class="btn btn-danger"
+                        (click)="openModal(confirmtemplate, item.BMKEY1)"
+                      >
+                        Delete
                       </button>
                     </div>
                   </td>
@@ -106,3 +120,28 @@
     </div>
   </div>
 </div>
+<ng-template #confirmtemplate>
+  <div class="modal-body text-center p-4">
+    <p class="mb-4">
+      Click (<strong>Ok</strong>) to permanently delete this Crane or Click (<strong>Cancel</strong>) to discard
+      this action.
+    </p>
+    <div class="d-flex justify-content-center gap-3 mt-3">
+      <button
+        type="button"
+        class="btn btn-danger px-4 py-2"
+        (click)="confirm()"
+      >
+        Yes
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger px-4 py-2"
+        (click)="decline()"
+      >
+        No
+      </button>
+    </div>
+  </div>
+</ng-template>
+

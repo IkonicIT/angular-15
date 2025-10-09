@@ -34,7 +34,7 @@ export class CraneNoteAttachementsComponent implements OnInit {
   globalCompany: any;
   helpFlag: any = false;
   craneNoteId: any;
-  bmkey: any;
+  BMKEY: any;
   authToken: any;
   vendorAttachment: any;
   frame: any;
@@ -61,7 +61,7 @@ export class CraneNoteAttachementsComponent implements OnInit {
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
-    this.bmkey = sessionStorage.getItem('BMKEY1');
+    this.BMKEY = sessionStorage.getItem('BMKEY1');
   }
 
   getAllDocuments(vendorId: any) {

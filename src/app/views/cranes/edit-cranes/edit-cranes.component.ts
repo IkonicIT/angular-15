@@ -14,7 +14,7 @@ export class EditCranesComponent implements OnInit, OnDestroy {
   craneData: any = {};
   highestRank: any;
   successMessage: string = '';
-  bmkey1: any;
+  BMKEY1: any;
 
   private subscriptions = new Subscription();
 
@@ -28,10 +28,11 @@ export class EditCranesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.bmkey1 = this.route.snapshot.paramMap.get('id');
-    if (this.bmkey1) {
+    this.BMKEY1 = this.route.snapshot.paramMap.get('id');
+    console.log(this.BMKEY1);
+    if (this.BMKEY1) {
       const sub = this.cranesService
-        .getCranesInfoData(this.bmkey1)
+        .getCranesInfoData(this.BMKEY1)
         .subscribe((data) => {
           this.craneData = data;
         });
@@ -45,10 +46,10 @@ export class EditCranesComponent implements OnInit, OnDestroy {
   }
 
   updateCrane(): void {
-    if (this.craneData.bmkey1) {
+    if (this.craneData.BMKEY1) {
       this.spinner.show();
       const sub = this.cranesService
-        .updateCraneData(this.craneData.bmkey1, this.craneData)
+        .updateCraneData(this.craneData.BMKEY1, this.craneData)
         .subscribe(() => {
           this.successMessage = 'Crane updated successfully';
           this.cdr.detectChanges();
@@ -59,9 +60,9 @@ export class EditCranesComponent implements OnInit, OnDestroy {
             this.cdr.detectChanges();
             this.router.navigate(['/cranes'], {
               queryParams: {
-                bmdrnk: this.craneData.bmdrnk,
-                bmkey: this.craneData.bmkey1,
-                bmkey2: this.craneData.bmkey2?.bmkey1,
+                BMDRNK: this.craneData.BMDRNK,
+                BMKEY: this.craneData.BMKEY1,
+                BMKEY2: this.craneData.BMKEY2?.BMKEY1,
               },
             });
           }, 3000);

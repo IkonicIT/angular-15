@@ -88,4 +88,15 @@ export class CranesService {
   deleteCraneNote(id: number): Observable<any> {
     return this.http.delete<any>(`${this.cranesURL}/api/v1/crane/notes/${id}`);
   }
+   
+   addCrane(data: any): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}cliffs/addCrane`, data);
+}
+   
+   deleteCrane(id: number): Observable<any> {
+  return this.http.delete<any>(`${this.apiUrl}cliffs/deleteCrane/${id}`);
+}
+
+
+
 }

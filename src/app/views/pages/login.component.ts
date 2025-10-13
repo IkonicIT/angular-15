@@ -50,7 +50,7 @@ export class LoginComponent {
     this.loginService.loginAuth(req).subscribe(
       (response) => {
         sessionStorage.setItem('auth_token', response.accessToken);
-        console.log(response);
+        console.log(response.accessToken);
         this.getUserIdByNameForLogged();
       },
       (error) => {

@@ -158,9 +158,12 @@ export class CraneNotesComponent implements OnInit {
     window.scroll(0, 0);
   }
 
-  backToCrane(): void {
-    this.location.back();
-  }
+   backToCrane(bmdrnk?: string) {
+  this.router.navigate(['/cranes'], {
+    queryParams: bmdrnk ? { BMDRNK: bmdrnk } : {},
+    queryParamsHandling: 'merge' 
+  });
+}
 
   goToAttachments(vendorNoteId: any): void {
     this.router.navigateByUrl(`cranes/craneNoteAttachments/${vendorNoteId}`);

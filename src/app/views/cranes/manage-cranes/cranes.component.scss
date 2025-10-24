@@ -16,23 +16,68 @@ input {
 }
 
 button {
-  padding: 10px;
+  
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+   font-size: 15px; 
+  font-weight: 500;
+}
+.button-gap
+  {
+    margin-right: 10px;
+  }
+.table th,
+.table td {
+  vertical-align: middle;
+  text-align: center;
 }
 
-table {
-  width: 100%;
-  border: 1px solid grey;
-  margin-top: 20px;
+.table td {
+  font-size: 0.9rem;
 }
 
-th,
-td {
-  padding: 10px;
-  text-align: left;
+
+
+.mr-5 {
+  margin-right: 20px !important;
+}
+
+
+.w-15 { width: 60px; }
+.w-20 { width: 80px; }
+.w-25 { width: 100px; }
+.w-35 { width: 150px; }
+.w-50 { width: 200px; }
+.w-70 { width: 290px; }
+
+
+.truncate-text {
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+
+.gap-2 {
+  gap: 4px !important;
+}
+
+
+.btn-group .btn {
+  white-space: nowrap;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4px;
 }
 
 .BMDRNK-link {
@@ -55,6 +100,7 @@ td {
   flex-direction: row;
   gap: 3px;
 }
-.rounded-button {
-  border-radius: 6px;
+
+.float-right {
+  float: right;
 }

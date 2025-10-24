@@ -20,7 +20,7 @@ RUN npm run build --prod --aot=false
 FROM nginx:1.15.8-alpine
 
 # Copy the built application from the builder stage
-COPY --from=builder /angular-14-migration/dist/* /usr/share/nginx/html/
+COPY --from=builder /angular-14-migration/dist/latest-version/ /usr/share/nginx/html/
 
 # Expose port 80
 EXPOSE 80

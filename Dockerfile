@@ -22,6 +22,9 @@ FROM nginx:1.15.8-alpine
 # Copy the built application from the builder stage
 COPY --from=builder /angular-14-migration/dist/latest-version/ /usr/share/nginx/html/
 
+# Copy custom Nginx config
+COPY default.conf /etc/nginx/conf.d/default.conf
+
 # Expose port 80
 EXPOSE 80
 

@@ -64,15 +64,26 @@ export class AddCraneComponent implements OnInit, OnDestroy {
   
     this.spinner.show();
 
-    const payload = {
+    let payload;
+    if(this.BMKEY2==0)
+    {
+      payload = {
       ...this.craneData,
-      BMKEY2: 
+      BMKEY2: null
+    };
+    }
+    else
+    {
+        payload = {
+      ...this.craneData,
+      BMKEY2:
       {
         BMKEY1 :this.BMKEY2,
       }
-    };
+        }
+      }
 
-    const sub = this.cranesService.addCrane(payload).subscribe(() => {
+    const sub = this.cranesService.addCrane(payload).subscribe((res) => {
       this.successMessage = 'Crane added successfully';
       this.cdr.detectChanges();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -84,7 +95,7 @@ export class AddCraneComponent implements OnInit, OnDestroy {
           queryParams: {
             BMDRNK: this.craneData.BMDRNK,
             BMKEY: this.craneData.BMKEY1,
-            BMKEY2: this.craneData.BMKEY2?.BMKEY1,
+            BMKEY2: this.craneData.BMKEY2? this.craneData.BMKEY1 : null,
           },
         });
       }, 3000);

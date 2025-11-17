@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
-
+import { HttpClient } from '@angular/common/http';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { ItemTypesService } from '../../../services/Items/item-types.service';
 import { ItemRepairItemsService } from '../../../services/Items/item-repair-items.service';
+
 
 @Component({
   selector: 'app-failuretypemanagement',
@@ -38,7 +39,6 @@ export class FailuretypemanagementComponent implements OnInit {
   failureCauses: any[] = [];
   selectedAttrType: any = {};
   globalCompany: any;
-  //addFlag:any = false;
   editDeleteFlag: any = false;
   addEditFlag: any = false;
   newFlag: any = false;
@@ -61,7 +61,8 @@ export class FailuretypemanagementComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private itemTypesService: ItemTypesService,
     private itemRepairItemsService: ItemRepairItemsService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +76,12 @@ export class FailuretypemanagementComponent implements OnInit {
         this.companyId = this.globalCompany.companyId;
       }
     }
-
+    this.http.get('assets/failureTypes/failureTypeManagement.json')
+  .subscribe((data: any) => {
+    this.failureTypesandcauses = data;
+    this.failureTypes = Object.keys(this.failureTypesandcauses);
+    this.spinner.hide();
+  });
     this.pageLoadCalls(this.companyId);
 
     this.companyManagementService
@@ -136,25 +142,18 @@ export class FailuretypemanagementComponent implements OnInit {
       this.getFailureTypes(value);
     }
   }
-
   getFailureTypes(typeId: string): void {
-    this.spinner.show();
+  this.spinner.show();
 
-    this.itemRepairItemsService
-      .getAllFailureTypes(this.companyId, typeId)
-      .subscribe((response) => {
-        this.failureTypesandcauses = response;
-        this.failureTypes = Object.keys(this.failureTypesandcauses);
-        this.spinner.hide();
-      });
-  }
+  this.failureTypes = Object.keys(this.failureTypesandcauses);
+  this.spinner.hide();
+}
 
   getCausesForFailureType(failureType: string): void {
-    this.failureType = failureType.split('_')[0];
-    this.failureTypeId = failureType.split('_')[1];
-    this.faliurecausetemp = this.failureTypesandcauses[failureType];
-    this.failureCauses = this.faliurecausetemp[0].split('\n');
-  }
+  this.failureType = failureType; 
+  this.failureCauses = this.failureTypesandcauses[failureType] || [];
+  this.editDeleteFlag = true;
+}
 
   addFailureTypeAndCauses(): void {
     this.addEditFlag = true;
@@ -162,9 +161,11 @@ export class FailuretypemanagementComponent implements OnInit {
     this.addFailure = 1;
     this.editEnable = 0;
     this.editDeleteFlag = false;
+
     this.failureTypesandcauses = {};
     this.failureTypes = [];
     this.failureCauses = [];
+
     this.model.failureType = '';
     this.model.causes = '';
   }

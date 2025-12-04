@@ -162,7 +162,11 @@ getAllCompanyDetails(): Observable<Company[]> {
       )
       .pipe(catchError(this.handleError));
   }
-
+  getIsMMS(companyId:number)
+  {
+    return this.http.get(AppConfiguration.companyRestURL+"isMMS/"+companyId)
+    .pipe(catchError(this.handleError));
+  }
   getCompanyDetails(comapnyId: string) {
     return this.http
       .get(AppConfiguration.companyRestURL + comapnyId)

@@ -20,7 +20,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Location } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { HttpClient } from '@angular/common/http';
+import { AppConfiguration } from 'src/app/configuration';
 @Component({
   selector: 'app-view-item',
   templateUrl: './view-item.component.html',
@@ -35,6 +36,8 @@ export class ViewItemComponent implements OnInit {
     typeId: 0,
     warrantyTypeId: 0,
   };
+  itemMMS: boolean = false;
+  mmsData: any = {};
   journals: any[] = [];
   index: number = 0;
   companyId: number = 0;
@@ -80,7 +83,8 @@ export class ViewItemComponent implements OnInit {
     private modalService: BsModalService,
     private broadcasterService: BroadcasterService,
     private _location: Location,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private http: HttpClient
   ) {
     this.itemId = route.snapshot.params['id'];
     this.authToken = sessionStorage.getItem('auth_token');
@@ -101,9 +105,16 @@ export class ViewItemComponent implements OnInit {
     this.itemType = this.broadcasterService.currentItemType;
     this.itemRank = this.broadcasterService.itemRank;
     this.userName = sessionStorage.getItem('userName');
+    const itemMMSValue = sessionStorage.getItem('itemMMS');
+    this.itemMMS = itemMMSValue === 'true' || itemMMSValue === '1';
+    console.log('itemMMS:', this.itemMMS);
     if (this.itemId) {
+      
       this.getItemDetails();
       this.getJournalLog();
+      if (this.itemMMS) {
+          this.getItemMMS();
+        }
     }
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
@@ -121,6 +132,7 @@ export class ViewItemComponent implements OnInit {
         this.broadcasterService.currentItemType = this.model.typeName;
         this.changeAttributes();
         this.getWarrantyTypes();
+        
       },
       () => {
         this.spinner.hide();
@@ -136,7 +148,22 @@ export class ViewItemComponent implements OnInit {
       });
     }
   }
-
+   getItemMMS(): void {
+    this.spinner.show();
+    this.http.get(AppConfiguration.locationRestURL + `item/getItemMMS/${this.itemId}`).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        this.mmsData = response !== null ? response : null;
+        console.log('MMS response:', response);
+      },
+      (error) => {
+        this.spinner.hide();
+        console.error('MMS error:', error);
+        // error -> treat as no MMS data
+        this.mmsData = null;
+      }
+    );
+  }
   getItemDefaultImage(): void {
     this.spinner.show();
     this.itemAttachmentsService.getItemDocuments(this.currentAttachmentId).subscribe(

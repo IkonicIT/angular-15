@@ -19,6 +19,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Location } from '@angular/common';
 import { isUndefined, isNull } from 'is-what';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
+import { AppConfiguration } from 'src/app/configuration';
 
 @Component({
   selector: 'app-edit-item',
@@ -65,6 +67,8 @@ export class EditItemComponent implements OnInit {
   imageIndexTwo: number = 0;
   journals: any[] = [];
   imageSource: any;
+   itemMMS: boolean = false;
+  mmsData: any = {};
   itemAttachments: any[] = [];
   iamgeconfig: ImageViewerConfig = {
     customBtns: [{ name: 'setAsDefault', icon: 'fa fa-sliders' }],
@@ -101,7 +105,8 @@ export class EditItemComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private itemRepairItemsService: ItemRepairItemsService,
     private broadcasterService: BroadcasterService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private http: HttpClient
   ) {
     this.itemId = route.snapshot.params['id'];
     this.authToken = sessionStorage.getItem('auth_token');
@@ -169,6 +174,7 @@ export class EditItemComponent implements OnInit {
         }
         this.getAllItemTypes();
         this.getItemTypeAttributes(this.model.typeId);
+        this.getItemMMS();
       },
       () => {
         this.spinner.hide();
@@ -189,7 +195,21 @@ export class EditItemComponent implements OnInit {
       });
     });
   }
-
+   getItemMMS(): void {
+    this.spinner.show();
+    this.http.get(AppConfiguration.locationRestURL + `item/getItemMMS/${this.itemId}`).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        this.mmsData = response || {};
+        console.log('MMS Response:', response);
+      },
+      (error) => {
+        this.spinner.hide();
+        console.log('MMS Error:', error);
+        this.mmsData = {};
+      }
+    );
+  }
   checkItemTag(): void {
     this.modalRef.hide();
     this.itemManagementService.checkTag(this.model.tag, this.model.typeId).subscribe(

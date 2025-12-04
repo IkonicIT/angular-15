@@ -10,7 +10,6 @@ import { ItemManagementService } from '../../../services/Items/item-management.s
 import { WarrantyManagementService } from '../../../services';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from 'src/app/services/broadcaster.service';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-item-repairs',
@@ -43,14 +42,13 @@ export class AddItemRepairsComponent implements OnInit {
   locationItems: TreeviewItem[] = [];
   userName: string | null = null;
   failureTypesandcauses: any = {};
-  editDeleteFlag: boolean = false;
   vendor: any = {};
   failureCauseSp: any[] = [];
   itemRank: any;
   failureCauses: any = {};
   details: any;
   helpFlag = false;
-  highestRank: string | null = null;
+ highestRank: string | null = null;
   get highestRankNum(): number {
     return Number(this.highestRank ?? 0);
   }
@@ -65,8 +63,7 @@ export class AddItemRepairsComponent implements OnInit {
     private itemRepairItemsService: ItemRepairItemsService,
     private warrantyManagementService: WarrantyManagementService,
     private itemManagementService: ItemManagementService,
-    private broadcasterService: BroadcasterService,
-    private http: HttpClient
+    private broadcasterService: BroadcasterService
   ) {
     this.itemId = Number(route.snapshot.params['itemId']);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
@@ -89,50 +86,39 @@ export class AddItemRepairsComponent implements OnInit {
     this.model.date = new Date();
     this.bsConfig = { containerClass: 'theme-red' };
     this.getWarrantyTypes();
-
-    // Load failure types JSON
-    this.http.get('assets/failureTypes/failureTypeManagement.json')
-      .subscribe((data: any) => {
-        this.failureTypesandcauses = data;
-        this.failureTypes = Object.keys(this.failureTypesandcauses);
-        this.spinner.hide();
-      });
   }
 
   getFailureTypes(): void {
+  this.spinner.show();
+  this.itemRepairItemsService
+    .getAllFailureTypesForEditItemRepair(String(this.companyId), this.details.typeId)
+    .subscribe(response => {
+      this.failureTypesandcauses = response;
+      this.spinner.hide();
+      this.failureTypes = Object.keys(this.failureTypesandcauses);
+    });
+}
+
+  getAcMotorFailureTypesAndCauses(): void {
     this.spinner.show();
-    this.failureTypes = Object.keys(this.failureTypesandcauses);
-    this.spinner.hide();
+    this.itemRepairItemsService
+      .getAcMotorFailureTypesAndCauses()
+      .subscribe((response: any) => {
+        this.failureTypesandcauses = response;
+        this.spinner.hide();
+        this.failureTypes = Object.keys(this.failureTypesandcauses);
+      });
   }
 
-  
-  onValueChange(failureType: string): void {
-    this.failureCauseSp = [];
-
-    const causes = this.failureTypesandcauses[failureType];
-
-    if (Array.isArray(causes)) {
-      this.failureCauseSp = causes;  
-    }
-  }
-
-  
-  getFailureCause(ft: string): string[] | null {
-    if (!ft) return null;
-
-    const causes = this.failureTypesandcauses[ft];
-
-    if (Array.isArray(causes)) {
-      return causes;
-    }
-
-    return null;
-  }
-
-  getCausesForFailureType(failureType: string): void {
-    this.failureType = failureType;
-    this.failureCauses = this.failureTypesandcauses[failureType] || [];
-    this.editDeleteFlag = true;
+  getDcMotorFailureTypesAndCauses(): void {
+    this.spinner.show();
+    this.itemRepairItemsService
+      .getDcMotorFailureTypesAndCauses()
+      .subscribe((response: any) => {
+        this.failureTypesandcauses = response;
+        this.spinner.hide();
+        this.failureTypes = Object.keys(this.failureTypesandcauses);
+      });
   }
 
   getItemDetails(): void {
@@ -151,7 +137,13 @@ export class AddItemRepairsComponent implements OnInit {
         if (this.model.warrantyExpiration) {
           this.model.warrantyExpiration = new Date(this.model.warrantyExpiration);
         }
-        this.getFailureTypes();
+        if (this.model.typeName === 'AC Motor') {
+          this.getAcMotorFailureTypesAndCauses();
+        } else if (this.model.typeName === 'DC Motor') {
+          this.getDcMotorFailureTypesAndCauses();
+        } else {
+          this.getFailureTypes();
+        }
         this.spinner.hide();
       });
   }
@@ -200,6 +192,18 @@ export class AddItemRepairsComponent implements OnInit {
     }
   }
 
+  onValueChange(failureType: string | number): void {
+    this.failureCauseSp = [];
+    this.model.failureCause = ' ';
+    const faliurecausetemp = this.failureTypesandcauses[failureType];
+    const failureCauseSp = faliurecausetemp[0].split('\n');
+    failureCauseSp.forEach((element: string | any[]) => {
+      if (element.length > 0) {
+        this.failureCauseSp.push(element);
+      }
+    });
+  }
+
   generateHierarchy(locList: any[]): TreeviewItem[] {
     return locList.map(loc => {
       const children =
@@ -232,19 +236,16 @@ export class AddItemRepairsComponent implements OnInit {
   }
 
   updateFailureTypeAndCauses(failureType: string | number): void {
-    const causes = this.failureTypesandcauses[failureType];
-    let newCauseList = Array.isArray(causes) ? [...causes] : [];
-    newCauseList.push(this.model.newFailureCauseSp);
-
+    const faliurecausetemp = this.failureTypesandcauses[failureType];
+    let causes = faliurecausetemp[0];
+    causes = causes + '\n' + this.model.newFailureCauseSp;
     this.spinner.show();
-
     const request = {
       failureTypeId: 0,
       itemTypeId: this.details.typeId,
       description: failureType,
-      causes: newCauseList.join(', '),
+      causes: causes,
     };
-
     this.itemRepairItemsService
       .updateFailureTypeAndCauses(request, request.failureTypeId)
       .subscribe(() => {
@@ -253,7 +254,6 @@ export class AddItemRepairsComponent implements OnInit {
   }
 
   saveItemRepair(): void {
-    // unchanged existing logic
     if (this.highestRank == '2') {
       if (
         !this.model.jobNumber ||
@@ -392,7 +392,6 @@ export class AddItemRepairsComponent implements OnInit {
         vendorId: this.model.vendorId ?? 0,
       },
     };
-
     this.spinner.show();
     this.itemRepairItemsService.saveItemRepair(this.model).subscribe(
       (response: any) => {
@@ -431,6 +430,11 @@ export class AddItemRepairsComponent implements OnInit {
 
   removeSecondaryFindings(i: number): void {
     this.model.secondaryTypeAndCauses.splice(i, 1);
+  }
+
+  getFailureCause(ft: any): string[] | null {
+    if (ft.length > 0) return this.failureTypesandcauses[ft][0].split('\n');
+    else return null;
   }
 
   checkValue(event: any): void {

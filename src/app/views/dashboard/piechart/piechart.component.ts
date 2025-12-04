@@ -188,7 +188,13 @@ export class PiechartComponent implements OnInit {
     this.itemType = this.broadcasterService.currentItemType;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.userId = sessionStorage.getItem('userId');
-    this.companyId = this.broadcasterService.selectedCompanyId;
+    this.companyId = this.broadcasterService.selectedCompanyId || (this.companyManagementService.getGlobalCompany() ? this.companyManagementService.getGlobalCompany().companyId : 0);
+    this.companyManagementService.globalCompanyChange.subscribe((c: any) => {
+      if (c && c.companyId) {
+        this.companyId = c.companyId;
+        this.getIsMMSCompany();
+      }
+    });
     this.getData();
     this.repairFlag = 'false';
     this.selectedVal = 'count';
@@ -397,7 +403,23 @@ export class PiechartComponent implements OnInit {
         });
     }
   }
-
+  getIsMMSCompany() {
+    if (!this.companyId) {
+      console.log('getIsMMSCompany: companyId not set');
+      return;
+    }
+    this.companyManagementService.getIsMMS(this.companyId).subscribe(
+      (res: any) => {
+        console.log('isMMSCompany:', res);
+        const isMMS = res === true || res === 'true' || (res && res.isMMS === true);
+        sessionStorage.setItem('itemMMS', isMMS ? 'true' : 'false');
+      },
+      (err) => {
+        console.error('getIsMMSCompany error:', err);
+        sessionStorage.setItem('itemMMS', 'false');
+      }
+    );
+  }
   getLocationsWithHierarchy() {
     this.allLocations = this.broadcasterService.locations;
     if (this.allLocations && this.allLocations.length > 0) {

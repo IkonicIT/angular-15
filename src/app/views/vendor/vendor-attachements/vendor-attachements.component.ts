@@ -130,28 +130,23 @@ export class VendorAttachementsComponent implements OnInit {
       });
   }
 
-  openAttachment(): void {
-    if (this.isImage()) {
-      const imageWindow = window.open();
-      if (imageWindow) {
-        imageWindow.document.write(
-          `<img src="data:${this.vendorAttachment.contentType};base64,${this.vendorAttachment.attachmentFile}" />`
-        );
-      }
-    } else {
-      const blob = this.base64ToBlob(
-        this.vendorAttachment.attachmentFile,
-        this.vendorAttachment.contentType
-      );
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = this.vendorAttachment.fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+ openAttachment(): void {
+  if (this.isImage()) {
+    const imageWindow = window.open();
+    if (imageWindow) {
+      imageWindow.document.write(`
+        <img src="data:${this.vendorAttachment.contentType};base64,${this.vendorAttachment.attachmentFile}" style="max-width:100%;height:auto;" />
+      `);
     }
+  } else {
+    const blob = this.base64ToBlob(
+      this.vendorAttachment.attachmentFile,
+      this.vendorAttachment.contentType
+    );
+    const url = window.URL.createObjectURL(blob);
+    window.open(url, '_blank');
   }
+}
 
   isImage(): boolean {
     return (

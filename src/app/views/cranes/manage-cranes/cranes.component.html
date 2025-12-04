@@ -81,17 +81,18 @@
 
                   <td class="text-center">
                     <div class="d-flex justify-content-center align-items-center flex-nowrap gap-2">
-                      <button
-                        [disabled]="highestRank < 5"
-                        class="btn btn-danger btn-sm nowrap"
-                        (click)="navigateToAdd(item.BMKEY1)"
-                      >
-                        Add Crane-Part
-                      </button>
+                     <button
+  [disabled]="highestRank < 5"
+  class="btn btn-outline-danger btn-sm btn-right my-btn-group no-wrap"
+  (click)="navigateToAdd(item.BMKEY1)"
+>
+  Add Crane-Part
+</button>
+
 
                       <button
                         [disabled]="highestRank < 5"
-                        class="btn btn-danger btn-sm"
+                        class="btn btn-outline-danger btn-sm btn-right my-btn-group"
                         (click)="navigateToEdit(item.BMKEY1,item.BMDRNK)"
                       >
                         Edit
@@ -99,7 +100,7 @@
 
                       <button
                         [disabled]="highestRank < 5"
-                        class="btn btn-danger btn-sm"
+                        class="btn btn-outline-danger btn-sm btn-right my-btn-group"
                         (click)="navigateToCraneNotes(item.BMKEY1 , item.BMDRNK)"
                       >
                         Notes
@@ -107,7 +108,7 @@
 
                       <button
                         [disabled]="highestRank < 5"
-                        class="btn btn-danger btn-sm"
+                        class="btn btn-outline-danger btn-sm btn-right my-btn-group"
                         (click)="openModal(confirmtemplate, item.BMKEY1, item.BMDRNK)"
                       >
                         Delete

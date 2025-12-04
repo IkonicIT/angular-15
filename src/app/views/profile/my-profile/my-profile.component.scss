@@ -112,7 +112,12 @@ button {
   animation-name: animatebottom;
   animation-duration: 1s;
 }
-
+.help-box {
+  text-align: left;
+  border: 1px solid #ccc;
+  width: fit-content;
+  background-color: whitesmoke;
+}
 @-webkit-keyframes animatebottom {
   from {
     bottom: -100px;

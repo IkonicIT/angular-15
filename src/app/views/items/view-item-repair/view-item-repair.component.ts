@@ -36,7 +36,7 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
   companyId: string = ''; 
   itemRepairId!: string;
   itemId!: string;
-
+  mmsDetails: any;
   userName: string = '';
   itemRank: any;
   modalRef!: BsModalRef;
@@ -47,7 +47,7 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
   itemRepairsFilter: any = '';
   repairsForPagination = 5;
   repairs: any[] = [];
-
+  isMMS: boolean = false;
   completedRepairsForPagination = 5;
   completedRepairsFilter: any = '';
   completedRepairs: any[] = [];
@@ -121,12 +121,34 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
     this.highestRank = sessionStorage.getItem('highestRank');
     this.itemRank = this.broadcasterService.itemRank;
     this.getItemRepairDetails();
+    this.isMMS = sessionStorage.getItem('itemMMS') === 'true';
+
+  if (this.isMMS) {
+    this.getMmsRepairDetails();
+  }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+  getMmsRepairDetails(): void {
+  this.spinner.show();
+
+  this.itemRepairItemsService
+    .getItemMmsDetails(this.itemRepairId)
+    .subscribe(
+      (response) => {
+        console.log('MMS Repair Details response:', response);
+        this.mmsDetails = response;
+        this.spinner.hide();
+      },
+      (error) => {
+        console.error('Error fetching MMS Repair Details:', error);
+        this.spinner.hide();
+      }
+    );
+}
 
   getItemRepairDetails(): void {
     this.spinner.show();

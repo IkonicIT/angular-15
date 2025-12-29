@@ -230,6 +230,62 @@
                       <span>{{ model.completedBy }}</span>
                     </div>
                   </div>
+                 
+<ng-container *ngIf="mmsDetails && isMMS">
+
+   <!-- <div class="col-sm-12">
+      <h6 class="mb-2">MMS Details</h6>
+    </div> -->
+
+  <div class="row space">
+    <div class="form-group col-sm-6">
+      <label class="pr5">Work Order Number:</label>
+      <span>{{ mmsDetails.workOrderNumber || '-' }}</span>
+    </div>
+    <div class="form-group col-sm-6">
+      <label class="pr5">Customer Work Order:</label>
+      <span>{{ mmsDetails.cusWorkOrderNumber?.trim() || '-' }}</span>
+    </div>
+   
+  </div>
+
+  <div class="row space">
+     <div class="form-group col-sm-6">
+      <label class="pr5">Customer PO Number:</label>
+      <span>{{ mmsDetails.cusPoNumber?.trim() || '-' }}</span>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="pr5">Customer RFQ:</label>
+      <span>{{ mmsDetails.cusRfqNumber?.trim() || '-' }}</span>
+    </div>
+  </div>
+
+  <div class="row space">
+    <div class="form-group col-sm-6">
+      <label class="pr5">Process Name:</label>
+      <span>{{ mmsDetails.processName || '-' }}</span>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label class="pr5">Driven Machine:</label>
+      <span>{{ mmsDetails.drivenMachineName || '-' }}</span>
+    </div>
+  </div>
+
+  <div class="row space">
+    <div class="form-group col-sm-6">
+      <label class="pr5">Vendor Name:</label>
+      <span>{{ mmsDetails.vendorName || '-' }}</span>
+    </div>
+    <div class="form-group col-sm-6">
+      <label class="pr5">Cus Req Number:</label>
+      <span>{{ mmsDetails.cusReqNumber || '-' }}</span>
+    </div>
+  </div>
+
+</ng-container>
+
                 </div>
               </form>
             </div>

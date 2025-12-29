@@ -220,7 +220,16 @@ export class ItemRepairItemsService {
       .get(this.serviceURL + 'itemRepairItem/' + repairId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-
+  getItemMmsDetails(repairId:string)
+  {
+    const isMMS = sessionStorage.getItem('itemMMS') === 'true';
+    return this.http
+      .get(
+        this.serviceURL + 'itemrepair/getMmsForView/' +isMMS+'/'+ repairId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
   getRepairDetailsForView(repairId: string) {
     return this.http
       .get(

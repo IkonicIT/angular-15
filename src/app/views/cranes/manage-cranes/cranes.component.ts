@@ -27,26 +27,28 @@ export class CranesComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.highestRank = sessionStorage.getItem("highestRank") || "";
-
-    this.route.queryParams.subscribe((params) => {
-      const BMDRNK = params["BMDRNK"];
-      if (BMDRNK) {
-        this.refreshByBMDRNK(BMDRNK);
-
-        setTimeout(() => {
-          this.router.navigate([], {
-            relativeTo: this.route,
-            queryParams: { BMDRNK: null },
-            queryParamsHandling: "merge",
-          });
-        }, 300);
-      }
-    });
+    sessionStorage.removeItem("bmdrnkHistory"); // reset on fresh load
   }
 
-  handleSearch() {
+  private getHistory(): string[] {
+    return JSON.parse(sessionStorage.getItem("bmdrnkHistory") || "[]");
+  }
+
+  private setHistory(history: string[]): void {
+    sessionStorage.setItem("bmdrnkHistory", JSON.stringify(history));
+  }
+
+  private pushToHistory(bmdrnk: string): void {
+    const history = this.getHistory();
+    if (history[history.length - 1] !== bmdrnk) {
+      history.push(bmdrnk);
+      this.setHistory(history);
+    }
+  }
+
+  handleSearch(): void {
     if (!this.searchKey || this.searchKey.trim() === "") {
       this.errorMessage = "Please enter a BMDRNK to search.";
       this.data = [];
@@ -54,24 +56,18 @@ export class CranesComponent implements OnInit {
     }
 
     this.errorMessage = "";
+    this.pushToHistory(this.searchKey);
     this.fetchCranesByBMDRNK(this.searchKey);
   }
 
-  fetchCranesByBMDRNK(bmdrnk: string) {
+  fetchCranesByBMDRNK(bmdrnk: string): void {
     this.spinner.show();
+    this.searchKey = bmdrnk;
     this.cranesService.getCranesByBMDRNK(bmdrnk).subscribe({
       next: (response: any[]) => {
         this.spinner.hide();
-        if (!response || response.length === 0) {
-          this.errorMessage = "No Data Found";
-          this.data = [];
-           this.spinner.hide();
-        } else {
-          this.data = response;
-          this.errorMessage = "";
-          console.log(response);
-           this.spinner.hide();
-        }
+        this.data = response || [];
+        this.errorMessage = this.data.length ? "" : "No Data Found";
       },
       error: (err) => {
         console.error("Error fetching cranes:", err);
@@ -81,18 +77,15 @@ export class CranesComponent implements OnInit {
     });
   }
 
-  handleBMDRNKClick(BMKEY: string, BMDRNK: string) {
+  handleBMDRNKClick(BMKEY: string, BMDRNK: string): void {
     this.spinner.show();
     this.cranesService.getCranesData(BMKEY).subscribe({
       next: (response: any[]) => {
         this.spinner.hide();
-        if (!response || response.length === 0) {
-          this.errorMessage = `No Data Found For BMDRNK: ${BMDRNK}`;
-          this.data = [];
-        } else {
-          this.data = response;
-          this.errorMessage = "";
-        }
+        this.data = response || [];
+        this.errorMessage = this.data.length
+          ? ""
+          : `No Data Found For BMDRNK: ${BMDRNK}`;
       },
       error: (err) => {
         console.error("Error fetching crane data:", err);
@@ -102,36 +95,26 @@ export class CranesComponent implements OnInit {
     });
   }
 
-  refreshByBMDRNK(bmdrnk: string) {
-    if (!bmdrnk) return;
-    this.searchKey = bmdrnk;
-    this.spinner.show();
+  goBack(): void {
+    const history = this.getHistory();
+    history.pop();
 
-    this.cranesService.getCranesByBMDRNK(bmdrnk).subscribe({
-      next: (response: any[]) => {
-        this.spinner.hide();
-        if (!response || response.length === 0) {
-          this.errorMessage = "No Data Found";
-          this.data = [];
-        } else {
-          this.data = response;
-          this.errorMessage = "";
-        }
-      },
-      error: (err) => {
-        console.error("Error refreshing cranes:", err);
-        this.spinner.hide();
-        this.errorMessage = "Error fetching data. Please try again.";
-      },
-    });
+    if (history.length > 0) {
+      const previousBMDRNK = history[history.length - 1];
+      this.setHistory(history);
+      this.fetchCranesByBMDRNK(previousBMDRNK);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      this.setHistory([]);
+      this.searchKey = "";
+      this.data = [];
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.errorMessage = "";
+    }
+     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // navigateToAdd(BMKEY1: number, BMDRNK?: string): void {
-  //   this.router.navigate([`cranes/addCrane/${BMKEY1}`], {
-  //     queryParams: BMDRNK ? { BMDRNK } : {},
-  //   });
-  // }
-navigateToAdd(BMKEY1: number): void {
+  navigateToAdd(BMKEY1: number): void {
     this.router.navigateByUrl(`cranes/addCrane/${BMKEY1}`);
   }
 
@@ -142,16 +125,14 @@ navigateToAdd(BMKEY1: number): void {
   }
 
   navigateToCraneNotes(BMKEY1: number, BMDRNK?: string): void {
-  this.router.navigate([`cranes/craneNotes/${BMKEY1}`], {
-    queryParams: BMDRNK ? { BMDRNK } : {},
-  });
-}
-
+    this.router.navigate([`cranes/craneNotes/${BMKEY1}`], {
+      queryParams: BMDRNK ? { BMDRNK } : {},
+    });
+  }
 
   openModal(template: TemplateRef<any>, id: string, bmdrnk: string): void {
     if (this.modalRef) {
       this.modalRef.hide();
-      this.modalRef = null;
     }
     this.index = id;
     this.inbmd = bmdrnk;
@@ -159,7 +140,6 @@ navigateToAdd(BMKEY1: number): void {
   }
 
   confirm(): void {
-    this.message = "Confirmed!";
     if (this.modalRef) {
       this.modalRef.hide();
       this.modalRef = null;
@@ -167,9 +147,7 @@ navigateToAdd(BMKEY1: number): void {
 
     this.spinner.show();
     this.cranesService.deleteCrane(this.index).subscribe({
-      next: () => {
-        this.afterDelete();
-      },
+      next: () => this.afterDelete(),
       error: (err) => {
         if (err.status === 200 || err.statusText === "OK") {
           this.afterDelete();
@@ -187,9 +165,11 @@ navigateToAdd(BMKEY1: number): void {
     this.index = null;
     this.inbmd = null;
   }
+  showBackButton(): boolean {
+  return this.getHistory().length > 0;
+}
 
   decline(): void {
-    this.message = "Declined!";
     if (this.modalRef) {
       this.modalRef.hide();
       this.modalRef = null;

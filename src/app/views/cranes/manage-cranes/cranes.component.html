@@ -118,7 +118,16 @@
                 </tr>
               </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+            <button
 
+  *ngIf="showBackButton()"
+   class="btn btn-danger mt-2 rounded-button"
+  (click)="goBack()"
+>
+  Back
+</button>
+</div>
             <div *ngIf="data.length === 0 && !errorMessage" class="text-center text-muted mt-4">
               No records to display. Please search by BMDRNK.
             </div>

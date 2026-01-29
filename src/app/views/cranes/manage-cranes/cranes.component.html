@@ -93,7 +93,7 @@
                       <button
                         [disabled]="highestRank < 5"
                         class="btn btn-outline-danger btn-sm btn-right my-btn-group"
-                        (click)="navigateToEdit(item.BMKEY1,item.BMDRNK)"
+                        (click)="navigateToEdit(item.BMKEY1)"
                       >
                         Edit
                       </button>
@@ -101,7 +101,7 @@
                       <button
                         [disabled]="highestRank < 5"
                         class="btn btn-outline-danger btn-sm btn-right my-btn-group"
-                        (click)="navigateToCraneNotes(item.BMKEY1 , item.BMDRNK)"
+                        (click)="navigateToCraneNotes(item.BMKEY1)"
                       >
                         Notes
                       </button>
@@ -109,7 +109,7 @@
                       <button
                         [disabled]="highestRank < 5"
                         class="btn btn-outline-danger btn-sm btn-right my-btn-group"
-                        (click)="openModal(confirmtemplate, item.BMKEY1, item.BMDRNK)"
+                        (click)="openModal(confirmtemplate, item.BMKEY1)"
                       >
                         Delete
                       </button>
@@ -119,15 +119,15 @@
               </tbody>
             </table>
             <div class="d-flex justify-content-center">
-            <button
-
-  *ngIf="showBackButton()"
-   class="btn btn-danger mt-2 rounded-button"
-  (click)="goBack()"
->
-  Back
-</button>
-</div>
+              <button
+                class="btn btn-danger mt-2 rounded-button"
+                *ngIf="historyStack.length > 0"
+                (click)="goBack()"
+                type="button"
+              >
+                Back
+              </button>
+            </div>
             <div *ngIf="data.length === 0 && !errorMessage" class="text-center text-muted mt-4">
               No records to display. Please search by BMDRNK.
             </div>

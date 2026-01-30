@@ -73,7 +73,7 @@ highestRank?: string | null;
     this.router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
         this.InitData();
-        this.router.navigated = false;
+        // this.router.navigated = false;
         window.scroll(0, 0);
       }
     });

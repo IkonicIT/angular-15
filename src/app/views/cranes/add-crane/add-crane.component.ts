@@ -33,7 +33,8 @@ export class AddCraneComponent implements OnInit, OnDestroy {
   BMTERM: '',
   BMPCHG: null,
   BMDCHG: null,
-  BMTCHG: null
+  BMTCHG: null,
+  Part_Type: ''
 };
 
   highestRank: any;
@@ -92,12 +93,13 @@ export class AddCraneComponent implements OnInit, OnDestroy {
         this.successMessage = '';
         this.cdr.detectChanges();
         this.router.navigate(['/cranes'], {
-          queryParams: {
-            BMDRNK: this.craneData.BMDRNK,
-            BMKEY: this.craneData.BMKEY1,
-            BMKEY2: this.craneData.BMKEY2? this.craneData.BMKEY1 : null,
-          },
-        });
+  queryParams: {
+    BMDRNK: this.craneData.BMDRNK,
+    BMKEY1: this.craneData.BMKEY1 ?? null,
+    BMKEY2: this.BMKEY2 && this.BMKEY2 !== 0 ? this.BMKEY2 : null,
+  },
+});
+
       }, 3000);
     });
 

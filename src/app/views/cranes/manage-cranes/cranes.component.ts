@@ -14,6 +14,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 export class CranesComponent implements OnInit, OnDestroy {
   searchKey: string = '';
   data: any[] = [];
+  filteredData: any[] = [];
   errorMessage: string = '';
   successMessage: string = '';
   index: any;
@@ -27,6 +28,7 @@ export class CranesComponent implements OnInit, OnDestroy {
   isFromQueryParams: boolean = false;
   previousData: any[] = [];
   historyStack: any[][] = [];
+  selectedPartType: string = '';
 
   private subscriptions = new Subscription();
 
@@ -55,6 +57,7 @@ export class CranesComponent implements OnInit, OnDestroy {
 
       if (!BMDRNK && !BMKEY1 && !BMKEY) {
         this.data = historyStackData ? JSON.parse(historyStackData) : [];
+        this.filteredData = [...this.data];
         this.isFromQueryParams = false;
         return;
       } else {
@@ -84,9 +87,11 @@ export class CranesComponent implements OnInit, OnDestroy {
         if (response.length === 0) {
           this.errorMessage = 'No Data Found For BMDRNK: ' + BMDRNK;
           this.data = [];
+          this.filteredData = [];
         } else {
           this.historyStack.push([...this.data]);
           this.data = response;
+          this.filteredData = [...this.data]; 
           sessionStorage.setItem('historyStack', JSON.stringify(this.data));
           sessionStorage.setItem('historyStackBackup', JSON.stringify(this.historyStack));
           this.errorMessage = '';
@@ -106,9 +111,11 @@ export class CranesComponent implements OnInit, OnDestroy {
         if (response.length === 0) {
           this.errorMessage = 'No Data Found';
           this.data = [];
+          this.filteredData = [];
         } else {
           this.historyStack.push([...this.data]);
           this.data = response;
+          this.filteredData = [...this.data]; 
           sessionStorage.setItem('historyStack', JSON.stringify(this.data));
           sessionStorage.setItem('historyStackBackup', JSON.stringify(this.historyStack));
           this.errorMessage = '';
@@ -123,6 +130,7 @@ export class CranesComponent implements OnInit, OnDestroy {
   handleSearch(): void {
     this.historyStack.length = 0;
     this.data = [];
+    this.filteredData = [];
     sessionStorage.removeItem('historyStack');
     sessionStorage.removeItem('historyStackBackup');
     sessionStorage.setItem('searchKey', this.searchKey);
@@ -132,10 +140,21 @@ export class CranesComponent implements OnInit, OnDestroy {
       next: (response: any[]) => {
         this.spinner.hide();
         this.data = response || [];
+        this.filteredData = [...this.data]; 
         this.errorMessage = this.data.length ? '' : 'No Data Found';
       },
       error: () => this.spinner.hide(),
     });
+  }
+
+  filterByPartType(): void {
+    if (!this.selectedPartType) {
+      this.filteredData = [...this.data]; 
+    } else {
+      this.filteredData = this.data.filter(
+        (item) => item.Part_Type?.toLowerCase() === this.selectedPartType.toLowerCase()
+      );
+    }
   }
 
   handleBMDRNKClick(BMKEY: string, BMDRNK: string): void {
@@ -166,33 +185,34 @@ export class CranesComponent implements OnInit, OnDestroy {
   }
 
   confirm(): void {
-  this.message = 'Confirmed!';
+    this.message = 'Confirmed!';
 
-  if (this.modalRef) {
-    this.modalRef.hide();
-    this.modalRef = null;
+    if (this.modalRef) {
+      this.modalRef.hide();
+      this.modalRef = null;
+    }
+    this.forceCloseModal();
+
+    this.spinner.show();
+
+    this.cranesService.deleteCrane(this.index).subscribe({
+      next: () => {
+        this.data = this.data.filter((item) => item.BMKEY1 !== this.index);
+        this.filteredData = this.filteredData.filter((item) => item.BMKEY1 !== this.index);
+
+        setTimeout(() => {
+          this.handleSearch();
+        }, 500);
+
+        this.spinner.hide();
+        this.forceCloseModal();
+      },
+      error: () => {
+        this.spinner.hide();
+        this.forceCloseModal();
+      },
+    });
   }
-  this.forceCloseModal();
-
-  this.spinner.show();
-
-  this.cranesService.deleteCrane(this.index).subscribe({
-    next: () => {
-      this.data = this.data.filter(item => item.BMKEY1 !== this.index);
-
-      setTimeout(() => {
-        this.handleSearch();
-      }, 500);
-
-      this.spinner.hide();
-      this.forceCloseModal();
-    },
-    error: () => {
-      this.spinner.hide();
-      this.forceCloseModal();
-    },
-  });
-}
 
   decline(): void {
     this.message = 'Declined!';
@@ -220,6 +240,7 @@ export class CranesComponent implements OnInit, OnDestroy {
     const poppedData = this.historyStack.pop();
     if (poppedData) {
       this.data = poppedData;
+      this.filteredData = [...this.data]; // reset filtered data
       sessionStorage.setItem('historyStack', JSON.stringify(this.data));
       sessionStorage.setItem('historyStackBackup', JSON.stringify(this.historyStack));
     }

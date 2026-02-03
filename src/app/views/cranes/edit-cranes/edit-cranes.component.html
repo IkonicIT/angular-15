@@ -130,6 +130,37 @@
                   <input type="number" id="BMTCHG" [(ngModel)]="craneData.BMTCHG" name="BMTCHG" class="form-control bg-white"/>
                 </div>
               </div>
+<div *ngIf="craneData.Part_Type" class="form-check form-check-inline">
+  <label class="me-3">Part Type:</label>
+
+  <div class="form-check form-check-inline">
+    <input
+      class="form-check-input custom-radio me-1"
+      type="radio"
+      name="Part_Type"
+      id="electrical"
+      value="Electrical"
+      [(ngModel)]="craneData.Part_Type"
+    />
+    <label class="form-check-label me-3" for="electrical">
+      Electrical
+    </label>
+  </div>
+
+  <div class="form-check form-check-inline">
+    <input
+      class="form-check-input custom-radio me-1"
+      type="radio"
+      name="Part_Type"
+      id="mechanical"
+      value="Mechanical"
+      [(ngModel)]="craneData.Part_Type"
+    />
+    <label class="form-check-label" for="mechanical">
+      Mechanical
+    </label>
+  </div>
+</div>
 
               <!-- Buttons -->
               <div class="d-flex flex-row justify-content-center gap-3">

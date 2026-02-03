@@ -133,6 +133,40 @@
                 </div>
               </div>
 
+              <div class="row mb-3">
+  <div class="col-md-6 d-flex align-items-center gap-3">
+    <label class="mb-0">Part Type:</label>
+    <div class="form-check mb-0">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="discipline"
+        id="electrical"
+        value="Electrical"
+        [(ngModel)]="craneData.Part_Type"
+      />
+      <label class="form-check-label" for="electrical">
+        Electrical
+      </label>
+    </div>
+
+    <div class="form-check mb-0">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="discipline"
+        id="mechanical"
+        value="Mechanical"
+        [(ngModel)]="craneData.Part_Type"
+      />
+      <label class="form-check-label" for="mechanical">
+        Mechanical
+      </label>
+    </div>
+
+  </div>
+</div>
+
               <!-- Buttons -->
               <div class="d-flex flex-row justify-content-center gap-3">
                 <button type="submit" class="btn btn-danger btn-rounded">Add</button>

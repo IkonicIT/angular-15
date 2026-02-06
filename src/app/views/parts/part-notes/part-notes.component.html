@@ -165,7 +165,7 @@
                 >
                   New
                 </button>
-                <button type="button" tooltip="Save Location Note" (click)="savePartNotes()" disabled class="btn btn-primary">
+                <button type="button" tooltip="Save Part Note" (click)="savePartNotes()" disabled class="btn btn-primary">
                   Save
                 </button>
                 <button
@@ -280,7 +280,7 @@
                 <button
                   [disabled]="highestRank < 6"
                   type="button"
-                  tooltip="Update Location Note"
+                  tooltip="Update Part Note"
                   (click)="updatePartNotes()"
                   class="btn btn-primary"
                   style="border-radius: 6px;"
@@ -301,7 +301,7 @@
                   [disabled]="highestRank < 6 || highestRank == 9"
                   type="button"
                   class="btn btn-primary"
-                  tooltip="Delete Location Note"
+                  tooltip="Delete Part Note"
                   (click)="openModal(confirmtemplate, model.id)"
                   style="border-radius: 6px;"
                 >

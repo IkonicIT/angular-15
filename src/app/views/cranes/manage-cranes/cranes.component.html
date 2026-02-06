@@ -53,9 +53,13 @@
                 <button class="btn btn-danger" (click)="handleSearch()">Search</button>
               </div>
 
-              <p *ngIf="data.length > 0 && data[0]?.BMDES1" class="mt-2 text-primary">
-                <strong>{{ data[0].BMDES1 }}</strong>
-              </p>
+              <p
+  *ngIf="parent?.length !== 1 && data?.length"
+  class="mt-2 text-primary"
+>
+  <strong>{{ parent[parent.length - 1] }}</strong>
+</p>
+
             </div>
 
             <table

@@ -30,7 +30,7 @@
           <!-- New Note Form -->
           <div *ngIf="newFlag">
             <div class="d-flex justify-content-end gap-1 mb-2">
-              <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Save Location Note" (click)="saveCraneNotes()">Save</button>
+              <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Save Crane Note" (click)="saveCraneNotes()">Save</button>
               <button *ngIf="highestRank > 5" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Cancel the Changes for this Note" (click)="addNotes()">Cancel</button>
               <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Delete Crane Note" disabled (click)="openModal(confirmtemplate, model.id)">Delete</button>
               <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Add Crane Note Attachment" disabled (click)="goToAttachments(model.craneNoteId)">Attachments</button>
@@ -65,7 +65,7 @@
             <p class="mt-2"><strong>Viewing Crane Note</strong></p>
             <div class="d-flex justify-content-end gap-1 mb-2">
               <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Add New Crane Note" (click)="addNotes()">New</button>
-              <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Save Location Note" (click)="saveCraneNotes()" disabled>Save</button>
+              <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Save Crane Note" (click)="saveCraneNotes()" disabled>Save</button>
               <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Edit Crane Note" (click)="editNote()">Edit</button>
               <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Delete Crane Note" disabled (click)="openModal(confirmtemplate, model.id)">Delete</button>
               <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Add Crane Note Attachment" (click)="goToAttachments(model.craneNoteId)">Attachments</button>

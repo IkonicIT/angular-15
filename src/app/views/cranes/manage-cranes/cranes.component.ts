@@ -29,7 +29,7 @@ export class CranesComponent implements OnInit, OnDestroy {
   previousData: any[] = [];
   historyStack: any[][] = [];
   selectedPartType: string = '';
-
+  parent : any[]=[];
   private subscriptions = new Subscription();
 
   constructor(
@@ -128,13 +128,15 @@ export class CranesComponent implements OnInit, OnDestroy {
   }
 
   handleSearch(): void {
+    console.log(parent);
     this.historyStack.length = 0;
     this.data = [];
     this.filteredData = [];
     sessionStorage.removeItem('historyStack');
     sessionStorage.removeItem('historyStackBackup');
     sessionStorage.setItem('searchKey', this.searchKey);
-
+    this.parent = [];
+    this.parent.push(this.searchKey);
     this.spinner.show();
     this.cranesService.getCranesByBMDRNK(this.searchKey).subscribe({
       next: (response: any[]) => {
@@ -158,6 +160,7 @@ export class CranesComponent implements OnInit, OnDestroy {
   }
 
   handleBMDRNKClick(BMKEY: string, BMDRNK: string): void {
+    this.parent.push(BMDRNK);
     this.fetchData(BMKEY, BMDRNK);
   }
 
@@ -237,6 +240,7 @@ export class CranesComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
+    this.parent.pop();
     const poppedData = this.historyStack.pop();
     if (poppedData) {
       this.data = poppedData;

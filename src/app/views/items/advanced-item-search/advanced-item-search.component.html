@@ -130,118 +130,20 @@
                 </div>
                 <div class="row">
                   <div
-                    class="form-group col-sm-6"
-                    *ngFor="
-                      let eachAttr of itemModel.attributeValues;
-                      let i = index
-                    "
-                  >
-                    <div>
-                      <label>{{ eachAttr.name }}</label>
-                      <div>
-                        <input
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 1"
-                          type="number"
-                          class="form-control"
-                          [(ngModel)]="eachAttr.value"
-                          name="number{{ i }}"
-                        />
-                        <input
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 2"
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="eachAttr.value"
-                          name="text{{ i }}"
-                        />
-                        <input
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 6"
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="eachAttr.value"
-                          name="multiValue{{ i }}"
-                        />
-                        <input
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 3"
-                          type="date"
-                          class="form-control"
-                          [(ngModel)]="eachAttr.value"
-                          name="radio{{ i }}"
-                          #state="ngModel"
-                        />
-                        <select
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 4"
-                          class="form-control custom-dropdown"
-                          [(ngModel)]="eachAttr.value"
-                          name="select{{ i }}"
-                          #type="ngModel"
-                        >
-                          <option value="">Choose..</option>
-                          <option
-                            [ngValue]="list.listItem"
-                            *ngFor="
-                              let list of eachAttr.attributeListItemResource
-                            "
-                          >
-                            {{ list.listItem }}
-                          </option>
-                        </select>
-                        <div
-                          class="form-check"
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 5"
-                        >
-                          <label
-                            class="form-check-label margin-right"
-                            for="radio1"
-                          >
-                            &nbsp;
-                            <input
-                              class="form-check-input"
-                              type="radio"
-                              [(ngModel)]="eachAttr.value"
-                              name="radios{{ i }}"
-                              id="radio1"
-                              value="true"
-                              checked
-                            />Y &nbsp;&nbsp;&nbsp;&nbsp;
-                          </label>
-                          <label
-                            class="form-check-label margin-right"
-                            for="radio2"
-                          >
-                            &nbsp;
-                            <input
-                              class="form-check-input"
-                              type="radio"
-                              [(ngModel)]="eachAttr.value"
-                              name="radios{{ i }}"
-                              id="radio2"
-                              value="false"
-                            />N &nbsp;&nbsp;&nbsp;&nbsp;
-                          </label>
-                          <label class="form-check-label" for="radio3">
-                            &nbsp;
-                            <input
-                              class="form-check-input"
-                              type="radio"
-                              [(ngModel)]="eachAttr.value"
-                              name="radios{{ i }}"
-                              id="radio3"
-                              value="N/A"
-                            />N/A
-                          </label>
-                        </div>
-                        <textarea
-                          *ngIf="eachAttr.attributeType.attributeTypeId == 7"
-                          name="textarea{{ i }}"
-                          rows="2"
-                          cols="4"
-                          class="form-control"
-                          [(ngModel)]="eachAttr.value"
-                          placeholder="Enter Value"
-                        ></textarea>
-                      </div>
-                    </div>
-                  </div>
+  class="form-group col-sm-6"
+  *ngFor="let eachAttr of itemModel.attributeValues; let i = index"
+>
+  <label>{{ eachAttr.name }}</label>
+
+  <input
+    type="text"
+    class="form-control"
+    [(ngModel)]="eachAttr.value"
+    name="attr{{ i }}"
+    placeholder="Enter Value"
+  />
+</div>
+
                 </div>
                 <div class="row">
                   <div class="form-group col-sm-12 text-center">
@@ -583,14 +485,13 @@
                       No Results Found <br />
                     </alert>
                   </div>
-                  <button
-                    type="button"
-                    *ngIf="flag == 0"
-                    (click)="exportAsExcelFileWithMultipleSheets()"
-                    class="btn btn-primary btn-right"
-                  >
-                    Export to Excel
-                  </button>
+                    <button type="button"
+        *ngIf="flag==0"
+        (click)="exportAsExcelFileWithMultipleSheets()"
+        class="btn btn-primary"
+        [disabled]="isExportDataLoading || !exportSearchResults">
+  {{ isExportDataLoading ? 'Preparing Export...' : 'Export to Excel' }}
+</button>
                   <button
                     type="button"
                     *ngIf="flag == 0"
@@ -616,7 +517,7 @@
                       <span
                         >Show
 
-                        <select [(ngModel)]="dynLst[t].itemsForPagination">
+                        <select [(ngModel)]="dynLst[t].itemsForPagination" (change)="onPageSizeChange(t, itemType)">
                           <option>5</option>
                           <option>10</option>
                           <option>25</option>
@@ -663,36 +564,15 @@
                                 searchResults[itemType][0].attributeNameList
                               "
                             >
-                              <th
-                                *ngFor="
-                                  let attr of searchResults[itemType][0]
-                                    .attributeNameList
-                                    | slice
-                                      : 0
-                                      : attributesSearchDisplay[itemType]
-                                "
-                              >
-                                {{
-                                  searchResults[itemType][0].attributeNameList
-                                    .name
-                                }}
-                              </th>
+                              <th *ngFor="let attr of searchResults[itemType][0].attributeNameList">
+  {{ attr.name }}
+</th>
+
                             </ng-container>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr
-                            *ngFor="
-                              let result of searchResults[itemType]
-                                | paginate
-                                  : {
-                                      itemsPerPage:
-                                        dynLst[t].itemsForPagination,
-                                      currentPage: dynLst[t].p,
-                                      id: 'page' + t
-                                    }
-                            "
-                          >
+                          <tr *ngFor="let result of searchResults[itemType] | paginate: { itemsPerPage: dynLst[t]?.itemsForPagination || itemsForPagination, currentPage: dynLst[t]?.p || page, totalItems: totalItemsByType[itemType] || itemsLength, id: 'page' + t }">
                             <td>
                               <a
                                 href="javascript:void(0)"
@@ -714,26 +594,34 @@
                             <ng-container
                               *ngIf="result && result.attributeNameList"
                             >
-                              <td
-                                *ngFor="
-                                  let attr of result.attributeNameList
-                                    | slice
-                                      : 0
-                                      : attributesSearchDisplay[itemType]
-                                "
-                              >
-                                {{ result.attributeNameList.value }}
-                              </td>
+                             <td *ngFor="let attr of result.attributeNameList">
+  {{ attr.value }}
+</td>
+
                             </ng-container>
                           </tr>
                         </tbody>
                       </table>
-                      <pagination-controls
-                        class="my-pagination"
-                        id="page{{ t }}"
-                        (pageChange)="dynLst[t].p = $event"
-                      >
-                      </pagination-controls>
+                      <div class="d-flex justify-content-end mt-2">
+
+  <pagination-controls
+    class="my-pagination"
+    [id]="'page' + t"
+
+
+    [maxSize]="7"
+    [directionLinks]="true"
+    [autoHide]="false"
+
+    previousLabel="Previous"
+    nextLabel="Next"
+
+    (pageChange)="(dynLst[t].p = $event) && onTypePageChange($event, t, itemType)">
+>
+  </pagination-controls>
+
+</div>
+
                     </div>
                   </div>
                 </div>
@@ -747,9 +635,7 @@
             *ngIf="this.searchResultKeys.length == 1 && dynLst[0].p == 1"
             class="float-left"
           >
-            <span
-              >Showing results {{ dynLst[0].p }} to
-              {{ dynLst[0].itemsForPagination }} of {{ itemsLength }}
+            <span>Showing results 1 to {{dynLst[0].itemsForPagination}} of {{itemsLength || 0}}
             </span>
           </div>
           <div
@@ -759,8 +645,7 @@
             <span
               >Showing results
               {{ (dynLst[0].p - 1) * dynLst[0].itemsForPagination + 1 }} to
-              {{ dynLst[0].itemsForPagination * dynLst[0].p }} of
-              {{ itemsLength }}
+                 {{dynLst[0].itemsForPagination*dynLst[0].p}} of {{itemsLength || 0}}
             </span>
           </div>
         </div>
@@ -779,14 +664,13 @@
                       No Results Found <br />
                     </alert>
                   </div>
-                  <button
-                    type="button"
-                    *ngIf="flag == 0"
-                    (click)="exportAsExcelFileWithMultipleSheets()"
-                    class="btn btn-primary"
-                  >
-                    Export to Excel
-                  </button>
+                    <button type="button"
+        *ngIf="flag==0"
+        (click)="exportAsExcelFileWithMultipleSheets()"
+        class="btn btn-primary"
+        [disabled]="isExportDataLoading || !exportSearchResults">
+  {{ isExportDataLoading ? 'Preparing Export...' : 'Export to Excel' }}
+</button>
 
                   <div
                     *ngFor="let itemType of searchResultKeys; let t = index"
@@ -851,36 +735,15 @@
                                 searchResults[itemType][0].attributeNameList
                               "
                             >
-                              <th
-                                *ngFor="
-                                  let attr of searchResults[itemType][0]
-                                    .attributeNameList
-                                    | slice
-                                      : 0
-                                      : attributesSearchDisplay[itemType]
-                                "
-                              >
-                                {{
-                                  searchResults[itemType][0].attributeNameList
-                                    .name
-                                }}
-                              </th>
+                              <th *ngFor="let attr of searchResults[itemType][0].attributeNameList">
+  {{ attr.name }}
+</th>
+
                             </ng-container>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr
-                            *ngFor="
-                              let result of searchResults[itemType]
-                                | paginate
-                                  : {
-                                      itemsPerPage:
-                                        dynLst[t].itemsForPagination,
-                                      currentPage: dynLst[t].p,
-                                      id: 'page' + t
-                                    }
-                            "
-                          >
+                         <tr *ngFor="let result of searchResults[itemType] | paginate: { itemsPerPage: dynLst[t]?.itemsForPagination || itemsForPagination, currentPage: dynLst[t]?.p || page, totalItems: totalItemsByType[itemType] || itemsLength, id: 'page' + t }">
                             <td>
                               <a
                                 href="javascript:void(0)"
@@ -902,26 +765,34 @@
                             <ng-container
                               *ngIf="result && result.attributeNameList"
                             >
-                              <td
-                                *ngFor="
-                                  let attr of result.attributeNameList
-                                    | slice
-                                      : 0
-                                      : attributesSearchDisplay[itemType]
-                                "
-                              >
-                                {{ result.attributeNameList.value }}
-                              </td>
+                              <td *ngFor="let attr of result.attributeNameList">
+  {{ attr.value }}
+</td>
+
                             </ng-container>
                           </tr>
                         </tbody>
                       </table>
-                      <pagination-controls
-                        class="my-pagination"
-                        id="page{{ t }}"
-                        (pageChange)="dynLst[t].p = $event"
-                      >
-                      </pagination-controls>
+                     <div class="d-flex justify-content-end mt-2">
+
+  <pagination-controls
+    class="my-pagination"
+    [id]="'page' + t"
+
+
+    [maxSize]="7"
+    [directionLinks]="true"
+    [autoHide]="false"
+
+    previousLabel="Previous"
+    nextLabel="Next"
+
+    (pageChange)="(dynLst[t].p = $event) && onTypePageChange($event, t, itemType)">
+>
+  </pagination-controls>
+
+</div>
+
                     </div>
                   </div>
                 </div>
@@ -937,7 +808,7 @@
           >
             <span
               >Showing results {{ dynLst[0].p }} to
-              {{ dynLst[0].itemsForPagination }} of {{ itemsLength }}
+                 {{dynLst[0].itemsForPagination*dynLst[0].p}} of {{itemsLength || 0}}
             </span>
           </div>
           <div
@@ -947,8 +818,7 @@
             <span
               >Showing results
               {{ (dynLst[0].p - 1) * dynLst[0].itemsForPagination + 1 }} to
-              {{ dynLst[0].itemsForPagination * dynLst[0].p }} of
-              {{ itemsLength }}
+                 {{dynLst[0].itemsForPagination*dynLst[0].p}} of {{itemsLength || 0}}
             </span>
           </div>
         </div>

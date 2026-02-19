@@ -247,8 +247,7 @@ export class ItemManagementService {
   }
 
   getAdvancedSearchItems(request: any) {
-    return this.http
-      .post(AppConfiguration.locationRestURL + 'advanceSearch', request, this.httpOptions)
+    return this.http.post<Record<string, any[]>>(AppConfiguration.locationRestURL + 'advanceSearch/advanceSearchNew', request, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

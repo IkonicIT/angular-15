@@ -17,10 +17,10 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { DatePipe, Location } from '@angular/common';
 import { ExcelService } from '../../../services/excel-service';
-import * as cloneDeep from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { IDatePickerConfig } from 'ng2-date-picker';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
-
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-advanced-item-search',
   templateUrl: './advanced-item-search.component.html',
@@ -49,6 +49,10 @@ export class AdvancedItemSearchComponent implements OnInit {
   public itemNotesList: any = {};
   public repairlogList: any[] = [];
   public RFQsList: any[] = [];
+   lastExportRequest: any = null;
+   private exportSubscription: Subscription;
+   exportSearchResults: any = null;
+isExportDataLoading: boolean = false;
   public currentAttributeValues: any[] = [];
   public value: any;
   public items: TreeviewItem[] = [];
@@ -62,13 +66,19 @@ export class AdvancedItemSearchComponent implements OnInit {
   public isOwnerAdmin: any;
   public loggedInuser: string | null = null;
   public excelObj: any;
-  public searchResults: any[] = [];
+  public searchResults: Record<string, any[]> = {};
+public totalItemsByType: Record<string, number> = {};
   public attributesSearchDisplay: any[] = [];
   public searchResultKeys: any[] = [];
   public itemsForPagination: number = 10;
   public itemsLength: number = 0;
   public dynLst: Array<any> = [];
   public flag: any;
+  public page: number = 1;
+public itemsPerPage: number = 10;
+public totalRows: number = 0;
+
+    private lastSearchRequest: any = null;
   public pieChartFlag: number = 0;
   public advanceSearchResults: any[] = [];
   public searchKeys: any[] = [];
@@ -202,9 +212,13 @@ export class AdvancedItemSearchComponent implements OnInit {
         this.reloadForFailedItems();
       } else {
         this.isExpandAdvancedSearch = false;
-        this.value = this.itemModel.value;
-        this.reloadInit();
-      }
+  this.value = this.itemModel.value;
+
+  this.searchResults = this.itemManagementService.getAdvancedItemSearchResults();
+  this.searchResultKeys = Object.keys(this.searchResults);
+
+  this.showSearchResults = true;
+}
     } else {
       this.advancedItemSearchRepaiNotesSearchresults = this.itemManagementService.getAdvancedItemSearchRepaiNotesSearchresults();
       this.keys = Object.keys(this.advancedItemSearchRepaiNotesSearchresults);
@@ -308,6 +322,7 @@ export class AdvancedItemSearchComponent implements OnInit {
         this.value = typeId;
         if (this.currentAttributeValues.length == 0)
           this.itemModel.attributeValues = Array.isArray(response) ? response : [];
+        this.currentAttributeValues = this.itemModel.attributeValues;
         this.spinner.hide();
       });
     } else {
@@ -315,53 +330,210 @@ export class AdvancedItemSearchComponent implements OnInit {
     }
   }
 
-  searchItems(): void {
-    this.isExpandAdvancedSearch = false;
-    const attributeLis: { attributeNameID: any; name: any; value: any }[] = [];
-    if (this.itemModel.attributeValues && this.itemModel.attributeValues.length > 0) {
-      this.itemModel.attributeValues.forEach(
-        (attr: { value: string; attributeNameId: any; name: any }) => {
-          if (attr.value && attr.value != '') {
-            let attributeValue = attr.value.trim();
-            const lastchar = attributeValue.substr(attributeValue.length - 1);
-            if (lastchar == '.' || lastchar == ',') {
-              attributeValue = attributeValue.substr(0, attributeValue.length - 1);
-            }
-            attributeLis.push({
-              attributeNameID: attr.attributeNameId,
-              name: attr.name,
-              value: attributeValue.replace('&amp;', '&').replace('&', '&amp;'),
-            });
-          }
-        }
-      );
-    }
-    const request = {
-      companyId: this.companyId,
-      name: this.itemModel.name ?? null,
-      tag: this.itemModel.tag ?? null,
-      locationName: this.itemModel.location ?? null,
-      statusId: this.itemModel.status ?? null,
-      locationId: this.itemModel.locationId ?? null,
-      typeId: this.value ?? null,
-      maxHitCount: attributeLis.length,
-      ownerAdmin: this.isOwnerAdmin,
-      userId: this.loggedInuser,
-      attributeNameList: attributeLis,
-    };
+   searchItems() {
+  this.isExpandAdvancedSearch = false;
 
-    this.spinner.show();
-    this.searchResults = [];
-    this.searchResultKeys = [];
-    this.itemManagementService.getAdvancedSearchItems(request).subscribe((response) => {
-      this.itemManagementService.setAdvancedItemSearchResults(response);
-      this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults([]);
-      this.searchresults = {};
-      this.itemModel.value = this.value;
+  const attributeLis = this.buildAttributeList();
+
+  const request = {
+    companyId: this.companyId,
+    name: this.itemModel.name ? this.itemModel.name : null,
+    tag: this.itemModel.tag ? this.itemModel.tag : null,
+    locationName: this.itemModel.location ? this.itemModel.location : null,
+    statusId: this.itemModel.status ? this.itemModel.status : null,
+    locationId: this.itemModel.locationId ? this.itemModel.locationId : null,
+    typeId: this.value ? this.value : null,
+    maxHitCount: attributeLis.length,
+    ownerAdmin: this.isOwnerAdmin,
+    userId: this.loggedInuser,
+    attributeNameList: attributeLis,
+    isExport: 0
+  };
+
+  this.lastSearchRequest = { ...request };
+  this.page = 1;
+
+  
+  this.getAdvancedSearchResults(this.page, this.itemsForPagination, request);
+
+  const exportRequest = { ...request, isExport: 1 };
+
+  const isRequestChanged =
+    JSON.stringify(exportRequest) !== JSON.stringify(this.lastExportRequest);
+
+  if (isRequestChanged) {
+
+    this.lastExportRequest = { ...exportRequest };
+
+  
+    if (this.exportSubscription) {
+      this.exportSubscription.unsubscribe();
+    }
+
+    this.exportSearchResults = null;
+    this.isExportDataLoading = true;
+
+    this.exportSubscription = this.itemManagementService.getAdvancedSearchItems(exportRequest)
+      .subscribe(res => {
+        this.exportSearchResults = res;
+        this.isExportDataLoading = false;
+      }, err => {
+        this.isExportDataLoading = false;
+      });
+  }
+}
+getAdvancedSearchResults(currentPage: number, itemsPerPage: number, baseRequest: any) {
+
+  const request = {
+    ...baseRequest,
+    page: currentPage,
+    size: itemsPerPage,
+    
+  };
+
+  this.spinner.show();
+
+  this.itemManagementService.getAdvancedSearchItems(request)
+    .subscribe((response: Record<string, any[]>) => {
+
       this.spinner.hide();
-      this.reloadInit();
+
+      this.searchResults = response;
+      this.searchResultKeys = Object.keys(this.searchResults);
+
+      this.totalItemsByType = {};
+
+      this.searchResultKeys.forEach(key => {
+        if (response[key] && response[key].length > 0) {
+          const firstRow = response[key][0];
+          this.totalItemsByType[key] = firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || response[key].length;
+        } else {
+          this.totalItemsByType[key] = 0;
+        }
+      });
+
+      // Set itemsLength from the first type's total count
+      if (this.searchResultKeys.length > 0) {
+        const firstKey = this.searchResultKeys[0];
+        this.itemsLength = this.totalItemsByType[firstKey] || 0;
+      } else {
+        this.itemsLength = 0;
+      }
+
+  
+      if (this.dynLst.length === 0) {
+        this.searchResultKeys.forEach((key, index) => {
+          this.dynLst[index] = { itemsForPagination: this.itemsForPagination, p: currentPage };
+        });
+      }
+
+      this.showSearchResults = true;
+      this.flag = this.searchResultKeys.length === 0 ? 1 : 0;
+
+    });
+}
+onTypePageChange(page: number, index: number, itemType: string) {
+
+  if (!this.lastSearchRequest) {
+    console.warn('No search request stored. Perform a search first.');
+    return;
+  }
+
+  if (!this.dynLst[index]) {
+    this.dynLst[index] = { itemsForPagination: this.itemsForPagination, p: 1 };
+  }
+
+  
+  this.dynLst[index].p = page;
+
+  const request = {
+    ...this.lastSearchRequest,
+    page: page,
+    size: this.dynLst[index].itemsForPagination || this.itemsForPagination
+  };
+
+  this.spinner.show();
+
+  this.itemManagementService.getAdvancedSearchItems(request).subscribe((response: Record<string, any[]>) => {
+
+    this.spinner.hide();
+
+    if (!response) return;
+
+    
+    const key = Object.keys(response).find(k => k.toLowerCase() === itemType.toLowerCase());
+
+    if (key) {
+      this.searchResults[itemType] = response[key];
+
+      if (response[key].length > 0) {
+        const firstRow = response[key][0];
+        this.totalItemsByType[itemType] = firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || response[key].length;
+      }
+    }
+
+  }, err => {
+    this.spinner.hide();
+    console.error(err);
+  });
+}
+onPageSizeChange(index: number, itemType: string) {
+ 
+  if (!this.dynLst[index]) {
+    this.dynLst[index] = { itemsForPagination: this.itemsForPagination, p: 1 };
+  }
+
+  
+  this.dynLst[index].itemsForPagination = Number(this.dynLst[index].itemsForPagination) || this.itemsForPagination;
+
+  this.onTypePageChange(1, index, itemType);
+}
+onPageChange(page: number) {
+  this.page = page;
+
+  const attributeLis = this.buildAttributeList();
+
+  const request = {
+    companyId: this.companyId,
+    name: this.itemModel.name ? this.itemModel.name : null,
+    tag: this.itemModel.tag ? this.itemModel.tag : null,
+    locationName: this.itemModel.location ? this.itemModel.location : null,
+    statusId: this.itemModel.status ? this.itemModel.status : null,
+    locationId: this.itemModel.locationId ? this.itemModel.locationId : null,
+    typeId: this.value ? this.value : null,
+    maxHitCount: attributeLis.length,
+    ownerAdmin: this.isOwnerAdmin,
+    userId: this.loggedInuser,
+    attributeNameList: attributeLis
+  };
+
+  this.getAdvancedSearchResults(this.page, this.itemsForPagination, request);
+}
+buildAttributeList() {
+  const attributeLis: any[] = [];
+
+  if (this.itemModel.attributeValues) {
+    this.itemModel.attributeValues.forEach((attr: any) => {
+      if (attr.value && attr.value !== "") {
+
+        let attributeValue = attr.value.trim();
+        const lastchar = attributeValue.substr(attributeValue.length - 1);
+
+        if (lastchar === '.' || lastchar === ',') {
+          attributeValue = attributeValue.substr(0, attributeValue.length - 1);
+        }
+
+        attributeLis.push({
+          attributeNameID: attr.attributeNameID,
+          name: attr.name,
+          value: attributeValue.replace("&amp;", "&").replace("&", "&amp;")
+        });
+      }
     });
   }
+
+  return attributeLis;
+}
 
   searchItemRepairNotesRfqModel(): void {
     this.advancedsearchflag = 1;
@@ -382,10 +554,7 @@ export class AdvancedItemSearchComponent implements OnInit {
     };
     this.spinner.show();
     this.itemManagementService.getAdvancedSearchItemRepairNotesRfq(request).subscribe((response: any) => {
-      this.searchresults = response;
-      this.itemManagementService.setAdvancedItemSearchResults([]);
-      this.searchResults = [];
-      this.searchResultKeys = [];
+     
       this.showSearchResults = false;
       this.showFailedItemsSearchResults = false;
       this.itemManagementService.itemrepairNotesrfqModel = this.itemrepairNotesrfqModel;
@@ -474,24 +643,43 @@ export class AdvancedItemSearchComponent implements OnInit {
     );
   }
 
-  exportAsExcelFileWithMultipleSheets(): void {
-    const clonedsearchResults: any = cloneDeep(this.searchResults);
-    Object.keys(clonedsearchResults).forEach((itemType) => {
-      const result = clonedsearchResults[itemType];
-      result.forEach((obj: any) => {
-        const robj: any = {};
-        obj.attributeNameList.forEach((atr: any) => {
-          robj[atr.name] = atr.value;
-        });
-        delete obj.typeName;
-        delete obj.locationName;
-        delete obj.itemId;
-        delete obj.rank;
-        obj = Object.assign(obj, robj);
-      });
-    });
-    this.excelService.exportAsExcelFileWithMultipleSheets(clonedsearchResults, 'itemAdvancedSearchResults');
+  exportAsExcelFileWithMultipleSheets() {
+
+  if (!this.exportSearchResults) {
+    console.log("No export data available. Please search again.");
+    return;
   }
+
+  this.spinner.show();
+
+  const clonedsearchResults: Record<string, any[]> = cloneDeep(this.exportSearchResults);
+
+  Object.keys(clonedsearchResults).forEach(itemType => {
+    const result = clonedsearchResults[itemType];
+
+    result.forEach((obj: any) => {
+
+      const robj: Record<string, any> = {};
+      obj.attributeNameList.forEach((atr: any) => {
+        robj[atr.name] = atr.value;
+      });
+
+      delete obj.typeName;
+      delete obj.locationName;
+      delete obj.itemId;
+      delete obj.rank;
+
+      Object.assign(obj, robj);
+    });
+  });
+
+  this.spinner.hide();
+
+  this.excelService.exportAsExcelFileWithMultipleSheets(
+    clonedsearchResults,
+    'itemAdvancedSearchResults'
+  );
+}
 
   onTabChanged(event: { index: number }): void {
     this.activeTab = event.index;
@@ -695,7 +883,7 @@ export class AdvancedItemSearchComponent implements OnInit {
       this.isTimeSpanSelected = 0;
       this.spinner.show();
       this.itemManagementService.getDataForFailedItems(String(this.companyId)).subscribe((response: any) => {
-        this.searchResults = Array.isArray(response) ? response : [];
+       this.searchResults = response && !Array.isArray(response) ? response : {};
         this.itemManagementService.setAdvancedItemSearchResults(response);
         this.showFailedItemsSearchResults = true;
         this.spinner.hide();

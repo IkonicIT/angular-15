@@ -130,7 +130,50 @@
                         <span [innerHTML]="model.typeName"></span>
                       </div>
                     </div>
-
+                    <div *ngIf="this.itemMMS==true" class="mt-3">
+                      <div class="row">
+                        <div class="col-sm-4 col-padding">
+      <div class="row">
+        <div class="col-6 col-md-5 col-padding"><label>Driven Machine ID:</label></div>
+        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.drivenMachineID"></span></div>
+      </div>
+    </div>
+    
+    <div class="col-sm-4 col-padding">
+      <div class="row">
+        <div class="col-6 col-md-5 col-padding"><label>Dept Number:</label></div>
+        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.deptNumber"></span></div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-padding">
+      <div class="row">
+        <div class="col-6 col-md-5 col-padding"><label>Process ID:</label></div>
+        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.processID"></span></div>
+      </div>
+    </div>
+  </div>
+        <div class="row">
+                        <div class="col-sm-4 col-padding">
+      <div class="row">
+        <div class="col-6 col-md-5 col-padding"><label>Driven Machine Name:</label></div>
+        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.DrivenMachineName"></span></div>
+      </div>
+    </div>
+    
+    <div class="col-sm-4 col-padding">
+      <div class="row">
+        <div class="col-6 col-md-5 col-padding"><label>Dept Name:</label></div>
+        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.DeptName"></span></div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-padding">
+      <div class="row">
+        <div class="col-6 col-md-5 col-padding"><label>Process Name:</label></div>
+        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.processName"></span></div>
+      </div>
+    </div>
+  </div>
+                    </div>
                     <div class="row">
                       <div class="form-group col-12 col-md-6" *ngIf="itemRank > 1">
                         <p style="color:#002a64; font-size:18px; font-weight:bold;">Changes Log Feed:</p>
@@ -294,32 +337,14 @@
     </div>
   </div>
 
+ 
+
   <div class="row">
+    
     <div class="col-sm-4 col-padding">
       <div class="row">
         <div class="col-6 col-md-5 col-padding"><label>Critical Last Test Date:</label></div>
         <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.criticalLastTestDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Dept Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.deptNumber"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Process ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.processID"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Driven Machine ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.drivenMachineID"></span></div>
       </div>
     </div>
     <div class="col-sm-4 col-padding">

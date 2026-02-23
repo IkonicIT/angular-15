@@ -33,19 +33,19 @@ export class ExcelService {
     );
   }
   
-  public exportAsExcelFileWithMultipleSheets(
-    json: any,
-    excelFileName: string
-  ): void {
-    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-    Object.keys(json).forEach((e) => {
-      workbook.SheetNames.push(e);
-      workbook.Sheets[e] = XLSX.utils.json_to_sheet(json[e]);
-    });
-    const excelBuffer: any = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array',
-    });
-    this.saveAsExcelFile(excelBuffer, excelFileName);
-  }
+  public exportAsExcelFileWithMultipleSheets(json: any, excelFileName: string): void {
+  const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+
+  Object.keys(json).forEach((sheetName) => {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json[sheetName]);
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+  });
+
+  const excelBuffer: any = XLSX.write(workbook, {
+    bookType: 'xlsx',
+    type: 'array',
+  });
+
+  this.saveAsExcelFile(excelBuffer, excelFileName);
+}
 }

@@ -359,6 +359,7 @@ export class PiechartComponent implements OnInit {
   }
 
   getLocations() {
+    this.locationManagementService.setHierarchyLoading(true);
     if (this.isOwnerAdmin == 'true') {
       this.spinner.show();
 
@@ -372,6 +373,7 @@ export class PiechartComponent implements OnInit {
           if (this.allLocations && this.allLocations.length > 0) {
             this.locations = [];
             this.locations = this.generateHierarchy(this.allLocations);
+            this.locationManagementService.setHierarchyLoading(false);
           }
         });
     } else {
@@ -387,6 +389,7 @@ export class PiechartComponent implements OnInit {
           if (this.allLocations && this.allLocations.length > 0) {
             this.locations = [];
             this.locations = this.generateHierarchy(this.allLocations);
+            this.locationManagementService.setHierarchyLoading(false);
           }
         });
     }
@@ -575,10 +578,10 @@ export class PiechartComponent implements OnInit {
     locList.forEach((loc) => {
       var children: TreeviewItem[] = [];
       if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
+        loc.parentResourceList &&
+        loc.parentResourceList.length > 0
       ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
+        children = this.generateHierarchy(loc.parentResourceList);
       }
       items.push(
         new TreeviewItem({

@@ -181,8 +181,8 @@ export class ItemManagementComponent implements OnInit {
 
   generateHierarchy(locList: any[]): TreeviewItem[] {
     return locList.map((loc) => {
-      const children = Array.isArray(loc.parentLocationResourceList)
-        ? this.generateHierarchy(loc.parentLocationResourceList)
+      const children = Array.isArray(loc.parentResourceList)
+        ? this.generateHierarchy(loc.parentResourceList)
         : [];
       return new TreeviewItem({
         text: loc.name,

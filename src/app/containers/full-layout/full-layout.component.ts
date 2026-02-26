@@ -71,7 +71,7 @@ export class FullLayoutComponent implements OnInit {
   companyId: any;
   masterSearchFlag: any = 'false';
   isOwnerAminReadOnly: any;
-
+  isHierarchyLoading = false;
   public constructor(
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
@@ -122,6 +122,10 @@ export class FullLayoutComponent implements OnInit {
     this.isOwnerAminReadOnly = sessionStorage.getItem('IsOwnerAdminReadOnly');
     this.spinner.show();
     this.authToken = sessionStorage.getItem('auth_token');
+    this.locationManagementService.hierarchyLoading$
+    .subscribe(status => {
+      this.isHierarchyLoading = status;
+    });
   }
 
   getSuggessions(tag: string) {

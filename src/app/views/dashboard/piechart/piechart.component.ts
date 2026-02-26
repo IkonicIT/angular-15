@@ -375,7 +375,7 @@ export class PiechartComponent implements OnInit {
       this.spinner.show();
 
       this.locationManagementService
-        .getAllLocationsWithHierarchy(this.companyId)
+        .getAllLocationsWithHierarchyOnlyInPieChart(this.companyId)
         .subscribe((response) => {
           this.spinner.hide();
 
@@ -603,10 +603,10 @@ export class PiechartComponent implements OnInit {
     locList.forEach((loc) => {
       var children: TreeviewItem[] = [];
       if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
+        loc.parentResourceList &&
+        loc.parentResourceList.length > 0
       ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
+        children = this.generateHierarchy(loc.parentResourceList);
       }
       items.push(
         new TreeviewItem({

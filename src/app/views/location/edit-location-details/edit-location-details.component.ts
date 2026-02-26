@@ -99,8 +99,8 @@ export class EditLocationDetailsComponent implements OnInit {
   generateHierarchy(locList: any[]): TreeviewItem[] {
     return locList.map((loc: any) => {
       const children =
-        loc.parentLocationResourceList && loc.parentLocationResourceList.length > 0
-          ? this.generateHierarchy(loc.parentLocationResourceList)
+        loc.parentResourceList && loc.parentResourceList.length > 0
+          ? this.generateHierarchy(loc.parentResourceList)
           : [];
       return new TreeviewItem({
         text: loc.name,
@@ -321,7 +321,7 @@ export class EditLocationDetailsComponent implements OnInit {
       postalCode: this.location.postalCode ?? '',
       state: this.location.state ?? '',
       statusId: this.location.statusId ?? 0,
-      parentLocationResourceList: this.location.parentLocationResourceList,
+      parentResourceList: this.location.parentResourceList,
       vendorCompany: {
         companyId: 0,
       },

@@ -82,7 +82,7 @@
   <button
     *ngIf="masterSearchFlag == 'false'"
     (click)="navigateToAdvanceItemSearch()"
-    [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0"
+    [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0 || isHierarchyLoading"
     class="btn btn-danger advanced-btn"
   >
     Advanced search

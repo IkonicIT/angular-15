@@ -212,10 +212,10 @@ export class EditItemRepairsComponent implements OnInit {
     locList.forEach((loc) => {
       let children: TreeviewItem[] = [];
       if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
+        loc.parentResourceList &&
+        loc.parentResourceList.length > 0
       ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
+        children = this.generateHierarchy(loc.parentResourceList);
       }
       items.push(
         new TreeviewItem({

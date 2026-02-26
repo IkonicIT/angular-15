@@ -5,7 +5,7 @@ import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { AppConfiguration } from '../configuration';
-
+import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class LocationManagementService {
   saveItem(req: {
@@ -20,6 +20,8 @@ export class LocationManagementService {
   currentGlobalCompany: any;
   public globalCompanyChange: Subject<any> = new Subject<any>();
   private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
+  private hierarchyLoadingSource = new BehaviorSubject<boolean>(false);
+public hierarchyLoading$ = this.hierarchyLoadingSource.asObservable();
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -42,7 +44,9 @@ export class LocationManagementService {
   public setSearchedLocationTypeId(typeId: any) {
     this.searchedLocationTypeId = typeId;
   }
-
+  setHierarchyLoading(status: boolean) {
+  this.hierarchyLoadingSource.next(status);
+}
   public getSearchedLocationTypeId() {
     return this.searchedLocationTypeId;
   }
@@ -102,7 +106,11 @@ export class LocationManagementService {
       .get<any[]>(AppConfiguration.locationRestURL + 'location/getAllLocationsWithHierarchy/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-
+  getAllLocationsWithHierarchyOnlyInPieChart(companyId: string | number) {
+    return this.http
+      .get<any[]>(AppConfiguration.locationRestURL + 'location/tree/' + companyId, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
   getAllLocationsWithHierarchyforUser(companyId: string | number, userId: string) {
     return this.http
       .get<any[]>(AppConfiguration.locationRestURL + 'location/getAllLocationsByUser/' + companyId + '/' + userId, this.httpOptions)

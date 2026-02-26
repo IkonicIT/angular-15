@@ -181,8 +181,8 @@ export class CloneItemComponent implements OnInit {
 
   generateHierarchy(locList: any[]): TreeviewItem[] {
     return locList.map(loc => {
-      const children = loc.parentLocationResourceList?.length
-        ? this.generateHierarchy(loc.parentLocationResourceList)
+      const children = loc.parentResourceList?.length
+        ? this.generateHierarchy(loc.parentResourceList)
         : [];
       return new TreeviewItem({
         text: loc.name,

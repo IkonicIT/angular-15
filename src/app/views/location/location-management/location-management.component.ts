@@ -139,8 +139,8 @@ highestRank?: string | null;
   generateHierarchy(locList: any[]): TreeviewItem[] {
     return locList.map((loc) => {
       const children =
-        loc.parentLocationResourceList && loc.parentLocationResourceList.length > 0
-          ? this.generateHierarchy(loc.parentLocationResourceList)
+        loc.parentResourceList && loc.parentResourceList.length > 0
+          ? this.generateHierarchy(loc.parentResourceList)
           : [];
       return new TreeviewItem({
         text: loc.name,

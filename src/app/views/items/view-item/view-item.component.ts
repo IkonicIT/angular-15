@@ -21,6 +21,7 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Location } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
+
 import { AppConfiguration } from 'src/app/configuration';
 @Component({
   selector: 'app-view-item',
@@ -48,6 +49,7 @@ export class ViewItemComponent implements OnInit {
   itemId: any;
   currentRole: string | null = null;
   highestRank: string | null = null;
+  showMMSData: boolean = false;
   get highestRankNum(): number {
     return Number(this.highestRank ?? 0);
   }
@@ -97,6 +99,7 @@ export class ViewItemComponent implements OnInit {
       this.globalCompany = value;
       this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
+      this.showMMSData = false;
     });
   }
 

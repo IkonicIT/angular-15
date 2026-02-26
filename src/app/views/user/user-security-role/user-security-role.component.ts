@@ -175,8 +175,8 @@ export class UserSecurityRoleComponent implements OnInit {
     const items: TreeviewItem[] = [];
     locList.forEach((loc) => {
       let children: TreeviewItem[] = [];
-      if (loc.parentLocationResourceList?.length > 0) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
+      if (loc.parentResourceList?.length > 0) {
+        children = this.generateHierarchy(loc.parentResourceList);
       }
       items.push(
         new TreeviewItem({

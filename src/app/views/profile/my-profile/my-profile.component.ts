@@ -81,9 +81,9 @@ export class MyProfileComponent implements OnInit {
     const items: TreeviewItem[] = [];
     locList.forEach((loc) => {
       const children =
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-          ? this.generateHierarchy(loc.parentLocationResourceList)
+        loc.parentResourceList &&
+        loc.parentResourceList.length > 0
+          ? this.generateHierarchy(loc.parentResourceList)
           : [];
 
       items.push(

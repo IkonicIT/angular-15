@@ -69,12 +69,13 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { MatRadioModule } from '@angular/material/radio';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   imports: [
     BsDatepickerModule.forRoot(),
     CommonModule,
     FormsModule,
+    DragDropModule,
     NgxPaginationModule,
     NgxSortableModule,
     NgPipesModule,

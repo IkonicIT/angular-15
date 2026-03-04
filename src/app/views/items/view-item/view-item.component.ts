@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+// import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'; // no longer using drag-drop component
 import { LocationManagementService } from '../../../services/location-management.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { ItemManagementService } from '../../../services/Items/item-management.service';
@@ -50,6 +51,8 @@ export class ViewItemComponent implements OnInit {
   currentRole: string | null = null;
   highestRank: string | null = null;
   showMMSData: boolean = false;
+  mmsItemsOrder: any[] = [];
+  editingOrder: boolean = false; 
   get highestRankNum(): number {
     return Number(this.highestRank ?? 0);
   }
@@ -117,6 +120,7 @@ export class ViewItemComponent implements OnInit {
       this.getJournalLog();
       if (this.itemMMS) {
           this.getItemMMS();
+          this.getMMSOrder();
         }
     }
     this.currentRole = sessionStorage.getItem('currentRole');
@@ -151,6 +155,21 @@ export class ViewItemComponent implements OnInit {
       });
     }
   }
+  getMMSOrder(): void {
+    this.spinner.show();
+    this.http.get(AppConfiguration.locationRestURL + `item/getMmsDataOrder/${this.companyId}`).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        this.mmsItemsOrder = response.mmsDataArray !== null ? response.mmsDataArray : null;
+        console.log('MMS response:', response);
+      },
+      (error) => {
+        this.spinner.hide();
+        console.error('MMS error:', error);
+        
+      }
+    );
+  }
    getItemMMS(): void {
     this.spinner.show();
     this.http.get(AppConfiguration.locationRestURL + `item/getItemMMS/${this.itemId}`).subscribe(
@@ -162,11 +181,71 @@ export class ViewItemComponent implements OnInit {
       (error) => {
         this.spinner.hide();
         console.error('MMS error:', error);
-        // error -> treat as no MMS data
+        
         this.mmsData = null;
       }
     );
   }
+  getLabel(field: string): string {
+  return field
+    .replace(/^./, str => str.toUpperCase()) 
+    .trim();
+}
+
+toggleEditOrder(): void {
+  this.editingOrder = !this.editingOrder;
+  
+  if (!this.editingOrder) {
+    this.getMMSOrder();
+  }
+}
+columns = 3; 
+
+private swap(i: number, j: number): void {
+  const temp = this.mmsItemsOrder[i];
+  this.mmsItemsOrder[i] = this.mmsItemsOrder[j];
+  this.mmsItemsOrder[j] = temp;
+}
+
+moveLeft(index: number): void {
+  if (index % this.columns !== 0) {
+    this.swap(index, index - 1);
+  }
+}
+
+moveRight(index: number): void {
+  if ((index % this.columns) !== this.columns - 1 &&
+      index < this.mmsItemsOrder.length - 1) {
+    this.swap(index, index + 1);
+  }
+}
+
+moveTop(index: number): void {
+  if (index - this.columns >= 0) {
+    this.swap(index, index - this.columns);
+  }
+}
+
+moveBottom(index: number): void {
+  if (index + this.columns < this.mmsItemsOrder.length) {
+    this.swap(index, index + this.columns);
+  }
+}
+saveMmsOrder(): void {
+  this.spinner.show();
+  this.http.post(AppConfiguration.locationRestURL + `item/MmsDataOrder`, {
+    companyId: this.companyId,
+    mmsDataArray: this.mmsItemsOrder
+  }).subscribe(
+    () => {
+      this.spinner.hide();
+      this.editingOrder = false;
+    },
+    () => {
+      this.spinner.hide();
+    }
+  );
+}
   getItemDefaultImage(): void {
     this.spinner.show();
     this.itemAttachmentsService.getItemDocuments(this.currentAttachmentId).subscribe(

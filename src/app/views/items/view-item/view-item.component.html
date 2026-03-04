@@ -314,472 +314,87 @@
   </label>
 </div>
 
-                                        <div *ngIf="itemMMS && showMMSData && mmsData" class="mt-3">
+   <div *ngIf="itemMMS && showMMSData && mmsData" class="mt-3">
+
   <h6 style="color:red">MMS Data</h6>
+
+  
+  <div class="mb-2">
+    <button class="btn btn-sm btn-outline-primary"
+            (click)="toggleEditOrder()">
+      {{ editingOrder ? 'Cancel Order Edit' : 'Edit MMS Data Order' }}
+    </button>
+
+    <button *ngIf="editingOrder"
+            class="btn btn-sm btn-success ml-1"
+            (click)="saveMmsOrder()">
+      Save Order
+    </button>
+  </div>
+
   
   <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Group Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.groupNumber"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Disposition Employee ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.dispositionEmployeeID"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Add Reason Code:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.addReasonCode"></span></div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>File:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.file"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>QC Fail:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.qcFail"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Critical:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.critical"></span></div>
-      </div>
-    </div>
-  </div>
+    <ng-container *ngFor="let field of mmsItemsOrder; let i = index">
 
+      <div *ngIf="mmsData[field] != null && mmsData[field] !== ''"
+     class="col-sm-4 col-padding mb-4">
 
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Replaced Tag:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.replacedTag"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Replaced By Tag:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.replacedByTag"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Obtained Under Warranty:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.obtainedUnderWarranty"></span></div>
-      </div>
-    </div>
-  </div>
+  <div class="d-flex justify-content-between align-items-center">
 
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>LR From Work Order:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lrFromWorkOrder"></span></div>
-      </div>
+   
+    <div>
+      <label class="mb-0" style="font-size: 16px;">{{ getLabel(field) }}:</label>
+      <span class="ml-1" style="font-size: 16px;">{{ mmsData[field] }}</span>
     </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>LR Customer Work Order Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lrCustomerWorkOrderNumber"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>LR Req Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lrReqNumber"></span></div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>LR RFQ Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lrRfqNumber"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>LR PO Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lrPoNumber"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>LR Vendor Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lrVendorNumber"></span></div>
-      </div>
-    </div>
-  </div>
+   <div *ngIf="editingOrder" class="arrow-container">
 
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>LR Received Back Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lrReceivedBackDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>LR Warranty End Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lrWarrantyEndDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR From Work Order Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purFromWorkOrderNumber"></span></div>
-      </div>
-    </div>
-  </div>
+ 
+  <button class="arrow-btn"
+          (click)="moveLeft(i)"
+          [disabled]="i % 3 === 0">
+    <svg viewBox="0 0 24 24">
+      <path d="M15 6l-6 6 6 6"/>
+    </svg>
+  </button>
 
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR From Cus Work Order Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purFromCusWorkOrderNumber"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR Req Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purReqNumber"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR RFQ Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purRfqNumber"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR PO Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purPoNumber"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR Vendor Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purVendorNumber"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR List Price:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purListPrice"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR Net Price:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purNetPrice"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR Purchase Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purPurchaseDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR Warranty Length OEM:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purWarrantyLengthOem"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR Warranty Start Date OEM:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purWarrantyStartDateOem | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR Warranty End Date OEM:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purWarrantyEndDateOem | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>PUR Purchased By Dept Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.purPurchasedByDeptNumber"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Sold To:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.soldTo"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Sold Price:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.soldPrice"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Scrap Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.scrapDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Scrap Location:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.scrapLocation"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Scrapper Name:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.scrapperName"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Scrap Value:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.scrapValue"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Create Employee ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.createEmployeeID"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Create Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.createDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Updated Employee ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.updatedEmployeeID"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Updated Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.updatedDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-   <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Critical Last Test Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.criticalLastTestDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Location Change Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.locationChangeDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>LR Date On Repair Tag:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lrDateOnRepairTag | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Reserved For Process ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.reservedForProcessID"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Reserved For Driven Machine ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.reservedForDrivenMachineID"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Last Run Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.lastRunDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Shaft Rotate Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.shaftRotateDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Shaft Position:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.shaftPosition"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Recommend Replace:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.recommendReplace"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Recommend Replace Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.recommendReplaceDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Recommend Replace From Field Test:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.recommendReplaceFromFieldTest"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Recommend Replace Removed Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.recommendReplaceRemovedDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Recommend Replace Removed Comment:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.recommendReplaceRemovedComment"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Stamp ID Plant ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.stampIdPlantID"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Stamp ID Part Stamp ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.stampIdPartStampID"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Stamp ID Part Model ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.stampIdPartModelID"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>CVTPL Loc Type:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.cvtplLocType"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>CVTPL Dept:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.cvtplDept"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>CVTPL Process:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.cvtplProcess"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>CVTPL Driven Machine:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.cvtplDrivenMachine"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>CVTPL Updated Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.cvtplUpdatedDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Stamp ID Part ID:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.stampIdPartID"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Imported Not Reviewed:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.importedNotReviewed"></span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Inventoried Date:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.inventoriedDate | date:'MM/dd/yyyy'"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Scrap Pedat Vendor:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.scrapPedatVendor"></span></div>
-      </div>
-    </div>
-    <div class="col-sm-4 col-padding">
-      <div class="row">
-        <div class="col-6 col-md-5 col-padding"><label>Scrap Bol Number:</label></div>
-        <div class="col-6 col-md-5 col-padding"><span [innerHTML]="mmsData.scrapBolNumber"></span></div>
-      </div>
-    </div>
-  </div>
   
+  <button class="arrow-btn"
+          (click)="moveTop(i)"
+          [disabled]="i < 3">
+    <svg viewBox="0 0 24 24">
+      <path d="M6 15l6-6 6 6"/>
+    </svg>
+  </button>
+
+ 
+  <button class="arrow-btn"
+          (click)="moveBottom(i)"
+          [disabled]="i + 3 >= mmsItemsOrder.length">
+    <svg viewBox="0 0 24 24">
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </button>
+
+ 
+  <button class="arrow-btn"
+          (click)="moveRight(i)"
+          [disabled]="(i % 3 === 2) || i === mmsItemsOrder.length - 1">
+    <svg viewBox="0 0 24 24">
+      <path d="M9 6l6 6-6 6"/>
+    </svg>
+  </button>
+
+</div>
+  </div>
+
+</div>
+
+    </ng-container>
+
+  </div>
+
 </div>
 <div *ngIf="itemMMS" class ="mt-3">
 <div class="row">

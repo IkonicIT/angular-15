@@ -13,11 +13,58 @@ label {
 .card-body {
   padding: 0.5em;
 }
+.arrow-container {
+  display: flex;
+  gap: 4px; 
+}
 
+.arrow-btn {
+  width: 26px;          
+  height: 26px;       
+  background: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.arrow-btn svg {
+  width: 14px;          
+  height: 14px;
+  stroke: #555;
+  stroke-width: 2;
+  fill: none;
+}
+
+.arrow-btn:hover {
+  background: #e5e5e5;
+}
+
+.arrow-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 .main > .row {
   margin-bottom: 1%;
 }
 
+// .mms-item {
+//   background: #f8f9fa;
+//   padding: 8px;
+//   border: 1px solid #ddd;
+//   border-radius: 4px;
+// }
+
+.cdk-drag-preview {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+}
 .scrollPopUp {
   height: 600px;
   overflow-y: scroll;

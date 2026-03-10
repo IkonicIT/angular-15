@@ -79,14 +79,14 @@
         </button>
 
         <div class="action-buttons">
-  <button
-    *ngIf="masterSearchFlag == 'false'"
-    (click)="navigateToAdvanceItemSearch()"
-    [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0 || isHierarchyLoading"
-    class="btn btn-danger advanced-btn"
-  >
-    Advanced search
-  </button>
+ <button
+  *ngIf="masterSearchFlag == 'false'"
+  (click)="navigateToAdvanceItemSearch()"
+  [disabled]="userSelectedCompany.companyId == 0 || highestRank == 0 || isHierarchyLoading"
+  class="btn btn-danger advanced-btn"
+>
+  Advanced search
+</button>
 
   <button
     *ngIf="isOwnerAdmin == 'true' && userSelectedCompany.companyId == 0"

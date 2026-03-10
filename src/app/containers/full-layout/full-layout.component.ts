@@ -473,6 +473,7 @@ export class FullLayoutComponent implements OnInit {
   }
 
   navigateToAdvanceItemSearch() {
+    (document.activeElement as HTMLElement)?.blur();
     this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
     this.itemManagementService.setAdvancedItemSearchResults([]);
     this.itemManagementService.itemModel = {};

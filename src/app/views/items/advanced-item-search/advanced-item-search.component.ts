@@ -28,12 +28,14 @@ import { Subscription } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
 })
 export class AdvancedItemSearchComponent implements OnInit {
+  public selectedDeptNumber: number = 0;
   public showSearchResults = false;
   public isExpandAdvancedSearch = true;
   public itemModel: any = {};
   public repairModel: any = {};
   public locationModel: any = {};
   public itemTypes: any[] = [];
+  public deptData: any[] = [];
   public attributesList: any[] = [];
   public attributesValuesList: any[] = [];
   public statuses: any[] = [];
@@ -156,7 +158,7 @@ public totalRows: number = 0;
   public order: string = '';
   public reverse: string = '';
   public attr: any;
-
+  public isMMS: boolean = false;
   constructor(
     private modalService: BsModalService,
     private locationManagementService: LocationManagementService,
@@ -191,6 +193,8 @@ public totalRows: number = 0;
   ngOnInit(): void {
     this.initializeData();
     this.selectedVal = 'count';
+    this.isMMS = sessionStorage.getItem('itemMMS') === 'true';
+    console.log(sessionStorage.getItem('itemMMS'));
   }
 
   initializeData(): void {
@@ -245,6 +249,7 @@ public totalRows: number = 0;
       this.items = this.generateHierarchy(this.locations);
     }
     this.getAllItemTypes();
+    this.getDeptData();
   }
 
   back(): void {
@@ -297,6 +302,7 @@ public totalRows: number = 0;
       }
     }
     this.getItemStatus();
+    
   }
 
   getItemStatus(): void {
@@ -313,7 +319,27 @@ public totalRows: number = 0;
       }
     );
   }
+  getDeptData(): void {
+  this.spinner.show();
+  this.itemManagementService.getDepartmentData().subscribe(
+    (response: any) => {
+      this.deptData = Array.isArray(response) ? response.map(d =>
+        new TreeviewItem({ text: d.deptName.trim(), value: d.deptNumber, children: [] })
+      ) : [];
+      this.spinner.hide();
+      this.isloaded = true;
+    },
+    () => {
+      this.spinner.hide();
+      this.isloaded = true;
+    }
+  );
+}
 
+onDeptChange(deptNumber: number) {
+  this.selectedDeptNumber = deptNumber;
+  console.log('Selected deptNumber:', deptNumber);
+}
   getTypeAttributes(typeId: string | undefined): void {
     this.currentAttributeValues = [];
     if (typeId != '0' && typeId != undefined) {
@@ -342,12 +368,14 @@ public totalRows: number = 0;
     locationName: this.itemModel.location ? this.itemModel.location : null,
     statusId: this.itemModel.status ? this.itemModel.status : null,
     locationId: this.itemModel.locationId ? this.itemModel.locationId : null,
+    deptNumber: this.selectedDeptNumber,
     typeId: this.value ? this.value : null,
     maxHitCount: attributeLis.length,
     ownerAdmin: this.isOwnerAdmin,
     userId: this.loggedInuser,
     attributeNameList: attributeLis,
-    isExport: 0
+    isExport: 0,
+    isMMS: this.isMMS
   };
 
   this.lastSearchRequest = { ...request };

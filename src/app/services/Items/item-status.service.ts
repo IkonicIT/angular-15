@@ -9,6 +9,7 @@ import { throwError } from 'rxjs';
 @Injectable()
 export class ItemStatusService {
   public serviceURL = AppConfiguration.typeStatusRestURL + 'status';
+
   public isProd = false;
   private authToken = sessionStorage.getItem('auth_token')
     ? sessionStorage.getItem('auth_token')
@@ -54,7 +55,7 @@ export class ItemStatusService {
       )
       .pipe(catchError(this.handleError));
   }
-
+  
   removeItemStatus(id: number, userName: string) {
     return this.http
       .delete(this.serviceURL + '/' + id + '/' + userName, this.httpOptions)

@@ -219,13 +219,20 @@ export class ItemManagementService {
       .get(AppConfiguration.locationRestURL + 'item/getItem/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-
+  
   getJournalLog(itemId: string) {
     return this.http
       .get(AppConfiguration.locationRestURL + 'item/journal/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-
+getDepartmentData() {
+    return this.http
+      .get(
+        AppConfiguration.locationRestURL + 'mms/getCustomerDepartments' ,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
   getItemTransferDetails(transferLogId: string) {
     return this.http
       .get(AppConfiguration.locationRestURL + 'transferLog/getTransfer/' + transferLogId, this.httpOptions)

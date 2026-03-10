@@ -7,8 +7,7 @@
   margin-bottom: 0rem;
 }
 
-.card,
-button {
+.card {
   border-radius: 0 !important;
 }
 
@@ -193,7 +192,12 @@ mat-radio-group {
   display: inline-block;
   width: 100%;
 }
-
+.custom-dropdown-wrapper ::ng-deep .dropdown-toggle {
+  padding-right: 30px !important;
+}
+.custom-dropdown-wrapper ::ng-deep .dropdown-toggle::after {
+  display: none !important;
+}
 .custom-dropdown-wrapper app-dropdown-treeview-select {
   display: block;
   width: 100%;

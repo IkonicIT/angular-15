@@ -54,7 +54,7 @@
   margin-left: 64px;
 }
 
-.text-overflow-button {
+.text-overflow-button .ngx-dropdown-button {
   background-color: #f86c6b;
 }
 
@@ -281,4 +281,22 @@ bs-tooltip-container {
   .ml-15 {
     margin-left: 7px;
   }
+}
+/* Fix Advanced Search button losing style after click */
+.advanced-btn,
+.advanced-btn:focus,
+.advanced-btn:active,
+.advanced-btn:hover {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Prevent bootstrap active light-red effect */
+.btn-danger:not(:disabled):not(.disabled):active,
+.btn-danger.active {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
 }

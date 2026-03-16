@@ -219,9 +219,12 @@
 
                     <div class="row">
                       <div class="col-4 col-lg-2 col-padding"><label>Location:</label></div>
-                      <div *ngIf="model.status != 'Customer Spare'" class="col-8 col-lg-8 col-padding"><span [innerHTML]="model.locationPath"></span></div>
-                      <div *ngIf="model.status === 'Customer Spare'" class="col-8 col-lg-8 col-padding"><span [innerHTML]="model.locationPath + '\\' + mmsData.deptName"></span></div>
-                    </div>
+                   <div class="col-8 col-lg-8 col-padding">
+  <span [innerHTML]="model.locationId === 2 
+    ? (model.locationPath + '\\' + mmsData.deptName) 
+    : model.locationPath">
+  </span>
+</div>     </div>
 
                     <div class="row">
                       <div class="col-4 col-lg-2 col-padding"><label>Description:</label></div>

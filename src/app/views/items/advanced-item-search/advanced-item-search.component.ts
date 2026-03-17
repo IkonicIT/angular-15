@@ -319,9 +319,9 @@ public totalRows: number = 0;
       }
     );
   }
-  getDeptData(): void {
+ getDeptData(): void {
   this.spinner.show();
-  this.itemManagementService.getDepartmentData().subscribe(
+  this.itemManagementService.getDepartmentData(this.companyId).subscribe(
     (response: any) => {
       this.deptData = Array.isArray(response) ? response.map(d =>
         new TreeviewItem({ text: d.deptName.trim(), value: d.deptNumber, children: [] })

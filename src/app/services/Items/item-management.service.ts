@@ -225,10 +225,10 @@ export class ItemManagementService {
       .get(AppConfiguration.locationRestURL + 'item/journal/' + itemId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-getDepartmentData() {
+getDepartmentData(companyId: any) {
     return this.http
       .get(
-        AppConfiguration.locationRestURL + 'mms/getCustomerDepartments' ,
+        AppConfiguration.locationRestURL + 'mms/getCustomerDepartments/' + companyId ,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));

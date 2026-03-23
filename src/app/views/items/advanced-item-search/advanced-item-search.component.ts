@@ -551,18 +551,22 @@ buildAttributeList() {
           attributeValue = attributeValue.substr(0, attributeValue.length - 1);
         }
 
-        attributeLis.push({
-          attributeNameID: attr.attributeNameID,
-          name: attr.name,
-          value: attributeValue.replace("&amp;", "&").replace("&", "&amp;")
-        });
+        let formattedValue = attributeValue;
+        const finalValue = formattedValue
+          .replace("&amp;", "&")
+          .replace(/&/g, "&amp;");
+        const attributeObj = {
+          attributeNameId: attr.attributeNameId,
+          name: attr.name, 
+          value: finalValue
+        };
+        attributeLis.push(attributeObj);
       }
     });
   }
 
   return attributeLis;
 }
-
   searchItemRepairNotesRfqModel(): void {
     this.advancedsearchflag = 1;
     const request = {

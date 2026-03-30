@@ -155,6 +155,19 @@ export class ViewItemComponent implements OnInit {
       });
     }
   }
+
+  get mmsComments(): string {
+    if (this.model?.attributeValues && this.model.attributeValues.length > 0) {
+      const commentAttr = this.model.attributeValues.find(
+        (attr: any) => attr.name?.toString().trim().toLowerCase() === 'comments'
+      );
+      if (commentAttr && commentAttr.value != null && commentAttr.value !== '') {
+        return commentAttr.value;
+      }
+    }
+    return this.mmsData?.comments ?? '';
+  }
+
   getMMSOrder(): void {
     this.spinner.show();
     this.http.get(AppConfiguration.locationRestURL + `item/getMmsDataOrder/${this.companyId}`).subscribe(

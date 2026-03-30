@@ -301,11 +301,11 @@
                       </div>
                     </div>
 
-<div *ngIf="itemMMS" class ="mt-3">
+<div  class ="mt-3">
 <div class="row">
   <div class="col-12 col-padding">
     <label>MMS Comments:</label>
-    <div>{{ mmsData.comments }}</div>
+    <div>{{ mmsComments }}</div>
   </div>
 </div>
 </div>
@@ -317,10 +317,12 @@
 
                     <div class="row">
                       <div class="col-sm-4 col-padding" *ngFor="let eachAttr of model.attributeValues">
-                        <div class="row">
-                          <div class="col-6 col-padding"><label [innerHTML]="eachAttr.name">:</label></div>
-                          <div class="col-6 col-padding"><span>{{ eachAttr.value }}</span></div>
-                        </div>
+                        <ng-container *ngIf="eachAttr.name?.toString()?.trim()?.toLowerCase() !== 'comments'">
+                          <div class="row">
+                            <div class="col-6 col-padding"><label [innerHTML]="eachAttr.name">:</label></div>
+                            <div class="col-6 col-padding"><span>{{ eachAttr.value }}</span></div>
+                          </div>
+                        </ng-container>
                       </div>
                     </div>
                    <div *ngIf="itemMMS" class="form-check mt-2">

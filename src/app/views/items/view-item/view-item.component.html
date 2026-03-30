@@ -233,7 +233,7 @@
                     <div class="row">
                       <div class="col-4 col-lg-2 col-padding"><label>Location:</label></div>
                    <div class="col-8 col-lg-8 col-padding">
-   <span [innerHTML]="model.locationId === 3 || model.locationId === 5165 || model.locationId === 5424 || model.locationId === 3220
+   <span [innerHTML]="model.locationName == 'Customer Spare (CS)'
     ? (model.locationPath + '\\' + mmsData.deptName) 
     : model.locationPath">
   </span>

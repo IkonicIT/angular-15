@@ -246,7 +246,7 @@ moveBottom(index: number): void {
 }
 saveMmsOrder(): void {
   this.spinner.show();
-  this.http.post(AppConfiguration.locationRestURL + `item/MmsDataOrder`, {
+  this.http.post(AppConfiguration.locationRestURL + `item/buildMmsDataOrder`, {
     companyId: this.companyId,
     mmsDataArray: this.mmsItemsOrder
   }).subscribe(

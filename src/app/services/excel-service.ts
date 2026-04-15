@@ -34,18 +34,20 @@ export class ExcelService {
   }
   
   public exportAsExcelFileWithMultipleSheets(json: any, excelFileName: string): void {
-  const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
 
-  Object.keys(json).forEach((sheetName) => {
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json[sheetName]);
-    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
-  });
+    Object.keys(json).forEach((sheetName) => {
+      if (Array.isArray(json[sheetName])) {
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json[sheetName]);
+        XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+      }
+    });
 
-  const excelBuffer: any = XLSX.write(workbook, {
-    bookType: 'xlsx',
-    type: 'array',
-  });
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
 
-  this.saveAsExcelFile(excelBuffer, excelFileName);
-}
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
 }

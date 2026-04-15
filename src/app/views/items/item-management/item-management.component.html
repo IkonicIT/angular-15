@@ -143,7 +143,7 @@
           <button
             type="button"
             *ngIf="flag === 0"
-            [disabled]="highestRankNum === 2"
+            [disabled]="highestRankNum === 2 || !exportSearchResults"
             (click)="exportAsExcelFileWithMultipleSheets()"
             class="btn btn-primary mb-2"
           >
@@ -159,8 +159,8 @@
               <div class="float-left">
                 <span>
                   Show
-                  <select [(ngModel)]="dynLst[t].itemsForPagination">
-                    <option>5</option>
+                  <select [(ngModel)]="dynLst[t].itemsForPagination" (change)="onPageSizeChange(t, itemType)">
+                    
                     <option>10</option>
                     <option>25</option>
                     <option>50</option>
@@ -191,7 +191,7 @@
                   </thead>
                   <tbody>
                     <tr
-                      *ngFor="let result of searchResults[itemType] | paginate : { itemsPerPage: dynLst[t].itemsForPagination, currentPage: dynLst[t].p, id: 'page' + t }"
+                      *ngFor="let result of searchResults[itemType] | paginate : { itemsPerPage: dynLst[t].itemsForPagination, currentPage: dynLst[t].p, totalItems: totalItemsByType[itemType] || searchResults[itemType]?.length, id: 'page' + t }"
                     >
                       <td>
                         <a
@@ -208,7 +208,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <pagination-controls class="my-pagination" id="page{{ t }}" (pageChange)="dynLst[t].p = $event"></pagination-controls>
+                <pagination-controls class="my-pagination" id="page{{ t }}" (pageChange)="onTypePageChange($event, t, itemType)"></pagination-controls>
               </div>
             </div>
           </div>

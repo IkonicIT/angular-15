@@ -8,7 +8,7 @@ import { ItemTypesService } from '../../../services/Items/item-types.service';
 import { WarrantyManagementService } from '../../../services/warranty-management.service';
 import { LocationManagementService } from '../../../services/location-management.service';
 import { ItemManagementService } from '../../../services/Items/item-management.service';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
@@ -72,6 +72,13 @@ export class ItemManagementComponent implements OnInit {
   public attributesSearchDisplay: Attribute[] = [];
   public searchResultKeys: string[] = [];
   public dynLst: Array<{ itemsForPagination: number; p: number }> = [];
+  public totalItemsByType: Record<string, number> = {};
+  public itemsLength: number = 0;
+  public page: number = 1;
+  public exportSearchResults: any = null;
+  public lastSearchRequest: any = null;
+  public lastExportRequest: any = null;
+  public isExportDataLoading: boolean = false;
   flag: any;
   itemTag: any;
   itemType: any;
@@ -210,35 +217,63 @@ export class ItemManagementComponent implements OnInit {
     this.flag = 0;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
-    this.spinner.show();
-    const req = {
+
+    const request = {
       locationId: this.model.locationId || null,
       statusId: this.model.statusId || null,
       tag: this.model.tag || null,
       typeId: this.model.typeId || null,
+      pageNumber: 1,
+      pageSize: this.itemsForPagination,
+      isExport: 0,
     };
 
+    this.lastSearchRequest = { ...request };
+    
+    const exportRequest = { ...request, isExport: 1 };
+    delete (exportRequest as any).pageNumber;
+    delete (exportRequest as any).pageSize;
+
+    this.spinner.show();
     this.searchResults = {};
+
+    // Make paginated call first - show UI immediately
     (this.itemManagementService.getAllItems(
-      req,
+      request,
       this.companyId,
       this.isOwnerAdmin,
       this.loggedInuser
     ) as Observable<any>).subscribe({
-      next: (response: any) => {
+      next: (paginatedResponse: any) => {
         this.spinner.hide();
-        this.itemManagementService.setSearchedItemTag(req.tag);
-        this.itemManagementService.setSearchedItemTypeId(req.typeId);
-        this.itemManagementService.setSearchedItemLocationId(req.locationId);
-        this.itemManagementService.setSearchedItemStatusId(req.statusId);
-
-        this.itemManagementService.setItemSearchResults(response);
-        this.searchResults = response || {};
+        
+        // Handle paginated response - show UI immediately
+        this.itemManagementService.setItemSearchResults(paginatedResponse);
+        this.searchResults = paginatedResponse || {};
         this.searchResultKeys = Object.keys(this.searchResults);
         this.dynLst = this.searchResultKeys.map(() => ({
           itemsForPagination: 5,
           p: 1,
         }));
+
+        this.totalItemsByType = {};
+        this.searchResultKeys.forEach((key) => {
+          const rows = this.searchResults[key];
+          if (Array.isArray(rows) && rows.length > 0) {
+            const firstRow: any = rows[0];
+            this.totalItemsByType[key] =
+              firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || rows.length;
+          } else {
+            this.totalItemsByType[key] = 0;
+          }
+        });
+
+        if (this.searchResultKeys.length > 0) {
+          const firstKey = this.searchResultKeys[0];
+          this.itemsLength = this.totalItemsByType[firstKey] || 0;
+        } else {
+          this.itemsLength = 0;
+        }
 
         if (this.searchResultKeys.length === 0) {
           this.flag = 1;
@@ -254,7 +289,26 @@ export class ItemManagementComponent implements OnInit {
           this.itemManagementService.deleteFlag = 0;
         }
       },
-      error: () => this.spinner.hide(),
+      error: () => {
+        this.spinner.hide();
+        this.exportSearchResults = null;
+      },
+    });
+
+    // Make export call in parallel (non-blocking) - load data in background
+    this.itemManagementService.getAllItems(
+      exportRequest,
+      this.companyId,
+      this.isOwnerAdmin,
+      this.loggedInuser
+    ).subscribe({
+      next: (exportResponse: any) => {
+        // Set export data to full search results (all data)
+        this.exportSearchResults = exportResponse;
+      },
+      error: () => {
+        this.exportSearchResults = null;
+      },
     });
   }
 
@@ -428,6 +482,113 @@ export class ItemManagementComponent implements OnInit {
     this.router.navigate(['/items/addItem']);
   }
 
+  onTypePageChange(page: number, index: number, itemType: string) {
+    if (!this.dynLst[index]) {
+      return;
+    }
+
+    this.dynLst[index].p = page;
+    const request = {
+      ...this.lastSearchRequest,
+      pageNumber: page,
+      pageSize: this.dynLst[index].itemsForPagination || this.itemsForPagination,
+      isExport: 0,
+    };
+
+    this.spinner.show();
+    this.searchResults = {};
+
+    (this.itemManagementService.getAllItems(
+      request,
+      this.companyId,
+      this.isOwnerAdmin,
+      this.loggedInuser
+    ) as Observable<any>).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        this.searchResults = response || {};
+        this.searchResultKeys = Object.keys(this.searchResults);
+
+        this.totalItemsByType = {};
+        this.searchResultKeys.forEach((key) => {
+          const rows = this.searchResults[key];
+          if (Array.isArray(rows) && rows.length > 0) {
+            const firstRow: any = rows[0];
+            this.totalItemsByType[key] =
+              firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || rows.length;
+          } else {
+            this.totalItemsByType[key] = 0;
+          }
+        });
+
+        if (this.searchResultKeys.length > 0) {
+          const firstKey = this.searchResultKeys[0];
+          this.itemsLength = this.totalItemsByType[firstKey] || 0;
+        } else {
+          this.itemsLength = 0;
+        }
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
+  }
+
+  onPageSizeChange(index: number, itemType: string) {
+    if (!this.dynLst[index]) {
+      return;
+    }
+
+    // Reset to page 1 when page size changes
+    this.dynLst[index].p = 1;
+    const pageSize = Number(this.dynLst[index].itemsForPagination) || this.itemsForPagination;
+
+    const request = {
+      ...this.lastSearchRequest,
+      pageNumber: 1,
+      pageSize: pageSize,
+      isExport: 0,
+    };
+
+    this.spinner.show();
+    this.searchResults = {};
+
+    (this.itemManagementService.getAllItems(
+      request,
+      this.companyId,
+      this.isOwnerAdmin,
+      this.loggedInuser
+    ) as Observable<any>).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        this.searchResults = response || {};
+        this.searchResultKeys = Object.keys(this.searchResults);
+
+        this.totalItemsByType = {};
+        this.searchResultKeys.forEach((key) => {
+          const rows = this.searchResults[key];
+          if (Array.isArray(rows) && rows.length > 0) {
+            const firstRow: any = rows[0];
+            this.totalItemsByType[key] =
+              firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || rows.length;
+          } else {
+            this.totalItemsByType[key] = 0;
+          }
+        });
+
+        if (this.searchResultKeys.length > 0) {
+          const firstKey = this.searchResultKeys[0];
+          this.itemsLength = this.totalItemsByType[firstKey] || 0;
+        } else {
+          this.itemsLength = 0;
+        }
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
+  }
+
   goToView(itemId: string, rank: any, tag: any, typeName: any) {
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
@@ -465,58 +626,55 @@ export class ItemManagementComponent implements OnInit {
     }
     this.order = value;
   }
+exportAsExcelFileWithMultipleSheets(): void {
 
-  exportAsExcelFileWithMultipleSheets() {
-    const clonedsearchResults: any = cloneDeep(this.searchResults);
-    Object.keys(clonedsearchResults).forEach((itemType) => {
-      const result = clonedsearchResults[itemType];
-      result.forEach((obj: any) => {
-        const robj: any = {};
+  console.log('STEP 1: Original 👉', this.exportSearchResults);
+
+  if (!this.exportSearchResults) {
+    console.log(' No data');
+    return;
+  }
+
+  // ✅ safest fix (no lodash issues)
+  const clonedsearchResults: Record<string, any[]> =
+    JSON.parse(JSON.stringify(this.exportSearchResults));
+
+  console.log('STEP 2: Clean clone 👉', clonedsearchResults);
+
+  Object.keys(clonedsearchResults).forEach((itemType) => {
+
+    const result = clonedsearchResults[itemType];
+
+    console.log(`Processing 👉 ${itemType}`, result);
+
+    if (!Array.isArray(result)) return;
+
+    result.forEach((obj: any, i: number) => {
+
+      console.log(`Row BEFORE [${i}] 👉`, obj);
+
+      const robj: any = {};
+
+      if (obj.attributeNameList) {
         obj.attributeNameList.forEach((atr: any) => {
           robj[atr.name] = atr.value;
         });
-        delete obj.companyId;
-        delete obj.serialNumber;
-        delete obj.modelNumber;
-        delete obj.statusId;
-        delete obj.typeName;
-        delete obj.locationId;
-        delete obj.typeId;
-        delete obj.itemid;
-        delete obj.itemRank;
-        delete obj.description;
-        delete obj.warrantyTypeId;
-        delete obj.warrantyExpiration;
-        delete obj.warrantyExpiration;
-        delete obj.lastModifiedBy;
-        delete obj.serialNumber;
-        delete obj.meanTimeBetweenService;
-        delete obj.inServiceOn;
-        delete obj.isInRepair;
-        delete obj.desiredSpareRatio;
-        delete obj.manufacturerId;
-        delete obj.repairQual;
-        delete obj.purchasePrice;
-        delete obj.daysInService;
-        delete obj.purchaseDate;
-        delete obj.defaultImageAttachmentId;
-        delete obj.isstale;
-        delete obj.entityTypeId;
-        delete obj.roleId;
-        delete obj.roleName;
-        delete obj.updatedDate;
-        delete obj.userId;
-        delete obj.attributeName;
-        delete obj.attributevalue;
+      }
 
-        obj = Object.assign(obj, robj);
-      });
+      Object.assign(obj, robj);
+      delete obj.attributeNameList;
+
+      console.log(`Row AFTER [${i}] 👉`, obj);
     });
-    this.excelService.exportAsExcelFileWithMultipleSheets(
-      clonedsearchResults,
-      'itemAdvancedSearchResults'
-    );
-  }
+  });
+
+  console.log('FINAL 👉', clonedsearchResults);
+
+  this.excelService.exportAsExcelFileWithMultipleSheets(
+    clonedsearchResults,
+    'itemAdvancedSearchResults'
+  );
+}
 
   print() {
     this.helpFlag = false;

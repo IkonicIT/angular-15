@@ -161,11 +161,8 @@ export class ViewItemComponent implements OnInit {
       const commentAttr = this.model.attributeValues.find(
         (attr: any) => attr.name?.toString().trim().toLowerCase() === 'comments'
       );
-      if (commentAttr && commentAttr.value != null && commentAttr.value !== '') {
-        return commentAttr.value;
-      }
-    }
-    return this.mmsData?.comments ?? '';
+        return commentAttr.value;   
+    }  
   }
 
   getMMSOrder(): void {

@@ -85,6 +85,7 @@ export class ItemManagementComponent implements OnInit {
   helpFlag = false;
   dismissible = true;
   loader = false;
+  exportProgress = '';
 
   constructor(
     private modalService: BsModalService,
@@ -626,55 +627,121 @@ export class ItemManagementComponent implements OnInit {
     }
     this.order = value;
   }
-exportAsExcelFileWithMultipleSheets(): void {
 
-  console.log('STEP 1: Original 👉', this.exportSearchResults);
-
-  if (!this.exportSearchResults) {
-    console.log(' No data');
-    return;
+  private chunkArray<T>(array: T[], chunkSize: number): T[][] {
+    const chunks: T[][] = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
   }
 
-  // ✅ safest fix (no lodash issues)
-  const clonedsearchResults: Record<string, any[]> =
-    JSON.parse(JSON.stringify(this.exportSearchResults));
+  private buildExportChunks(
+    sourceData: Record<string, any[]>,
+    maxRowsPerWorkbook = 8000
+  ): Array<{ fileNameSuffix: number; payload: Record<string, any[]> }> {
+    const chunks: Array<{ fileNameSuffix: number; payload: Record<string, any[]> }> = [];
+    let currentPayload: Record<string, any[]> = {};
+    let currentRowCount = 0;
+    let fileIndex = 1;
 
-  console.log('STEP 2: Clean clone 👉', clonedsearchResults);
-
-  Object.keys(clonedsearchResults).forEach((itemType) => {
-
-    const result = clonedsearchResults[itemType];
-
-    console.log(`Processing 👉 ${itemType}`, result);
-
-    if (!Array.isArray(result)) return;
-
-    result.forEach((obj: any, i: number) => {
-
-      console.log(`Row BEFORE [${i}] 👉`, obj);
-
-      const robj: any = {};
-
-      if (obj.attributeNameList) {
-        obj.attributeNameList.forEach((atr: any) => {
-          robj[atr.name] = atr.value;
-        });
+    const flushCurrentPayload = () => {
+      if (Object.keys(currentPayload).length > 0) {
+        chunks.push({ fileNameSuffix: fileIndex++, payload: { ...currentPayload } });
       }
+      currentPayload = {};
+      currentRowCount = 0;
+    };
 
-      Object.assign(obj, robj);
-      delete obj.attributeNameList;
+    const addSheetGroup = (sheetName: string, rows: any[]) => {
+      if (!rows || rows.length === 0) {
+        return;
+      }
+      const rowCount = rows.length;
+      if (currentRowCount + rowCount > maxRowsPerWorkbook && currentRowCount > 0) {
+        flushCurrentPayload();
+      }
+      if (rowCount > maxRowsPerWorkbook) {
+        const rowGroups = this.chunkArray(rows, maxRowsPerWorkbook);
+        rowGroups.forEach((group, index) => {
+          const chunkedSheetName = `${sheetName}_${index + 1}`;
+          if (currentRowCount + group.length > maxRowsPerWorkbook && currentRowCount > 0) {
+            flushCurrentPayload();
+          }
+          currentPayload[chunkedSheetName] = group;
+          currentRowCount += group.length;
+          if (currentRowCount >= maxRowsPerWorkbook) {
+            flushCurrentPayload();
+          }
+        });
+      } else {
+        currentPayload[sheetName] = rows;
+        currentRowCount += rowCount;
+      }
+    };
 
-      console.log(`Row AFTER [${i}] 👉`, obj);
+    Object.keys(sourceData).forEach((sheetName) => {
+      addSheetGroup(sheetName, sourceData[sheetName] || []);
     });
-  });
 
-  console.log('FINAL 👉', clonedsearchResults);
+    flushCurrentPayload();
+    return chunks;
+  }
 
-  this.excelService.exportAsExcelFileWithMultipleSheets(
-    clonedsearchResults,
-    'itemAdvancedSearchResults'
-  );
-}
+  private async delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  private buildExportPayload(): Record<string, any[]> {
+    const payload: Record<string, any[]> = {};
+    Object.keys(this.exportSearchResults).forEach((itemType) => {
+      const rows = this.exportSearchResults[itemType] || [];
+      payload[itemType] = rows.map((obj: any) => {
+        const exportObj: any = { ...obj };
+        const attrs = obj['attributeNameList'];
+        if (Array.isArray(attrs)) {
+          attrs.forEach((atr: any) => {
+            exportObj[atr.name] = atr.value;
+          });
+          exportObj['attributeNameList'] = JSON.stringify(attrs);
+        }
+        delete exportObj['attributeNameList'];
+        return exportObj;
+      });
+    });
+    return payload;
+  }
+
+  private async exportMultipleExcelFiles(exportData: Record<string, any[]>): Promise<void> {
+    const maxRowsPerWorkbook = 8000;
+    const maxRowsPerSheet = 4000;
+    const workbookChunks = this.buildExportChunks(exportData, maxRowsPerWorkbook);
+
+    for (const chunk of workbookChunks) {
+      this.exportProgress = `Exporting file ${chunk.fileNameSuffix} of ${workbookChunks.length}...`;
+      await this.delay(50);
+      const fileName = `itemAdvancedSearchResults_part${chunk.fileNameSuffix}`;
+      this.excelService.exportAsExcelFileWithMultipleSheets(
+        chunk.payload,
+        fileName,
+        maxRowsPerSheet
+      );
+      await this.delay(100);
+    }
+    this.exportProgress = 'Export complete.';
+  }
+
+  async exportAsExcelFileWithMultipleSheets(): Promise<void> {
+    if (!this.exportSearchResults) {
+      return;
+    }
+
+    this.exportProgress = 'Preparing export...';
+    await this.delay(0);
+    const exportData = this.buildExportPayload();
+    await this.exportMultipleExcelFiles(exportData);
+    this.exportProgress = '';
+  }
 
   print() {
     this.helpFlag = false;

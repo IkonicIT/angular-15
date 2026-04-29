@@ -19,6 +19,7 @@ export class ExcelService {
     const excelBuffer: any = XLSX.write(workbook, {
       bookType: 'xlsx',
       type: 'array',
+      compression: true,
     });
     this.saveAsExcelFile(excelBuffer, excelFileName);
   }
@@ -32,20 +33,47 @@ export class ExcelService {
       fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
     );
   }
-  
-  public exportAsExcelFileWithMultipleSheets(json: any, excelFileName: string): void {
+
+  private chunkArray<T>(array: T[], chunkSize: number): T[][] {
+    const chunks: T[][] = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+  }
+
+  private safeSheetName(sheetName: string): string {
+    const cleaned = sheetName.replace(/[:\\/\\?\\*\[\]]/g, '_');
+    return cleaned.substr(0, 31);
+  }
+
+  public exportAsExcelFileWithMultipleSheets(
+    json: any,
+    excelFileName: string,
+    maxRowsPerSheet: number = 10000
+  ): void {
     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
 
     Object.keys(json).forEach((sheetName) => {
-      if (Array.isArray(json[sheetName])) {
-        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json[sheetName]);
-        XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+      const sheetData = json[sheetName];
+      if (!Array.isArray(sheetData)) {
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(sheetData);
+        XLSX.utils.book_append_sheet(workbook, worksheet, this.safeSheetName(sheetName));
+        return;
       }
+
+      const chunks = this.chunkArray(sheetData, maxRowsPerSheet);
+      chunks.forEach((chunk, index) => {
+        const chunkSheetName = chunks.length > 1 ? `${sheetName}_${index + 1}` : sheetName;
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(chunk);
+        XLSX.utils.book_append_sheet(workbook, worksheet, this.safeSheetName(chunkSheetName));
+      });
     });
 
     const excelBuffer: any = XLSX.write(workbook, {
       bookType: 'xlsx',
       type: 'array',
+      compression: true,
     });
 
     this.saveAsExcelFile(excelBuffer, excelFileName);

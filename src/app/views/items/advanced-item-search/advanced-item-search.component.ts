@@ -28,7 +28,7 @@ import { Subscription } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
 })
 export class AdvancedItemSearchComponent implements OnInit {
-  public selectedDeptNumber: number = 0;
+  public selectedDeptNumber: number | null = null;
   public showSearchResults = false;
   public isExpandAdvancedSearch = true;
   public itemModel: any = {};
@@ -55,6 +55,7 @@ export class AdvancedItemSearchComponent implements OnInit {
    private exportSubscription: Subscription;
    exportSearchResults: any = null;
 isExportDataLoading: boolean = false;
+  public exportProgress: string = '';
   public currentAttributeValues: any[] = [];
   public value: any;
   public items: TreeviewItem[] = [];
@@ -675,43 +676,135 @@ buildAttributeList() {
     );
   }
 
-  exportAsExcelFileWithMultipleSheets() {
-
-  if (!this.exportSearchResults) {
-    console.log("No export data available. Please search again.");
-    return;
+  private chunkArray<T>(array: T[], chunkSize: number): T[][] {
+    const chunks: T[][] = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
   }
 
-  this.spinner.show();
+  private buildExportChunks(
+    sourceData: Record<string, any[]>,
+    maxRowsPerWorkbook = 8000
+  ): Array<{ fileNameSuffix: number; payload: Record<string, any[]> }> {
+    const chunks: Array<{ fileNameSuffix: number; payload: Record<string, any[]> }> = [];
+    let currentPayload: Record<string, any[]> = {};
+    let currentRowCount = 0;
+    let fileIndex = 1;
 
-  const clonedsearchResults: Record<string, any[]> = cloneDeep(this.exportSearchResults);
+    const flushCurrentPayload = () => {
+      if (Object.keys(currentPayload).length > 0) {
+        chunks.push({ fileNameSuffix: fileIndex++, payload: { ...currentPayload } });
+      }
+      currentPayload = {};
+      currentRowCount = 0;
+    };
 
-  Object.keys(clonedsearchResults).forEach(itemType => {
-    const result = clonedsearchResults[itemType];
+    const addSheetGroup = (sheetName: string, rows: any[]) => {
+      if (!rows || rows.length === 0) {
+        return;
+      }
 
-    result.forEach((obj: any) => {
+      const rowCount = rows.length;
+      if (currentRowCount + rowCount > maxRowsPerWorkbook && currentRowCount > 0) {
+        flushCurrentPayload();
+      }
 
-      const robj: Record<string, any> = {};
-      obj.attributeNameList.forEach((atr: any) => {
-        robj[atr.name] = atr.value;
-      });
+      if (rowCount > maxRowsPerWorkbook) {
+        const rowGroups = this.chunkArray(rows, maxRowsPerWorkbook);
+        rowGroups.forEach((group, index) => {
+          const chunkedSheetName = `${sheetName}_${index + 1}`;
+          if (currentRowCount + group.length > maxRowsPerWorkbook && currentRowCount > 0) {
+            flushCurrentPayload();
+          }
+          currentPayload[chunkedSheetName] = group;
+          currentRowCount += group.length;
+          if (currentRowCount >= maxRowsPerWorkbook) {
+            flushCurrentPayload();
+          }
+        });
+      } else {
+        currentPayload[sheetName] = rows;
+        currentRowCount += rowCount;
+      }
+    };
 
-      delete obj.typeName;
-      delete obj.locationName;
-      delete obj.itemId;
-      delete obj.rank;
-
-      Object.assign(obj, robj);
+    Object.keys(sourceData).forEach((sheetName) => {
+      addSheetGroup(sheetName, sourceData[sheetName] || []);
     });
-  });
 
-  this.spinner.hide();
+    flushCurrentPayload();
+    return chunks;
+  }
 
-  this.excelService.exportAsExcelFileWithMultipleSheets(
-    clonedsearchResults,
-    'itemAdvancedSearchResults'
-  );
-}
+  private async delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  private async exportMultipleExcelFiles(exportData: Record<string, any[]>): Promise<void> {
+    const maxRowsPerWorkbook = 8000;
+    const maxRowsPerSheet = 4000;
+    const workbookChunks = this.buildExportChunks(exportData, maxRowsPerWorkbook);
+
+    for (const chunk of workbookChunks) {
+      this.exportProgress = `Exporting file ${chunk.fileNameSuffix} of ${workbookChunks.length}...`;
+      await this.delay(50);
+      const fileName = `itemAdvancedSearchResults_part${chunk.fileNameSuffix}`;
+      this.excelService.exportAsExcelFileWithMultipleSheets(
+        chunk.payload,
+        fileName,
+        maxRowsPerSheet
+      );
+      await this.delay(100);
+    }
+
+    this.exportProgress = 'Export complete.';
+  }
+
+  private buildExportPayload(): Record<string, any[]> {
+    const payload: Record<string, any[]> = {};
+    Object.keys(this.exportSearchResults).forEach((itemType) => {
+      const rows = this.exportSearchResults[itemType];
+      if (!Array.isArray(rows)) {
+        payload[itemType] = rows;
+        return;
+      }
+
+      payload[itemType] = rows.map((obj: any) => {
+        const exportObj: Record<string, any> = { ...obj };
+        const attrList = obj['attributeNameList'];
+        if (Array.isArray(attrList)) {
+          attrList.forEach((atr: any) => {
+            exportObj[atr.name] = atr.value;
+          });
+          exportObj['attributeNameList'] = JSON.stringify(attrList);
+        }
+        return exportObj;
+      });
+    });
+    return payload;
+  }
+
+  async exportAsExcelFileWithMultipleSheets() {
+    if (!this.exportSearchResults) {
+      console.log('No export data available. Please search again.');
+      return;
+    }
+
+    this.spinner.show();
+    this.isExportDataLoading = true;
+    this.exportProgress = 'Preparing export...';
+
+    await this.delay(0);
+    const exportData = this.buildExportPayload();
+
+    await this.exportMultipleExcelFiles(exportData);
+
+    this.spinner.hide();
+    this.isExportDataLoading = false;
+    this.exportProgress = '';
+  }
 
   onTabChanged(event: { index: number }): void {
     this.activeTab = event.index;

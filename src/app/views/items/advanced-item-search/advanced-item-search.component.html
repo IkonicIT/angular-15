@@ -521,6 +521,7 @@
         [disabled]="isExportDataLoading || !exportSearchResults">
   {{ isExportDataLoading ? 'Preparing Export...' : 'Export to Excel' }}
 </button>
+                    <span class="ml-2 text-muted" *ngIf="exportProgress">{{ exportProgress }}</span>
                   <button
                     type="button"
                     *ngIf="flag == 0"
@@ -700,6 +701,7 @@
         [disabled]="isExportDataLoading || !exportSearchResults">
   {{ isExportDataLoading ? 'Preparing Export...' : 'Export to Excel' }}
 </button>
+                    <span class="ml-2 text-muted" *ngIf="exportProgress">{{ exportProgress }}</span>
 
                   <div
                     *ngFor="let itemType of searchResultKeys; let t = index"

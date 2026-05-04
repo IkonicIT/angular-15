@@ -160,7 +160,7 @@
                         <div class="custom-dropdown-wrapper">
                        <app-dropdown-treeview-select
                           [items]="vendorItems"
-                          [(value)]="model.vendor.vendorId"
+                          [(value)]="model.vendor.vendorId || model.vendorNumber"
                           (valueChange)="onVendorChange($event)"
                         >
                         </app-dropdown-treeview-select>
@@ -371,6 +371,104 @@
                           id="actualCompletion"
                           name="actualCompletion"
                           bsDatepicker
+                        />
+                      </div>
+                    </div>
+                     <div *ngIf="itemMMS" class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="workOrderNumber">Work Order Number</label>
+                        <input
+                          type="text"
+                          class="form-control form-color"
+                          [(ngModel)]="mmsDetails.workOrderNumber"
+                          name="workOrderNumber"
+                          id="workOrderNumber"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="cusWorkOrderNumber">Cus Work Order Number</label>
+                        <input
+                          type="text"
+                          class="form-control form-color"
+                          [(ngModel)]="mmsDetails.cusWorkOrderNumber"
+                          name="cusWorkOrderNumber"
+                          id="cusWorkOrderNumber"
+                        />
+                      </div>
+                    </div>
+                    <div *ngIf="itemMMS" class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="repairstatus">Cus Req Number</label>
+                        <input
+                          type="text"
+                          class="form-control form-color"
+                          [(ngModel)]="mmsDetails.cusReqNumber"
+                          name="cusReqNumber"
+                          id="cusReqNumber"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="cusRfqNumber">Cus Rfq Number</label>
+                        <input
+                          type="text"
+                          class="form-control form-color"
+                          [(ngModel)]="mmsDetails.cusRfqNumber"
+                          name="cusRfqNumber"
+                          id="cusRfqNumber"
+                        />
+                      </div>
+                    </div>
+                    <div *ngIf="itemMMS" class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="cusPoNumber">Cus Po Number</label>
+                        <input
+                          type="text"
+                          class="form-control form-color"
+                          [(ngModel)]="mmsDetails.cusPoNumber"
+                          name="cusPoNumber"
+                          id="cusPoNumber"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="vendorAssignedTo">Vendor Assigned To</label>
+                        <input
+                          type="text"
+                          class="form-control form-color"
+                          [(ngModel)]="mmsDetails.vendorAssignedTo"
+                          name="vendorAssignedTo"
+                          id="vendorAssignedTo"
+                        />
+                      </div>
+                    </div>
+                    <div *ngIf="itemMMS" class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="tagNumber">Tag Number</label>
+                        <input
+                          type="text"
+                          class="form-control form-color"
+                          [(ngModel)]="mmsDetails.tagNumber"
+                          name="tagNumber"
+                          id="tagNumber"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="cusPrcControlNumber">Cus Prc ControlNumber</label>
+                        <input
+                          type="text"
+                          class="form-control form-color"
+                          [(ngModel)]="mmsDetails.cusPrcControlNumber"
+                          name="cusPrcControlNumber"
+                          id="cusPrcControlNumber"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="cusDmControlNumber">Cus Dm Control Number</label>
+                        <input
+                          type="text"
+                          class="form-control form-color"
+                          [(ngModel)]="mmsDetails.cusDmControlNumber"
+                          name="cusDmControlNumber"
+                          id="cusDmControlNumber"
                         />
                       </div>
                     </div>

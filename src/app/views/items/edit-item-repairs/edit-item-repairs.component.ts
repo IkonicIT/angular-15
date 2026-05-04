@@ -10,7 +10,8 @@ import { WarrantyManagementService } from '../../../services';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from 'src/app/services/broadcaster.service';
 import { Location } from '@angular/common';
-
+import { HttpClient } from '@angular/common/http';
+import { AppConfiguration } from 'src/app/configuration';
 @Component({
   selector: 'app-edit-item-repairs',
   templateUrl: './edit-item-repairs.component.html',
@@ -18,7 +19,9 @@ import { Location } from '@angular/common';
 })
 export class EditItemRepairsComponent implements OnInit {
   bsConfig: Partial<BsDatepickerConfig>;
+  itemMMS: boolean = false;
   failureType: any;
+  mmsDetails: any;
   currFailuretype: any;
   failureTypeId: any;
   model: any = {};
@@ -47,7 +50,7 @@ export class EditItemRepairsComponent implements OnInit {
   failureCauses: any = {};
   userName: any;
   helpFlag: boolean = false;
-
+  
   constructor(
     private companyManagementService: CompanyManagementService,
     private locationManagementService: LocationManagementService,
@@ -58,13 +61,24 @@ export class EditItemRepairsComponent implements OnInit {
     private itemManagementService: ItemManagementService,
     private warrantyManagementService: WarrantyManagementService,
     private broadcasterService: BroadcasterService,
-    private _location: Location
+    private _location: Location,
+    private http: HttpClient
   ) {
     this.itemId = route.snapshot.params['itemId'];
     this.itemRepairId = route.snapshot.params['repairId'];
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyId = this.globalCompany.companyId;
+    const itemMMSValue = sessionStorage.getItem('itemMMS');
+    this.itemMMS = itemMMSValue === 'true' || itemMMSValue === '1';
+    if(this.itemMMS)
+    {
+      this.getMMSVendors();
+      this.getMmsRepairDetails();
+    }
+    else
+    {
     this.getAllVendors();
+    }
     this.locations = this.getLocations();
     if (this.companyId) {
       this.getWarrantyTypes();
@@ -79,7 +93,20 @@ export class EditItemRepairsComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
   }
-
+   getMMSVendors(): void {
+        this.spinner.show();
+        this.http.get(AppConfiguration.locationRestURL + `mms/getMmsVendors/${this.companyId}`).subscribe(
+          (response: any) => {
+            this.spinner.hide();
+            this.fullVendors = Array.isArray(response) ? response : [];
+          this.vendorItems = this.generateVendorHierarchyMMS(this.fullVendors);
+          this.spinner.hide();
+          },
+          (error) => {
+            this.spinner.hide();
+          }
+        );
+      }
   getWarrantyTypes() {
     this.spinner.show();
     this.warrantyManagementService
@@ -255,9 +282,22 @@ export class EditItemRepairsComponent implements OnInit {
     );
   }
 
-  onVendorChange(value: any) {
-    this.model.vendorId = value;
-  }
+  generateVendorHierarchyMMS(vendors: any[]): TreeviewItem[] {
+      return vendors.map(
+        vendor =>
+          new TreeviewItem({
+            text: vendor.vendorName,
+            value: vendor.vendorNumber,
+            collapsed: true,
+            children: [],
+          })
+      );
+    }
+  
+    onVendorChange(value: any): void {
+      this.model.vendorId = value;
+      this.model.vendorNumber=value;
+    }
 
   getFailureTypes() {
     this.itemRepairItemsService
@@ -280,7 +320,23 @@ export class EditItemRepairsComponent implements OnInit {
       }
     });
   }
+  getMmsRepairDetails(): void {
+  this.spinner.show();
 
+  this.itemRepairItemsService
+    .getItemMmsDetails(this.itemRepairId)
+    .subscribe(
+      (response) => {
+        console.log('MMS Repair Details response:', response);
+        this.mmsDetails = response;
+        this.spinner.hide();
+      },
+      (error) => {
+        console.error('Error fetching MMS Repair Details:', error);
+        this.spinner.hide();
+      }
+    );
+}
   updateFailureTypeAndCauses(failureType: string | number) {
     let faliurecausetemp = this.failureTypesandcauses[failureType];
     let causes = faliurecausetemp[0];
@@ -358,7 +414,19 @@ export class EditItemRepairsComponent implements OnInit {
   }
 
   updateItemRepair() {
-    this.model = {
+    const tempMMS = sessionStorage.getItem('itemMMS') === 'true' || sessionStorage.getItem('itemMMS') === '1';
+    const repairlogMmsResource ={
+          workOrderNumber: this.mmsDetails.workOrderNumber ?? '',
+          cusWorkOrderNumber: this.mmsDetails.cusWorkOrderNumber ?? '',
+          cusReqNumber:this.mmsDetails.cusReqNumber ?? '',
+          cusRfqNumber:this.mmsDetails.cusRfqNumber ?? '',
+          cusPoNumber:this.mmsDetails.cusPoNumber ?? '',
+          vendorAssignedTo:this.mmsDetails.vendorAssignedTo ?? '',
+          cusPrcControlNumber:this.mmsDetails.cusPrcControlNumber ?? '',
+          cusDmControlNumber:this.mmsDetails.cusDmControlNumber ?? '',
+          tagNumber:this.mmsDetails.tagNumber ?? ''
+        }
+    const request = {
       actualCompletion: this.model.actualCompletion ?? null,
       complete: this.model.complete ?? false,
       completedBy: this.model.completedBy,
@@ -376,7 +444,7 @@ export class EditItemRepairsComponent implements OnInit {
       itemType: this.model.itemType,
       jobNumber: this.model.jobNumber ?? 0,
       poNumber: this.model.poNumber ?? 0,
-      repairCompanyId: this.model.repaircompanyId,
+      repairCompanyId: this.model.repairCompanyId,
       repairCost: this.model.repairCost ?? 0,
       repairJobStatus: this.model.repairJobStatus,
       repairLocationId: this.model.repairLocationId ?? 0,
@@ -401,8 +469,12 @@ export class EditItemRepairsComponent implements OnInit {
         vendorId: this.model.vendor.vendorId,
       },
     };
+     let fullRequest = {
+  ...request,
+  ...(tempMMS && { repairlogMmsResource })
+};
     this.spinner.show();
-    this.itemRepairItemsService.updateItemRepair(this.model).subscribe(
+    this.itemRepairItemsService.updateItemRepair(fullRequest).subscribe(
       (response: any) => {
         this.spinner.hide();
         window.scroll(0, 0);

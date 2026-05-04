@@ -256,6 +256,7 @@ export class ViewItemRepairComponent implements OnInit, OnDestroy {
   ViewItemRepair(repairId: any): void {
     this.itemRepairId = String(repairId ?? '');
     this.getItemRepairDetails();
+    this.getMmsRepairDetails();
     window.scroll(0, 0);
   }
 

@@ -162,7 +162,8 @@ export class ViewItemComponent implements OnInit {
         (attr: any) => attr.name?.toString().trim().toLowerCase() === 'comments'
       );
         return commentAttr.value;   
-    }  
+    }
+    return '';  
   }
 
   getMMSOrder(): void {

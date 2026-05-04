@@ -10,7 +10,8 @@ import { ItemManagementService } from '../../../services/Items/item-management.s
 import { WarrantyManagementService } from '../../../services';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from 'src/app/services/broadcaster.service';
-
+import { HttpClient } from '@angular/common/http';
+import { AppConfiguration } from 'src/app/configuration';
 @Component({
   selector: 'app-add-item-repairs',
   templateUrl: './add-item-repairs.component.html',
@@ -23,6 +24,17 @@ export class AddItemRepairsComponent implements OnInit {
     locationId: 0,
     secondaryTypeAndCauses: [],
   };
+  
+    //  workOrderNumber: any;
+    // cusWorkOrderNumber: any;
+    //  cusReqNumber: any;
+    //  cusRfqNumber: any;
+    //  cusPoNumber: any;
+    //  vendorAssignedTo: any;
+    //  tagNumber: any;
+    //  cusPrcControlNumber: any;
+    //  cusDmControlNumber: any;
+  itemMMS: boolean = false;
   index = 0;
   itemId = 0;
   bsConfig: Partial<BsDatepickerConfig>;
@@ -63,14 +75,25 @@ export class AddItemRepairsComponent implements OnInit {
     private itemRepairItemsService: ItemRepairItemsService,
     private warrantyManagementService: WarrantyManagementService,
     private itemManagementService: ItemManagementService,
-    private broadcasterService: BroadcasterService
+    private broadcasterService: BroadcasterService,
+    private http: HttpClient
   ) {
     this.itemId = Number(route.snapshot.params['itemId']);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
     }
+    const itemMMSValue = sessionStorage.getItem('itemMMS');
+    this.itemMMS = itemMMSValue === 'true' || itemMMSValue === '1';
+    
+    if(this.itemMMS)
+    {
+      this.getMMSVendors();
+    }
+    else
+    {
     this.getAllVendors();
+    }
     this.getLocations();
 
     this.companyManagementService.globalCompanyChange.subscribe(value => {
@@ -83,6 +106,8 @@ export class AddItemRepairsComponent implements OnInit {
     this.model.repaircompanyId = this.companyId;
     this.userName = sessionStorage.getItem('userName');
     this.highestRank = sessionStorage.getItem('highestRank');
+    
+    
     this.model.date = new Date();
     this.bsConfig = { containerClass: 'theme-red' };
     this.getWarrantyTypes();
@@ -98,7 +123,20 @@ export class AddItemRepairsComponent implements OnInit {
       this.failureTypes = Object.keys(this.failureTypesandcauses);
     });
 }
-
+  getMMSVendors(): void {
+      this.spinner.show();
+      this.http.get(AppConfiguration.locationRestURL + `mms/getMmsVendors/${this.companyId}`).subscribe(
+        (response: any) => {
+          this.spinner.hide();
+          this.fullVendors = Array.isArray(response) ? response : [];
+        this.vendorItems = this.generateVendorHierarchyMMS(this.fullVendors);
+        this.spinner.hide();
+        },
+        (error) => {
+          this.spinner.hide();
+        }
+      );
+    }
   getAcMotorFailureTypesAndCauses(): void {
     this.spinner.show();
     this.itemRepairItemsService
@@ -180,9 +218,21 @@ export class AddItemRepairsComponent implements OnInit {
         })
     );
   }
+  generateVendorHierarchyMMS(vendors: any[]): TreeviewItem[] {
+    return vendors.map(
+      vendor =>
+        new TreeviewItem({
+          text: vendor.vendorName,
+          value: vendor.vendorNumber,
+          collapsed: true,
+          children: [],
+        })
+    );
+  }
 
   onVendorChange(value: any): void {
     this.model.vendorId = value;
+    this.model.vendorNumber=value;
   }
 
   getLocations(): void {
@@ -352,7 +402,19 @@ export class AddItemRepairsComponent implements OnInit {
   }
 
   addItemRepair(): void {
-    this.model = {
+    const tempMMS = sessionStorage.getItem('itemMMS') === 'true' || sessionStorage.getItem('itemMMS') === '1';
+    const repairlogMmsResource ={
+          workOrderNumber: this.model.workOrderNumber ?? '',
+          cusWorkOrderNumber: this.model.cusWorkOrderNumber ?? '',
+          cusReqNumber:this.model.cusReqNumber ?? '',
+          cusRfqNumber:this.model.cusRfqNumber ?? '',
+          cusPoNumber:this.model.cusPoNumber ?? '',
+          vendorAssignedTo:this.model.vendorAssignedTo ?? '',
+          cusPrcControlNumber:this.model.cusPrcControlNumber ?? '',
+          cusDmControlNumber:this.model.cusDmControlNumber ?? '',
+          tagNumber:this.model.tagNumber ?? ''
+        }
+    const request = {
       tag: this.model.tag,
       typeName: this.model.typeName,
       actualCompletion: this.model.actualCompletion ?? null,
@@ -391,9 +453,14 @@ export class AddItemRepairsComponent implements OnInit {
       vendor: {
         vendorId: this.model.vendorId ?? 0,
       },
+      
     };
+  let fullRequest = {
+  ...request,
+  ...(tempMMS && { repairlogMmsResource })
+};
     this.spinner.show();
-    this.itemRepairItemsService.saveItemRepair(this.model).subscribe(
+    this.itemRepairItemsService.saveItemRepair(fullRequest).subscribe(
       (response: any) => {
         this.spinner.hide();
         window.scroll(0, 0);

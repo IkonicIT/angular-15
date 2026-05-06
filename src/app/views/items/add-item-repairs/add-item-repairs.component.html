@@ -149,7 +149,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-sm-6">
+                      <div *ngIf="itemMMS != true" class="form-group col-sm-6">
                         <label for="vendor">
                           Vendor<strong *ngIf="highestRankNum == 2" class="text-danger">*</strong>
                         </label>
@@ -414,7 +414,7 @@
                     </div>
                     <div *ngIf="itemMMS" class="row">
                       <div class="form-group col-sm-6">
-                        <label for="repairstatus">Cus Req Number</label>
+                        <label for="repairstatus">Cus REQ Number</label>
                         <input
                           type="text"
                           class="form-control form-color"
@@ -424,7 +424,7 @@
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="cusRfqNumber">Cus Rfq Number</label>
+                        <label for="cusRfqNumber">Cus RFQ Number</label>
                         <input
                           type="text"
                           class="form-control form-color"
@@ -436,7 +436,7 @@
                     </div>
                     <div *ngIf="itemMMS" class="row">
                       <div class="form-group col-sm-6">
-                        <label for="cusPoNumber">Cus Po Number</label>
+                        <label for="cusPoNumber">Cus PO Number</label>
                         <input
                           type="text"
                           class="form-control form-color"
@@ -447,50 +447,83 @@
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="vendorAssignedTo">Vendor Assigned To</label>
-                        <input
-                          type="text"
-                          class="form-control form-color"
-                          [(ngModel)]="model.vendorAssignedTo"
-                          name="vendorAssignedTo"
-                          id="vendorAssignedTo"
-                        />
+                        <div class="custom-dropdown-wrapper">
+                        <app-dropdown-treeview-select
+                          class="form-color"
+                          [items]="vendorItems"
+                          [(value)]="model.vendorAssignedTo"
+                          (valueChange)="onVendorAssignedChange($event)"
+                        >
+                        </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                      </div>
                       </div>
                     </div>
                     <div *ngIf="itemMMS" class="row">
+                     
                       <div class="form-group col-sm-6">
-                        <label for="tagNumber">Tag Number</label>
-                        <input
-                          type="text"
-                          class="form-control form-color"
-                          [(ngModel)]="model.tagNumber"
-                          name="tagNumber"
-                          id="tagNumber"
-                        />
+                        <label for="cusPrcControlNumber">Customer Process Name</label>
+                        <div class="custom-dropdown-wrapper search-dropdown-wrapper">
+                          <input
+                            type="text"
+                            class="form-control form-color search-input"
+                            placeholder="Search process..."
+                            [(ngModel)]="customerProcessSearchFilter"
+                            (ngModelChange)="getMMSCustomerProcessNames($event)"
+                            name="cusPrcSearch"
+                            id="cusPrcSearch"
+                          />
+                          <select
+                            class="form-control form-color custom-dropdown"
+                            [(ngModel)]="model.cusPrcControlNumber"
+                            (ngModelChange)="onCustomerProcessSelect($event)"
+                            name="cusPrcControlNumber"
+                            id="cusPrcControlNumber"
+                          >
+                            <option [ngValue]="null">Select Process</option>
+                            <option
+                              [ngValue]="process.cusPrcControlNumber"
+                              *ngFor="let process of filteredCustomerProcesses; trackBy: trackByControlNumber"
+                            >
+                              {{ process.processName }}
+                            </option>
+                          </select>
+                        </div>
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="cusPrcControlNumber">Cus Prc ControlNumber</label>
-                        <input
-                          type="text"
-                          class="form-control form-color"
-                          [(ngModel)]="model.cusPrcControlNumber"
-                          name="cusPrcControlNumber"
-                          id="cusPrcControlNumber"
-                        />
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label for="cusDmControlNumber">Cus Dm Control Number</label>
-                        <input
-                          type="text"
-                          class="form-control form-color"
-                          [(ngModel)]="model.cusDmControlNumber"
-                          name="cusDmControlNumber"
-                          id="cusDmControlNumber"
-                        />
+                        <label for="cusDmControlNumber">Driven Machine Name</label>
+                        <div class="custom-dropdown-wrapper search-dropdown-wrapper">
+                          <input
+                            type="text"
+                            class="form-control form-color search-input"
+                            placeholder="Search machine..."
+                            [(ngModel)]="drivenMachineSearchFilter"
+                            (ngModelChange)="getMMSDrivenMachineNames($event)"
+                            name="cusDmSearch"
+                            id="cusDmSearch"
+                          />
+                          <select
+                            class="form-control form-color custom-dropdown"
+                            [(ngModel)]="model.cusDmControlNumber"
+                            (ngModelChange)="onDrivenMachineSelect($event)"
+                            name="cusDmControlNumber"
+                            id="cusDmControlNumber"
+                          >
+                            <option [ngValue]="null">Select Driven Machine</option>
+                            <option
+                              [ngValue]="machine.cusDmControlNumber"
+                              *ngFor="let machine of filteredDrivenMachines; trackBy: trackByControlNumber"
+                            >
+                              {{ machine.drivenMachineName }}
+                            </option>
+                          </select>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
+                          type="button"
                           class="btn btn-primary btn-right btn-group"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"

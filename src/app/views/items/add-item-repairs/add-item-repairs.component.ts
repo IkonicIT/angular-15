@@ -10,7 +10,7 @@ import { ItemManagementService } from '../../../services/Items/item-management.s
 import { WarrantyManagementService } from '../../../services';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from 'src/app/services/broadcaster.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { AppConfiguration } from 'src/app/configuration';
 @Component({
   selector: 'app-add-item-repairs',
@@ -24,6 +24,30 @@ export class AddItemRepairsComponent implements OnInit {
     locationId: 0,
     secondaryTypeAndCauses: [],
   };
+  
+  // Dropdown search filters
+  drivenMachineSearchFilter: string = '';
+  customerProcessSearchFilter: string = '';
+  
+  get filteredDrivenMachines(): any[] {
+    if (!this.drivenMachineSearchFilter.trim()) {
+      return this.fullDrivenMachineNames;
+    }
+    const filter = this.drivenMachineSearchFilter.toLowerCase();
+    return this.fullDrivenMachineNames.filter(m => 
+      m.drivenMachineName?.toLowerCase().includes(filter)
+    );
+  }
+  
+  get filteredCustomerProcesses(): any[] {
+    if (!this.customerProcessSearchFilter.trim()) {
+      return this.fullCustomerProcessNames;
+    }
+    const filter = this.customerProcessSearchFilter.toLowerCase();
+    return this.fullCustomerProcessNames.filter(p => 
+      p.processName?.toLowerCase().includes(filter)
+    );
+  }
   
     //  workOrderNumber: any;
     // cusWorkOrderNumber: any;
@@ -50,6 +74,8 @@ export class AddItemRepairsComponent implements OnInit {
   tag = '';
   vendors: any;
   fullVendors: any[] = [];
+  fullDrivenMachineNames: any[] = [];
+  fullCustomerProcessNames: any[] = [];
   vendorItems: TreeviewItem[] = [];
   locationItems: TreeviewItem[] = [];
   userName: string | null = null;
@@ -89,6 +115,8 @@ export class AddItemRepairsComponent implements OnInit {
     if(this.itemMMS)
     {
       this.getMMSVendors();
+      this.getMMSDrivenMachineNames();
+      this.getMMSCustomerProcessNames();
     }
     else
     {
@@ -136,6 +164,48 @@ export class AddItemRepairsComponent implements OnInit {
           this.spinner.hide();
         }
       );
+    }
+    getMMSDrivenMachineNames(keyword: string = ''): void {
+      this.spinner.show();
+      const params = new HttpParams()
+        .set('companyId', String(this.companyId))
+        .set('keyword', keyword || '')
+        .set('page', '0')
+        .set('size', '250');
+      this.http
+        .get(AppConfiguration.locationRestURL + `mms/driven-machines`, { params })
+        .subscribe(
+          (response: any) => {
+            this.fullDrivenMachineNames = Array.isArray(response)
+              ? response
+              : response?.content ?? [];
+            this.spinner.hide();
+          },
+          () => {
+            this.spinner.hide();
+          }
+        );
+    }
+    getMMSCustomerProcessNames(keyword: string = ''): void {
+      this.spinner.show();
+      const params = new HttpParams()
+        .set('companyId', String(this.companyId))
+        .set('keyword', keyword || '')
+        .set('page', '0')
+        .set('size', '250');
+      this.http
+        .get(AppConfiguration.locationRestURL + `mms/processes`, { params })
+        .subscribe(
+          (response: any) => {
+            this.fullCustomerProcessNames = Array.isArray(response)
+              ? response
+              : response?.content ?? [];
+            this.spinner.hide();
+          },
+          () => {
+            this.spinner.hide();
+          }
+        );
     }
   getAcMotorFailureTypesAndCauses(): void {
     this.spinner.show();
@@ -233,6 +303,10 @@ export class AddItemRepairsComponent implements OnInit {
   onVendorChange(value: any): void {
     this.model.vendorId = value;
     this.model.vendorNumber=value;
+  }
+
+  onVendorAssignedChange(value: any): void {
+    this.model.vendorAssignedTo = value;
   }
 
   getLocations(): void {
@@ -525,5 +599,21 @@ export class AddItemRepairsComponent implements OnInit {
 
   help(): void {
     this.helpFlag = !this.helpFlag;
+  }
+  
+  onCustomerProcessSelect(value: any): void {
+    this.model.cusPrcControlNumber = value;
+  }
+
+  onDrivenMachineSelect(value: any): void {
+    this.model.cusDmControlNumber = value;
+  }
+
+  trackByControlNumber(index: number, item: any): any {
+    return item?.cusPrcControlNumber ?? item?.cusDmControlNumber ?? index;
+  }
+  
+  trackByIndex(index: number): number {
+    return index;
   }
 }

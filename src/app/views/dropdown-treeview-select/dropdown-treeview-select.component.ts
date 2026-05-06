@@ -74,9 +74,8 @@ export class DropdownTreeviewSelectComponent implements OnInit, OnChanges {
       const selectedItem = TreeviewHelper.findItemInList(this.items, this.value);
       if (selectedItem) {
         this.selectItem(selectedItem);
-      } else {
-        this.selectAll();
       }
+      // Do not auto-select "all" when the current value does not match an item.
     }
   }
 

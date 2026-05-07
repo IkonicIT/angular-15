@@ -37,6 +37,7 @@ export class DropdownTreeviewSelectComponent implements OnInit, OnChanges {
   @Input() value: any;
 
   @Output() valueChange = new EventEmitter<any>();
+  @Output() filterTextChange = new EventEmitter<string>();
 
   @ViewChild(DropdownTreeviewComponent)
   dropdownTreeviewComponent?: DropdownTreeviewComponent;
@@ -69,14 +70,18 @@ export class DropdownTreeviewSelectComponent implements OnInit, OnChanges {
     this.selectItem(item);
   }
 
+  onFilterChange(filterText: string, onFilterTextChange: (filterText: string) => void): void {
+    onFilterTextChange(filterText);
+    this.filterTextChange.emit(filterText);
+  }
+
   private updateSelectedItem(): void {
     if (this.items && this.items.length > 0) {
       const selectedItem = TreeviewHelper.findItemInList(this.items, this.value);
       if (selectedItem) {
         this.selectItem(selectedItem);
-      } else {
-        this.selectAll();
       }
+      // Do not auto-select "all" when the current value does not match an item.
     }
   }
 

@@ -98,6 +98,26 @@ button {
   border-radius: 6px;
 }
 
+.search-dropdown-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.search-dropdown-wrapper .search-input {
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0;
+}
+
+.search-dropdown-wrapper select {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-top: 0;
+}
+
 .custom-dropdown-wrapper {
   position: relative;
   display: inline-block;

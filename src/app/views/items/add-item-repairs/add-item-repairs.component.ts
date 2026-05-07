@@ -10,7 +10,8 @@ import { ItemManagementService } from '../../../services/Items/item-management.s
 import { WarrantyManagementService } from '../../../services';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from 'src/app/services/broadcaster.service';
-
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { AppConfiguration } from 'src/app/configuration';
 @Component({
   selector: 'app-add-item-repairs',
   templateUrl: './add-item-repairs.component.html',
@@ -23,6 +24,41 @@ export class AddItemRepairsComponent implements OnInit {
     locationId: 0,
     secondaryTypeAndCauses: [],
   };
+  
+  // Dropdown search filters
+  drivenMachineSearchFilter: string = '';
+  customerProcessSearchFilter: string = '';
+  
+  get filteredDrivenMachines(): any[] {
+    if (!this.drivenMachineSearchFilter.trim()) {
+      return this.fullDrivenMachineNames;
+    }
+    const filter = this.drivenMachineSearchFilter.toLowerCase();
+    return this.fullDrivenMachineNames.filter(m => 
+      m.drivenMachineName?.toLowerCase().includes(filter)
+    );
+  }
+  
+  get filteredCustomerProcesses(): any[] {
+    if (!this.customerProcessSearchFilter.trim()) {
+      return this.fullCustomerProcessNames;
+    }
+    const filter = this.customerProcessSearchFilter.toLowerCase();
+    return this.fullCustomerProcessNames.filter(p => 
+      p.processName?.toLowerCase().includes(filter)
+    );
+  }
+  
+    //  workOrderNumber: any;
+    // cusWorkOrderNumber: any;
+    //  cusReqNumber: any;
+    //  cusRfqNumber: any;
+    //  cusPoNumber: any;
+    //  vendorAssignedTo: any;
+    //  tagNumber: any;
+    //  cusPrcControlNumber: any;
+    //  cusDmControlNumber: any;
+  itemMMS: boolean = false;
   index = 0;
   itemId = 0;
   bsConfig: Partial<BsDatepickerConfig>;
@@ -38,7 +74,11 @@ export class AddItemRepairsComponent implements OnInit {
   tag = '';
   vendors: any;
   fullVendors: any[] = [];
+  fullDrivenMachineNames: any[] = [];
+  fullCustomerProcessNames: any[] = [];
   vendorItems: TreeviewItem[] = [];
+  drivenMachineItems: TreeviewItem[] = [];
+  customerProcessItems: TreeviewItem[] = [];
   locationItems: TreeviewItem[] = [];
   userName: string | null = null;
   failureTypesandcauses: any = {};
@@ -63,14 +103,27 @@ export class AddItemRepairsComponent implements OnInit {
     private itemRepairItemsService: ItemRepairItemsService,
     private warrantyManagementService: WarrantyManagementService,
     private itemManagementService: ItemManagementService,
-    private broadcasterService: BroadcasterService
+    private broadcasterService: BroadcasterService,
+    private http: HttpClient
   ) {
     this.itemId = Number(route.snapshot.params['itemId']);
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyId = this.globalCompany.companyId;
     }
+    const itemMMSValue = sessionStorage.getItem('itemMMS');
+    this.itemMMS = itemMMSValue === 'true' || itemMMSValue === '1';
+    
+    if(this.itemMMS)
+    {
+      this.getMMSVendors();
+      this.getMMSDrivenMachineNames();
+      this.getMMSCustomerProcessNames();
+    }
+    else
+    {
     this.getAllVendors();
+    }
     this.getLocations();
 
     this.companyManagementService.globalCompanyChange.subscribe(value => {
@@ -83,6 +136,8 @@ export class AddItemRepairsComponent implements OnInit {
     this.model.repaircompanyId = this.companyId;
     this.userName = sessionStorage.getItem('userName');
     this.highestRank = sessionStorage.getItem('highestRank');
+    
+    
     this.model.date = new Date();
     this.bsConfig = { containerClass: 'theme-red' };
     this.getWarrantyTypes();
@@ -98,7 +153,64 @@ export class AddItemRepairsComponent implements OnInit {
       this.failureTypes = Object.keys(this.failureTypesandcauses);
     });
 }
-
+  getMMSVendors(): void {
+      this.spinner.show();
+      this.http.get(AppConfiguration.locationRestURL + `mms/getMmsVendors/${this.companyId}`).subscribe(
+        (response: any) => {
+          this.spinner.hide();
+          this.fullVendors = Array.isArray(response) ? response : [];
+        this.vendorItems = this.generateVendorHierarchyMMS(this.fullVendors);
+        this.spinner.hide();
+        },
+        (error) => {
+          this.spinner.hide();
+        }
+      );
+    }
+    getMMSDrivenMachineNames(keyword: string = ''): void {
+      this.spinner.show();
+      const params = new HttpParams()
+        .set('companyId', String(this.companyId))
+        .set('keyword', keyword || '')
+        .set('page', '0')
+        .set('size', '250');
+      this.http
+        .get(AppConfiguration.locationRestURL + `mms/driven-machines`, { params })
+        .subscribe(
+          (response: any) => {
+            this.fullDrivenMachineNames = Array.isArray(response)
+              ? response
+              : response?.content ?? [];
+            this.drivenMachineItems = this.generateDrivenMachineHierarchy(this.fullDrivenMachineNames);
+            this.spinner.hide();
+          },
+          () => {
+            this.spinner.hide();
+          }
+        );
+    }
+    getMMSCustomerProcessNames(keyword: string = ''): void {
+      this.spinner.show();
+      const params = new HttpParams()
+        .set('companyId', String(this.companyId))
+        .set('keyword', keyword || '')
+        .set('page', '0')
+        .set('size', '250');
+      this.http
+        .get(AppConfiguration.locationRestURL + `mms/processes`, { params })
+        .subscribe(
+          (response: any) => {
+            this.fullCustomerProcessNames = Array.isArray(response)
+              ? response
+              : response?.content ?? [];
+            this.customerProcessItems = this.generateCustomerProcessHierarchy(this.fullCustomerProcessNames);
+            this.spinner.hide();
+          },
+          () => {
+            this.spinner.hide();
+          }
+        );
+    }
   getAcMotorFailureTypesAndCauses(): void {
     this.spinner.show();
     this.itemRepairItemsService
@@ -180,9 +292,49 @@ export class AddItemRepairsComponent implements OnInit {
         })
     );
   }
+  generateVendorHierarchyMMS(vendors: any[]): TreeviewItem[] {
+    return vendors.map(
+      vendor =>
+        new TreeviewItem({
+          text: vendor.vendorName,
+          value: vendor.vendorNumber,
+          collapsed: true,
+          children: [],
+        })
+    );
+  }
+
+  generateDrivenMachineHierarchy(machines: any[]): TreeviewItem[] {
+    return machines.map(
+      machine =>
+        new TreeviewItem({
+          text: machine.drivenMachineName,
+          value: machine.cusDmControlNumber,
+          collapsed: true,
+          children: [],
+        })
+    );
+  }
+
+  generateCustomerProcessHierarchy(processes: any[]): TreeviewItem[] {
+    return processes.map(
+      process =>
+        new TreeviewItem({
+          text: process.processName,
+          value: process.cusPrcControlNumber,
+          collapsed: true,
+          children: [],
+        })
+    );
+  }
 
   onVendorChange(value: any): void {
     this.model.vendorId = value;
+    this.model.vendorNumber=value;
+  }
+
+  onVendorAssignedChange(value: any): void {
+    this.model.vendorAssignedTo = value;
   }
 
   getLocations(): void {
@@ -352,7 +504,19 @@ export class AddItemRepairsComponent implements OnInit {
   }
 
   addItemRepair(): void {
-    this.model = {
+    const tempMMS = sessionStorage.getItem('itemMMS') === 'true' || sessionStorage.getItem('itemMMS') === '1';
+    const repairlogMmsResource ={
+          workOrderNumber: this.model.workOrderNumber ?? '',
+          cusWorkOrderNumber: this.model.cusWorkOrderNumber ?? '',
+          cusReqNumber:this.model.cusReqNumber ?? '',
+          cusRfqNumber:this.model.cusRfqNumber ?? '',
+          cusPoNumber:this.model.cusPoNumber ?? '',
+          vendorAssignedTo:this.model.vendorAssignedTo ?? '',
+          cusPrcControlNumber:this.model.cusPrcControlNumber ?? '',
+          cusDmControlNumber:this.model.cusDmControlNumber ?? '',
+          tagNumber:this.model.tagNumber ?? ''
+        }
+    const request = {
       tag: this.model.tag,
       typeName: this.model.typeName,
       actualCompletion: this.model.actualCompletion ?? null,
@@ -391,9 +555,14 @@ export class AddItemRepairsComponent implements OnInit {
       vendor: {
         vendorId: this.model.vendorId ?? 0,
       },
+      
     };
+  let fullRequest = {
+  ...request,
+  ...(tempMMS && { repairlogMmsResource })
+};
     this.spinner.show();
-    this.itemRepairItemsService.saveItemRepair(this.model).subscribe(
+    this.itemRepairItemsService.saveItemRepair(fullRequest).subscribe(
       (response: any) => {
         this.spinner.hide();
         window.scroll(0, 0);
@@ -458,5 +627,21 @@ export class AddItemRepairsComponent implements OnInit {
 
   help(): void {
     this.helpFlag = !this.helpFlag;
+  }
+  
+  onCustomerProcessSelect(value: any): void {
+    this.model.cusPrcControlNumber = value;
+  }
+
+  onDrivenMachineSelect(value: any): void {
+    this.model.cusDmControlNumber = value;
+  }
+
+  trackByControlNumber(index: number, item: any): any {
+    return item?.cusPrcControlNumber ?? item?.cusDmControlNumber ?? index;
+  }
+  
+  trackByIndex(index: number): number {
+    return index;
   }
 }

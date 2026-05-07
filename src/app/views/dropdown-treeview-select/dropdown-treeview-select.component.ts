@@ -79,7 +79,7 @@ export class DropdownTreeviewSelectComponent implements OnInit, OnChanges {
     if (this.items && this.items.length > 0) {
       const selectedItem = TreeviewHelper.findItemInList(this.items, this.value);
       if (selectedItem) {
-        this.selectItem(selectedItem);
+        this.syncSelectedItem(selectedItem);
       }
       // Do not auto-select "all" when the current value does not match an item.
     }
@@ -88,15 +88,19 @@ export class DropdownTreeviewSelectComponent implements OnInit, OnChanges {
   private selectItem(item: TreeviewItem): void {
     this.myFocusText?.nativeElement.click();
 
+    this.syncSelectedItem(item);
+
+    if (item && this.value !== item.value) {
+      this.value = item.value;
+      this.valueChange.emit(item.value);
+    }
+  }
+
+  private syncSelectedItem(item: TreeviewItem): void {
     if (this.dropdownTreeviewSelectI18n.selectedItem !== item) {
       this.dropdownTreeviewSelectI18n.selectedItem = item;
 
       this.dropdownTreeviewComponent?.onSelectedChange([item]);
-
-      if (item && this.value !== item.value) {
-        this.value = item.value;
-        this.valueChange.emit(item.value);
-      }
     }
   }
 

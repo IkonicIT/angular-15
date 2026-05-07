@@ -463,60 +463,30 @@
                      
                       <div class="form-group col-sm-6">
                         <label for="cusPrcControlNumber">Customer Process Name</label>
-                        <div class="custom-dropdown-wrapper search-dropdown-wrapper">
-                          <input
-                            type="text"
-                            class="form-control form-color search-input"
-                            placeholder="Search process..."
-                            [(ngModel)]="customerProcessSearchFilter"
-                            (ngModelChange)="getMMSCustomerProcessNames($event)"
-                            name="cusPrcSearch"
-                            id="cusPrcSearch"
-                          />
-                          <select
-                            class="form-control form-color custom-dropdown"
-                            [(ngModel)]="model.cusPrcControlNumber"
-                            (ngModelChange)="onCustomerProcessSelect($event)"
-                            name="cusPrcControlNumber"
-                            id="cusPrcControlNumber"
+                        <div class="custom-dropdown-wrapper">
+                          <app-dropdown-treeview-select
+                            class="form-color"
+                            [items]="customerProcessItems"
+                            [(value)]="model.cusPrcControlNumber"
+                            (valueChange)="onCustomerProcessSelect($event)"
+                            (filterTextChange)="getMMSCustomerProcessNames($event)"
                           >
-                            <option [ngValue]="null">Select Process</option>
-                            <option
-                              [ngValue]="process.cusPrcControlNumber"
-                              *ngFor="let process of filteredCustomerProcesses; trackBy: trackByControlNumber"
-                            >
-                              {{ process.processName }}
-                            </option>
-                          </select>
+                          </app-dropdown-treeview-select>
+                          <span class="custom-dropdown-arrow"></span>
                         </div>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="cusDmControlNumber">Driven Machine Name</label>
-                        <div class="custom-dropdown-wrapper search-dropdown-wrapper">
-                          <input
-                            type="text"
-                            class="form-control form-color search-input"
-                            placeholder="Search machine..."
-                            [(ngModel)]="drivenMachineSearchFilter"
-                            (ngModelChange)="getMMSDrivenMachineNames($event)"
-                            name="cusDmSearch"
-                            id="cusDmSearch"
-                          />
-                          <select
-                            class="form-control form-color custom-dropdown"
-                            [(ngModel)]="model.cusDmControlNumber"
-                            (ngModelChange)="onDrivenMachineSelect($event)"
-                            name="cusDmControlNumber"
-                            id="cusDmControlNumber"
+                        <div class="custom-dropdown-wrapper">
+                          <app-dropdown-treeview-select
+                            class="form-color"
+                            [items]="drivenMachineItems"
+                            [(value)]="model.cusDmControlNumber"
+                            (valueChange)="onDrivenMachineSelect($event)"
+                            (filterTextChange)="getMMSDrivenMachineNames($event)"
                           >
-                            <option [ngValue]="null">Select Driven Machine</option>
-                            <option
-                              [ngValue]="machine.cusDmControlNumber"
-                              *ngFor="let machine of filteredDrivenMachines; trackBy: trackByControlNumber"
-                            >
-                              {{ machine.drivenMachineName }}
-                            </option>
-                          </select>
+                          </app-dropdown-treeview-select>
+                          <span class="custom-dropdown-arrow"></span>
                         </div>
                       </div>
                     </div>

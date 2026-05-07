@@ -77,6 +77,8 @@ export class AddItemRepairsComponent implements OnInit {
   fullDrivenMachineNames: any[] = [];
   fullCustomerProcessNames: any[] = [];
   vendorItems: TreeviewItem[] = [];
+  drivenMachineItems: TreeviewItem[] = [];
+  customerProcessItems: TreeviewItem[] = [];
   locationItems: TreeviewItem[] = [];
   userName: string | null = null;
   failureTypesandcauses: any = {};
@@ -179,6 +181,7 @@ export class AddItemRepairsComponent implements OnInit {
             this.fullDrivenMachineNames = Array.isArray(response)
               ? response
               : response?.content ?? [];
+            this.drivenMachineItems = this.generateDrivenMachineHierarchy(this.fullDrivenMachineNames);
             this.spinner.hide();
           },
           () => {
@@ -200,6 +203,7 @@ export class AddItemRepairsComponent implements OnInit {
             this.fullCustomerProcessNames = Array.isArray(response)
               ? response
               : response?.content ?? [];
+            this.customerProcessItems = this.generateCustomerProcessHierarchy(this.fullCustomerProcessNames);
             this.spinner.hide();
           },
           () => {
@@ -294,6 +298,30 @@ export class AddItemRepairsComponent implements OnInit {
         new TreeviewItem({
           text: vendor.vendorName,
           value: vendor.vendorNumber,
+          collapsed: true,
+          children: [],
+        })
+    );
+  }
+
+  generateDrivenMachineHierarchy(machines: any[]): TreeviewItem[] {
+    return machines.map(
+      machine =>
+        new TreeviewItem({
+          text: machine.drivenMachineName,
+          value: machine.cusDmControlNumber,
+          collapsed: true,
+          children: [],
+        })
+    );
+  }
+
+  generateCustomerProcessHierarchy(processes: any[]): TreeviewItem[] {
+    return processes.map(
+      process =>
+        new TreeviewItem({
+          text: process.processName,
+          value: process.cusPrcControlNumber,
           collapsed: true,
           children: [],
         })

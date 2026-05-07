@@ -37,6 +37,7 @@ export class DropdownTreeviewSelectComponent implements OnInit, OnChanges {
   @Input() value: any;
 
   @Output() valueChange = new EventEmitter<any>();
+  @Output() filterTextChange = new EventEmitter<string>();
 
   @ViewChild(DropdownTreeviewComponent)
   dropdownTreeviewComponent?: DropdownTreeviewComponent;
@@ -67,6 +68,11 @@ export class DropdownTreeviewSelectComponent implements OnInit, OnChanges {
 
   select(item: TreeviewItem): void {
     this.selectItem(item);
+  }
+
+  onFilterChange(filterText: string, onFilterTextChange: (filterText: string) => void): void {
+    onFilterTextChange(filterText);
+    this.filterTextChange.emit(filterText);
   }
 
   private updateSelectedItem(): void {

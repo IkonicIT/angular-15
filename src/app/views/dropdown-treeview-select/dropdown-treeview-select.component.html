@@ -35,7 +35,7 @@
         type="text"
         [placeholder]="i18n.getFilterPlaceholder()"
         [(ngModel)]="filterText"
-        (ngModelChange)="onFilterTextChange($event)"
+        (ngModelChange)="onFilterChange($event, onFilterTextChange)"
       />
     </div>
   </div>

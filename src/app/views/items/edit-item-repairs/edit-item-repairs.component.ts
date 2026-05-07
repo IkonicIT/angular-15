@@ -67,6 +67,8 @@ export class EditItemRepairsComponent implements OnInit {
   vendors: any;
   fullVendors: any;
   vendorItems: TreeviewItem[] = [];
+  drivenMachineItems: TreeviewItem[] = [];
+  customerProcessItems: TreeviewItem[] = [];
   locationItems: TreeviewItem[] = [];
   failureTypesandcauses: any = {};
   failureCauseSp: any[] = [];
@@ -97,8 +99,6 @@ export class EditItemRepairsComponent implements OnInit {
     {
       this.getMMSVendors();
       this.getMmsRepairDetails();
-       this.getMMSDrivenMachineNames();
-      this.getMMSCustomerProcessNames();
     }
     else
     {
@@ -240,6 +240,7 @@ export class EditItemRepairsComponent implements OnInit {
       }
 
             this.spinner.hide();
+            this.drivenMachineItems = this.generateDrivenMachineHierarchy(this.fullDrivenMachineNames);
           },
           () => {
             this.spinner.hide();
@@ -278,6 +279,7 @@ export class EditItemRepairsComponent implements OnInit {
         }
       }
             this.spinner.hide();
+            this.customerProcessItems = this.generateCustomerProcessHierarchy(this.fullCustomerProcessNames);
           },
           () => {
             this.spinner.hide();
@@ -414,12 +416,36 @@ export class EditItemRepairsComponent implements OnInit {
     );
   }
 
-  generateVendorHierarchyMMS(vendors: any[]): TreeviewItem[] {
+    generateVendorHierarchyMMS(vendors: any[]): TreeviewItem[] {
       return vendors.map(
         vendor =>
           new TreeviewItem({
             text: vendor.vendorName,
             value: vendor.vendorNumber != null ? vendor.vendorNumber.toString() : vendor.vendorNumber,
+            collapsed: true,
+            children: [],
+          })
+      );
+    }
+
+    generateDrivenMachineHierarchy(machines: any[]): TreeviewItem[] {
+      return machines.map(
+        machine =>
+          new TreeviewItem({
+            text: machine.drivenMachineName,
+            value: machine.cusDmControlNumber,
+            collapsed: true,
+            children: [],
+          })
+      );
+    }
+
+    generateCustomerProcessHierarchy(processes: any[]): TreeviewItem[] {
+      return processes.map(
+        process =>
+          new TreeviewItem({
+            text: process.processName,
+            value: process.cusPrcControlNumber,
             collapsed: true,
             children: [],
           })
@@ -435,6 +461,7 @@ export class EditItemRepairsComponent implements OnInit {
       const normalizedValue = value != null ? value.toString() : value;
       this.model.vendorAssignedTo = normalizedValue;
       this.model.vendorName = normalizedValue;
+      this.model.vendorNumber = normalizedValue;
     }
 
   getFailureTypes() {
@@ -470,10 +497,14 @@ export class EditItemRepairsComponent implements OnInit {
         this.model.cusPrcControlNumber = response.cusPrcControlNumber;
         this.model.cusDmControlNumber = response.cusDmControlNumber;
         this.model.vendorAssignedTo = response.vendorAssignedTo ?? response.vendorNumber ?? response.vendorId ?? null;
+        this.model.vendorNumber = response.vendorNumber ?? null;
         this.model.vendorName = response.vendorNumber != null ? response.vendorNumber.toString() : (response.vendorAssignedTo != null ? response.vendorAssignedTo.toString() : null);
         this.customerProcessSearchFilter = response.processName ?? '';
         this.drivenMachineSearchFilter = response.drivenMachineName ?? '';
         this.syncSelectedMMSVendor();
+        // Load process and machine names after MMS details are loaded
+        this.getMMSDrivenMachineNames();
+        this.getMMSCustomerProcessNames();
         this.spinner.hide();
       },
       (error) => {
@@ -566,10 +597,12 @@ export class EditItemRepairsComponent implements OnInit {
           cusReqNumber:this.mmsDetails.cusReqNumber ?? '',
           cusRfqNumber:this.mmsDetails.cusRfqNumber ?? '',
           cusPoNumber:this.mmsDetails.cusPoNumber ?? '',
-          vendorAssignedTo:this.model.vendorAssignedTo ?? this.mmsDetails.vendorAssignedTo ?? '',
+          vendorAssignedTo:this.model.vendorNumber ?? this.mmsDetails.vendorNumber ?? '',
+          vendorNumber: this.model.vendorNumber ?? this.mmsDetails.vendorNumber ?? '',
           cusPrcControlNumber:this.model.cusPrcControlNumber ?? this.mmsDetails.cusPrcControlNumber ?? '',
           cusDmControlNumber:this.model.cusDmControlNumber ?? this.mmsDetails.cusDmControlNumber ?? '',
-          tagNumber:this.mmsDetails.tagNumber ?? ''
+          tagNumber:this.mmsDetails.tagNumber ?? '',
+          
         }
     const request = {
       actualCompletion: this.model.actualCompletion ?? null,
@@ -610,6 +643,7 @@ export class EditItemRepairsComponent implements OnInit {
       isActive: 1,
       isVendorWarranty: this.model.isVendorWarranty ?? 0,
       repairType: this.model.repairType ?? '',
+      
       vendor: {
         vendorId: this.model.vendor.vendorId,
       },

@@ -59,7 +59,9 @@ export class AddItemRepairsComponent implements OnInit {
     //  cusPrcControlNumber: any;
     //  cusDmControlNumber: any;
   itemMMS: boolean = false;
+  public selectedDeptNumber: number | null = null;
   index = 0;
+   public isloaded = false;
   itemId = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   dismissible = true;
@@ -82,6 +84,7 @@ export class AddItemRepairsComponent implements OnInit {
   locationItems: TreeviewItem[] = [];
   userName: string | null = null;
   failureTypesandcauses: any = {};
+  public deptData: any[] = [];
   vendor: any = {};
   failureCauseSp: any[] = [];
   itemRank: any;
@@ -119,6 +122,7 @@ export class AddItemRepairsComponent implements OnInit {
       this.getMMSVendors();
       this.getMMSDrivenMachineNames();
       this.getMMSCustomerProcessNames();
+      this.getDeptData();
     }
     else
     {
@@ -167,13 +171,16 @@ export class AddItemRepairsComponent implements OnInit {
         }
       );
     }
-    getMMSDrivenMachineNames(keyword: string = ''): void {
+    getMMSDrivenMachineNames(keyword: string = '', deptNumber?: number): void {
       this.spinner.show();
-      const params = new HttpParams()
+      let params = new HttpParams()
         .set('companyId', String(this.companyId))
         .set('keyword', keyword || '')
         .set('page', '0')
         .set('size', '250');
+      if (deptNumber != null) {
+        params = params.set('deptNumber', String(deptNumber));
+      }
       this.http
         .get(AppConfiguration.locationRestURL + `mms/driven-machines`, { params })
         .subscribe(
@@ -189,13 +196,16 @@ export class AddItemRepairsComponent implements OnInit {
           }
         );
     }
-    getMMSCustomerProcessNames(keyword: string = ''): void {
+    getMMSCustomerProcessNames(keyword: string = '', deptNumber?: number): void {
       this.spinner.show();
-      const params = new HttpParams()
+      let params = new HttpParams()
         .set('companyId', String(this.companyId))
         .set('keyword', keyword || '')
         .set('page', '0')
         .set('size', '250');
+      if (deptNumber != null) {
+        params = params.set('deptNumber', String(deptNumber));
+      }
       this.http
         .get(AppConfiguration.locationRestURL + `mms/processes`, { params })
         .subscribe(
@@ -211,6 +221,29 @@ export class AddItemRepairsComponent implements OnInit {
           }
         );
     }
+    getDeptData(): void {
+      this.spinner.show();
+      this.itemManagementService.getDepartmentData(this.companyId).subscribe(
+        (response: any) => {
+          this.deptData = Array.isArray(response) ? response.map(d =>
+            new TreeviewItem({ text: d.deptName.trim(), value: d.deptNumber, children: [] })
+          ) : [];
+          this.spinner.hide();
+          this.isloaded = true;
+        },
+        () => {
+          this.spinner.hide();
+          this.isloaded = true;
+        }
+      );
+    }
+    onDeptChange(deptNumber: number) {
+  this.selectedDeptNumber = deptNumber;
+  console.log('Selected deptNumber:', deptNumber);
+  // Refresh driven machine and process names with selected deptNumber
+  this.getMMSDrivenMachineNames('', deptNumber);
+  this.getMMSCustomerProcessNames('', deptNumber);
+}
   getAcMotorFailureTypesAndCauses(): void {
     this.spinner.show();
     this.itemRepairItemsService

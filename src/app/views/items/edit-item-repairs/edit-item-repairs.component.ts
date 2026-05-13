@@ -43,6 +43,9 @@ export class EditItemRepairsComponent implements OnInit {
     );
   }
   itemMMS: boolean = false;
+  public selectedDeptNumber: number | null = null;
+   public isloaded = false;
+   public deptData: any[] = [];
   failureType: any;
   mmsDetails: any;
   currFailuretype: any;
@@ -99,6 +102,7 @@ export class EditItemRepairsComponent implements OnInit {
     {
       this.getMMSVendors();
       this.getMmsRepairDetails();
+      this.getDeptData();
     }
     else
     {
@@ -207,13 +211,40 @@ export class EditItemRepairsComponent implements OnInit {
         }
       });
   }
-  getMMSDrivenMachineNames(keyword: string = ''): void {
+  getDeptData(): void {
+        this.spinner.show();
+        this.itemManagementService.getDepartmentData(this.companyId).subscribe(
+          (response: any) => {
+            this.deptData = Array.isArray(response) ? response.map(d =>
+              new TreeviewItem({ text: d.deptName.trim(), value: d.deptNumber, children: [] })
+            ) : [];
+            this.spinner.hide();
+            this.isloaded = true;
+          },
+          () => {
+            this.spinner.hide();
+            this.isloaded = true;
+          }
+        );
+      }
+      onDeptChange(deptNumber: number) {
+    this.selectedDeptNumber = deptNumber;
+    console.log('Selected deptNumber:', deptNumber);
+    // Refresh driven machine and process names with selected deptNumber
+    this.getMMSDrivenMachineNames('', deptNumber);
+    this.getMMSCustomerProcessNames('', deptNumber);
+  }
+  getMMSDrivenMachineNames(keyword: string = '', deptNumber?: number): void {
       this.spinner.show();
-      const params = new HttpParams()
+      let params = new HttpParams()
         .set('companyId', String(this.companyId))
+        .set('deptNumber',String(deptNumber))
         .set('keyword', keyword || '')
         .set('page', '0')
         .set('size', '250');
+      // if (deptNumber != null) {
+      //   params = params.set('deptNumber', String(deptNumber));
+      // }
       this.http
         .get(AppConfiguration.locationRestURL + `mms/driven-machines`, { params })
         .subscribe(
@@ -247,13 +278,16 @@ export class EditItemRepairsComponent implements OnInit {
           }
         );
     }
-    getMMSCustomerProcessNames(keyword: string = ''): void {
+    getMMSCustomerProcessNames(keyword: string = '', deptNumber?: number): void {
       this.spinner.show();
-      const params = new HttpParams()
+      let params = new HttpParams()
         .set('companyId', String(this.companyId))
         .set('keyword', keyword || '')
         .set('page', '0')
         .set('size', '250');
+      if (deptNumber != null) {
+        params = params.set('deptNumber', String(deptNumber));
+      }
       this.http
         .get(AppConfiguration.locationRestURL + `mms/processes`, { params })
         .subscribe(

@@ -238,13 +238,13 @@ export class EditItemRepairsComponent implements OnInit {
       this.spinner.show();
       let params = new HttpParams()
         .set('companyId', String(this.companyId))
-        .set('deptNumber',String(deptNumber))
+        
         .set('keyword', keyword || '')
         .set('page', '0')
         .set('size', '250');
-      // if (deptNumber != null) {
-      //   params = params.set('deptNumber', String(deptNumber));
-      // }
+       if (deptNumber != null) {
+         params = params.set('deptNumber', String(deptNumber));
+       }
       this.http
         .get(AppConfiguration.locationRestURL + `mms/driven-machines`, { params })
         .subscribe(

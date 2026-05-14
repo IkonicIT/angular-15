@@ -120,8 +120,8 @@ export class AddItemRepairsComponent implements OnInit {
     if(this.itemMMS)
     {
       this.getMMSVendors();
-      this.getMMSDrivenMachineNames();
-      this.getMMSCustomerProcessNames();
+      // this.getMMSDrivenMachineNames();
+      // this.getMMSCustomerProcessNames();
       this.getDeptData();
     }
     else
@@ -171,56 +171,94 @@ export class AddItemRepairsComponent implements OnInit {
         }
       );
     }
-    getMMSDrivenMachineNames(keyword: string = '', deptNumber?: number): void {
-      this.spinner.show();
-      let params = new HttpParams()
-        .set('companyId', String(this.companyId))
-        .set('keyword', keyword || '')
-        .set('page', '0')
-        .set('size', '250');
-      if (deptNumber != null) {
-        params = params.set('deptNumber', String(deptNumber));
-      }
-      this.http
-        .get(AppConfiguration.locationRestURL + `mms/driven-machines`, { params })
-        .subscribe(
-          (response: any) => {
-            this.fullDrivenMachineNames = Array.isArray(response)
-              ? response
-              : response?.content ?? [];
-            this.drivenMachineItems = this.generateDrivenMachineHierarchy(this.fullDrivenMachineNames);
-            this.spinner.hide();
-          },
-          () => {
-            this.spinner.hide();
-          }
+  
+  getMMSDrivenMachineNames(
+  keyword: string = '',
+  deptNumber?: number
+): void {
+
+  // No department selected
+  if (deptNumber == null) {
+    this.fullDrivenMachineNames = [];
+    this.drivenMachineItems = [];
+    return;
+  }
+
+  this.spinner.show();
+
+  let params = new HttpParams()
+    .set('keyword', keyword || '')
+    .set('page', '0')
+    .set('size', '250');
+
+  this.http.get(
+    AppConfiguration.locationRestURL +
+    `mms/driven-machines/${this.companyId}/${deptNumber}`,
+    { params }
+  ).subscribe(
+    (response: any) => {
+
+      this.fullDrivenMachineNames =
+        Array.isArray(response)
+          ? response
+          : response?.content ?? [];
+
+      this.drivenMachineItems =
+        this.generateDrivenMachineHierarchy(
+          this.fullDrivenMachineNames
         );
+
+      this.spinner.hide();
+    },
+    () => {
+      this.spinner.hide();
     }
-    getMMSCustomerProcessNames(keyword: string = '', deptNumber?: number): void {
-      this.spinner.show();
-      let params = new HttpParams()
-        .set('companyId', String(this.companyId))
-        .set('keyword', keyword || '')
-        .set('page', '0')
-        .set('size', '250');
-      if (deptNumber != null) {
-        params = params.set('deptNumber', String(deptNumber));
-      }
-      this.http
-        .get(AppConfiguration.locationRestURL + `mms/processes`, { params })
-        .subscribe(
-          (response: any) => {
-            this.fullCustomerProcessNames = Array.isArray(response)
-              ? response
-              : response?.content ?? [];
-            this.customerProcessItems = this.generateCustomerProcessHierarchy(this.fullCustomerProcessNames);
-            this.spinner.hide();
-          },
-          () => {
-            this.spinner.hide();
-          }
+  );
+}
+  
+  getMMSCustomerProcessNames(
+  keyword: string = '',
+  deptNumber?: number
+): void {
+
+  // No department selected
+  if (deptNumber == null) {
+    this.fullCustomerProcessNames = [];
+    this.customerProcessItems = [];
+    return;
+  }
+
+  this.spinner.show();
+
+  let params = new HttpParams()
+    .set('keyword', keyword || '')
+    .set('page', '0')
+    .set('size', '250');
+
+  this.http.get(
+    AppConfiguration.locationRestURL +
+    `mms/processes/${this.companyId}/${deptNumber}`,
+    { params }
+  ).subscribe(
+    (response: any) => {
+
+      this.fullCustomerProcessNames =
+        Array.isArray(response)
+          ? response
+          : response?.content ?? [];
+
+      this.customerProcessItems =
+        this.generateCustomerProcessHierarchy(
+          this.fullCustomerProcessNames
         );
+
+      this.spinner.hide();
+    },
+    () => {
+      this.spinner.hide();
     }
+  );
+}
     getDeptData(): void {
       this.spinner.show();
       this.itemManagementService.getDepartmentData(this.companyId).subscribe(
@@ -237,13 +275,33 @@ export class AddItemRepairsComponent implements OnInit {
         }
       );
     }
-    onDeptChange(deptNumber: number) {
+    
+  onDeptChange(deptNumber: number): void {
+
   this.selectedDeptNumber = deptNumber;
-  console.log('Selected deptNumber:', deptNumber);
-  // Refresh driven machine and process names with selected deptNumber
-  this.getMMSDrivenMachineNames('', deptNumber);
-  this.getMMSCustomerProcessNames('', deptNumber);
+
+  console.log(
+    'Selected deptNumber:',
+    deptNumber
+  );
+
+  // Clear previously selected values
+  this.model.cusPrcControlNumber = null;
+  this.model.cusDmControlNumber = null;
+  this.model.cusDptControlNumber = null;
+
+  // Load filtered data
+  this.getMMSDrivenMachineNames(
+    '',
+    deptNumber
+  );
+
+  this.getMMSCustomerProcessNames(
+    '',
+    deptNumber
+  );
 }
+
   getAcMotorFailureTypesAndCauses(): void {
     this.spinner.show();
     this.itemRepairItemsService
@@ -547,6 +605,7 @@ export class AddItemRepairsComponent implements OnInit {
           vendorAssignedTo:this.model.vendorAssignedTo ?? '',
           cusPrcControlNumber:this.model.cusPrcControlNumber ?? '',
           cusDmControlNumber:this.model.cusDmControlNumber ?? '',
+          cusDptControlNumber:this.selectedDeptNumber ?? '',
           tagNumber:this.model.tagNumber ?? ''
         }
     const request = {

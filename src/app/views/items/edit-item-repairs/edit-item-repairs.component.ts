@@ -231,18 +231,18 @@ export class EditItemRepairsComponent implements OnInit {
   onDeptChange(deptNumber: number): void {
 
   this.selectedDeptNumber = deptNumber;
+  this.model.cusDptControlNumber = deptNumber;
 
   console.log(
     'Selected deptNumber:',
     deptNumber
   );
 
-  // Clear previously selected values
+  // Clear previously selected machine/process values
   this.model.cusPrcControlNumber = null;
   this.model.cusDmControlNumber = null;
-  this.model.cusDptControlNumber = null;
 
-  // Load filtered data
+  // Load filtered data for the selected department
   this.getMMSDrivenMachineNames(
     '',
     deptNumber
@@ -550,7 +550,8 @@ export class EditItemRepairsComponent implements OnInit {
         this.mmsDetails = response;
         this.model.cusPrcControlNumber = response.cusPrcControlNumber;
         this.model.cusDmControlNumber = response.cusDmControlNumber;
-        this.model.cusDptControlNumber = response.cusDptControlNumber;
+        this.model.cusDptControlNumber = response.cusDptControlNumber ?? response.deptNumber ?? null;
+        this.selectedDeptNumber = this.model.cusDptControlNumber;
         this.model.vendorAssignedTo = response.vendorAssignedTo ?? response.vendorNumber ?? response.vendorId ?? null;
         this.model.vendorNumber = response.vendorNumber ?? null;
         this.model.vendorName = response.vendorNumber != null ? response.vendorNumber.toString() : (response.vendorAssignedTo != null ? response.vendorAssignedTo.toString() : null);
@@ -558,8 +559,10 @@ export class EditItemRepairsComponent implements OnInit {
         this.drivenMachineSearchFilter = response.drivenMachineName ?? '';
         this.syncSelectedMMSVendor();
         // Load process and machine names after MMS details are loaded
-        this.getMMSDrivenMachineNames();
-        this.getMMSCustomerProcessNames();
+        if (this.selectedDeptNumber != null) {
+          this.getMMSDrivenMachineNames('', this.selectedDeptNumber);
+          this.getMMSCustomerProcessNames('', this.selectedDeptNumber);
+        }
         this.spinner.hide();
       },
       (error) => {

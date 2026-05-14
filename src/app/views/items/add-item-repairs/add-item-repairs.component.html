@@ -460,10 +460,13 @@
                       </div>
                       </div>
                     </div>
-                    <div *ngIf="itemMMS" class="form-group col-sm-6">
+                    
+                    <div *ngIf="itemMMS" class="row">
+                     <div class="form-group col-sm-6">
   <label for="deptDropdown">Department Name</label>
   <div class="custom-dropdown-wrapper">
     <app-dropdown-treeview-select
+    class="form-color"
         [items]="deptData"
         [(value)]="selectedDeptNumber"
         id="deptDropdown"
@@ -472,8 +475,6 @@
     <span class="custom-dropdown-arrow"></span>
   </div>
 </div>
-                    <div *ngIf="itemMMS" class="row">
-                     
                       <div class="form-group col-sm-6">
                         <label for="cusPrcControlNumber">Customer Process Name</label>
                         <div class="custom-dropdown-wrapper">

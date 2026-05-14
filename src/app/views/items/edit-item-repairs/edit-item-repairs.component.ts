@@ -43,6 +43,9 @@ export class EditItemRepairsComponent implements OnInit {
     );
   }
   itemMMS: boolean = false;
+  public selectedDeptNumber: number | null = null;
+   public isloaded = false;
+   public deptData: any[] = [];
   failureType: any;
   mmsDetails: any;
   currFailuretype: any;
@@ -99,6 +102,7 @@ export class EditItemRepairsComponent implements OnInit {
     {
       this.getMMSVendors();
       this.getMmsRepairDetails();
+      this.getDeptData();
     }
     else
     {
@@ -207,85 +211,135 @@ export class EditItemRepairsComponent implements OnInit {
         }
       });
   }
-  getMMSDrivenMachineNames(keyword: string = ''): void {
-      this.spinner.show();
-      const params = new HttpParams()
-        .set('companyId', String(this.companyId))
-        .set('keyword', keyword || '')
-        .set('page', '0')
-        .set('size', '250');
-      this.http
-        .get(AppConfiguration.locationRestURL + `mms/driven-machines`, { params })
-        .subscribe(
+  getDeptData(): void {
+        this.spinner.show();
+        this.itemManagementService.getDepartmentData(this.companyId).subscribe(
           (response: any) => {
-            this.fullDrivenMachineNames = Array.isArray(response)
-              ? response
-              : response?.content ?? [];
-              if (this.mmsDetails?.cusDmControlNumber != null) {
-        const match = this.fullDrivenMachineNames.find(
-          m => m.cusDmControlNumber === this.mmsDetails.cusDmControlNumber ||
-               m.drivenMachineName?.trim() === this.mmsDetails.drivenMachineName?.trim()
-        );
-        if (match) {
-          this.model.cusDmControlNumber = match.cusDmControlNumber;
-        } else {
-          this.model.cusDmControlNumber = this.mmsDetails.cusDmControlNumber;
-          if (this.mmsDetails.drivenMachineName) {
-            this.fullDrivenMachineNames.unshift({
-              cusDmControlNumber: this.mmsDetails.cusDmControlNumber,
-              drivenMachineName: this.mmsDetails.drivenMachineName,
-            });
+            this.deptData = Array.isArray(response) ? response.map(d =>
+              new TreeviewItem({ text: d.deptName.trim(), value: d.deptNumber, children: [] })
+            ) : [];
+            this.spinner.hide();
+            this.isloaded = true;
+          },
+          () => {
+            this.spinner.hide();
+            this.isloaded = true;
           }
-        }
+        );
       }
+      
+  onDeptChange(deptNumber: number): void {
 
-            this.spinner.hide();
-            this.drivenMachineItems = this.generateDrivenMachineHierarchy(this.fullDrivenMachineNames);
-          },
-          () => {
-            this.spinner.hide();
-          }
+  this.selectedDeptNumber = deptNumber;
+  this.model.cusDptControlNumber = deptNumber;
+
+  console.log(
+    'Selected deptNumber:',
+    deptNumber
+  );
+
+  // Clear previously selected machine/process values
+  this.model.cusPrcControlNumber = null;
+  this.model.cusDmControlNumber = null;
+
+  // Load filtered data for the selected department
+  this.getMMSDrivenMachineNames(
+    '',
+    deptNumber
+  );
+
+  this.getMMSCustomerProcessNames(
+    '',
+    deptNumber
+  );
+}    
+
+  getMMSDrivenMachineNames(
+  keyword: string = '',
+  deptNumber?: number
+): void {
+
+  // No department selected
+  if (deptNumber == null) {
+    this.fullDrivenMachineNames = [];
+    this.drivenMachineItems = [];
+    return;
+  }
+
+  this.spinner.show();
+
+  let params = new HttpParams()
+    .set('keyword', keyword || '')
+    .set('page', '0')
+    .set('size', '250');
+
+  this.http.get(
+    AppConfiguration.locationRestURL +
+    `mms/driven-machines/${this.companyId}/${deptNumber}`,
+    { params }
+  ).subscribe(
+    (response: any) => {
+
+      this.fullDrivenMachineNames =
+        Array.isArray(response)
+          ? response
+          : response?.content ?? [];
+
+      this.drivenMachineItems =
+        this.generateDrivenMachineHierarchy(
+          this.fullDrivenMachineNames
         );
+
+      this.spinner.hide();
+    },
+    () => {
+      this.spinner.hide();
     }
-    getMMSCustomerProcessNames(keyword: string = ''): void {
-      this.spinner.show();
-      const params = new HttpParams()
-        .set('companyId', String(this.companyId))
-        .set('keyword', keyword || '')
-        .set('page', '0')
-        .set('size', '250');
-      this.http
-        .get(AppConfiguration.locationRestURL + `mms/processes`, { params })
-        .subscribe(
-          (response: any) => {
-            this.fullCustomerProcessNames = Array.isArray(response)
-              ? response
-              : response?.content ?? [];
-              if (this.mmsDetails?.cusPrcControlNumber != null) {
-        const match = this.fullCustomerProcessNames.find(
-          p => p.cusPrcControlNumber === this.mmsDetails.cusPrcControlNumber ||
-               p.processName?.trim() === this.mmsDetails.processName?.trim()
+  );
+}
+    getMMSCustomerProcessNames(
+  keyword: string = '',
+  deptNumber?: number
+): void {
+
+  // No department selected
+  if (deptNumber == null) {
+    this.fullCustomerProcessNames = [];
+    this.customerProcessItems = [];
+    return;
+  }
+
+  this.spinner.show();
+
+  let params = new HttpParams()
+    .set('keyword', keyword || '')
+    .set('page', '0')
+    .set('size', '250');
+
+  this.http.get(
+    AppConfiguration.locationRestURL +
+    `mms/processes/${this.companyId}/${deptNumber}`,
+    { params }
+  ).subscribe(
+    (response: any) => {
+
+      this.fullCustomerProcessNames =
+        Array.isArray(response)
+          ? response
+          : response?.content ?? [];
+
+      this.customerProcessItems =
+        this.generateCustomerProcessHierarchy(
+          this.fullCustomerProcessNames
         );
-        if (match) {
-          this.model.cusPrcControlNumber = match.cusPrcControlNumber;
-        } else {
-          this.model.cusPrcControlNumber = this.mmsDetails.cusPrcControlNumber;
-          if (this.mmsDetails.processName) {
-            this.fullCustomerProcessNames.unshift({
-              cusPrcControlNumber: this.mmsDetails.cusPrcControlNumber,
-              processName: this.mmsDetails.processName,
-            });
-          }
-        }
-      }
-            this.spinner.hide();
-            this.customerProcessItems = this.generateCustomerProcessHierarchy(this.fullCustomerProcessNames);
-          },
-          () => {
-            this.spinner.hide();
-          }
-        );
+
+      this.spinner.hide();
+    },
+    () => {
+      this.spinner.hide();
     }
+  );
+}
     trackByControlNumber(index: number, item: any): any {
       return item?.cusPrcControlNumber ?? item?.cusDmControlNumber ?? index;
     }
@@ -496,6 +550,8 @@ export class EditItemRepairsComponent implements OnInit {
         this.mmsDetails = response;
         this.model.cusPrcControlNumber = response.cusPrcControlNumber;
         this.model.cusDmControlNumber = response.cusDmControlNumber;
+        this.model.cusDptControlNumber = response.cusDptControlNumber ?? response.deptNumber ?? null;
+        this.selectedDeptNumber = this.model.cusDptControlNumber;
         this.model.vendorAssignedTo = response.vendorAssignedTo ?? response.vendorNumber ?? response.vendorId ?? null;
         this.model.vendorNumber = response.vendorNumber ?? null;
         this.model.vendorName = response.vendorNumber != null ? response.vendorNumber.toString() : (response.vendorAssignedTo != null ? response.vendorAssignedTo.toString() : null);
@@ -503,8 +559,10 @@ export class EditItemRepairsComponent implements OnInit {
         this.drivenMachineSearchFilter = response.drivenMachineName ?? '';
         this.syncSelectedMMSVendor();
         // Load process and machine names after MMS details are loaded
-        this.getMMSDrivenMachineNames();
-        this.getMMSCustomerProcessNames();
+        if (this.selectedDeptNumber != null) {
+          this.getMMSDrivenMachineNames('', this.selectedDeptNumber);
+          this.getMMSCustomerProcessNames('', this.selectedDeptNumber);
+        }
         this.spinner.hide();
       },
       (error) => {
@@ -601,6 +659,7 @@ export class EditItemRepairsComponent implements OnInit {
           vendorNumber: this.model.vendorNumber ?? this.mmsDetails.vendorNumber ?? '',
           cusPrcControlNumber:this.model.cusPrcControlNumber ?? this.mmsDetails.cusPrcControlNumber ?? '',
           cusDmControlNumber:this.model.cusDmControlNumber ?? this.mmsDetails.cusDmControlNumber ?? '',
+          cusDptControlNumber:this.model.cusDptControlNumber ?? this.mmsDetails.cusDptControlNumber ?? '',
           tagNumber:this.mmsDetails.tagNumber ?? '',
           
         }

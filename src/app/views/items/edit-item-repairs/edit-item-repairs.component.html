@@ -429,6 +429,18 @@
                           id="cusPoNumber"
                         />
                       </div>
+                      <div *ngIf="itemMMS" class="form-group col-sm-6">
+  <label for="deptDropdown">Department Name</label>
+  <div class="custom-dropdown-wrapper">
+    <app-dropdown-treeview-select
+        [items]="deptData"
+        [(value)]="selectedDeptNumber"
+        id="deptDropdown"
+        (valueChange)="onDeptChange($event)">
+    </app-dropdown-treeview-select>
+    <span class="custom-dropdown-arrow"></span>
+  </div>
+</div>
                       <div class="form-group col-sm-6">
                         <label for="vendorAssignedTo">Vendor Assigned To</label>
                         <div class="custom-dropdown-wrapper">
@@ -441,6 +453,19 @@
                         </app-dropdown-treeview-select>
                         <span class="custom-dropdown-arrow"></span>
                       </div>
+                      </div>
+                       <div class="form-group col-sm-6">
+                        <label for="cusDmControlNumber">Driven Machine Name</label>
+                        <div class="custom-dropdown-wrapper">
+                          <app-dropdown-treeview-select
+                            class="form-color"
+                            [items]="drivenMachineItems"
+                            [(value)]="model.cusDmControlNumber"
+                            (filterTextChange)="getMMSDrivenMachineNames($event)"
+                          >
+                          </app-dropdown-treeview-select>
+                          <span class="custom-dropdown-arrow"></span>
+                        </div>
                       </div>
                     </div>
                     <div *ngIf="itemMMS" class="row">
@@ -458,19 +483,7 @@
                           <span class="custom-dropdown-arrow"></span>
                         </div>
                       </div>
-                      <div class="form-group col-sm-6">
-                        <label for="cusDmControlNumber">Driven Machine Name</label>
-                        <div class="custom-dropdown-wrapper">
-                          <app-dropdown-treeview-select
-                            class="form-color"
-                            [items]="drivenMachineItems"
-                            [(value)]="model.cusDmControlNumber"
-                            (filterTextChange)="getMMSDrivenMachineNames($event)"
-                          >
-                          </app-dropdown-treeview-select>
-                          <span class="custom-dropdown-arrow"></span>
-                        </div>
-                      </div>
+                      
                     </div>
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">

@@ -30,23 +30,25 @@ export class AddItemRepairsComponent implements OnInit {
   customerProcessSearchFilter: string = '';
   
   get filteredDrivenMachines(): any[] {
-    if (!this.drivenMachineSearchFilter.trim()) {
-      return this.fullDrivenMachineNames;
-    }
-    const filter = this.drivenMachineSearchFilter.toLowerCase();
-    return this.fullDrivenMachineNames.filter(m => 
-      m.drivenMachineName?.toLowerCase().includes(filter)
-    );
+    return this.fullDrivenMachineNames;
   }
   
   get filteredCustomerProcesses(): any[] {
-    if (!this.customerProcessSearchFilter.trim()) {
-      return this.fullCustomerProcessNames;
+    return this.fullCustomerProcessNames;
+  }
+
+  onDrivenMachineFilterChange(keyword: string): void {
+    this.drivenMachineSearchFilter = keyword;
+    if (this.selectedDeptNumber != null) {
+      this.getMMSDrivenMachineNames(keyword, this.selectedDeptNumber);
     }
-    const filter = this.customerProcessSearchFilter.toLowerCase();
-    return this.fullCustomerProcessNames.filter(p => 
-      p.processName?.toLowerCase().includes(filter)
-    );
+  }
+
+  onCustomerProcessFilterChange(keyword: string): void {
+    this.customerProcessSearchFilter = keyword;
+    if (this.selectedDeptNumber != null) {
+      this.getMMSCustomerProcessNames(keyword, this.selectedDeptNumber);
+    }
   }
   
     //  workOrderNumber: any;
@@ -59,10 +61,11 @@ export class AddItemRepairsComponent implements OnInit {
     //  cusPrcControlNumber: any;
     //  cusDmControlNumber: any;
   itemMMS: boolean = false;
-  public selectedDeptNumber: number | null = null;
+  public selectedDeptNumber: string | null = null;
   index = 0;
    public isloaded = false;
   itemId = 0;
+  departmentResponse: any[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   dismissible = true;
   globalCompany: any;
@@ -174,7 +177,7 @@ export class AddItemRepairsComponent implements OnInit {
   
   getMMSDrivenMachineNames(
   keyword: string = '',
-  deptNumber?: number
+  deptNumber?: any
 ): void {
 
   // No department selected
@@ -198,10 +201,17 @@ export class AddItemRepairsComponent implements OnInit {
   ).subscribe(
     (response: any) => {
 
-      this.fullDrivenMachineNames =
-        Array.isArray(response)
-          ? response
-          : response?.content ?? [];
+      let data = response;
+      if (Array.isArray(response)) {
+        data = response;
+      } else if (response && response.content && Array.isArray(response.content)) {
+        data = response.content;
+      } else if (response && response.data && Array.isArray(response.data)) {
+        data = response.data;
+      } else {
+        data = [];
+      }
+      this.fullDrivenMachineNames = data;
 
       this.drivenMachineItems =
         this.generateDrivenMachineHierarchy(
@@ -218,7 +228,7 @@ export class AddItemRepairsComponent implements OnInit {
   
   getMMSCustomerProcessNames(
   keyword: string = '',
-  deptNumber?: number
+  deptNumber?: any
 ): void {
 
   // No department selected
@@ -242,10 +252,17 @@ export class AddItemRepairsComponent implements OnInit {
   ).subscribe(
     (response: any) => {
 
-      this.fullCustomerProcessNames =
-        Array.isArray(response)
-          ? response
-          : response?.content ?? [];
+      let data = response;
+      if (Array.isArray(response)) {
+        data = response;
+      } else if (response && response.content && Array.isArray(response.content)) {
+        data = response.content;
+      } else if (response && response.data && Array.isArray(response.data)) {
+        data = response.data;
+      } else {
+        data = [];
+      }
+      this.fullCustomerProcessNames = data;
 
       this.customerProcessItems =
         this.generateCustomerProcessHierarchy(
@@ -263,8 +280,11 @@ export class AddItemRepairsComponent implements OnInit {
       this.spinner.show();
       this.itemManagementService.getDepartmentData(this.companyId).subscribe(
         (response: any) => {
+          this.departmentResponse = Array.isArray(response)
+          ? response
+          : [];
           this.deptData = Array.isArray(response) ? response.map(d =>
-            new TreeviewItem({ text: d.deptName.trim(), value: d.deptNumber, children: [] })
+            new TreeviewItem({ text: d.deptName.trim(), value: d.deptNumber != null ? d.deptNumber.toString() : null, children: [] })
           ) : [];
           this.spinner.hide();
           this.isloaded = true;
@@ -276,7 +296,7 @@ export class AddItemRepairsComponent implements OnInit {
       );
     }
     
-  onDeptChange(deptNumber: number): void {
+  onDeptChange(deptNumber: any): void {
 
   this.selectedDeptNumber = deptNumber;
 
@@ -301,6 +321,7 @@ export class AddItemRepairsComponent implements OnInit {
     deptNumber
   );
 }
+
 
   getAcMotorFailureTypesAndCauses(): void {
     this.spinner.show();
@@ -495,7 +516,16 @@ export class AddItemRepairsComponent implements OnInit {
         this.spinner.hide();
       });
   }
+   getCusDeptControlNumber(deptNumber: string): number {
 
+  var dept = this.departmentResponse.find(function(d) {
+    return d.deptNumber.toString() === deptNumber;
+  });
+
+  return dept
+    ? dept.cusDptControlNumber
+    : null;
+}
   saveItemRepair(): void {
     if (this.highestRank == '2') {
       if (
@@ -595,6 +625,11 @@ export class AddItemRepairsComponent implements OnInit {
   }
 
   addItemRepair(): void {
+     let mySavingnumber;
+     if(this.selectedDeptNumber!=null)
+     {
+      mySavingnumber = this.getCusDeptControlNumber(this.selectedDeptNumber);
+     }
     const tempMMS = sessionStorage.getItem('itemMMS') === 'true' || sessionStorage.getItem('itemMMS') === '1';
     const repairlogMmsResource ={
           workOrderNumber: this.model.workOrderNumber ?? '',
@@ -605,7 +640,7 @@ export class AddItemRepairsComponent implements OnInit {
           vendorAssignedTo:this.model.vendorAssignedTo ?? '',
           cusPrcControlNumber:this.model.cusPrcControlNumber ?? '',
           cusDmControlNumber:this.model.cusDmControlNumber ?? '',
-          cusDptControlNumber:this.selectedDeptNumber ?? '',
+          cusDptControlNumber: mySavingnumber ?? '',
           tagNumber:this.model.tagNumber ?? ''
         }
     const request = {

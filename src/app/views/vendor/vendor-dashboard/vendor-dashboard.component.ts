@@ -6,6 +6,8 @@ import { TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from 'src/app/services/broadcaster.service'; 
 import { VendorExcelService } from 'src/app/services/vendor-excel.service'; 
 import { Company } from '../../../models/company';
+import { HttpClient , HttpParams} from '@angular/common/http';
+import { AppConfiguration } from 'src/app/configuration';
 import {
   CompanyDocumentsService,
   CompanyManagementService,
@@ -19,6 +21,7 @@ import {
 export class VendorDashBoardComponent implements OnInit {
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
+  itemMMS: boolean = false;
   message: string;
   vendors: any;
   index: number = 0;
@@ -34,6 +37,7 @@ export class VendorDashBoardComponent implements OnInit {
   helpFlag: any = false;
   vendorRepairs: any;
   vendorId: any;
+  vendorNumber : any;
   companies: any;
   companyList: any;
   authToken: any;
@@ -48,11 +52,14 @@ export class VendorDashBoardComponent implements OnInit {
     private broadcasterService: BroadcasterService,
     sanitizer: DomSanitizer,
     private spinner: NgxSpinnerService,
+    private http: HttpClient,
     private excelService: VendorExcelService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
     this.companyId = this.globalCompany.companyId;
+    const itemMMSValue = sessionStorage.getItem('itemMMS');
+    this.itemMMS = itemMMSValue === 'true' || itemMMSValue === '1';
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
@@ -66,8 +73,25 @@ export class VendorDashBoardComponent implements OnInit {
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
     
-    
+    if(this.itemMMS)
+    {
+      this.spinner.show();
+    this.http.get(AppConfiguration.locationRestURL + `mms/getMmsVendors/${this.companyId}`).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.vendors = response;
+        this.vendorItems = this.convertVendorsToTreeviewItems(this.vendors);
+      },
+      (error) => {
+        this.spinner.hide();
+        console.error('Error loading vendors:', error);
+      }
+    );
+    }
+    else
+    {
     this.loadVendors();
+    }
   }
 
   loadVendors() {
@@ -86,17 +110,28 @@ export class VendorDashBoardComponent implements OnInit {
   }
 
   convertVendorsToTreeviewItems(vendors: any[]): TreeviewItem[] {
-    return vendors.map(
-      (vendor) =>
-        new TreeviewItem({
-          text: vendor.name,
-          value: vendor.vendorId,
-        })
-    );
+    return vendors.map((vendor) => {
+      const vendorName = this.getTrimmedValue(vendor.name || vendor.vendorName);
+      const vendorAbbr = this.getTrimmedValue(vendor.vendorAbbr);
+      const vendorValue = vendor.vendorId || vendor.vendorNumber;
+
+      return new TreeviewItem({
+        text: vendorName || vendorAbbr || `Vendor ${vendorValue}`,
+        value: vendorValue != null ? vendorValue.toString() : vendorValue,
+        collapsed: true,
+        children: [],
+      });
+    });
+  }
+
+  private getTrimmedValue(value: any): string {
+    return value != null ? value.toString().trim() : '';
   }
 
   onVendorChange(value: any) {
     this.vendorId = value;
+    this.vendorNumber = value;
+
   }
 
   getLocationsWithHierarchy() {
@@ -134,10 +169,13 @@ export class VendorDashBoardComponent implements OnInit {
   }
 
   getVendorData() {
+    const selectedVendorId =
+      this.vendorNumber != null ? this.vendorNumber : this.vendorId;
+
     var request = {
       companyId: this.companyId != null ? this.companyId : 0,
       locationId: this.locationId != null ? this.locationId : 0,
-      vendorId: this.vendorId != null ? this.vendorId : null,
+      vendorId: selectedVendorId != null ? selectedVendorId : null,
     };
     this.spinner.show();
     this.companyManagementService.getAllVendorRepairs(request).subscribe(

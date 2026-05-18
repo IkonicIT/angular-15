@@ -5,7 +5,8 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { HttpClient , HttpParams} from '@angular/common/http';
+import { AppConfiguration } from 'src/app/configuration';
 @Component({
   selector: 'app-vendor-management',
   templateUrl: './vendor-management.component.html',
@@ -13,6 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class VendorManagementComponent implements OnInit {
   modalRef: BsModalRef | null;
+  itemMMS: boolean = false;
   modalRef2: BsModalRef;
   message: string;
   vendors: any;
@@ -38,13 +40,14 @@ export class VendorManagementComponent implements OnInit {
     private companyManagementService: CompanyManagementService,
     sanitizer: DomSanitizer,
     router: Router,
-
+    private http: HttpClient,
     private spinner: NgxSpinnerService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
     this.companyId = this.globalCompany.companyId;
-
+    const itemMMSValue = sessionStorage.getItem('itemMMS');
+    this.itemMMS = itemMMSValue === 'true' || itemMMSValue === '1';
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
@@ -55,6 +58,23 @@ export class VendorManagementComponent implements OnInit {
 
   ngOnInit() {
     this.spinner.show();
+    if(this.itemMMS)
+    {
+      this.http.get(AppConfiguration.locationRestURL + `mms/getMmsVendors/${this.companyId}`).subscribe(
+      (response) => {
+        
+        setTimeout(() => {
+          this.vendors = response;
+          this.spinner.hide();
+        }, 7000);
+      },
+      (error) => {
+        this.spinner.hide();
+      }
+    );
+    }
+    else
+    {
     this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
         
@@ -67,6 +87,7 @@ export class VendorManagementComponent implements OnInit {
         this.spinner.hide();
       }
     );
+  }
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
     
@@ -91,6 +112,23 @@ export class VendorManagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
+    if (this.itemMMS) {
+  this.http.delete(
+    AppConfiguration.locationRestURL +
+    `mms/deleteMmsVendors/${this.companyId}/${this.index}`
+  ).subscribe(
+    (response) => {
+      this.spinner.hide();
+      this.modalRef?.hide();
+      this.refresh();
+    },
+    (error) => {
+      this.spinner.hide();
+    }
+  );
+}
+    else
+    {
     this.companyManagementService.removeVendor(this.index).subscribe(
       (response) => {
         this.spinner.hide();
@@ -102,7 +140,7 @@ export class VendorManagementComponent implements OnInit {
       }
     );
   }
-
+  }
   decline(): void {
     this.message = 'Declined!';
     this.modalRef?.hide();

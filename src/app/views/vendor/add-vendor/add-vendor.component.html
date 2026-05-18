@@ -63,6 +63,7 @@
                   nphonephonneovalidate
                 >
                   <div class="card-body">
+                    <ng-container *ngIf="!itemMMS">
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="name"
@@ -230,6 +231,171 @@
                         ></textarea>
                       </div>
                     </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemMMS">
+
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <label for="vendorAbbr">Vendor Abbr</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.vendorAbbr"
+        name="vendorAbbr"
+        id="vendorAbbr"
+        placeholder="Enter Vendor Abbr"
+      />
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label for="vendorName">
+        Vendor Name <strong class="text-danger">*</strong>
+      </label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.vendorName"
+        name="vendorName"
+        id="vendorName"
+        placeholder="Enter Vendor Name"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <label for="repair">Repair</label>
+      <input
+        type="number"
+        class="form-control"
+        [(ngModel)]="model.repair"
+        name="repair"
+        id="repair"
+        placeholder="0"
+      />
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label for="purchase">Purchase</label>
+      <input
+        type="number"
+        class="form-control"
+        [(ngModel)]="model.purchase"
+        name="purchase"
+        id="purchase"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <label for="phone">Phone</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.phone"
+        name="phone"
+        id="phone"
+        placeholder="Enter Phone"
+      />
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label for="fax">Fax</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.fax"
+        name="fax"
+        id="fax"
+        placeholder="Enter Fax"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <label for="AddressLine1">Address Line1</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.address1"
+        name="address1"
+        id="AddressLine1"
+        placeholder="Enter Address 1"
+      />
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label for="AddressLine2">Address Line2</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.address2"
+        name="address2"
+        id="AddressLine2"
+        placeholder="Enter Address 2"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-4">
+      <label for="city">City</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.city"
+        name="city"
+        id="city"
+        placeholder="Enter City"
+      />
+    </div>
+
+    <div class="form-group col-sm-4">
+      <label for="state">State</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.state"
+        name="state"
+        id="state"
+        placeholder="Enter State"
+      />
+    </div>
+
+    <div class="form-group col-sm-4">
+      <label for="zip">Zip</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.zip"
+        name="zip"
+        id="zip"
+        placeholder="Enter Zip"
+      />
+    </div>
+  </div>
+
+ 
+  <div class="row">
+    <div class="form-group col-sm-12">
+      <label for="comments1024">Comments</label>
+      <textarea
+        id="comments1024"
+        rows="2"
+        cols="4"
+        class="form-control"
+        [(ngModel)]="model.comments1024"
+        name="comments1024"
+        placeholder="Enter Comments"
+      ></textarea>
+    </div>
+  </div>
+
+</ng-container>
                    
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">

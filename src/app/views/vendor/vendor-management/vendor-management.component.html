@@ -110,7 +110,7 @@
                 *ngFor="
                   let vendor of vendors
                     | orderBy : reverse + order
-                    | filterBy : ['name', 'phone', 'state'] : vendorFilter
+                    | filterBy : ['name', 'vendorName', 'phone', 'state'] : vendorFilter
                     | paginate
                       : { itemsPerPage: itemsForPagination, currentPage: p }
                 "

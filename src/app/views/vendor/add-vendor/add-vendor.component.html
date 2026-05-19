@@ -237,18 +237,6 @@
 
   <div class="row">
     <div class="form-group col-sm-6">
-      <label for="vendorAbbr">Vendor Abbr</label>
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="model.vendorAbbr"
-        name="vendorAbbr"
-        id="vendorAbbr"
-        placeholder="Enter Vendor Abbr"
-      />
-    </div>
-
-    <div class="form-group col-sm-6">
       <label for="vendorName">
         Vendor Name <strong class="text-danger">*</strong>
       </label>
@@ -259,6 +247,18 @@
         name="vendorName"
         id="vendorName"
         placeholder="Enter Vendor Name"
+      />
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label for="vendorAbbr">Vendor Abbr</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="model.vendorAbbr"
+        name="vendorAbbr"
+        id="vendorAbbr"
+        placeholder="Enter Vendor Abbr"
       />
     </div>
   </div>

@@ -174,7 +174,7 @@ export class AddVendorComponent implements OnInit {
   city: this.model.city ? this.model.city : '',
   state: this.model.state ? this.model.state : '',
   zip: this.model.zip ? this.model.zip : '',
-
+  companyId:this.companyId,
 
   comments1024: this.model.comments1024
     ? this.model.comments1024

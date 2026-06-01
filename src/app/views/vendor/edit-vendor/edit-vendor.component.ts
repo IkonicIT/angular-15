@@ -138,6 +138,7 @@ export class EditVendorComponent implements OnInit {
       state: this.model.state ? this.model.state : '',
       zip: this.model.zip ? this.model.zip : '',
       comments1024: this.model.comments1024 ? this.model.comments1024 : '',
+      companyId:this.companyId,
     };
 
     this.spinner.show();

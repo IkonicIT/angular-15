@@ -7,8 +7,7 @@
   margin-bottom: 0rem;
 }
 
-.card,
-button {
+.card {
   border-radius: 0 !important;
 }
 
@@ -114,6 +113,15 @@ tbody td a:hover {
   border-radius: 0;
 }
 
+.modal {
+  z-index: 1050 !important;
+}
+
+.cdk-overlay-container {
+  position: fixed;
+  z-index: 3000 !important;
+}
+
 .float-right {
   float: right;
 }
@@ -178,4 +186,37 @@ mat-radio-group {
   + .mdc-radio__background
   .mdc-radio__inner-circle {
   border-color: #0d6efd !important;
+}
+.custom-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.custom-dropdown-wrapper ::ng-deep .dropdown-toggle {
+  padding-right: 30px !important;
+}
+.custom-dropdown-wrapper ::ng-deep .dropdown-toggle::after {
+  display: none !important;
+}
+.custom-dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-dropdown-arrow {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}
+
+.btn-group{
+  border-radius: 6px !important;
 }

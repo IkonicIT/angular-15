@@ -1,0 +1,181 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="edit-crane-container m-5">
+            <h2 class="text-danger mb-4">
+                {{ BMKEY2 == 0 ? 'Add New Crane' : 'Add Crane-Part' }}
+            </h2>
+
+            <form (ngSubmit)="addCrane()">
+              <p *ngIf="successMessage" class="alert alert-success">
+                {{ successMessage }}
+              </p>
+
+              <!-- Row 1 -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="BMDRNK">BMDRNK</label>
+                  <input type="text" id="BMDRNK" [(ngModel)]="craneData.BMDRNK" name="BMDRNK" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMDRNO">BMDRNO</label>
+                  <input type="text" id="BMDRNO" [(ngModel)]="craneData.BMDRNO" name="BMDRNO" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <!-- Row 2 -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="BMDES1">BMDES1</label>
+                  <input type="text" id="BMDES1" [(ngModel)]="craneData.BMDES1" name="BMDES1" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMDES2">BMDES2</label>
+                  <input type="text" id="BMDES2" [(ngModel)]="craneData.BMDES2" name="BMDES2" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <!-- Row 3 -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="BMDES3">BMDES3</label>
+                  <input type="text" id="BMDES3" [(ngModel)]="craneData.BMDES3" name="BMDES3" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMSTO1">BMSTO1</label>
+                  <input type="text" id="BMSTO1" [(ngModel)]="craneData.BMSTO1" name="BMSTO1" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <!-- Row 4 -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="BMSTO2">BMSTO2</label>
+                  <input type="text" id="BMSTO2" [(ngModel)]="craneData.BMSTO2" name="BMSTO2" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMQTYU">BMQTYU</label>
+                  <input type="number" id="BMQTYU" [(ngModel)]="craneData.BMQTYU" name="BMQTYU" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <!-- Row 5 -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="BMCOMM">BMCOMM</label>
+                  <input type="text" id="BMCOMM" [(ngModel)]="craneData.BMCOMM" name="BMCOMM" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMNOT1">BMNOT1</label>
+                  <input type="text" id="BMNOT1" [(ngModel)]="craneData.BMNOT1" name="BMNOT1" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <!-- Row 6 -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="BMNOT2">BMNOT2</label>
+                  <input type="text" id="BMNOT2" [(ngModel)]="craneData.BMNOT2" name="BMNOT2" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMNOT3">BMNOT3</label>
+                  <input type="text" id="BMNOT3" [(ngModel)]="craneData.BMNOT3" name="BMNOT3" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <!-- Row 7 -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="BMBIN1">BMBIN1</label>
+                  <input type="text" id="BMBIN1" [(ngModel)]="craneData.BMBIN1" name="BMBIN1" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMBIN2">BMBIN2</label>
+                  <input type="text" id="BMBIN2" [(ngModel)]="craneData.BMBIN2" name="BMBIN2" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <!-- Row 8 -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="BMFRAM">BMFRAM</label>
+                  <input type="text" id="BMFRAM" [(ngModel)]="craneData.BMFRAM" name="BMFRAM" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMINIT">BMINIT</label>
+                  <input type="text" id="BMINIT" [(ngModel)]="craneData.BMINIT" name="BMINIT" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <!-- Row 9 -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="BMTERM">BMTERM</label>
+                  <input type="text" id="BMTERM" [(ngModel)]="craneData.BMTERM" name="BMTERM" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMPCHG">BMPCHG</label>
+                  <input type="number" id="BMPCHG" [(ngModel)]="craneData.BMPCHG" name="BMPCHG" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <!-- Row 10 -->
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <label for="BMDCHG">BMDCHG</label>
+                  <input type="number" id="BMDCHG" [(ngModel)]="craneData.BMDCHG" name="BMDCHG" class="form-control bg-white"/>
+                </div>
+                <div class="col-md-6">
+                  <label for="BMTCHG">BMTCHG</label>
+                  <input type="number" id="BMTCHG" [(ngModel)]="craneData.BMTCHG" name="BMTCHG" class="form-control bg-white"/>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+  <div class="col-md-6 d-flex align-items-center gap-3">
+    <label class="mb-0">Part Type:</label>
+    <div class="form-check mb-0">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="discipline"
+        id="electrical"
+        value="Electrical"
+        [(ngModel)]="craneData.Part_Type"
+      />
+      <label class="form-check-label" for="electrical">
+        Electrical
+      </label>
+    </div>
+
+    <div class="form-check mb-0">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="discipline"
+        id="mechanical"
+        value="Mechanical"
+        [(ngModel)]="craneData.Part_Type"
+      />
+      <label class="form-check-label" for="mechanical">
+        Mechanical
+      </label>
+    </div>
+
+  </div>
+</div>
+
+              <!-- Buttons -->
+              <div class="d-flex flex-row justify-content-center gap-3">
+                <button type="submit" class="btn btn-danger btn-rounded">Add</button>
+                <button type="button" class="btn btn-danger btn-rounded" (click)="navigateToCranes()">Back</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

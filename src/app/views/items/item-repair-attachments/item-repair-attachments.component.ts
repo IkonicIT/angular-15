@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   CompanyDocumentsService,
   ItemAttachmentsService,
   ItemRepairItemsService,
+  CompanyManagementService,
 } from '../../../services/index';
-import { TemplateRef, SecurityContext } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { CompanyManagementService } from '../../../services/index';
 import { saveAs } from 'file-saver';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
@@ -20,17 +19,15 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
   styleUrls: ['./item-repair-attachments.component.scss'],
 })
 export class ItemRepairAttachmentsComponent implements OnInit {
-  repairlogId: string;
+  repairLogId: string;
   model: any;
   itemRank: any;
   p: any;
   index: string = 'companydocument';
   documents: any[] = [];
-  route: ActivatedRoute;
-  router: Router;
   message: string;
   companyId: number = 0;
-  modalRef: BsModalRef;
+  modalRef!: BsModalRef;
   companyName: string = '';
   order: string = 'description';
   reverse: string = '';
@@ -44,13 +41,14 @@ export class ItemRepairAttachmentsComponent implements OnInit {
   highestRank: any;
   helpFlag: any = false;
   itemRepair: any;
-  loader =false;
+  loader = false;
+
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
     private companyDocumentsService: CompanyDocumentsService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private _location: Location,
     private _itemRepairItemsService: ItemRepairItemsService,
     private spinner: NgxSpinnerService,
@@ -59,22 +57,19 @@ export class ItemRepairAttachmentsComponent implements OnInit {
   ) {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
 
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
 
-    this.repairlogId = route.snapshot.params['repairlogId'];
+    this.repairLogId = this.route.snapshot.params['repairLogId'];
     this.itemId = this._itemRepairItemsService.itemId;
     this.authToken = sessionStorage.getItem('auth_token');
-    this.router = router;
-    this.route = route;
-    console.log('repairlogid=' + this.repairlogId);
-    if (this.repairlogId) {
+    if (this.repairLogId) {
       this.getAllDocuments();
     }
   }
@@ -89,19 +84,15 @@ export class ItemRepairAttachmentsComponent implements OnInit {
 
   getAllDocuments() {
     this.spinner.show();
-    this.loader = true;
     this.companyDocumentsService
-      .getAllRepairDocuments(this.repairlogId)
+      .getAllRepairDocuments(this.repairLogId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
-          console.log(response);
-          this.documents = response;
+          this.documents = Array.isArray(response) ? response : [];
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -119,12 +110,11 @@ export class ItemRepairAttachmentsComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
     let userLog = {
       itemTag: this.itemRepair.tag,
-      itemTypeName: this.itemRepair.itemtype,
-      poNumber: this.itemRepair.ponumber,
-      jobNumber: this.itemRepair.jobnumber,
+      itemTypeName: this.itemRepair.itemType,
+      poNumber: this.itemRepair.poNumber,
+      jobNumber: this.itemRepair.jobNumber,
     };
     this.itemAttachmentsService
       .removeItemRepairDocuments(
@@ -134,15 +124,13 @@ export class ItemRepairAttachmentsComponent implements OnInit {
         userLog
       )
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
           this.modalRef.hide();
           this.refresh();
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -154,11 +142,7 @@ export class ItemRepairAttachmentsComponent implements OnInit {
 
   setOrder(value: string) {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
@@ -171,68 +155,60 @@ export class ItemRepairAttachmentsComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { isNew?: boolean; attachmentid?: any }) {
+  downloadDocumentFromDB(document: { isNew?: boolean; attachmentId?: any }) {
     this.spinner.show();
-    this.loader = true;
     this.itemAttachmentsService
-      .getItemDocuments(document.attachmentid)
+      .getItemDocuments(document.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
           this.downloadDocument(response);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
 
   downloadDocument(companyDocument: any) {
-    var blob = this.companyDocumentsService.b64toBlob(
+    const blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
-    var fileURL = URL.createObjectURL(blob);
+    const fileURL = URL.createObjectURL(blob);
     window.open(fileURL);
   }
 
   downloadFile(companyDocument: {
     isNew?: boolean;
-    filename?: any;
-    attachmentid?: any;
+    fileName?: any;
+    attachmentId?: any;
   }) {
-    var index = companyDocument.filename.lastIndexOf('.');
-    var extension = companyDocument.filename.slice(index + 1);
+    const index = companyDocument.fileName.lastIndexOf('.');
+    const extension = companyDocument.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
-      var wnd = window.open('about:blank');
-      var pdfStr = `<div style="text-align:center">
+      const wnd = window.open('about:blank');
+      const pdfStr = `<div style="text-align:center">
     <h4>Pdf viewer</h4>
     <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-      companyDocument.attachmentid + '?access_token=' + this.authToken
+      companyDocument.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
       </div>
       <script>
           function reloadIFrame() {
             var iframe = document.getElementById("iFrame");
-              console.log(iframe); //work control
-              console.log(iframe.contentDocument); //work control
               if(iframe.contentDocument.URL == "about:blank"){
-                console.log("loaded");
                 iframe.src =  iframe.src;
               }
             }
             var timerId = setInterval("reloadIFrame();", 1300);
             setTimeout(() => {
               clearInterval(timerId);
-              console.log("Finally Loaded");
               }, 25000);
-  
+
             $( document ).ready(function() {
                 $('#menuiFrame').on('load', function() {
                     clearInterval(timerId);
-                    console.log("Finally Loaded"); //work control
                 });
             });
           </script>`;
@@ -244,19 +220,19 @@ export class ItemRepairAttachmentsComponent implements OnInit {
       extension.toLowerCase() == 'jpeg' ||
       extension.toLowerCase() == 'gif'
     ) {
-      var pdfStr = `<div style="text-align:center">
+      const pdfStr = `<div style="text-align:center">
     <h4>Image Viewer</h4>
     <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-      companyDocument.attachmentid + '?access_token=' + this.authToken
+      companyDocument.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" >
       </div>`;
 
-      var wnd = window.open('about:blank');
+      const wnd = window.open('about:blank');
       if (wnd) wnd.document.write(pdfStr);
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          companyDocument.attachmentid +
+          companyDocument.attachmentId +
           '?access_token=' +
           this.authToken
       );
@@ -265,7 +241,7 @@ export class ItemRepairAttachmentsComponent implements OnInit {
 
   back() {
     this.router.navigate([
-      '/items/viewItemRepair/' + this.itemId + '/' + this.repairlogId,
+      '/items/viewItemRepair/' + this.itemId + '/' + this.repairLogId,
     ]);
   }
 
@@ -273,6 +249,7 @@ export class ItemRepairAttachmentsComponent implements OnInit {
     this.helpFlag = false;
     window.print();
   }
+
   help() {
     this.helpFlag = !this.helpFlag;
   }

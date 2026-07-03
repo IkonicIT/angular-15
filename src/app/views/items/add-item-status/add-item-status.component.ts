@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationStatusService } from '../../../services/location-status.service';
-import { CompanyManagementService } from '../../../services/company-management.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ItemStatusService } from '../../../services/Items/item-status.service';
+import { CompanyManagementService } from '../../../services/company-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -12,84 +11,88 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class AddItemStatusComponent implements OnInit {
   model: any = {};
-  index: number = 0;
+  index = 0;
   date = Date.now();
-  companyId: number;
-  private sub: any;
-  userName: any;
-  id: number;
-  router: any;
+  companyId = 0;
+  userName: string | null = '';
   globalCompany: any = {};
-  length: any = 0;
-  helpFlag: any = false;
+  length = 0;
+  helpFlag = false;
   dismissible = true;
   loader = false;
+
   constructor(
     private itemStatusService: ItemStatusService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.router = router;
-    this.globalCompany = this.companyManagementService.getGlobalCompany();
+    this.globalCompany = this.companyManagementService.getGlobalCompany() ?? {};
+    this.companyId = this.globalCompany?.companyId ?? 0;
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
-      console.log('compaanyid=' + this.companyId);
+      this.companyId = value.companyId;
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  saveStatus() {
+  saveStatus(): void {
     if (this.model.status != undefined) {
       this.model.status = this.model.status.trim();
       this.length = this.model.status.length;
-      console.log(this.length);
+      
     }
-    if (this.model.status == '' || this.model.status === undefined) {
+
+    if (!this.model.status) {
       this.index = -1;
       window.scroll(0, 0);
-    } else if (this.length > 100) {
-      this.index = 2;
-    } else {
-      this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
-        destroyed: this.model.destroyed ? this.model.destroyed : false,
-        entitytypeid: 0,
-        inservice: this.model.inservice ? this.model.inservice : false,
-        moduleType: 'itemtype',
-        spare: this.model.spare ? this.model.spare : false,
-        status: this.model.status,
-        statusid: 0,
-        underrepair: this.model.underrepair ? this.model.underrepair : false,
-      };
-      this.spinner.show();
-      this.loader = true;
-      this.itemStatusService
-        .saveItemStatus(this.model)
-        .subscribe((response) => {
-          this.spinner.hide();
-          this.loader = false;
-          window.scroll(0, 0);
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-          this.router.navigate(['/items/status']);
-        });
+      return;
     }
+
+    if (this.length > 100) {
+      this.index = 2;
+      return;
+    }
+
+    const payload = {
+      companyId: this.companyId,
+      lastModifiedBy: this.userName,
+      destroyed: !!this.model.destroyed,
+      entityTypeId: 0,
+      inService: !!this.model.inservice,
+      moduleType: 'itemType',
+      spare: !!this.model.spare,
+      status: this.model.status,
+      statusId: 0,
+      underRepair: !!this.model.underRepair,
+    };
+
+    this.spinner.show();
+
+    this.itemStatusService.saveItemStatus(payload).subscribe(
+      (response) => {
+        this.spinner.hide();
+        window.scroll(0, 0);
+        this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+        this.router.navigate(['/items/status']);
+      },
+      (error) => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  cancelAddStatus() {
+  cancelAddStatus(): void {
     this.router.navigate(['/items/status']);
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

@@ -39,7 +39,7 @@ const routes: Routes = [
         },
       },
       {
-        path: 'viewuserlog/:username',
+        path: 'viewuserlog/:userName',
         component: ViewuserLogComponent,
         data: {
           title: 'viewuserlog',

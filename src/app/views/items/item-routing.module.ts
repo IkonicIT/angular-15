@@ -268,21 +268,21 @@ const routes: Routes = [
         },
       },
       {
-        path: 'itemRepairAttachments/:repairlogId',
+        path: 'itemRepairAttachments/:repairLogId',
         component: ItemRepairAttachmentsComponent,
         data: {
           title: '  Item Repairs Attachments',
         },
       },
       {
-        path: 'editItemRepairAttachments/:repairlogId/:attachmentid',
+        path: 'editItemRepairAttachments/:repairLogId/:attachmentId',
         component: EditItemRepairAttachmentsComponent,
         data: {
           title: ' Edit Item Repairs Attachments',
         },
       },
       {
-        path: 'addItemRepairAttachments/:repairlogId',
+        path: 'addItemRepairAttachments/:repairLogId',
         component: AddItemRepairAttachmentsComponent,
         data: {
           title: ' Add Item Repairs Attachments',
@@ -303,7 +303,7 @@ const routes: Routes = [
         },
       },
       {
-        path: 'advancedSearch/:itemId/:typeID',
+        path: 'advancedSearch/:itemId/:typeId',
         component: AdvancedItemSearchReplacementComponent,
         data: {
           title: 'Advanced Item Search',
@@ -359,7 +359,7 @@ const routes: Routes = [
         },
       },
       {
-        path: 'viewAllRepairs/:companyID',
+        path: 'viewAllRepairs/:companyId',
         component: ViewAllRepairsComponent,
         data: {
           title: 'View All Repairs',

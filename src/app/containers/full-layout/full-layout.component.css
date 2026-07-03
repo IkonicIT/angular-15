@@ -1,15 +1,134 @@
-/* .ng-select.disabled .ng-arrow-wrapper .ng-arrow {
-    display: none;
- }
- 
- .ng-select.disabled ng-dropdown-panel {
-   display: none;
- }
- 
- .ng-select.disabled .ng-clear-wrapper {
-  display: none;
- } */
+/* ===============================
+   Top bar layout
+   =============================== */
+.top-bar {
+  background-color: white;
+  border-bottom: 1px solid gray;
+  margin-bottom: 4%;
+}
 
+.breadcrumb-col {
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+}
+
+.custom-breadcrumb {
+  float: left;
+  border-bottom: none;
+  margin-left: 64px;
+  padding-top: 16px;
+  padding-bottom: 12px;
+  width: auto;
+}
+
+.top-controls {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  overflow-x: visible;
+}
+
+/* ===============================
+   Logo
+   =============================== */
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.company-logo {
+  height: 50px;
+  max-width: 70%;
+  object-fit: contain;
+}
+
+/* ===============================
+   Company select
+   =============================== */
+.company-select {
+  float: right;
+  margin-left: 64px;
+}
+
+.text-overflow-button .ngx-dropdown-button {
+  background-color: #f86c6b;
+}
+
+/* ===============================
+   Tag input
+   =============================== */
+.tag-input {
+  flex: 0 0 80px;
+  padding: 4px;
+  min-width: 80px;
+}
+
+/* ===============================
+   Dropdown wrapper + custom arrow
+   =============================== */
+.dropdown-wrapper99 {
+  position: relative;
+  display: inline-block;
+  flex: 0 1 160px;
+}
+
+.custom-dropdown99 {
+  width: 100%;
+  display: block;
+}
+
+.custom-dropdown-arrow99 {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}
+
+/* ===============================
+   Buttons
+   =============================== */
+.go-btn {
+  padding: 5px 10px;
+}
+
+.advanced-btn {
+  padding: 5px 10px;
+  margin-right: 64px;
+}
+
+.master-pie-btn {
+  padding: 5px 10px;
+  margin-right: 64px;
+}
+
+.action-buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  min-width: max-content;
+}
+
+/* ===============================
+   Content
+   =============================== */
+.content-wrapper {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/* ===============================
+   Utility / general
+   =============================== */
 .margin-tag {
   margin-left: -10px;
   margin-top: 2px;
@@ -19,72 +138,71 @@
   height: 34px;
 }
 
-.goSearch {
-  pointer-events: visible;
-  border-radius: 0;
-  line-height: 1.1;
-  height: 33px;
-  margin-top: -5px;
-}
-
-::ng-deep .treeview-container .row-item {
-  margin-bottom: 0.3rem;
-  flex-wrap: nowrap;
-}
-
-::ng-deep .treeview-container .row-item .fa {
-  width: 0.8rem;
-  cursor: pointer;
-  margin-right: 0.3rem;
-}
-
-.btn-danger,
-.btn-danger.disabled,
-.btn-danger:disabled {
-  color: #fff;
-  background-color: #f86c6b;
-  border-color: #f86c6b;
-}
-
-.btn-danger:hover {
-  color: #fff;
-  background-color: #f64846;
-  border-color: #f63c3a;
-}
-
-.btn.disabled,
-.btn:disabled {
-  opacity: 0.65;
-}
-
-.masterSearch,
-.advancedSearch {
-  border-radius: 0;
-  line-height: 1.1;
-  height: 34px;
-  margin-top: -2px;
-}
-
 .img-side-logo {
-  /* margin-right: 10px;  */
-  /* margin-top: -16px; */
   max-width: 160px;
+}
+
+.side-bar-margin {
+  margin-top: 55px;
+}
+
+.main {
+  flex: 1;
 }
 
 bs-tooltip-container {
   z-index: 99999;
 }
 
+/* ===============================
+   Force ngx-dropdown styles
+   =============================== */
+:host ::ng-deep .ngx-dropdown-container {
+  width: auto !important;
+  min-width: 200px;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-list-container {
+  width: auto !important;
+  min-width: 100%;
+  top: 100% !important;
+  bottom: auto !important;
+  margin-top: 4px !important;
+}
+
+:host ::ng-deep .ngx-dropdown-container .ngx-dropdown-button::after,
+:host ::ng-deep .dropdown-toggle::after {
+  display: none !important;
+}
+:host ::ng-deep app-dropdown-treeview-select .dropdown-toggle::after,
+:host ::ng-deep app-dropdown-treeview-select .ng-arrow-wrapper,
+:host ::ng-deep app-dropdown-treeview-select .ng-select-container::after {
+  display: none !important;
+  content: none !important;
+}
+.side-bar-margin,
+.main,
+.col-12,
+.btn-group {
+  overflow: visible !important;
+}
+
+/* ===============================
+   Responsive adjustments
+   =============================== */
 @media (min-width: 400px) and (max-width: 520px) {
   .margin-tag {
     margin-left: 0px;
     margin-top: 4px;
     text-align: center;
   }
-
-  /* .margin-mobile{
-    margin-left: 30px;
-  } */
 
   .mobile-padding {
     padding: 0px;
@@ -106,16 +224,11 @@ bs-tooltip-container {
     margin-left: -17px;
   }
 
-  /* .margin-mobile{
-    margin-left: 90px;
-  } */
   .margin-new-top {
     margin-top: 5px;
   }
 
   .img-side-logo {
-    /* margin-right: 10px;  */
-    /* margin-top: -16px; */
     max-width: 180px;
   }
 
@@ -135,13 +248,12 @@ bs-tooltip-container {
   .margin-mobile {
     margin-left: 90px;
   }
+
   .margin-new-top {
     margin-top: 5px;
   }
 
   .img-side-logo {
-    /* margin-right: 10px;  */
-    /* margin-top: -16px; */
     max-width: 180px;
   }
 
@@ -169,4 +281,22 @@ bs-tooltip-container {
   .ml-15 {
     margin-left: 7px;
   }
+}
+/* Fix Advanced Search button losing style after click */
+.advanced-btn,
+.advanced-btn:focus,
+.advanced-btn:active,
+.advanced-btn:hover {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Prevent bootstrap active light-red effect */
+.btn-danger:not(:disabled):not(.disabled):active,
+.btn-danger.active {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
 }

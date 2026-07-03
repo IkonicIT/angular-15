@@ -1,4 +1,4 @@
-<div class="animated fadeIn">
+<div class="fadeIn">
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
@@ -6,31 +6,20 @@
           <button
             type="button"
             (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            style="text-align:left;border:1px solid;width:fit-content;background-color:whitesmoke;"
+            *ngIf="helpFlag"
           >
             *To add a new Item Service:<br />
             1.Click the 'AddItemService' button.<br />
@@ -40,10 +29,12 @@
             1. click on 'Edit' button.<br />
             2.Modify service information.<br />
             3.Click the 'Save' button.<br />
-            4.Checking the 'Complete' box will complete the Service and submit
-            it to reporting
+            4.Checking the 'Complete' box will complete the Service and submit it to reporting
           </div>
         </div>
+        <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible" class="space">
+          Item Service Deleted successfully.
+        </alert>
         <div class="card-body">
           <p class="card-text">
             Manage Item Service "{{ itemType }}" '{{ itemTag }}'
@@ -52,27 +43,21 @@
             <strong>Open Services</strong>
             <button
               type="button"
-              class="btn btn-primary float-right"
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="Add a new Item Service"
+              class="btn btn-primary float-right btn-group"
               (click)="openModal(addtemplate)"
-              placement="top"
             >
               Add Item Service
             </button>
           </p>
           <div class="select-pagination-option">
             <div class="float-left">
-              <span
-                >Show
+              <span>Show
                 <select [(ngModel)]="itemsForPagination">
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
                   <option>50</option>
-                </select>
-                entries
+                </select> entries
               </span>
             </div>
           </div>
@@ -80,64 +65,33 @@
             <span>Search : </span>
             <input [(ngModel)]="inCompletedServicesFilter" />
           </div>
-
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
-          >
+          <table class="table table-responsive-sm table-hover table-outline mb-0 mt-2">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'serviceDate'"
-                  (click)="setOrder('serviceDate')"
-                >
-                  ServiceDate<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'serviceDate'" (click)="setOrder('serviceDate')">
+                  ServiceDate<span [hidden]="reverse == ''">▼</span><span [hidden]="reverse != ''">▲</span>
                 </th>
                 <th>Cause</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="
-                  let service of incompletedServices
-                    | orderBy : reverse + order
-                    | filterBy
-                      : ['serviceDate', 'serviceCause']
-                      : inCompletedServicesFilter
-                    | paginate
-                      : {
-                          itemsPerPage: itemsForPagination,
-                          currentPage: page1,
-                          id: 'p1'
-                        }
-                "
-              >
-                <td
-                  [innerHTML]="service.serviceDate | date : 'MM/dd/yyyy'"
-                ></td>
-                <td [innerHTML]="service.serviceCause"></td>
+              <tr *ngFor="let service of incompletedServices | orderBy:reverse+order | filterBy:['serviceDate','serviceCause']:inCompletedServicesFilter | paginate:{itemsPerPage:itemsForPagination,currentPage:page1,id:'p1'}">
+                <td>{{ service.serviceDate | date:'MM/dd/yyyy' }}</td>
+                <td>{{ service.serviceCause }}</td>
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Edit this Type"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right btn-group"
                     (click)="openModalForEdit(addtemplate, service.serviceId)"
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Delete this Service"
-                    (click)="
-                      openDeleteModal(confirmtemplate, service.serviceId)
-                    "
-                    [disabled]="highestRank == 9"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-group"
+                    (click)="openDeleteModal(confirmtemplate, service.serviceId)"
+                    [disabled]="highestRankNum == 9"
                   >
                     Delete
                   </button>
@@ -145,12 +99,7 @@
               </tr>
             </tbody>
           </table>
-          <pagination-controls
-            class="my-pagination"
-            (pageChange)="page1 = $event"
-            id="p1"
-            [autoHide]="true"
-          ></pagination-controls>
+          <pagination-controls class="my-pagination" (pageChange)="page1=$event" id="p1" [autoHide]="true"></pagination-controls>
         </div>
       </div>
     </div>
@@ -161,15 +110,13 @@
           <p class="card-text"><strong>Previous Services</strong></p>
           <div class="select-pagination-option">
             <div class="float-left">
-              <span
-                >Show
+              <span>Show
                 <select [(ngModel)]="completedServicesForPagination">
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
                   <option>50</option>
-                </select>
-                entries
+                </select> entries
               </span>
             </div>
           </div>
@@ -177,88 +124,41 @@
             <span>Search : </span>
             <input [(ngModel)]="completedServicesFilter" />
           </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0"
-          >
+          <table class="table table-responsive-sm table-hover table-outline mb-0">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="completedOrder === 'serviceDate'"
-                  (click)="setCompletedOrder('serviceDate')"
-                >
-                  Service Date<span [hidden]="completedReverse == ''">▼</span
-                  ><span [hidden]="completedReverse != ''">▲</span>
+                <th [class.active]="completedOrder==='serviceDate'" (click)="setCompletedOrder('serviceDate')">
+                  Service Date<span [hidden]="completedReverse==''">▼</span><span [hidden]="completedReverse!=''">▲</span>
                 </th>
                 <th>Cause</th>
-                <th
-                  [class.active]="completedOrder === 'actualCompletion'"
-                  (click)="setCompletedOrder('actualCompletion')"
-                >
-                  Actual Completion<span [hidden]="completedReverse == ''"
-                    >▼</span
-                  ><span [hidden]="completedReverse != ''">▲</span>
+                <th [class.active]="completedOrder==='actualCompletion'" (click)="setCompletedOrder('actualCompletion')">
+                  Actual Completion<span [hidden]="completedReverse==''">▼</span><span [hidden]="completedReverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="completedOrder === 'completedBy'"
-                  (click)="setCompletedOrder('completedBy')"
-                >
-                  Completed By<span [hidden]="completedReverse == ''">▼</span
-                  ><span [hidden]="completedReverse != ''">▲</span>
+                <th [class.active]="completedOrder==='completedBy'" (click)="setCompletedOrder('completedBy')">
+                  Completed By<span [hidden]="completedReverse==''">▼</span><span [hidden]="completedReverse!=''">▲</span>
                 </th>
                 <th>Actions</th>
               </tr>
             </thead>
-
             <tbody>
-              <tr
-                *ngFor="
-                  let service of completedServices
-                    | orderBy : completedReverse + completedOrder
-                    | filterBy
-                      : [
-                          'serviceDate',
-                          'serviceCause',
-                          'completedBy',
-                          'actualCompletion'
-                        ]
-                      : completedServicesFilter
-                    | paginate
-                      : {
-                          itemsPerPage: completedServicesForPagination,
-                          currentPage: page2,
-                          id: 'p2'
-                        }
-                "
-              >
-                <td
-                  [innerHTML]="service.serviceDate | date : 'MM/dd/yyyy'"
-                ></td>
-                <td [innerHTML]="service.serviceCause"></td>
-                <td
-                  [innerHTML]="service.actualCompletion | date : 'MM/dd/yyyy'"
-                ></td>
-                <td [innerHTML]="service.completedBy"></td>
+              <tr *ngFor="let service of completedServices | orderBy:completedReverse+completedOrder | filterBy:['serviceDate','serviceCause','completedBy','actualCompletion']:completedServicesFilter | paginate:{itemsPerPage:completedServicesForPagination,currentPage:page2,id:'p2'}">
+                <td>{{ service.serviceDate | date:'MM/dd/yyyy' }}</td>
+                <td>{{ service.serviceCause }}</td>
+                <td>{{ service.actualCompletion | date:'MM/dd/yyyy' }}</td>
+                <td>{{ service.completedBy }}</td>
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Edit this Type"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right btn-group"
                     (click)="openModalForEdit(addtemplate, service.serviceId)"
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
-                    title="Delete this Service"
-                    (click)="
-                      openDeleteModal(confirmtemplate, service.serviceId)
-                    "
-                    [disabled]="highestRank == 9"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-group"
+                    (click)="openDeleteModal(confirmtemplate, service.serviceId)"
+                    [disabled]="highestRankNum == 9"
                   >
                     Delete
                   </button>
@@ -266,12 +166,7 @@
               </tr>
             </tbody>
           </table>
-          <pagination-controls
-            class="my-pagination"
-            (pageChange)="page2 = $event"
-            id="p2"
-            [autoHide]="true"
-          ></pagination-controls>
+          <pagination-controls class="my-pagination" (pageChange)="page2=$event" id="p2" [autoHide]="true"></pagination-controls>
         </div>
       </div>
     </div>
@@ -281,10 +176,7 @@
       <button
         type="button"
         (click)="back()"
-        data-bs-placement="bottom"
-        data-bs-toggle="tooltip"
-        title="Back"
-        class="btn btn-primary"
+        class="btn btn-primary btn-group"
       >
         Back To Item
       </button>
@@ -293,34 +185,29 @@
 </div>
 
 <ng-template #addtemplate>
-  <div class="col-lg-12 mobile-padding col-padding" style="margin-top: 30px">
+  <div class="col-lg-12 mobile-padding col-padding" style="margin-top:30px">
     <div class="card">
       <div class="card-header">
-        <strong class="card-text"
-          >Add Item Service "{{ itemType }}" '{{ itemTag }}'</strong
-        >
-        <alert *ngIf="index == 1" type="success" [dismissible]="dismissible">
+        <strong class="card-text">Add Item Service "{{ itemType }}" '{{ itemTag }}'</strong>
+        <alert *ngIf="index==1" type="success" [dismissible]="dismissible">
           Item Service Details Saved successfully.
         </alert>
-        <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+        <alert type="danger" *ngIf="index==-1" [dismissible]="dismissible">
           Please Select Service Date
         </alert>
-        <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
-          Please Select Service Cause,ActualCompletion</alert
-        >
+        <alert type="danger" *ngIf="index==-2" [dismissible]="dismissible">
+          Please Select Service Cause,ActualCompletion
+        </alert>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="form-group col-sm-6">
-            <label for="serviceDate"
-              >Service Date<strong class="text-danger">*</strong></label
-            >
+            <label for="serviceDate">Service Date<strong class="text-danger">*</strong></label>
             <input
               type="text"
               class="form-control"
               [(ngModel)]="model.serviceDate"
               name="serviceDate"
-              #serviceDate="ngModel"
               id="serviceDate"
               bsDatepicker
             />
@@ -328,27 +215,23 @@
           <div class="form-group col-sm-6">
             <label for="serviceCause">Service Cause</label>
             <select
-              class="form-control"
+              class="form-control custom-dropdown"
               [(ngModel)]="model.serviceCause"
               name="serviceCause"
-              #serviceCause="ngModel"
               id="serviceCause"
             >
               <option value="0" selected="false">Other</option>
-              <option [ngValue]="cause" *ngFor="let cause of serviceCauses">
-                {{ cause }}
-              </option>
+              <option [ngValue]="cause" *ngFor="let cause of serviceCauses">{{ cause }}</option>
             </select>
             <div>
-              <label for="failurecause">Or</label>
+              <label for="failureCause">Or</label>
               <input
                 placeholder="Please Enter Service Cause"
                 type="text"
                 class="form-control"
-                *ngIf="model.serviceCause == 0"
+                *ngIf="model.serviceCause==0"
                 [(ngModel)]="model.newServiceCause"
                 name="newServiceCause"
-                #newServiceCause="ngModel"
                 id="newServiceCause"
               />
             </div>
@@ -363,7 +246,6 @@
               [(ngModel)]="model.complete"
               name="complete"
               (change)="checkValue(model.complete ? 'A' : 'B')"
-              #complete="ngModel"
               id="complete"
             />
           </div>
@@ -382,20 +264,14 @@
         <div class="row">
           <div class="form-group col-sm-12 text-center">
             <button
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="Update this Item Service Date"
               (click)="saveItemServiceData()"
-              class="btn btn-primary btn-right"
+              class="btn btn-primary btn-right btn-group"
             >
               Save
             </button>
             <button
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
-              title="Close popup"
               (click)="closeModel()"
-              class="btn btn-primary"
+              class="btn btn-primary btn-group"
             >
               Close
             </button>
@@ -409,118 +285,47 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>
-      Click(Yes) to permanently delete this Item Service or Click(No) to discard
-      this action.
+      Click(Yes) to permanently delete this Item Service or Click(No) to discard this action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
+<div *ngIf="loader" style="position:fixed;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,0.5);z-index:2;cursor:pointer;transform:translate(-1%,-1%);"></div>
+
 <style>
   .loader {
     position: absolute;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
     margin: -75px 0 0 -75px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
-
-  /* Add animation to "page content" */
   .animate-bottom {
     position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
     animation-name: animatebottom;
     animation-duration: 1s;
   }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
   @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+    from { bottom:-100px;opacity:0; }
+    to { bottom:0;opacity:1; }
   }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
+  .btn-link[routerLink="/forgot-password"] { color: red; }
   .cent {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%,-50%);
   }
 </style>
-
-

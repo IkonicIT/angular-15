@@ -2,25 +2,21 @@
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+        <div class="form-group col-12 text-end">
           <button
             type="button"
-            (click)="help()"
-            data-bs-placement="bottom"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
+            title="Instructions"
             data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            data-bs-placement="bottom"
+            (click)="help()"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            class="mt-2 p-2 border"
+            style="background-color: whitesmoke; width: fit-content; text-align: left;"
           >
             Note: Mandatory Fields are required.
           </div>
@@ -30,497 +26,350 @@
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Item Transferred Successfully.
           </alert>
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
-            Please Enter Required Fields. <br />
-            ( Effective Date, Status and TransferTo fields are required)
+          <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
+            Please Enter Required Fields.<br />
+            (Effective Date, Status and TransferTo fields are required)
           </alert>
 
           <div class="modal-body mobile-padding">
-            <div class="col-sm-12 mobile-padding col-padding">
+            <div class="col-12 mobile-padding col-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Transfer Item</strong>
                 </div>
-                <div style="border: 1px solid black">
-                  <div>
-                    <label>Transferring the following item:</label>
-                  </div>
-                  <div class="col-md-12 col-padding">
-                    <div class="form-group col-sm-6" style="float: left">
-                      <label>Tag:</label>
-                      <span>{{ item.tag }}</span>
+                <div class="border border-black p-2 mb-3">
+                  <label>Transferring the following item:</label>
+                  <div class="row mt-2">
+                    <div class="col-sm-6">
+                      <label>Tag:</label> <span>{{ item.tag }}</span>
                     </div>
-                    <div class="form-group col-sm-6" style="float: left">
-                      <label for="name">Type:</label>
-                      <label> {{ item.typeName }}</label>
+                    <div class="col-sm-6">
+                      <label>Type:</label> <span>{{ item.typeName }}</span>
                     </div>
                   </div>
-
-                  <div class="col-md-12 col-padding">
-                    <label>Current Location:</label>
-                    <span>{{ item.locationName }}</span>
+                  <div class="mt-2">
+                    <label>Current Location:</label> <span>{{ item.locationName }}</span>
                   </div>
                 </div>
-                <br />
-                <div class="col-sm-12 col-padding">
-                  <form name="form" #f="ngForm" novalidate>
-                    <div class="row">
-                      <div class="form-group col-sm-6">
-                        <label for="name">
-                          Effective Date
-                          <strong class="text-danger">*</strong></label
-                        >
-                        <!-- <input type="text"  class="form-control" [(ngModel)]="model.warrantyexpiration" id="date" name="critical" bsDatepicker> -->
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="model.effectiveDate"
-                          name="transferDate"
-                          #transferDate="ngModel"
-                          id="transferDate"
-                          bsDatepicker
-                        />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="form-group col-sm-6">
-                        <label for="name">PO Number</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="model.ponumber"
-                          name="PONumber"
-                          #PONumber="ngModel"
-                          id="PONumber"
-                          placeholder="Enter PO Number"
-                        />
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label for="name">Job Number</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="model.jobNumber"
-                          name="jobNumber"
-                          #jobNumber="ngModel"
-                          id="jobNumber"
-                          placeholder="Enter Job Number"
-                        />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="form-group col-sm-6">
-                        <label for="name">Shipping Number</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="model.shippingNumber"
-                          name="shippingNumber"
-                          #shippingNumber="ngModel"
-                          id="shippingNumber"
-                          placeholder="Enter Shipping Number"
-                        />
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <label for="name">Tracking Number</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="model.trackingNumber"
-                          name="trackingNumber"
-                          #trackingNumber="ngModel"
-                          id="trackingNumber"
-                          placeholder="Enter Tracking Number"
-                        />
-                      </div>
-                    </div>
 
-                    <div class="row">
-                      <div class="form-group col-sm-6">
-                        <label for="price" class="btn-right"
-                          >Current Status:</label
+                <form #f="ngForm" class="ms-3 me-3" novalidate>
+                  <div class="row mb-3">
+                    <div class="col-sm-6">
+                      <label>Effective Date <strong class="text-danger">*</strong></label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.effectiveDate"
+                        name="transferDate"
+                        #transferDate="ngModel"
+                        id="transferDate"
+                        bsDatepicker
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-sm-6">
+                      <label>PO Number</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.poNumber"
+                        name="PONumber"
+                        #PONumber="ngModel"
+                        id="PONumber"
+                        placeholder="Enter PO Number"
+                      />
+                    </div>
+                    <div class="col-sm-6">
+                      <label>Job Number</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.jobNumber"
+                        name="jobNumber"
+                        #jobNumber="ngModel"
+                        id="jobNumber"
+                        placeholder="Enter Job Number"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-sm-6">
+                      <label>Shipping Number</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.shippingNumber"
+                        name="shippingNumber"
+                        #shippingNumber="ngModel"
+                        id="shippingNumber"
+                        placeholder="Enter Shipping Number"
+                      />
+                    </div>
+                    <div class="col-sm-6">
+                      <label>Tracking Number</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.trackingNumber"
+                        name="trackingNumber"
+                        #trackingNumber="ngModel"
+                        id="trackingNumber"
+                        placeholder="Enter Tracking Number"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-sm-6">
+                      <label>Current Status:</label>
+                      <span class="fw-bold">{{ item.status }}</span>
+                    </div>
+                    <div class="col-sm-6">
+                      <label>Select Status <strong class="text-danger">*</strong></label>
+                      <select
+                        class="form-control custom-dropdown"
+                        [(ngModel)]="model.newStatus"
+                        name="newStatus"
+                        #newStatus="ngModel"
+                        id="newStatus"
+                      >
+                        <option value="0" selected>Choose Status</option>
+                        <option
+                          *ngFor="let status of statuses"
+                          [ngValue]="status.statusId"
                         >
-                        <span style="font-weight: bold">{{ item.status }}</span>
+                          {{ status.status }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-sm-6">
+                      <label>Days in Current Status:</label>
+                      <span class="fw-bold">{{ item.daysInService }}</span>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-sm-12">
+                      <label>Transfer To: <strong class="text-danger">*</strong></label>
+                      <div class="custom-dropdown-wrapper">
+                      <app-dropdown-treeview-select
+                        [items]="locationItems"
+                        [(value)]="model.toLocation"
+                        (valueChange)="onValueChange($event)"
+                      >
+                      </app-dropdown-treeview-select>
+                      <span class="custom-dropdown-arrow"></span>
                       </div>
-                      <div class="form-group col-sm-6">
-                        <label for="name"
-                          >Select Status
-                          <strong class="text-danger">*</strong></label
-                        >
-                        <select
+                    </div>
+                  </div>
+
+                  <div class="row mb-3" *ngIf="!existingLocationFlag">
+                    <alert *ngIf="locationIndex > 0" type="success" [dismissible]="dismissible">
+                      Location "{{ name }}" Added Successfully.
+                    </alert>
+                    <alert *ngIf="locationIndex == -1" type="danger">
+                      Please Enter Required Fields.<br />
+                      (LocationName and Type of Location are required)
+                    </alert>
+
+                    <div class="col-sm-12">
+                      <label>Transfer To New Location:</label>
+                      <label>(Select Location To Add New Location)</label>
+                      <button
+                        type="button"
+                        [disabled]="addLocationFlag == 0"
+                        class="btn btn-primary btn-right btn-group"
+                        (click)="newLocation()"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="Click here to add New Location"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-group"
+                        (click)="existingLocation()"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                        title="Existing Location"
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="card-body" *ngIf="newLocationFlag">
+                    <div class="row mb-3">
+                      <div class="col-sm-6">
+                        <label>Location Name <strong class="text-danger">*</strong></label>
+                        <input type="text" [(ngModel)]="locationModel._id" name="_id" hidden />
+                        <input
+                          type="text"
                           class="form-control"
-                          [(ngModel)]="model.newStatus"
-                          name="newStatus"
-                          #newStatus="ngModel"
-                          id="newStatus"
-                        >
-                          <option value="0" selected="true">
-                            Choose Status
-                          </option>
-                          <option
-                            [ngValue]="status.statusid"
-                            *ngFor="let status of statuses"
-                          >
-                            {{ status.status }}
-                          </option>
-                        </select>
+                          [(ngModel)]="locationModel.locationName"
+                          name="name"
+                          #name="ngModel"
+                          id="name"
+                          placeholder="Enter Location Name"
+                        />
                       </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="form-group col-sm-6">
-                        <label for="mtbs" class="btn-right"
-                          >Days in Current Status:
-                        </label>
-                        <span style="font-weight: bold"
-                          >{{ item.daysInService }}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="form-group col-sm-12">
-                        <label for="location"
-                          >Transfer To:
-                          <strong class="text-danger">*</strong></label
-                        >
+                      <div class="col-sm-6">
+                        <label>Type Of Location <strong class="text-danger">*</strong></label>
                         <app-dropdown-treeview-select
-                          [items]="locationItems"
-                          [(value)]="model.toLocation"
-                          (valueChange)="onValueChange($event)"
+                          [items]="itemTypeItems"
+                          id="type"
+                          [(value)]="locationModel.locationTypeId"
                         >
                         </app-dropdown-treeview-select>
                       </div>
                     </div>
-                    <div class="row" *ngIf="!existingLocationFlag">
-                      <alert
-                        *ngIf="locationIndex > 0"
-                        type="success"
-                        [dismissible]="dismissible"
-                      >
-                        Location "{{ name }}" Added Successfully.
-                      </alert>
-                      <alert type="danger" *ngIf="locationIndex == -1">
-                        Please Enter Required Fields. <br />
-                        ( LocationName and Type of Location are required)
-                      </alert>
 
-                      <div class="form-group col-sm-12">
-                        <label for="location" class="btn-right"
-                          >Transfer To New Location:</label
+                    <div class="row mb-3">
+                      <div class="col-sm-6">
+                        <label>Status</label>
+                        <select
+                          class="form-control custom-dropdown"
+                          [(ngModel)]="locationModel.statusId"
+                          name="status"
+                          #status="ngModel"
+                          id="status"
                         >
-                        <label for="location" class="btn-right"
-                          >(Select Location To Add New Location)</label
-                        >
-                        <button
-                          type="button"
-                          [disabled]="addLocationFlag == 0"
-                          class="btn btn-primary btn-right"
-                          (click)="newLocation()"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title=" Click here to add New Location"
-                        >
-                          Yes
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-primary"
-                          (click)="existingLocation()"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Existing Location"
-                        >
-                          No
-                        </button>
+                          <option value="">Choose..</option>
+                          <option *ngFor="let stat of locationStatuses" [ngValue]="stat.statusId">
+                            {{ stat.status }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-sm-6">
+                        <label>Critical</label>
+                        <input type="checkbox" [checked]="locationModel.critical" id="critical" name="critical" />
                       </div>
                     </div>
 
-                    <div class="card-body" *ngIf="newLocationFlag">
-                      <div class="row">
-                        <div class="form-group col-sm-6">
-                          <label for="name"
-                            >Location Name
-                            <strong class="text-danger">*</strong></label
-                          >
-                          <input
-                            type="text"
-                            [(ngModel)]="locationModel._id"
-                            name="_id"
-                            #_id="ngModel"
-                            id="_id"
-                            hidden
-                          />
-                          <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="locationModel.locationName"
-                            name="name"
-                            #name="ngModel"
-                            id="name"
-                            placeholder="Enter Location Name"
-                          />
-                        </div>
-                        <div class="form-group col-sm-6">
-                          <label for="type"
-                            >Type Of Location
-                            <strong class="text-danger">*</strong></label
-                          >
-                          <app-dropdown-treeview-select
-                            [items]="itemTypeItems"
-                            id="type"
-                            [(value)]="locationModel.locationTypeId"
-                          >
-                          </app-dropdown-treeview-select>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="form-group col-sm-6">
-                          <label for="status">Status</label>
-                          <select
-                            class="form-control"
-                            [(ngModel)]="locationModel.statusid"
-                            name="status"
-                            #status="ngModel"
-                            id="status"
-                          >
-                            <option value="">Choose..</option>
-                            <option
-                              [value]="stat.statusid"
-                              [ngValue]="stat.statusid"
-                              *ngFor="let stat of locationStatuses"
-                            >
-                              {{ stat.status }}
-                            </option>
-                          </select>
-                        </div>
-                        <div class="form-group col-sm-6">
-                          <label for="critical">Critical</label>
-                          <input
-                            type="checkbox"
-                            [checked]="locationModel.critical"
-                            id="critical"
-                            name="critical"
-                          />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-sm-12">
-                          <label for="description">Description</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="locationModel.description"
-                            name="description"
-                            #description="ngModel"
-                            id="description"
-                          />
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        (click)="saveLocation()"
-                        data-bs-placement="bottom"
-                        data-bs-toggle="tooltip"
-                        title="Save Location"
-                      >
-                        Save Location
-                      </button>
-                    </div>
-
-                    <div class="row">
-                      <div class="form-group col-sm-12">
-                        <label for="description">Details</label>
+                    <div class="row mb-3">
+                      <div class="col-sm-12">
+                        <label>Description</label>
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.details"
-                          name="details"
-                          #details="ngModel"
-                          id="details"
+                          [(ngModel)]="locationModel.description"
+                          name="description"
+                          #description="ngModel"
+                          id="description"
                         />
                       </div>
                     </div>
 
-                    <div class="row">
-                      <div class="form-group col-sm-12 text-center">
-                        <button
-                          class="btn btn-primary btn-right"
-                          (click)="saveTransfer()"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="SaveItemTransfer"
-                        >
-                          Save
-                        </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-group"
+                      (click)="saveLocation()"
+                      data-bs-placement="bottom"
+                      data-bs-toggle="tooltip"
+                      title="Save Location"
+                    >
+                      Save Location
+                    </button>
+                  </div>
 
-                        <button
-                          type="button"
-                          (click)="backToViewItem()"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Back to View Item"
-                          class="btn btn-primary"
-                        >
-                          Back To Item
-                        </button>
-                      </div>
+                  <div class="row mb-3">
+                    <div class="col-sm-12">
+                      <label>Details</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.details"
+                        name="details"
+                        #details="ngModel"
+                        id="details"
+                      />
                     </div>
-                    <div>
-                      <p
-                        class="card-text"
-                        style="font-weight: bold; font-size: 22px"
-                      >
-                        Previous Transfers
-                      </p>
-                      <table
-                        class="table table-responsive-sm1 table-hover table-outline mb-0"
-                      >
+                  </div>
+
+                      <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button class="btn btn-primary btn-group" (click)="saveTransfer()"
+                          tooltip="SaveItemTransfer">Save</button>
+                       
+                        <button type="button" (click)="backToViewItem()" tooltip="Back to View Item"
+                          class="btn btn-primary ms-2 btn-group">Back To Item</button>
+                      </div>
+
+                    </div>
+
+                   <div>
+                    <p class="fw-bold fs-5">Previous Transfers</p>
+                      <table class="table table-responsive-sm1 table-hover table-outline mb-0">
                         <thead class="thead-light">
                           <tr>
-                            <th
-                              [class.active]="order === 'transferDate'"
-                              (click)="setOrder('transferDate')"
-                            >
-                              TransferDate
-                            </th>
-                            <th
-                              [class.active]="order === 'fromLocation'"
-                              (click)="setOrder('fromLocation')"
-                            >
-                              FromLocation
-                            </th>
-                            <th
-                              [class.active]="order === 'toLocation'"
-                              (click)="setOrder('toLocation')"
-                            >
-                              ToLocation
-                            </th>
-                            <th
-                              [class.active]="order === 'ponumber'"
-                              (click)="setOrder('ponumber')"
-                            >
-                              PONumber
-                            </th>
-                            <th
-                              [class.active]="order === 'jobNumber'"
-                              (click)="setOrder('jobNumber')"
-                            >
-                              JobNumber
-                            </th>
-                            <th
-                              [class.active]="order === 'shippingNumber'"
-                              (click)="setOrder('shippingNumber')"
-                            >
-                              ShippingNo
-                            </th>
-                            <th
-                              [class.active]="order === 'trackingNumber'"
-                              (click)="setOrder('trackingNumber')"
-                            >
-                              trackingNo
-                            </th>
-                            <th
-                              [class.active]="order === 'daysinOldStatus'"
-                              (click)="setOrder('daysinOldStatus')"
-                            >
-                              DaysinStatus
-                            </th>
-                            <th
-                              [class.active]="order === 'newStatus'"
-                              (click)="setOrder('newStatus')"
-                            >
-                              Status
-                            </th>
-                            <th
-                              [class.active]="order === 'transferredBy'"
-                              (click)="setOrder('transferredBy')"
-                            >
-                              TransferredBy
-                            </th>
+       <tr>
+                          <th [class.active]="order==='transferDate'" (click)="setOrder('transferDate')">TransferDate</th>
+                          <th [class.active]="order==='fromLocation'" (click)="setOrder('fromLocation')">FromLocation</th>
+                          <th [class.active]="order==='toLocation'" (click)="setOrder('toLocation')">ToLocation</th>
+                          <th [class.active]="order==='poNumber'" (click)="setOrder('poNumber')">PONumber</th>
+                          <th [class.active]="order==='jobNumber'" (click)="setOrder('jobNumber')">JobNumber</th>
+                          <th [class.active]="order==='shippingNumber'" (click)="setOrder('shippingNumber')">ShippingNo</th>
+                          <th [class.active]="order==='trackingNumber'" (click)="setOrder('trackingNumber')">TrackingNo</th>
+                          <th [class.active]="order==='daysinOldStatus'" (click)="setOrder('daysinOldStatus')">DaysinStatus</th>
+                          <th [class.active]="order==='newStatus'" (click)="setOrder('newStatus')">Status</th>
+                          <th [class.active]="order==='transferredBy'" (click)="setOrder('transferredBy')">TransferredBy</th>
                             <th>Actions</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr
-                            *ngFor="
-                              let transfer of transfers
-                                | orderBy : reverse + order
-                                | filterBy
-                                  : [
-                                      'transferDate',
-                                      'fromLocation',
-                                      'toLocation',
-                                      'ponumber',
-                                      'jobNumber',
-                                      'shippingNumber',
-                                      'trackingNumber',
-                                      'daysinOldStatus',
-                                      'newStatus',
-                                      'transferredBy'
-                                    ]
-                                  : transferFilter
-                                | paginate
-                                  : {
-                                      itemsPerPage: itemsForPagination,
-                                      currentPage: p
-                                    }
-                            "
-                          >
-                            <td
-                              [innerHTML]="
-                                transfer.transferDate | date : 'MM/dd/yyyy'
-                              "
-                            ></td>
-                            <td [innerHTML]="transfer.fromLocation"></td>
-                            <td [innerHTML]="transfer.toLocation"></td>
-                            <td [innerHTML]="transfer.ponumber"></td>
-                            <td [innerHTML]="transfer.jobNumber"></td>
-                            <td [innerHTML]="transfer.shippingNumber"></td>
-                            <td [innerHTML]="transfer.trackingNumber"></td>
-                            <td [innerHTML]="transfer.daysinOldStatus"></td>
-                            <td [innerHTML]="transfer.newStatus"></td>
-                            <td [innerHTML]="transfer.transferredBy"></td>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-outline-danger btn-sm mb-1 btn-right"
-                                data-bs-placement="bottom"
-                                data-bs-toggle="tooltip"
-                                title="View Item Transfer"
-                                [routerLink]="[
-                                  '../../viewtItemTransfer/' +
-                                    transfer.transferLogID
-                                ]"
-                              >
-                                View
-                              </button>
-                              <button
-                                type="button"
-                                class="btn btn-outline-danger btn-sm mb-1"
-                                data-bs-placement="bottom"
-                                data-bs-toggle="tooltip"
-                                title="Delete Item Transfer"
-                                (click)="
-                                  openModal(
-                                    confirmtemplate,
-                                    transfer.transferLogID
-                                  )
-                                "
-                                [disabled]="highestRank == 9"
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </form>
-                </div>
+                      <tbody>
+                        <tr
+                          *ngFor="let transfer of transfers
+                            | orderBy: reverse + order
+                            | filterBy: [
+                                'transferDate','fromLocation','toLocation','poNumber','jobNumber','shippingNumber','trackingNumber','daysinOldStatus','newStatus','transferredBy'
+                              ]: transferFilter
+                            | paginate: { itemsPerPage: itemsForPagination, currentPage: p }"
+                        >
+                          <td [innerHTML]="transfer.transferDate | date:'MM/dd/yyyy'"></td>
+                          <td [innerHTML]="transfer.fromLocation"></td>
+                          <td [innerHTML]="transfer.toLocation"></td>
+                          <td [innerHTML]="transfer.poNumber"></td>
+                          <td [innerHTML]="transfer.jobNumber"></td>
+                          <td [innerHTML]="transfer.shippingNumber"></td>
+                          <td [innerHTML]="transfer.trackingNumber"></td>
+                          <td [innerHTML]="transfer.daysinOldStatus"></td>
+                          <td [innerHTML]="transfer.newStatus"></td>
+                          <td [innerHTML]="transfer.transferredBy"></td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-outline-danger btn-sm mb-1 me-2 btn-group"
+                              title="View Item Transfer"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="bottom"
+                              [routerLink]="['../../viewtItemTransfer/' + transfer.transferLogId]"
+                            >
+                              View
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-outline-danger btn-sm mb-1 btn-group"
+                              title="Delete Item Transfer"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="bottom"
+                              (click)="openModal(confirmtemplate, transfer.transferLogId)"
+                              [disabled]="highestRank == 9"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -532,15 +381,10 @@
   <ng-template #confirmtemplate>
     <div class="modal-body text-center">
       <p>
-        Click(Yes) to permanently delete this Item Transfer Log or Click(No) to
-        discard This action.
+        Click(Yes) to permanently delete this Item Transfer Log or Click(No) to discard This action.
       </p>
-      <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-        Yes
-      </button>
-      <button type="button" class="btn btn-primary" (click)="decline()">
-        No
-      </button>
+      <button type="button" class="btn btn-primary btn-right btn-group" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary btn-group" (click)="decline()">No</button>
     </div>
   </ng-template>
 </div>

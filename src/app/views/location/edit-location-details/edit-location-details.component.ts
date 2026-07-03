@@ -8,8 +8,6 @@ import { LocationStatusService } from '../../../services/location-status.service
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { BroadcasterService } from '../../../services/broadcaster.service';
-import { isUndefined, isNull } from 'is-what';
-import { focusTrapModule } from 'ngx-bootstrap/modal/modal.module';
 
 @Component({
   selector: 'app-edit-location-details',
@@ -18,40 +16,41 @@ import { focusTrapModule } from 'ngx-bootstrap/modal/modal.module';
 })
 export class EditLocationDetailsComponent implements OnInit {
   model: any = {};
-  locationTypes: any;
-  statuses: any;
+  locationTypes: any[] = [];
+  statuses: any[] = [];
   location: any = {
     parentLocation: {
-      locationid: 0,
+      locationId: 0,
     },
   };
   locationId: any;
   companyId: any;
-  typeAttributes: any;
-  locations: any;
+  typeAttributes: any[] = [];
+  locations: any[] = [];
   index: any;
   globalCompany: any;
   companyName: any;
-  addedlocations: any = [];
-  addrequest: any = [];
-  vendors: any;
+  addedlocations: any[] = [];
+  addrequest: any[] = [];
+  vendors: any[] = [];
   value: any;
-  items: TreeviewItem[];
-  itemTypeItems: TreeviewItem[];
+  items: TreeviewItem[] = [];
+  itemTypeItems: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  typeID: any;
+  typeId: any;
   locationattr: any = {};
   userName: string | null;
   isReqdAttr: any;
   reqAttrName: any;
   reqAttrValue: any;
-  reqAttrValidate: any;
+  reqAttrValidate: boolean = false;
   helpFlag: any = false;
   dismissible = true;
   loader = false;
+
   constructor(
     private locationManagementService: LocationManagementService,
     private companyManagementService: CompanyManagementService,
@@ -70,7 +69,7 @@ export class EditLocationDetailsComponent implements OnInit {
     this.companyName = this.globalCompany.name;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
 
@@ -82,89 +81,74 @@ export class EditLocationDetailsComponent implements OnInit {
   }
 
   getLocations() {
-    this.locations = this.broadcasterService.locations;
-    var self = this;
+    this.locations = Array.isArray(this.broadcasterService.locations)
+      ? this.broadcasterService.locations
+      : [];
     if (this.locations && this.locations.length > 0) {
-      self.items = this.generateHierarchy(this.locations);
+      this.items = this.generateHierarchy(this.locations);
     }
-    self.items.unshift(
+    this.items.unshift(
       new TreeviewItem({
         text: this.companyName,
         value: -1,
       })
     );
-
     this.getAllVendors();
   }
 
-  generateHierarchy(locList: any) {
-    var items: any = [];
-    locList.forEach((loc: any) => {
-      var children = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList); //children.push({text : childLoc.name, value: childLoc.locationid})
-      }
-      items.push(
-        new TreeviewItem({
-          text: loc.name,
-          value: loc.locationid,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchy(locList: any[]): TreeviewItem[] {
+    return locList.map((loc: any) => {
+      const children =
+        loc.parentResourceList && loc.parentResourceList.length > 0
+          ? this.generateHierarchy(loc.parentResourceList)
+          : [];
+      return new TreeviewItem({
+        text: loc.name,
+        value: loc.locationId,
+        collapsed: true,
+        children: children,
+      });
     });
-    return items;
   }
 
   onValueChange(value: any) {
     this.value = value;
-    console.log(value);
   }
 
   getLocationStatus() {
     this.locationStatusService.getAllLocationStatuses(this.companyId).subscribe(
       (response) => {
-        this.statuses = response;
-
+        this.statuses = Array.isArray(response) ? response : [];
         this.getLocations();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
-  generateHierarchyForItemTypes(typeList: any) {
-    var items: any = [];
-    typeList.forEach((type: any) => {
-      var children = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchyForItemTypes(type.typeList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeid,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchyForItemTypes(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type: any) => {
+      const children =
+        type.typeList && type.typeList.length > 0
+          ? this.generateHierarchyForItemTypes(type.typeList)
+          : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children: children,
+      });
     });
-    return items;
   }
 
   getAllLocTypes() {
     this.spinner.show();
-    this.loader = true;
     this.locationTypesService
       .getAllLocationTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
-          this.locationTypes = response;
+          this.locationTypes = Array.isArray(response) ? response : [];
           if (this.locationTypes && this.locationTypes.length > 0) {
             this.itemTypeItems = this.generateHierarchyForItemTypes(
               this.locationTypes
@@ -172,60 +156,55 @@ export class EditLocationDetailsComponent implements OnInit {
           }
           this.getLocationStatus();
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
 
   getTypeAttributes(typeId: any) {
-    if (typeId && typeId != '0') {
+    if (typeId && typeId !== '0') {
       this.locationAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
-          this.typeAttributes = response;
-          console.log('attrlength ' + this.location.attributevalues.length);
+          this.typeAttributes = Array.isArray(response) ? response : [];
           if (
-            this.location.attributevalues &&
-            this.location.attributevalues.length > 0
+            this.location.attributeValues &&
+            this.location.attributeValues.length > 0
           ) {
             this.typeAttributes.forEach((attr: any) => {
-              this.location.attributevalues.forEach((ansAttr: any) => {
-                if (attr.name == ansAttr.attributename.name) {
-                  ansAttr.attributename.attributelistitemResource =
-                    attr.attributelistitemResource;
+              this.location.attributeValues.forEach((ansAttr: any) => {
+                if (attr.name == ansAttr.attributeName.name) {
+                  ansAttr.attributeName.attributeListItemResource =
+                    attr.attributeListItemResource;
                   attr.value = ansAttr.value;
-                  console.log('attrvalue  ' + attr.value);
                 }
               });
             });
           } else {
             this.typeAttributes.forEach((attr: any) => {
-              if (attr.attributetype.attributetypeid == 4) {
-                this.location.attributevalues.push({
-                  attributename: attr,
-                  entityid: this.locationId,
-                  entitytypeid: attr.type.entitytypeid,
-                  lastmodifiedby: attr.type.lastmodifiedby,
+              if (attr.attributeType.attributeTypeId == 4) {
+                this.location.attributeValues.push({
+                  attributeName: attr,
+                  entityId: this.locationId,
+                  entitytypeId: attr.type.entitytypeId,
+                  lastModifiedBy: attr.type.lastModifiedBy,
                   value: parseInt(attr.value),
                 });
               } else {
-                this.location.attributevalues.push({
-                  attributename: attr,
-                  entityid: this.locationId,
-                  entitytypeid: attr.type.entitytypeid,
-                  lastmodifiedby: attr.type.lastmodifiedby,
+                this.location.attributeValues.push({
+                  attributeName: attr,
+                  entityId: this.locationId,
+                  entitytypeId: attr.type.entitytypeId,
+                  lastModifiedBy: attr.type.lastModifiedBy,
                   value: attr.value,
                 });
               }
             });
           }
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
@@ -233,42 +212,39 @@ export class EditLocationDetailsComponent implements OnInit {
 
   getLocation() {
     this.spinner.show();
-    this.loader = true;
     this.locationManagementService
       .getLocationDetails(this.locationId)
       .subscribe(
         (response) => {
           this.location = response;
-
-          if (this.location.parentID == null) {
+          if (this.location.parentId == null) {
             this.value = -1;
             this.location.parentLocation = {
-              locationid: 0,
+              locationId: 0,
             };
           } else {
-            this.value = this.location.parentID;
+            this.value = this.location.parentId;
           }
-
-          this.locationManagementService.setSearchedLocationTypeId(this.location.typeId);
+          this.locationManagementService.setSearchedLocationTypeId(
+            this.location.typeId
+          );
           this.getTypeAttributes(this.location.typeId);
-          this.typeID = this.location.typeId;
+          this.typeId = this.location.typeId;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
+
   getAllVendors() {
-    this.companyManagementService.getAllVendorDetails(this.companyId).subscribe(
+    this.companyManagementService.getAllVendorDetails().subscribe(
       (response) => {
-        this.vendors = response;
+        this.vendors = Array.isArray(response) ? response : [];
         this.spinner.hide();
-        this.loader = false;
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -279,7 +255,7 @@ export class EditLocationDetailsComponent implements OnInit {
       this.location.typeId &&
       this.location.typeId != 0
     ) {
-      if (this.location.locationid == this.value) {
+      if (this.location.locationId == this.value) {
         this.index = -3;
         window.scroll(0, 0);
       } else {
@@ -292,115 +268,113 @@ export class EditLocationDetailsComponent implements OnInit {
   }
 
   saveLocation() {
-    this.locationattr.attributevalues = [];
-    if (this.typeAttributes != undefined) {
+    this.locationattr.attributeValues = [];
+    if (this.typeAttributes && this.typeAttributes.length > 0) {
       this.typeAttributes.forEach((attr: any) => {
-        this.locationattr.attributevalues.push({
-          attributename: attr,
-          entityid: this.locationId,
-          entitytypeid: attr.type.entitytypeid,
-          lastmodifiedby: attr.type.lastmodifiedby,
+        this.locationattr.attributeValues.push({
+          attributeName: attr,
+          entityId: this.locationId,
+          entitytypeId: attr.type.entitytypeId,
+          lastModifiedBy: attr.type.lastModifiedBy,
           value: attr.value,
         });
       });
     }
-    this.location.attributevalues = this.locationattr.attributevalues;
+    this.location.attributeValues = this.locationattr.attributeValues;
 
     this.reqAttrValidate = false;
-    this.location.attributevalues.forEach((attr: any) => {
-      this.isReqdAttr = attr.attributename.isrequired;
-      this.reqAttrName = attr.attributename.name;
-      this.reqAttrValue = attr.value;
-      if (
-        this.isReqdAttr == true &&
-        (isUndefined(this.reqAttrValue) ||
-          isNull(this.reqAttrValue) ||
-          this.reqAttrValue == '')
-      ) {
-        this.reqAttrValidate = true;
-        return;
+    if (this.location.attributeValues && this.location.attributeValues.length > 0) {
+      for (const attr of this.location.attributeValues) {
+        this.isReqdAttr = attr.attributeName.isRequired;
+        this.reqAttrName = attr.attributeName.name;
+        this.reqAttrValue = attr.value;
+        if (
+          this.isReqdAttr === true &&
+          (this.reqAttrValue === undefined ||
+            this.reqAttrValue === null ||
+            this.reqAttrValue === '')
+        ) {
+          this.reqAttrValidate = true;
+          break;
+        }
       }
-    });
-    var request = {
-      locationid: this.location.locationid,
-      address1: this.location.address1 ? this.location.address1 : '',
-      address2: this.location.address2 ? this.location.address2 : '',
-      city: this.location.city ? this.location.city : '',
-      typeId: this.location.typeId ? this.location.typeId : '',
+    }
+
+    const request = {
+      locationId: this.location.locationId,
+      address1: this.location.address1 ?? '',
+      address2: this.location.address2 ?? '',
+      city: this.location.city ?? '',
+      typeId: this.location.typeId ?? '',
       company: {
-        companyid: this.companyId,
+        companyId: this.companyId,
       },
-      criticalflag: this.location.critical ? this.location.critical : false,
-      description: this.location.description ? this.location.description : '',
-      desiredspareratio: this.location.desiredspareratio
-        ? this.location.desiredspareratio
-        : 0,
-      isvendor: this.location.isvendor ? this.location.isvendor : false,
-      lastmodifiedby: this.userName,
-      name: this.location.name ? this.location.name : '',
+      criticalFlag: this.location.critical ?? false,
+      description: this.location.description ?? '',
+      desiredSpareRatio: this.location.desiredSpareRatio ?? 0,
+      isVendor: this.location.isVendor ?? false,
+      lastModifiedBy: this.userName,
+      name: this.location.name ?? '',
       parentLocation: {
-        locationid: this.value ? this.value : 0,
+        locationId: this.value ?? 0,
       },
-      postalcode: this.location.postalcode ? this.location.postalcode : '',
-      state: this.location.state ? this.location.state : '',
-      statusid: this.location.statusid ? this.location.statusid : 0,
-      parentLocationResourceList: this.location.parentLocationResourceList,
+      postalCode: this.location.postalCode ?? '',
+      state: this.location.state ?? '',
+      statusId: this.location.statusId ?? 0,
+      parentResourceList: this.location.parentResourceList,
       vendorCompany: {
-        companyid: 0,
+        companyId: 0,
       },
-      attributevalues: this.location.attributevalues
-        ? this.location.attributevalues
-        : null,
+      attributeValues: this.location.attributeValues ?? null,
     };
+
     if (this.addedlocations && this.addedlocations.length > 0) {
       this.addedlocations.forEach((loc: any) => {
-        if (loc.locationName && loc.locationName != '') {
+        if (loc.locationName && loc.locationName !== '') {
           this.addrequest.push({
-            address1: this.location.address1 ? this.location.address1 : '',
-            address2: this.location.address2 ? this.location.address2 : '',
-            city: this.location.city ? this.location.city : '',
-            typeId: this.location.typeId ? this.location.typeId : '',
+            address1: this.location.address1 ?? '',
+            address2: this.location.address2 ?? '',
+            city: this.location.city ?? '',
+            typeId: this.location.typeId ?? '',
             company: {
-              companyid: this.companyId,
+              companyId: this.companyId,
             },
-            criticalflag: this.location.critical ? this.location.critical : false,
-            description: this.location.description ? this.location.description : '',
-            desiredspareratio: this.location.desiredspareratio ? this.location.desiredspareratio : 0,
-            isvendor: this.location.isvendor ? this.location.isvendor : false,
-            lastmodifiedby: this.userName,
-            locationid: 0,
-            name: loc.locationName ? loc.locationName : '',
+            criticalFlag: this.location.critical ?? false,
+            description: this.location.description ?? '',
+            desiredSpareRatio: this.location.desiredSpareRatio ?? 0,
+            isVendor: this.location.isVendor ?? false,
+            lastModifiedBy: this.userName,
+            locationId: 0,
+            name: loc.locationName ?? '',
             parentLocation: {
-              locationid: this.value ? this.value : 0,
+              locationId: this.value ?? 0,
             },
-            postalcode: this.location.postalcode ? this.location.postalcode : '',
-            state: this.location.state ? this.location.state : '',
-            statusid: this.location.statusid ? this.location.statusid : 0,
+            postalCode: this.location.postalCode ?? '',
+            state: this.location.state ?? '',
+            statusId: this.location.statusId ?? 0,
             vendorCompany: {
-              companyid: 0,
+              companyId: 0,
             },
-            attributevalues: this.location.attributevalues ? this.location.attributevalues : null,
+            attributeValues: this.location.attributeValues ?? null,
           });
         }
       });
     }
-    if (this.reqAttrValidate == false) {
+
+    if (!this.reqAttrValidate) {
       this.spinner.show();
-      this.loader = true;
       this.locationManagementService.updateLocation(request).subscribe(
-        (response) => {
+        () => {
           if (this.addedlocations && this.addedlocations.length > 0) {
             this.locationManagementService
               .saveLocation(this.addrequest)
-              .subscribe((response) => {});
+              .subscribe(() => {});
           }
           this.spinner.hide();
-          this.loader = false;
           this.refreshCalls();
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {
@@ -411,31 +385,26 @@ export class EditLocationDetailsComponent implements OnInit {
 
   refreshCalls() {
     this.spinner.show();
-    this.loader = true;
     this.locationManagementService
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.broadcasterService.locations = response;
         this.router.navigate(['/location/list']);
-        console.log('locations:' + response);
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
   cloneaddressfromParentLoc() {
     this.spinner.show();
-    this.loader = true;
     this.locationManagementService
       .cloneaddressfromParentLoc(this.value, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
-        this.loader = false;
         this.location.address1 = response.address1;
         this.location.address2 = response.address2;
         this.location.city = response.city;
         this.location.state = response.state;
-        this.location.postalcode = response.postalcode;
+        this.location.postalCode = response.postalCode;
       });
     this.index = 2;
     setTimeout(() => {
@@ -448,7 +417,8 @@ export class EditLocationDetailsComponent implements OnInit {
     this.helpFlag = false;
     window.print();
   }
+
   help() {
-    this.helpFlag = !this.helpFlag;
+    this.helpFlag =!this.helpFlag;
   }
 }

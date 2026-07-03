@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { isUndefined } from 'is-what';
 import { BroadcasterService } from '../../services/broadcaster.service';
-import { UserManagementService } from '../../services/user-management.service';
+import { UserManagementService } from '../../services/user-management.service'; 
+
 
 @Component({
   selector: 'app-header',
@@ -84,5 +85,11 @@ export class AppHeaderComponent implements OnInit {
   toggleDropdown(event: Event) {
     event.preventDefault();
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+  @HostListener('document:click', ['$event'])
+  closeDropdown(event: Event) {
+    if (!(event.target as HTMLElement).closest('#simple-dropdown')) {
+      this.isDropdownOpen = false;
+    }
   }
 }

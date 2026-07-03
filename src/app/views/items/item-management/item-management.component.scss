@@ -63,12 +63,10 @@ tbody td a:hover {
 
 .type-header {
   padding: 0.3rem;
+
   background-color: lightgrey;
 }
 
-.card {
-  margin-bottom: 0rem;
-}
 
 .card,
 button {
@@ -157,3 +155,43 @@ button {
 ::ng-deep .item-list-after .dropdown button:after {
   right: 0.6rem !important;
 }
+.custom-dropdown-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.custom-dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+}
+
+.custom-dropdown-arrow {
+  position: absolute;
+  top: 55.5%;
+  right: 12px; /* adjust this value to move left/right */
+  transform: translateY(-45%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}
+.custom-dropdown-arrow1 {
+  position: absolute;
+  top: 55.5%;
+  right: 12px; /* adjust this value to move left/right */
+  transform: translateY(-45%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}
+
+.btn-group{
+  border-radius: 6px;
+}
+

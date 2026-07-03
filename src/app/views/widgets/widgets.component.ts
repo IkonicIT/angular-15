@@ -11,13 +11,13 @@ export class WidgetsComponent {
   public brandWarning = '#f8cb00';
   public brandDanger = '#f86c6b';
 
-  // lineChart1
+  
   public lineChart1Data: ChartData<'line'> = {
     datasets: [
       {
         data: [65, 59, 84, 84, 51, 55, 40],
         label: 'Series A',
-        // grey
+  
         backgroundColor: this.brandPrimary,
         borderColor: 'rgba(255,255,255,.55)',
       },
@@ -74,14 +74,12 @@ export class WidgetsComponent {
   };
   public lineChart1Legend = false;
   public lineChart1Type: ChartType = 'line';
-
-  // lineChart2
   public lineChart2Data: ChartData<'line'> = {
     datasets: [
       {
         data: [1, 18, 9, 17, 34, 22, 11],
         label: 'Series A',
-        // grey
+      
         backgroundColor: this.brandInfo,
         borderColor: 'rgba(255,255,255,.55)',
       },
@@ -140,7 +138,6 @@ export class WidgetsComponent {
   public lineChart2Legend = false;
   public lineChart2Type: ChartType = 'line';
 
-  // lineChart3
   public lineChart3Data: ChartData<'line'> = {
     datasets: [
       {
@@ -190,8 +187,6 @@ export class WidgetsComponent {
   };
   public lineChart3Legend = false;
   public lineChart3Type: ChartType = 'line';
-
-  // barChart1
   public barChart1Data: ChartData<'bar'> = {
     datasets: [
       {
@@ -242,7 +237,6 @@ export class WidgetsComponent {
   public barChart1Legend = false;
   public barChart1Type: ChartType = 'bar';
 
-  // lineChart4
   public lineChart4Data: ChartData<'line'> = {
     datasets: [
       {
@@ -291,7 +285,6 @@ export class WidgetsComponent {
   public lineChart4Legend = false;
   public lineChart4Type: ChartType = 'line';
 
-  // barChart2
   public barChart2Data: ChartData<'bar'> = {
     datasets: [
       {
@@ -341,7 +334,6 @@ export class WidgetsComponent {
   public barChart2Legend = false;
   public barChart2Type: ChartType = 'bar';
 
-  // barChart3
   public barChart3Data: ChartData<'bar'> = {
     datasets: [
       {
@@ -406,7 +398,6 @@ export class WidgetsComponent {
   public barChart3Legend = false;
   public barChart3Type: ChartType = 'bar';
 
-  // lineChart5
   public lineChart5Data: ChartData<'line'> = {
     datasets: [
       {
@@ -467,13 +458,11 @@ export class WidgetsComponent {
   ];
   public lineChart5Legend = false;
   public lineChart5Type: ChartType = 'line';
-
-  // events
   public chartClicked(e: any): void {
-    console.log(e);
+  
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
+    
   }
 }

@@ -1,4 +1,3 @@
-// Here you can add other styles
 
 .loginForm {
   background-color: #fff;
@@ -28,7 +27,6 @@ li.nav-dropdown > ul.nav-dropdown-items {
   margin-top: 18px;
 }
 
-/*desktopcss starts*/
 .breadcrumb {
   margin-bottom: 0px;
 }
@@ -50,9 +48,6 @@ li.nav-dropdown > ul.nav-dropdown-items {
   margin-top: 18px;
 }
 
-/*desktopcss Ends*/
-
-/*Mobile Css Starts*/
 @media (min-width: 300px) and (max-width: 480px) {
   .mobile-padding {
     padding: 0px;
@@ -84,9 +79,6 @@ li.nav-dropdown > ul.nav-dropdown-items {
     height: auto;
   }
 
-  .main {
-    margin-top: 20px;
-  }
 }
 
 @media (min-width: 400px) and (max-width: 520px) {
@@ -116,12 +108,9 @@ li.nav-dropdown > ul.nav-dropdown-items {
     margin-top: 18px;
   }
 
-  .main {
-    margin-top: 20px;
-  }
 }
 
-/*mobile css Ends*/
+
 
 @media only screen and (min-width: 810px) and (max-width: 830px) {
   .show-land-new {
@@ -228,10 +217,6 @@ li.nav-dropdown > ul.nav-dropdown-items {
     margin-left: -34px;
   }
 
-  //  .center-landscape{
-  //   text-align: center;
-  //   margin-left: -12px;
-  //  }
 
   .margin-name-0mobile {
     margin-top: 18px;

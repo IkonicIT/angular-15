@@ -1,4 +1,4 @@
-label {
+label,h6 {
   color: #002a64;
   font-weight: bold;
 }
@@ -79,6 +79,21 @@ tbody td {
   color: #f86c6b;
   border-color: #f86c6b;
 }
+.mobile-padding {
+  padding: 7px;
+}
+
+.space {
+  padding: 10px;
+}
+.pr5 {
+  padding-right: 5px;
+}
+
+.alignment {
+  gap: 10px;
+  justify-content: center;
+}
 
 .card,
 button {
@@ -106,4 +121,8 @@ button {
 
 ::ng-deep .alert-dismissible .btn-close {
   opacity: 0;
+}
+
+.btn-group{
+  border-radius: 6px;
 }

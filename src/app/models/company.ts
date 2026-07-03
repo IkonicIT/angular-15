@@ -2,7 +2,7 @@ export class Company {
   constructor(
     public _id: number,
     public name: string,
-    public companyid = _id,
+    public companyId = _id,
     public url: string,
     public phone: string,
     public fax: string,

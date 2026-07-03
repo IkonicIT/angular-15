@@ -12,7 +12,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./template.component.scss'],
 })
 export class TemplateComponent implements OnInit {
-  templateID: any = 0;
+  templateId: any = 0;
   company: any = {};
   model: any = {};
   companies: any = [];
@@ -38,7 +38,7 @@ export class TemplateComponent implements OnInit {
     private modalService: BsModalService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companies = this.companyManagementService.getGlobalCompanyList();
   }
 
@@ -50,53 +50,55 @@ export class TemplateComponent implements OnInit {
 
   getAllTemplates(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.getAllTemplates(companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.templates = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   saveCompany() {
-    if (this.templateID == 0) {
+    let req: any;
+    if (this.templateId == 0) {
       this.index = -1;
     } else if (this.company.name == undefined) {
       this.index = -2;
     } else {
-      var req = {
-        templateId: this.templateID,
+       req = {
+        templateId: this.templateId,
+      
         companyName: this.company.name,
         userName: this.userName,
+        isPartnerCompany: this.highestRank === '10' ? true : false
+      };    
+      if (this.highestRank === '10' || '0') {
+        req.userId = sessionStorage.getItem('userId');
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyManagementService.saveCompanyFromTemplate(req).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
-          this.savedCompanyName = this.company.name;
-          this.company.name = '';
-          alert('Company successfully Added from Template,Refreshing List');
-          this.companyManagementService.setCompaniesListModified(true);
+    this.savedCompanyName = this.company.name;
+    this.company.name = '';
+    this.companyManagementService.setCompaniesListModified(true);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
   }
 
   openModal(template: TemplateRef<any>, id: any) {
-    this.templateID = id;
-    if (this.templateID == 0) {
+    this.templateId = id;
+    if (this.templateId == 0) {
       this.index = -1;
     } else {
       this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
@@ -106,19 +108,19 @@ export class TemplateComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
-    if (this.templateID == 0) {
+
+    if (this.templateId == 0) {
       this.index = -1;
       this.spinner.hide();
-      this.loader = false;
+
       this.modalRef.hide();
     } else {
       this.spinner.show();
-      this.loader = true;
-      this.setTemplateName(this.templateID);
+
+      this.setTemplateName(this.templateId);
       this.companyManagementService
         .removeTemplate(
-          this.templateID,
+          this.templateId,
           this.companyId,
           this.userName,
           this.currentTemplateName
@@ -130,17 +132,16 @@ export class TemplateComponent implements OnInit {
           setTimeout(() => {
             this.index = 0;
           }, 5000);
-          this.templateID = 0;
+          this.templateId = 0;
           this.getAllTemplates(this.companyId);
           this.spinner.hide();
-          this.loader = false;
         });
     }
   }
 
-  setTemplateName(templateID: any) {
-    this.templates.forEach((template: { templateID: any; name: any }) => {
-      if (templateID == template.templateID)
+  setTemplateName(templateId: any) {
+    this.templates.forEach((template: { templateId: any; name: any }) => {
+      if (templateId == template.templateId)
         this.currentTemplateName = template.name;
     });
   }
@@ -151,19 +152,19 @@ export class TemplateComponent implements OnInit {
   }
 
   saveTemplate() {
-    if (this.model.companyid == undefined) {
+    if (this.model.companyId == undefined) {
       this.index1 = -1;
     } else if (this.model.templateName == undefined) {
       this.index1 = -2;
     } else {
       var req = {
-        companyId: this.model.companyid,
+        companyId: this.model.companyId,
         userName: this.userName,
         templateName: this.model.templateName,
         includeAllElements: false,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.companyManagementService.saveTemplate(req).subscribe(
         (response: any) => {
           this.savedTemplateName = response.name;
@@ -173,12 +174,11 @@ export class TemplateComponent implements OnInit {
           }, 5000);
           this.model = {};
           this.spinner.hide();
-          this.loader = false;
+
           this.getAllTemplates(this.companyId);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }

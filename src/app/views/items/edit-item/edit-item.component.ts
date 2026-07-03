@@ -19,7 +19,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Location } from '@angular/common';
 import { isUndefined, isNull } from 'is-what';
 import { DomSanitizer } from '@angular/platform-browser';
-import { faL } from '@fortawesome/free-solid-svg-icons';
+import { HttpClient } from '@angular/common/http';
+import { AppConfiguration } from 'src/app/configuration';
 
 @Component({
   selector: 'app-edit-item',
@@ -28,60 +29,66 @@ import { faL } from '@fortawesome/free-solid-svg-icons';
 })
 export class EditItemComponent implements OnInit {
   model: any = {
-    locationid: 0,
+    locationId: 0,
     typeId: 0,
-    warrantytypeid: 0,
+    warrantyTypeId: 0,
   };
-  message: string;
+  message: string = '';
   index: number = 0;
-  itemTypes: any;
-  statuses: any;
-  companyId: any;
-  userName: any;
-  typeAttributes: any;
+  itemTypes: any[] = [];
+  statuses: any[] = [];
+  companyId: number = 0;
+  userName: string | null = null;
+  typeAttributes: any[] = [];
   item: any = {};
-  locations: any;
+  locations: any[] = [];
   globalCompany: any;
-  companyName: any;
-  warrantyTypes: any;
+  companyName: string = '';
+  warrantyTypes: any[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   itemId: any;
-  responseAttributes: any = [];
-  authToken: any;
+  responseAttributes: any[] = [];
+  authToken: string | null = null;
   itemRank: any;
   isReqdAttr: any;
   reqAttrName: any;
   reqAttrValue: any;
-  reqAttrValidate: any;
+  reqAttrValidate: boolean = false;
   dateNow: Date = new Date();
   locationValue: any;
-  locationItems: TreeviewItem[];
-  itemTypeItems: TreeviewItem[];
-  config = TreeviewConfig.create({
+  locationItems: TreeviewItem[] = [];
+  itemTypeItems: TreeviewItem[] = [];
+  config: TreeviewConfig = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  images = [];
-  imageIndexOne = 0;
-  imageIndexTwo = 0;
+  images: any[] = [];
+  imageIndexOne: number = 0;
+  imageIndexTwo: number = 0;
   journals: any[] = [];
   imageSource: any;
-  itemAttachments: any = [];
+   itemMMS: boolean = false;
+  mmsData: any = {};
+  itemAttachments: any[] = [];
   iamgeconfig: ImageViewerConfig = {
     customBtns: [{ name: 'setAsDefault', icon: 'fa fa-sliders' }],
   };
-  @ViewChild('myModal') public myModal: ModalDirective;
-  loggedInuser: string;
-  modalRef: BsModalRef;
+  @ViewChild('myModal') public myModal!: ModalDirective;
+  loggedInuser: string = '';
+  modalRef!: BsModalRef;
   currentAttachmentId: any;
   itemTag: any;
-  any: any;
   itemType: any;
-  isDuplicateTag = false;
+  isDuplicateTag: boolean = false;
   currentItemTag: any;
-  helpFlag: any = false;
-  dismissible = true;
-  loader = false;
+  helpFlag: boolean = false;
+  dismissible: boolean = true;
+  loader: boolean = false;
+  highestRank: string | null = null;
+  get highestRankNum(): number {
+    return Number(this.highestRank ?? 0);
+  }
+
   constructor(
     private locationManagementService: LocationManagementService,
     private companyManagementService: CompanyManagementService,
@@ -98,72 +105,63 @@ export class EditItemComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private itemRepairItemsService: ItemRepairItemsService,
     private broadcasterService: BroadcasterService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private http: HttpClient
   ) {
     this.itemId = route.snapshot.params['id'];
     this.authToken = sessionStorage.getItem('auth_token');
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.userName = sessionStorage.getItem('userName');
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
       this.userName = sessionStorage.getItem('userName');
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
     this.itemRank = this.broadcasterService.itemRank;
+    this.highestRank = sessionStorage.getItem('highestRank');
     if (this.itemId) {
       this.getAllLocationsWithHierarchy();
       this.getJournalLog();
     }
   }
 
-  getAllLocationsWithHierarchy() {
-    this.locations = this.broadcasterService.locations;
-    if (this.locations && this.locations.length > 0) {
-      this.locationItems = [];
+  getAllLocationsWithHierarchy(): void {
+    this.locations = Array.isArray(this.broadcasterService.locations) ? this.broadcasterService.locations : [];
+    if (this.locations.length > 0) {
       this.locationItems = this.generateHierarchy(this.locations);
     }
     this.getItemDetails();
   }
 
-  generateHierarchy(locList: any[]) {
-    var items: TreeviewItem[] = [];
-    locList.forEach((loc) => {
-      var children: TreeviewItem[] = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: loc.name,
-          value: loc.locationid,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchy(locList: any[]): TreeviewItem[] {
+    return locList.map((loc) => {
+      const children = loc.parentResourceList && loc.parentResourceList.length > 0
+        ? this.generateHierarchy(loc.parentResourceList)
+        : [];
+      return new TreeviewItem({
+        text: loc.name,
+        value: loc.locationId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
-  getItemDetails() {
+  getItemDetails(): void {
     this.spinner.show();
-    this.loader = true;
     this.itemManagementService.getItemById(this.itemId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
         this.model = response;
         this.currentItemTag = this.model.tag;
         this.currentAttachmentId = this.model.defaultImageAttachmentId;
@@ -172,237 +170,216 @@ export class EditItemComponent implements OnInit {
           this.model.purchaseDate = new Date(this.model.purchaseDate);
         }
         if (this.model.warrantyExpiration) {
-          this.model.warrantyExpiration = new Date(
-            this.model.warrantyExpiration
-          );
+          this.model.warrantyExpiration = new Date(this.model.warrantyExpiration);
         }
-
         this.getAllItemTypes();
         this.getItemTypeAttributes(this.model.typeId);
+        this.getItemMMS();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
-  generateHierarchyForItemTypes(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchyForItemTypes(type.typeList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeid,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchyForItemTypes(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children = type.typeList && type.typeList.length > 0
+        ? this.generateHierarchyForItemTypes(type.typeList)
+        : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
-
-  checkItemTag() {
+   getItemMMS(): void {
+    this.spinner.show();
+    this.http.get(AppConfiguration.locationRestURL + `item/getItemMMS/${this.itemId}`).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        this.mmsData = response || {};
+        console.log('MMS Response:', response);
+      },
+      (error) => {
+        this.spinner.hide();
+        console.log('MMS Error:', error);
+        this.mmsData = {};
+      }
+    );
+  }
+  checkItemTag(): void {
     this.modalRef.hide();
-    this.itemManagementService
-      .checkTag(this.model.tag, this.model.typeId)
-      .subscribe(
-        (response: any) => {
-          this.isDuplicateTag = response.length > 0 ? true : false;
-        },
-        (error) => {}
-      );
+    this.itemManagementService.checkTag(this.model.tag, this.model.typeId).subscribe(
+      (response: any) => {
+        this.isDuplicateTag = Array.isArray(response) && response.length > 0;
+      }
+    );
   }
 
-  CancelItemTagChange() {
+  CancelItemTagChange(): void {
     this.model.tag = this.currentItemTag;
     this.modalRef.hide();
   }
 
-  getAllItemTypes() {
-    this.itemTypes = this.broadcasterService.itemTypeHierarchy;
-    if (this.itemTypes && this.itemTypes.length > 0) {
+  getAllItemTypes(): void {
+    this.itemTypes = Array.isArray(this.broadcasterService.itemTypeHierarchy) ? this.broadcasterService.itemTypeHierarchy : [];
+    if (this.itemTypes.length > 0) {
       this.itemTypeItems = this.generateHierarchyForItemTypes(this.itemTypes);
     }
     this.getItemStatus();
   }
 
-  getTypeName(typeId: any) {
-    let typeName;
+  getTypeName(typeId: any): string | undefined {
+    let typeName: string | undefined;
     this.itemTypes.forEach((type: any) => {
-        if (type.typeid == typeId) {
-          typeName = type.name;
-        } else if (type.typeList.length >= 1) {
-          type.typeList.forEach((type: any) => {
-            if (type.typeid == typeId) {
-              typeName = type.name;
-            }
-          });
-        }
+      if (type.typeId == typeId) {
+        typeName = type.name;
+      } else if (type.typeList && type.typeList.length >= 1) {
+        type.typeList.forEach((subType: any) => {
+          if (subType.typeId == typeId) {
+            typeName = subType.name;
+          }
+        });
       }
-    );
+    });
     return typeName;
   }
 
-  getItemStatus() {
-    this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
+  getItemStatus(): void {
+    this.itemStatusService.getAllItemStatuses(String(this.companyId)).subscribe(
       (response) => {
-        this.statuses = response;
+        this.statuses = Array.isArray(response) ? response : [];
         this.getWarrantyTypes();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
-  getWarrantyTypes() {
+  getWarrantyTypes(): void {
     this.spinner.show();
-    this.loader = true;
-    this.warrantyManagementService
-      .getAllWarrantyTypes(this.companyId)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.loader = false;
-          this.warrantyTypes = response;
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
+    this.warrantyManagementService.getAllWarrantyTypes(this.companyId).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.warrantyTypes = Array.isArray(response) ? response : [];
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  getJournalLog() {
+  getJournalLog(): void {
     this.itemManagementService.getJournalLog(this.itemId).subscribe(
       (response: any) => {
-        this.journals = response;
-        console.log('journallist=' + this.journals);
+        this.journals = Array.isArray(response) ? response : [];
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
-  getItemTypeAttributes(typeId: string) {
+  getItemTypeAttributes(typeId: string): void {
     if (typeId && typeId != '0') {
       this.spinner.show();
-      this.loader = true;
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
         (response) => {
-          this.typeAttributes = response;
-          if (
-            this.model.attributeValues &&
-            this.model.attributeValues.length > 0
-          ) {
+          this.typeAttributes = Array.isArray(response) ? response : [];
+          if (this.model.attributeValues && this.model.attributeValues.length > 0) {
             this.typeAttributes.forEach((attr: { name: any; value: any }) => {
-              this.model.attributeValues.forEach(
-                (ansAttr: { name: any; value: any }) => {
-                  if (attr.name == ansAttr.name) {
-                    attr.value = ansAttr.value;
-                  }
+              this.model.attributeValues.forEach((ansAttr: { name: any; value: any }) => {
+                if (attr.name == ansAttr.name) {
+                  attr.value = ansAttr.value;
                 }
-              );
+              });
             });
           }
           this.spinner.hide();
-          this.loader = false;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
   }
 
-  updateItem() {
+  updateItem(): void {
     if (
-      this.model.typeId && this.model.typeId != 0 && this.model.tag && this.model.tag != '' && !this.isDuplicateTag
+      this.model.typeId &&
+      this.model.typeId != 0 &&
+      this.model.tag &&
+      this.model.tag != '' &&
+      !this.isDuplicateTag
     ) {
-      this.item.attributevalues = [];
+      this.item.attributeValues = [];
       this.typeAttributes.forEach((attr: any) => {
-          this.item.attributevalues.push({
-            attributename: attr,
-            entityid: this.itemId,
-            entitytypeid: attr.type.entitytypeid,
-            lastmodifiedby: this.userName,
-            value: attr.value != null ? attr.value : '',
-          });
-        }
-      );
+        this.item.attributeValues.push({
+          attributeName: attr,
+          entityId: this.itemId,
+          entitytypeId: attr.type.entitytypeId,
+          lastModifiedBy: this.userName ?? '',
+          value: attr.value != null ? attr.value : '',
+        });
+      });
 
       this.reqAttrValidate = false;
-      this.item.attributevalues.forEach(
-        (attr: {
-          attributename: { isrequired: any; name: any };
-          value: any;
-        }) => {
-          this.isReqdAttr = attr.attributename.isrequired;
-          this.reqAttrName = attr.attributename.name;
+      this.item.attributeValues.forEach(
+        (attr: { attributeName: { isRequired: any; name: any }; value: any }) => {
+          this.isReqdAttr = attr.attributeName.isRequired;
+          this.reqAttrName = attr.attributeName.name;
           this.reqAttrValue = attr.value;
           if (
-            this.isReqdAttr == true &&
+            this.isReqdAttr === true &&
             (isUndefined(this.reqAttrValue) ||
               isNull(this.reqAttrValue) ||
-              this.reqAttrValue == '')
+              this.reqAttrValue === '')
           ) {
             this.reqAttrValidate = true;
-            console.log('attribute check is' + this.index);
             return;
           }
-          console.log('attribute isrequired value is' + this.isReqdAttr);
-          console.log('attribute name is' + this.reqAttrName);
-          console.log('attribute name value is' + this.reqAttrValue);
-          console.log('validate' + this.reqAttrValidate);
         }
       );
-      var req = {
-        attributevalues: this.item.attributevalues ? this.item.attributevalues : null,
-        defaultimageattachmentid: this.model.defaultImageAttachmentId,
-        description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.desiredSpareRatio ? this.model.desiredSpareRatio : 0,
-        inserviceon: this.model.inServiceOn,
-        isinrepair: false,
-        isstale: false,
-        itemid: this.itemId,
-        lastmodifiedby: this.userName,
-        locationid: this.model.locationId ? this.model.locationId : 0,
-        manufacturerid: null,
-        meantimebetweenservice: this.model.meanTimeBetweenService ? this.model.meanTimeBetweenService : 0,
-        modelnumber: 'string',
-        name: this.model.name ? this.model.name : '',
-        purchasedate: this.model.purchaseDate ? this.model.purchaseDate : '',
-        purchaseprice: this.model.purchasePrice ? this.model.purchasePrice : 0,
-        repairqual: 0,
-        serialnumber: '',
-        statusid: this.model.statusId ? this.model.statusId : 0,
-        statusname: this.model.status ? this.model.status : 0,
-        companyid: this.companyId,
-        tag: this.model.tag ? this.model.tag : '',
-        typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyExpiration ? this.model.warrantyExpiration : '',
-        warrantytypeid: this.model.warrantyTypeId ? this.model.warrantyTypeId : 0,
-        userid: sessionStorage.getItem('userId'),
+      const req = {
+        attributeValues: this.item.attributeValues ?? null,
+        defaultImageAttachmentId: this.model.defaultImageAttachmentId,
+        description: this.model.description ?? '',
+        desiredSpareRatio: this.model.desiredSpareRatio ?? 0,
+        inServiceOn: this.model.inServiceOn,
+        isInRepair: false,
+        isStale: false,
+        itemId: this.itemId,
+        lastModifiedBy: this.userName ?? '',
+        locationId: this.model.locationId ?? 0,
+        manufacturerId: null,
+        meanTimeBetweenService: this.model.meanTimeBetweenService ?? 0,
+        modelNumber: 'string',
+        name: this.model.name ?? '',
+        purchaseDate: this.model.purchaseDate ?? '',
+        purchasePrice: this.model.purchasePrice ?? 0,
+        repairQual: 0,
+        serialNumber: '',
+        statusId: this.model.statusId ?? 0,
+        statusName: this.model.status ?? 0,
+        companyId: this.companyId,
+        tag: this.model.tag ?? '',
+        typeId: this.model.typeId ?? 0,
+        warrantyExpiration: this.model.warrantyExpiration ?? '',
+        warrantyTypeId: this.model.warrantyTypeId ?? 0,
+        userId: sessionStorage.getItem('userId'),
         typeName: this.model.typeName,
         locationName: this.model.locationName,
         updatedDate: new Date().toISOString(),
       };
-      if (this.reqAttrValidate == false) {
+      if (!this.reqAttrValidate) {
         this.spinner.show();
-        this.loader = true;
         this.itemManagementService.updateItem(req).subscribe(
           (response) => {
             this.spinner.hide();
-            this.loader = false;
             this.index = 1;
             if (this.model.tag != this.currentItemTag) {
               this.broadcasterService.currentItemTag = this.model.tag;
@@ -411,12 +388,11 @@ export class EditItemComponent implements OnInit {
             setTimeout(() => {
               this.index = 0;
             }, 7000);
-            this.router.navigate(['/items/viewItem/' + req.itemid]);
+            this.router.navigate(['/items/viewItem/' + req.itemId]);
             window.scroll(0, 0);
           },
-          (error) => {
+          () => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {
@@ -429,60 +405,49 @@ export class EditItemComponent implements OnInit {
     }
   }
 
-  openImage() {
+  openImage(): void {
     this.getAttachments();
   }
 
-  handleEvent(event: any) {
-    console.log('run print logic');
+  handleEvent(event: any): void {
     let image: any = this.images[event.imageIndex];
-
     this.itemAttachmentsService
       .updateItemDefaultImage(
         this.itemId,
         image.substring(image.lastIndexOf('/') + 1, image.lastIndexOf('?'))
       )
       .subscribe(
-        (response) => {
-          alert('Image successfully updated ');
+        () => {
+          alert('Image successfully updated');
           this.refreshCall();
-        },
-        (error) => {}
+        }
       );
     this.myModal.hide();
   }
 
-  refreshCall() {
+  refreshCall(): void {
     this.spinner.show();
-    this.loader = true;
-    this.itemManagementService
-      .getItemById(this.itemId)
-      .subscribe((response) => {
-        this.spinner.hide();
-        this.loader = false;
-
-        this.model = response;
-
-        if (this.model.purchaseDate) {
-          this.model.purchaseDate = new Date(this.model.purchaseDate);
-        }
-        if (this.model.warrantyExpiration) {
-          this.model.warrantyExpiration = new Date(
-            this.model.warrantyExpiration
-          );
-        }
-      });
+    this.itemManagementService.getItemById(this.itemId).subscribe((response) => {
+      this.spinner.hide();
+      this.model = response;
+      if (this.model.purchaseDate) {
+        this.model.purchaseDate = new Date(this.model.purchaseDate);
+      }
+      if (this.model.warrantyExpiration) {
+        this.model.warrantyExpiration = new Date(this.model.warrantyExpiration);
+      }
+    });
   }
 
-  back() {
+  back(): void {
     this._location.back();
   }
 
-  openModal(template: TemplateRef<any>, id: any) {
+  openModal(template: TemplateRef<any>, id: any): void {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  openModalForChangeTag(template: TemplateRef<any>) {
+  openModalForChangeTag(template: TemplateRef<any>): void {
     if (this.model.tag != this.currentItemTag) {
       this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
     } else {
@@ -493,19 +458,17 @@ export class EditItemComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
     this.itemManagementService
       .removeItem(
         this.itemId,
         this.companyId,
-        this.userName,
+        this.userName ?? '',
         this.itemTag,
         this.itemType
       )
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
           this.modalRef.hide();
           this.itemManagementService.deleteFlag = 1;
           this.itemManagementService.itemSearchResults = [];
@@ -515,9 +478,8 @@ export class EditItemComponent implements OnInit {
           this.itemManagementService.setSearchedItemStatusId(0);
           this.router.navigate(['/items/lists/all']);
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -527,37 +489,35 @@ export class EditItemComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  openMoreChanges() {
+  openMoreChanges(): void {
     this.router.navigate(['/items/changeLog/' + this.itemId + '/' + 0]);
   }
 
-  GoToWareHousetag() {
+  GoToWareHousetag(): void {
     this.itemManagementService.item = this.model;
-
     this.router.navigate(['/items/warehousetag/' + this.itemId]);
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 
-  getAttachments() {
+  getAttachments(): void {
     this.spinner.show();
-    this.loader = true;
     this.itemAttachmentsService.getAllItemPictures(this.itemId).subscribe(
       (response: any) => {
-        this.itemAttachments = response;
-        this.images = response
-          .filter((e: { contenttype: string | string[] }) =>
-            e.contenttype.includes('image')
+        this.itemAttachments = Array.isArray(response) ? response : [];
+        this.images = this.itemAttachments
+          .filter((e: { contentType: string | string[] }) =>
+            e.contentType.includes('image')
           )
           .map(
-            (e: { isNew: any; attachmentFile: any; attachmentid: string }) => {
+            (e: { isNew: any; attachmentFile: any; attachmentId: string }) => {
               if (e.isNew)
                 return this.sanitizer.bypassSecurityTrustResourceUrl(
                   `data:image/png;base64, ${e.attachmentFile}`
@@ -565,51 +525,44 @@ export class EditItemComponent implements OnInit {
               else
                 return (
                   'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-                  e.attachmentid +
+                  e.attachmentId +
                   '?access_token=' +
                   this.authToken
                 );
             }
           );
         this.spinner.hide();
-        this.loader = false;
         this.myModal.show();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
-  getItemDefaultImage() {
+  getItemDefaultImage(): void {
     this.spinner.show();
-    this.loader = true;
-    this.itemAttachmentsService
-      .getItemDocuments(this.currentAttachmentId)
-      .subscribe(
-        (response: any) => {
-          this.spinner.hide();
-          this.loader = false;
-          if (response.isNew)
-            this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
-              `data:image/png;base64, ${response.attachmentFile}`
-            );
-          else
-            this.imageSource =
-              'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-              response.attachmentid +
-              '?access_token=' +
-              this.authToken;
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
+    this.itemAttachmentsService.getItemDocuments(this.currentAttachmentId).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        if (response.isNew)
+          this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
+            `data:image/png;base64, ${response.attachmentFile}`
+          );
+        else
+          this.imageSource =
+            'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
+            response.attachmentId +
+            '?access_token=' +
+            this.authToken;
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  goToItemService() {
+  goToItemService(): void {
     this.itemManagementService.item = this.model;
     this.router.navigate(['/items/itemService/' + this.itemId]);
   }

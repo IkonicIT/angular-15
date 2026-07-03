@@ -12,11 +12,14 @@ import { BroadcasterService } from '../../services/broadcaster.service';
 import { ReportsService } from '../../services/reports.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './full-layout.component.html',
   styleUrls: ['./full-layout.component.css'],
 })
+
+
 export class FullLayoutComponent implements OnInit {
   noLogo: boolean;
   imageSource: any;
@@ -31,10 +34,10 @@ export class FullLayoutComponent implements OnInit {
   suggessions: any[] = [];
   value: any;
   items: TreeviewItem[];
-  config = TreeviewConfig.create({
-    hasFilter: false,
-    hasCollapseExpand: false,
-  });
+ config = TreeviewConfig.create({
+  hasFilter: true,              
+  hasCollapseExpand: true,    
+});
   authToken: any;
   userSecurityRoles: any = [];
   rolesListForLoggedInUser: any = [];
@@ -50,6 +53,7 @@ export class FullLayoutComponent implements OnInit {
     searchOnKey: 'name',
     search: true,
     height: '500px',
+    width: 'auto',
     placeholder: 'Select Company',
     customComparator: this.orderData,
     limitTo: 0,
@@ -67,8 +71,7 @@ export class FullLayoutComponent implements OnInit {
   companyId: any;
   masterSearchFlag: any = 'false';
   isOwnerAminReadOnly: any;
-  loader = false;
-
+  isHierarchyLoading = false;
   public constructor(
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
@@ -82,8 +85,10 @@ export class FullLayoutComponent implements OnInit {
     private reportsService: ReportsService,
     private sanitizer: DomSanitizer
   ) {
+
+  
     this.spinner.show();
-    this.loader = true;
+
     this.companyManagementService.companyListChange.subscribe((value) => {
       this.broadcasterService.selectedCompanyId = 0;
       this.router.navigate(['']);
@@ -91,8 +96,8 @@ export class FullLayoutComponent implements OnInit {
     this.companyManagementService.switchCompanyChange.subscribe((value) => {
       this.companyList = this.companyManagementService.getGlobalCompanyList();
       this.companyId = this.broadcasterService.switchCompanyId;
-      this.companyList.forEach((company: { companyid: any }) => {
-        if (company.companyid == this.companyId) {
+      this.companyList.forEach((company: { companyId: any }) => {
+        if (company.companyId == this.companyId) {
           this.userSelectedCompany = company;
         }
       });
@@ -112,14 +117,15 @@ export class FullLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.items = [
-      new TreeviewItem({ text: 'All', value: 'All' }), 
-    ];
+    this.items = [new TreeviewItem({ text: 'All', value: 'All' })];
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.isOwnerAminReadOnly = sessionStorage.getItem('IsOwnerAdminReadOnly');
     this.spinner.show();
-    this.loader = true
     this.authToken = sessionStorage.getItem('auth_token');
+    this.locationManagementService.hierarchyLoading$
+    .subscribe(status => {
+      this.isHierarchyLoading = status;
+    });
   }
 
   getSuggessions(tag: string) {
@@ -129,6 +135,8 @@ export class FullLayoutComponent implements OnInit {
         this.suggessions = response;
       });
   }
+
+  
 
   getUserAccessCompanies() {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
@@ -141,7 +149,7 @@ export class FullLayoutComponent implements OnInit {
             !this.userSelectedCompany.name ||
             this.userSelectedCompany.name == undefined
           ) {
-            this.userSelectedCompany = { name: 'Select Company', companyid: 0 };
+            this.userSelectedCompany = { name: 'Select Company', companyId: 0 };
           }
           this.companyManagementService.setGlobalCompanyList(
             this.userCompanies
@@ -151,23 +159,18 @@ export class FullLayoutComponent implements OnInit {
             this.userSelectedCompany
           );
           this.spinner.hide();
-          this.loader = false
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
     } else {
       this.spinner.show();
-      this.loader = true
       this.loggedInuser = sessionStorage.getItem('userId');
       if (this.loggedInuser == null) {
         this.router.navigate(['/login']);
         return;
       }
-      console.log('logged in user is' + this.loggedInuser);
-      // this.loggedInuser= '99B27614-A682-4BA3-B9CE-7E52CFA659D7';  if user id null uncomment
       this.companyManagementService
         .getCompanyNames(this.loggedInuser)
         .subscribe(
@@ -175,7 +178,7 @@ export class FullLayoutComponent implements OnInit {
             this.userCompanies = this.orderPipe.transform(response, 'name');
             if (this.userCompanies.length == 1) {
               this.userSelectedCompany1 = this.userCompanies[0].name;
-              this.selectRootCompany(this.userCompanies[0]);
+              this.selectRootCompany({ value: this.userCompanies[0] });
               this.companyManagementService.setGlobalCompany(
                 this.userCompanies[0]
               );
@@ -183,7 +186,7 @@ export class FullLayoutComponent implements OnInit {
               if (!this.userSelectedCompany.name) {
                 this.userSelectedCompany = {
                   name: 'Select Company',
-                  companyid: 0,
+                  companyId: 0,
                 };
               }
               this.selectRootCompany(this.userSelectedCompany);
@@ -191,18 +194,15 @@ export class FullLayoutComponent implements OnInit {
                 this.userSelectedCompany
               );
             }
-            // this.userCompanies.unshift({"companyid":0,"name":"SELECT COMPANY","filePath":null})
 
             this.companyManagementService.setGlobalCompanyList(
               this.userCompanies
             );
 
             this.spinner.hide();
-            this.loader = false;
           },
           (error) => {
             this.spinner.hide();
-            this.loader = false
           }
         );
       this.companyManagementService.setGlobalCompany(this.userCompanies[0]);
@@ -220,23 +220,23 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setCompletedRepairs([]);
     this.itemManagementService.setInCompletedRepairs([]);
     this.itemManagementService.itemModel = {};
-    this.itemManagementService.itemrepairnotesrfqModel = {};
+    this.itemManagementService.itemrepairNotesrfqModel = {};
     this.broadcasterService.locations = [];
-    if (userSelectedCompany.companyid == 0) {
+    if (userSelectedCompany.companyId == 0) {
       this.masterSearchFlag = 'true';
       sessionStorage.removeItem('currentRole');
       sessionStorage.removeItem('highestRank');
       this.broadcasterService.currentCompany = 'selectcompany';
-      this.userSelectedCompany = { name: 'Select Company', companyid: 0 };
-      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyid;
+      this.userSelectedCompany = { name: 'Select Company', companyId: 0 };
+      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyId;
       this.broadcasterService.broadcast('refreshNavBar', true);
       this.broadcasterService.broadcast(
         'piechart',
-        userSelectedCompany.companyid
+        userSelectedCompany.companyId
       );
       this.router.navigate(['/dashboard']);
     } else if (this.isOwnerAminReadOnly == 'true') {
-      this.getCompanyLogo(userSelectedCompany.companyid);
+      this.getCompanyLogo(userSelectedCompany.companyId);
       this.masterSearchFlag = 'false';
       this.broadcasterService.currentCompany = 'nonselectcompany';
       this.broadcasterService.locations = [];
@@ -246,11 +246,10 @@ export class FullLayoutComponent implements OnInit {
       this.userName = sessionStorage.getItem('userName');
       this.locationManagementService.setLocations([]);
       this.spinner.show();
-      this.loader = true;
       this.companyManagementService.setGlobalCompany(userSelectedCompany);
-      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyid;
+      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyId;
       this.itemTypesService
-        .getAllItemTypesWithHierarchy(userSelectedCompany.companyid)
+        .getAllItemTypesWithHierarchy(userSelectedCompany.companyId)
         .subscribe((response) => {
           this.broadcasterService.itemTypeHierarchy = response;
           this.currentRole = 'OwnerAdminReadOnly';
@@ -261,11 +260,11 @@ export class FullLayoutComponent implements OnInit {
           sessionStorage.setItem('currentRole', this.currentRole);
           sessionStorage.setItem('highestRank', this.highestRank);
 
-          console.log('currentRole is' + this.currentRole);
-          console.log('highestRank is' + this.highestRank);
+          
+          
           this.broadcasterService.broadcast(
             'piechart',
-            userSelectedCompany.companyid
+            userSelectedCompany.companyId
           );
           this.broadcasterService.broadcast('refreshNavBar', true);
 
@@ -275,11 +274,10 @@ export class FullLayoutComponent implements OnInit {
           }
           this.itemManagementService.setItemTypes(response);
           this.spinner.hide();
-          this.loader = false;
           this.router.navigate(['/dashboard']);
         });
     } else {
-      this.getCompanyLogo(userSelectedCompany.companyid);
+      this.getCompanyLogo(userSelectedCompany.companyId);
       this.masterSearchFlag = 'false';
       this.broadcasterService.currentCompany = 'nonselectcompany';
       this.broadcasterService.locations = [];
@@ -289,11 +287,10 @@ export class FullLayoutComponent implements OnInit {
       this.userName = sessionStorage.getItem('userName');
       this.locationManagementService.setLocations([]);
       this.spinner.show();
-      this.loader = true;
       this.companyManagementService.setGlobalCompany(userSelectedCompany);
-      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyid;
+      this.broadcasterService.selectedCompanyId = userSelectedCompany.companyId;
       this.itemTypesService
-        .getAllItemTypesWithHierarchy(userSelectedCompany.companyid)
+        .getAllItemTypesWithHierarchy(userSelectedCompany.companyId)
         .subscribe((response) => {
           this.broadcasterService.itemTypeHierarchy = response;
           this.highestRank = 0;
@@ -304,11 +301,11 @@ export class FullLayoutComponent implements OnInit {
           sessionStorage.setItem('currentRole', this.currentRole);
           sessionStorage.setItem('highestRank', this.highestRank);
 
-          console.log('currentRole is' + this.currentRole);
-          console.log('highestRank is' + this.highestRank);
+          
+          
           this.broadcasterService.broadcast(
             'piechart',
-            userSelectedCompany.companyid
+            userSelectedCompany.companyId
           );
           this.broadcasterService.broadcast('refreshNavBar', true);
 
@@ -318,17 +315,15 @@ export class FullLayoutComponent implements OnInit {
           }
           this.itemManagementService.setItemTypes(response);
           this.spinner.hide();
-          this.loader = false;
           this.router.navigate(['/dashboard']);
         });
     }
   }
 
-  getCompanyLogo(companyid: any) {
+  getCompanyLogo(companyId: any) {
     this.noLogo = false;
     this.spinner.show();
-    this.loader = true
-    this.companyManagementService.getLogo(companyid).subscribe(
+    this.companyManagementService.getLogo(companyId).subscribe(
       (response: any) => {
         if (response.logo != null)
           this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -336,121 +331,97 @@ export class FullLayoutComponent implements OnInit {
           );
         else this.noLogo = true;
         this.spinner.hide();
-        this.loader = false
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
 
-  selectRootCompany(userSelectedCompany: any) {
-    let userSelectedCompany1 = userSelectedCompany.value;
-    this.itemManagementService.setSearchedItemTag('');
-    this.itemManagementService.setSearchedItemTypeId(0);
-    this.itemManagementService.setItemSearchResults([]);
-    this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
-    this.reportsService.setInserviceVsSpareReport({});
-    this.reportsService.setserviceReport([]);
-    this.itemManagementService.setAdvancedItemSearchResults([]);
-    this.itemManagementService.itemModel = {};
-    this.itemManagementService.itemrepairnotesrfqModel = {};
-    this.itemManagementService.setCompletedRepairs([]);
-    this.itemManagementService.setInCompletedRepairs([]);
-    this.broadcasterService.locations = [];
-    if (typeof userSelectedCompany1 == 'undefined') {
-      userSelectedCompany1 = { name: 'Select Company', companyid: 0 };
-    }
+ selectRootCompany(userSelectedCompany: any) {
+  let selectedCompany = userSelectedCompany?.value || userSelectedCompany;
 
-    if (this.isOwnerAdmin == 'true' || this.isOwnerAminReadOnly == 'true') {
-      this.selectRootCompanyForAdmin(userSelectedCompany1);
-    } else {
-      if (userSelectedCompany1.companyid == 0) {
-        sessionStorage.removeItem('currentRole');
-        sessionStorage.removeItem('highestRank');
-        this.broadcasterService.currentCompany = 'selectcompany';
-        this.userSelectedCompany = { name: 'Select Company', companyid: 0 };
-        this.broadcasterService.selectedCompanyId =
-          userSelectedCompany1.companyid;
-        this.broadcasterService.broadcast('refreshNavBar', true);
-        this.broadcasterService.broadcast(
-          'piechart',
-          userSelectedCompany1.companyid
-        );
-        this.router.navigate(['/dashboard']);
-        return true;
-      }
-      this.getCompanyLogo(userSelectedCompany1.companyid);
-      this.broadcasterService.currentCompany = 'nonselectcompany';
-      this.broadcasterService.locations = [];
-      this.itemTag = null;
-      this.userSelectedCompany = userSelectedCompany1;
-      this.authToken = sessionStorage.getItem('auth_token');
-      this.userName = sessionStorage.getItem('userName');
-      this.locationManagementService.setLocations([]);
-      this.spinner.show();
-      this.loader = true;
-      this.companyManagementService.setGlobalCompany(userSelectedCompany1);
-      this.broadcasterService.selectedCompanyId =
-        userSelectedCompany1.companyid;
-      this.itemTypesService
-        .getAllItemTypesWithHierarchy(userSelectedCompany1.companyid)
-        .subscribe((response) => {
-          this.broadcasterService.itemTypeHierarchy = response;
-          this.highestRank = 0;
-          this.currentRole = '';
-          this.userId = sessionStorage.getItem('userId');
-          this.loginService
-            .getRolesForALoggedInUser(
-              this.userName,
-              userSelectedCompany1.companyid
-            )
-            .subscribe((response: any) => {
-              this.userSecurityRoles = response;
-              this.broadcasterService.userRoles = this.userSecurityRoles;
-              if (this.userSecurityRoles && this.userSecurityRoles.length > 0) {
-                this.userSecurityRoles.forEach((userRolesObj: any) => {
-                  this.rolesListForLoggedInUser = userRolesObj.roleName;
-                  if (true) {
-                    if (userRolesObj.rank >= this.highestRank) {
-                      this.highestRank = userRolesObj.rank;
-                      this.currentRole = userRolesObj.roleName;
-                    } else {
-                    }
-
-                    sessionStorage.setItem('currentRole', this.currentRole);
-                    sessionStorage.setItem('highestRank', this.highestRank);
-
-                    console.log('currentRole is' + this.currentRole);
-                    console.log('highestRank is' + this.highestRank);
-                  }
-                });
-                this.broadcasterService.broadcast(
-                  'piechart',
-                  userSelectedCompany.companyid
-                );
-                setTimeout(() => {
-                  this.broadcasterService.broadcast('refreshNavBar', true);
-                }, 1000);
-              } else {
-              }
-            });
-
-          this.itemTypes = response;
-          if (this.itemTypes && this.itemTypes.length > 0) {
-            this.items = this.generateHierarchy(this.itemTypes);
-          }
-          this.itemManagementService.setItemTypes(response);
-          this.spinner.hide();
-          this.loader = false;
-          this.router.navigate(['/dashboard']);
-        });
-    }
+  if (!selectedCompany || typeof selectedCompany.companyId === 'undefined') {
+    selectedCompany = { name: 'Select Company', companyId: 0 };
+  }
+  this.itemManagementService.setSearchedItemTag('');
+  this.itemManagementService.setSearchedItemTypeId(0);
+  this.itemManagementService.setItemSearchResults([]);
+  this.itemManagementService.setAdvancedItemSearchResults([]);
+  this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
+  this.reportsService.setInserviceVsSpareReport({});
+  this.reportsService.setserviceReport([]);
+  this.itemManagementService.itemModel = {};
+  this.itemManagementService.itemrepairNotesrfqModel = {};
+  this.itemManagementService.setCompletedRepairs([]);
+  this.itemManagementService.setInCompletedRepairs([]);
+  this.broadcasterService.locations = [];
+  if (this.isOwnerAdmin === 'true' || this.isOwnerAminReadOnly === 'true') {
+    this.selectRootCompanyForAdmin(selectedCompany);
+    return;
+  }
+  if (selectedCompany.companyId === 0) {
+    sessionStorage.removeItem('currentRole');
+    sessionStorage.removeItem('highestRank');
+    this.broadcasterService.currentCompany = 'selectcompany';
+    this.userSelectedCompany = { name: 'Select Company', companyId: 0 };
+    this.broadcasterService.selectedCompanyId = 0;
+    this.broadcasterService.broadcast('refreshNavBar', true);
+    this.broadcasterService.broadcast('piechart', 0);
+    this.router.navigate(['/dashboard']);
     return;
   }
 
-  generateHierarchy(typeList: any[]) {
+  this.getCompanyLogo(selectedCompany.companyId);
+  this.userSelectedCompany = selectedCompany;
+  this.broadcasterService.currentCompany = 'nonselectcompany';
+  this.authToken = sessionStorage.getItem('auth_token');
+  this.userName = sessionStorage.getItem('userName');
+  this.locationManagementService.setLocations([]);
+  this.spinner.show();
+  this.companyManagementService.setGlobalCompany(selectedCompany);
+  this.broadcasterService.selectedCompanyId = selectedCompany.companyId;
+
+  this.itemTypesService.getAllItemTypesWithHierarchy(selectedCompany.companyId)
+    .subscribe((response) => {
+      this.broadcasterService.itemTypeHierarchy = response;
+      this.itemTypes = response;
+      if (this.itemTypes?.length > 0) {
+        this.items = this.generateHierarchy(this.itemTypes);
+      }
+      this.itemManagementService.setItemTypes(response);
+
+      // Fetch roles for user
+      this.userId = sessionStorage.getItem('userId');
+      this.loginService.getRolesForALoggedInUser(this.userName, selectedCompany.companyId)
+        .subscribe((roles: any[]) => {
+          this.userSecurityRoles = roles;
+          this.broadcasterService.userRoles = roles;
+
+          this.highestRank = 0;
+          this.currentRole = '';
+
+          roles.forEach((r) => {
+            if (r.rank >= this.highestRank) {
+              this.highestRank = r.rank;
+              this.currentRole = r.roleName;
+            }
+          });
+
+          sessionStorage.setItem('currentRole', this.currentRole);
+          sessionStorage.setItem('highestRank', this.highestRank.toString());
+
+          this.broadcasterService.broadcast('piechart', selectedCompany.companyId);
+          setTimeout(() => {
+            this.broadcasterService.broadcast('refreshNavBar', true);
+          }, 500);
+        });
+
+      this.spinner.hide();
+      this.router.navigate(['/dashboard']);
+    });
+}
+ generateHierarchy(typeList: any[]) {
     let items: TreeviewItem[] = [];
     typeList.forEach((type) => {
       var children: TreeviewItem[] = [];
@@ -460,7 +431,7 @@ export class FullLayoutComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -474,12 +445,11 @@ export class FullLayoutComponent implements OnInit {
     this.userId = sessionStorage.getItem('userId');
     this.loginService.getProfileByUserId(this.userId).subscribe(
       (response) => {
-        this.broadcasterService.isOwnerAdmin = response.isowneradmin;
-        console.log(this.broadcasterService.isOwnerAdmin);
+        this.broadcasterService.isOwnerAdmin = response.isOwnerAdmin;
+      
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
@@ -492,23 +462,22 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setSearchedItemTag(this.itemTag);
     this.itemManagementService.setItemSearchResults([]);
     this.itemManagementService.setSearchedItemTypeId(this.selectedType);
-    // tslint:disable-next-line: triple-equals
     this.value = null;
     this.itemTag = '';
     if (this.router.url != '/items/lists/all') {
       this.router.navigate(['/items/lists/all']);
       this.spinner.show();
-      this.loader = true;      
     } else {
       this.broadcasterService.broadcast('refreshlist', true);
     }
   }
 
   navigateToAdvanceItemSearch() {
+    (document.activeElement as HTMLElement)?.blur();
     this.itemManagementService.setAdvancedItemSearchRepaiNotesSearchresults({});
     this.itemManagementService.setAdvancedItemSearchResults([]);
     this.itemManagementService.itemModel = {};
-    this.itemManagementService.itemrepairnotesrfqModel = {};
+    this.itemManagementService.itemrepairNotesrfqModel = {};
     this.router.navigate(['/items/advancedSearch']);
   }
 
@@ -520,5 +489,11 @@ export class FullLayoutComponent implements OnInit {
     this.itemManagementService.setItemMasterSearchResults([]);
     this.itemManagementService.masterSearchModel = {};
     this.router.navigate(['/items/masterSearch']);
+  }
+
+  navigateToMasterPieCharts() {
+    this.itemManagementService.setItemMasterSearchResults([]);
+    this.itemManagementService.masterSearchModel = {};
+    this.router.navigate(['/masterpiecharts']);
   }
 }

@@ -12,17 +12,12 @@
   border-radius: 1rem !important;
 }
 
-// temp fix for Vue & React
-
-// Open state for the dropdown
 .open, .show {
-  // Remove the outline when :focus is triggered
   > a {
     outline: 0;
   }
 }
 
-// navbar dropdown fix
 .navbar .dropdown-toggle {
   @extend .nav-link;
 

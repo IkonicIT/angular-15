@@ -34,48 +34,35 @@ export class LoginService {
   }
 
   loginAuth(obj: any): Observable<any> {
-    this.headers = new HttpHeaders();
-    this.headers = this.headers.append(
-      'Authorization',
-      'Basic ' + window.btoa(obj.userName + ':' + obj.password)
-    );
-    this.headers = this.headers.append(
-      'Content-Type',
-      'application/x-www-form-urlencoded'
-    );
-    this.httpOptions = {
-      headers: this.headers,
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    const body = {
+      username : obj.userName,
+      password : obj.password
     };
-    let params = new HttpParams()
-      .set('grant_type', 'password')
-      .set('username', obj.userName)
-      .set('password', obj.password)
-      .set('client_id', 'clientid123');
     return this.http
-      .post(this.serviceURL, params.toString(), this.httpOptions)
+      .post(`${this.serviceURL}`, body, { headers })
       .pipe(catchError(this.handleError));
   }
 
   getUserIdByName(userName: string): Observable<any> {
     this.authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
+    console.log(this.authToken);
     return this.http
-      .get(this.locationRestURL + 'users/' + userName + '?access_token=' + this.authToken)
+      .get(this.locationRestURL + 'users/' + userName)
       .pipe(catchError(this.handleError));
   }
 
   getProfileByUserId(userId: string): Observable<any> {
     this.authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
     return this.http
-      .get(this.locationRestURL + 'profile/user/' + userId + '?access_token=' + this.authToken)
+      .get(this.locationRestURL + 'profile/user/' + userId)
       .pipe(catchError(this.handleError));
   }
 
-  getRolesForALoggedInUser(userName: string, companyid: string): Observable<any> {
+  getRolesForALoggedInUser(userName: string, companyId: string): Observable<any> {
     this.authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
     return this.http
-      .get(this.locationRestURL + 'userSecurity/getAllRolesForLoggedInUser/' + userName + '/' + companyid + '?access_token=' +
-          this.authToken
-      )
+      .get(this.locationRestURL + 'userSecurity/getAllRolesForLoggedInUser/' + userName + '/' + companyId)
       .pipe(catchError(this.handleError));
   }
 }

@@ -6,31 +6,26 @@
           <button
             type="button"
             (click)="print()"
-            data-bs-placement="bottom"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-save"
             data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
+            class="btn btn-outline-danger btn-sm btn-top btn-save"
             data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            class="help-box p-2 mb-2"
           >
             Note: Mandatory Fields are required.<br />
             * To change profile:<br />
@@ -40,84 +35,72 @@
             1.Click the 'ChangePassword' button.
           </div>
         </div>
+
         <div class="card-body mobile-padding">
           <div class="modal-body">
             <div class="col-sm-12 mobile-padding col-padding">
               <div class="card">
-                <div class="card-header">
-                  <alert
-                    *ngIf="index > 0"
-                    type="success"
-                    [dismissible]="dismissible"
-                  >
-                    Profile of "{{ username }}" updated successfully.
-                  </alert>
-                  <alert
-                    type="danger"
-                    *ngIf="index == -1"
-                    [dismissible]="dismissible"
-                  >
-                    Please Enter Required Fields. <br />
-                    ( username and Email are required )
-                  </alert>
-                  <strong class="btn-right">My Profile</strong>
+                <div class="card-header d-flex align-items-center justify-content-between">
+                  <div class="flex-grow-1">
+                    <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
+                      Profile of "{{ userName }}" updated successfully.
+                    </alert>
+                    <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
+                      Please Enter Required Fields. <br />
+                      ( userName and Email are required )
+                    </alert>
+                    <strong class="btn-right">My Profile</strong>
+                  </div>
                   <button
                     type="button"
-                    class="btn btn-primary float-right"
+                    class="btn btn-primary btn-save"
                     [routerLink]="['../changePassword']"
-                    data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
                     title="Change Password"
-                    placement="top"
                   >
                     Change Password
                   </button>
                 </div>
-                <form
-                  name="form"
-                  (ngSubmit)="saveProfile(0, 0, 0)"
-                  #f="ngForm"
-                  novalidate
-                >
+
+                <form name="form" (ngSubmit)="saveProfile(0, 0, 0)" #f="ngForm" novalidate>
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-6">
-                        <label for="lType">User Name</label
-                        ><strong class="text-danger">*</strong>
+                        <label for="lType">User Name</label>
+                        <strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.username"
+                          [(ngModel)]="model.userName"
                           name="lType"
-                          #name="ngModel"
                           id="lType"
                           placeholder="Enter User Name"
                           required
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="email">E-mail</label
-                        ><strong class="text-danger">*</strong>
+                        <label for="email">E-mail</label>
+                        <strong class="text-danger">*</strong>
                         <input
                           type="text"
                           class="form-control"
                           [(ngModel)]="model.email"
                           name="email"
-                          #email="ngModel"
                           id="email"
                           required
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fname">First Name</label>
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.firstname"
+                          [(ngModel)]="model.firstName"
                           name="fname"
-                          #fname="ngModel"
                           id="fname"
                         />
                       </div>
@@ -126,22 +109,21 @@
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.lastname"
+                          [(ngModel)]="model.lastName"
                           name="lName"
-                          #lName="ngModel"
                           id="lName"
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="job">Job Title</label>
                         <input
                           type="text"
                           class="form-control"
-                          [(ngModel)]="model.jobtitle"
+                          [(ngModel)]="model.jobTitle"
                           name="job"
-                          #job="ngModel"
                           id="job"
                         />
                       </div>
@@ -152,11 +134,11 @@
                           class="form-control"
                           [(ngModel)]="model.department"
                           name="dept"
-                          #dept="ngModel"
                           id="dept"
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="fax">Fax</label>
@@ -165,30 +147,30 @@
                           class="form-control"
                           [(ngModel)]="model.fax"
                           name="fax"
-                          #fax="ngModel"
                           id="fax"
                         />
                       </div>
                       <div class="form-group col-sm-6">
-                        <label for="plocation">Preferred Location </label>
-
+                        <label for="plocation">Preferred Location</label>
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="locationItems"
-                          [(value)]="model.preferredlocationid"
+                          [(value)]="model.preferredLocationId"
                           (valueChange)="onValueChange($event)"
-                        >
-                        </app-dropdown-treeview-select>
+                        ></app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                      </div>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="phone">Phone</label>
                         <input
                           type="number"
-                          class="form-control"
+                          class="form-control no-arrows"
                           [(ngModel)]="model.phone"
                           name="phone"
-                          #phone="ngModel"
                           id="phone"
                         />
                       </div>
@@ -196,10 +178,9 @@
                         <label for="mobile">Mobile</label>
                         <input
                           type="number"
-                          class="form-control"
-                          [(ngModel)]="model.mobilephone"
+                          class="form-control no-arrows"
+                          [(ngModel)]="model.mobilePhone"
                           name="mobile"
-                          #mobile="ngModel"
                           id="mobile"
                         />
                       </div>
@@ -208,134 +189,33 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          class="btn btn-primary btn-right btn-top"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Save Profile"
+                          type="submit"
+                          class="btn btn-primary btn-right btn-top btn-save"
                         >
                           Save
                         </button>
                         <button
                           type="button"
+                          class="btn btn-primary btn-right btn-top btn-save"
                           (click)="back()"
-                          class="btn btn btn-outline-danger btn-sm btn-top"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title="Cancel Profile"
                         >
                           Cancel
                         </button>
                       </div>
                     </div>
+
                   </div>
                 </form>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

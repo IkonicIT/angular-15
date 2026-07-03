@@ -11,84 +11,80 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class EditLocationAttachmentComponent implements OnInit {
   model: any = {};
-  index: number = 0;
+  index = 0;
   date = Date.now();
-  companyId: number = 0;
-  private sub: any;
-  id: number;
-  router: Router;
+  companyId = 0;
+  id!: number;
   globalCompany: any;
-  attachmentId: any;
-  userName: any;
-  locationId: any;
+  attachmentId!: number;
+  userName: string | null = null;
+  locationId!: number;
   dismissible = true;
   loader = false;
+
   constructor(
     private locationAttachmentsService: LocationAttachmentsService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
+    this.globalCompany = this.companyManagementService.getGlobalCompany();
+    if (this.globalCompany) {
+      this.companyId = this.globalCompany.companyId;
+    }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
-    if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
-    }
-    this.locationId = route.snapshot.params['locId'];
-    this.attachmentId = route.snapshot.params['id'];
-    console.log('compaanyid=' + this.companyId);
-    this.router = router;
+
+    this.locationId = +this.route.snapshot.params['locId'];
+    this.attachmentId = +this.route.snapshot.params['id'];
+
     this.spinner.show();
-    this.loader = true;
     this.locationAttachmentsService
-      .getLocationDocuments(this.attachmentId)
+      .getLocationDocuments(String(this.attachmentId))
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
-          this.model = response;
+          this.model = response ?? {};
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  updateLocationDocument() {
+  updateLocationDocument(): void {
     this.spinner.show();
-    this.loader = true;
-    this.model.moduleType = 'locationtype';
-    this.model.companyID = this.companyId;
-    this.model.adddedby = this.userName;
-    this.locationAttachmentsService
-      .updateLocationDocument(this.model)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.loader = false;
-          window.scroll(0, 0);
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-          this.router.navigate(['/location/attachments/' + this.locationId]);
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
+
+    this.model = {
+      ...this.model,
+      moduleType: 'locationtype',
+      companyId: this.companyId,
+      addedBy: this.userName, 
+    };
+
+    this.locationAttachmentsService.updateLocationDocument(this.model).subscribe(
+      () => {
+        this.spinner.hide();
+        window.scroll(0, 0);
+        this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+        this.router.navigate([`/location/attachments/${this.locationId}`]);
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  cancelLocationDocument() {
-    this.router.navigate(['/location/attachments/' + this.locationId]);
+  cancelLocationDocument(): void {
+    this.router.navigate([`/location/attachments/${this.locationId}`]);
   }
 }

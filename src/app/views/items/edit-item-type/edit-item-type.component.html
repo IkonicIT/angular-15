@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+        <div class="form-group col-sm-12 text-end">
           <button
             type="button"
             (click)="print()"
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
@@ -19,18 +19,18 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
           <div
+            *ngIf="helpFlag"
             style="
               text-align: left;
               border: 1px solid;
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
           >
             * To create a new type:<br />
             1.Enter the information for the new type.<br />
@@ -46,10 +46,10 @@
             Item Type Updated successfully.
           </alert>
 
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert type="danger" *ngIf="index === -1" [dismissible]="dismissible">
             Please Enter Name of Type
           </alert>
-          <alert type="danger" *ngIf="index == -2" [dismissible]="dismissible">
+          <alert type="danger" *ngIf="index === -2" [dismissible]="dismissible">
             ParentType and Existing Item Type must not be the same
           </alert>
 
@@ -60,9 +60,8 @@
                   <strong>Editing Item Type '{{ model.name }}'</strong>
                 </div>
                 <form
-                  name="form"
-                  (ngSubmit)="f.form.valid && updateItemType()"
                   #f="ngForm"
+                  (ngSubmit)="f.valid && updateItemType()"
                   novalidate
                 >
                   <div class="card-body">
@@ -74,9 +73,8 @@
                         >
                         <input
                           type="text"
-                          [(ngModel)]="model.typeid"
+                          [(ngModel)]="model.typeId"
                           name="_id"
-                          #_id="ngModel"
                           id="_id"
                           hidden
                         />
@@ -85,7 +83,6 @@
                           class="form-control"
                           [(ngModel)]="model.name"
                           name="lType"
-                          #name="ngModel"
                           id="lType"
                           placeholder="Enter Location Type Name"
                         />
@@ -95,9 +92,8 @@
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="model.hostingfee"
+                          [(ngModel)]="model.hostingFee"
                           name="hostingFee"
-                          #hostingFee="ngModel"
                           id="hostingFee"
                         />
                       </div>
@@ -106,13 +102,15 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="parentType">Select Parent Type</label>
-
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
                           (valueChange)="onValueChange($event)"
                         >
                         </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                      </div>
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="searchdisplay"
@@ -122,9 +120,8 @@
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="model.attributesearchdisplay"
+                          [(ngModel)]="model.attributeSearchDisplay"
                           name="searchdisplay"
-                          #searchdisplay="ngModel"
                           id="searchdisplay"
                         />
                       </div>
@@ -135,9 +132,8 @@
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="model.typemtbs"
+                          [(ngModel)]="model.typeMtbs"
                           name="mtbs"
-                          #mtbs="ngModel"
                           id="typemtbs"
                         />
                       </div>
@@ -146,9 +142,8 @@
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="model.typespareratio"
+                          [(ngModel)]="model.typeSpareRatio"
                           name="spareratio"
-                          #spareratio="ngModel"
                           id="spareratio"
                         />
                       </div>
@@ -161,7 +156,6 @@
                           class="form-control"
                           [(ngModel)]="model.description"
                           name="desc"
-                          #desc="ngModel"
                           id="description"
                         />
                       </div>
@@ -172,7 +166,7 @@
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Update this Item Type"
-                          class="btn btn-primary btn-right"
+                          class="btn btn-primary btn-right btn-group"
                         >
                           Update
                         </button>
@@ -182,7 +176,7 @@
                           data-bs-toggle="tooltip"
                           title="Cancel"
                           [routerLink]="['../../../types']"
-                          class="btn btn-primary"
+                          class="btn btn-primary btn-group"
                         >
                           Cancel
                         </button>
@@ -216,34 +210,21 @@
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
 <style>
   .loader {
-    position: absolute;
+    position: fixed;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
     margin: -75px 0 0 -75px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
   }
 
   @keyframes spin {
@@ -256,25 +237,9 @@
     }
   }
 
-  /* Add animation to "page content" */
   .animate-bottom {
     position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
+    animation: animatebottom 1s;
   }
 
   @keyframes animatebottom {
@@ -300,5 +265,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

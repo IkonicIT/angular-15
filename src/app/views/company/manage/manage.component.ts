@@ -33,7 +33,7 @@ export class ManageComponent implements OnInit {
   currentRole: any;
   highestRank: any;
   dismissible = true;
-  journalid: number = 0;
+  journalId: number = 0;
   private sub: any;
   id: number;
   router: Router;
@@ -47,7 +47,7 @@ export class ManageComponent implements OnInit {
   index1: number = 0;
   authToken: any;
   currentCompanyName: any;
-  entityname: any;
+  entityName: any;
   p: any;
   loader = false;
 
@@ -70,7 +70,6 @@ export class ManageComponent implements OnInit {
     this.companyName = this.globalCompany.name;
     this.currentCompanyName = this.companyManagementService.currentCompanyName;
 
-    console.log('companuyid=' + this.companyId);
     if (this.companyId) {
       this.getAllNotes(this.companyId);
     }
@@ -78,7 +77,7 @@ export class ManageComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
   }
 
@@ -86,26 +85,23 @@ export class ManageComponent implements OnInit {
     this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
     this.model.date = new Date();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   getAllNotes(companyId: string) {
     this.spinner.show();
-    this.loader = true;
+
     this.companynotesService.getAllCompanyNotess(companyId).subscribe(
+
       (response: any) => {
         this.spinner.hide();
-        this.loader = false;
-        console.log(response);
+
         this.notes = response;
       },
       (error: any) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -116,46 +112,45 @@ export class ManageComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   saveCompanyNote() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index1 = -1;
       window.scroll(0, 0);
     } else {
       this.model = {
-        companyid: this.companyId,
-        effectiveon: this.model.effectiveon,
-        enteredby: this.userName,
-        enteredon: new Date(),
-        entityid: this.companyId,
-        entityname: this.model.entityname,
-        entitytypeid: 0,
-        entityxml: '',
+        companyId: this.companyId,
+        effectiveOn: this.model.effectiveOn,
+        enteredBy: this.userName,
+        enteredOn: new Date(),
+        entityId: this.companyId,
+        entityName: this.model.entityName,
+        entityTypeId: 0,
+        entityXml: '',
         entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
-        journaltypeid: 0,
-        locationid: 0,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
+        jobNumber: this.model.jobNumber,
+        journalId: 0,
+        journalTypeId: 0,
+        locationId: 0,
+        locationName: '',
+        poNumber: this.model.poNumber,
+        shippingNumber: '',
+        trackingNumber: '',
         moduleType: 'companytype',
       };
-      console.log(JSON.stringify(this.model));
       this.spinner.show();
-      this.loader = true;
+
       this.companynotesService.saveCompanynotes(this.model).subscribe(
         (response: any) => {
           this.model = response;
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.viewFlag = true;
           this.newFlag = false;
@@ -169,16 +164,15 @@ export class ManageComponent implements OnInit {
         },
         (error: any) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
   }
 
-  goToAttachments(journalid: string, entityname: any) {
-    this.broadcasterService.currentNoteAttachmentTitle = entityname;
+  goToAttachments(journalId: string, entityName: any) {
+    this.broadcasterService.currentNoteAttachmentTitle = entityName;
     this.router.navigate([
-      '/company/noteAttchments/' + journalid + '/' + journalid,
+      '/company/noteAttchments/' + journalId + '/' + journalId,
     ]);
   }
 
@@ -190,22 +184,22 @@ export class ManageComponent implements OnInit {
   }
 
   updateCompanyNotes() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index1 = -1;
       window.scroll(0, 0);
     } else {
       this.spinner.show();
-      this.loader = true;
+
       this.model.moduleType = 'companytype';
-      this.model.effectiveon = new Date(this.model.effectiveon);
+      this.model.effectiveOn = new Date(this.model.effectiveOn);
       this.companynotesService.updateCompanynotes(this.model).subscribe(
         (response: any) => {
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
           this.spinner.hide();
-          this.loader = false;
+
           window.scroll(0, 0);
           this.viewFlag = true;
           this.newFlag = false;
@@ -220,31 +214,30 @@ export class ManageComponent implements OnInit {
         },
         (error: any) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
   }
 
-  viewCompanyNotes(journalid: any) {
+  viewCompanyNotes(journalId: any) {
     this.viewFlag = true;
     this.newFlag = false;
     this.editFlag = false;
     this.helpFlag = false;
 
     this.spinner.show();
-    this.loader = true;
+
     this.companynotesService
-      .getCompanynotess(journalid, this.companyId)
+      .getCompanynotess(journalId, this.companyId)
       .subscribe((response: any) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
 
-        if (this.model.effectiveon) {
-          this.model.effectiveon = new Date(this.model.effectiveon);
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
+        if (this.model.effectiveOn) {
+          this.model.effectiveOn = new Date(this.model.effectiveOn);
+          this.model.effectiveOn = this.datepipe.transform(
+            this.model.effectiveOn,
             'MM/dd/yyyy'
           );
         }
@@ -258,7 +251,7 @@ export class ManageComponent implements OnInit {
     this.viewFlag = false;
     this.helpFlag = false;
     this.model = [];
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
   backToItem() {
@@ -274,35 +267,34 @@ export class ManageComponent implements OnInit {
     }
   }
 
-  downloadDocumentFromDB(document: { attachmentID: any }) {
+  downloadDocumentFromDB(document: { attachmentId: any }) {
     this.spinner.show();
-    this.loader = true;
+
     this.companyDocumentsService
-      .getCompanyDocuments(document.attachmentID)
+      .getCompanyDocuments(document.attachmentId)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.downloadDocument(response);
         },
         (error: any) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
 
-  downloadDocument(companyDocument: { attachmentFile: any; contenttype: any }) {
+  downloadDocument(companyDocument: { attachmentFile: any; contentType: any }) {
     var blob = this.companyDocumentsService.b64toBlob(
       companyDocument.attachmentFile,
-      companyDocument.contenttype
+      companyDocument.contentType
     );
     var fileURL = URL.createObjectURL(blob);
 
     window.open(fileURL);
   }
 
-  downloadFile(attachment: { fileName: any; attachmentID: string }) {
+  downloadFile(attachment: { fileName: any; attachmentId: string }) {
     var index = attachment.fileName.lastIndexOf('.');
     var extension = attachment.fileName.slice(index + 1);
     if (extension.toLowerCase() == 'pdf' || extension.toLowerCase() == 'txt') {
@@ -310,29 +302,24 @@ export class ManageComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
     <h4>Document viewer</h4>
     <iframe id="iFrame" src="https://docs.google.com/viewer?url=https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-      attachment.attachmentID + '?access_token=' + this.authToken
+      attachment.attachmentId + '?access_token=' + this.authToken
     }&embedded=true" frameborder="0" height="650px" width="100%"></iframe>
       </div>
       <script>
         function reloadIFrame() {
           var iframe = document.getElementById("iFrame");
-            console.log(iframe); //work control
-            console.log(iframe.contentDocument); //work control
             if(iframe.contentDocument.URL == "about:blank"){
-              console.log("loaded");
               iframe.src =  iframe.src;
             }
           }
           var timerId = setInterval("reloadIFrame();", 1300);
           setTimeout(() => {
             clearInterval(timerId);
-            console.log("Finally Loaded");
             }, 25000);
 
           $( document ).ready(function() {
               $('#menuiFrame').on('load', function() {
                   clearInterval(timerId);
-                  console.log("Finally Loaded"); //work control
               });
           });
         </script>
@@ -348,7 +335,7 @@ export class ManageComponent implements OnInit {
       var pdfStr = `<div style="text-align:center">
       <h4>Image Viewer</h4>
       <img src="https://gotracrat.com:8088/api/attachment/downloadaudiofile/${
-        attachment.attachmentID + '?access_token=' + this.authToken
+        attachment.attachmentId + '?access_token=' + this.authToken
       }&embedded=true" >
         </div>`;
 
@@ -357,7 +344,7 @@ export class ManageComponent implements OnInit {
     } else {
       window.open(
         'https://gotracrat.com:8088/api/attachment/downloadaudiofile/' +
-          attachment.attachmentID +
+          attachment.attachmentId +
           '?access_token=' +
           this.authToken
       );
@@ -385,20 +372,18 @@ export class ManageComponent implements OnInit {
 
   confirm(): void {
     this.message = 'Confirmed!';
-    console.log('Deleting note with journalid:', this.model.journalid);
     this.modalRef.hide();
     this.spinner.show();
-    this.loader = true;
+
     this.companynotesService
-      .removeCompanynotess(this.model.journalid, this.userName)
+      .removeCompanynotess(this.model.journalId, this.userName)
       .subscribe(
         (response: any) => {
-          console.log('Delete response:', response);
           this.spinner.hide();
-          this.loader = false;
+
           this.getAllNotes(this.companyId);
           this.model = {};
-          this.model.effectiveon = new Date();
+          this.model.effectiveOn = new Date();
           this.newFlag = true;
           this.editFlag = false;
           this.viewFlag = false;
@@ -411,7 +396,6 @@ export class ManageComponent implements OnInit {
         (error: any) => {
           console.error('Delete error:', error);
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

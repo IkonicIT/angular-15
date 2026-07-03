@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group"
           >
             Print
           </button>
@@ -19,18 +19,18 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
           >
             Help
           </button>
           <div
+            *ngIf="helpFlag"
             style="
               text-align: left;
               border: 1px solid;
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
           >
             Note: Mandatory Fields are required.<br />
             * To create a new Company:<br />
@@ -54,275 +54,285 @@
                   <strong>Viewing Company '{{ model.name }}'</strong>
                 </div>
                 <div class="card-body">
-                  <div class="row">
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="name">Name</label>
-                      <input
-                        type="text"
-                        [(ngModel)]="model.companyid"
-                        name="_id"
-                        #_id="ngModel"
-                        id="name"
-                        hidden
-                      />
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.name"
-                        name="name"
-                        #name="ngModel"
-                        id="name"
-                      />
-                    </div>
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="url">URL</label>
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.url"
-                        name="url"
-                        #url="ngModel"
-                        id="url"
-                      />
-                    </div>
-                  </div>
+                  <form>
+                    <div class="row">
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="name">Name</label>
+                        <input
+                          type="text"
+                          [(ngModel)]="model.companyId"
+                          name="_id"
+                          #_id="ngModel"
+                          id="name"
+                          hidden
+                        />
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.name"
+                          name="name"
+                          #name="ngModel"
+                          id="name"
+                        />
+                      </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="phone">Phone</label>
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.phone"
-                        name="phone"
-                        #phone="ngModel"
-                        id="phone"
-                      />
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="url">URL</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.url"
+                          name="url"
+                          #url="ngModel"
+                          id="url"
+                        />
+                      </div>
                     </div>
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="fax">Fax</label>
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.fax"
-                        id="fax"
-                        name="fax"
-                        #fax="ngModel"
-                      />
-                    </div>
-                  </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="AddressLine1">Address Line1</label>
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.address1"
-                        name="addressLineOne"
-                        #addressLineOne="ngModel"
-                        id="AddressLine1"
-                      />
-                    </div>
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="AddressLine2">Address Line2</label>
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.address2"
-                        name="addressLineTwo"
-                        #addressLineTwo="ngModel"
-                        id="AddressLine2"
-                      />
-                    </div>
-                  </div>
+                    <div class="form-group col-sm-6">
+                        <div class="form-check">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            [(ngModel)]="model.isPartnerCompany"
+                            name="isPartnerCompany"
+                            id="isPartnerCompany"
+                          />
+                          <label class="form-check-label" for="isPartnerCompany">
+                            Is Partner Company
+                          </label>
+                        </div>
+                      </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="city">City</label>
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.city"
-                        name="city"
-                        #city="ngModel"
-                        id="city"
-                      />
-                    </div>
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="state">State</label>
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.state"
-                        name="state"
-                        #state="ngModel"
-                        id="state"
-                      />
-                    </div>
-                  </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="pcode">Postal Code</label>
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.postalcode"
-                        name="postalCode"
-                        #postalCode="ngModel"
-                        id="pcode"
-                      />
+                    <div class="row">
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="phone">Phone</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.phone"
+                          name="phone"
+                          #phone="ngModel"
+                          id="phone"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="fax">Fax</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.fax"
+                          id="fax"
+                          name="fax"
+                          #fax="ngModel"
+                        />
+                      </div>
                     </div>
-                    <div class="form-group col-sm-6 form-group-padding">
-                      <label for="status">Status</label>
-                      <select
-                        disabled
-                        class="form-control"
-                        [(ngModel)]="model.statusid"
-                        name="status"
-                        #status="ngModel"
-                        id="status"
-                      >
-                        <option value="">Choose..</option>
-                        <option
-                          [ngValue]="stat.statusid"
-                          *ngFor="let stat of statuses"
+
+                    <div class="row">
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="AddressLine1">Address Line1</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.address1"
+                          name="addressLineOne"
+                          #addressLineOne="ngModel"
+                          id="AddressLine1"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="AddressLine2">Address Line2</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.address2"
+                          name="addressLineTwo"
+                          #addressLineTwo="ngModel"
+                          id="AddressLine2"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="city">City</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.city"
+                          name="city"
+                          #city="ngModel"
+                          id="city"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="state">State</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.state"
+                          name="state"
+                          #state="ngModel"
+                          id="state"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="pcode">Postal Code</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.postalCode"
+                          name="postalCode"
+                          #postalCode="ngModel"
+                          id="pcode"
+                        />
+                      </div>
+                      <div class="form-group col-sm-6 form-group-padding">
+                        <label for="status">Status</label>
+                        <select
+                          disabled
+                          class="form-control custom-dropdown"
+                          [(ngModel)]="model.statusId"
+                          name="status"
+                          #status="ngModel"
+                          id="status"
                         >
-                          {{ stat.status }}
-                        </option>
-                      </select>
+                          <option value="">Choose..</option>
+                          <option
+                            *ngFor="let stat of statuses"
+                            [ngValue]="stat.statusId"
+                          >
+                            {{ stat.status }}
+                          </option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-12 form-group-padding">
-                      <label for="desc">Description</label>
-                      <textarea
-                        readonly
-                        id="desc"
-                        name="textarea-input"
-                        rows="2"
-                        cols="4"
-                        class="form-control"
-                        [(ngModel)]="model.description"
-                        name="description"
-                        #description="ngModel"
-                      ></textarea>
+                    <div class="row">
+                      <div class="form-group col-sm-12 form-group-padding">
+                        <label for="desc">Description</label>
+                        <textarea
+                          readonly
+                          id="desc"
+                          name="description"
+                          rows="2"
+                          cols="4"
+                          class="form-control"
+                          [(ngModel)]="model.description"
+                          #description="ngModel"
+                        ></textarea>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-12 form-group-padding">
-                      <label for="desc"> Company Logo:</label>
-                      <label for="desc">{{ model.companyfilename }}</label>
+                    <div class="row">
+                      <div class="form-group col-sm-12 form-group-padding">
+                        <label>Company Logo:</label>
+                        <label>{{ model.companyFileName }}</label>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-12 form-group-padding">
-                      <label for="desc">Primary Contact Name</label>
-                      <input
-                        type="text"
-                        readonly
-                        class="form-control"
-                        [(ngModel)]="model.primaryContactName"
-                        id="desc"
-                        name="primaryContactName"
-                        #primaryContactName="ngModel"
-                      />
+                    <div class="row">
+                      <div class="form-group col-sm-12 form-group-padding">
+                        <label>Primary Contact Name</label>
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control"
+                          [(ngModel)]="model.primaryContactName"
+                          name="primaryContactName"
+                          #primaryContactName="ngModel"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="row" *ngIf="isOwnerAdmin === 'true'">
-                    <div class="form-group col-sm-12 form-group-padding">
-                      <label for="tracratAnnouncements"
-                        >Tracrat Announcements</label
-                      >
-                      <textarea
-                        readonly
-                        id="tracratAnnouncement"
-                        name="textarea-input"
-                        rows="2"
-                        cols="4"
-                        name="tracratAnnouncements"
-                        #tracratAnnouncements="ngModel"
-                        class="form-control"
-                        [(ngModel)]="model.tracratAnnouncements"
-                        placeholder="Enter Description"
-                      ></textarea>
-                      <button
-                        (click)="saveMessage()"
-                        data-bs-placement="bottom"
-                        data-bs-toggle="tooltip"
-                        title="Save Message"
-                        class="btn btn-primary"
-                      >
-                        Save Message
-                      </button>
+                    <div class="row" *ngIf="isOwnerAdmin === 'true'">
+                      <div class="form-group col-sm-12 form-group-padding">
+                        <label>Tracrat Announcements</label>
+                        <textarea
+                          readonly
+                          rows="2"
+                          cols="4"
+                          name="tracratAnnouncements"
+                          #tracratAnnouncements="ngModel"
+                          class="form-control"
+                          [(ngModel)]="model.tracratAnnouncements"
+                          placeholder="Enter Description"
+                        ></textarea>
+                        <button
+                          (click)="saveMessage()"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Save Message"
+                          class="btn btn-primary btn-group"
+                        >
+                          Save Message
+                        </button>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-12 form-group-padding">
-                      <label for="desc">Company Announcements</label>
-                      <textarea
-                        readonly
-                        id="desc"
-                        name="textarea-input"
-                        rows="2"
-                        cols="4"
-                        name="companyAnnouncements"
-                        #companyAnnouncements="ngModel"
-                        class="form-control"
-                        [(ngModel)]="model.announcement.announcementtext"
-                      ></textarea>
+                    <div class="row">
+                      <div class="form-group col-sm-12 form-group-padding">
+                        <label>Company Announcements</label>
+                        <textarea
+                          readonly
+                          rows="2"
+                          cols="4"
+                          name="companyAnnouncements"
+                          #companyAnnouncements="ngModel"
+                          class="form-control"
+                          [(ngModel)]="model.announcement.announcementText"
+                        ></textarea>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="row">
-                    <div class="form-group col-sm-12 text-center">
-                      <button
-                        type="button"
-                        [routerLink]="['../../edit', model.companyid]"
-                        data-bs-placement="bottom"
-                        data-bs-toggle="tooltip"
-                        title="Edit this Company"
-                        class="btn btn-primary btn-right"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        (click)="cancelCompanyDetails()"
-                        data-bs-placement="bottom"
-                        data-bs-toggle="tooltip"
-                        title="Cancel"
-                        class="btn btn-primary"
-                      >
-                        Back
-                      </button>
+                    <div class="row">
+                      <div class="form-group col-sm-12 text-center">
+                        <button
+                          type="button"
+                          [routerLink]="['../../edit', model.companyId]"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Edit this Company"
+                          class="btn btn-primary btn-right btn-group"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          (click)="cancelCompanyDetails()"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                          title="Cancel"
+                          class="btn btn-primary btn-group"
+                        >
+                          Back
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
   </div>
 </div>
-
 
 <div
   *ngIf="loader"
@@ -334,94 +344,45 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0,0.5);
     z-index: 2;
     cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    width: 60px;
+    height: 60px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
 
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
-  /* Add animation to "page content" */
   .animate-bottom {
     position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
     animation-name: animatebottom;
     animation-duration: 1s;
   }
 
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
   @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
 
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
+  .btn-link[routerLink="/forgot-password"] { color: red; }
 
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  .cent { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 </style>

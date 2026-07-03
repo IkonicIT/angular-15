@@ -1,10 +1,10 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { BroadcasterService } from '../../../services/broadcaster.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { ItemManagementService } from '../../../services/Items/item-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BroadcasterService } from '../../../services/broadcaster.service';
+import { ItemManagementService } from '../../../services/Items/item-management.service';
 import { ItemServiceManagementService } from '../../../services/Items/item-service-management.service';
 
 @Component({
@@ -14,48 +14,58 @@ import { ItemServiceManagementService } from '../../../services/Items/item-servi
 })
 export class AddItemServiceComponent implements OnInit {
   model: any = {};
-  itemTag: any;
-  any: any;
-  itemType: any;
-  helpFlag: any = false;
-  itemId: any;
-  index: number = 0;
-  itemsForPagination: any = 5;
-  completedServicesForPagination: any = 5;
-  page1: any = 1;
-  page2: any = 1;
-  order: string = 'serviceDate';
-  reverse: string = '';
-  completedOrder: string = 'serviceDate';
-  completedReverse: string = '';
-  userName: any;
-  completedServices: any = [];
-  incompletedServices: any = [];
-  serviceCauses: any = [];
-  modalRef: BsModalRef;
-  deleteModalRef: BsModalRef;
-  addFlag: any = false;
-  editFlag: any = false;
-  serviceId: any;
-  highestRank: any;
+  itemTag!: string;
+  itemType!: string;
+  helpFlag = false;
+  itemId!: number;
+
+  index = 0;
+  itemsForPagination = 5;
+  completedServicesForPagination = 5;
+  page1 = 1;
+  page2 = 1;
+
+  order = 'serviceDate';
+  reverse = '';
+  completedOrder = 'serviceDate';
+  completedReverse = '';
+
+  userName!: string | null;
+  highestRank!: string | null;
+  get highestRankNum(): number {
+    return Number(this.highestRank ?? 0);
+  }
+  completedServices: any[] = [];
+  incompletedServices: any[] = [];
+  serviceCauses: string[] = [];
+
+  modalRef!: BsModalRef;
+  deleteModalRef!: BsModalRef;
+
+  addFlag = false;
+  editFlag = false;
+  serviceId!: number;
+
   dismissible = true;
   inCompletedServicesFilter: any;
   completedServicesFilter: any;
+
   loader = false;
+  index1 = 0;
+
   constructor(
     private broadcasterService: BroadcasterService,
     private route: ActivatedRoute,
-    private _location: Location,
+    private location: Location,
     private itemManagementService: ItemManagementService,
     private spinner: NgxSpinnerService,
     private modalService: BsModalService,
     private itemServiceManagementService: ItemServiceManagementService
   ) {
-    this.itemId = route.snapshot.params['itemId'];
-    console.log('ItemId in Item Service' + this.itemId);
+    this.itemId = Number(this.route.snapshot.params['itemId']);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.itemTag = this.broadcasterService.currentItemTag;
     this.itemType = this.broadcasterService.currentItemType;
     this.userName = sessionStorage.getItem('userName');
@@ -63,22 +73,18 @@ export class AddItemServiceComponent implements OnInit {
     this.initData();
   }
 
-  initData() {
+  initData(): void {
     this.spinner.show();
-    this.loader = true;
-    this.itemServiceManagementService.getAllItemServices(this.itemId).subscribe(
+
+    this.itemServiceManagementService.getAllItemServices(String(this.itemId)).subscribe(
       (response: any) => {
-        this.completedServices = response.completedServices;
-        this.incompletedServices = response.inCompletedServices;
-        this.spinner.hide();
-        this.loader = false;
+        this.completedServices = response.completedServices ?? [];
+        this.incompletedServices = response.inCompletedServices ?? [];
+        setTimeout(() => this.spinner.hide(), 2000);
       },
-      (error) => {
-        this.spinner.hide();
-        this.loader = false;
-      }
+      () => this.spinner.hide()
     );
-    //staticly given as this will not be changed
+
     this.serviceCauses = [
       'Relubricate/Grease Bearings',
       'Check Bearing Oil Level',
@@ -91,190 +97,164 @@ export class AddItemServiceComponent implements OnInit {
     ];
   }
 
-  saveItemServiceData() {
+  saveItemServiceData(): void {
     this.index = 0;
-    if (this.model.serviceDate) {
-      if (this.model.complete == true) {
-        if (this.model.serviceCause && this.model.actualCompletion) {
-          this.addOrUpdateItemService();
-        } else {
-          this.index = -2;
-        }
-      } else {
+
+    if (!this.model.serviceDate) {
+      this.index = -1;
+      return;
+    }
+
+    if (this.model.complete === true) {
+      if (this.model.serviceCause && this.model.actualCompletion) {
         this.addOrUpdateItemService();
+      } else {
+        this.index = -2;
       }
     } else {
-      this.index = -1;
+      this.addOrUpdateItemService();
     }
   }
 
-  addOrUpdateItemService() {
-    this.model.complete == true
-      ? (this.model.completedBy = this.userName)
-      : (this.model.completedBy = '');
+  addOrUpdateItemService(): void {
+    this.model.completedBy = this.model.complete ? this.userName : '';
 
-    if (this.addFlag == true) {
-      var addRequest = {
+    if (this.addFlag) {
+      const addRequest = {
         itemId: this.itemId,
         serviceDate: this.model.serviceDate,
         serviceCause:
-          this.model.serviceCause != 0
+          this.model.serviceCause !== 0
             ? this.model.serviceCause
             : this.model.newServiceCause,
-        actualCompletion:
-          this.model.actualCompletion != null
-            ? this.model.actualCompletion
-            : null,
-        complete: this.model.complete ? this.model.complete : false,
+        actualCompletion: this.model.actualCompletion ?? null,
+        complete: this.model.complete ?? false,
         completedBy: this.model.completedBy,
         createdDate: new Date(),
         createdBy: this.userName,
         updatedDate: new Date(),
         updatedBy: this.userName,
       };
+
       this.spinner.show();
-      this.loader = true;
       this.itemServiceManagementService.saveItemService(addRequest).subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.loader = false;
+        () => {
+          setTimeout(() => this.spinner.hide(), 2000);
           this.index = 1;
           this.initData();
           setTimeout(() => {
             this.index = 0;
-            this.modalRef.hide();
+            this.modalRef?.hide();
           }, 2000);
         },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
+        () => this.spinner.hide()
       );
     } else {
-      var updateRequest = {
+      const updateRequest = {
         itemId: this.itemId,
         serviceDate: this.model.serviceDate,
         serviceCause:
-          this.model.serviceCause != 0
+          this.model.serviceCause !== 0
             ? this.model.serviceCause
             : this.model.newServiceCause,
-        actualCompletion:
-          this.model.actualCompletion != null
-            ? this.model.actualCompletion
-            : null,
-        complete: this.model.complete ? this.model.complete : false,
+        actualCompletion: this.model.actualCompletion ?? null,
+        complete: this.model.complete ?? false,
         completedBy: this.model.completedBy,
         createdDate: this.model.createdDate,
         createdBy: this.model.createdBy,
         updatedDate: new Date(),
         updatedBy: this.userName,
       };
+
       this.spinner.show();
-      this.loader = true;
       this.itemServiceManagementService
         .updateItemService(updateRequest, this.model.serviceId)
         .subscribe(
-          (response) => {
-            this.spinner.hide();
-            this.loader = false;
+          () => {
+            setTimeout(() => this.spinner.hide(), 2000);
             this.index = 1;
             this.initData();
             setTimeout(() => {
               this.index = 0;
-              this.modalRef.hide();
+              this.modalRef?.hide();
             }, 2000);
           },
-          (error) => {
-            this.spinner.hide();
-            this.loader = false;
-          }
+          () => this.spinner.hide()
         );
     }
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 
-  back() {
-    this._location.back();
+  back(): void {
+    this.location.back();
   }
 
-  setOrder(value: string) {
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
 
-  setCompletedOrder(value: string) {
+  setCompletedOrder(value: string): void {
     if (this.completedOrder === value) {
-      if (this.completedReverse == '') {
-        this.completedReverse = '-';
-      } else {
-        this.completedReverse = '';
-      }
+      this.completedReverse = this.completedReverse === '' ? '-' : '';
     }
     this.completedOrder = value;
   }
 
-  openModal(template: TemplateRef<any>) {
+  openModal(template: TemplateRef<any>): void {
     this.addFlag = true;
     this.editFlag = false;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  openModalForEdit(template: TemplateRef<any>, serviceId: string) {
+  openModalForEdit(template: TemplateRef<any>, serviceId: number): void {
     this.editFlag = true;
     this.addFlag = false;
     this.spinner.show();
-    this.loader = true;
-    this.itemServiceManagementService.getServiceById(serviceId).subscribe(
+
+    this.itemServiceManagementService.getServiceById(String(serviceId)).subscribe(
       (response) => {
         this.model = response;
         this.model.serviceDate = new Date(this.model.serviceDate);
-        if (this.model.actualCompletion)
+
+        if (this.model.actualCompletion) {
           this.model.actualCompletion = new Date(this.model.actualCompletion);
+        }
+
         if (this.model.serviceCause) {
-          let count = 0;
-          this.serviceCauses.forEach((cause: any) => {
-            if (cause == this.model.serviceCause) {
-              count = count + 1;
-            }
-          });
-          if (count == 0) {
+          const exists = this.serviceCauses.includes(this.model.serviceCause);
+          if (!exists) {
             this.model.newServiceCause = this.model.serviceCause;
             this.model.serviceCause = 0;
           }
         }
-        this.spinner.hide();
-        this.loader = false;
+
+        setTimeout(() => this.spinner.hide(), 2000);
       },
-      (error) => {
-        this.spinner.hide();
-        this.loader = false;
-      }
+      () => this.spinner.hide()
     );
+
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  closeModel() {
+  closeModel(): void {
     this.model = {};
     this.addFlag = false;
     this.editFlag = false;
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
-  openDeleteModal(template: TemplateRef<any>, serviceId: any) {
+  openDeleteModal(template: TemplateRef<any>, serviceId: number): void {
     this.serviceId = serviceId;
     this.deleteModalRef = this.modalService.show(template, {
       class: 'modal-lg',
@@ -283,27 +263,28 @@ export class AddItemServiceComponent implements OnInit {
 
   confirm(): void {
     this.spinner.show();
-    this.loader = true;
-    this.itemServiceManagementService
-      .deleteItemServiceById(this.serviceId)
-      .subscribe(
-        (response) => {
-          this.deleteModalRef.hide();
-          this.initData();
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false
-        }
-      );
+    this.itemServiceManagementService.deleteItemServiceById(String(this.serviceId)).subscribe(
+      () => {
+        this.deleteModalRef?.hide();
+        this.index1 = 1;
+        this.initData();
+        setTimeout(() => {
+          this.index1 = 0;
+        }, 2000);
+      },
+      () => this.spinner.hide()
+    );
   }
 
   decline(): void {
-    this.deleteModalRef.hide();
+    this.deleteModalRef?.hide();
   }
 
-  checkValue(event: any) {
-    if (event == 'A') this.model.actualCompletion = new Date();
-    else if (event == 'B') this.model.actualCompletion = null;
+  checkValue(event: string): void {
+    if (event === 'A') {
+      this.model.actualCompletion = new Date();
+    } else if (event === 'B') {
+      this.model.actualCompletion = null;
+    }
   }
 }

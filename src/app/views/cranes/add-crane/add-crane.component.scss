@@ -1,0 +1,25 @@
+
+.help-box {
+  text-align: left;
+  border: 1px solid;
+  width: fit-content;
+  background-color: whitesmoke;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.update-btn,
+.cancel-btn {
+  border-radius: 6px;
+}
+.form-check-label {
+  font-weight: 500; 
+  margin-left: 0.3rem;
+}
+
+.custom-radio {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 0; 
+  cursor: pointer;
+}

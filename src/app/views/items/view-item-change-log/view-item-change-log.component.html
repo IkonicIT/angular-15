@@ -9,42 +9,42 @@
             Item Notes Updated successfully.
           </alert>
 
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             Please Enter Title and Date
           </alert>
 
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding">
               <div class="card">
-                <form name="form" #f="ngForm" novalidate>
+                <form #f="ngForm" novalidate>
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="title">Title</label>
                         <input
                           type="text"
-                          readonly
-                          class="form-control"
-                          [(ngModel)]="model.entityname"
-                          name="title"
-                          #title="ngModel"
                           id="title"
+                          name="title"
+                          class="form-control"
                           placeholder="Enter Title"
+                          [(ngModel)]="model.entityName"
+                          #title="ngModel"
+                          readonly
                         />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="date">Date</label>
                         <input
                           type="text"
-                          readonly
-                          class="form-control"
-                          [bsConfig]="bsConfig"
-                          [(ngModel)]="model.enteredon"
-                          name="date"
-                          #date="ngModel"
                           id="date"
+                          name="date"
+                          class="form-control"
                           placeholder="Enter Date"
+                          [(ngModel)]="model.enteredOn"
+                          [bsConfig]="bsConfig"
+                          #date="ngModel"
                           bsDatepicker
+                          readonly
                         />
                       </div>
                     </div>
@@ -54,26 +54,26 @@
                         <label for="job">JOB Number</label>
                         <input
                           type="number"
-                          readonly
-                          class="form-control"
-                          [(ngModel)]="model.jobnumber"
-                          name="job"
-                          #job="ngModel"
                           id="job"
+                          name="job"
+                          class="form-control"
                           placeholder="Enter JOB Number"
+                          [(ngModel)]="model.jobNumber"
+                          #job="ngModel"
+                          readonly
                         />
                       </div>
                       <div class="form-group col-sm-6">
                         <label for="po">PO Number</label>
                         <input
                           type="number"
-                          readonly
-                          class="form-control"
-                          [(ngModel)]="model.ponumber"
                           id="po"
                           name="po"
-                          #po="ngModel"
+                          class="form-control"
                           placeholder="Enter PO Number"
+                          [(ngModel)]="model.poNumber"
+                          #po="ngModel"
+                          readonly
                         />
                       </div>
                     </div>
@@ -83,15 +83,14 @@
                         <label for="details">Details</label>
                         <textarea
                           id="details"
-                          readonly
-                          name="textarea-input"
+                          name="details"
+                          class="form-control"
+                          placeholder="Enter Description"
                           rows="2"
                           cols="4"
-                          name="details"
-                          #details="ngModel"
-                          class="form-control"
                           [(ngModel)]="model.entry"
-                          placeholder="Enter Description"
+                          #details="ngModel"
+                          readonly
                         ></textarea>
                       </div>
                     </div>
@@ -101,17 +100,15 @@
                         <button
                           type="button"
                           (click)="cancelItemNotes()"
-                          class="btn btn-outline-danger btn-sm"
+                          class="btn btn-outline-danger btn-sm rounded"
                         >
                           Cancel
                         </button>
                         <button
                           type="button"
-                          data-bs-placement="bottom"
-                          data-bs-toggle="tooltip"
-                          title=" Back to View Item "
+                          class="btn btn-outline-danger btn-sm rounded"
+                          title="Back to View Item"
                           (click)="backToItem()"
-                          class="btn btn-outline-danger btn-sm"
                         >
                           Back To Item
                         </button>
@@ -128,104 +125,43 @@
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
+</div>
+
+<style>
+  .loader-overlay {
     position: fixed;
+    inset: 0;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
+    z-index: 1050;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
+  }
+
   .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
     width: 60px;
     height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
   }
 
   @keyframes spin {
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
 
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .btn-sm.rounded {
+    border-radius: 6px;
   }
 </style>

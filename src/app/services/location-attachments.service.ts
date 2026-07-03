@@ -29,9 +29,9 @@ export class LocationAttachmentsService {
       .pipe(catchError(this.handleError));
   }
 
-  updateLocationDocument(company: { attachmentid: string }) {
+  updateLocationDocument(company: { attachmentId: string }) {
     return this.http
-      .put(this.serviceURL + '/' + company.attachmentid, company, this.httpOptions)
+      .put(this.serviceURL + '/' + company.attachmentId, company, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -49,18 +49,18 @@ export class LocationAttachmentsService {
 
   removeLocationDocuments(
     attachmentId: string,
-    companyid: string,
-    username: string
+    companyId: string,
+    userName: string
   ) {
     return this.http
-      .delete(this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username, this.httpOptions)
+      .delete(this.serviceURL + '/' + attachmentId + '/' + companyId + '/' + userName, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
   removeLocationNoteDocuments(
     attachmentId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     userLog: { noteType: any; noteName: any; locationName: any }
   ) {
     let params = new HttpParams();
@@ -75,7 +75,7 @@ export class LocationAttachmentsService {
     };
 
     return this.http
-      .delete(this.serviceURL + '/' + attachmentId + '/' + companyid + '/' + username, httpOptions)
+      .delete(this.serviceURL + '/' + attachmentId + '/' + companyId + '/' + userName, httpOptions)
       .pipe(catchError(this.handleError));
   }
 

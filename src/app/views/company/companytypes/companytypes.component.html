@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
           >
             Print
           </button>
@@ -19,7 +19,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
@@ -30,7 +30,7 @@
               width: fit-content;
               background-color: whitesmoke;
             "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
           >
             * To create a new type:<br />
             1.Enter the information for the new type.<br />
@@ -49,21 +49,20 @@
             Manage {{ companyName }} Company Types
             <button
               type="button"
-              class="btn btn-primary float-right"
+              class="btn btn-primary float-right my-btn-group"
               (click)="addCompanyType()"
               data-bs-placement="bottom"
               data-bs-toggle="tooltip"
               title="Add a new Company Type."
-              placement="top"
             >
               Add Company Type
             </button>
           </p>
           <div class="select-pagination-option">
             <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="itemsForPagination" (change) = "onChange($event.target)">
+              <span>
+                Show
+                <select [(ngModel)]="itemsForPagination" (change)="onChange($event.target)">
                   <option>5</option>
                   <option>10</option>
                   <option>25</option>
@@ -77,32 +76,23 @@
             <span>Search : </span>
             <input [(ngModel)]="companyTypeFilter" />
           </div>
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
-          >
+          <table class="table table-responsive-sm table-hover table-outline mb-0 mt-2">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'name'"
-                  (click)="setOrder('name')"
-                >
-                  Company Type Name <span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'name'" (click)="setOrder('name')">
+                  Company Type Name
+                  <span [hidden]="reverse === ''">▼</span>
+                  <span [hidden]="reverse !== ''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'hostingfee'"
-                  (click)="setOrder('hostingfee')"
-                >
-                  Hosting Fee<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'hostingFee'" (click)="setOrder('hostingFee')">
+                  Hosting Fee
+                  <span [hidden]="reverse === ''">▼</span>
+                  <span [hidden]="reverse !== ''">▲</span>
                 </th>
-
-                <th
-                  [class.active]="order === 'description'"
-                  (click)="setOrder('description')"
-                >
-                  Description<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order === 'description'" (click)="setOrder('description')">
+                  Description
+                  <span [hidden]="reverse === ''">▼</span>
+                  <span [hidden]="reverse !== ''">▲</span>
                 </th>
                 <th>Attributes</th>
                 <th>Actions</th>
@@ -113,24 +103,21 @@
                 *ngFor="
                   let companyType of types
                     | orderBy : reverse + order
-                    | filterBy
-                      : ['name', 'hostingfee', 'description']
-                      : companyTypeFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
+                    | filterBy : ['name', 'hostingFee', 'description'] : companyTypeFilter
+                    | paginate : { itemsPerPage: itemsForPagination, currentPage: p }
                 "
               >
                 <td>{{ companyType.name }}</td>
-                <td>{{ companyType.hostingfee }}</td>
+                <td>{{ companyType.hostingFee }}</td>
                 <td>{{ companyType.description }}</td>
                 <td>
                   <button
                     type="button"
+                    *ngIf="highestRank > 6"
+                    class="btn btn-outline-success btn-sm my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Click here to Manage Company Attributes"
-                    *ngIf="highestRank > 6"
-                    class="btn btn-outline-success btn-sm"
                     (click)="gotoAttributesForType(companyType)"
                   >
                     Manage Attributes
@@ -140,7 +127,7 @@
                   <button
                     type="button"
                     *ngIf="highestRank > 6"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Edit this Company Type"
@@ -151,12 +138,12 @@
                   <button
                     type="button"
                     *ngIf="highestRank > 6"
-                    class="btn btn-outline-danger btn-sm mb-1"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     data-bs-placement="bottom"
                     data-bs-toggle="tooltip"
                     title="Delete this Type"
-                    (click)="openModal(confirmtemplate, companyType.typeid)"
                     [disabled]="highestRank == 9"
+                    (click)="openModal(confirmtemplate, companyType.typeId)"
                   >
                     Delete
                   </button>
@@ -168,8 +155,7 @@
             class="my-pagination"
             (pageChange)="p = $event"
             [autoHide]="true"
-          >
-          </pagination-controls>
+          ></pagination-controls>
         </div>
       </div>
     </div>
@@ -179,24 +165,14 @@
 <ng-template #templateNested>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Second modal</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     This is nested modal.
     <br />
-    <button
-      *ngIf="modalRef"
-      type="button"
-      class="btn btn-danger"
-      (click)="closeFirstModal()"
-    >
+    <button *ngIf="modalRef" type="button" class="btn btn-danger" (click)="closeFirstModal()">
       Close first modal
     </button>
   </div>
@@ -205,15 +181,10 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>
-      Click(Yes) to permanently delete this CompanyType or Click(No) to discard
-      this action.
+      Click(Yes) to permanently delete this CompanyType or Click(No) to discard this action.
     </p>
-    <button type="button" class="btn btn-primary btn-right" (click)="confirm()">
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 
@@ -234,8 +205,9 @@
     transform: translate(-1%, -1%);
   "
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
@@ -255,26 +227,15 @@
   }
 
   @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
   }
 
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
-  /* Add animation to "page content" */
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -284,32 +245,16 @@
   }
 
   @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0px; opacity: 1; }
   }
 
   @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
   }
 
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
+  .btn-link[routerLink="/forgot-password"] { color: red; }
 
   .cent {
     position: absolute;

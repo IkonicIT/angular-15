@@ -41,31 +41,29 @@ export class EditItemAttachmentComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
 
     this.itemId = route.snapshot.params['itemId'];
     this.attachmentId = route.snapshot.params['id'];
     this.currentAttachmentId = route.snapshot.params['attachmentId'];
-    console.log('itemId=' + this.itemId);
     this.router = router;
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService.getItemDocuments(this.attachmentId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
         this.model.defaultImage = 'false';
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -78,9 +76,9 @@ export class EditItemAttachmentComponent implements OnInit {
 
   updateItemDocument() {
     this.spinner.show();
-    this.loader = true;
-    this.model.moduleType = 'itemtype';
-    this.model.companyID = this.companyId;
+
+    this.model.moduleType = 'itemType';
+    this.model.companyId = this.companyId;
     this.model.updatedDate = new Date();
     this.model.itemTag = this.itemTag;
     this.model.attachmentUserLogDTO = {
@@ -91,10 +89,10 @@ export class EditItemAttachmentComponent implements OnInit {
     this.itemAttachmentsService.updateItemDocument(this.model).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         if (
           this.model.defaultImage == 'true' &&
-          this.model.contenttype.includes('image')
+          this.model.contentType.includes('image')
         ) {
           this.setAsDefault(this.model);
         } else {
@@ -108,7 +106,6 @@ export class EditItemAttachmentComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -119,16 +116,16 @@ export class EditItemAttachmentComponent implements OnInit {
     ]);
   }
 
-  setAsDefault(res: { attachmentid: any }) {
+  setAsDefault(res: { attachmentId: any }) {
     this.spinner.show();
-    this.loader =true;
+
     this.itemAttachmentsService
-      .updateItemDefaultImage(this.itemId, res.attachmentid)
+      .updateItemDefaultImage(this.itemId, res.attachmentId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
-          this.currentAttachmentId = res.attachmentid;
+
+          this.currentAttachmentId = res.attachmentId;
           this.router.navigate([
             '/items/attachments/' +
               this.itemId +
@@ -138,7 +135,6 @@ export class EditItemAttachmentComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }

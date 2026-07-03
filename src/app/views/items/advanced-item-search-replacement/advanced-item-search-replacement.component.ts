@@ -9,9 +9,23 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { ItemStatusService } from '../../../services/Items/item-status.service';
 import { ItemAttributeService } from '../../../services/Items/item-attribute.service';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
-import { isNullOrUndefined } from 'is-what';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Location } from '@angular/common';
+import { Observable } from 'rxjs';
+import { ExcelService } from '../../../services/excel-service';
+import { cloneDeep } from 'lodash';
+import { Subscription } from 'rxjs';
+interface AttributeType {
+  attributeTypeId: number;
+}
+
+interface AttributeValue {
+  attributeNameId: number;
+  name: string;
+  value?: string;
+  attributeType?: AttributeType;
+  attributeListItemResource?: any[];
+}
 
 @Component({
   selector: 'app-advanced-item-search',
@@ -19,46 +33,58 @@ import { Location } from '@angular/common';
   styleUrls: ['./advanced-item-search-replacement.component.scss'],
 })
 export class AdvancedItemSearchReplacementComponent implements OnInit {
-  public showSearchResults = false;
-  public isExpandAdvancedSearch = true;
-  public itemModel: any = {};
-  public repairModel: any = {};
-  public locationModel: any = {};
-  public itemTypes = [];
-  public attributesList = [];
-  public attributesValuesList = [];
-  public statuses: any = [];
-  public locations = [];
-  public globalCompany;
-  public companyName = '';
-  public companyId;
-  public typeAttributes: any;
-  public itemTypeName: any;
-  public reqItemTypeId: String;
-  public reqItemTypeName: any;
-  public itemId: any;
-  public typeId: any;
-  public itrTypeId: any;
-  value: any;
-  itemValue: any;
-  public itemrepairnotesrfqModel: any = {};
-  public itemNotesList: any = {};
-  public repairlogList: any = [];
-  public RFQsList: any = [];
-  advancedsearchflag: number = 0;
+
+  showSearchResults = false;
+  isExpandAdvancedSearch = true;
+  advancedsearchflag = 0;
+  loader = false;
+
+  itemModel: any = {};
+  repairModel: any = {};
+  itemrepairNotesrfqModel: any = {};
   searchresults: any = {};
-  vendors: any = [];
-  items: TreeviewItem[];
-  public itemTypeItems: TreeviewItem[];
-  config = TreeviewConfig.create({
-    hasFilter: false,
-    hasCollapseExpand: false,
-  });
+  itemNotesList: any = {};
+  repairlogList: any[] = [];
+  RFQsList: any[] = [];
+
+  itemTypes: any[] = [];
+  statuses: any[] = [];
+  locations: any[] = [];
+  vendors: any[] = [];
+
+  items: TreeviewItem[] = [];
+  itemTypeItems: TreeviewItem[] = [];
+  config = TreeviewConfig.create({ hasFilter: false, hasCollapseExpand: false });
+
+  globalCompany: any;
+  companyId: number;
+  companyName = '';
+  itemId: string;
+  typeId: string;
+  itemValue: any;
   isOwnerAdmin: string | null;
   loggedInuser: string | null;
-  order: string;
-  reverse: string;
-  loader = false;
+  order = '';
+  reverse = '';
+  public excelObj: any;
+  public searchResults: Record<string, any[]> = {};
+  public attributesSearchDisplay: Record<string, any> = {};
+  public searchResultKeys: string[] = [];
+  public itemsForPagination: number = 10;
+  public itemsLength: number = 0;
+  public totalItemsByType: Record<string, number> = {};
+  public dynLst: Array<any> = [];
+  public flag: any;
+  public page: number = 1;
+  public itemsPerPage: number = 10;
+  public totalRows: number = 0;
+  private lastSearchRequest: any = null;
+  private lastExportRequest: any = null;
+  private exportSubscription: Subscription;
+  public exportSearchResults: any = null;
+  public isExportDataLoading: boolean = false;
+  public dismissible = true;
+  public isMMS: boolean = false;
   constructor(
     private modalService: BsModalService,
     private locationManagementService: LocationManagementService,
@@ -71,194 +97,132 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private itemAttributeService: ItemAttributeService,
     private broadcasterService: BroadcasterService,
+     private excelService: ExcelService,
     private _location: Location
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.getAllLocationsWithHierarchy();
     }
 
-    this.itemId = route.snapshot.params['itemId'];
-    this.typeId = route.snapshot.params['typeID'];
-    console.log('typeId from view item' + this.typeId);
-    this.itemTypes = this.itemManagementService.getItemTypes();
+    this.itemId = this.route.snapshot.params['itemId'];
+    this.typeId = this.route.snapshot.params['typeId'];
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
-      this.companyName = this.globalCompany.name;
-      console.log('inide item search');
+      this.companyId = value.companyId;
+      this.companyName = value.name;
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
+    this.isMMS = sessionStorage.getItem('itemMMS') === 'true';
     this.getAllItemTypes();
   }
 
-  back() {
+  /** Navigation */
+  back(): void {
     this._location.back();
   }
 
-  getAllLocationsWithHierarchy() {
-    this.locations = this.broadcasterService.locations;
-    if (this.locations && this.locations.length > 0) {
-      this.items = [];
+  /** Locations */
+  getAllLocationsWithHierarchy(): void {
+    this.locations = this.broadcasterService.locations || [];
+    if (this.locations.length) {
       this.items = this.generateHierarchy(this.locations);
     }
   }
 
-  generateHierarchy(locList: any[]) {
-    var items: TreeviewItem[] = [];
-    locList.forEach((loc) => {
-      var children: TreeviewItem[] = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: loc.name,
-          value: loc.locationid,
-          collapsed: true,
-          children: children,
-        })
-      );
+  private generateHierarchy(locList: any[]): TreeviewItem[] {
+    return locList.map((loc) => {
+      const children = loc.parentResourceList?.length
+        ? this.generateHierarchy(loc.parentResourceList)
+        : [];
+      return new TreeviewItem({ text: loc.name, value: loc.locationId, collapsed: true, children });
     });
-    return items;
   }
 
-  generateHierarchyForItemTypes(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchyForItemTypes(type.typeList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeid + '',
-          collapsed: true,
-          children: children,
-        })
-      );
+  /** Item Types */
+  private generateHierarchyForItemTypes(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children = type.typeList?.length ? this.generateHierarchyForItemTypes(type.typeList) : [];
+      return new TreeviewItem({ text: type.name, value: String(type.typeId), collapsed: true, children });
     });
-
-    return items;
   }
 
-  getAllItemTypes() {
+  getAllItemTypes(): void {
     this.spinner.show();
-    this.loader = true;
-    this.itemTypesService
-      .getAllItemTypesWithHierarchy(this.companyId)
-      .subscribe(
-        (response: any) => {
-          this.itemTypes = response;
-          this.spinner.hide();
-          this.loader = false;
-          if (this.itemTypes && this.itemTypes.length > 0) {
-            this.itemTypeItems = this.generateHierarchyForItemTypes(
-              this.itemTypes
-            );
-
-            this.itemValue = this.typeId;
-            this.getTypeAttributes(this.typeId);
-          }
-          this.getItemStatus();
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
+    this.itemTypesService.getAllItemTypesWithHierarchy(this.companyId).subscribe({
+      next: (response: any) => {
+        this.itemTypes = response || [];
+        if (this.itemTypes.length) {
+          this.itemTypeItems = this.generateHierarchyForItemTypes(this.itemTypes);
+          this.itemValue = this.typeId;
+          if (this.itemValue) this.getTypeAttributes(this.itemValue);
         }
-      );
-  }
-
-  getItemStatus() {
-    this.spinner.show();
-    this.loader = true;
-    this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
-      (response: any) => {
-        this.statuses = response;
+        this.getItemStatus();
         this.spinner.hide();
-        this.loader = false;
       },
-      (error) => {
-        this.spinner.hide();
-        this.loader = false;
-      }
-    );
+      error: () => this.spinner.hide(),
+    });
   }
 
-  onItemValueChange(typeId: any) {
-    if (typeId != 0 && typeId != undefined) {
+  getItemStatus(): void {
+    this.spinner.show();
+    this.itemStatusService.getAllItemStatuses(String(this.companyId)).subscribe({
+      next: (response: any) => {
+        this.statuses = response || [];
+        this.spinner.hide();
+      },
+      error: () => this.spinner.hide(),
+    });
+  }
+
+  onItemValueChange(typeId: any): void {
+    if (typeId && typeId !== 0) {
       this.itemValue = typeId;
-      console.log('on value change type id is' + typeId);
       this.getTypeAttributes(typeId);
     }
   }
 
-  getTypeAttributes(typeId: string) {
-    console.log('hit type id is' + typeId);
+  /** Attributes */
+  getTypeAttributes(typeId: string): void {
+    if (!typeId || typeId === '0') return;
+    this.spinner.show();
 
-    if (typeId != '0') {
-      this.spinner.show();
-      this.loader = true;
-      this.itemAttributeService
-        .getTypeAttributes(typeId)
-        .subscribe((response) => {
-          this.spinner.hide();
-          this.loader = false;
-          this.itemModel.attributevalues = response;
-          this.attributesValuesList = this.itemModel.attributevalues;
-          this.itemAttributeService
-            .getAttributesForFindReplacement(this.itemId)
-            .subscribe((res) => {
-              this.itemModel.attributesList = res;
-              this.itemModel.attributename = null;
-              this.attributesValuesList.forEach((attrList: any) => {
-                this.itemModel.attributename = attrList.name;
-                this.itemModel.attributesList.forEach((attribtesList: any) => {
-                  this.itemModel.attributeeName = attribtesList.attributeName;
-                  if (
-                    this.itemModel.attributeeName ===
-                    this.itemModel.attributename
-                  ) {
-                    attrList.value = attribtesList.attributeValue;
-                  }
-                });
-              });
-            });
+    this.itemAttributeService.getTypeAttributes(typeId).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        this.itemModel.attributeValues = response || [];
+        this.itemAttributeService.getAttributesForFindReplacement(this.itemId).subscribe({
+          next: (res: any) => {
+            this.itemModel.attributesList = res || [];
+            this.mergeAttributes();
+          },
         });
-    }
+      },
+    });
   }
 
-  searchItems() {
+  private mergeAttributes(): void {
+    if (!this.itemModel.attributeValues || !this.itemModel.attributesList) return;
+    this.itemModel.attributeValues.forEach((attr: AttributeValue) => {
+      const match = this.itemModel.attributesList.find((a: any) => a.attributeName === attr.name);
+      if (match) attr.value = match.attributeValue;
+    });
+  }
+
+  /** Search */
+  searchItems(): void {
     this.isExpandAdvancedSearch = false;
-    var attributeLis: { attributeNameID: any; name: any; value: any }[] = [];
-    if (
-      this.itemModel.attributevalues &&
-      this.itemModel.attributevalues.length > 0
-    ) {
-      this.itemModel.attributevalues.forEach(
-        (attr: { value: string; attributenameid: any; name: any }) => {
-          if (attr.value && attr.value != '') {
-            let listItem = {
-              attributeNameID: attr.attributenameid,
-              name: attr.name,
-              value: attr.value,
-            };
-            attributeLis.push(listItem);
-          }
-        }
-      );
-    }
-    var request = {
+
+    const attributeLis = this.buildAttributeList();
+
+    const request = {
       companyId: this.companyId,
       name: this.itemModel.name ? this.itemModel.name : null,
       tag: this.itemModel.tag ? this.itemModel.tag : null,
@@ -270,112 +234,279 @@ export class AdvancedItemSearchReplacementComponent implements OnInit {
       ownerAdmin: this.isOwnerAdmin,
       userId: this.loggedInuser,
       attributeNameList: attributeLis,
+      isExport: 0,
+      isMMS:this.isMMS
     };
 
-    console.log(JSON.stringify(request));
+    this.lastSearchRequest = { ...request };
+    this.page = 1;
+
+    this.getAdvancedSearchResults(this.page, this.itemsForPagination, request);
+
+    const exportRequest = { ...request, isExport: 1 };
+
+    const isRequestChanged =
+      JSON.stringify(exportRequest) !== JSON.stringify(this.lastExportRequest);
+
+    if (isRequestChanged) {
+      this.lastExportRequest = { ...exportRequest };
+
+      if (this.exportSubscription) {
+        this.exportSubscription.unsubscribe();
+      }
+
+      this.exportSearchResults = null;
+      this.isExportDataLoading = true;
+
+      this.exportSubscription = this.itemManagementService.getAdvancedSearchItems(exportRequest)
+        .subscribe(res => {
+          this.exportSearchResults = res;
+          this.isExportDataLoading = false;
+        }, err => {
+          this.isExportDataLoading = false;
+        });
+    }
+  }
+
+  getAdvancedSearchResults(currentPage: number, itemsPerPage: number, baseRequest: any) {
+
+    const request = {
+      ...baseRequest,
+      page: currentPage,
+      size: itemsPerPage,
+      
+    };
+
     this.spinner.show();
-    this.loader = true;
-    this.itemManagementService
-      .getAdvancedSearchItems(request)
-      .subscribe((response) => {
-        this.itemManagementService.setAdvancedItemSearchResults(response);
+
+    this.itemManagementService.getAdvancedSearchItems(request)
+      .subscribe((response: Record<string, any[]>) => {
+
         this.spinner.hide();
-        this.loader = false;
+
+        this.searchResults = response;
+        this.searchResultKeys = Object.keys(this.searchResults);
+
+        this.totalItemsByType = {};
+
+        this.searchResultKeys.forEach(key => {
+          if (response[key] && response[key].length > 0) {
+            const firstRow = response[key][0];
+            this.totalItemsByType[key] = firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || response[key].length;
+          } else {
+            this.totalItemsByType[key] = 0;
+          }
+        });
+
+        // Set itemsLength from the first type's total count
+        if (this.searchResultKeys.length > 0) {
+          const firstKey = this.searchResultKeys[0];
+          this.itemsLength = this.totalItemsByType[firstKey] || 0;
+        } else {
+          this.itemsLength = 0;
+        }
+
+  
+        if (this.dynLst.length === 0) {
+          this.searchResultKeys.forEach((key, index) => {
+            this.dynLst[index] = { itemsForPagination: this.itemsForPagination, p: currentPage };
+          });
+        }
+
         this.showSearchResults = true;
-        this.broadcasterService.broadcast('advancedsearchresults', 'reload');
+        this.flag = this.searchResultKeys.length === 0 ? 1 : 0;
+        this.getAttributesForSearchDisplay();
       });
   }
 
-  searchItemRepairNotesRfqModel() {
+  buildAttributeList() {
+
+    const attributeList = (this.itemModel.attributeValues || [])
+      .filter((attr: AttributeValue) => !!attr.value)
+      .map((attr: AttributeValue) => ({
+        attributeNameId: attr.attributeNameId,
+        name: attr.name,
+        value: attr.value,
+      }));
+
+    return attributeList;
+  }
+
+  searchItemRepairNotesRfqModel(): void {
     this.advancedsearchflag = 1;
-    var request = {
+    const request = {
       companyID: this.companyId,
-      extraTag: this.itemrepairnotesrfqModel.exactTag
-        ? this.itemrepairnotesrfqModel.exactTag
-        : null,
-      RFQ: this.itemrepairnotesrfqModel.rfq
-        ? this.itemrepairnotesrfqModel.rfq
-        : null,
-      po: this.itemrepairnotesrfqModel.po
-        ? this.itemrepairnotesrfqModel.po
-        : null,
-      job: this.itemrepairnotesrfqModel.job
-        ? this.itemrepairnotesrfqModel.job
-        : null,
-      noteFlag: this.itemrepairnotesrfqModel.isitemnote,
-      repairFlag: this.itemrepairnotesrfqModel.isitemrepair,
-      rfqFlag: this.itemrepairnotesrfqModel.isitemrfq,
+      extraTag: this.itemrepairNotesrfqModel.exactTag || null,
+      RFQ: this.itemrepairNotesrfqModel.rfq || null,
+      po: this.itemrepairNotesrfqModel.po || null,
+      job: this.itemrepairNotesrfqModel.job || null,
+      noteFlag: this.itemrepairNotesrfqModel.isitemnote,
+      repairFlag: this.itemrepairNotesrfqModel.isitemrepair,
+      rfqFlag: this.itemrepairNotesrfqModel.isitemrfq,
       itemNotes: null,
       repairlogList: null,
       RFQsList: null,
       isOwnerAdmin: this.isOwnerAdmin,
       userId: this.loggedInuser,
     };
+
     this.spinner.show();
-    this.loader = true;
-    this.itemManagementService
-      .getAdvancedSearchItemRepairNotesRfq(request)
-      .subscribe((response: any) => {
+    this.itemManagementService.getAdvancedSearchItemRepairNotesRfq(request).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
         this.searchresults = response;
         this.itemNotesList = response.itemNotes;
         this.repairlogList = response.repairlogList;
         this.RFQsList = response.rfqsList;
-        console.log('this.itemNotesList is' + this.itemNotesList);
-        console.log('this.repairlogList is' + this.repairlogList);
-        console.log('this.RFQsList is' + this.RFQsList);
-        console.log('this.itemNotesList is' + response.itemNotes);
-        console.log('this.repairlogList is' + response.repairlogList);
-        console.log('this.RFQsList is' + response.rfqsList);
-        this.spinner.hide();
-        this.loader = false;
-      });
+      },
+      error: () => this.spinner.hide(),
+    });
   }
 
-  setOrder(value: string) {
-    if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
-    }
+  /** Sorting */
+  setOrder(value: string): void {
+    if (this.order === value) this.reverse = this.reverse === '' ? '-' : '';
     this.order = value;
   }
 
-  clearItem() {
+  /** Clear */
+  clearItem(): void {
     this.itemModel = {};
     this.itemValue = 0;
   }
 
-  clearRepairNoteQuote() {
-    this.itemrepairnotesrfqModel = {};
+  clearRepairNoteQuote(): void {
+    this.itemrepairNotesrfqModel = {};
   }
 
-  goToNote(
-    itemId: string,
-    journalid: string,
-    rank: any,
-    tag: any,
-    typeName: any
-  ) {
+  /** Navigation */
+  goToNote(itemId: string, journalId: string, rank: any, tag: any, typeName: any): void {
     this.broadcasterService.itemRank = rank;
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
-    this.router.navigate(['/items/itemNotes/' + itemId + '/' + journalid]);
+    this.router.navigate(['/items/itemNotes', itemId, journalId]);
   }
 
-  goToItemRepair(
-    itemId: string,
-    repairLogId: string,
-    rank: any,
-    tag: any,
-    typeName: any
-  ) {
+  goToItemRepair(itemId: string, repairLogId: string, rank: any, tag: any, typeName: any): void {
     this.broadcasterService.itemRank = rank;
     this.broadcasterService.currentItemTag = tag;
     this.broadcasterService.currentItemType = typeName;
-    this.router.navigate([
-      '/items/viewItemRepair/' + itemId + '/' + repairLogId,
-    ]);
+    this.router.navigate(['/items/viewItemRepair', itemId, repairLogId]);
+  }
+  onTypePageChange(page: number, index: number, itemType: string) {
+
+    if (!this.lastSearchRequest) {
+      console.warn('No search request stored. Perform a search first.');
+      return;
+    }
+
+    if (!this.dynLst[index]) {
+      this.dynLst[index] = { itemsForPagination: this.itemsForPagination, p: 1 };
+    }
+
+    
+    this.dynLst[index].p = page;
+
+    const request = {
+      ...this.lastSearchRequest,
+      page: page,
+      size: this.dynLst[index].itemsForPagination || this.itemsForPagination
+    };
+
+    this.spinner.show();
+
+    this.itemManagementService.getAdvancedSearchItems(request).subscribe((response: Record<string, any[]>) => {
+
+      this.spinner.hide();
+
+      if (!response) return;
+
+      
+      const key = Object.keys(response).find(k => k.toLowerCase() === itemType.toLowerCase());
+
+      if (key) {
+        this.searchResults[itemType] = response[key];
+
+        if (response[key].length > 0) {
+          const firstRow = response[key][0];
+          this.totalItemsByType[itemType] = firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || response[key].length;
+        }
+      }
+
+    }, err => {
+      this.spinner.hide();
+      console.error(err);
+    });
+  }
+
+  onPageSizeChange(index: number, itemType: string) {
+ 
+    if (!this.dynLst[index]) {
+      this.dynLst[index] = { itemsForPagination: this.itemsForPagination, p: 1 };
+    }
+
+    
+    this.dynLst[index].itemsForPagination = Number(this.dynLst[index].itemsForPagination) || this.itemsForPagination;
+
+    this.onTypePageChange(1, index, itemType);
+  }
+
+  onPageChange(page: number) {
+    this.page = page;
+
+    const attributeLis = this.buildAttributeList();
+
+    const request = {
+      companyId: this.companyId,
+      name: this.itemModel.name ? this.itemModel.name : null,
+      tag: this.itemModel.tag ? this.itemModel.tag : null,
+      locationName: this.itemModel.location ? this.itemModel.location : null,
+      statusId: this.itemModel.status ? this.itemModel.status : null,
+      locationId: this.itemModel.locationId ? this.itemModel.locationId : null,
+      typeId: this.itemValue ? this.itemValue : null,
+      maxHitCount: attributeLis.length,
+      ownerAdmin: this.isOwnerAdmin,
+      userId: this.loggedInuser,
+      attributeNameList: attributeLis
+    };
+
+    this.getAdvancedSearchResults(this.page, this.itemsForPagination, request);
+  }
+
+  getAttributesForSearchDisplay() {
+    this.itemManagementService.getAttributesForSearchDisplay(String(this.companyId)).subscribe((response: any) => {
+      this.attributesSearchDisplay = response;
+    },
+      error => {
+        this.spinner.hide();
+      });
+  }
+
+  exportAsExcelFileWithMultipleSheets() {
+    const clonedsearchResults = cloneDeep(this.searchResults);
+    Object.keys(clonedsearchResults).forEach(itemType => {
+      const result = clonedsearchResults[itemType];
+      result.forEach((obj: any) => {
+        const robj: any = {};
+        obj.attributeNameList.forEach((atr: any) => {
+          robj[atr.name] = atr.value;
+        });
+        delete obj.typeName;
+        delete obj.locationPath
+        delete obj.itemId;
+        delete obj.rank;
+
+        obj = Object.assign(obj, robj);
+      });
+
+    });
+    this.excelService.exportAsExcelFileWithMultipleSheets(clonedsearchResults, 'itemAdvancedSearchResults');
+  }
+
+  goToView(itemId: string, rank: any, tag: any, typeName: any) {
+    this.broadcasterService.currentItemTag = tag;
+    this.broadcasterService.currentItemType = typeName;
+    this.broadcasterService.itemRank = rank;
+    this.router.navigate(['/items/viewItem/' + itemId]);
   }
 }

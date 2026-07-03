@@ -27,19 +27,16 @@ export class EditcompanyattributesComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.companyId = route.snapshot.params['id'];
-    console.log('compaanyid=' + this.companyId);
     this.router = router;
   }
 
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe((params) => {
       this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
     });
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.documentId = +params['a'] || 0;
-      console.log('Query params ', this.documentId);
     });
   }
 

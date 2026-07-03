@@ -1,36 +1,32 @@
-<div class="animated fadeIn" *ngIf="highestRank > 5">
+<div class="animated fadeIn" *ngIf="highestRankNum > 5">
   <div class="row">
     <div class="col-lg-12 col-padding">
       <div class="card">
-        <div class="form-group col-sm-12 text-right">
+        <div class="form-group col-12 text-end">
           <button
             type="button"
-            (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            (click)="print()"
           >
             Print
           </button>
           <button
             type="button"
-            (click)="help()"
-            data-bs-placement="bottom"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group me-2"
+            title="Instructions"
             data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            data-bs-placement="bottom"
+            (click)="help()"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            class="mt-2 p-2 border"
+            style="background-color: whitesmoke; width: fit-content; text-align: left;"
           >
             * To create a new type:<br />
             1.Enter the information for the new type.<br />
@@ -41,67 +37,54 @@
             3.Click the 'Save' button.
           </div>
         </div>
+
         <div class="card-body">
           <p class="card-text">
             Manage {{ companyName }} Item types
             <button
               type="button"
-              *ngIf="highestRank > 3"
-              class="btn btn-primary float-right"
+              *ngIf="highestRankNum > 3"
+              class="btn btn-primary float-end my-btn-group"
               [routerLink]="['../addItemType']"
-              data-bs-placement="bottom"
-              data-bs-toggle="tooltip"
               title="Add a new Item."
-              placement="top"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
             >
               Add Item Type
             </button>
           </p>
-          <div class="select-pagination-option">
-            <div class="float-left">
-              <span
-                >Show
-                <select [(ngModel)]="itemsForPagination" (change) = "onChange($event.target)">
-                  <option>5</option>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                </select>
-                entries
-              </span>
+
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              Show
+              <select [(ngModel)]="itemsForPagination" (change)="onChange($event.target)">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+              entries
+            </div>
+            <div>
+              Search:
+              <input [(ngModel)]="typeFilter" style="width: auto;" />
             </div>
           </div>
-          <div class="float-right div-search">
-            <span>Search : </span>
-            <input [(ngModel)]="typeFilter" />
-          </div>
 
-          <table
-            class="table table-responsive-sm table-hover table-outline mb-0 mt-2"
-          >
+          <table class="table table-responsive-sm table-hover table-outline mb-0 mt-2">
             <thead class="thead-light">
               <tr>
-                <th
-                  [class.active]="order === 'name'"
-                  (click)="setOrder('name')"
-                >
-                  Item Type Name<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='name'" (click)="setOrder('name')">
+                  Item Type Name
+                  <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
-                <th
-                  [class.active]="order === 'hostingfee'"
-                  (click)="setOrder('hostingfee')"
-                >
-                  Hosting Fee<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='hostingFee'" (click)="setOrder('hostingFee')">
+                  Hosting Fee
+                  <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
-
-                <th
-                  [class.active]="order === 'description'"
-                  (click)="setOrder('description')"
-                >
-                  Description<span [hidden]="reverse == ''">▼</span
-                  ><span [hidden]="reverse != ''">▲</span>
+                <th [class.active]="order==='description'" (click)="setOrder('description')">
+                  Description
+                  <span [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span>
                 </th>
                 <th>Attributes</th>
                 <th>Actions</th>
@@ -109,53 +92,47 @@
             </thead>
             <tbody>
               <tr
-                *ngFor="
-                  let type of locationsTypes
-                    | orderBy : reverse + order
-                    | filterBy
-                      : ['name', 'hostingfee', 'description']
-                      : typeFilter
-                    | paginate
-                      : { itemsPerPage: itemsForPagination, currentPage: p }
-                "
+                *ngFor="let type of locationsTypes
+                  | orderBy: reverse + order
+                  | filterBy: ['name','hostingFee','description']: typeFilter
+                  | paginate: { itemsPerPage: itemsForPagination, currentPage: p }"
               >
                 <td [innerHTML]="type.name"></td>
-                <td [innerHTML]="type.hostingfee"></td>
-
+                <td [innerHTML]="type.hostingFee"></td>
                 <td [innerHTML]="type.description"></td>
                 <td>
                   <button
                     type="button"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
+                    class="btn btn-outline-success btn-sm my-btn-group"
                     title="Click here to Manage Item Attributes"
-                    class="btn btn-outline-success btn-sm"
-                    [routerLink]="['../attributes', type.typeid, companyId]"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    [routerLink]="['../attributes', type.typeId, companyId]"
                   >
                     Manage Attributes
                   </button>
                 </td>
                 <td>
                   <button
+                    *ngIf="highestRankNum > 3"
                     type="button"
-                    *ngIf="highestRank > 3"
-                    class="btn btn-outline-danger btn-sm mb-1 btn-right"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
+                    class="btn btn-outline-danger btn-sm mb-1 btn-right my-btn-group"
                     title="Edit this Type"
-                    [routerLink]="['../editItemType', type.typeid, companyId]"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    [routerLink]="['../editItemType', type.typeId, companyId]"
                   >
                     Edit
                   </button>
                   <button
+                    *ngIf="highestRankNum > 3"
                     type="button"
-                    *ngIf="highestRank > 3"
-                    class="btn btn-outline-danger btn-sm mb-1"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="tooltip"
+                    class="btn btn-outline-danger btn-sm mb-1 my-btn-group"
                     title="Delete this Type"
-                    (click)="openModal(confirmtemplate, type.typeid)"
-                    [disabled]="highestRank == 9"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    (click)="openModal(confirmtemplate, type.typeId)"
+                    [disabled]="highestRankNum == 9"
                   >
                     Delete
                   </button>
@@ -163,37 +140,23 @@
               </tr>
             </tbody>
           </table>
-          <pagination-controls
-            class="my-pagination"
-            (pageChange)="p = $event"
-            [autoHide]="true"
-          ></pagination-controls>
+
+          <pagination-controls class="my-pagination" (pageChange)="p=$event" [autoHide]="true"></pagination-controls>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 <ng-template #templateNested>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Second modal</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef2.hide()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <h4 class="modal-title">Second modal</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()"></button>
   </div>
   <div class="modal-body">
     This is nested modal.
     <br />
-    <button
-      *ngIf="modalRef"
-      type="button"
-      class="btn btn-danger"
-      (click)="closeFirstModal()"
-    >
+    <button *ngIf="modalRef" type="button" class="btn btn-danger" (click)="closeFirstModal()">
       Close first modal
     </button>
   </div>
@@ -202,117 +165,32 @@
 <ng-template #confirmtemplate>
   <div class="modal-body text-center">
     <p>Do you want to confirm?</p>
-    <button
-      type="button"
-      class="btn btn-outline-danger btn-right"
-      (click)="confirm()"
-    >
-      Yes
-    </button>
-    <button type="button" class="btn btn-primary" (click)="decline()">
-      No
-    </button>
+    <button type="button" class="btn btn-primary btn-right my-btn-group" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary my-btn-group" (click)="decline()">No</button>
   </div>
 </ng-template>
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  class="position-fixed w-100 h-100 top-0 start-0"
+  style="background-color: rgba(0,0,0,0.5); z-index: 2; cursor: pointer;"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    left: 50%;
+    top: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
+    z-index: 1050;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  @keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 </style>

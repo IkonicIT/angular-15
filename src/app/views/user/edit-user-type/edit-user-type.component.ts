@@ -13,26 +13,27 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 })
 export class EditUserTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
+    parentId: {
+      typeId: 0,
     },
   };
-  userTypeId: any;
-  index: number;
-  companyId: any;
+  userTypeId!: number;
+  index = 0;
+  companyId!: number;
   globalCompany: any;
-  companyName: any;
-  userTypes: any;
-  value: any;
-  items: TreeviewItem[];
-  config = TreeviewConfig.create({
+  companyName = '';
+  userTypes: any[] = [];
+  value: number | null = null;
+  items: TreeviewItem[] = [];
+  config: TreeviewConfig = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  userName: any;
-  helpFlag: any = false;
+  userName: string | null = null;
+  helpFlag = false;
   dismissible = true;
   loader = false;
+
   constructor(
     private userTypesService: UserTypesService,
     private companyManagementService: CompanyManagementService,
@@ -41,146 +42,134 @@ export class EditUserTypeComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private broadcasterService: BroadcasterService
   ) {
-    this.userTypeId = route.snapshot.params['id'];
-    this.companyId = route.snapshot.params['cmpId'];
+    this.userTypeId = Number(this.route.snapshot.paramMap.get('id'));
+    this.companyId = Number(this.route.snapshot.paramMap.get('cmpId'));
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyName = this.globalCompany.name;
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
+    this.companyName = this.globalCompany?.name ?? '';
+
+    this.companyManagementService.globalCompanyChange.subscribe((value: any) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
+
     this.getAllUserTypes();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  getUserType(typeId: any) {
+  getUserType(typeId: number): void {
     this.spinner.show();
-    this.loader = true;
-    this.userTypesService.getUserTypeDetails(typeId).subscribe((response) => {
-      this.spinner.hide();
-      this.loader = false;
-      console.log(response);
-      this.model = response;
-      if (!this.model.parentid) {
-        this.model.parentid = {
-          typeid: 0,
-        };
-      } else {
-        this.value = this.model.parentid.typeid;
-      }
-    });
-  }
-
-  getAllUserTypes() {
-    this.userTypesService
-      .getAllUserTypesWithHierarchy(this.companyId)
-      .subscribe(
-        (response) => {
-          this.userTypes = response;
-          var self = this;
-          if (this.userTypes && this.userTypes.length > 0) {
-            self.items = this.generateHierarchy(this.userTypes);
-          }
-          this.getUserType(this.userTypeId);
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
+    this.userTypesService.getUserTypeDetails(typeId).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        this.model = response;
+        if (!this.model.parentId) {
+          this.model.parentId = { typeId: 0 };
+        } else {
+          this.value = this.model.parentId.typeId;
         }
-      );
-  }
+      },
+      error: () => this.spinner.hide(),
 
-  generateHierarchy(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeid,
-          collapsed: true,
-          children: children,
-        })
-      );
     });
-    return items;
   }
 
-  updateUserType() {
-    if (this.model.name && (this.model.parentid.typeid != this.userTypeId)) {
-      var request = {
-        attributesearchdisplay: 0,
+  getAllUserTypes(): void {
+    this.userTypesService.getAllUserTypesWithHierarchy(this.companyId).subscribe({
+      next: (response: any[]) => {
+        this.userTypes = response;
+        if (this.userTypes?.length > 0) {
+          this.items = this.generateHierarchy(this.userTypes);
+        }
+        this.getUserType(this.userTypeId);
+      },
+      error: () => this.spinner.hide(),
+    });
+  }
+
+  generateHierarchy(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children =
+        type.typeList && type.typeList.length > 0
+          ? this.generateHierarchy(type.typeList)
+          : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children,
+      });
+    });
+  }
+
+  updateUserType(): void {
+    if (this.model.name && this.model.parentId.typeId !== this.userTypeId) {
+      const request = {
+        attributeSearchDisplay: 0,
         description: this.model.description,
-        entitytypeid: this.model.entitytypeid,
-        hostingfee: this.model.hostingfee,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: this.model.entitytypeId,
+        hostingFee: this.model.hostingFee,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'usertype',
         name: this.model.name,
-        parentid: {
-          typeid: this.model.parentid.typeid ? this.model.parentid.typeid : 0,
+        parentId: {
+          typeId: this.model.parentId.typeId ? this.model.parentId.typeId : 0,
         },
         company: {
-          companyid: this.companyId,
+          companyId: this.companyId,
         },
         typeList: this.model.typeList,
-        typeid: this.userTypeId,
-        typemtbs: 0,
-        typespareratio: 0,
+        typeId: this.userTypeId,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
       };
+
       this.spinner.show();
-      this.loader = true;
-      this.userTypesService.updateUserType(request).subscribe(
-        (response) => {
+      this.userTypesService.updateUserType(request).subscribe({
+        next: () => {
           this.spinner.hide();
-          this.loader = false;
           this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
+          setTimeout(() => (this.index = 0), 7000);
           window.scroll(0, 0);
           this.router.navigate(['/user/types']);
         },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
+        error: () => this.spinner.hide(),
+      });
     } else {
       this.index = -1;
-      if (this.model.parentid.typeid == this.userTypeId) {
+      if (this.model.parentId.typeId === this.userTypeId) {
         this.index = -2;
       }
       window.scroll(0, 0);
     }
   }
-  getAllUserTypesWithHierarchy() {
+
+  getAllUserTypesWithHierarchy(): void {
     this.spinner.show();
-    this.loader = true;
-    this.userTypesService
-      .getAllUserTypesWithHierarchy(this.companyId)
-      .subscribe((response) => {
+    this.userTypesService.getAllUserTypesWithHierarchy(this.companyId).subscribe({
+      next: (response: any[]) => {
         this.spinner.hide();
-        this.loader = false;
         this.broadcasterService.userTypeHierarchy = response;
-      });
+      },
+      error: () => this.spinner.hide(),
+    });
   }
-  onValueChange(value: any) {
+
+  onValueChange(value: number): void {
     this.value = value;
-    console.log(value);
   }
-  print() {
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

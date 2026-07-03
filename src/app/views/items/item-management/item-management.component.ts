@@ -8,7 +8,7 @@ import { ItemTypesService } from '../../../services/Items/item-types.service';
 import { WarrantyManagementService } from '../../../services/warranty-management.service';
 import { LocationManagementService } from '../../../services/location-management.service';
 import { ItemManagementService } from '../../../services/Items/item-management.service';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
@@ -16,61 +16,76 @@ import { BroadcasterService } from '../../../services/broadcaster.service';
 import { ExcelService } from '../../../services/excel-service';
 import * as cloneDeep from 'lodash';
 
+export interface Attribute {
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-item-management',
   templateUrl: './item-management.component.html',
   styleUrls: ['./item-management.component.scss'],
 })
 export class ItemManagementComponent implements OnInit {
-  modalRef: BsModalRef | null;
-  modalRef2: BsModalRef;
-  message: string;
-  items: any = [];
-  index: number;
-  order: string = 'name';
-  reverse: string = '';
-  itemFilter: any = '';
-  itemsForPagination: any = 5;
-  itemTypes: any;
-  statuses: any;
-  locations: any;
-  warrantyTypes: any;
-  companyId: any = 0;
+  modalRef: BsModalRef | null = null;
+  modalRef2!: BsModalRef;
+  message = '';
+  items: any[] = [];
+  index!: number;
+  order = 'name';
+  reverse = '';
+  itemFilter = '';
+  itemsForPagination = 5;
+  itemTypes: any[] = [];
+  statuses: any[] = [];
+  locations: any[] = [];
+  warrantyTypes: any[] = [];
+  companyId = 0;
   globalCompany: any;
-  companyName: any;
-  currentRole: any;
-  highestRank: any;
+  companyName = '';
+  currentRole: string | null = null;
+  highestRank?: string | null;
+  get highestRankNum(): number {
+    return Number(this.highestRank ?? 0);
+  }
   excelObj: any;
   model: any = {
-    statusid: 0,
-    typeid: null,
+    statusId: 0,
+    typeId: null,
   };
-  queryString: any = '';
+  queryString = '';
   suggessions: any[] = [];
-  dataSource: Observable<any>;
-  typeAheadUrl: string = 'http://18.216.158.31:8087/api/item/searchTags/';
+  dataSource!: Observable<any>;
+  typeAheadUrl = 'http://18.216.158.31:8087/api/item/searchTags/';
 
   value: any;
-  locationItems: TreeviewItem[];
-  itemTypeItems: TreeviewItem[];
+  locationItems: TreeviewItem[] = [];
+  itemTypeItems: TreeviewItem[] = [];
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
   deleteFlag: any;
-  isOwnerAdmin: string | null;
-  loggedInuser: string | null;
-  searchResults: any[] = [];
-  public attributesSearchDisplay = [];
-  public searchResultKeys: any = [];
-  public dynLst: Array<any> = [];
+  isOwnerAdmin: string | null = null;
+  loggedInuser: string | null = null;
+  searchResults: Record<string, any[]> = {};
+  public attributesSearchDisplay: Attribute[] = [];
+  public searchResultKeys: string[] = [];
+  public dynLst: Array<{ itemsForPagination: number; p: number }> = [];
+  public totalItemsByType: Record<string, number> = {};
+  public itemsLength: number = 0;
+  public page: number = 1;
+  public exportSearchResults: any = null;
+  public lastSearchRequest: any = null;
+  public lastExportRequest: any = null;
+  public isExportDataLoading: boolean = false;
   flag: any;
   itemTag: any;
   itemType: any;
-  helpFlag: any = false;
+  helpFlag = false;
   dismissible = true;
-  loader = false
-  
+  loader = false;
+
   constructor(
     private modalService: BsModalService,
     private locationManagementService: LocationManagementService,
@@ -90,11 +105,11 @@ export class ItemManagementComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = this.globalCompany.name;
     });
     this.deleteFlag = itemManagementService.deleteFlag;
@@ -109,9 +124,8 @@ export class ItemManagementComponent implements OnInit {
     this.itemType = this.broadcasterService.currentItemType;
     this.getAttributesForSearchDisplay();
     this.spinner.show();
-    this.loader = true
     this.getLocations();
-    this.broadcasterService.on('refreshlist').subscribe((data) => {
+    this.broadcasterService.on('refreshlist').subscribe(() => {
       this.setInitValues();
     });
     this.currentRole = sessionStorage.getItem('currentRole');
@@ -120,91 +134,82 @@ export class ItemManagementComponent implements OnInit {
 
   getAttributesForSearchDisplay() {
     this.itemManagementService
-      .getAttributesForSearchDisplay(this.companyId)
-      .subscribe(
-        (response: any) => {
-          this.attributesSearchDisplay = response;
+      .getAttributesForSearchDisplay(String(this.companyId))
+      .subscribe({
+        next: (response: any) => {
+          this.attributesSearchDisplay = response || [];
         },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false
-        }
-      );
+        error: () => this.spinner.hide(),
+      });
   }
 
   setInitValues() {
     this.searchResults = this.itemManagementService.getItemSearchResults();
     this.model.typeId = this.itemManagementService.getSearchedItemTypeId();
-    this.model.statusid = this.itemManagementService.getSearchedItemStatusId();
-    this.model.locationid = this.itemManagementService.getSearchedItemLocationId();
-    this.value = this.model.locationid;
+    this.model.statusId = this.itemManagementService.getSearchedItemStatusId();
+    this.model.locationId =
+      this.itemManagementService.getSearchedItemLocationId();
+    this.value = this.model.locationId;
     this.model.tag = this.itemManagementService.getSearchedItemTag();
 
-    this.searchResultKeys = Object.keys(this.searchResults);
-    if (this.searchResultKeys.length == 0) {
-      if (this.route.snapshot.params['type'] == 'all') {
-        if ((this.model.tag && this.model.tag != '') || (this.model.typeId != '' && this.model.typeId)) {
+    this.searchResultKeys = Object.keys(this.searchResults || {});
+    if (this.searchResultKeys.length === 0) {
+      if (this.route.snapshot.params['type'] === 'all') {
+        if (
+          (this.model.tag && this.model.tag !== '') ||
+          (this.model.typeId !== '' && this.model.typeId)
+        ) {
           this.getSearchedItems();
-        }
-        else {
+        } else {
           this.getSearchedItemsByCompanyId();
         }
       }
     } else {
-      this.searchResultKeys = Object.keys(this.searchResults);
-      this.dynLst = [];
-      for (let item of this.searchResultKeys) {
-        const dnobj = { itemsForPagination: 5, p: 1 };
-        this.dynLst.push(dnobj);
-      }
+      this.dynLst = this.searchResultKeys.map(() => ({
+        itemsForPagination: 5,
+        p: 1,
+      }));
     }
   }
 
   itemRepairs(item: any) {
-    this.itemManagementService.setSearchedItemTypeId(item.typeid);
+    this.itemManagementService.setSearchedItemTypeId(item.typeId);
     this.itemManagementService.setSearchedItemTag(item.tag);
-    this.router.navigate(['/items/itemRepairs/' + item.itemid]);
+    this.router.navigate(['/items/itemRepairs/' + item.itemId]);
   }
 
   getLocations() {
-    this.spinner.show();
-    this.loader = true
-    this.locations = this.broadcasterService.locations;
-    if (this.locations && this.locations.length > 0) {
-      this.locationItems = [];
+    this.locations = this.broadcasterService.locations || [];
+    if (this.locations.length > 0) {
       this.locationItems = this.generateHierarchy(this.locations);
     }
     this.getItemStatus();
   }
 
-  generateHierarchy(locList: any[]) {
-    var items: TreeviewItem[] = [];
-    locList.forEach((loc) => {
-      var children: TreeviewItem[] = [];
-      if (loc.parentLocationResourceList && loc.parentLocationResourceList.length > 0) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
-      }
-      items.push(new TreeviewItem({
-          text: loc.name,
-          value: loc.locationid,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchy(locList: any[]): TreeviewItem[] {
+    return locList.map((loc) => {
+      const children = Array.isArray(loc.parentResourceList)
+        ? this.generateHierarchy(loc.parentResourceList)
+        : [];
+      return new TreeviewItem({
+        text: loc.name,
+        value: loc.locationId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
   onValueChange(value: any) {
     this.value = value;
-    this.model.locationid = value;
+    this.model.locationId = value;
   }
 
   getSuggessions(tag: string) {
     this.itemManagementService
-      .getItemSuggessions(tag, this.companyId)
+      .getItemSuggessions(tag, String(this.companyId))
       .subscribe((response: any) => {
-        this.suggessions = response;
+        this.suggessions = response || [];
       });
   }
 
@@ -212,68 +217,99 @@ export class ItemManagementComponent implements OnInit {
     this.flag = 0;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
-    this.spinner.show();
-    this.loader = true;
 
-    var req = {
-      locationid: this.model.locationid ? this.model.locationid : null,
-      statusid: this.model.statusid ? this.model.statusid : null,
-      tag: this.model.tag ? this.model.tag : null,
-      typeId: this.model.typeId ? this.model.typeId : null,
+    const request = {
+      locationId: this.model.locationId || null,
+      statusId: this.model.statusId || null,
+      tag: this.model.tag || null,
+      typeId: this.model.typeId || null,
+      pageNumber: 1,
+      pageSize: this.itemsForPagination,
+      isExport: 0,
     };
 
-    this.searchResults = [];
-    this.itemManagementService
-      .getAllItems(req, this.companyId, this.isOwnerAdmin, this.loggedInuser)
-      .subscribe((response: any) => {
+    this.lastSearchRequest = { ...request };
+    
+    const exportRequest = { ...request, isExport: 1 };
+    delete (exportRequest as any).pageNumber;
+    delete (exportRequest as any).pageSize;
 
-          this.spinner.hide();
-          this.loader = false
-          this.itemManagementService.setSearchedItemTag(req.tag);
-          this.itemManagementService.setSearchedItemTypeId(req.typeId);
-          this.itemManagementService.setSearchedItemLocationId(req.locationid);
-          this.itemManagementService.setSearchedItemStatusId(req.statusid);          
-          this.itemManagementService.setItemSearchResults(response);
-          this.searchResults = response;
-          this.searchResultKeys = Object.keys(this.searchResults);
+    this.spinner.show();
+    this.searchResults = {};
 
-          this.dynLst = [];
-          for (let item of this.searchResultKeys) {
-            const dnobj = { itemsForPagination: 5, p: 1 };
-            this.dynLst.push(dnobj);
+    // Make paginated call first - show UI immediately
+    (this.itemManagementService.getAllItems(
+      request,
+      this.companyId,
+      this.isOwnerAdmin,
+      this.loggedInuser
+    ) as Observable<any>).subscribe({
+      next: (paginatedResponse: any) => {
+        this.spinner.hide();
+        
+        // Handle paginated response - show UI immediately
+        this.itemManagementService.setItemSearchResults(paginatedResponse);
+        this.searchResults = paginatedResponse || {};
+        this.searchResultKeys = Object.keys(this.searchResults);
+        this.dynLst = this.searchResultKeys.map(() => ({
+          itemsForPagination: 5,
+          p: 1,
+        }));
+
+        this.totalItemsByType = {};
+        this.searchResultKeys.forEach((key) => {
+          const rows = this.searchResults[key];
+          if (Array.isArray(rows) && rows.length > 0) {
+            const firstRow: any = rows[0];
+            this.totalItemsByType[key] =
+              firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || rows.length;
+          } else {
+            this.totalItemsByType[key] = 0;
           }
-          if (this.searchResultKeys.length == 0) {
-            this.flag = 1;
-          } else if (this.searchResultKeys.length == 1) {
-            let key: any;
-            let itemId: any;
-            let rank: any;
-            let tag: any;
-            let typeName: any;
-            let count: number = 0;
+        });
 
-            key = this.searchResultKeys[0];
-            this.searchResults[key].forEach((obj: any) => {
-              count++;
-            });
-            if (count == 1) {
-              this.searchResults[key].forEach((obj: any) => {
-                itemId = obj.itemid;
-                rank = obj.itemRank;
-                tag = obj.tag;
-                typeName = obj.typeName;
-                this.goToView(itemId, rank, tag, typeName);
-              });
-            }
-
-            this.itemManagementService.deleteFlag = 0;
-          }
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false
+        if (this.searchResultKeys.length > 0) {
+          const firstKey = this.searchResultKeys[0];
+          this.itemsLength = this.totalItemsByType[firstKey] || 0;
+        } else {
+          this.itemsLength = 0;
         }
-      );
+
+        if (this.searchResultKeys.length === 0) {
+          this.flag = 1;
+        } else if (this.searchResultKeys.length === 1) {
+          const key = this.searchResultKeys[0];
+          if (
+            Array.isArray(this.searchResults[key]) &&
+            this.searchResults[key].length === 1
+          ) {
+            const obj = this.searchResults[key][0];
+            this.goToView(obj.itemId, obj.itemRank, obj.tag, obj.typeName);
+          }
+          this.itemManagementService.deleteFlag = 0;
+        }
+      },
+      error: () => {
+        this.spinner.hide();
+        this.exportSearchResults = null;
+      },
+    });
+
+    // Make export call in parallel (non-blocking) - load data in background
+    this.itemManagementService.getAllItems(
+      exportRequest,
+      this.companyId,
+      this.isOwnerAdmin,
+      this.loggedInuser
+    ).subscribe({
+      next: (exportResponse: any) => {
+        // Set export data to full search results (all data)
+        this.exportSearchResults = exportResponse;
+      },
+      error: () => {
+        this.exportSearchResults = null;
+      },
+    });
   }
 
   exportAsXLSX(itemType: any): void {
@@ -289,31 +325,28 @@ export class ItemManagementComponent implements OnInit {
 
     this.excelService.exportAsExcelFile(result, 'itemAdvancedSearchResults');
   }
-
   getSearchedItemsByCompanyId() {
     this.flag = 0;
     this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
     this.loggedInuser = sessionStorage.getItem('userId');
     this.spinner.show();
-    this.loader = true
     var req = {
-      locationid: this.model.locationid ? this.model.locationid : null,
-      statusid: this.model.statusid ? this.model.statusid : null,
+      locationId: this.model.locationId ? this.model.locationId : null,
+      statusId: this.model.statusId ? this.model.statusId : null,
       tag: this.model.tag ? this.model.tag : null,
       typeId: this.model.typeId ? this.model.typeId : null,
     };
-    this.searchResults = [];
+    this.searchResults = {};
     this.itemManagementService
       .getAllItems(req, this.companyId, this.isOwnerAdmin, this.loggedInuser)
       .subscribe(
         (response: any) => {
           this.spinner.hide();
-          this.loader = false
           this.searchResults = response;
           this.itemManagementService.setSearchedItemTag(req.tag);
           this.itemManagementService.setSearchedItemTypeId(req.typeId);
-          this.itemManagementService.setSearchedItemLocationId(req.locationid);
-          this.itemManagementService.setSearchedItemStatusId(req.statusid);
+          this.itemManagementService.setSearchedItemLocationId(req.locationId);
+          this.itemManagementService.setSearchedItemStatusId(req.statusId);
           this.itemManagementService.setItemSearchResults(response);
           this.searchResultKeys = Object.keys(this.searchResults);
           this.dynLst = [];
@@ -350,7 +383,6 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
   }
@@ -365,7 +397,7 @@ export class ItemManagementComponent implements OnInit {
       items.push(
         new TreeviewItem({
           text: type.name,
-          value: type.typeid,
+          value: type.typeId,
           collapsed: true,
           children: children,
         })
@@ -376,14 +408,12 @@ export class ItemManagementComponent implements OnInit {
 
   getAllItemTypes() {
     this.spinner.show();
-    this.loader = true
     this.itemTypesService
       .getAllItemTypesWithHierarchy(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false
-          this.itemTypes = response;
+          this.itemTypes = Array.isArray(response) ? response : [];;
           if (this.itemTypes && this.itemTypes.length > 0) {
             this.itemTypeItems = this.generateHierarchyForItemTypes(
               this.itemTypes
@@ -392,40 +422,34 @@ export class ItemManagementComponent implements OnInit {
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
   }
 
   getItemStatus() {
     this.spinner.show();
-    this.loader = true
-    this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
+    this.itemStatusService.getAllItemStatuses(String(this.companyId)).subscribe(
       (response) => {
-        this.statuses = response;
+        this.statuses = Array.isArray(response) ? response : [];
         this.getAllItemTypes();
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
 
   getWarrantyTypes() {
     this.spinner.show();
-    this.loader = true
     this.warrantyManagementService
       .getAllWarrantyTypes(this.companyId)
       .subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false 
-          this.warrantyTypes = response;
+          this.warrantyTypes = Array.isArray(response) ? response : [];
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false
         }
       );
   }
@@ -445,20 +469,124 @@ export class ItemManagementComponent implements OnInit {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
-
   openModal2(template: TemplateRef<any>) {
     this.modalRef2 = this.modalService.show(template, { class: 'second' });
   }
-
   closeFirstModal() {
     this.modalRef?.hide();
     this.modalRef = null;
   }
 
   editItemRepair() {}
-
   goToAddItem() {
     this.router.navigate(['/items/addItem']);
+  }
+
+  onTypePageChange(page: number, index: number, itemType: string) {
+    if (!this.dynLst[index]) {
+      return;
+    }
+
+    this.dynLst[index].p = page;
+    const request = {
+      ...this.lastSearchRequest,
+      pageNumber: page,
+      pageSize: this.dynLst[index].itemsForPagination || this.itemsForPagination,
+      isExport: 0,
+    };
+
+    this.spinner.show();
+    this.searchResults = {};
+
+    (this.itemManagementService.getAllItems(
+      request,
+      this.companyId,
+      this.isOwnerAdmin,
+      this.loggedInuser
+    ) as Observable<any>).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        this.searchResults = response || {};
+        this.searchResultKeys = Object.keys(this.searchResults);
+
+        this.totalItemsByType = {};
+        this.searchResultKeys.forEach((key) => {
+          const rows = this.searchResults[key];
+          if (Array.isArray(rows) && rows.length > 0) {
+            const firstRow: any = rows[0];
+            this.totalItemsByType[key] =
+              firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || rows.length;
+          } else {
+            this.totalItemsByType[key] = 0;
+          }
+        });
+
+        if (this.searchResultKeys.length > 0) {
+          const firstKey = this.searchResultKeys[0];
+          this.itemsLength = this.totalItemsByType[firstKey] || 0;
+        } else {
+          this.itemsLength = 0;
+        }
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
+  }
+
+  onPageSizeChange(index: number, itemType: string) {
+    if (!this.dynLst[index]) {
+      return;
+    }
+
+    // Reset to page 1 when page size changes
+    this.dynLst[index].p = 1;
+    const pageSize = Number(this.dynLst[index].itemsForPagination) || this.itemsForPagination;
+
+    const request = {
+      ...this.lastSearchRequest,
+      pageNumber: 1,
+      pageSize: pageSize,
+      isExport: 0,
+    };
+
+    this.spinner.show();
+    this.searchResults = {};
+
+    (this.itemManagementService.getAllItems(
+      request,
+      this.companyId,
+      this.isOwnerAdmin,
+      this.loggedInuser
+    ) as Observable<any>).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        this.searchResults = response || {};
+        this.searchResultKeys = Object.keys(this.searchResults);
+
+        this.totalItemsByType = {};
+        this.searchResultKeys.forEach((key) => {
+          const rows = this.searchResults[key];
+          if (Array.isArray(rows) && rows.length > 0) {
+            const firstRow: any = rows[0];
+            this.totalItemsByType[key] =
+              firstRow.totalRows || firstRow.totalrows || firstRow.TotalRows || rows.length;
+          } else {
+            this.totalItemsByType[key] = 0;
+          }
+        });
+
+        if (this.searchResultKeys.length > 0) {
+          const firstKey = this.searchResultKeys[0];
+          this.itemsLength = this.totalItemsByType[firstKey] || 0;
+        } else {
+          this.itemsLength = 0;
+        }
+      },
+      error: () => {
+        this.spinner.hide();
+      },
+    });
   }
 
   goToView(itemId: string, rank: any, tag: any, typeName: any) {
@@ -498,66 +626,60 @@ export class ItemManagementComponent implements OnInit {
     }
     this.order = value;
   }
+exportAsExcelFileWithMultipleSheets(): void {
 
-  exportAsExcelFileWithMultipleSheets() {
-    const clonedsearchResults: any = cloneDeep(this.searchResults);
-    Object.keys(clonedsearchResults).forEach((itemType) => {
-      const result = clonedsearchResults[itemType];
-      result.forEach((obj: any) => {
-        const robj: any = {};
+  console.log('STEP 1: Original 👉', this.exportSearchResults);
+
+  if (!this.exportSearchResults) {
+    console.log(' No data');
+    return;
+  }
+
+  // ✅ safest fix (no lodash issues)
+  const clonedsearchResults: Record<string, any[]> =
+    JSON.parse(JSON.stringify(this.exportSearchResults));
+
+  console.log('STEP 2: Clean clone 👉', clonedsearchResults);
+
+  Object.keys(clonedsearchResults).forEach((itemType) => {
+
+    const result = clonedsearchResults[itemType];
+
+    console.log(`Processing 👉 ${itemType}`, result);
+
+    if (!Array.isArray(result)) return;
+
+    result.forEach((obj: any, i: number) => {
+
+      console.log(`Row BEFORE [${i}] 👉`, obj);
+
+      const robj: any = {};
+
+      if (obj.attributeNameList) {
         obj.attributeNameList.forEach((atr: any) => {
           robj[atr.name] = atr.value;
         });
-        delete obj.companyid;
-        delete obj.serialNumber;
-        delete obj.modelnumber;
-        delete obj.statusid;
-        delete obj.typeName;
-        delete obj.locationid;
-        delete obj.typeId;
-        delete obj.itemid;
-        delete obj.itemRank;
-        delete obj.description;
-        delete obj.warrantytypeid;
-        delete obj.warrantyexpiration;
-        delete obj.warrantyExpiration;
-        delete obj.lastmodifiedby;
-        delete obj.serialnumber;
-        delete obj.meantimebetweenservice;
-        delete obj.inserviceon;
-        delete obj.isinrepair;
-        delete obj.desiredspareratio;
-        delete obj.manufacturerid;
-        delete obj.repairqual;
-        delete obj.purchaseprice;
-        delete obj.daysinservice;
-        delete obj.purchasedate;
-        delete obj.defaultimageattachmentid;
-        delete obj.isstale;
-        delete obj.entityTypeId;
-        delete obj.roleid;
-        delete obj.roleName;
-        delete obj.updatedDate;
-        delete obj.userid;
-        delete obj.attributeName;
-        delete obj.attributevalue;
+      }
 
-        obj = Object.assign(obj, robj);
-      });
+      Object.assign(obj, robj);
+      delete obj.attributeNameList;
+
+      console.log(`Row AFTER [${i}] 👉`, obj);
     });
-    this.excelService.exportAsExcelFileWithMultipleSheets(
-      clonedsearchResults,
-      'itemAdvancedSearchResults'
-    );
-  }
+  });
 
-  confirm(): void {}
+  console.log('FINAL 👉', clonedsearchResults);
+
+  this.excelService.exportAsExcelFileWithMultipleSheets(
+    clonedsearchResults,
+    'itemAdvancedSearchResults'
+  );
+}
 
   print() {
     this.helpFlag = false;
     window.print();
   }
-
   help() {
     this.helpFlag = !this.helpFlag;
   }

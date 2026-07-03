@@ -15,29 +15,28 @@ import { LocationManagementService } from '../../../services';
 export class AddLocationNoteAttachmentsComponent implements OnInit {
   model: any = {};
   index: number = 0;
-  date = Date.now();
+  date: number = Date.now();
   companyId: number = 0;
-  companyName: string;
-  private sub: any;
-  id: number;
-  router: Router;
+  companyName: string = '';
+  id: number = 0;
   private fileContent: string = '';
-  private fileName: any;
-  public fileType: any = '';
+  private fileName: string | null = null;
+  public fileType: string = '';
   globalCompany: any;
-  entityId: any;
-  file: File;
-  userName: any;
-  addedfiles: any = [];
-  noteName: any;
-  locationName: any;
-  dismissible = true;
-  loader = false;
+  entityId: number = 0;
+  file!: File;
+  userName: string | null = null;
+  addedfiles: any[] = [];
+  noteName: string = '';
+  locationName: string = '';
+  dismissible: boolean = true;
+  loader: boolean = false;
+
   constructor(
     private itemAttachmentsService: ItemAttachmentsService,
     private companyManagementService: CompanyManagementService,
     private itemManagementService: ItemManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private broadcasterService: BroadcasterService,
@@ -45,131 +44,122 @@ export class AddLocationNoteAttachmentsComponent implements OnInit {
   ) {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyName = value?.name ?? '';
+      this.companyId = value?.companyId ?? 0;
     });
 
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    //var globalCompanyName = sessionStorage.getItem('globalCompany');
     if (this.globalCompany) {
-      this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyName = this.globalCompany.name ?? '';
+      this.companyId = this.globalCompany.companyId ?? 0;
     }
 
-    this.entityId = route.snapshot.params['noteId'];
-    console.log('entityId=' + this.entityId);
-    this.router = router;
+    this.entityId = +this.route.snapshot.params['noteId'] || 0;
   }
 
-  ngOnInit() {
-    this.noteName = this.broadcasterService.currentNoteAttachmentTitle;
-    this.locationName = this.locationManagementService.currentLocationName;
+  ngOnInit(): void {
+    this.noteName = this.broadcasterService.currentNoteAttachmentTitle ?? '';
+    this.locationName = this.locationManagementService.currentLocationName ?? '';
     this.userName = sessionStorage.getItem('userName');
     this.addedfiles.push({ file: '', description: '' });
   }
 
-  saveLocationNoteAttachment() {
-    var noFileChosen = true;
-    var addedFiles = this.addedfiles;
-    addedFiles.forEach(function (element: { attachmentFile: undefined }) {
+  saveLocationNoteAttachment(): void {
+    let noFileChosen = true;
+    this.addedfiles.forEach((element) => {
       if (element.attachmentFile === undefined) {
         noFileChosen = false;
       }
     });
+
     if (!noFileChosen) {
       this.index = -1;
       window.scroll(0, 0);
-    } else {
-      const formdata: FormData = new FormData();
-      formdata.append('file', this.file);
-      formdata.append('addedby', this.userName);
-      formdata.append('entityid', JSON.stringify(this.companyId));
-      formdata.append(
-        'description',
-        this.model.description ? this.model.description : ''
-      );
-      formdata.append('entityid', JSON.stringify(this.entityId));
-      formdata.append('moduleType', 'itemtype');
-      var jsonArr = this.addedfiles;
-      for (var i = 0; i < jsonArr.length; i++) {
-        delete jsonArr[i]['file'];
-      }
-      var req = {
-        attachmentResourceList: jsonArr,
-        attachmentUserLogDTO: {
-          noteType: 'locationnoteattachment',
-          noteName: this.noteName,
-          locationName: this.locationName,
-        },
-      };
-      this.spinner.show();
-      this.loader = true;
-      this.itemAttachmentsService.saveItemMultipleDocuments(req).subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.loader = false;
-          window.scroll(0, 0);
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-          this.router.navigate([
-            '/location/noteAttchments/' + this.entityId + '/' + this.entityId,
-          ]);
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
+      return;
     }
+
+    const formdata: FormData = new FormData();
+    formdata.append('file', this.file);
+    formdata.append('addedBy', this.userName ?? '');
+    formdata.append('entityId', JSON.stringify(this.companyId));
+    formdata.append('description', this.model.description ?? '');
+    formdata.append('entityId', JSON.stringify(this.entityId));
+    formdata.append('moduleType', 'itemType');
+
+    const jsonArr = this.addedfiles.map((file) => {
+      const { file: _, ...rest } = file;
+      return rest;
+    });
+
+    const req = {
+      attachmentResourceList: jsonArr,
+      attachmentUserLogDTO: {
+        noteType: 'locationnoteattachment',
+        noteName: this.noteName,
+        locationName: this.locationName,
+      },
+    };
+
+    this.spinner.show();
+
+    this.itemAttachmentsService.saveItemMultipleDocuments(req).subscribe(
+      () => {
+        this.spinner.hide();
+        window.scroll(0, 0);
+        this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+        this.router.navigate([
+          `/location/noteAttchments/${this.entityId}/${this.entityId}`,
+        ]);
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  cancelLocationDocument() {
+  cancelLocationDocument(): void {
     this.router.navigate([
-      '/location/noteAttchments/' + this.entityId + '/' + this.entityId,
+      `/location/noteAttchments/${this.entityId}/${this.entityId}`,
     ]);
   }
 
-  fileChangeListener($event: { target: any }, fileIndex: any): void {
-    //console.log(this.addedfiles)
-    this.readThis($event.target, fileIndex);
+  fileChangeListener(event: { target: any }, fileIndex: number): void {
+    this.readThis(event.target, fileIndex);
   }
 
-  addNewAttachment() {
+  addNewAttachment(): void {
     this.index = 0;
     this.addedfiles.push({ file: '', description: '' });
   }
 
-  remove(i: number) {
+  remove(i: number): void {
     this.addedfiles.splice(i, 1);
   }
 
-  readThis(inputValue: any, fileIndex: string | number): void {
+  readThis(inputValue: any, fileIndex: number): void {
     if (inputValue.files && inputValue.files[0]) {
       this.file = inputValue.files[0];
       this.fileName = this.file.name;
 
-      var myReader: any = new FileReader();
+      const myReader = new FileReader();
       myReader.readAsDataURL(this.file);
-      myReader.onloadend = (e: any) => {
-        this.fileContent = myReader.result.split(',')[1];
-        this.fileType = myReader.result
-          .split(',')[0]
-          .split(':')[1]
-          .split(';')[0];
+      myReader.onloadend = () => {
+        const result = myReader.result as string;
+        this.fileContent = result.split(',')[1];
+        this.fileType = result.split(',')[0].split(':')[1].split(';')[0];
+
         const fileInfo = this.addedfiles[fileIndex];
-        fileInfo['addedby'] = this.userName;
+        fileInfo['addedBy'] = this.userName ?? '';
         fileInfo['attachmentFile'] = this.fileContent;
-        fileInfo['attachmentid'] = 0;
-        fileInfo['contenttype'] = this.fileType;
-        fileInfo['companyID'] = this.companyId;
-        fileInfo['dateadded'] = new Date().toISOString();
-        fileInfo['entityid'] = this.entityId;
+        fileInfo['attachmentId'] = 0;
+        fileInfo['contentType'] = this.fileType;
+        fileInfo['companyId'] = this.companyId;
+        fileInfo['dateAdded'] = new Date().toISOString();
+        fileInfo['entityId'] = this.entityId;
         fileInfo['isNew'] = 1;
         fileInfo['moduleType'] = 'itemnotetype';
-        fileInfo['filename'] = this.fileName;
-        console.log(this.addedfiles);
+        fileInfo['fileName'] = this.fileName;
       };
     }
   }

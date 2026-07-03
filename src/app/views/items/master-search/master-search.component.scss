@@ -14,7 +14,9 @@
   border: solid 1px #a4b7c1;
   padding-left: 0px;
 }
-
+.my-btn-group{
+  border-radius: 6px !important;
+}
 .my-pagination ::ng-deep .ngx-pagination .current {
   color: white;
   background-color: red;
@@ -64,4 +66,8 @@
 
 .form-control {
   background-color: #fff;
+}
+
+.btn-group{
+  border-radius: 6px !important;
 }

@@ -6,6 +6,8 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AppConfiguration } from '../configuration';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Company } from '../models';
 
 @Injectable()
 export class CompanyManagementService {
@@ -43,7 +45,6 @@ export class CompanyManagementService {
     this.companyListChange.subscribe((value) => {
       this.isCompaniesListModified = value;
     });
-    console.log('auth token' + this.authToken);
   }
 
   setGlobalCompanyList(list: any) {
@@ -108,9 +109,9 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  updateCompany(company: { companyid: string }) {
+  updateCompany(company: { companyId: string }) {
     return this.http
-      .put(AppConfiguration.companyRestURL + '' + company.companyid, company)
+      .put(AppConfiguration.companyRestURL + '' + company.companyId, company)
       .pipe(catchError(this.handleError));
   }
 
@@ -122,15 +123,15 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  getAllCompanyDetails() {
-    return this.http
-      .get(AppConfiguration.companyRestURL + 'getAllCompanies')
-      .pipe(catchError(this.handleError));
-  }
+getAllCompanyDetails(): Observable<Company[]> {
+  return this.http
+    .get<Company[]>(AppConfiguration.companyRestURL + 'getAllCompanies')
+    .pipe(catchError(this.handleError));
+}
 
   getCompanyNames(userId: string) {
     return this.http
-      .get(AppConfiguration.companyRestURL + 'getCompaniesByUser/' + userId)
+      .get<any[]>(AppConfiguration.companyRestURL + 'getCompaniesByUser/' + userId)
       .pipe(catchError(this.handleError));
   }
 
@@ -142,7 +143,7 @@ export class CompanyManagementService {
 
   getRolesForUser(userId: string) {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.locationRestURL +
           'userSecurity/getAllRolesForUser/' +
           userId
@@ -152,7 +153,7 @@ export class CompanyManagementService {
 
   getLevelsByUserName(userName: string, companyId: string) {
     return this.http
-      .get(
+      .get<any[]>(
         AppConfiguration.locationRestURL +
           'userSecurity/' +
           userName +
@@ -161,7 +162,11 @@ export class CompanyManagementService {
       )
       .pipe(catchError(this.handleError));
   }
-
+  getIsMMS(companyId:number)
+  {
+    return this.http.get(AppConfiguration.companyRestURL+"isMMS/"+companyId)
+    .pipe(catchError(this.handleError));
+  }
   getCompanyDetails(comapnyId: string) {
     return this.http
       .get(AppConfiguration.companyRestURL + comapnyId)
@@ -187,7 +192,6 @@ export class CompanyManagementService {
   }
 
   private handleError(error: any) {
-    //handle your auth error
     if (error.status === 401) {
       //navigate /delete cookies or whatever
       console.log('handled error ' + error.status);
@@ -205,17 +209,25 @@ export class CompanyManagementService {
     return Math.floor(Math.random() * 6 + 1);
   }
 
-  getAllVendorDetails(companyId: string) {
+  getAllVendorDetails() {
     return this.http
-      .get(
-        AppConfiguration.vendorRestURL + 'getAllCompaniesForUser/' + companyId
+      .get<any[]>(AppConfiguration.vendorRestURL + 'getAllVendorsList')
+      .pipe(catchError(this.handleError));
+  }
+
+  getAllVendorRepairs(vendorRequest: any) {
+    return this.http
+      .post(
+        AppConfiguration.locationRestURL +
+          'itemrepair/getAllItemRepairsByVendorInLocation/',
+        vendorRequest
       )
       .pipe(catchError(this.handleError));
   }
 
   getAllCompaniesForOwnerAdmin() {
     return this.http
-      .get(AppConfiguration.companyRestURL + 'getCompanies')
+      .get<any[]>(AppConfiguration.companyRestURL + 'getCompanies')
       .pipe(catchError(this.handleError));
   }
 
@@ -233,9 +245,9 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  saveVendor(company: any) {
+  saveVendor(vendor: any) {
     return this.http
-      .post(AppConfiguration.vendorRestURL + 'addVendor', company)
+      .post(AppConfiguration.vendorRestURL, vendor)
       .pipe(catchError(this.handleError));
   }
 
@@ -245,23 +257,23 @@ export class CompanyManagementService {
       .pipe(catchError(this.handleError));
   }
 
-  updateVendor(company: { companyid: string }) {
+  updateVendor(vendor: any) {
     return this.http
-      .put(AppConfiguration.vendorRestURL + '' + company.companyid, company)
+      .put(AppConfiguration.vendorRestURL + vendor.vendorId, vendor)
       .pipe(catchError(this.handleError));
   }
 
-  getAllTemplates(companyId: string) {
+  getAllTemplates(companyId: string | number) {
     return this.http
-      .get(AppConfiguration.templateRestURL + 'getAllTemplates/' + companyId)
+      .get<any[]>(AppConfiguration.templateRestURL + 'getAllTemplates/' + companyId)
       .pipe(catchError(this.handleError));
   }
 
   removeTemplate(
-    templateId: string,
-    companyid: string,
-    username: string,
-    templateName: string
+    templateId: number,
+    companyId: string | number,
+    userName: string,
+    templateName: string | null
   ) {
     return this.http
       .delete(
@@ -269,9 +281,9 @@ export class CompanyManagementService {
           '' +
           templateId +
           '/' +
-          companyid +
+          companyId +
           '/' +
-          username +
+          userName +
           '/' +
           templateName,
         { responseType: 'text' }

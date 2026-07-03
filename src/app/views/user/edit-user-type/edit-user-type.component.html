@@ -9,7 +9,7 @@
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
+            class="btn btn-outline-danger btn-sm btn-right btn-top my-btn-group"
           >
             Print
           </button>
@@ -18,19 +18,14 @@
             (click)="help()"
             data-bs-placement="bottom"
             data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            title="Instructions"
+            class="btn btn-outline-danger btn-sm btn-top my-btn-group"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
             *ngIf="helpFlag == true"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
           >
             * To create a new type:<br />
             1.Enter the information for the new type.<br />
@@ -70,11 +65,11 @@
                 >
                   <div class="card-body">
                     <div class="row">
-                      <div class="form-group col-sm-6">
-                        <label for="lType"
-                          >Name of User Type
-                          <strong class="text-danger">*</strong></label
-                        >
+                      <div class="form-group col-sm-12">
+                        <label for="lType">
+                          Name of User Type
+                          <strong class="text-danger">*</strong>
+                        </label>
                         <input
                           type="text"
                           class="form-control"
@@ -85,12 +80,12 @@
                           placeholder="Enter User Type Name"
                         />
                       </div>
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-12">
                         <label for="hostingFee">Hosting Fee</label>
                         <input
                           type="number"
                           class="form-control"
-                          [(ngModel)]="model.hostingfee"
+                          [(ngModel)]="model.hostingFee"
                           name="hostingFee"
                           #hostingFee="ngModel"
                           id="hostingFee"
@@ -99,17 +94,19 @@
                     </div>
 
                     <div class="row">
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-12">
                         <label for="parentType">Select Parent Type</label>
-
+                        <div class="custom-dropdown-wrapper">
                         <app-dropdown-treeview-select
                           [items]="items"
                           [(value)]="value"
                           (valueChange)="onValueChange($event)"
                         >
                         </app-dropdown-treeview-select>
+                        <span class="custom-dropdown-arrow"></span>
+                        </div>
                       </div>
-                      <div class="form-group col-sm-6">
+                      <div class="form-group col-sm-12">
                         <label for="description">Description</label>
                         <input
                           type="text"
@@ -121,13 +118,14 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Update this UserType"
-                          class="btn btn-primary btn-right"
+                          class="btn btn-primary btn-right my-btn-group"
                         >
                           Update
                         </button>
@@ -137,7 +135,7 @@
                           data-bs-toggle="tooltip"
                           title="Cancel"
                           [routerLink]="['../../../types']"
-                          class="btn btn-primary"
+                          class="btn btn-primary my-btn-group"
                         >
                           Cancel
                         </button>
@@ -156,102 +154,7 @@
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 2; cursor: pointer; -ms-transform: translate(-50%, -50%); transform: translate(-1%, -1%);"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

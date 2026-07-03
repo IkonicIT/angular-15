@@ -9,6 +9,7 @@ import { throwError } from 'rxjs';
 @Injectable()
 export class ItemStatusService {
   public serviceURL = AppConfiguration.typeStatusRestURL + 'status';
+
   public isProd = false;
   private authToken = sessionStorage.getItem('auth_token')
     ? sessionStorage.getItem('auth_token')
@@ -30,10 +31,10 @@ export class ItemStatusService {
       .pipe(catchError(this.handleError));
   }
 
-  updateItemStatus(itemStatus: { statusid: string }) {
+  updateItemStatus(itemStatus: { statusId: string }) {
     return this.http
       .put(
-        this.serviceURL + '/' + itemStatus.statusid,
+        this.serviceURL + '/' + itemStatus.statusId,
         itemStatus,
         this.httpOptions
       )
@@ -54,7 +55,7 @@ export class ItemStatusService {
       )
       .pipe(catchError(this.handleError));
   }
-
+  
   removeItemStatus(id: number, userName: string) {
     return this.http
       .delete(this.serviceURL + '/' + id + '/' + userName, this.httpOptions)

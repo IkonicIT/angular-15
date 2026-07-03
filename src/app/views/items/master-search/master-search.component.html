@@ -7,68 +7,62 @@
             type="button"
             class="btn btn-outline-danger btn-sm"
             (click)="isExpandAdvancedSearch = !isExpandAdvancedSearch"
-            data-bs-placement="bottom"
             data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
             title="Click here to Show/Change the Search Fields"
           >
             Show/Change Search Fields Criteria
           </button>
         </ng-container>
+
         <div class="form-group col-sm-12 text-right">
           <button
             type="button"
+            class="btn btn-outline-danger btn-sm btn-right btn-top btn-group my-btn-group"
             (click)="print()"
-            data-bs-placement="bottom"
             data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
             title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm btn-right btn-top"
           >
             Print
           </button>
           <button
             type="button"
+            class="btn btn-outline-danger btn-sm btn-top btn-group my-btn-group"
             (click)="help()"
-            data-bs-placement="bottom"
             data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            data-bs-placement="bottom"
+            title="Instructions"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            style="text-align:left; border:1px solid; width:fit-content; background-color:whitesmoke;"
           >
             Note: Mandatory Fields are required.<br />
             *To add a new item:<br />
             1.Enter the data for the new item.<br />
             2.Click the 'Save' button.<br />
-            *To edit an existing item: <br />
-            1.Enter the tag number and click 'Search' or click the 'Edit'
-            button.<br />
-            2.If more than one item type is found for the tag number, select the
-            desired type in the 'Select Type' drop down list.<br />
+            *To edit an existing item:<br />
+            1.Enter the tag number and click 'Search' or click the 'Edit' button.<br />
+            2.If more than one item type is found for the tag number, select the desired type in the 'Select Type' drop down list.<br />
             3.Make the necessary changes.<br />
             4.Click the 'Save' button.
           </div>
         </div>
+
         <div class="card-body">
           <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
             Please enter Tag
           </alert>
+
           <ng-container *ngIf="isExpandAdvancedSearch">
-            <p class="card-text">Master Search</p>
+            <p class="card-text btn-group">Master Search</p>
             <div class="row">
-              <div class="form-group col-sm-1"></div>
+              <div class="col-sm-1"></div>
               <div class="form-group col-sm-5">
-                <label for="tag"
-                  >Item Tag# <strong class="text-danger">*</strong></label
-                >
+                <label for="tag">Item Tag# <strong class="text-danger">*</strong></label>
                 <input
                   type="text"
                   class="form-control"
@@ -80,7 +74,7 @@
                 />
               </div>
               <div class="form-group col-sm-5">
-                <label for="tag">Name</label>
+                <label for="name">Name</label>
                 <input
                   type="text"
                   class="form-control"
@@ -91,12 +85,13 @@
                   placeholder="Enter Item Name"
                 />
               </div>
-              <div class="form-group col-sm-1"></div>
+              <div class="col-sm-1"></div>
             </div>
+
             <div class="row">
-              <div class="form-group col-sm-1"></div>
+              <div class="col-sm-1"></div>
               <div class="form-group col-sm-5">
-                <label for="tag">LocationName</label>
+                <label for="locationName">LocationName</label>
                 <input
                   type="text"
                   class="form-control"
@@ -108,23 +103,24 @@
                 />
               </div>
               <div class="form-group col-sm-5">
-                <label for="tag">TypeName</label>
+                <label for="typeName">TypeName</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.typeName"
                   name="TypeName"
                   #typeName="ngModel"
-                  id="TypeName"
+                  id="typeName"
                   placeholder="Enter Item Type"
                 />
               </div>
-              <div class="form-group col-sm-1"></div>
+              <div class="col-sm-1"></div>
             </div>
+
             <div class="row">
-              <div class="form-group col-sm-1"></div>
+              <div class="col-sm-1"></div>
               <div class="form-group col-sm-5">
-                <label for="tag">Status Name</label>
+                <label for="statusName">Status Name</label>
                 <input
                   type="text"
                   class="form-control"
@@ -135,148 +131,77 @@
                   placeholder="Enter Item Status"
                 />
               </div>
-              <div class="form-group col-sm-1"></div>
+              <div class="col-sm-1"></div>
             </div>
+
             <div class="row">
-              <div class="form-group col-sm-5"></div>
-              <div class="form-group col-sm-4 align-center">
+              <div class="col-sm-5"></div>
+              <div class="col-sm-4 d-flex gap-2 justify-content-center">
                 <button
                   type="button"
+                  class="btn btn-primary btn-group"
                   (click)="getSearchedItems()"
-                  data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
                   title="Search an item"
-                  class="btn btn-primary"
                 >
                   Search
                 </button>
                 <button
                   type="button"
+                  class="btn btn-primary btn-group"
                   (click)="clear()"
-                  data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
                   title="Clear searched Fields"
-                  class="btn btn-primary"
                 >
                   Clear
                 </button>
                 <button
                   *ngIf="isExpandAdvancedSearch"
                   type="button"
+                  class="btn btn-primary btn-group"
                   (click)="Hide()"
-                  data-bs-placement="bottom"
                   data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
                   title="Hide searched Fields"
-                  class="btn btn-primary"
                 >
                   Hide
                 </button>
               </div>
-              <div class="form-group col-sm-3"></div>
+              <div class="col-sm-3"></div>
             </div>
           </ng-container>
 
-          <!-- <div class="card">
-              <div class="type-header">
-                <strong>{{item.name}}</strong>
-
-              </div>
-            </div> -->
-
-          <!-- <div class="card">
-                <div class="type-header">
-                  <strong>{{value.itemType}}</strong>
-                </div>
-              </div> -->
-          <!--             
-                  <div class="table-responsive">
-                    <table class="table">
-                      <ng-container *ngFor="let item of results | paginate: { itemsPerPage: itemsForPagination, currentPage: p }">
-                        <tr>
-                          <th>
-                           Customer: {{item.name}}
-                          </th>
-                        </tr>
-                      <ng-container *ngFor="let value of item.values">
-                        <tr>
-                          <th>
-                            {{value.itemType}}
-                          </th>
-                        </tr>
-                      <thead class="thead-light">
-                        <tr>
-                          <th [class.active]="order === 'name'" (click)="setOrder('name')">Tag #<span
-                              [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                          <th [class.active]="order === 'phone'" (click)="setOrder('phone')">Location<span
-                              [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                          <th [class.active]="order === 'state'" (click)="setOrder('state')">Status<span
-                              [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                          <ng-container *ngIf="value.items[0] &&value.items[0].attributeNameList"> 
-                            <th *ngFor="let attr of value.items[0].attributeNameList">{{attr.name}}
-                            </th>
-                          </ng-container>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr
-                          *ngFor="let result of value.items">
-                          <td><a href="javascript:void(0)"
-                            (click)="goToView(result.itemid,result.itemRank,result.tag,result.typeName,result.companyid)">{{result.tag}}</a></td>
-                          <td>{{result.locationName}}</td>
-                          <td>{{result.statusname}}</td>
-                          <ng-container *ngIf="result && result.attributeNameList">
-                            <td *ngFor="let attr of result.attributeNameList ">{{attr.value}}</td>
-                          </ng-container>
-                        </tr>
-                      </tbody>
-                    </ng-container>
-                    </ng-container>
-                    </table>
-                    <pagination-controls class="my-pagination" (pageChange)="p = $event" autoHide="true">
-                    </pagination-controls>
-                   
-                  </div>
-            -->
-
-          <div *ngIf="flag == 0">
+          <div *ngIf="flag === 0">
             <strong>Search Results:</strong>
           </div>
-          <div>
-            <alert type="danger" *ngIf="flag == 1">
-              No Results Found <br />
-            </alert>
-          </div>
+
+          <alert type="danger" *ngIf="flag === 1">
+            No Results Found <br />
+          </alert>
 
           <button
+            *ngIf="flag === 0"
             type="button"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Export results "
-            *ngIf="flag == 0"
+            class="btn btn-primary mb-2"
             (click)="exportAsExcelFileWithMultipleSheets()"
-            class="btn btn-primary"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="Export results"
           >
             Export to Excel
           </button>
+
           <div *ngFor="let companyName of searchResultKeys; let s = index">
-            <!-- <tr>
-                <th>
-                 Customer: {{companyName}}
-                </th>
-              </tr> -->
-            <div class="card">
+            <div class="card mb-2">
               <div class="type-header">
                 <strong>{{ companyName }}</strong>
               </div>
             </div>
-            <div
-              *ngFor="
-                let itemType of searchResults[companyName] | keys;
-                let t = index
-              "
-              style="margin-bottom: 0.3rem"
-            >
-              <div class="card">
+
+            <div *ngFor="let itemType of searchResults[companyName] | keys; let t = index" class="mb-2">
+              <div class="card mb-1">
                 <div class="type-header">
                   <strong>{{ itemType }}</strong>
                 </div>
@@ -286,251 +211,67 @@
                 <table class="table">
                   <thead class="thead-light">
                     <tr>
-                      <th
-                        [class.active]="order === 'name'"
-                        (click)="setOrder('name')"
-                      >
-                        Tag #<span [hidden]="reverse == ''">▼</span
-                        ><span [hidden]="reverse != ''">▲</span>
+                      <th [class.active]="order === 'name'" (click)="setOrder('name')">
+                        Tag # <span [hidden]="reverse === ''">▼</span><span [hidden]="reverse !== ''">▲</span>
                       </th>
-                      <th
-                        [class.active]="order === 'phone'"
-                        (click)="setOrder('phone')"
-                      >
-                        Location<span [hidden]="reverse == ''">▼</span
-                        ><span [hidden]="reverse != ''">▲</span>
+                      <th [class.active]="order === 'phone'" (click)="setOrder('phone')">
+                        Location <span [hidden]="reverse === ''">▼</span><span [hidden]="reverse !== ''">▲</span>
                       </th>
-                      <th
-                        [class.active]="order === 'state'"
-                        (click)="setOrder('state')"
-                      >
-                        Status<span [hidden]="reverse == ''">▼</span
-                        ><span [hidden]="reverse != ''">▲</span>
+                      <th [class.active]="order === 'state'" (click)="setOrder('state')">
+                        Status <span [hidden]="reverse === ''">▼</span><span [hidden]="reverse !== ''">▲</span>
                       </th>
-                      <ng-container
-                        *ngIf="
-                          searchResults[companyName][itemType][0] &&
-                          searchResults[companyName][itemType][0]
-                            .attributeNameList
-                        "
-                      >
-                        <th
-                          *ngFor="
-                            let attr of searchResults[companyName][itemType][0]
-                              .attributeNameList
-                          "
-                        >
+                      <ng-container *ngIf="searchResults[companyName][itemType][0]?.attributeNameList">
+                        <th *ngFor="let attr of searchResults[companyName][itemType][0].attributeNameList">
                           {{ attr.name }}
                         </th>
                       </ng-container>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      *ngFor="
-                        let result of searchResults[companyName][itemType]
-                          | paginate
-                            : {
-                                itemsPerPage: dynLst[s][t].itemsForPagination,
-                                currentPage: dynLst[s][t].p,
-                                id: 'page' + t
-                              }
-                      "
-                    >
+                    <tr *ngFor="let result of searchResults[companyName][itemType] | paginate:{itemsPerPage: dynLst[s][t].itemsForPagination, currentPage: dynLst[s][t].p, id: 'page'+t}">
                       <td>
-                        <a
-                          href="javascript:void(0)"
-                          (click)="
-                            goToView(
-                              result.itemid,
-                              result.itemRank,
-                              result.tag,
-                              result.typeName,
-                              result.companyid
-                            )
-                          "
-                          >{{ result.tag }}</a
-                        >
+                        <a href="javascript:void(0)" (click)="goToView(result.itemId,result.itemRank,result.tag,result.typeName,result.companyId)">
+                          {{ result.tag }}
+                        </a>
                       </td>
                       <td>{{ result.locationName }}</td>
                       <td>{{ result.statusname }}</td>
-                      <ng-container *ngIf="result && result.attributeNameList">
-                        <td *ngFor="let attr of result.attributeNameList">
-                          {{ attr.value }}
-                        </td>
+                      <ng-container *ngIf="result?.attributeNameList">
+                        <td *ngFor="let attr of result.attributeNameList">{{ attr.value }}</td>
                       </ng-container>
                     </tr>
                   </tbody>
                 </table>
-                <pagination-controls
-                  class="my-pagination"
-                  id="page{{ t }}"
-                  (pageChange)="dynLst[s][t].p = $event"
-                >
-                </pagination-controls>
-
-                <!-- <pagination-controls class="my-pagination" id="page{{t}}" (pageChange)="dynLst[t].p = $event"></pagination-controls> -->
+                <pagination-controls class="my-pagination" id="page{{ t }}" (pageChange)="dynLst[s][t].p = $event"></pagination-controls>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- <div *ngFor="let itemType of searchResultKeys ;let t=index" style="margin-bottom: 0.3rem">
-            <button type="button" *ngIf="flag==0"  (click)="exportAsExcelFileWithMultipleSheets()" class="btn btn-primary">Export to Excel</button>
-            <div class="card">
-              <div class="type-header">
-                <strong>{{itemType}}</strong>
-              </div>
-            </div>
-              <div class="float-left">
-                  <span>Show
-                  <select [(ngModel)]="dynLst[t].itemsForPagination">
-                      <option>5</option>
-                      <option>10</option>
-                      <option>25</option>
-                      <option>50</option>
-                  </select>  entries
-                  </span>
-              </div>
-           
-            <div class="table-responsive">
-              <table *ngIf="searchResults[itemType] && searchResults[itemType].length>0" class="table">
-                <thead class="thead-light">
-                  <tr>
-                    <th [class.active]="order === 'name'" (click)="setOrder('name')">Tag #<span
-                        [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                    <th [class.active]="order === 'phone'" (click)="setOrder('phone')">Location<span
-                        [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                    <th [class.active]="order === 'state'" (click)="setOrder('state')">Status<span
-                        [hidden]="reverse==''">▼</span><span [hidden]="reverse!=''">▲</span></th>
-                    <ng-container *ngIf="searchResults[itemType][0] && searchResults[itemType][0].attributeNameList">
-                      <th *ngFor="let attr of searchResults[itemType][0].attributeNameList | slice:0:attributesSearchDisplay[itemType]">{{attr.name}}
-                      </th>
-                    </ng-container>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    *ngFor="let result of searchResults[itemType] | paginate: { itemsPerPage: dynLst[t].itemsForPagination, currentPage: dynLst[t].p,id:'page'+t }">
-                    <td><a href="javascript:void(0)"
-                      (click)="goToView(result.itemid,result.itemRank,result.tag,result.typeName)">{{result.tag}}</a></td>
-                    <td>{{result.locationName}}</td>
-                    <td>{{result.statusname}}</td>
-                    <ng-container *ngIf="result && result.attributeNameList">
-                      <td *ngFor="let attr of result.attributeNameList | slice:0:attributesSearchDisplay[itemType] ">{{attr.value}}</td>
-                    </ng-container>
-                  </tr>
-                </tbody>
-              </table>
-              <pagination-controls class="my-pagination" id="page{{t}}" (pageChange)="dynLst[t].p = $event"></pagination-controls>
-            </div>
-            
-          </div> -->
     </div>
   </div>
 </div>
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index:2; cursor:pointer; transform: translate(-1%, -1%);"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
+
 <style>
   .loader {
     position: absolute;
     left: 60%;
     top: 60%;
     z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  @keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 </style>
-
-

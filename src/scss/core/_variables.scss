@@ -1,12 +1,9 @@
-// scss-lint:disable all
-// Core Admin Variables
 
 $enable-sidebar-nav-rounded: false !default;
 
 $border-color: $gray-123 !default;
 $layout-transition-speed: 0.25s !default;
 
-// Social Colors
 
 $facebook: #3b5998 !default;
 $twitter: #00aced !default;
@@ -34,8 +31,6 @@ $spotify: #7ab800 !default;
 $vine: #00bf8f !default;
 $foursquare: #1073af !default;
 $vimeo: #aad450 !default;
-
-// Navbar
 
 $navbar-height: 55px !default;
 $navbar-bg: #fff !default;
@@ -80,7 +75,6 @@ $navbar-toggler-icon-hover: str-replace(
   "%23"
 ) !default;
 
-// Sidebar
 
 $sidebar-width: 200px !default;
 $sidebar-padding: 0 !default;
@@ -93,21 +87,18 @@ $sidebar-bg: $gray-800 !default;
 $sidebar-borders: none !default;
 $mobile-sidebar-width: 220px !default;
 
-// Sidebar Header
 
 $sidebar-header-height: auto !default;
 $sidebar-header-bg: rgba(0, 0, 0, 0.2) !default;
 $sidebar-header-padding-y: 0.75rem !default;
 $sidebar-header-padding-x: 1rem !default;
 
-// Sidebar Form
 
 $sidebar-form-border: 0 !default;
 $sidebar-form-bg: darken($sidebar-bg, 10%) !default;
 $sidebar-form-color: #fff !default;
 $sidebar-form-placeholder-color: rgba(255, 255, 255, 0.7) !default;
 
-// Sidebar Navigation
 
 $sidebar-nav-color: #fff !default;
 $sidebar-nav-title-padding-y: 0.75rem !default;
@@ -146,7 +137,6 @@ $sidebar-nav-dropdown-indicator-hover: str-replace(
   "%23"
 ) !default;
 
-// Sidebar Footer
 
 $sidebar-footer-height: auto !default;
 $sidebar-footer-bg: rgba(0, 0, 0, 0.2) !default;
@@ -154,7 +144,6 @@ $sidebar-footer-padding-y: 0.75rem !default;
 $sidebar-footer-padding-x: 1rem !default;
 $sidebar-footer-borders: 0 !default;
 
-// Sidebar Minimizer
 
 $sidebar-minimizer-height: 50px !default;
 $sidebar-minimizer-bg: rgba(0, 0, 0, 0.2) !default;
@@ -173,7 +162,6 @@ $sidebar-minimizer-hover-indicator: str-replace(
   "%23"
 ) !default;
 
-// Top Navigation
 
 $top-nav-bg: #fff !default;
 $top-nav-color: $body-color !default;
@@ -198,7 +186,6 @@ $top-nav-active-color: #fff !default;
 $top-nav-active-bg: theme-color("primary") !default;
 $top-nav-height: $navbar-height - 15px !default;
 
-// Breadcrumb
 $breadcrumb-borders: (
   bottom: (
     size: 1px,
@@ -207,7 +194,6 @@ $breadcrumb-borders: (
   ),
 ) !default;
 
-// Aside
 
 $aside-menu-width: 250px !default;
 $aside-menu-color: $gray-800 !default;
@@ -223,7 +209,6 @@ $aside-menu-borders: (
 $aside-menu-nav-padding-y: 0.75rem !default;
 $aside-menu-nav-padding-x: 1rem !default;
 
-// Footer
 
 $footer-height: 50px !default;
 $footer-bg: $gray-100 !default;
@@ -236,7 +221,6 @@ $footer-borders: (
   ),
 ) !default;
 
-// Cards
 
 $card-icon-bg: transparent !default;
 $card-icon-color: $body-color !default;

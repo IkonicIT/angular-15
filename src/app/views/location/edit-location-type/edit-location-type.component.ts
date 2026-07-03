@@ -12,27 +12,32 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 })
 export class EditLocationTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
+    parentId: {
+      typeId: 0,
     },
   };
-  locationTypeId: any;
-  index: number;
-  companyId: any;
-  globalCompany: any;
-  companyName: any;
-  locationsTypes: any;
 
-  value: any;
-  items: TreeviewItem[];
+  locationTypeId!: number;
+  companyId!: number;
+  companyName!: string;
+  globalCompany: any;
+
+  items: TreeviewItem[] = [];
+  locationsTypes: any[] = [];
+
+  value: number | null = null;
+  index = 0;
+
+  userName!: string | null;
+  helpFlag = false;
+  dismissible = true;
+  loader = false;
+
   config = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  userName: any;
-  dismissible = true;
-  helpFlag: any = false;
-  loader = false;
+
   constructor(
     private locationTypesService: LocationTypesService,
     private companyManagementService: CompanyManagementService,
@@ -40,145 +45,119 @@ export class EditLocationTypeComponent implements OnInit {
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.locationTypeId = route.snapshot.params['id'];
-    this.companyId = route.snapshot.params['cmpId'];
+    this.locationTypeId = Number(this.route.snapshot.params['id']);
+    this.companyId = Number(this.route.snapshot.params['cmpId']);
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyName = this.globalCompany.name;
+    this.companyName = this.globalCompany?.name;
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
-      this.companyName = this.globalCompany.name;
+      this.companyId = value.companyId;
+      this.companyName = value.name;
     });
+  }
+
+  ngOnInit(): void {
+    this.userName = sessionStorage.getItem('userName');
     this.getAllLocTypes();
   }
 
-  ngOnInit() {
-    this.userName = sessionStorage.getItem('userName');
-  }
-
-  getLocationType(typeId: string) {
+  private getLocationType(typeId: number): void {
     this.spinner.show();
-    this.loader = true;
-    this.locationTypesService.getLocationTypeDetails(typeId).subscribe(
+    this.locationTypesService.getLocationTypeDetails(String(typeId)).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
-        console.log(response);
         this.model = response;
-        if (!this.model.parentid) {
-          this.model.parentid = {
-            typeid: 0,
-          };
+
+        if (!this.model.parentId) {
+          this.model.parentId = { typeId: 0 };
         } else {
-          this.value = this.model.parentid.typeid;
+          this.value = this.model.parentId.typeId;
         }
       },
-      (error) => {
-        this.spinner.hide();
-        this.loader = false;
-      }
+      () => this.spinner.hide()
     );
   }
 
-  getAllLocTypes() {
+  private getAllLocTypes(): void {
     this.spinner.show();
-    this.loader = true;
     this.locationTypesService
-      .getAllLocationTypesWithHierarchy(this.companyId)
-      .subscribe(
-        (response) => {
-          this.locationsTypes = response;
-          var self = this;
-          if (this.locationsTypes && this.locationsTypes.length > 0) {
-            self.items = this.generateHierarchy(this.locationsTypes);
-          }
-          this.getLocationType(this.locationTypeId);
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
-  }
-
-  generateHierarchy(typeList: any) {
-    var items: any = [];
-    typeList.forEach((type: any) => {
-        var children = [];
-        if (type.typeList && type.typeList.length > 0) {
-          children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
-        }
-        items.push(
-          new TreeviewItem({
-            text: type.name,
-            value: type.typeid,
-            collapsed: true,
-            children: children,
-          })
-        );
+  .getAllLocationTypesWithHierarchy(this.companyId)
+  .subscribe(
+    (response: any) => {
+      this.spinner.hide();
+      this.locationsTypes = response || [];
+      if (Array.isArray(this.locationsTypes) && this.locationsTypes.length > 0) {
+        this.items = this.generateHierarchy(this.locationsTypes);
       }
-    );
-    return items;
+      this.getLocationType(this.locationTypeId);
+    },
+    () => this.spinner.hide()
+  );
   }
 
-  onValueChange(value: any) {
-    console.log(value);
+  private generateHierarchy(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children =
+        type.typeList && type.typeList.length > 0
+          ? this.generateHierarchy(type.typeList)
+          : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children,
+      });
+    });
   }
 
-  updateLocationType() {
-    if (this.model.name && this.value != this.locationTypeId) {
-      var request = {
-        attributesearchdisplay: 0,
+  onValueChange(value: number): void {
+    this.value = value;
+  }
+
+  updateLocationType(): void {
+    if (this.model.name && this.value !== this.locationTypeId) {
+      const request = {
+        attributeSearchDisplay: 0,
         description: this.model.description,
-        entitytypeid: this.model.entitytypeid,
-        hostingfee: this.model.hostingfee,
-        ishidden: true,
-        lastmodifiedby: this.userName,
+        entityTypeId: this.model.entitytypeId || 0,
+        hostingFee: this.model.hostingFee || 0,
+        isHidden: true,
+        lastModifiedBy: this.userName,
         moduleType: 'locationtype',
         name: this.model.name,
-        parentid: {
-          typeid: this.value ? this.value : 0,
-        },
-        company: {
-          companyid: this.companyId,
-        },
-        typeList: this.model.typeList,
-        typeid: this.locationTypeId,
-        typemtbs: 0,
-        typespareratio: 0,
+        parentId: { typeId: this.value || 0 },
+        company: { companyId: this.companyId },
+        typeList: this.model.typeList || [],
+        typeId: this.locationTypeId,
+        typeMtbs: 0,
+        typeSpareRatio: 0,
       };
+
       this.spinner.show();
-      this.loader = true;
       this.locationTypesService.updateLocationType(request).subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
           this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
+          setTimeout(() => (this.index = 0), 7000);
           window.scroll(0, 0);
           this.router.navigate(['/location/types']);
         },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
+        () => this.spinner.hide()
       );
     } else {
-      this.index = -1;
-      if (this.value == this.locationTypeId) {
-        this.index = -2;
-      }
+      this.index = this.value === this.locationTypeId ? -2 : -1;
       window.scroll(0, 0);
     }
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

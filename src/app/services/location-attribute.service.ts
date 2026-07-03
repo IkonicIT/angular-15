@@ -11,7 +11,9 @@ export class LocationAttributeService {
   databaseIndex: number = 0;
   currentGlobalCompany: any;
   public globalCompanyChange: Subject<any> = new Subject<any>();
-  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
+  private authToken = sessionStorage.getItem('auth_token')
+    ? sessionStorage.getItem('auth_token')
+    : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -25,31 +27,50 @@ export class LocationAttributeService {
 
   saveLocationAttributes(attributes: any) {
     return this.http
-      .post(AppConfiguration.companyRestURL + 'add', attributes, this.httpOptions)
+      .post(
+        AppConfiguration.companyRestURL + 'add',
+        attributes,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   updateTypeAttributes(attribute: any) {
     return this.http
-      .put(AppConfiguration.attributeRestURL + '/' + attribute.attributenameid, attribute, this.httpOptions)
+      .put(
+        AppConfiguration.attributeRestURL + '/' + attribute.attributeNameId,
+        attribute,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getTypeAttributes(typeId: any) {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId, this.httpOptions)
+      .get(
+        AppConfiguration.attributeRestURL + '/getAllAttributes/' + typeId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllAttributeTypes() {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributetypes', this.httpOptions)
+      .get(
+        AppConfiguration.attributeRestURL + '/getAllAttributetypes',
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllSearchTypes(attributeType: any) {
     return this.http
-      .get(AppConfiguration.attributeRestURL + '/getAllAttributeSearchType/' + attributeType, this.httpOptions)
+      .get(
+        AppConfiguration.attributeRestURL +
+          '/getAllAttributeSearchType/' +
+          attributeType,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -61,21 +82,26 @@ export class LocationAttributeService {
 
   getAllLocationAttributes() {
     return this.http
-      .get(AppConfiguration.companyRestURL + 'getAllCompanies', this.httpOptions)
+      .get(
+        AppConfiguration.companyRestURL + 'getAllCompanies',
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   removeLocationAttributess(
     attributeId: string,
-    companyid: string,
-    username: string,
+    companyId: string,
+    userName: string,
     attributeName: string,
     typeName: string,
     moduleType: string
   ) {
+    const url = `${AppConfiguration.attributeRestURL}/${attributeId}/${companyId}/${userName}/${attributeName}/${typeName}/${moduleType}`;
+
     return this.http
-      .delete(AppConfiguration.attributeRestURL + '/' + attributeId + '/' + companyid + '/' + username + '/' +
-          attributeName + '/' + typeName + '/' + moduleType, this.httpOptions)
+      .delete(url, { ...this.httpOptions, responseType: 'text' })
+
       .pipe(catchError(this.handleError));
   }
 

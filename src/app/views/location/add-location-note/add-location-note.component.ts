@@ -14,14 +14,14 @@ export class AddLocationNoteComponent implements OnInit {
   model: any = {};
   index: number = 0;
   locationId: number = 0;
-  private sub: any;
-  id: number;
-  bsConfig: Partial<BsDatepickerConfig>;
-  dismissible = true;
+  id: number = 0;
+  bsConfig: Partial<BsDatepickerConfig> = { containerClass: 'theme-red' };
+  dismissible: boolean = true;
   globalCompany: any;
-  companyId: any;
-  userName: any;
-  loader = false;
+  companyId: number = 0;
+  userName: string | null = null;
+  loader: boolean = false;
+
   constructor(
     private locationNoteService: LocationNotesService,
     private companyManagementService: CompanyManagementService,
@@ -29,70 +29,68 @@ export class AddLocationNoteComponent implements OnInit {
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.locationId = route.snapshot.params['id'];
+    this.locationId = +this.route.snapshot.params['id'] || 0;
+
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    if (this.globalCompany) {
+      this.companyId = this.globalCompany.companyId ?? 0;
+    }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value?.companyId ?? 0;
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
     this.model.date = new Date();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-red' });
-    console.log('locationId=' + this.locationId);
-    this.model.effectiveon = new Date();
+    this.model.effectiveOn = new Date();
   }
 
-  saveLocationNote() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+  saveLocationNote(): void {
+    if (!this.model.entityName || !this.model.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
-    } else {
-      this.model = {
-        companyid: this.companyId,
-        effectiveon: this.model.effectiveon,
-        enteredby: this.userName,
-        enteredon: new Date(),
-        entityid: this.locationId,
-        entityname: this.model.entityname,
-        entitytypeid: 0,
-        entityxml: '',
-        entry: this.model.entry ? this.model.entry : ' ',
-        jobnumber: this.model.jobnumber,
-        journalid: 0,
-        journaltypeid: 0,
-        locationid: this.locationId,
-        locationname: '',
-        ponumber: this.model.ponumber,
-        shippingnumber: '',
-        trackingnumber: '',
-        moduleType: 'locationtype',
-      };
-      console.log(JSON.stringify(this.model));
-      this.spinner.show();
-      this.loader = true;
-      this.locationNoteService.saveLocationNotes(this.model).subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.loader = false;
-          window.scroll(0, 0);
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
+      return;
     }
+
+    const payload = {
+      companyId: this.companyId,
+      effectiveOn: this.model.effectiveOn,
+      enteredBy: this.userName ?? '',
+      enteredOn: new Date(),
+      entityId: this.locationId,
+      entityName: this.model.entityName ?? '',
+      entitytypeId: 0,
+      entityXml: '',
+      entry: this.model.entry ?? ' ',
+      jobNumber: this.model.jobNumber ?? '',
+      journalId: 0,
+      journaltypeId: 0,
+      locationId: this.locationId,
+      locationName: '',
+      poNumber: this.model.poNumber ?? '',
+      shippingNumber: '',
+      trackingNumber: '',
+      moduleType: 'locationtype',
+    };
+    this.spinner.show();
+
+    this.locationNoteService.saveLocationNotes(payload).subscribe(
+      () => {
+        this.spinner.hide();
+        window.scroll(0, 0);
+        this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  cancelLocationNote() {
-    this.router.navigate(['/location/notes/' + this.locationId]);
+  cancelLocationNote(): void {
+    this.router.navigate([`/location/notes/${this.locationId}`]);
   }
 }

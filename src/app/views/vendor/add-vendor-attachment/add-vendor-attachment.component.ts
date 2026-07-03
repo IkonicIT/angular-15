@@ -14,6 +14,8 @@ export class AddVendorAttachmentComponent implements OnInit {
   index: number = 0;
   date = Date.now();
   companyId: number = 0;
+  dismissible: boolean = true; 
+
   vendorName: string;
   private sub: any;
   id: number;
@@ -23,9 +25,10 @@ export class AddVendorAttachmentComponent implements OnInit {
   public fileType: any = '';
   globalCompany: any;
   helpFlag: any = false;
-  dismissible = true;
-  loader = false;
-
+  addedfiles: any = [];
+  public file: File;
+  userName: any;
+  vendorId: any;
   constructor(
     private companyDocumentsService: CompanyDocumentsService,
     private companyManagementService: CompanyManagementService,
@@ -36,80 +39,120 @@ export class AddVendorAttachmentComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.vendorName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
+      this.userName = sessionStorage.getItem('userName');
     });
     this.router = router;
     this.sub = this.route.queryParams.subscribe((params) => {
-      this.companyId = +params['q'] || 0;
-      console.log('Query params ', this.companyId);
+      this.vendorId = +params['q'] || 0;
+    
     });
   }
 
   ngOnInit() {
-    console.log('companyi=' + this.companyId);
+    this.addedfiles.push({ file: '', description: '' });
   }
 
-  saveVendorDocument() {
-    if (!this.fileName) {
+  saveCompanyDocument() {
+    var noFileChosen = true;
+    var addedFiles = this.addedfiles;
+    addedFiles.forEach(function (element: any) {
+      if (element.attachmentFile === undefined) {
+        noFileChosen = false;
+      }
+    });
+    if (!noFileChosen) {
       this.index = -1;
       window.scroll(0, 0);
     } else {
-      let req = {
-        addedby: 'Yogi Patel',
-        attachmentFile: this.fileContent,
-        attachmentid: 0,
-        contenttype: this.fileType,
-        dateadded: new Date().toISOString(),
-        description: this.model.description,
-        entityid: this.companyId,
-        entitytypeid: 0,
-        filename: this.fileName,
-        moduleType: 'vendortype',
+      const formdata: FormData = new FormData();
+      formdata.append('file', this.file);
+      formdata.append('addedBy', this.userName);
+      formdata.append('companyId', JSON.stringify(this.companyId));
+      formdata.append(
+        'description',
+        this.model.description ? this.model.description : ''
+      );
+      formdata.append('entityId', JSON.stringify(this.companyId));
+      formdata.append('moduleType', 'companytype');
+      var jsonArr = this.addedfiles;
+      for (var i = 0; i < jsonArr.length; i++) {
+        delete jsonArr[i]['file'];
+      }
+      var req = {
+        vendorAttachmentResourceList: jsonArr,
+        attachmentUserLogDTO: {},
       };
       this.spinner.show();
-      this.loader = true;
-      this.companyDocumentsService.saveCompanyDocument(req).subscribe(
+      this.companyDocumentsService.saveVendorMultipleDocuments(req).subscribe(
         (response) => {
           this.spinner.hide();
-          this.loader = false;
           window.scroll(0, 0);
           this.index = 1;
+          setTimeout(() => {
+            this.index = 0;
+          }, 3000);
+          this.router.navigate(['/vendor/documents/' + this.vendorId]);
         },
         (error) => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
   }
 
   cancelVendorDocument() {
-    this.router.navigate(['/vendor/documents/' + this.companyId]);
-  }
-
-  fileChangeListener($event: any): void {
-    this.readThis($event.target);
-  }
-
-  readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
-    this.fileName = file.name;
-    var myReader: any = new FileReader();
-    myReader.readAsDataURL(file);
-    let self = this;
-    myReader.onloadend = function (e: any) {
-      console.log(myReader.result);
-      self.fileContent = myReader.result.split(',')[1];
-      self.fileType = myReader.result.split(',')[0].split(':')[1].split(';')[0];
-    };
+    this.router.navigate(['/vendor/documents/' + this.vendorId]);
   }
 
   print() {
     this.helpFlag = false;
     window.print();
   }
-
   help() {
     this.helpFlag = !this.helpFlag;
+  }
+
+  fileChangeListener($event: Event, fileIndex: number): void {
+
+    this.readThis($event.target, fileIndex);
+  }
+
+  remove(i: number) {
+    this.addedfiles.splice(i, 1);
+  }
+
+  addNewAttachment() {
+    this.index = 0;
+    this.addedfiles.push({ file: '', description: '' });
+  }
+  readThis(inputValue: any, fileIndex: any): void {
+    if (inputValue.files && inputValue.files[0]) {
+      this.file = inputValue.files[0];
+      this.fileName = this.file.name;
+
+      var myReader: FileReader = new FileReader();
+      myReader.readAsDataURL(this.file);
+      myReader.onloadend = (e) => {
+        if (myReader.result) {
+          const resultString = myReader.result as string;
+          this.fileContent = resultString.split(',')[1];
+          this.fileType = resultString
+            .split(',')[0]
+            .split(':')[1]
+            .split(';')[0];
+        }
+        const fileInfo = this.addedfiles[fileIndex];
+        fileInfo['createdBy'] = this.userName;
+        fileInfo['vendorId'] = this.vendorId;
+        fileInfo['attachmentFile'] = this.fileContent;
+        fileInfo['vendorAttachmentId'] = 0;
+        fileInfo['contentType'] = this.fileType;
+        fileInfo['isNew'] = 1;
+        fileInfo['moduleType'] = 'companytype';
+        fileInfo['fileName'] = this.fileName;
+        fileInfo['createdDate'] = new Date().toISOString();
+      };
+    }
   }
 }

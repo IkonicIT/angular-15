@@ -1,0 +1,196 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+
+          <!-- Print & Help buttons -->
+          <div class="d-flex justify-content-end gap-1 mb-2">
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="print()" tooltip="Click to Print this Page">
+              Print
+            </button>
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="help()" tooltip="Instructions">
+              Help
+            </button>
+
+            <!-- Help box -->
+            <div
+              *ngIf="helpFlag"
+              style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
+            >
+              * To create a Note <br />
+              1.Enter the information <br />
+              2.Click the 'Save' button <br />
+              * Pressing 'Cancel' will undo the changes you've made.
+            </div>
+          </div>
+
+          <p class="card-text fw-bold fs-4">Crane Notes:</p>
+
+          <!-- New Note Form -->
+          <div *ngIf="newFlag">
+            <div class="d-flex justify-content-end gap-1 mb-2">
+              <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Save Crane Note" (click)="saveCraneNotes()">Save</button>
+              <button *ngIf="highestRank > 5" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Cancel the Changes for this Note" (click)="addNotes()">Cancel</button>
+              <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Delete Crane Note" disabled (click)="openModal(confirmtemplate, model.id)">Delete</button>
+              <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Add Crane Note Attachment" disabled (click)="goToAttachments(model.craneNoteId)">Attachments</button>
+              <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Back" (click)="backToCrane()">Back</button>
+            </div>
+
+            <!-- Alerts -->
+            <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible">Note was successfully Saved</alert>
+            <alert *ngIf="index1 == 2" type="success" [dismissible]="dismissible">Note was successfully Updated</alert>
+            <alert *ngIf="index1 == -1" type="danger" [dismissible]="dismissible">Please Enter Title and Date</alert>
+            <alert *ngIf="index1 == 4" type="success" [dismissible]="dismissible">Note was successfully Deleted</alert>
+
+            <!-- Form fields -->
+            <div class="row mt-2">
+              <div class="col-sm-6 mb-3">
+                <label for="title">Title <strong class="text-danger">*</strong></label>
+                <input type="text" class="form-control bg-white" id="title" placeholder="Enter Title" name="title" [(ngModel)]="model.name" #title="ngModel"/>
+              </div>
+              <div class="col-sm-6 mb-3">
+                <label for="date">Date <strong class="text-danger">*</strong></label>
+                <input type="text" class="form-control bg-white" id="date" placeholder="Enter Date" name="date" [(ngModel)]="model.createdDate" #date="ngModel" bsDatepicker/>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="details">Details</label>
+              <textarea class="form-control bg-white" id="details" rows="2" placeholder="Enter Description" name="details" [(ngModel)]="model.details" #details="ngModel"></textarea>
+            </div>
+          </div>
+
+          <!-- View Note Form -->
+          <div *ngIf="viewFlag">
+            <p class="mt-2"><strong>Viewing Crane Note</strong></p>
+            <div class="d-flex justify-content-end gap-1 mb-2">
+              <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Add New Crane Note" (click)="addNotes()">New</button>
+              <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Save Crane Note" (click)="saveCraneNotes()" disabled>Save</button>
+              <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Edit Crane Note" (click)="editNote()">Edit</button>
+              <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Delete Crane Note" disabled (click)="openModal(confirmtemplate, model.id)">Delete</button>
+              <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Add Crane Note Attachment" (click)="goToAttachments(model.craneNoteId)">Attachments</button>
+              <button type="button" class="btn btn-primary" style="border-radius: 6px;" tooltip="Back" (click)="backToCrane()">Back</button>
+            </div>
+
+            <!-- Alerts -->
+            <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible">Note for Crane was successfully Saved</alert>
+            <alert *ngIf="index1 == 2" type="success" [dismissible]="dismissible">Note for 'Crane ' was successfully Updated</alert>
+            <alert *ngIf="index1 == -1" type="danger" [dismissible]="dismissible">Please Enter Title and Date</alert>
+            <alert *ngIf="index1 == 4" type="success" [dismissible]="dismissible">Note for Crane was successfully Deleted</alert>
+
+            <div class="row mt-2">
+              <div class="col-sm-6 mb-3">
+                <label for="title">Title <strong class="text-danger">*</strong></label>
+                <input type="text" class="form-control bg-color" id="title" disabled [(ngModel)]="model.name"/>
+              </div>
+              <div class="col-sm-6 mb-3">
+                <label for="date">Date <strong class="text-danger">*</strong></label>
+                <input type="text" class="form-control bg-color" id="date" disabled [(ngModel)]="model.createdDate"/>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="details">Details</label>
+              <textarea class="form-control bg-color" id="details" disabled rows="2" [(ngModel)]="model.details"></textarea>
+            </div>
+          </div>
+
+          <!-- Edit Note Form -->
+          <div *ngIf="editFlag">
+            <p class="mt-2"><strong>Editing Crane Note</strong></p>
+            <div class="d-flex justify-content-end gap-1 mb-2">
+              <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" tooltip="Add New Crane Note" (click)="addNotes()">New</button>
+              <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" tooltip="Update Crane Note" (click)="updateCraneNotes()">Update</button>
+              <button *ngIf="highestRank > 5" type="button" class="btn btn-primary" tooltip="Cancel the Changes for this Note" (click)="addNotes()">Cancel</button>
+              <button [disabled]="highestRank < 6 || highestRank == 9" type="button" class="btn btn-primary" tooltip="Delete Crane Note" (click)="openModal(confirmtemplate, model.id)">Delete</button>
+              <button [disabled]="highestRank < 6" type="button" class="btn btn-primary" tooltip="Add Crane Note Attachment" (click)="goToAttachments(model.craneNoteId)">Attachments</button>
+              <button type="button" class="btn btn-primary" tooltip="Back" (click)="backToCrane()">Back</button>
+            </div>
+
+            <alert *ngIf="index1 == 1" type="success" [dismissible]="dismissible">Note for 'Location ' was successfully Saved</alert>
+            <alert *ngIf="index1 == 2" type="success" [dismissible]="dismissible">Note for 'Location ' was successfully Updated</alert>
+            <alert *ngIf="index1 == -1" type="danger" [dismissible]="dismissible">Please Enter Title and Date</alert>
+            <alert *ngIf="index1 == 4" type="success" [dismissible]="dismissible">Note for 'Location ' was successfully Deleted</alert>
+
+            <div class="row mt-2">
+              <div class="col-sm-6 mb-3">
+                <label for="title">Title <strong class="text-danger">*</strong></label>
+                <input type="text" class="form-control bg-color" id="title" disabled [(ngModel)]="model.name"/>
+              </div>
+              <div class="col-sm-6 mb-3">
+                <label for="date">Date <strong class="text-danger">*</strong></label>
+                <input type="text" class="form-control bg-white" id="date" [(ngModel)]="model.createdDate"/>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="details">Details</label>
+              <textarea class="form-control bg-white" id="details" rows="2" [(ngModel)]="model.details"></textarea>
+            </div>
+          </div>
+
+          <!-- Current Notes Table -->
+          <div *ngIf="highestRank > 4" class="animated fadeIn">
+            <p class="card-text fw-bold fs-5 mt-2">Current Notes:</p>
+
+            <div class="d-flex justify-content-between mb-2">
+              <div>
+                Show
+                <select [(ngModel)]="itemsForPagination" class="form-select form-select-sm d-inline-block w-auto bg-white">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                </select>
+                entries
+              </div>
+              <div>
+                Search: <input [(ngModel)]="vendorNotesFilter" class="form-control form-control-sm d-inline-block w-auto bg-white"/>
+              </div>
+            </div>
+
+            <table class="table table-responsive-sm table-hover table-outline mb-0">
+              <thead class="thead-light">
+                <tr>
+                  <th [class.active]="order === 'createdDate'" (click)="setOrder('createdDate')">
+                    Date <span [hidden]="reverse === ''">▼</span><span [hidden]="reverse !== ''">▲</span>
+                  </th>
+                  <th [class.active]="order === 'name'" (click)="setOrder('name')">
+                    Title <span [hidden]="reverse === ''">▼</span><span [hidden]="reverse !== ''">▲</span>
+                  </th>
+                  <th [class.active]="order === 'createdBy'" (click)="setOrder('createdBy')">
+                    By <span [hidden]="reverse === ''">▼</span><span [hidden]="reverse !== ''">▲</span>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let note of notes
+                    | orderBy: reverse + order
+                    | filterBy: ['createdDate','name','jobNumber','poNumber','createdBy']: vendorNotesFilter
+                    | paginate: { itemsPerPage: itemsForPagination, currentPage: p }">
+                  <td>{{ note.createdDate | date: 'MM/dd/yyyy' }}</td>
+                  <td>{{ note.name }}</td>
+                  <td>{{ note.createdBy }}</td>
+                  <td>
+                    <button type="button" class="btn btn-outline-danger btn-sm" tooltip="Click here to View this Note" (click)="viewCraneNote(note.craneNoteId)">View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <pagination-controls class="my-pagination" (pageChange)="p = $event" [autoHide]="true"></pagination-controls>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal Template -->
+  <ng-template #confirmtemplate>
+    <div class="modal-body text-center">
+      <p>Click(Yes) to permanently delete this Note or Click(No) to discard this action.</p>
+      <button type="button" class="btn btn-primary me-2" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    </div>
+  </ng-template>
+</div>

@@ -24,60 +24,62 @@ import { isUndefined, isNull } from 'is-what';
 })
 export class CloneItemComponent implements OnInit {
   model: any = {
-    locationid: 0,
+    locationId: 0,
     typeId: 0,
-    warrantytypeid: 0,
+    warrantyTypeId: 0,
   };
   locationModel: any = {
     pLocationId: 0,
-    vendorCompany: {
-      companyid: 0,
-    },
+    vendorCompany: { companyId: 0 },
     locationTypeId: 0,
   };
-  index: number = 0;
-  itemTypes: any;
+  index = 0;
+  itemTypes: any[] = [];
   isDuplicateTag = false;
-  statuses: any;
-  companyId: any;
-  typeAttributes: any;
-  locations: any;
+  statuses: any[] = [];
+  companyId: number = 0;
+  typeAttributes: any[] = [];
+  locations: any[] = [];
   globalCompany: any;
-  companyName: any;
-  warrantyTypes: any;
+  companyName = '';
+  warrantyTypes: any[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   itemId: any;
-  responseAttributes: any = [];
-  currentRole: any;
-  highestRank: any;
+  responseAttributes: any[] = [];
+  currentRole: string | null = null;
+  highestRank: string | null = null;
+  get highestRankNum(): number {
+    return Number(this.highestRank ?? 0);
+  }
   locationValue: any;
-  locationItems: TreeviewItem[];
-  itemTypeItems: TreeviewItem[];
-  config = TreeviewConfig.create({
+  locationItems: TreeviewItem[] = [];
+  itemTypeItems: TreeviewItem[] = [];
+  config: TreeviewConfig = TreeviewConfig.create({
     hasFilter: false,
     hasCollapseExpand: false,
   });
-  typeName: any;
+  typeName: string = '';
   item: any;
-  location: any = [];
+  location: any[] = [];
   dateNow: Date = new Date();
-  userName: any;
-  newLocationFlag: boolean;
-  existingLocationFlag: boolean;
-  addLocationFlag: any = 0;
-  name: any;
-  locationStatuses: any;
-  locationTypes: any;
-  locationIndex: number = 0;
-  locationTypeItems: any;
-  addedLocationId: any = 0;
+  userName: string | null = null;
+  newLocationFlag = false;
+  existingLocationFlag = false;
+  addLocationFlag: number = 0;
+  name: string = '';
+  locationStatuses: any[] = [];
+  locationTypes: any[] = [];
+  locationIndex = 0;
+  locationTypeItems: TreeviewItem[] = [];
+  addedLocationId = 0;
   isReqdAttr: any;
   reqAttrName: any;
   reqAttrValue: any;
-  reqAttrValidate: any;
-  helpFlag: any = false;
+  reqAttrValidate = false;
+  helpFlag = false;
   dismissible = true;
   loader = false;
+
   constructor(
     private locationManagementService: LocationManagementService,
     private locationTypesService: LocationTypesService,
@@ -99,16 +101,16 @@ export class CloneItemComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
-    this.companyManagementService.globalCompanyChange.subscribe((value) => {
+    this.companyManagementService.globalCompanyChange.subscribe(value => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
-      this.companyName = this.globalCompany.name;
+      this.companyId = value.companyId;
+      this.companyName = value.name;
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
     if (this.itemId) {
       this.getAllLocationsWithHierarchy();
@@ -116,305 +118,246 @@ export class CloneItemComponent implements OnInit {
     this.getAllItemTypes();
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    
+    
   }
-  getLocations() {
-    this.locations = this.broadcasterService.locations;
-    if (this.locations && this.locations.length > 0) {
-      this.locationItems = [];
+
+  getLocations(): void {
+    this.locations = Array.isArray(this.broadcasterService.locations) ? this.broadcasterService.locations : [];
+    if (this.locations.length > 0) {
       this.locationItems = this.generateHierarchy(this.locations);
     }
-
     this.getAllItemTypes();
   }
-  getLocationStatus() {
-    this.locationStatusService.getAllLocationStatuses(this.companyId).subscribe(
-      (response) => {
-        this.locationStatuses = response;
+
+  getLocationStatus(): void {
+    this.locationStatusService.getAllLocationStatuses(String(this.companyId)).subscribe(
+      response => {
+        this.locationStatuses = Array.isArray(response) ? response : [];
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false
       }
     );
   }
 
-  getAllLocTypes() {
+  getAllLocTypes(): void {
     this.spinner.show();
-    this.loader = true;
-    this.locationTypesService
-      .getAllLocationTypesWithHierarchy(this.companyId)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.loader = false;
-          this.locationTypes = response;
-          this.locationTypes.forEach((type: { parentid: string }) => {
-            if (!type.parentid) {
-              type.parentid = 'Top Level';
-            }
-          });
-          if (this.locationTypes && this.locationTypes.length > 0) {
-            this.locationTypeItems = this.generateHierarchyForItemTypes(
-              this.locationTypes
-            );
+    this.locationTypesService.getAllLocationTypesWithHierarchy(String(this.companyId)).subscribe(
+      response => {
+        this.spinner.hide();
+        this.locationTypes = Array.isArray(response) ? response : [];
+        this.locationTypes.forEach((type: { parentId: string }) => {
+          if (!type.parentId) {
+            type.parentId = 'Top Level';
           }
-          this.getLocationStatus();
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
+        });
+        if (this.locationTypes.length > 0) {
+          this.locationTypeItems = this.generateHierarchyForItemTypes(this.locationTypes);
         }
-      );
+        this.getLocationStatus();
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
-  getAllLocationsWithHierarchy() {
-    this.locations = this.broadcasterService.locations;
-    if (this.locations && this.locations.length > 0) {
-      this.locationItems = [];
+
+  getAllLocationsWithHierarchy(): void {
+    this.locations = Array.isArray(this.broadcasterService.locations) ? this.broadcasterService.locations : [];
+    if (this.locations.length > 0) {
       this.locationItems = this.generateHierarchy(this.locations);
     }
     this.getItemDetails();
   }
 
-  checkItemTag(event: any) {
-    this.itemManagementService
-      .checkTag(event.target.value, this.model.typeId)
-      .subscribe(
-        (response: any) => {
-          this.isDuplicateTag = response.length > 0 ? true : false;
-        },
-        (error) => {}
-      );
-  }
-  generateHierarchy(locList: any[]) {
-    var items: TreeviewItem[] = [];
-    locList.forEach((loc) => {
-      var children: TreeviewItem[] = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
+  checkItemTag(event: any): void {
+    this.itemManagementService.checkTag(event.target.value, this.model.typeId).subscribe(
+      (response: any) => {
+        this.isDuplicateTag = Array.isArray(response) && response.length > 0;
       }
-      items.push(
-        new TreeviewItem({
-          text: loc.name,
-          value: loc.locationid,
-          collapsed: true,
-          children: children,
-        })
-      );
-    });
-    return items;
+    );
   }
 
-  onValueChange(value: any) {
-    if (value != undefined) {
+  generateHierarchy(locList: any[]): TreeviewItem[] {
+    return locList.map(loc => {
+      const children = loc.parentResourceList?.length
+        ? this.generateHierarchy(loc.parentResourceList)
+        : [];
+      return new TreeviewItem({
+        text: loc.name,
+        value: loc.locationId,
+        collapsed: true,
+        children,
+      });
+    });
+  }
+
+  onValueChange(value: any): void {
+    if (value !== undefined) {
       this.model.locationId = value;
       this.addLocationFlag = 1;
     }
   }
 
-  getItemDetails() {
+  getItemDetails(): void {
     this.spinner.show();
-    this.loader = true;
     this.itemManagementService.getItemById(this.itemId).subscribe(
-      (response) => {
+      (response: any) => {
         this.spinner.hide();
-        this.loader = false;
         this.model = response;
         this.model.name = null;
         this.model.statusId = null;
         this.model.locationId = null;
         this.model.tag = null;
-
         if (this.model.purchaseDate) {
           this.model.purchaseDate = new Date(this.model.purchaseDate);
         }
         if (this.model.warrantyExpiration) {
-          this.model.warrantyExpiration = new Date(
-            this.model.warrantyExpiration
-          );
+          this.model.warrantyExpiration = new Date(this.model.warrantyExpiration);
         }
         this.getItemTypeAttributes(this.model.typeId);
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
-  generateHierarchyForItemTypes(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchyForItemTypes(type.typeList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeid,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchyForItemTypes(typeList: any[]): TreeviewItem[] {
+    return typeList.map(type => {
+      const children = type.typeList?.length
+        ? this.generateHierarchyForItemTypes(type.typeList)
+        : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
-  getAllItemTypes() {
+  getAllItemTypes(): void {
     this.spinner.show();
-    this.loader = true;
-    this.itemTypes = this.broadcasterService.itemTypeHierarchy;
-    if (this.itemTypes && this.itemTypes.length > 0) {
+    this.itemTypes = Array.isArray(this.broadcasterService.itemTypeHierarchy) ? this.broadcasterService.itemTypeHierarchy : [];
+    if (this.itemTypes.length > 0) {
       this.itemTypeItems = this.generateHierarchyForItemTypes(this.itemTypes);
     }
     this.getItemStatus();
   }
 
-  getItemStatus() {
-    this.itemStatusService.getAllItemStatuses(this.companyId).subscribe(
-      (response) => {
-        this.statuses = response;
+  getItemStatus(): void {
+    this.itemStatusService.getAllItemStatuses(String(this.companyId)).subscribe(
+      (response: any) => {
+        this.statuses = Array.isArray(response) ? response : [];
         this.getWarrantyTypes();
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
-  getWarrantyTypes() {
+  getWarrantyTypes(): void {
     this.spinner.show();
-    this.loader = true;
-    this.warrantyManagementService
-      .getAllWarrantyTypes(this.companyId)
-      .subscribe(
-        (response) => {
-          this.spinner.hide();
-          this.loader = false;
-          this.warrantyTypes = response;
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false
-        }
-      );
+    this.warrantyManagementService.getAllWarrantyTypes(this.companyId).subscribe(
+      (response: any) => {
+        this.spinner.hide();
+        this.warrantyTypes = Array.isArray(response) ? response : [];
+      },
+      () => {
+        this.spinner.hide();
+      }
+    );
   }
 
-  getItemTypeAttributes(typeId: string) {
-    if (typeId && typeId != '0') {
+  getItemTypeAttributes(typeId: string): void {
+    if (typeId && typeId !== '0') {
       this.spinner.show();
-      this.loader = true;
       this.itemAttributeService.getTypeAttributes(typeId).subscribe(
-        (response) => {
-          this.typeAttributes = response;
+        (response: any) => {
+          this.typeAttributes = Array.isArray(response) ? response : [];
           if (
-            this.model.attributeValues &&
+            Array.isArray(this.model.attributeValues) &&
             this.model.attributeValues.length > 0 &&
-            this.typeAttributes &&
             this.typeAttributes.length > 0
           ) {
             this.typeAttributes.forEach((attr: { name: any; value: any }) => {
-              this.model.attributeValues.forEach(
-                (ansAttr: { name: any; value: any }) => {
-                  if (attr.name == ansAttr.name) {
-                    attr.value = ansAttr.value;
-                  }
+              this.model.attributeValues.forEach((ansAttr: { name: any; value: any }) => {
+                if (attr.name === ansAttr.name) {
+                  attr.value = ansAttr.value;
                 }
-              );
+              });
             });
           }
           this.spinner.hide();
-          this.loader = false;
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     }
   }
 
-  saveLocation() {
+  saveLocation(): void {
     if (
       this.locationModel.locationName &&
       this.locationModel.locationTypeId &&
-      this.locationModel.locationTypeId != 0
+      this.locationModel.locationTypeId !== 0
     ) {
-      if (this.typeAttributes && this.typeAttributes.length > 0) {
-        this.locationModel.attributevalues = [];
-        this.typeAttributes.forEach(
-          (attr: { attributenameid: any; value: any }) => {
-            this.locationModel.attributevalues.push({
-              attributename: {
-                attributenameid: attr.attributenameid,
-              },
-              entityid: 0,
-              entitytypeid: 0,
-              lastmodifiedby: this.userName,
-              value: attr.value,
-            });
-          }
-        );
+      if (this.typeAttributes.length > 0) {
+        this.locationModel.attributeValues = [];
+        this.typeAttributes.forEach((attr: { attributeNameId: any; value: any }) => {
+          this.locationModel.attributeValues.push({
+            attributeName: { attributeNameId: attr.attributeNameId },
+            entityId: 0,
+            entityTypeId: 0,
+            lastModifiedBy: this.userName ?? '',
+            value: attr.value,
+          });
+        });
       }
-      var request = [
+      const request = [
         {
-          address1: this.locationModel.addressLineOne ? this.locationModel.addressLineOne : '',
-          address2: this.locationModel.addressLineTwo ? this.locationModel.addressLineTwo : '',
-          city: this.locationModel.city ? this.locationModel.city : '',
-          typeId: this.locationModel.locationTypeId ? this.locationModel.locationTypeId : '',
-          company: {
-            companyid: this.companyId,
-          },
-          criticalflag: this.locationModel.critical ? this.locationModel.critical : false,
-          description: this.locationModel.description ? this.locationModel.description : '',
-          desiredspareratio: this.locationModel.sRatio ? this.locationModel.sRatio : 0,
-          isvendor: this.locationModel.vLocation ? this.locationModel.vLocation : false,
-          lastmodifiedby: this.userName,
-          locationid: 0,
-          name: this.locationModel.locationName ? this.locationModel.locationName : '',
-          parentLocation: {
-            locationid: this.model.locationId ? this.model.locationId : 0,
-          },
-          postalcode: this.locationModel.postalCode ? this.locationModel.postalCode : '',
-          state: this.locationModel.state ? this.locationModel.state : '',
-          statusid: this.locationModel.statusid ? this.locationModel.statusid : 0,
-          vendorCompany: {
-            companyid: 0,
-          },
-          attributevalues: this.locationModel.attributevalues ? this.locationModel.attributevalues : null,
+          address1: this.locationModel.addressLineOne ?? '',
+          address2: this.locationModel.addressLineTwo ?? '',
+          city: this.locationModel.city ?? '',
+          typeId: this.locationModel.locationTypeId ?? '',
+          company: { companyId: this.companyId },
+          criticalFlag: this.locationModel.critical ?? false,
+          description: this.locationModel.description ?? '',
+          desiredSpareRatio: this.locationModel.sRatio ?? 0,
+          isVendor: this.locationModel.vLocation ?? false,
+          lastModifiedBy: this.userName ?? '',
+          locationId: 0,
+          name: this.locationModel.locationName ?? '',
+          parentLocation: { locationId: this.model.locationId ?? 0 },
+          postalCode: this.locationModel.postalCode ?? '',
+          state: this.locationModel.state ?? '',
+          statusId: this.locationModel.statusId ?? 0,
+          vendorCompany: { companyId: 0 },
+          attributeValues: this.locationModel.attributeValues ?? null,
         },
       ];
-
       this.spinner.show();
-      this.loader = true;
       this.locationManagementService.saveLocation(request).subscribe(
         (response: any) => {
-          this.addedLocationId = response[0].locationid;
-          this.locationManagementService
-            .getAllLocations(this.companyId)
-            .subscribe((response) => {
-              this.locationManagementService.setLocations(response);
-
-              this.spinner.hide();
-              this.loader = false;
-              this.locationIndex = 1;
-              setTimeout(() => {
-                this.index = 0;
-              }, 7000);
-              this.refreshCalls();
-              this.newLocationFlag = false;
-              this.locationModel = [];
-            });
+          this.addedLocationId = response[0].locationId;
+          this.locationManagementService.getAllLocations(this.companyId).subscribe(resp => {
+            this.locationManagementService.setLocations(resp);
+            this.spinner.hide();
+            this.locationIndex = 1;
+            setTimeout(() => {
+              this.index = 0;
+            }, 7000);
+            this.refreshCalls();
+            this.newLocationFlag = false;
+            this.locationModel = [];
+          });
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
     } else {
@@ -422,109 +365,97 @@ export class CloneItemComponent implements OnInit {
     }
   }
 
-  refreshCalls() {
+  refreshCalls(): void {
     this.spinner.show();
-    this.loader = true;
-    this.locationManagementService
-      .getAllLocationsWithHierarchy(this.companyId)
-      .subscribe((response) => {
-        this.broadcasterService.locations = response;
-        this.model.locationId = this.addedLocationId;
-        this.getLocations();
-        console.log('locations:' + response);
-        this.spinner.hide();
-        this.loader = false;
-      });
+    this.locationManagementService.getAllLocationsWithHierarchy(String(this.companyId)).subscribe(response => {
+      this.broadcasterService.locations = response;
+      this.model.locationId = this.addedLocationId;
+      this.getLocations();
+      this.spinner.hide();
+    });
   }
 
-  saveItem() {
+  saveItem(): void {
     if (
-      this.model.typeId && this.model.typeId != 0 && this.model.tag && this.model.tag != '' &&
-      this.model.statusId && this.model.statusId != 0 && !this.isDuplicateTag && this.model.locationId
+      this.model.typeId &&
+      this.model.typeId !== 0 &&
+      this.model.tag &&
+      this.model.tag !== '' &&
+      this.model.statusId &&
+      this.model.statusId !== 0 &&
+      !this.isDuplicateTag &&
+      this.model.locationId
     ) {
-      //this.getLocationNameAndStatusNameFromId(this.model.locationId, this.model.statusId);
-      this.model.attributevalues = [];
-      if (this.typeAttributes && this.typeAttributes.length > 0) {
+      this.model.attributeValues = [];
+      if (this.typeAttributes.length > 0) {
         this.typeAttributes.forEach((attr: any) => {
-            this.model.attributevalues.push({
-              attributename: attr,
-              entityid: this.itemId,
-              entitytypeid: attr.type.entitytypeid,
-              lastmodifiedby: this.userName,
-              value: attr.value != null ? attr.value : '',
-            });
-          }
-        );
+          this.model.attributeValues.push({
+            attributeName: attr,
+            entityId: this.itemId,
+            entityTypeId: attr.type.entityTypeId,
+            lastModifiedBy: this.userName ?? '',
+            value: attr.value ?? '',
+          });
+        });
       }
       this.reqAttrValidate = false;
-      this.model.attributevalues.forEach(
-        (attr: {
-          attributename: { isrequired: any; name: any };
-          value: any;
-        }) => {
-          this.isReqdAttr = attr.attributename.isrequired;
-          this.reqAttrName = attr.attributename.name;
-          this.reqAttrValue = attr.value;
-          if (
-            this.isReqdAttr == true &&
-            (isUndefined(this.reqAttrValue) ||
-              isNull(this.reqAttrValue) ||
-              this.reqAttrValue == '')
-          ) {
-            this.reqAttrValidate = true;
-            return;
-          }
+      this.model.attributeValues.forEach((attr: { attributeName: { isRequired: any; name: any }; value: any }) => {
+        this.isReqdAttr = attr.attributeName.isRequired;
+        this.reqAttrName = attr.attributeName.name;
+        this.reqAttrValue = attr.value;
+        if (
+          this.isReqdAttr === true &&
+          (isUndefined(this.reqAttrValue) || isNull(this.reqAttrValue) || this.reqAttrValue === '')
+        ) {
+          this.reqAttrValidate = true;
+          return;
         }
-      );
-      var req = {
-        attributevalues: this.model.attributevalues ? this.model.attributevalues : null,
-        defaultimageattachmentid: 0,
-        description: this.model.description ? this.model.description : '',
-        desiredspareratio: this.model.desiredSpareRatio ? this.model.desiredSpareRatio : 0,
-        inserviceon: this.dateNow,
-        isinrepair: false,
-        isstale: false,
-        itemid: 0,
-        lastmodifiedby: this.userName,
-        locationid: this.model.locationId ? this.model.locationId : 0,
-        companyid: this.companyId,
-        manufacturerid: null,
-        meantimebetweenservice: this.model.meanTimeBetweenService ? this.model.meanTimeBetweenService : 0,
-        modelnumber: 'string',
-        name: this.model.name ? this.model.name : '',
-        purchasedate: this.model.purchaseDate ? this.model.purchaseDate : '',
-        purchaseprice: this.model.purchasePrice ? this.model.purchasePrice : 0,
-        repairqual: 0,
-        serialnumber: '',
-        statusid: this.model.statusId ? this.model.statusId : 0,
-        tag: this.model.tag ? this.model.tag : '',
-        typeId: this.model.typeId ? this.model.typeId : 0,
-        warrantyexpiration: this.model.warrantyExpiration ? this.model.warrantyExpiration : '',
-        warrantytypeid: this.model.warrantyTypeId ? this.model.warrantyTypeId : 0,
+      });
+      const req = {
+        attributeValues: this.model.attributeValues ?? null,
+        defaultImageAttachmentId: 0,
+        description: this.model.description ?? '',
+        desiredSpareRatio: this.model.desiredSpareRatio ?? 0,
+        inServiceOn: this.dateNow,
+        isInRepair: false,
+        isStale: false,
+        itemId: 0,
+        lastModifiedBy: this.userName ?? '',
+        locationId: this.model.locationId ?? 0,
+        companyId: this.companyId,
+        manufacturerId: null,
+        meanTimeBetweenService: this.model.meanTimeBetweenService ?? 0,
+        modelNumber: 'string',
+        name: this.model.name ?? '',
+        purchaseDate: this.model.purchaseDate ?? '',
+        purchasePrice: this.model.purchasePrice ?? 0,
+        repairQual: 0,
+        serialNumber: '',
+        statusId: this.model.statusId ?? 0,
+        tag: this.model.tag ?? '',
+        typeId: this.model.typeId ?? 0,
+        warrantyExpiration: this.model.warrantyExpiration ?? '',
+        warrantyTypeId: this.model.warrantyTypeId ?? 0,
         typeName: this.model.typeName,
         locationName: this.model.locationName,
-        statusname: this.model.statusName,
+        statusName: this.model.statusName,
         createdDate: new Date().toISOString(),
       };
-      if (this.reqAttrValidate == false) {
+      if (!this.reqAttrValidate) {
         this.spinner.show();
-        this.loader = true;
         this.itemManagementService.saveItem(req).subscribe(
           (response: any) => {
             this.spinner.hide();
-            this.loader = false;
-            this.router.navigate(['/items/viewItem/' + response.itemid]);
+            this.router.navigate(['/items/viewItem/' + response.itemId]);
             this.index = 1;
             this.itemManagementService.setSearchedItemTag(response.tag);
             this.itemManagementService.setSearchedItemTypeId(response.typeId);
             this.itemManagementService.itemSearchResults = [];
             this.router.navigate(['/items/lists/all']);
-
             window.scroll(0, 0);
           },
-          (error) => {
+          () => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {
@@ -537,40 +468,39 @@ export class CloneItemComponent implements OnInit {
     }
   }
 
-  getLocationNameAndStatusNameFromId(locationid: any, statusid: any) {
-    this.locations.forEach((element: { locationid: any; name: any }) => {
-      if (element.locationid == locationid) {
+  getLocationNameAndStatusNameFromId(locationId: any, statusId: any): void {
+    this.locations.forEach((element: { locationId: any; name: any }) => {
+      if (element.locationId === locationId) {
         this.model.locationName = element.name;
       }
     });
-
-    this.statuses.forEach((element: { statusid: any; status: any }) => {
-      if (element.statusid == statusid) {
+    this.statuses.forEach((element: { statusId: any; status: any }) => {
+      if (element.statusId === statusId) {
         this.model.statusName = element.status;
       }
     });
   }
 
-  newLocation() {
+  newLocation(): void {
     this.getAllLocTypes();
     this.newLocationFlag = true;
   }
 
-  existingLocation() {
+  existingLocation(): void {
     this.newLocationFlag = false;
     this.existingLocationFlag = true;
   }
 
-  back() {
+  back(): void {
     this._location.back();
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

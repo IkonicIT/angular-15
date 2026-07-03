@@ -30,15 +30,12 @@ export class ResetPasswordComponent {
 
   ngOnInit() {
     this.resetTokenfromUrl = this.activatedRoute.snapshot.queryParams['token'];
-    console.log(`access token from URL ${this.resetTokenfromUrl}`);
     if (!this.resetTokenfromUrl) {
-      console.log(`we found malware login so we are navigating to login page`);
       this.router.navigate(['/login']);
     }
   }
 
   resetPassword(formData: { value: { email: string } }) {
-    console.log(`forgotPasswordForm data is`, formData.value);
     this.email = formData.value.email;
     if (this.user.password == this.user.repassword) {
       if (
@@ -47,7 +44,7 @@ export class ResetPasswordComponent {
         )
       ) {
         this.spinner.show();
-        this.loader = true;
+
         let request = {
           password: this.user.password,
           resetToken: this.resetTokenfromUrl,
@@ -55,11 +52,8 @@ export class ResetPasswordComponent {
         this.resetPasswordService.resetPasswordAPI(request).subscribe(
           (response: any) => {
             this.spinner.hide();
-            this.loader = false;
-            console.log(
-              `password reset submitted successfully response is `,
-              response
-            );
+
+            
             if (response.status == 'Success') {
               this.index = 0;
               this.router.navigate(['/login']);
@@ -68,11 +62,9 @@ export class ResetPasswordComponent {
             }
           },
           (error) => {
-            console.log(error);
             this.index = 0;
             this.loginError = true;
             this.spinner.hide();
-            this.loader = false;
           }
         );
       } else {

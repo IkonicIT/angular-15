@@ -4,54 +4,72 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ItemStatusService } from '../../../services/Items/item-status.service';
 
+export interface ItemStatusModel {
+  statusId: number | string;
+  status: string;
+  destroyed: boolean;
+  inService: boolean;
+  spare: boolean;
+  underRepair: boolean;
+  companyId: number;
+
+  added?: string;
+  by?: string;
+  _id?: string;
+  lastModifiedBy?: string;
+  oldStatus?: string;
+}
+
 @Component({
   selector: 'app-edit-item-status',
   templateUrl: './edit-item-status.component.html',
   styleUrls: ['./edit-item-status.component.scss'],
 })
 export class EditItemStatusComponent implements OnInit {
-  model: any = {};
+  model: ItemStatusModel = {
+    statusId: 0,
+    status: '',
+    destroyed: false,
+    inService: false,
+    spare: false,
+    underRepair: false,
+    companyId: 0,
+  };
+
   index: number = 0;
-  date = Date.now();
   statusId: number = 0;
-  private sub: any;
-  userName: any;
-  id: number;
-  router: Router;
+  userName: string | null = '';
   globalCompany: any = {};
-  companyId: number;
-  helpFlag: any = false;
-  oldStatus: any;
-  length: number;
-  dismissible = true;
-  loader = false;
+  companyId: number = 0;
+  helpFlag: boolean = false;
+  oldStatus: string = '';
+  length: number = 0;
+
+  dismissible: boolean = true;
+  loader: boolean = false;
+
   constructor(
     private itemStatusService: ItemStatusService,
     private companyManagementService: CompanyManagementService,
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.statusId = route.snapshot.params['id'];
-    console.log('companyid=' + this.statusId);
-    this.router = router;
+    this.statusId = +this.route.snapshot.params['id'];
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
-      console.log('compaanyid=' + this.companyId);
+      this.companyId = this.globalCompany.companyId;
     });
+
     this.spinner.show();
-    this.loader = true;
-    this.itemStatusService
-      .getItemStatus(this.statusId)
-      .subscribe((response) => {
-        this.spinner.hide();
-        this.loader = false;
-        this.model = response;
-        this.oldStatus = this.model.status;
-      });
+    this.itemStatusService.getItemStatus(this.statusId).subscribe((response: any) => {
+      this.spinner.hide();
+      this.model = response as ItemStatusModel;
+      this.oldStatus = this.model.status;
+    });
   }
 
   ngOnInit() {
@@ -59,46 +77,41 @@ export class EditItemStatusComponent implements OnInit {
   }
 
   updateStatus() {
-    if (this.model.status != undefined) {
+    if (this.model.status) {
       this.model.status = this.model.status.trim();
       this.length = this.model.status.length;
-      console.log(this.length);
     }
-    if (this.model.status == '' || this.model.status == undefined) {
+
+    if (!this.model.status) {
       this.index = -1;
       window.scroll(0, 0);
-    } else if (this.length > 100) {
-      this.index = 2;
-    } else {
-      this.model = {
-        companyid: this.globalCompany.companyid,
-        lastmodifiedby: this.userName,
-        destroyed: this.model.destroyed ? this.model.destroyed : false,
-        entitytypeid: 0,
-        inservice: this.model.inservice ? this.model.inservice : false,
-        moduleType: 'itemtype',
-        spare: this.model.spare ? this.model.spare : false,
-        status: this.model.status,
-        statusid: this.model.statusid,
-        underrepair: this.model.underrepair ? this.model.underrepair : false,
-        oldStatus: this.oldStatus,
-      };
-      this.spinner.show();
-      this.loader = true;
-      this.itemStatusService
-        .updateItemStatus(this.model)
-        .subscribe((response) => {
-          this.spinner.hide();
-          this.loader = false;
-          window.scroll(0, 0);
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-          this.router.navigate(['/items/status']);
-        });
+      return;
     }
+
+    if (this.length > 100) {
+      this.index = 2;
+      return;
+    }
+
+    const request: ItemStatusModel & { oldStatus: string } = {
+      ...this.model,
+      statusId: String(this.model.statusId),
+      companyId: this.globalCompany.companyId,
+      lastModifiedBy: this.userName || '',
+      oldStatus: this.oldStatus,
+    };
+
+    this.spinner.show();
+    this.itemStatusService
+  .updateItemStatus(this.model as { statusId: string | number } & any)
+  .subscribe(() => {
+    this.spinner.hide();
+    this.index = 1;
+    setTimeout(() => (this.index = 0), 7000);
+    this.router.navigate(['/items/status']);
+  });
   }
+
   cancelUpdateStatus() {
     this.router.navigate(['/items/status']);
   }

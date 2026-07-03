@@ -1,4 +1,4 @@
-// IE10&11 Flexbox fix
+
 @media all and (-ms-high-contrast: none) {
   html {
     display: flex;
@@ -6,14 +6,11 @@
   }
 }
 
-// app-dashboard and app-root are Angular2+ selectors. You can add here your own selectors if you need.
 .app,
 app-dashboard,
 app-root {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
 }
 
@@ -37,24 +34,17 @@ app-root {
   }
 
   .sidebar {
-    // $sidebar-width is the width of the columns
     flex: 0 0 $sidebar-width;
-    // put the nav on the left
     order: -1;
   }
 
   .aside-menu {
-    // $aside-menu-width is the width of the columns
     flex: 0 0 $aside-menu-width;
   }
 }
 
-//
-// header
-//
 .header-fixed {
   .app-header {
-    top: 0px;
     position: fixed;
     z-index: $zindex-sticky;
     width: 100%;
@@ -64,9 +54,6 @@ app-root {
   }
 }
 
-//
-// Sidebar
-//
 .sidebar-hidden {
   .sidebar {
     margin-left: -$sidebar-width;
@@ -79,11 +66,7 @@ app-root {
     z-index: $zindex-sticky - 1;
     width: $sidebar-width;
     height: calc(100vh - #{$navbar-height});
-    // margin-top: - $navbar-height;
-
-    // .sidebar-nav {
-    //   height: calc(100vh - #{$navbar-height});
-    // }
+   
   }
 
   .main,
@@ -172,9 +155,7 @@ app-root {
   }
 }
 
-//
-// Aside Menu
-//
+
 .aside-menu-hidden {
   .aside-menu {
     margin-right: -$aside-menu-width;
@@ -222,9 +203,6 @@ app-root {
   }
 }
 
-//
-// Breadcrumb
-//
 .breadcrumb-fixed {
   .main {
     $breadcrumb-height: 2 * $breadcrumb-padding-y + $font-size-base + 1.5 *
@@ -240,7 +218,6 @@ app-root {
     z-index: $zindex-sticky - 2;
   }
 
-  // if sidebar + main + aside
   .main:nth-child(2) {
     .breadcrumb {
       right: $aside-menu-width;
@@ -248,7 +225,6 @@ app-root {
     }
   }
 
-  // if sidebar + main
   .main:first-child {
     .breadcrumb {
       right: $aside-menu-width;
@@ -256,7 +232,6 @@ app-root {
     }
   }
 
-  // if  main + aside
   .main:last-child {
     .breadcrumb {
       right: 0;
@@ -284,9 +259,6 @@ app-root {
   }
 }
 
-//
-// Footer
-//
 .footer-fixed {
   .app-footer {
     position: fixed;
@@ -302,9 +274,6 @@ app-root {
   }
 }
 
-//
-// Animations
-//
 .app-header,
 .app-footer,
 .sidebar,
@@ -322,9 +291,6 @@ app-root {
     width $layout-transition-speed;
 }
 
-//
-// Mobile layout
-//
 
 @include media-breakpoint-down(md) {
   .app-header.navbar {
@@ -346,7 +312,7 @@ app-root {
     .navbar-brand {
       position: absolute;
       left: 50%;
-      margin-left: -(calc($navbar-brand-width / 2));
+      margin-left: -($navbar-brand-width / 2);
     }
   }
 
@@ -385,9 +351,6 @@ app-root {
     margin-left: 0 !important;
   }
 
-  // .aside-menu {
-  //   margin-right: - $aside-menu-width;
-  // }
 
   .sidebar-hidden {
     .sidebar {
@@ -406,4 +369,29 @@ app-root {
       margin-left: $mobile-sidebar-width !important;
     }
   }
+}
+
+.ngx-dropdown-button {
+  border: 1px solid #0000003b !important;
+  background-color: #f86c6b !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+  border-radius: 0 !important;
+}
+
+.ngx-dropdown-container[_ngcontent-sgb-c7]
+  .ngx-dropdown-list-container[_ngcontent-sgb-c7] {
+  box-sizing: border-box !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  border-radius: 4px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  width: auto !important;
+  z-index: 999999999 !important ;
+  background-clip: padding-box !important;
+  background: white !important;
+  position: absolute !important;
+  box-shadow: 5px 5px 5px #00000036 !important;
+  overflow-y: auto !important;
 }

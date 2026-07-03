@@ -20,6 +20,7 @@
             </div>
             <div class="col-sm-8"></div>
           </div>
+
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Company Attributes saved successfully.
           </alert>
@@ -38,6 +39,7 @@
                 <div class="card-header">
                   <strong>Add Company Attributes</strong>
                 </div>
+
                 <form
                   name="form"
                   (ngSubmit)="f.form.valid && saveAttributes()"
@@ -48,6 +50,7 @@
                     <div class="row">
                       <div class="form-group col-sm-6">
                         <label for="title">Name</label>
+
                         <input
                           type="text"
                           [(ngModel)]="model._id"
@@ -66,10 +69,11 @@
                           placeholder="Enter Name"
                         />
                       </div>
+
                       <div class="form-group col-sm-6">
                         <label for="Toa">Type of Attribute</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.Toa"
                           name="Toa"
                           #date="ngModel"
@@ -101,10 +105,11 @@
                           placeholder="Enter Attribute Tooltip"
                         />
                       </div>
+
                       <div class="form-group col-sm-6">
                         <label for="sType">Search Type</label>
                         <select
-                          class="form-control"
+                          class="form-control custom-dropdown"
                           [(ngModel)]="model.sType"
                           id="sType"
                           name="sType"
@@ -137,13 +142,13 @@
 
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary btn-save">
                           Save
                         </button>
                         <button
                           type="button"
                           (click)="cancelCompanyDocument()"
-                          class="btn btn-outline-danger btn-sm"
+                          class="btn btn-outline-danger btn-sm btn-cancel"
                         >
                           Cancel
                         </button>
@@ -151,115 +156,17 @@
                     </div>
                   </div>
                 </form>
+
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" class="loader-overlay">
+  <div class="loader"></div>
 </div>
-<style>
-  .loader {
-    position: absolute;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>
-
-

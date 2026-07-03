@@ -16,6 +16,12 @@ import { AddVendorNoteComponent } from './add-vendor-note/add-vendor-note.compon
 import { EditVendorNoteComponent } from './edit-vendor-note/edit-vendor-note.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { VendorDashBoardComponent } from './vendor-dashboard/vendor-dashboard.component';
+import { DropdownTreeviewModule } from '../dropdown-treeview-select/dropdown-treeview.module';
+import { VendorExcelService } from '../../services/vendor-excel.service';
+import { ManageVendorNoteAttachmentComponent } from './manage-vendor-note-attachment/manage-vendor-note-attachment.component';
+import { EditVendorNoteAttachmentComponent } from './edit-vendor-note-attachment/edit-vendor-note-attachment.component';
+import { AddVendorNoteAttachmentComponent } from './add-vendor-note-attachment/add-vendor-note-attachment.component';
 
 @NgModule({
   imports: [
@@ -26,7 +32,11 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     TooltipModule.forRoot(),
     NgxPaginationModule,
     NgPipesModule,
+    DropdownTreeviewModule,
     AlertModule.forRoot(),
+  ],
+  providers: [
+    VendorExcelService, 
   ],
   declarations: [
     VendorManagementComponent,
@@ -38,6 +48,13 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     VendorNotesComponent,
     AddVendorNoteComponent,
     EditVendorNoteComponent,
+    AddVendorAttachmentComponent,
+    VendorAttachementsComponent,
+    EditVendorAttachmentComponent,
+    VendorDashBoardComponent,
+    ManageVendorNoteAttachmentComponent,
+    EditVendorNoteAttachmentComponent,
+    AddVendorNoteAttachmentComponent,
   ],
 })
 export class VendorModule {}

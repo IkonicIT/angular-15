@@ -6,21 +6,16 @@
           <button
             type="button"
             (click)="help()"
-            data-bs-placement="bottom"
+            class="btn btn-outline-danger btn-sm btn-top btn-group"
             data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm btn-top"
+            data-bs-placement="bottom"
+            title="Instructions"
           >
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
           >
             * To create a new status:<br />
             1.Click the 'Add Status' button.<br />
@@ -36,61 +31,32 @@
         </div>
 
         <div class="card-body">
-          <alert *ngIf="index == 1" type="success" [dismissible]="dismissible">
+          <alert *ngIf="index === 1" type="success" [dismissible]="dismissible">
             Location Status saved successfully.
           </alert>
-          <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             Please enter status.
           </alert>
-          <alert *ngIf="index == 2" type="danger" [dismissible]="dismissible">
+          <alert *ngIf="index === 2" type="danger" [dismissible]="dismissible">
             Status size should be less than 100 characters.
           </alert>
+
           <div class="modal-body mobile-padding">
             <div class="col-sm-12 mobile-padding modal-body-padding">
               <div class="card">
                 <div class="card-header">
                   <strong>Adding New Status</strong>
                 </div>
-                <form
-                  name="form"
-                  (ngSubmit)="f.form.valid && saveStatus()"
-                  #f="ngForm"
-                  novalidate
-                >
+
+                <form (ngSubmit)="f.form.valid && saveStatus()" #f="ngForm" novalidate>
                   <div class="card-body">
+                    <input type="hidden" [(ngModel)]="model.added" name="added" id="added" />
+                    <input type="hidden" [(ngModel)]="model.by" name="by" id="by" />
+                    <input type="hidden" [(ngModel)]="model._id" name="_id" id="_id" />
+
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <input
-                          type="text"
-                          [(ngModel)]="model.added"
-                          name="added"
-                          #added="ngModel"
-                          id="added"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.by"
-                          name="by"
-                          #by="ngModel"
-                          id="by"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model._id"
-                          name="_id"
-                          #_id="ngModel"
-                          id="_id"
-                          hidden
-                        />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="form-group col-sm-12">
-                        <label for="Status"
-                          >Status<strong class="text-danger">*</strong></label
-                        >
+                        <label for="status">Status <strong class="text-danger">*</strong></label>
                         <input
                           id="status"
                           type="text"
@@ -102,23 +68,25 @@
                         />
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
-                          data-bs-placement="bottom"
+                          type="submit"
+                          class="btn btn-primary btn-right btn-group"
                           data-bs-toggle="tooltip"
+                          data-bs-placement="bottom"
                           title="Save this Status"
-                          class="btn btn-primary btn-right"
                         >
                           Save
                         </button>
                         <button
                           type="button"
                           (click)="cancelAddStatus()"
-                          data-bs-placement="bottom"
+                          class="btn btn-primary btn-group"
                           data-bs-toggle="tooltip"
+                          data-bs-placement="bottom"
                           title="Cancel"
-                          class="btn btn-primary"
                         >
                           Cancel
                         </button>
@@ -126,113 +94,58 @@
                     </div>
                   </div>
                 </form>
+
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
+<div *ngIf="loader" class="loader-backdrop">
+  <div class="loader"></div>
 </div>
+
 <style>
-  .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid red;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
+.loader-backdrop {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
 
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
+.loader {
+  position: fixed;
+  left: 60%;
+  top: 60%;
+  z-index: 3;
+  width: 60px;
+  height: 60px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid red;
+  animation: spin 2s linear infinite;
+}
 
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
+.animate-bottom {
+  position: relative;
+  animation: animatebottom 1s;
+}
 
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+@keyframes animatebottom {
+  from { bottom: -100px; opacity: 0; }
+  to { bottom: 0; opacity: 1; }
+}
 </style>

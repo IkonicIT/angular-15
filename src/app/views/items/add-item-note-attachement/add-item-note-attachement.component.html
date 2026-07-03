@@ -3,34 +3,32 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="form-group col-sm-12 text-right">
-          <button
-            type="button"
-            (click)="print()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title="Click to Print this Page"
-            class="btn btn-outline-danger btn-sm"
-          >
-            Print
-          </button>
-          <button
-            type="button"
-            (click)="help()"
-            data-bs-placement="bottom"
-            data-bs-toggle="tooltip"
-            title=" Instructions"
-            class="btn btn-outline-danger btn-sm"
-          >
-            Help
-          </button>
+          <div class="style">
+            <button
+              type="button"
+              (click)="print()"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Click to Print this Page"
+              class="btn btn-outline-danger btn-sm btn-right btn-top"
+            >
+              Print
+            </button>
+            <button
+              type="button"
+              (click)="help()"
+              data-bs-placement="bottom"
+              data-bs-toggle="tooltip"
+              title="Instructions"
+              class="btn btn-outline-danger btn-sm btn-top"
+            >
+              Help
+            </button>
+          </div>
+
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag === true"
+            class="help-box"
           >
             *To add an attachment:<br />
             1.Click the 'Choose File' button to locate the desired file.<br />
@@ -44,13 +42,16 @@
             1.Click the 'Delete' button.
           </div>
         </div>
+
         <div class="card-body">
           <alert *ngIf="index > 0" type="success" [dismissible]="dismissible">
             Added attachments to Note successfully.
           </alert>
-          <alert *ngIf="index == -1" type="danger" [dismissible]="dismissible">
+
+          <alert *ngIf="index === -1" type="danger" [dismissible]="dismissible">
             please upload file
           </alert>
+
           <div>
             <strong>Note: "{{ noteAttachmentTitle }}" </strong>
           </div>
@@ -61,51 +62,19 @@
                 <div class="card-header">
                   <strong>Add Item Note Attachments</strong>
                 </div>
-                <form
-                  name="form"
-                  (ngSubmit)="saveItemDocument()"
-                  #f="ngForm"
-                  novalidate
-                >
+
+                <form #f="ngForm" (ngSubmit)="saveItemDocument()" novalidate>
                   <div class="card-body">
                     <div class="row">
                       <div class="form-group col-sm-12">
-                        <input
-                          type="text"
-                          [(ngModel)]="model.added"
-                          name="added"
-                          #added="ngModel"
-                          id="added"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.by"
-                          name="by"
-                          #by="ngModel"
-                          id="by"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model._id"
-                          name="_id"
-                          #_id="ngModel"
-                          id="_id"
-                          hidden
-                        />
-                        <input
-                          type="text"
-                          [(ngModel)]="model.companyId"
-                          name="companyId"
-                          #companyId="ngModel"
-                          id="companyId"
-                          hidden
-                        />
+                        <input type="hidden" [(ngModel)]="model.added" name="added" />
+                        <input type="hidden" [(ngModel)]="model.by" name="by" />
+                        <input type="hidden" [(ngModel)]="model._id" name="_id" />
+                        <input type="hidden" [(ngModel)]="model.companyId" name="companyId" />
                       </div>
                     </div>
 
-                    <div style="overflow: auto">
+                    <div style="overflow:auto">
                       <table class="table table-bordered">
                         <thead>
                           <tr>
@@ -119,17 +88,16 @@
                             <td>
                               <input
                                 type="file"
-                                class="form-control"
+                                class="form-control bg-white"
                                 (change)="fileChangeListener($event, i)"
-                                id="file"
+                                [attr.id]="'file' + i"
                               />
                             </td>
                             <td>
                               <textarea
-                                id="desc"
                                 rows="2"
                                 cols="4"
-                                class="form-control"
+                                class="form-control bg-white"
                                 [(ngModel)]="item.description"
                                 [name]="'description' + i"
                                 placeholder="Enter Description"
@@ -142,8 +110,8 @@
                                 (click)="remove(i)"
                                 data-bs-placement="bottom"
                                 data-bs-toggle="tooltip"
-                                title=" Click here to remove File"
-                                disabled="highestRank == 9"
+                                title="Click here to remove File"
+                                [disabled]="highestRank == 9"
                               >
                                 Remove
                               </button>
@@ -152,6 +120,7 @@
                         </tbody>
                       </table>
                     </div>
+
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
@@ -159,7 +128,7 @@
                           (click)="addNewAttachment()"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
-                          title=" Click here to Add File"
+                          title="Click here to Add File"
                         >
                           Add File
                         </button>
@@ -169,20 +138,23 @@
                     <div class="row">
                       <div class="form-group col-sm-12 text-center">
                         <button
+                          type="submit"
+                          class="btn btn-primary btn-right btn-top mt-2"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Save Note Attachment"
-                          class="btn btn-primary"
+                          style="border-radius: 6px;"
                         >
                           Save
                         </button>
                         <button
                           type="button"
+                          (click)="cancelItemDocument()"
+                          class="btn btn-primary btn-top mt-2"
                           data-bs-placement="bottom"
                           data-bs-toggle="tooltip"
                           title="Cancel"
-                          (click)="cancelItemDocument()"
-                          class="btn btn-primary"
+                          style="border-radius: 6px;"
                         >
                           Cancel
                         </button>
@@ -190,113 +162,63 @@
                     </div>
                   </div>
                 </form>
+
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  *ngIf="loader"
-  style="
+<div *ngIf="loader" class="overlay-loader">
+  <div class="loader"></div>
+</div>
+
+<style>
+  .help-box {
+    text-align: left;
+    border: 1px solid;
+    width: fit-content;
+    margin-left: 20px;
+    padding: 10px;
+    background-color: whitesmoke;
+  }
+
+  .overlay-loader {
     position: fixed;
+    inset: 0;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
->
-  <div _ngcontent-c0="" class="loader"></div>
-</div>
-<style>
+  }
+
   .loader {
-    position: fixed;
-    left: 60%;
-    top: 60%;
-    z-index: 1;
-    width: 75px;
-    height: 75px;
-    margin: -75px 0 0 -75px;
     border: 5px solid #f3f3f3;
-    border-radius: 50%;
     border-top: 5px solid red;
+    border-radius: 50%;
     width: 60px;
     height: 60px;
-    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
 
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
-  }
-
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
-  /* Add animation to "page content" */
-  .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s;
-  }
-
-  @-webkit-keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes animatebottom {
-    from {
-      bottom: -100px;
-      opacity: 0;
-    }
-
-    to {
-      bottom: 0;
-      opacity: 1;
-    }
-  }
-
-  .btn-link[routerLink="/forgot-password"] {
-    color: red;
-  }
-
-  .cent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .btn-link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #0d6efd;
+    cursor: pointer;
   }
 </style>

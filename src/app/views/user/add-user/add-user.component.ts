@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { UserManagementService } from '../../../services/user-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NgModel } from '@angular/forms';
+import { TreeviewItem } from 'ngx-treeview';
 
 @Component({
   selector: 'app-add-user',
@@ -12,226 +12,256 @@ import { NgModel } from '@angular/forms';
 })
 export class AddUserComponent implements OnInit {
   model: any = {};
-  index: number = 0;
-  router: Router;
+  showPassword = {
+    password: false,
+    confirmPassword: false,
+  };
+  index = 0;
   isNameCheckVisible = false;
   isEmailCheckVisible = false;
   isDuplicateTag = false;
   isMinLength = false;
   isDuplicate = false;
-  companyId: any = 0;
+  companyId: number = 0;
   globalCompany: any;
-  allCompanies: any = [];
+  allCompanies: any[] = [];
   isOwnerAdmin: any;
-  helpFlag: any = false;
-  userName: any;
+  helpFlag = false;
+  userName: string | null = null;
   dismissible = true;
-  loader = false;
+  vendors: any[] = [];
+  vendorItems: TreeviewItem[] = [];
+  userId: string | null = null;
+
   constructor(
-    router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
     private userManagementService: UserManagementService
-  ) {
-    this.router = router;
-  }
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
-    this.loader = true;
+    this.loadVendors();
     this.globalCompany = this.companyManagementService.getGlobalCompany();
 
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
-    this.isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin');
-    if (this.isOwnerAdmin == 'true') {
-      this.companyManagementService.getAllCompaniesForOwnerAdmin().subscribe(
-        (response) => {
+
+    const isOwnerAdmin = sessionStorage.getItem('IsOwnerAdmin') === 'true';
+    this.userId = sessionStorage.getItem('userId');
+    const highestRank = parseInt(sessionStorage.getItem('highestRank') || '0', 10);
+
+    if (highestRank === 10 && this.userId) {
+      this.companyManagementService.getCompanyNames(this.userId).subscribe({
+        next: (response) => {
           this.spinner.hide();
-          this.loader = false;
-          console.log(response);
           this.allCompanies = response;
         },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
-      console.log('all  companies for owner Admin' + this.allCompanies);
+        error: () => this.spinner.hide(),
+      });
     } else {
-      this.companyManagementService
-        .getAllVendorDetails(this.companyId)
-        .subscribe(
-          (response) => {
-            this.spinner.hide();
-            this.loader = false;
-            console.log(response);
-            this.allCompanies = response;
-          },
-          (error) => {
-            this.spinner.hide();
-            this.loader = false;
-          }
-        );
-      console.log('all vendor companies' + this.allCompanies);
+      this.companyManagementService.getAllCompaniesForOwnerAdmin().subscribe({
+        next: (response) => {
+          this.spinner.hide();
+          this.allCompanies = response;
+        },
+        error: () => this.spinner.hide(),
+      });
     }
   }
 
-  checkUserName(event: any) {
+  loadVendors(): void {
+    this.spinner.show();
+    this.companyManagementService.getAllVendorDetails().subscribe({
+      next: (response) => {
+        this.spinner.hide();
+        this.vendors = response;
+        this.vendorItems = this.convertVendorsToTreeviewItems(this.vendors);
+      },
+      error: (error) => {
+        this.spinner.hide();
+        console.error('Error loading vendors:', error);
+      },
+    });
+  }
+
+  convertVendorsToTreeviewItems(vendors: any[]): TreeviewItem[] {
+    return vendors.map(
+      (vendor) =>
+        new TreeviewItem({
+          text: vendor.name,
+          value: vendor.vendorId,
+        })
+    );
+  }
+
+  onVendorChange(value: any): void {
+    this.model.vendorId = value;
+  }
+
+  checkUserName(event: Event): void {
+    const input = event.target as HTMLInputElement;
     this.isNameCheckVisible = true;
     this.isDuplicateTag = false;
-    console.log('event' + event.target.value);
-    if (
-      event.target.value.length < 4 ||
-      event.target.value == null ||
-      event.target.value == ''
-    ) {
+
+    if (!input.value || input.value.length < 4) {
       this.isMinLength = false;
     } else {
       this.isMinLength = true;
-      this.userManagementService.getUserId(event.target.value).subscribe(
-        (response: any) => {
+      this.userManagementService.getUserId(input.value).subscribe({
+        next: (response: any) => {
           if (response > 0) {
             this.isDuplicateTag = true;
           }
         },
-        (error) => {}
-      );
+      });
     }
   }
 
-  checkEmail(event: any) {
+  checkEmail(event: Event): void {
+    const input = event.target as HTMLInputElement;
     this.isEmailCheckVisible = true;
     this.isDuplicate = false;
-    var email = '^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$';
-    console.log('event' + event.target.value);
-    if (event.target.value.match(email)) {
+
+    const emailRegex = /\S+@\S+\.\S+/;
+
+    if (emailRegex.test(input.value)) {
+      this.userManagementService.getEmail(input.value).subscribe({
+        next: (response: any) => {
+          if (response > 0) {
+            this.isDuplicate = true;
+          }
+        },
+      });
     }
-    this.userManagementService.getEmail(event.target.value).subscribe(
-      (response: any) => {
-        if (response > 0) {
-          this.isDuplicate = true;
-        }
-      },
-      (error) => {}
-    );
   }
 
-  saveUser() {
-    console.log(JSON.stringify(this.model));
-    console.log('user name is' + this.model.name);
+  saveUser(): void {
     if (
       this.model.name &&
       this.model.email &&
-      this.model.firstname &&
-      this.model.lastname &&
+      this.model.firstName &&
+      this.model.lastName &&
       this.model.password &&
       this.model.confirmPassword &&
-      this.model.companyid &&
-      this.model.password == this.model.confirmPassword &&
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.model.email) &&
+      this.model.companyId &&
+      this.model.password === this.model.confirmPassword &&
+      /\S+@\S+\.\S+/.test(this.model.email) &&
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(
         this.model.password
       )
     ) {
-      var req = {
-        applicationid: '2E8DCDA9-84CE-4A7F-B8EB-CBD5E815656B',
-        username: this.model.name,
-        loweredusername: 'y',
-        mobilealias: null,
-        isanonymous: true,
-        lastactivitydate: new Date(),
+      if (this.model.isVendor && !this.model.vendorId) {
+        this.index = -5;
+        window.scroll(0, 0);
+        return;
+      }
+
+      const req = {
+        applicationId: '2E8DCDA9-84CE-4A7F-B8EB-CBD5E815656B',
+        userName: this.model.name,
+        loweredUserName: 'y',
+        mobileAlias: null,
+        isAnonymous: true,
+        lastActivityDate: new Date(),
         password: this.model.password,
-        passwordformat: null,
-        passwordsalt: null,
-        mobilepin: null,
+        passwordFormat: null,
+        passwordSalt: null,
+        mobilePin: null,
         email: this.model.email,
-        loweredemail: null,
-        passwordquestion: null,
-        passwordanswer: null,
-        isapproved: true,
-        islockedout: false,
-        createdate: new Date(),
-        lastlogindate: new Date(),
-        lastpasswordchangeddate: new Date(),
-        lastlockoutdate: new Date(),
-        failedpasswordattemptcount: 2,
-        failedpasswordattemptwindowstart: new Date(),
-        failedpasswordanswerattemptcount: 2,
-        failedpasswordanswerattemptwindowstart: new Date(),
+        loweredEmail: null,
+        passwordQuestion: null,
+        passwordAnswer: null,
+        isApproved: true,
+        isLockedOut: false,
+        createDate: new Date(),
+        lastLoginDate: new Date(),
+        lastPasswordChangedDate: new Date(),
+        lastLockoutDate: new Date(),
+        failedPasswordAttemptCount: 2,
+        failedPasswordAttemptWindowStart: new Date(),
+        failedPasswordAnswerAttemptCount: 2,
+        failedPasswordAnswerAttemptWindowStart: new Date(),
         comment: null,
-        profileid: '',
-        firstname: this.model.firstname ? this.model.firstname : '',
-        lastname: this.model.lastname ? this.model.lastname : '',
-        jobtitle: this.model.jobtitle ? this.model.jobtitle : '',
-        department: this.model.department ? this.model.department : '',
-        phone: this.model.phone ? this.model.phone : '',
-        mobilephone: this.model.mobile ? this.model.mobile : '',
-        fax: this.model.fax ? this.model.fax : '',
-        acceptedterms: true,
-        isowneradmin: true,
-        sendreceiverfq: true,
-        toplocationid: null,
-        preferredlocationid: null,
-        hidepricing: true,
-        companyid: this.model.companyid ? this.model.companyid : this.companyId,
+        profileId: '',
+        firstName: this.model.firstName || '',
+        lastName: this.model.lastName || '',
+        jobTitle: this.model.jobTitle || '',
+        department: this.model.department || '',
+        phone: this.model.phone || '',
+        mobilePhone: this.model.mobile || '',
+        fax: this.model.fax || '',
+        acceptedTerms: true,
+        isOwnerAdmin: true,
+        sendReceiveRFQ: true,
+        topLocationId: null,
+        preferredLocationId: null,
+        hidePricing: true,
+        companyId: this.model.companyId || this.companyId,
         addedBy: this.userName,
+        isVendor: this.model.isVendor,
+        vendorResource: {
+          vendorId: this.model.vendorId,
+        },
       };
+
       this.spinner.show();
-      this.loader = true;
-      this.userManagementService
-        .saveUser(req, this.companyId)
-        .subscribe((response) => {
+      this.userManagementService.saveUser(req, this.companyId).subscribe({
+        next: () => {
           window.scroll(0, 0);
           this.index = 1;
           setTimeout(() => {
             this.index = 0;
           }, 7000);
           this.spinner.hide();
-          this.loader = false;
           this.router.navigate(['/user/list']);
-        });
+        },
+      });
     } else {
       window.scroll(0, 0);
       this.index = -1;
-      if (
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.model.email)
-      ) {
+      if (/\S+@\S+\.\S+/.test(this.model.email)) {
         if (
           /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(
             this.model.password
           )
         ) {
-          if (this.model.password != this.model.confirmPassword) {
+          if (this.model.password !== this.model.confirmPassword) {
             this.index = -2;
           }
         } else {
           this.index = -4;
-          if (this.model.password == null || this.model.name == null) {
+          if (!this.model.password || !this.model.name) {
             this.index = -1;
           }
         }
       } else {
         this.index = -3;
-        if (this.model.email == null || this.model.name == null) {
+        if (!this.model.email || !this.model.name) {
           this.index = -1;
         }
       }
     }
   }
 
-  cancelUser() {
+  cancelUser(): void {
     this.router.navigate(['/user/list']);
   }
 
-  print() {
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
-  help() {
+
+  help(): void {
     this.helpFlag = !this.helpFlag;
+  }
+
+  togglePasswordVisibility(field: 'password' | 'confirmPassword'): void {
+    this.showPassword[field] = !this.showPassword[field];
   }
 }

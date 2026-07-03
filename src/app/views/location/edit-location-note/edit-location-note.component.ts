@@ -11,14 +11,13 @@ import { DatePipe } from '@angular/common';
 })
 export class EditLocationNoteComponent implements OnInit {
   model: any = {};
-  index: number = 0;
+  index = 0;
   date = Date.now();
-  locationId: number = 0;
-  journalid: number = 0;
-  private sub: any;
-  id: number;
+  locationId = 0;
+  journalId = 0;
   dismissible = true;
   loader = false;
+
   constructor(
     private locationNotesService: LocationNotesService,
     private router: Router,
@@ -26,61 +25,59 @@ export class EditLocationNoteComponent implements OnInit {
     private spinner: NgxSpinnerService,
     public datepipe: DatePipe
   ) {
-    this.journalid = route.snapshot.params['id'];
-    this.locationId = route.snapshot.params['locId'];
-    this.router = router;
+    this.journalId = Number(this.route.snapshot.params['id']);
+    this.locationId = Number(this.route.snapshot.params['locId']);
+
     this.spinner.show();
-    this.loader = true;
     this.locationNotesService
-      .getLocationNotes(this.journalid, this.locationId)
-      .subscribe((response) => {
-        this.spinner.hide();
-        this.loader = false;
-        this.model = response;
-        if (this.model.effectiveon) {
-          this.model.effectiveon = new Date(this.model.effectiveon);
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
-            'MM/dd/yyyy'
-          );
-        }
-      });
+      .getLocationNotes(this.journalId, this.locationId)
+      .subscribe(
+        (response) => {
+          this.spinner.hide();
+          this.model = response;
+
+          if (this.model?.effectiveOn) {
+            const effectiveDate = new Date(this.model.effectiveOn);
+            this.model.effectiveOn = this.datepipe.transform(
+              effectiveDate,
+              'MM/dd/yyyy'
+            );
+          }
+        },
+        () => this.spinner.hide()
+      );
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
-  updateLocationNotes() {
-    if (!this.model.entityname || !this.model.effectiveon) {
+  updateLocationNotes(): void {
+    if (!this.model?.entityName || !this.model?.effectiveOn) {
       this.index = -1;
       window.scroll(0, 0);
-    } else {
-      this.spinner.show();
-      this.loader = true;
-      this.model.moduleType = 'locationtype';
-      this.model.effectiveon = new Date(this.model.effectiveon);
-      this.locationNotesService.updateLocationNotes(this.model).subscribe(
-        (response) => {
-          this.model.effectiveon = this.datepipe.transform(
-            this.model.effectiveon,
-            'MM/dd/yyyy'
-          );
-          this.spinner.hide();
-          this.loader = false;
-          window.scroll(0, 0);
-          this.index = 1;
-          setTimeout(() => {
-            this.index = 0;
-          }, 7000);
-        },
-        (error) => {
-          this.spinner.hide();
-          this.loader = false;
-        }
-      );
+      return;
     }
+
+    this.spinner.show();
+    this.model.moduleType = 'locationtype';
+    this.model.effectiveOn = new Date(this.model.effectiveOn);
+
+    this.locationNotesService.updateLocationNotes(this.model).subscribe(
+      () => {
+        this.model.effectiveOn = this.datepipe.transform(
+          this.model.effectiveOn,
+          'MM/dd/yyyy'
+        );
+        this.spinner.hide();
+
+        window.scroll(0, 0);
+        this.index = 1;
+        setTimeout(() => (this.index = 0), 7000);
+      },
+      () => this.spinner.hide()
+    );
   }
 
-  cancelLocationNotes() {
-    this.router.navigate(['/location/notes/' + this.locationId]);
+  cancelLocationNotes(): void {
+    this.router.navigate([`/location/notes/${this.locationId}`]);
   }
 }

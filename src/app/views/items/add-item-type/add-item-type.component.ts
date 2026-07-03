@@ -4,7 +4,7 @@ import { CompanyManagementService } from '../../../services/company-management.s
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { BroadcasterService } from '../../../services/broadcaster.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-item-type',
@@ -13,26 +13,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AddItemTypeComponent implements OnInit {
   model: any = {
-    parentid: {
-      typeid: 0,
-    },
-    typespareratio: 0.2,
+    parentId: { typeId: 0 },
+    typeSpareRatio: 0.2,
   };
-  index: number = 0;
-  companyId: number;
+  index = 0;
+  companyId = 0;
   globalCompany: any = {};
   itemTypes: any;
-  companyName: any;
-
-  value: any;
-  items: TreeviewItem[];
-  config = TreeviewConfig.create({
-    hasFilter: false,
-    hasCollapseExpand: false,
-  });
-  userName: any;
-  router: Router;
-  helpFlag: any = false;
+  companyName = '';
+  value: number = 0;
+  items: TreeviewItem[] = [];
+  config = TreeviewConfig.create({ hasFilter: false, hasCollapseExpand: false });
+  userName: string | null = '';
+  helpFlag = false;
   dismissible = true;
 
   constructor(
@@ -40,114 +33,96 @@ export class AddItemTypeComponent implements OnInit {
     private companyManagementService: CompanyManagementService,
     private spinner: NgxSpinnerService,
     private broadcasterService: BroadcasterService,
-    router: Router
+    private router: Router
   ) {
-    this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
-    this.companyName = this.globalCompany.name;
+    this.globalCompany = this.companyManagementService.getGlobalCompany() ?? {};
+    this.companyId = this.globalCompany?.companyId ?? 0;
+    this.companyName = this.globalCompany?.name ?? '';
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
-      this.companyName = this.globalCompany.name;
+      this.companyId = value?.companyId ?? 0;
+      this.companyName = value?.name ?? '';
     });
-    this.router = router;
+
     this.getAllLocTypes();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
   }
 
-  getAllLocTypes() {
-    this.itemTypes = this.broadcasterService.itemTypeHierarchy;
-    var self = this;
-    if (this.itemTypes && this.itemTypes.length > 0) {
-      self.items = this.generateHierarchy(this.itemTypes);
+  getAllLocTypes(): void {
+    this.itemTypes = this.broadcasterService.itemTypeHierarchy ?? [];
+    if (this.itemTypes.length > 0) {
+      this.items = this.generateHierarchy(this.itemTypes);
     }
   }
 
-  generateHierarchy(typeList: any[]) {
-    var items: TreeviewItem[] = [];
-    typeList.forEach((type) => {
-      var children: TreeviewItem[] = [];
-      if (type.typeList && type.typeList.length > 0) {
-        children = this.generateHierarchy(type.typeList); //children.push({text : childLoc.name, value: childLoc.locationid})
-      }
-      items.push(
-        new TreeviewItem({
-          text: type.name,
-          value: type.typeid,
-          collapsed: true,
-          children: children,
-        })
-      );
-    });
-    return items;
-  }
-
-  onValueChange(value: any) {
-    this.value = value;
-    console.log(value);
-  }
-
-  saveItemType() {
-    if (this.model.name) {
-      var request = {
-        attributesearchdisplay: this.model.attributesearchdisplay
-          ? this.model.attributesearchdisplay
-          : 0,
-        company: {
-          companyid: this.companyId,
-        },
-        description: this.model.description,
-        entitytypeid: 0,
-        hostingfee: this.model.hostingFee ? this.model.hostingFee : 0,
-        ishidden: true,
-        lastmodifiedby: this.userName,
-        moduleType: 'itemtype',
-        name: this.model.name,
-        parentid: {
-          typeid: this.value ? this.value : 0,
-        },
-        typeid: 0,
-        typemtbs: this.model.typemtbs ? this.model.typemtbs : 0,
-        typespareratio: this.model.typespareratio
-          ? this.model.typespareratio
-          : 0.2,
-      };
-      this.spinner.show();
-      this.itemTypesService.saveItemType(request).subscribe((response) => {
-        this.spinner.hide();
-        this.index = 1;
-        setTimeout(() => {
-          this.index = 0;
-        }, 7000);
-        window.scroll(0, 0);
-        this.getAllItemTypesWithHierarchy();
-        this.router.navigate(['/items/types']);
+  generateHierarchy(typeList: any[]): TreeviewItem[] {
+    return typeList.map((type) => {
+      const children = type.typeList?.length > 0 ? this.generateHierarchy(type.typeList) : [];
+      return new TreeviewItem({
+        text: type.name,
+        value: type.typeId,
+        collapsed: true,
+        children,
       });
-    } else {
+    });
+  }
+
+  onValueChange(value: number): void {
+    this.value = value;
+  }
+
+  saveItemType(): void {
+    if (!this.model.name?.trim()) {
       this.index = -1;
       window.scroll(0, 0);
+      return;
     }
-  }
 
-  getAllItemTypesWithHierarchy() {
+    const request = {
+      attributeSearchDisplay: this.model.attributeSearchDisplay ?? 0,
+      company: { companyId: this.companyId },
+      description: this.model.description ?? '',
+      entityTypeId: 0,
+      hostingFee: this.model.hostingFee ?? 0,
+      isHidden: true,
+      lastModifiedBy: this.userName ?? '',
+      moduleType: 'itemType',
+      name: this.model.name,
+      parentId: { typeId: this.value ?? 0 },
+      typeId: 0,
+      typeMtbs: this.model.typeMtbs ?? 0,
+      typeSpareRatio: this.model.typeSpareRatio ?? 0.2,
+    };
+
     this.spinner.show();
-    this.itemTypesService
-      .getAllItemTypesWithHierarchy(this.companyId)
-      .subscribe((response) => {
-        this.spinner.hide();
-        this.broadcasterService.itemTypeHierarchy = response;
-      });
+    this.itemTypesService.saveItemType(request).subscribe(() => {
+      this.spinner.hide();
+      this.index = 1;
+      setTimeout(() => (this.index = 0), 7000);
+      window.scroll(0, 0);
+      this.getAllItemTypesWithHierarchy();
+      this.router.navigate(['/items/types']);
+    });
   }
 
-  print() {
+  getAllItemTypesWithHierarchy(): void {
+    this.spinner.show();
+    this.itemTypesService.getAllItemTypesWithHierarchy(this.companyId).subscribe((response) => {
+      this.spinner.hide();
+      this.broadcasterService.itemTypeHierarchy = response ?? [];
+    });
+  }
+
+  print(): void {
     this.helpFlag = false;
     window.print();
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

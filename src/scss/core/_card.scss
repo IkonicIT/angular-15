@@ -1,7 +1,6 @@
 .card {
   margin-bottom: 1.5 * $spacer;
 
-  // Cards with color accent
   @each $color, $value in $theme-colors {
     &.bg-#{"" + $color} {
       border-color: darken($value, 12.5%);
@@ -67,7 +66,7 @@
     margin-top: -$input-btn-padding-y-lg;
   }
 }
-//
+
 .card-footer {
   ul {
     display: table;
@@ -97,14 +96,12 @@
   }
 }
 
-// Cards with color accent
 @each $color, $value in $theme-colors {
   .card-accent-#{"" + $color} {
     @include card-accent-variant($value);
   }
 }
 
-// Card Actions
 .card-header {
   > i {
     margin-right: calc($spacer / 2);
@@ -113,7 +110,6 @@
     position: absolute;
     top: 0;
     right: 0;
-    //height: inherit;
 
     a,
     button {

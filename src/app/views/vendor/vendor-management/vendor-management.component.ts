@@ -4,7 +4,9 @@ import { Company } from '../../../models/company';
 import { CompanyManagementService } from '../../../services/company-management.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { Router, ActivatedRoute } from '@angular/router';
+import { HttpClient , HttpParams} from '@angular/common/http';
+import { AppConfiguration } from 'src/app/configuration';
 @Component({
   selector: 'app-vendor-management',
   templateUrl: './vendor-management.component.html',
@@ -12,9 +14,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class VendorManagementComponent implements OnInit {
   modalRef: BsModalRef | null;
+  itemMMS: boolean = false;
   modalRef2: BsModalRef;
   message: string;
-  vendors: Company[] = [];
+  vendors: any;
   index: number;
   order: string = 'name';
   reverse: string = '';
@@ -25,44 +28,70 @@ export class VendorManagementComponent implements OnInit {
   companyId: any;
   currentRole: any;
   highestRank: any;
+  router: Router;
+  locationId: any;
+  vendorId: any;
+  vendorRepairs: any;
   helpFlag: any = false;
-  p: any;
-  loader = false;
+  companies: any;
+  p: number = 1;
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
     sanitizer: DomSanitizer,
+    router: Router,
+    private http: HttpClient,
     private spinner: NgxSpinnerService
   ) {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     this.companyName = this.globalCompany.name;
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
+    const itemMMSValue = sessionStorage.getItem('itemMMS');
+    this.itemMMS = itemMMSValue === 'true' || itemMMSValue === '1';
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
+    this.router = router;
   }
 
   ngOnInit() {
     this.spinner.show();
-    this.loader = true;
-    this.companyManagementService.getAllVendorDetails(this.companyId).subscribe(
-      (response: any) => {
-        this.spinner.hide();
-        this.loader = false;
-        console.log(response);
-        this.vendors = response;
+    if(this.itemMMS)
+    {
+      this.http.get(AppConfiguration.locationRestURL + `mms/getMmsVendors/${this.companyId}`).subscribe(
+      (response) => {
+        
+        setTimeout(() => {
+          this.vendors = response;
+          this.spinner.hide();
+        }, 7000);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
+    }
+    else
+    {
+    this.companyManagementService.getAllVendorDetails().subscribe(
+      (response) => {
+        
+        setTimeout(() => {
+          this.vendors = response;
+          this.spinner.hide();
+        }, 7000);
+      },
+      (error) => {
+        this.spinner.hide();
+      }
+    );
+  }
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+    
+    
   }
   refresh() {
     this.vendors = [];
@@ -83,21 +112,35 @@ export class VendorManagementComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
+    if (this.itemMMS) {
+  this.http.delete(
+    AppConfiguration.locationRestURL +
+    `mms/deleteMmsVendors/${this.companyId}/${this.index}`
+  ).subscribe(
+    (response) => {
+      this.spinner.hide();
+      this.modalRef?.hide();
+      this.refresh();
+    },
+    (error) => {
+      this.spinner.hide();
+    }
+  );
+}
+    else
+    {
     this.companyManagementService.removeVendor(this.index).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
         this.modalRef?.hide();
         this.refresh();
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
-
+  }
   decline(): void {
     this.message = 'Declined!';
     this.modalRef?.hide();

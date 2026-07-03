@@ -12,7 +12,9 @@ export class ItemRepairItemsService {
   public itemId: any;
   public serviceURL = AppConfiguration.locationRestURL;
   public isProd = false;
-  private authToken = sessionStorage.getItem('auth_token') ? sessionStorage.getItem('auth_token') : '';
+  private authToken = sessionStorage.getItem('auth_token')
+    ? sessionStorage.getItem('auth_token')
+    : '';
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Bearer  ' + this.authToken,
@@ -32,31 +34,77 @@ export class ItemRepairItemsService {
 
   updateRepairItemType(itemStatus: any, repairId: string) {
     return this.http
-      .put(this.serviceURL + 'itemRepairItem/' + repairId, itemStatus, this.httpOptions)
+      .put(
+        this.serviceURL + 'itemRepairItem/' + repairId,
+        itemStatus,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllCompletedRepairs(companyId: string, typeId: string) {
     return this.http
-      .get(this.serviceURL + 'itemrepair/getAllCompletedItemRepairs/' + companyId + '/' + typeId, this.httpOptions)
+      .get(
+        this.serviceURL +
+          'itemrepair/getAllCompletedItemRepairs/' +
+          companyId +
+          '/' +
+          typeId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllPreviousRepairs(companyId: string, typeId: string) {
     return this.http
-      .get(this.serviceURL + 'itemrepair/getAllInCompletedItemRepairs/' + companyId + '/' + typeId, this.httpOptions)
+      .get(
+        this.serviceURL +
+          'itemrepair/getAllInCompletedItemRepairs/' +
+          companyId +
+          '/' +
+          typeId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllFailureTypes(companyId: string, itemId: string) {
     return this.http
-      .get(this.serviceURL + 'failureType/' + companyId + '/' + itemId, this.httpOptions)
+      .get(
+        this.serviceURL + 'failureType/' + companyId + '/' + itemId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllFailureTypesForEditItemRepair(companyId: string, itemId: string) {
     return this.http
-      .get(this.serviceURL + 'itemrepair/failureTypeAndCauseForItemRepair/' + companyId + '/' + itemId, this.httpOptions)
+      .get(
+        this.serviceURL +
+          'itemrepair/failureTypeAndCauseForItemRepair/' +
+          companyId +
+          '/' +
+          itemId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getAcMotorFailureTypesAndCauses() {
+    return this.http
+      .get(
+        this.serviceURL + 'failureType/getAllACMotorFailureTypes',
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getDcMotorFailureTypesAndCauses() {
+    return this.http
+      .get(
+        this.serviceURL + 'failureType/getAllDCMotorFailureTypes',
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -68,20 +116,39 @@ export class ItemRepairItemsService {
 
   saveFailureTypeAndCauses(getFailureTypeAndCause: any) {
     return this.http
-      .post(this.serviceURL + 'failureType', getFailureTypeAndCause, this.httpOptions)
+      .post(
+        this.serviceURL + 'failureType',
+        getFailureTypeAndCause,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
-  updateFailureTypeAndCauses(failureTypeAndCause: any, failuretypeid: any) {
-    console.log('failuretypeid in updateFailureTypeAndCauses service is' + failuretypeid);
+  updateFailureTypeAndCauses(failureTypeAndCause: any, failureTypeId: any) {
+    
     return this.http
-      .put(this.serviceURL + 'failureType/' + parseInt(failuretypeid), failureTypeAndCause, this.httpOptions)
+      .put(
+        this.serviceURL + 'failureType/' + parseInt(failureTypeId),
+        failureTypeAndCause,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
-  deleteFailureTypeAndCauses(failureTypeId: string, companyid: string, username: string) {
+  deleteFailureTypeAndCauses(
+    failureTypeId: string,
+    companyId: string,
+    userName: string
+  ) {
     return this.http
-      .delete(this.serviceURL + 'failureType/' + parseInt(failureTypeId) + '/' + companyid + '/' + username,
+      .delete(
+        this.serviceURL +
+          'failureType/' +
+          parseInt(failureTypeId) +
+          '/' +
+          companyId +
+          '/' +
+          userName,
         { responseType: 'text' }
       )
       .pipe(catchError(this.handleError));
@@ -95,7 +162,10 @@ export class ItemRepairItemsService {
 
   getAllTransfers(itemId: string) {
     return this.http
-      .get(this.serviceURL + 'transferlog/getAllTransfers' + '/' + itemId, this.httpOptions)
+      .get(
+        this.serviceURL + 'transferlog/getAllTransfers' + '/' + itemId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -111,19 +181,37 @@ export class ItemRepairItemsService {
 
   getFailureTypes(companyId: string, typeId: string) {
     return this.http
-      .get(this.serviceURL + 'itemrepair/getAllInCompletedItemRepairs/' + companyId + '/' + typeId, this.httpOptions)
+      .get(
+        this.serviceURL +
+          'itemrepair/getAllInCompletedItemRepairs/' +
+          companyId +
+          '/' +
+          typeId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
-  updateItemRepair(itemRepair: { repairlogid: string }) {
+  updateItemRepair(itemRepair: { repairLogId: string }) {
     return this.http
-      .put(this.serviceURL + 'itemrepair/' + itemRepair.repairlogid, itemRepair, this.httpOptions)
+      .put(
+        this.serviceURL + 'itemrepair/' + itemRepair.repairLogId,
+        itemRepair,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
   getAllItemRepairItems(companyId: string, typeId: string) {
     return this.http
-      .get(this.serviceURL + 'itemRepairItem/getAllRepairItems/' + companyId + '/' + typeId, this.httpOptions)
+      .get(
+        this.serviceURL +
+          'itemRepairItem/getAllRepairItems/' +
+          companyId +
+          '/' +
+          typeId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -132,10 +220,22 @@ export class ItemRepairItemsService {
       .get(this.serviceURL + 'itemRepairItem/' + repairId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-
-  getRepairDetailsForView(repairid: string) {
+  getItemMmsDetails(repairId:string)
+  {
+    const isMMS = sessionStorage.getItem('itemMMS') === 'true';
     return this.http
-      .get(this.serviceURL + 'itemrepair/getForView/' + repairid, this.httpOptions)
+      .get(
+        this.serviceURL + 'itemrepair/getMmsForView/' +isMMS+'/'+ repairId,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+  getRepairDetailsForView(repairId: string) {
+    return this.http
+      .get(
+        this.serviceURL + 'itemrepair/getForView/' + repairId,
+        this.httpOptions
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -147,22 +247,40 @@ export class ItemRepairItemsService {
 
   removeRepairItem(repairId: number) {
     return this.http
-      .delete(this.serviceURL + 'itemRepairItem/' + repairId, { responseType: 'text' })
+      .delete(this.serviceURL + 'itemRepairItem/' + repairId, {
+        responseType: 'text',
+      })
       .pipe(catchError(this.handleError));
   }
 
   removeItemRepair(
     id: string,
-    companyid: string,
-    username: string,
-    itemtype: string,
+    companyId: string,
+    userName: string,
+    itemType: string,
     tag: string,
-    ponumber: string,
-    jobnumber: string
+    poNumber: string,
+    jobNumber: string
   ) {
     return this.http
-      .delete(this.serviceURL + 'itemrepair/' + id + '/' + companyid + '/' + username + '/' + itemtype +
-          '/' + tag + '/' + ponumber + '/' + jobnumber, { responseType: 'text' })
+      .delete(
+        this.serviceURL +
+          'itemrepair/' +
+          id +
+          '/' +
+          companyId +
+          '/' +
+          userName +
+          '/' +
+          itemType +
+          '/' +
+          tag +
+          '/' +
+          poNumber +
+          '/' +
+          jobNumber,
+        { responseType: 'text' }
+      )
       .pipe(catchError(this.handleError));
   }
 

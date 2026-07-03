@@ -1,0 +1,64 @@
+
+import { Injectable } from '@angular/core';
+import * as XLSX from 'xlsx';
+
+@Injectable()
+export class VendorExcelService {
+  constructor() {}
+
+  exportToExcel(data: any, fileName: string): void {
+    const workbook: XLSX.WorkBook = { Sheets: {}, SheetNames: [] };
+
+    for (const companyName in data) {
+      if (data.hasOwnProperty(companyName)) {
+        const companyData = data[companyName];
+
+        const flattenedData = this.flattenData(companyData);
+        workbook.SheetNames.push(companyName);
+        workbook.Sheets[companyName] = XLSX.utils.json_to_sheet(flattenedData);
+      }
+    }
+
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
+    this.saveAsExcelFile(excelBuffer, fileName);
+  }
+
+  private flattenData(data: any[]): any[] {
+    const flattenedData: any[] = []; 
+    data.forEach((item) => {
+      const flatItem = {
+        jobNumber: item.jobNumber,
+        tag: item.tag,
+        dateReceived: item.dateReceived,
+        rfqNumber: item.rfqNumber,
+        poNumber: item.poNumber,
+        estimatedShipDate: item.estimatedShipDate,
+        completed: item.completed,
+        attributeValues: this.concatenateAttributes(item.attributeValues), 
+      };
+      flattenedData.push(flatItem);
+    });
+    return flattenedData;
+  }
+
+  private concatenateAttributes(attributeValues: any[]): string {
+    return attributeValues
+      .map((attr) => `${attr.name}: ${attr.value}`)
+      .join(', ');
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url: string = window.URL.createObjectURL(data);
+    const a: HTMLAnchorElement = document.createElement('a');
+    document.body.appendChild(a);
+    a.href = url;
+    a.download = fileName + '.xlsx';
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  }
+}

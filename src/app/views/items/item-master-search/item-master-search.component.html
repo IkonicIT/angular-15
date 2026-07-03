@@ -36,13 +36,8 @@
             Help
           </button>
           <div
-            style="
-              text-align: left;
-              border: 1px solid;
-              width: fit-content;
-              background-color: whitesmoke;
-            "
-            *ngIf="helpFlag == true"
+            *ngIf="helpFlag"
+            style="text-align: left; border: 1px solid; width: fit-content; background-color: whitesmoke;"
           >
             Note: Mandatory Fields are required.<br />
             *To add a new item:<br />
@@ -58,7 +53,7 @@
           </div>
         </div>
         <div class="card-body">
-          <alert type="danger" *ngIf="index == -1" [dismissible]="dismissible">
+          <alert type="danger" *ngIf="index === -1" [dismissible]="dismissible">
             Please enter Any of the fields
           </alert>
           <ng-container *ngIf="isExpandAdvancedSearch">
@@ -72,7 +67,6 @@
                   class="form-control"
                   [(ngModel)]="model.tag"
                   name="Tag"
-                  #Tag="ngModel"
                   id="tag"
                   placeholder="Enter Item Tag"
                 />
@@ -84,7 +78,6 @@
                   class="form-control"
                   [(ngModel)]="model.hp"
                   name="HP"
-                  #HP="ngModel"
                   id="hp"
                   placeholder="Enter HP"
                 />
@@ -94,13 +87,12 @@
             <div class="row">
               <div class="form-group col-sm-1"></div>
               <div class="form-group col-sm-5">
-                <label for="RPM">RPM</label>
+                <label for="rpm">RPM</label>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="model.rpm"
                   name="RPM"
-                  #RPM="ngModel"
                   id="rpm"
                   placeholder="Enter RPM"
                 />
@@ -112,7 +104,6 @@
                   class="form-control"
                   [(ngModel)]="model.frame"
                   name="frame"
-                  #frame="ngModel"
                   id="frame"
                   placeholder="Enter Frame"
                 />
@@ -128,7 +119,6 @@
                   class="form-control"
                   [(ngModel)]="model.locationName"
                   name="locationName"
-                  #LocationName="ngModel"
                   id="locationName"
                   placeholder="Enter Location Name"
                 />
@@ -145,6 +135,7 @@
                   data-bs-toggle="tooltip"
                   title="Search an item"
                   class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
                 >
                   Search
                 </button>
@@ -155,6 +146,7 @@
                   data-bs-toggle="tooltip"
                   title="Clear searched Fields"
                   class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
                 >
                   Clear
                 </button>
@@ -165,6 +157,7 @@
                   data-bs-toggle="tooltip"
                   title="Hide searched Fields"
                   class="btn btn-primary"
+                  style="border-radius: 6px;"
                 >
                   Hide
                 </button>
@@ -181,10 +174,10 @@
                   title="Export results to Excel Sheet "
                   (click)="exportAsExcelFileWithMultipleSheets()"
                   class="btn btn-primary btn-right"
+                  style="border-radius: 6px;"
                 >
                   Export to Excel
                 </button>
-
                 <button
                   type="button"
                   data-bs-placement="bottom"
@@ -192,14 +185,15 @@
                   title="Show All Items"
                   (click)="showAll()"
                   class="btn btn-primary"
+                  style="border-radius: 6px;"
                 >
                   Show All
                 </button>
               </div>
             </div>
             <div class="float-left">
-              <span
-                >Show
+              <span>
+                Show
                 <select [(ngModel)]="itemsForPagination" (change)="getItems()">
                   <option>10</option>
                   <option>25</option>
@@ -208,7 +202,6 @@
                 entries
               </span>
             </div>
-
             <div class="table-responsive">
               <table class="table">
                 <thead class="thead-light">
@@ -223,35 +216,19 @@
                 </thead>
                 <tbody>
                   <tr
-                    *ngFor="
-                      let result of masterSearchResults
-                        | paginate
-                          : {
-                              itemsPerPage: itemsForPagination,
-                              currentPage: page,
-                              totalItems: totalRows
-                            }
-                    "
+                    *ngFor="let result of masterSearchResults | paginate : { itemsPerPage: itemsForPagination, currentPage: page, totalItems: totalRows }"
                   >
                     <td>{{ result.companyName }}</td>
                     <td>
                       <a
                         href="javascript:void(0)"
-                        (click)="
-                          goToView(
-                            result.itemId,
-                            result.tag,
-                            result.typeName,
-                            result.companyId
-                          )
-                        "
+                        (click)="goToView(result.itemId, result.tag, result.typeName, result.companyId)"
                         >{{ result.tag }}</a
                       >
                     </td>
                     <td>{{ result.typeName }}</td>
                     <td>{{ result.status }}</td>
                     <td>{{ result.locationName }}</td>
-
                     <td *ngFor="let attr of result.attributes">
                       {{ attr.attributeName }}:{{ attr.value }}
                     </td>
@@ -281,10 +258,9 @@
                 </button>
               </div>
             </div>
-
             <div class="float-left">
-              <span
-                >Show
+              <span>
+                Show
                 <select [(ngModel)]="itemsPerPaginationForShowAll">
                   <option>10</option>
                   <option>25</option>
@@ -311,45 +287,19 @@
                 </thead>
                 <tbody>
                   <tr
-                    *ngFor="
-                      let result of masterSearchResults
-                        | filterBy
-                          : [
-                              'companyName',
-                              'tag',
-                              'typeName',
-                              'status',
-                              'locationName',
-                              'attributeName',
-                              'value'
-                            ]
-                          : filter
-                        | paginate
-                          : {
-                              itemsPerPage: itemsPerPaginationForShowAll,
-                              currentPage: pagesForShowAll
-                            }
-                    "
+                    *ngFor="let result of masterSearchResults | filterBy : ['companyName','tag','typeName','status','locationName','attributeName','value'] : filter | paginate : { itemsPerPage: itemsPerPaginationForShowAll, currentPage: pagesForShowAll }"
                   >
                     <td>{{ result.companyName }}</td>
                     <td>
                       <a
                         href="javascript:void(0)"
-                        (click)="
-                          goToViewFromShowAll(
-                            result.itemId,
-                            result.tag,
-                            result.typeName,
-                            result.companyId
-                          )
-                        "
+                        (click)="goToViewFromShowAll(result.itemId, result.tag, result.typeName, result.companyId)"
                         >{{ result.tag }}</a
                       >
                     </td>
                     <td>{{ result.typeName }}</td>
                     <td>{{ result.status }}</td>
                     <td>{{ result.locationName }}</td>
-
                     <td *ngFor="let attr of result.attributes">
                       {{ attr.attributeName }}:{{ attr.value }}
                     </td>
@@ -372,22 +322,9 @@
 
 <div
   *ngIf="loader"
-  style="
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    cursor: pointer;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-1%, -1%);
-  "
+  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 2; cursor: pointer; -ms-transform: translate(-50%, -50%); transform: translate(-1%, -1%);"
 >
-  <div _ngcontent-c0="" class="loader"></div>
+  <div class="loader"></div>
 </div>
 <style>
   .loader {
@@ -406,28 +343,22 @@
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
   }
-
   @-webkit-keyframes spin {
     0% {
       -webkit-transform: rotate(0deg);
     }
-
     100% {
       -webkit-transform: rotate(360deg);
     }
   }
-
   @keyframes spin {
     0% {
       transform: rotate(0deg);
     }
-
     100% {
       transform: rotate(360deg);
     }
   }
-
-  /* Add animation to "page content" */
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
@@ -435,35 +366,29 @@
     animation-name: animatebottom;
     animation-duration: 1s;
   }
-
   @-webkit-keyframes animatebottom {
     from {
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0px;
       opacity: 1;
     }
   }
-
   @keyframes animatebottom {
     from {
       bottom: -100px;
       opacity: 0;
     }
-
     to {
       bottom: 0;
       opacity: 1;
     }
   }
-
   .btn-link[routerLink="/forgot-password"] {
     color: red;
   }
-
   .cent {
     position: absolute;
     top: 50%;
@@ -471,5 +396,3 @@
     transform: translate(-50%, -50%);
   }
 </style>
-
-

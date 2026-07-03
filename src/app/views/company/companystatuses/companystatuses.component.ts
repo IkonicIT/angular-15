@@ -1,11 +1,10 @@
-import { CompanyStatusesService } from '../../../services/index';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TemplateRef } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { CompanyManagementService } from '../../../services/company-management.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
+
+import { CompanyStatusesService } from '../../../services/index';
+import { CompanyManagementService } from '../../../services/company-management.service';
 
 @Component({
   selector: 'app-companystatuses',
@@ -13,85 +12,84 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./companystatuses.component.scss'],
 })
 export class CompanystatusesComponent implements OnInit {
-  statuses: any = [];
-  companyId: string;
+  statuses: any[] = [];
+  companyId!: string;
   model: any;
   index: string = 'companydocument';
   documents: any[] = [];
-  router: Router;
-  message: string;
-  modalRef: BsModalRef;
+  message: string = '';
+  modalRef!: BsModalRef;
   companyName: string = '';
   order: string = 'status';
   reverse: string = '';
   statusFilter: any = '';
-  itemsForPagination: any = 5;
+  itemsForPagination: number = 5;
   index1: number = 0;
   globalCompany: any = {};
   currentRole: any;
   highestRank: any;
   userName: any;
-  helpFlag: any = false;
+  helpFlag: boolean = false;
   dismissible = true;
-  p: any;
+  p: number = 1;
   loader = false;
+
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
     private companyStatusService: CompanyStatusesService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-    this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    this.companyId = this.globalCompany.companyId;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.documents = [];
     });
     this.getStatuses();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
   }
 
-  getStatuses() {
+  getStatuses(): void {
     this.spinner.show();
-    this.loader = true;
     this.statuses = [];
     this.companyStatusService.getAllCompanyStatuses(this.companyId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
-        console.log(response);
         this.statuses = response;
+        const totalWarrantyTypesCount = this.statuses.length;
+        const maxPageAvailable = Math.ceil(
+          totalWarrantyTypesCount / this.itemsForPagination
+        );
+        if (this.p > maxPageAvailable) {
+          this.p = maxPageAvailable;
+        }
       },
-      (error) => {
+      () => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
-  addStatus() {
+  addStatus(): void {
     this.router.navigate(['/company/addStatus/']);
   }
 
-  editStatus(status: { statusid: string }) {
-    console.log('statusid=' + status.statusid);
+  editStatus(status: { statusId: string }): void {
     this.router.navigate(['/company/editStatus/'], {
-      queryParams: { q: status.statusid },
+      queryParams: { q: status.statusId },
     });
   }
 
-  openModal(template: TemplateRef<any>, id: string) {
+  openModal(template: TemplateRef<any>, id: string): void {
     this.index = id;
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
@@ -99,29 +97,29 @@ export class CompanystatusesComponent implements OnInit {
   confirm(): void {
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
     this.companyStatusService
       .removeCompanyStatus(this.index, this.userName)
       .subscribe(
-        (response) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
           this.modalRef.hide();
           this.index1 = 1;
           setTimeout(() => {
             this.index1 = 0;
           }, 7000);
           this.getStatuses();
+
           const currentPage = this.p;
-        const statusesCount = this.statuses.length - 1;
-        const maxPageAvailable = Math.ceil(statusesCount / this.itemsForPagination);
-        if (currentPage > maxPageAvailable){
-          this.p = maxPageAvailable;
-        }
+          const statusesCount = this.statuses.length - 1;
+          const maxPageAvailable = Math.ceil(
+            statusesCount / this.itemsForPagination
+          );
+          if (currentPage > maxPageAvailable) {
+            this.p = maxPageAvailable;
+          }
         },
-        (error) => {
+        () => {
           this.spinner.hide();
-          this.loader = false;
         }
       );
   }
@@ -130,26 +128,23 @@ export class CompanystatusesComponent implements OnInit {
     this.message = 'Declined!';
     this.modalRef.hide();
   }
-  setOrder(value: string) {
+
+  setOrder(value: string): void {
     if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
+      this.reverse = this.reverse === '' ? '-' : '';
     }
     this.order = value;
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 
-  onChange(e: any) {
+  onChange(e: any): void {
     const currentPage = this.p;
     const statusCount = this.statuses.length;
     const maxPageAvailable = Math.ceil(statusCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
+    if (currentPage > maxPageAvailable) {
       this.p = maxPageAvailable;
     }
   }

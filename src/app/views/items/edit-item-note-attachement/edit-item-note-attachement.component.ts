@@ -17,7 +17,7 @@ export class EditItemNoteAttachementComponent implements OnInit {
   companyName: string;
   globalCompany: any;
   date = Date.now();
-  itemid: number = 0;
+  itemId: number = 0;
   documentId: number = 0;
   private sub: any;
   userName: any;
@@ -40,16 +40,16 @@ export class EditItemNoteAttachementComponent implements OnInit {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
       this.companyName = value.name;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
 
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
     this.id = route.snapshot.params['id'];
-    this.itemid = route.snapshot.params['journalId'];
+    this.itemId = route.snapshot.params['journalId'];
     this.documentId = route.snapshot.params['itemId'];
     this.router = router;
   }
@@ -61,25 +61,24 @@ export class EditItemNoteAttachementComponent implements OnInit {
     this.itemType = this.broadcasterService.currentItemType;
     this.userName = sessionStorage.getItem('userName');
     this.spinner.show();
-    this.loader = true;
+
     this.itemAttachmentsService.getItemDocuments(this.id).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   updateItemNoteAttachment() {
     this.spinner.show();
-    this.loader = true;
+
     this.model.moduleType = 'itemnotetype';
-    this.model.companyID = this.companyId;
+    this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {
       noteType: 'itemnoteattachment',
       noteName: this.noteAttachmentTitle,
@@ -90,26 +89,25 @@ export class EditItemNoteAttachementComponent implements OnInit {
     this.itemAttachmentsService.updateItemDocument(this.model).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         window.scroll(0, 0);
         this.index = 1;
         setTimeout(() => {
           this.index = 0;
         }, 7000);
         this.router.navigate([
-          '/items/noteAttachments/' + this.documentId + '/' + this.itemid,
+          '/items/noteAttachments/' + this.documentId + '/' + this.itemId,
         ]);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   cancelItemNoteAttachment() {
     this.router.navigate([
-      '/items/noteAttachments/' + this.documentId + '/' + this.itemid,
+      '/items/noteAttachments/' + this.documentId + '/' + this.itemId,
     ]);
   }
 

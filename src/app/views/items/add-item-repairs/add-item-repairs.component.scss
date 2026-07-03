@@ -93,3 +93,52 @@ button {
 ::ng-deep .alert-dismissible button {
   visibility: hidden;
 }
+
+.btn-group{
+  border-radius: 6px;
+}
+
+.search-dropdown-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.search-dropdown-wrapper .search-input {
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0;
+}
+
+.search-dropdown-wrapper select {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-top: 0;
+}
+
+.custom-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-dropdown-wrapper app-dropdown-treeview-select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-dropdown-arrow {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid gray;
+}

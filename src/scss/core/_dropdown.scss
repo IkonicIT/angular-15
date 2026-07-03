@@ -1,4 +1,3 @@
-// Links, buttons, and more within the dropdown menu
 .dropdown-item {
   position: relative;
   padding: 10px 20px;
@@ -24,7 +23,6 @@
   }
 }
 
-// Dropdown section headers
 .dropdown-header {
   padding: 8px 20px;
   background: $dropdown-divider-bg;
@@ -52,13 +50,9 @@
     .dropdown-menu {
       position: absolute;
     }
-    // Menu positioning
-    //
-    // Add extra class to `.dropdown-menu` to flip the alignment of the dropdown
-    // menu with the parent.
     .dropdown-menu-right {
       right: 0;
-      left: auto; // Reset the default from `.dropdown-menu`
+      left: auto; 
     }
 
     .dropdown-menu-left {

@@ -43,8 +43,9 @@ export class ItemServiceManagementService {
   }
 
   deleteItemServiceById(serviceId: string) {
+    const url = `${this.serviceURL}/${serviceId}`;
     return this.http
-      .delete(this.serviceURL + '/' + serviceId, this.httpOptions)
+      .delete(url, { ...this.httpOptions, responseType: 'text' })
       .pipe(catchError(this.handleError));
   }
 

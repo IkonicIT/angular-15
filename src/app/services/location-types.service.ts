@@ -32,7 +32,7 @@ export class LocationTypesService {
 
   updateLocationType(locationType: any) {
     return this.http
-      .put(this.serviceURL + '/' + locationType.typeid, locationType, this.httpOptions)
+      .put(this.serviceURL + '/' + locationType.typeId, locationType, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

@@ -1,4 +1,4 @@
-import { Attribute, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ItemManagementService } from '../../../services/Items/item-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as cloneDeep from 'lodash';
@@ -6,6 +6,7 @@ import { ExcelService } from '../../../services/excel-service';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Router } from '@angular/router';
 import { CompanyManagementService } from '../../../services/index';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-item-master-search',
@@ -21,14 +22,15 @@ export class ItemMasterSearchComponent implements OnInit {
   public page = 1;
   public pagesForShowAll = 1;
   public totalRows: number;
-  public masterSearchResults: any = [];
-  public exportSearchResults: any = [];
+  public masterSearchResults: any[] = [];
+  public exportSearchResults: any[] = [];
   model: any = {};
   filter: any = '';
   helpFlag: any = false;
   dismissible = true;
   index: any;
   loader = false;
+
   constructor(
     private itemManagementService: ItemManagementService,
     private spinner: NgxSpinnerService,
@@ -39,10 +41,10 @@ export class ItemMasterSearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let oldResults = this.itemManagementService.getItemMasterSearchResults();
-    let keys = Object.keys(oldResults);
+    const oldResults = this.itemManagementService.getItemMasterSearchResults();
+    const keys = Object.keys(oldResults);
     if (keys.length > 0) {
-      if (oldResults.showAllTable == false) {
+      if (oldResults.showAllTable === false) {
         this.getOldResults(oldResults);
         this.page = oldResults.currentPage;
         this.itemsForPagination = oldResults.itemsPerPage;
@@ -57,7 +59,7 @@ export class ItemMasterSearchComponent implements OnInit {
   }
 
   getOldResults(oldResults: {
-    results: any;
+    results: any[];
     masterSearchModel: any;
     totalRows: number;
   }) {
@@ -81,52 +83,40 @@ export class ItemMasterSearchComponent implements OnInit {
   }
 
   getMasterSearchResults(currentPage: number, itemsPerPage: any) {
-    var attributes = [];
-    if (this.model.hp != undefined && this.model.hp != '') {
-      let attribute = {
-        attributeName: 'HP/KW/KVA',
-        value: this.model.hp,
-      };
-      attributes.push(attribute);
+    const attributes: any[] = [];
+    if (this.model.hp !== undefined && this.model.hp !== '') {
+      attributes.push({ attributeName: 'HP/KW/KVA', value: this.model.hp });
     }
-    if (this.model.rpm != undefined && this.model.rpm != '') {
-      let attribute = {
-        attributeName: 'RPM',
-        value: this.model.rpm,
-      };
-      attributes.push(attribute);
+    if (this.model.rpm !== undefined && this.model.rpm !== '') {
+      attributes.push({ attributeName: 'RPM', value: this.model.rpm });
     }
-    if (this.model.frame != undefined && this.model.frame != '') {
-      let attribute = {
-        attributeName: 'frame',
-        value: this.model.frame,
-      };
-      attributes.push(attribute);
+    if (this.model.frame !== undefined && this.model.frame !== '') {
+      attributes.push({ attributeName: 'frame', value: this.model.frame });
     }
-    var request = {
+
+    const request = {
       tag: this.model.tag,
       attributes: attributes,
       locationName: this.model.locationName,
       page: currentPage,
       size: itemsPerPage,
     };
-    this.spinner.show();
-    this.loader = true;
-    this.itemManagementService
-      .getMasterSearchResults(request)
-      .subscribe((response: any) => {
-        this.spinner.hide();
-        this.loader = false;
-        this.masterSearchResults = response;
 
-        if (response.length > 0) {
+    this.spinner.show();
+    (this.itemManagementService.getMasterSearchResults(request) as Observable<any[]>).subscribe(
+      (response: any[]) => {
+        this.spinner.hide();
+        this.masterSearchResults = response || [];
+        if (response && response.length > 0) {
           this.totalRows = response[0].totalRows;
         }
         this.showTable = true;
         this.showAllTable = false;
         this.pagesForShowAll = 1;
         this.itemsPerPaginationForShowAll = 10;
-      });
+      },
+      () => this.spinner.hide()
+    );
   }
 
   getPage(page: number) {
@@ -140,77 +130,59 @@ export class ItemMasterSearchComponent implements OnInit {
   }
 
   async exportAsExcelFileWithMultipleSheets() {
-    var attributes = [];
-    if (this.model.hp != undefined && this.model.hp != '') {
-      let attribute = {
-        attributeName: 'HP/KW/KVA',
-        value: this.model.hp,
-      };
-      attributes.push(attribute);
+    const attributes: any[] = [];
+    if (this.model.hp !== undefined && this.model.hp !== '') {
+      attributes.push({ attributeName: 'HP/KW/KVA', value: this.model.hp });
     }
-    if (this.model.rpm != undefined && this.model.rpm != '') {
-      let attribute = {
-        attributeName: 'RPM',
-        value: this.model.rpm,
-      };
-      attributes.push(attribute);
+    if (this.model.rpm !== undefined && this.model.rpm !== '') {
+      attributes.push({ attributeName: 'RPM', value: this.model.rpm });
     }
-    if (this.model.frame != undefined && this.model.frame != '') {
-      let attribute = {
-        attributeName: 'frame',
-        value: this.model.frame,
-      };
-      attributes.push(attribute);
+    if (this.model.frame !== undefined && this.model.frame !== '') {
+      attributes.push({ attributeName: 'frame', value: this.model.frame });
     }
-    var request = {
+
+    const request = {
       tag: this.model.tag,
       attributes: attributes,
       locationName: this.model.locationName,
       page: 1,
       size: this.totalRows,
     };
+
     this.spinner.show();
-    this.loader = true;
-    const data = await this.itemManagementService
-      .getMasterSearchResults(request)
-      .toPromise();
+    const data: any[] =
+      (await (this.itemManagementService.getMasterSearchResults(request) as Observable<any[]>).toPromise()) || [];
     this.spinner.hide();
-    this.loader = false;
+
     this.exportSearchResults = data;
     this.exportAsExcelFile();
   }
 
   formAttributesString(searchResults: any[]) {
     searchResults.forEach((item: any) => {
-      var attributes = '';
-      if (item.attributes != '') {
+      let attributes = '';
+      if (item.attributes !== '') {
         item.attributes.forEach(
           (attribute: { attributeName: string; value: string }) => {
-            attributes =
-              attributes +
-              attribute.attributeName +
-              ':' +
-              attribute.value +
-              ' ' +
-              ' | ';
+            attributes += `${attribute.attributeName}:${attribute.value} | `;
           }
         );
       }
       item.Attributes = attributes;
     });
-
     return searchResults;
   }
 
   exportAsExcelFile() {
-    var map = this.groupBy(
+    const map = this.groupBy(
       this.formAttributesString(this.exportSearchResults),
       (item) => item.companyName
     );
-    let results: any = {};
+    const results: any = {};
     map.forEach((value, key) => {
       results[key] = value;
     });
+
     const clonedsearchResults: any = cloneDeep(results);
     Object.keys(clonedsearchResults).forEach((companyName) => {
       const result = clonedsearchResults[companyName];
@@ -221,13 +193,14 @@ export class ItemMasterSearchComponent implements OnInit {
         delete obj.totalRows;
       });
     });
+
     this.excelService.exportAsExcelFileWithMultipleSheets(
       clonedsearchResults,
       'MasterSearchResults'
     );
   }
 
-  groupBy(list: any[], keyGetter: { (item: any): any; (arg0: any): string }) {
+  groupBy(list: any[], keyGetter: (item: any) => string) {
     const map = new Map();
     list.forEach((item: any) => {
       const key = keyGetter(item).replaceAll('/', '');
@@ -242,7 +215,7 @@ export class ItemMasterSearchComponent implements OnInit {
   }
 
   goToView(itemId: string, tag: any, typeName: any, companyId: any) {
-    var searchResults = {
+    const searchResults = {
       results: this.masterSearchResults,
       currentPage: this.page,
       itemsPerPage: this.itemsForPagination,
@@ -261,42 +234,30 @@ export class ItemMasterSearchComponent implements OnInit {
 
   async showAll() {
     if (this.totalRows > this.itemsForPagination) {
-      var attributes = [];
-      if (this.model.hp != undefined && this.model.hp != '') {
-        let attribute = {
-          attributeName: 'HP/KW/KVA',
-          value: this.model.hp,
-        };
-        attributes.push(attribute);
+      const attributes: any[] = [];
+      if (this.model.hp !== undefined && this.model.hp !== '') {
+        attributes.push({ attributeName: 'HP/KW/KVA', value: this.model.hp });
       }
-      if (this.model.rpm != undefined && this.model.rpm != '') {
-        let attribute = {
-          attributeName: 'RPM',
-          value: this.model.rpm,
-        };
-        attributes.push(attribute);
+      if (this.model.rpm !== undefined && this.model.rpm !== '') {
+        attributes.push({ attributeName: 'RPM', value: this.model.rpm });
       }
-      if (this.model.frame != undefined && this.model.frame != '') {
-        let attribute = {
-          attributeName: 'frame',
-          value: this.model.frame,
-        };
-        attributes.push(attribute);
+      if (this.model.frame !== undefined && this.model.frame !== '') {
+        attributes.push({ attributeName: 'frame', value: this.model.frame });
       }
-      var request = {
+
+      const request = {
         tag: this.model.tag,
         attributes: attributes,
         locationName: this.model.locationName,
         page: 1,
         size: this.totalRows,
       };
+
       this.spinner.show();
-      this.loader = true;
-      const data = await this.itemManagementService
-        .getMasterSearchResults(request)
-        .toPromise();
+      const data: any[] =
+        (await (this.itemManagementService.getMasterSearchResults(request) as Observable<any[]>).toPromise()) || [];
       this.spinner.hide();
-      this.loader = false;
+
       this.masterSearchResults = data;
       this.showAllTable = true;
       this.showTable = false;
@@ -304,7 +265,7 @@ export class ItemMasterSearchComponent implements OnInit {
   }
 
   goToViewFromShowAll(itemId: string, tag: any, typeName: any, companyId: any) {
-    var searchResults = {
+    const searchResults = {
       results: this.masterSearchResults,
       currentPage: this.pagesForShowAll,
       itemsPerPage: this.itemsPerPaginationForShowAll,

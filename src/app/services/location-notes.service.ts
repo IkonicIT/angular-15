@@ -29,15 +29,15 @@ export class LocationNotesService {
       .pipe(catchError(this.handleError));
   }
 
-  updateLocationNotes(locationNote: { journalid: string }) {
+  updateLocationNotes(locationNote: { journalId: string }) {
     return this.http
-      .put(this.serviceURL + '/' + locationNote.journalid, locationNote, this.httpOptions)
+      .put(this.serviceURL + '/' + locationNote.journalId, locationNote, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  getLocationNotes(journalid: string | number, companyId: string | number) {
+  getLocationNotes(journalId: string | number, companyId: string | number) {
     return this.http
-      .get(this.serviceURL + '/' + journalid, this.httpOptions)
+      .get(this.serviceURL + '/' + journalId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

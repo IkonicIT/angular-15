@@ -18,7 +18,7 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
   globalCompany: any;
   userName: any;
   companyId: number = 0;
-  repairlogid: number;
+  repairLogId: number;
   documentId: number = 0;
   private sub: any;
   id: number;
@@ -38,31 +38,29 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
   ) {
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
     });
     this.globalCompany = this.companyManagementService.getGlobalCompany();
     if (this.globalCompany) {
       this.companyName = this.globalCompany.name;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
     }
 
-    this.repairlogid = route.snapshot.params['repairlogId'];
-    console.log('repairlogid=' + this.repairlogid);
-    this.documentId = route.snapshot.params['attachmentid'];
-    console.log('repairlogid=' + this.documentId);
+    this.repairLogId = route.snapshot.params['repairLogId'];
+    
+    this.documentId = route.snapshot.params['attachmentId'];
+    
     this.router = router;
     this.spinner.show();
-    this.loader = true;
 
     this.companyDocumentsService.getCompanyDocuments(this.documentId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
@@ -74,32 +72,31 @@ export class EditItemRepairAttachmentsComponent implements OnInit {
 
   updateItemRepairDocument() {
     this.spinner.show();
-    this.loader = true;
+
     this.model.moduleType = 'itemrepairtype';
-    this.model.companyID = this.companyId;
+    this.model.companyId = this.companyId;
     this.model.attachmentUserLogDTO = {
       itemTag: this.itemRepair.tag,
-      itemTypeName: this.itemRepair.itemtype,
-      poNumber: this.itemRepair.ponumber,
-      jobNumber: this.itemRepair.jobnumber,
+      itemTypeName: this.itemRepair.itemType,
+      poNumber: this.itemRepair.poNumber,
+      jobNumber: this.itemRepair.jobNumber,
     };
     this.model.updatedBy = this.userName;
     this.companyDocumentsService.updateCompanyDocument(this.model).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         window.scroll(0, 0);
         this.index = 1;
         setTimeout(() => {
           this.index = 0;
         }, 7000);
         this.router.navigate([
-          '/items/itemRepairAttachments/' + this.repairlogid,
+          '/items/itemRepairAttachments/' + this.repairLogId,
         ]);
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }

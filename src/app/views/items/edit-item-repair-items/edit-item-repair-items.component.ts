@@ -28,7 +28,7 @@ export class EditItemRepairItemsComponent implements OnInit {
   order: string = '';
   reverse: string = '';
   modalRef: BsModalRef;
-  repairid: any;
+  repairId: any;
   route: ActivatedRoute;
   router: Router;
   helpFlag: any = false;
@@ -47,7 +47,7 @@ export class EditItemRepairItemsComponent implements OnInit {
     this.globalCompany = this.companyManagementService.getGlobalCompany();
 
     if (this.globalCompany) {
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
       this.companyName = this.globalCompany.name;
       this.getAllItemTypes();
     }
@@ -55,35 +55,34 @@ export class EditItemRepairItemsComponent implements OnInit {
     this.route = route;
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = value.companyid;
+      this.companyId = value.companyId;
       this.companyName = value.name;
     });
   }
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
-    this.repairid = this.route.snapshot.params['repairId'];
-    this.itemReairItemsService.getItemRepairItem(this.repairid).subscribe(
+    this.repairId = this.route.snapshot.params['repairId'];
+    this.itemReairItemsService.getItemRepairItem(this.repairId).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.model = response;
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }
 
   getAllItemTypes() {
     this.spinner.show();
-    this.loader = true;
+
     this.itemTypesService
       .getAllItemTypes(this.companyId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.itemTypes = response;
       });
   }
@@ -91,12 +90,12 @@ export class EditItemRepairItemsComponent implements OnInit {
   getRepairItems() {
     if (this.itemType != '') {
       this.spinner.show();
-      this.loader = true;
+
       this.itemReairItemsService
         .getAllItemRepairItems(this.companyId, this.itemType)
         .subscribe((response) => {
           this.spinner.hide();
-          this.loader = false;
+
           this.repairItems = response;
         });
     }
@@ -104,23 +103,24 @@ export class EditItemRepairItemsComponent implements OnInit {
 
   UpdateRepairItem() {
     this.spinner.show();
-    this.loader = true;
+
     var request = {
-      lastmodifiedby: this.userName,
-      companyid: this.companyId,
-      repairdescription: this.model.repairdescription,
-      repairid: this.repairid,
-      typeid: this.model.typeid,
+      lastModifiedBy: this.userName,
+      companyId: this.companyId,
+      repairDescription: this.model.repairDescription,
+      repairId: this.repairId,
+      typeId: this.model.typeId,
     };
     this.itemReairItemsService
-      .updateRepairItemType(request, this.repairid)
+      .updateRepairItemType(request, this.repairId)
       .subscribe((response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.index = 1;
         setTimeout(() => {
           this.index = 0;
         }, 7000);
+          this.router.navigate(['/items/repairItems']);
         this.getRepairItems();
       });
   }
@@ -138,17 +138,16 @@ export class EditItemRepairItemsComponent implements OnInit {
 
   confirm(): void {
     this.spinner.show();
-    this.loader = true;
+
     this.itemReairItemsService.removeRepairItem(this.index).subscribe(
       (response) => {
         this.spinner.hide();
-        this.loader = false;
+
         this.modalRef.hide();
         this.getRepairItems();
       },
       (error) => {
         this.spinner.hide();
-        this.loader = false;
       }
     );
   }

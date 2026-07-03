@@ -19,7 +19,7 @@ export class BroadcasterService {
   public selectedCompanyId: any;
   public isOwnerAdmin: boolean;
   public currentCompany: any;
-  public username: any;
+  public userName: any;
   public itemRank: any;
   public userRoles: any;
   public currentItemTag: any;
@@ -28,7 +28,6 @@ export class BroadcasterService {
   public tracratAnnouncement: any;
   public switchCompanyId: any;
   public itemRepair: any;
-  //public currentLocationName:any;
   constructor() {
     this._eventBus = new Subject<BroadcastEvent>();
     this._locationBus = new Subject<any>();

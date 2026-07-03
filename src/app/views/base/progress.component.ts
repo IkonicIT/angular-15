@@ -19,7 +19,6 @@ export class ProgressComponent implements OnDestroy {
     if (this.timer) {
       clearInterval(this.timer);
     }
-    // console.log(`onDestroy`, this.timer);
   }
 
   random(): void {

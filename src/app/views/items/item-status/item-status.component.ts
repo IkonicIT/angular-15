@@ -1,8 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CompanyManagementService } from '../../../services/company-management.service';
-import { LocationStatusService } from '../../../services/location-status.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ItemStatusService } from '../../../services/Items/item-status.service';
 
@@ -13,72 +12,83 @@ import { ItemStatusService } from '../../../services/Items/item-status.service';
 })
 export class ItemStatusComponent implements OnInit {
   statuses: any[] = [];
-  companyId: string;
-  model: any;
   documents: any[] = [];
-  router: Router;
-  message: string;
-  userName: any;
-  modalRef: BsModalRef;
+
+  companyId: number | null = null;
   companyName: string = '';
+  globalCompany: any = {};
+
+  userName: string | null = null;
+  currentRole: string | null = null;
+  highestRank: string | null | undefined;
+
   order: string = 'status';
   reverse: string = '';
-  statusFilter: any = '';
-  itemsForPagination: any = 5;
-  index: number;
-  globalCompany: any = {};
-  currentRole: any;
-  highestRank: any;
-  helpFlag: any = false;
-  p: any;
+  statusFilter: string = '';
+  itemsForPagination = 5;
+  p = 1;
+
+  index: number = 0;
+  message: string = '';
+  helpFlag = false;
+
+  modalRef?: BsModalRef;
   loader = false;
+
   constructor(
     private modalService: BsModalService,
     private companyManagementService: CompanyManagementService,
     private itemStatusService: ItemStatusService,
-    router: Router,
-    route: ActivatedRoute,
+    private router: Router,
     private spinner: NgxSpinnerService
   ) {
-    this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyId = this.globalCompany.companyid;
+    if (this.globalCompany) {
+      this.companyId = this.globalCompany.companyId;
+      this.companyName = this.globalCompany.name;
+    }
+
     this.companyManagementService.globalCompanyChange.subscribe((value) => {
       this.globalCompany = value;
-      this.companyId = this.globalCompany.companyid;
+      this.companyId = this.globalCompany.companyId;
+      this.companyName = this.globalCompany.name;
       this.documents = [];
     });
+
     this.getStatuses();
+  }
+
+  get highestRankNum(): number {
+    return Number(this.highestRank ?? 0);
   }
 
   ngOnInit() {
     this.userName = sessionStorage.getItem('userName');
     this.currentRole = sessionStorage.getItem('currentRole');
     this.highestRank = sessionStorage.getItem('highestRank');
-    console.log('currentRole is' + this.currentRole);
-    console.log('highestRank is' + this.highestRank);
+
+    
+    
   }
 
   getStatuses() {
+    if (!this.companyId) return;
     this.spinner.show();
-    this.loader = true;
-    this.itemStatusService
-      .getAllItemStatuses(this.companyId)
-      .subscribe((response: any) => {
+    this.itemStatusService.getAllItemStatuses(String(this.companyId)).subscribe(
+      (response: any) => {
         this.spinner.hide();
-        this.loader = false;
-        console.log(response);
-        this.statuses = response;
-      });
+        this.statuses = Array.isArray(response) ? response : [];
+      },
+      () => this.spinner.hide()
+    );
   }
 
   addStatus() {
     this.router.navigate(['/items/addItemStatus/']);
   }
 
-  editStatus(status: { statusid: string }) {
-    console.log('statusid=' + status.statusid);
-    this.router.navigate(['/items/editItemStatus/' + status.statusid]);
+  editStatus(status: { statusId: string }) {
+    this.router.navigate(['/items/editItemStatus/' + status.statusId]);
   }
 
   openModal(template: TemplateRef<any>, id: number) {
@@ -86,53 +96,44 @@ export class ItemStatusComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
-  
-
   confirm(): void {
+    if (!this.index || !this.userName) return;
     this.message = 'Confirmed!';
     this.spinner.show();
-    this.loader = true;
-    this.itemStatusService
-      .removeItemStatus(this.index, this.userName)
-      .subscribe((response) => {
+    this.itemStatusService.removeItemStatus(this.index, this.userName).subscribe(
+      () => {
         this.spinner.hide();
-        this.loader = false;
-        this.modalRef.hide();
+        this.modalRef?.hide();
         this.getStatuses();
-        const currentPage = this.p;
-        const statusCount = this.statuses.length - 1;
-        const maxPageAvailable = Math.ceil(statusCount / this.itemsForPagination);
-        if (currentPage > maxPageAvailable){
-          this.p = maxPageAvailable;
-        }
-      });
+        this.adjustPagination();
+      },
+      () => this.spinner.hide()
+    );
   }
 
   decline(): void {
     this.message = 'Declined!';
-    this.modalRef.hide();
+    this.modalRef?.hide();
   }
 
   setOrder(value: string) {
-    if (this.order === value) {
-      if (this.reverse == '') {
-        this.reverse = '-';
-      } else {
-        this.reverse = '';
-      }
-    }
+    this.reverse = this.order === value && this.reverse === '' ? '-' : '';
     this.order = value;
   }
 
   help() {
     this.helpFlag = !this.helpFlag;
   }
-  onChange(e: any) {
-    const currentPage = this.p;
+
+  onChange() {
+    this.adjustPagination();
+  }
+
+  private adjustPagination() {
     const statusCount = this.statuses.length - 1;
     const maxPageAvailable = Math.ceil(statusCount / this.itemsForPagination);
-    if (currentPage > maxPageAvailable){
-      this.p = maxPageAvailable;
+    if (this.p > maxPageAvailable) {
+      this.p = maxPageAvailable > 0 ? maxPageAvailable : 1;
     }
   }
 }

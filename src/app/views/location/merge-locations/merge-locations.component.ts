@@ -3,7 +3,7 @@ import { TreeviewItem } from 'ngx-treeview';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { LocationManagementService } from '../../../services/location-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { CompanyManagementService } from '../../../services/company-management.service';
 
 @Component({
@@ -12,20 +12,21 @@ import { CompanyManagementService } from '../../../services/company-management.s
   styleUrls: ['./merge-locations.component.scss'],
 })
 export class MergeLocationsComponent implements OnInit {
-  locationItems: TreeviewItem[];
-  locations: any;
-  model: any = {
-    tolocationid: 0,
-    fromlocationid: 0,
-    locationname: '',
+  locationItems: TreeviewItem[] = [];
+  locations: any[] = [];
+  model = {
+    tolocationId: 0,
+    fromlocationId: 0,
+    locationName: '',
   };
-  index: number;
+  index = 0;
   dismissible = true;
   globalCompany: any;
-  companyName: any;
-  companyId: any;
-  helpFlag: any = false;
+  companyName: string = '';
+  companyId: number = 0;
+  helpFlag = false;
   loader = false;
+
   constructor(
     private broadcasterService: BroadcasterService,
     private locationManagementService: LocationManagementService,
@@ -33,75 +34,63 @@ export class MergeLocationsComponent implements OnInit {
     private companyManagementService: CompanyManagementService,
     private router: Router
   ) {
-    this.router = router;
     this.globalCompany = this.companyManagementService.getGlobalCompany();
-    this.companyName = this.globalCompany.name;
-    this.companyId = this.globalCompany.companyid;
+    this.companyName = this.globalCompany?.name ?? '';
+    this.companyId = this.globalCompany?.companyId ?? 0;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getLocations();
   }
-  getLocations() {
-    this.locations = this.broadcasterService.locations;
-    if (this.locations && this.locations.length > 0) {
-      this.locationItems = [];
+
+  getLocations(): void {
+    this.locations = Array.isArray(this.broadcasterService.locations)
+      ? this.broadcasterService.locations
+      : [];
+    if (this.locations.length > 0) {
       this.locationItems = this.generateHierarchy(this.locations);
     }
   }
 
-  generateHierarchy(locList: any[]) {
-    var items: TreeviewItem[] = [];
-    locList.forEach((loc) => {
-      var children: TreeviewItem[] = [];
-      if (
-        loc.parentLocationResourceList &&
-        loc.parentLocationResourceList.length > 0
-      ) {
-        children = this.generateHierarchy(loc.parentLocationResourceList);
-      }
-      items.push(
-        new TreeviewItem({
-          text: loc.name,
-          value: loc.locationid,
-          collapsed: true,
-          children: children,
-        })
-      );
+  generateHierarchy(locList: any[]): TreeviewItem[] {
+    return locList.map((loc) => {
+      const children =
+        loc.parentResourceList && loc.parentResourceList.length > 0
+          ? this.generateHierarchy(loc.parentResourceList)
+          : [];
+      return new TreeviewItem({
+        text: loc.name,
+        value: loc.locationId,
+        collapsed: true,
+        children,
+      });
     });
-    return items;
   }
 
-  mergeLocations() {
+  mergeLocations(): void {
     if (
-      this.model.tolocationid &&
-      this.model.tolocationid != 0 &&
-      this.model.fromlocationid &&
-      this.model.fromlocationid != 0 &&
-      this.model.tolocationid == this.model.fromlocationid
+      this.model.tolocationId &&
+      this.model.fromlocationId &&
+      this.model.tolocationId === this.model.fromlocationId
     ) {
       this.index = 2;
     } else if (
-      this.model.tolocationid &&
-      this.model.tolocationid != 0 &&
-      this.model.fromlocationid &&
-      this.model.fromlocationid != 0 &&
-      this.model.locationname &&
-      this.model.locationname != ''
+      this.model.tolocationId &&
+      this.model.fromlocationId &&
+      this.model.locationName
     ) {
-      var req = {
-        newLocationId: this.model.tolocationid,
-        oldLocationId: this.model.fromlocationid,
-        newLocationName: this.model.locationname,
+      const req = {
+        newLocationId: this.model.tolocationId,
+        oldLocationId: this.model.fromlocationId,
+        newLocationName: this.model.locationName,
       };
       this.spinner.show();
-      this.loader = true;
+
       this.locationManagementService
-        .mergeLocations(req, this.companyId)
+        .mergeLocations(req, String(this.companyId))
         .subscribe(
-          (response) => {
+          () => {
             this.spinner.hide();
-            this.loader = false;
             this.index = 1;
             setTimeout(() => {
               this.index = 0;
@@ -109,32 +98,28 @@ export class MergeLocationsComponent implements OnInit {
             this.refreshCalls();
             window.scroll(0, 0);
           },
-          (error) => {
+          () => {
             this.spinner.hide();
-            this.loader = false;
           }
         );
     } else {
-      console.log(`please fill required feilds`);
       this.index = -1;
       window.scroll(0, 0);
     }
   }
-  refreshCalls() {
+
+  refreshCalls(): void {
     this.spinner.show();
-    this.loader = true;
     this.locationManagementService
       .getAllLocationsWithHierarchy(this.companyId)
       .subscribe((response) => {
         this.broadcasterService.locations = response;
         this.router.navigate(['/location/list']);
-        console.log('locations:' + response);
         this.spinner.hide();
-        this.loader = false;
       });
   }
 
-  help() {
+  help(): void {
     this.helpFlag = !this.helpFlag;
   }
 }

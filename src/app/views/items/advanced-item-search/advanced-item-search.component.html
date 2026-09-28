@@ -142,20 +142,102 @@
                 </div>
                 <div class="row">
                   <div
-  class="form-group col-sm-6"
-  *ngFor="let eachAttr of itemModel.attributeValues; let i = index"
->
-  <label>{{ eachAttr.name }}</label>
-
-  <input
-    type="text"
-    class="form-control"
-    [(ngModel)]="eachAttr.value"
-    name="attr{{ i }}"
-    placeholder="Enter Value"
-  />
-</div>
-
+                    class="form-group col-sm-6"
+                    *ngFor="let eachAttr of itemModel.attributeValues; let i = index"
+                  >
+                    <div>
+                      <label>{{ eachAttr.name }}</label>
+                      <div>
+                        <input
+                          *ngIf="eachAttr.attributeType?.attributeTypeId === 1"
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="number{{ i }}"
+                        />
+                        <input
+                          *ngIf="eachAttr.attributeType?.attributeTypeId === 2"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="text{{ i }}"
+                        />
+                        <input
+                          *ngIf="eachAttr.attributeType?.attributeTypeId === 6"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="multiValue{{ i }}"
+                        />
+                        <input
+                          *ngIf="eachAttr.attributeType?.attributeTypeId === 3"
+                          type="date"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          name="date{{ i }}"
+                        />
+                        <div
+                          *ngIf="eachAttr.attributeType?.attributeTypeId === 4"
+                          class="custom-dropdown-wrapper"
+                        >
+                          <select
+                            class="form-control"
+                            [(ngModel)]="eachAttr.value"
+                            name="select{{ i }}"
+                          >
+                            <option value="">Choose..</option>
+                            <option
+                              [ngValue]="list.listItem"
+                              *ngFor="let list of eachAttr.attributeListItemResource"
+                            >
+                              {{ list.listItem }}
+                            </option>
+                          </select>
+                          <span class="custom-dropdown-arrow"></span>
+                        </div>
+                        <div
+                          class="form-check attribute-radio-options"
+                          *ngIf="eachAttr.attributeType?.attributeTypeId === 5"
+                        >
+                          <label class="form-check-label">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [(ngModel)]="eachAttr.value"
+                              name="radios{{ i }}"
+                              value="Y"
+                            />Y
+                          </label>
+                          <label class="form-check-label">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [(ngModel)]="eachAttr.value"
+                              name="radios{{ i }}"
+                              value="N"
+                            />N
+                          </label>
+                          <label class="form-check-label">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [(ngModel)]="eachAttr.value"
+                              name="radios{{ i }}"
+                              value="N/A"
+                            />N/A
+                          </label>
+                        </div>
+                        <textarea
+                          *ngIf="eachAttr.attributeType?.attributeTypeId === 7"
+                          name="textarea{{ i }}"
+                          rows="2"
+                          class="form-control"
+                          [(ngModel)]="eachAttr.value"
+                          placeholder="Enter Value"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-sm-12 text-center">

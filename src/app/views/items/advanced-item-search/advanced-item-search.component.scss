@@ -217,6 +217,25 @@ mat-radio-group {
   border-top: 6px solid gray;
 }
 
+.attribute-radio-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  min-height: 38px;
+}
+
+.attribute-radio-options .form-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.attribute-radio-options .form-check-input {
+  margin: 0;
+}
+
 .btn-group{
   border-radius: 6px !important;
 }

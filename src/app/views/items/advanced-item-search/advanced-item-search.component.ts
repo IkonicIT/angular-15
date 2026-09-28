@@ -543,9 +543,8 @@ buildAttributeList() {
 
   if (this.itemModel.attributeValues) {
     this.itemModel.attributeValues.forEach((attr: any) => {
-      if (attr.value && attr.value !== "") {
-
-        let attributeValue = attr.value.trim();
+      if (attr.value !== null && attr.value !== undefined && String(attr.value).trim() !== "") {
+        let attributeValue = String(attr.value).trim();
         const lastchar = attributeValue.substr(attributeValue.length - 1);
 
         if (lastchar === '.' || lastchar === ',') {

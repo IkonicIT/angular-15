@@ -600,7 +600,7 @@
         *ngIf="flag==0"
         (click)="exportAsExcelFileWithMultipleSheets()"
         class="btn btn-primary"
-        [disabled]="isExportDataLoading || !exportSearchResults">
+        [disabled]="isExportDataLoading">
   {{ isExportDataLoading ? 'Preparing Export...' : 'Export to Excel' }}
 </button>
                     <span class="ml-2 text-muted" *ngIf="exportProgress">{{ exportProgress }}</span>
@@ -780,7 +780,7 @@
         *ngIf="flag==0"
         (click)="exportAsExcelFileWithMultipleSheets()"
         class="btn btn-primary"
-        [disabled]="isExportDataLoading || !exportSearchResults">
+        [disabled]="isExportDataLoading">
   {{ isExportDataLoading ? 'Preparing Export...' : 'Export to Excel' }}
 </button>
                     <span class="ml-2 text-muted" *ngIf="exportProgress">{{ exportProgress }}</span>

@@ -103,7 +103,7 @@ public hierarchyLoading$ = this.hierarchyLoadingSource.asObservable();
 
   getAllLocationsWithHierarchy(companyId: string | number) {
     return this.http
-      .get<any[]>(AppConfiguration.locationRestURL + 'location/getAllLocationsWithHierarchy/' + companyId, this.httpOptions)
+      .get<any[]>(AppConfiguration.locationRestURL + 'location/tree/' + companyId, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
   getAllLocationsWithHierarchyOnlyInPieChart(companyId: string | number) {

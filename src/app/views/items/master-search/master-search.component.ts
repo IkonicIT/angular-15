@@ -4,7 +4,7 @@ import { ItemManagementService } from '../../../services/Items/item-management.s
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Router } from '@angular/router';
 import { CompanyManagementService } from '../../../services/index';
-import * as cloneDeep from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { ExcelService } from '../../../services/excel-service';
 
 @Component({
@@ -173,7 +173,7 @@ export class MasterSearchComponent implements OnInit {
       const result = clonedsearchResults[itemType];
       result.forEach((obj: any) => {
         const robj: any = {};
-        obj.attributeNameList.forEach((atr: any) => {
+        (obj.attributeNameList || []).forEach((atr: any) => {
           robj[atr.name] = atr.value;
         });
 

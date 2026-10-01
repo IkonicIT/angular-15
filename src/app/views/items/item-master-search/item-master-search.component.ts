@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemManagementService } from '../../../services/Items/item-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import * as cloneDeep from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { ExcelService } from '../../../services/excel-service';
 import { BroadcasterService } from '../../../services/broadcaster.service';
 import { Router } from '@angular/router';
@@ -150,18 +150,28 @@ export class ItemMasterSearchComponent implements OnInit {
     };
 
     this.spinner.show();
-    const data: any[] =
-      (await (this.itemManagementService.getMasterSearchResults(request) as Observable<any[]>).toPromise()) || [];
-    this.spinner.hide();
-
-    this.exportSearchResults = data;
-    this.exportAsExcelFile();
+    try {
+      const data: any[] =
+        (await (this.itemManagementService.getMasterSearchResults(request) as Observable<any[]>).toPromise()) || [];
+      this.exportSearchResults = Array.isArray(data) ? data : [];
+      if (this.exportSearchResults.length > 0) {
+        this.exportAsExcelFile();
+      }
+    } catch (error) {
+      console.error('Failed to load master search data for export.', error);
+    } finally {
+      this.spinner.hide();
+    }
   }
 
   formAttributesString(searchResults: any[]) {
     searchResults.forEach((item: any) => {
+      if (!item || typeof item !== 'object') {
+        return;
+      }
+
       let attributes = '';
-      if (item.attributes !== '') {
+      if (Array.isArray(item.attributes)) {
         item.attributes.forEach(
           (attribute: { attributeName: string; value: string }) => {
             attributes += `${attribute.attributeName}:${attribute.value} | `;
@@ -203,7 +213,7 @@ export class ItemMasterSearchComponent implements OnInit {
   groupBy(list: any[], keyGetter: (item: any) => string) {
     const map = new Map();
     list.forEach((item: any) => {
-      const key = keyGetter(item).replaceAll('/', '');
+      const key = String(keyGetter(item) || 'Unknown Company').replaceAll('/', '');
       const collection = map.get(key);
       if (!collection) {
         map.set(key, [item]);

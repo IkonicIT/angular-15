@@ -382,19 +382,13 @@ onDeptChange(deptNumber: number) {
   this.lastSearchRequest = { ...request };
   this.page = 1;
 
-  
   this.getAdvancedSearchResults(this.page, this.itemsForPagination, request);
-
   const exportRequest = { ...request, isExport: 1 };
-
   const isRequestChanged =
     JSON.stringify(exportRequest) !== JSON.stringify(this.lastExportRequest);
 
   if (isRequestChanged) {
-
     this.lastExportRequest = { ...exportRequest };
-
-  
     if (this.exportSubscription) {
       this.exportSubscription.unsubscribe();
     }
@@ -761,10 +755,10 @@ buildAttributeList() {
     this.exportProgress = 'Export complete.';
   }
 
-  private buildExportPayload(): Record<string, any[]> {
+  private buildExportPayload(sourceData: Record<string, any[]>): Record<string, any[]> {
     const payload: Record<string, any[]> = {};
-    Object.keys(this.exportSearchResults).forEach((itemType) => {
-      const rows = this.exportSearchResults[itemType];
+    Object.keys(sourceData).forEach((itemType) => {
+      const rows = sourceData[itemType];
       if (!Array.isArray(rows)) {
         payload[itemType] = rows;
         return;
@@ -786,8 +780,9 @@ buildAttributeList() {
   }
 
   async exportAsExcelFileWithMultipleSheets() {
-    if (!this.exportSearchResults) {
-      console.log('No export data available. Please search again.');
+    const sourceData = this.exportSearchResults || this.searchResults;
+    if (!sourceData || Object.keys(sourceData).length === 0) {
+      console.log('No search data available to export.');
       return;
     }
 
@@ -796,7 +791,7 @@ buildAttributeList() {
     this.exportProgress = 'Preparing export...';
 
     await this.delay(0);
-    const exportData = this.buildExportPayload();
+    const exportData = this.buildExportPayload(sourceData);
 
     await this.exportMultipleExcelFiles(exportData);
 

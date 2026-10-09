@@ -15,7 +15,7 @@ import {
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DashboardService } from '../../../services/dashboard.service';
-import * as cloneDeep from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { ExcelService } from '../../../services/excel-service';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 
